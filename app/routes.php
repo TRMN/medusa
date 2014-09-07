@@ -11,7 +11,8 @@
 |
 */
 
-Route::get( '/signin', 'AuthController@signin' );
+Route::get( '/signout', 'AuthController@doSignout' );
+Route::post( '/signin', 'AuthController@doSignin' );
 Route::get( '/dashboard', 'HomeController@showDashboard' );
 Route::get( '/', 'HomeController@showWelcome' );
 Route::get( '/ships/{shipname}', 'ShipController@showShip' );

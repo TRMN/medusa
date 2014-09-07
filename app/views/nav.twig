@@ -3,11 +3,14 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">TRMN Database</a>
         </div>
-        <div id="signin-form" class="not-authenticated">
-            {% include 'loginForm' %}
-        </div>
-        <div id="user-info" class="authenticated">
-            <p class="navbar-text navbar-right">Signed in as <span id="username"></span></p>
-        </div>
+        {% if user %}
+            <div id="user-info">
+                <p class="navbar-text navbar-right">Signed in as <span id="username">{{ user.name }}</span>. <a href="/signout">logout</a></p>
+            </div>
+        {% else %}
+            <div id="signin-form">
+                {% include 'loginForm' %}
+            </div>
+        {% endif %}
     </div>
 </nav>

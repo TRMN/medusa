@@ -1,11 +1,18 @@
 <?php
 
 class AuthController extends BaseController {
-    public function signin( $email, $password ) {
-        // fetch the user record from the database that matches the email
+    public function doSignin() {
+        $email = Input::get( 'email' );
+        $password = Input::get( 'password' );
+        if ( Auth::attempt( [ 'email' => $email, 'password' => $password ] ) ) {
+            return json_encode( [ 'status' => 'success' ]);
+        } else {
+            return json_encode( [ 'status' => 'error' ]);
+        }
+    }
 
-        // if found, compare the password to the hashed password of the record
-
-        // if successful, return the user record
+    public function doSignout() {
+        Auth::logout();
+        return Redirect::intended( '/' );
     }
 }

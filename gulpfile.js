@@ -16,6 +16,8 @@ gulp.task( 'sass', function() {
 gulp.task( 'bootstrap', function() {
     gulp.src( 'bower_components/jquery/dist/jquery.min.js' )
         .pipe( gulp.dest( 'public/js' ) );
+    gulp.src( 'bower_components/jquery/dist/jquery.min.map' )
+        .pipe( gulp.dest( 'public/js' ) );
     gulp.src( 'bower_components/bootstrap/dist/css/bootstrap.min.css' )
         .pipe( gulp.dest( 'public/css' ) );
     return gulp.src( 'bower_components/bootstrap/dist/js/bootstrap.min.js' )
@@ -24,16 +26,15 @@ gulp.task( 'bootstrap', function() {
 
 // Minify JS
 gulp.task( 'js', function() {
-    return gulp.src( 'js/*.js')
-        .pipe( gulp.dest( 'public/js' ) )
-        .pipe( rename( 'main.min.js' ) )
+    return gulp.src( 'javascript/main.js')
         .pipe( uglify() )
+        .pipe( rename( 'main.min.js' ) )
         .pipe( gulp.dest( 'public/js' ) );
 });
 
 // Watch Files For Changes
 gulp.task( 'watch', function() {
-    gulp.watch( 'js/*.js', [ 'js' ] );
+    gulp.watch( 'javascript/*.js', [ 'js' ] );
     gulp.watch( 'sass/*.sass', [ 'sass' ] );
 });
 
