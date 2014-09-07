@@ -2,3 +2,4 @@ vendor/*
 node_modules/*
 bower_components
 .sass_cache
+app/config/local
