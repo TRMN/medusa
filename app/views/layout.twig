@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ pageTitle }}</title>
+    <title>{{ pageTitle }} | Royal Manticoran Navy Database</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
 
+{% include 'nav' %}
+
+<div class="container">
 {% block content %}
 {% endblock %}
+</div>
 
 </body>
 </html>

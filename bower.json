@@ -1,0 +1,24 @@
+{
+  "name": "medusa",
+  "version": "0.0.1",
+  "homepage": "https://github.com/BenOvermyer/medusa",
+  "authors": [
+    "Ben Overmyer <manatrance@gmail.com>"
+  ],
+  "description": "The web app for the RMN Database.",
+  "keywords": [
+    "medusa"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0"
+  }
+}

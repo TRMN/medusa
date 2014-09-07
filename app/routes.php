@@ -11,6 +11,7 @@
 |
 */
 
+Route::get( '/signin', 'AuthController@signin' );
 Route::get( '/dashboard', 'HomeController@showDashboard' );
 Route::get( '/', 'HomeController@showWelcome' );
 Route::get( '/ships/{shipname}', 'ShipController@showShip' );

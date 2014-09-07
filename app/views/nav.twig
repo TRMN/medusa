@@ -1,0 +1,13 @@
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">TRMN Database</a>
+        </div>
+        <div id="signin-form" class="not-authenticated">
+            {% include 'loginForm' %}
+        </div>
+        <div id="user-info" class="authenticated">
+            <p class="navbar-text navbar-right">Signed in as <span id="username"></span></p>
+        </div>
+    </div>
+</nav>
