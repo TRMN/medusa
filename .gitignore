@@ -1,5 +1,6 @@
-vendor/*
-node_modules/*
+vendor
+node_modules
 bower_components
-.sass_cache
+.sass-cache
 app/config/local
+.idea
