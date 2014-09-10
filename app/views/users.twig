@@ -1,0 +1,31 @@
+{% extends 'layout' %}
+
+{% block content %}
+<table id="users" class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Member ID</th>
+            <th>Rank</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for row in users %}
+        <tr>
+            <td>{{ row.name }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.member_id }}</td>
+            <td>{{ row.rank.code }}</td>
+            <td>
+                <button class="btn edit-user" data-id="{{ row.id }}">Edit</button>
+                <button class="btn delete-user" data-id="{{ row.id }}">Delete</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<button class="btn" id="add-user">Add User</button>
+{% endblock %}
