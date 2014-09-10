@@ -38,16 +38,14 @@ class GenerateAdminUser extends Command {
     public function fire()
     {
         $password = $this->argument( 'password' );
-        $username = $this->argument( 'username' );
+        $username = $this->argument( 'first_name' );
         $email = $this->argument( 'email' );
-        $zipcode = $this->argument( 'zipcode' );
 
         try {
             $user = new User();
             $user->password = Hash::make( $password );
             $user->email = $email;
-            $user->zipcode = $zipcode;
-            $user->name = $username;
+            $user->first_name = $username;
             $user->save();
             $this->info( 'User created successfully.' );
         } catch ( Exception $e ) {
@@ -63,10 +61,9 @@ class GenerateAdminUser extends Command {
     protected function getArguments()
     {
         return [
-            [ 'username', InputArgument::REQUIRED, 'The username.' ],
+            [ 'first_name', InputArgument::REQUIRED, 'The user\'s first name.' ],
             [ 'email', InputArgument::REQUIRED, 'User email.' ],
-            [ 'password', InputArgument::REQUIRED, 'User password.' ],
-            [ 'zipcode', InputArgument::REQUIRED, 'User zipcode.' ]
+            [ 'password', InputArgument::REQUIRED, 'User password.' ]
         ];
     }
 
