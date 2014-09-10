@@ -26,8 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment([ 
 
-	'local' => [ 'Bens-MacBook-Pro.local' ],
-
+	'local' => [ 'Bens-MacBook-Pro.local', 'bens-mbp.star.local' ],
 ]);
 
 /*

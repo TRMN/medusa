@@ -3,18 +3,19 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">TRMN Database</a>
         </div>
-        {% if user %}
+        @if ($user)
             <ul class="nav navbar-nav">
                 <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="/users">Users</a></li>
             </ul>
             <div id="user-info">
-                <p class="navbar-text navbar-right">Signed in as <a href="/users/{{ user.id }}">{{ user.name }}</a>. <a href="/signout">logout</a></p>
+                <p class="navbar-text navbar-right">Signed in as <a href="/users/{{{ $user->id }}}">{{{ $user->first_name }}}</a>. <a href="/signout">logout</a></p>
             </div>
-        {% else %}
+        @endif
+        @unless(Auth::check())
             <div id="signin-form">
-                {% include 'loginForm' %}
+                @include('loginForm')
             </div>
-        {% endif %}
+        @endunless
     </div>
 </nav>
