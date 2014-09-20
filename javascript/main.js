@@ -1,3 +1,5 @@
+var jQuery = require( 'jquery' );
+
 jQuery( document ).ready( function( $ ) {
     $( '#signin-btn' ).click( function() {
         var data = { email: '', password: '' };
