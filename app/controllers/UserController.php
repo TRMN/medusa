@@ -86,6 +86,17 @@ class UserController extends \BaseController {
 	}
 
 	/**
+	 * Confirm that the user should be deleted.
+	 *
+	 * @param  User  $user
+	 * @return Response
+	 */
+	public function confirmDelete( User $user )
+	{
+		return View::make( 'user.confirmdelete', [ 'user' => $user ] );
+	}
+
+	/**
 	 * Remove the specified user from storage.
 	 *
 	 * @param  User  $user

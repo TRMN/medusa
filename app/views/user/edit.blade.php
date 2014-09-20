@@ -6,7 +6,7 @@ Editing User {{{ $user->member_id }}}
 
 @section('content')
 <h2>Editing User {{{ $user->member_id }}}</h2>
-{{ Form::model( $user, [ 'route' => [ 'user.update', $user->id ] ] ) }}
+{{ Form::model( $user, [ 'route' => [ 'user.update', $user->id ], 'method' => 'put' ] ) }}
 <div class="form-group">
     {{ Form::label('first_name', 'First Name') }} {{ Form::text('first_name') }}
 </div>
