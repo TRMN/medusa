@@ -20,9 +20,10 @@ Users
                     <td>{{{ $user->first_name }}} {{{ $user->last_name }}}</td>
                     <td>{{{ $user->member_id }}}</td>
                     <td>{{{ $user->email }}}</td>
-                    <td><a class="btn btn-info" href="{{ route('user.edit', [ $user->id ]) }}">Edit</a> <a class="btn btn-danger">Delete</a></td>
+                    <td><a class="btn btn-info" href="{{ route('user.edit', [ $user->id ]) }}">Edit</a></td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+    <a class="btn btn-info" href="{{ route('user.create') }}">Create User</a>
 @stop
