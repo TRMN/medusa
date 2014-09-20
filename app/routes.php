@@ -22,5 +22,5 @@ Route::get( '/', 'HomeController@showWelcome' );
 // Users
 
 Route::model( 'user', 'User' );
-Route::get( '/user/{user}/confirmdelete', 'UserController@confirmDelete' );
+Route::get( '/user/{user}/confirmdelete', [ 'as' => 'user.confirmdelete', 'uses' => 'UserController@confirmDelete' ] );
 Route::resource( 'user', 'UserController' );
