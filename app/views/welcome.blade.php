@@ -5,7 +5,5 @@ Welcome
 @stop
 
 @section('content')
-<div class="jumbotron">
-    <h1></h1>
-</div>
+<h1>Welcome to the Royal Manticoran Navy Database</h1>
 @stop

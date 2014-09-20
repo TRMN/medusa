@@ -93,7 +93,7 @@ class UserController extends \BaseController {
 	 */
 	public function confirmDelete( User $user )
 	{
-		return View::make( 'user.confirmdelete', [ 'user' => $user ] );
+		return View::make( 'user.confirm-delete', [ 'user' => $user ] );
 	}
 
 	/**
