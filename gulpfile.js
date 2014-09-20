@@ -2,41 +2,40 @@
 var gulp = require( 'gulp' ); 
 
 // Include Our Plugins
+var browserify = require( 'browserify' );
+var source = require( 'vinyl-source-stream' );
+var buffer = require( 'vinyl-buffer' );
 var sass = require( 'gulp-ruby-sass' );
 var uglify = require( 'gulp-uglify' );
-var rename = require( 'gulp-rename' );
 
 // Compile Our Sass
 gulp.task( 'sass', function() {
     return gulp.src( 'sass/*.sass' )
         .pipe( sass() )
-        .pipe( gulp.dest( 'public/css' ) );
+        .pipe( gulp.dest( './public/css' ) );
 });
 
-gulp.task( 'bootstrap', function() {
-    gulp.src( 'bower_components/jquery/dist/jquery.min.js' )
-        .pipe( gulp.dest( 'public/js' ) );
-    gulp.src( 'bower_components/jquery/dist/jquery.min.map' )
-        .pipe( gulp.dest( 'public/js' ) );
-    gulp.src( 'bower_components/bootstrap/dist/css/bootstrap.min.css' )
-        .pipe( gulp.dest( 'public/css' ) );
-    return gulp.src( 'bower_components/bootstrap/dist/js/bootstrap.min.js' )
-        .pipe( gulp.dest( 'public/js' ) );
-});
-
-// Minify JS
-gulp.task( 'js', function() {
-    return gulp.src( 'javascript/main.js')
+gulp.task( 'browserify', function() {
+    return browserify( './javascript/main.js')
+        .bundle()
+        .on( 'error', function ( err ) {
+            console.log( err.toString() );
+            this.emit( 'end' );
+        })
+        // Pass desired output filename to vinyl-source-stream
+        .pipe( source( 'bundle.min.js' ) )
+        .pipe( buffer() )
+        // Uglify that thing
         .pipe( uglify() )
-        .pipe( rename( 'main.min.js' ) )
-        .pipe( gulp.dest( 'public/js' ) );
+        // Start piping stream to tasks!
+        .pipe( gulp.dest( './public/js' ) );
 });
 
 // Watch Files For Changes
 gulp.task( 'watch', function() {
-    gulp.watch( 'javascript/*.js', [ 'js' ] );
+    gulp.watch( 'javascript/*.js', [ 'browserify' ] );
     gulp.watch( 'sass/*.sass', [ 'sass' ] );
 });
 
 // Default Task
-gulp.task( 'default', [ 'sass', 'js', 'bootstrap', 'watch' ] );
+gulp.task( 'default', [ 'sass', 'browserify', 'watch' ] );
