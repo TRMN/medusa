@@ -11,7 +11,8 @@ var uglify = require( 'gulp-uglify' );
 // Compile Our Sass
 gulp.task( 'sass', function() {
     return gulp.src( 'sass/*.sass' )
-        .pipe( sass() )
+        .pipe( sass( { 'sourcemap=none': true } ) )
+        .on( 'error', function ( err ) { console.log( err.message ); } )
         .pipe( gulp.dest( './public/css' ) );
 });
 
