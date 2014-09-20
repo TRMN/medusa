@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('pageTitle')
-Welcome
+Dashboard
 @stop
 
 @section('content')
