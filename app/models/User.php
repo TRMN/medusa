@@ -9,14 +9,21 @@ class User extends \Eloquent implements UserInterface, RemindableInterface {
 
     use UserTrait, RemindableTrait;
 
-	// Add your validation rules here
-	public static $rules = [
-		// 'title' => 'required'
-	];
+    public static $rules = [];
 
     protected $hidden = [ 'password', 'remember_token' ];
 
-	// Don't forget to fill this array
-	protected $fillable = [ 'first_name', 'last_name', 'email', 'member_id' ];
+    protected $fillable = [ 'first_name', 'last_name', 'email', 'member_id' ];
 
+    public function formalName() {
+        return $this->last_name . ', ' . $this->first_name;
+    }
+
+    public function fullName() {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function chapters() {
+        return $this->belongsToMany( 'Chapter' ); // make this polymorphic
+    }
 }

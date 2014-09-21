@@ -7,6 +7,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="{{ route('user.index') }}">Users</a></li>
+                <li><a href="{{ route('ship.index') }}">Ships</a></li>
             </ul>
             <div id="user-info">
                 <p>Signed in as <a href="{{ route('user.edit', $authUser->id) }}">{{{ $authUser->first_name }}} {{{ $authUser->last_name }}}</a>. <a href="/signout">logout</a></p>

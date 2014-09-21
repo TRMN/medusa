@@ -5,7 +5,7 @@ Creating New User
 @stop
 
 @section('content')
-<h2>Creating New User</h2>
+<h1>Create New User</h1>
 {{ Form::model( $user, [ 'route' => [ 'user.store' ] ] ) }}
 <div class="form-group">
     {{ Form::label('first_name', 'First Name') }} {{ Form::text('first_name') }}
