@@ -1,17 +1,37 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: dweiner
+ * Date: 9/27/14
+ * Time: 10:08 PM
+ */
 
-class ChapterController extends \BaseController {
+class ChapterController extends BaseController {
 
-    /**
-     * Display a listing of chapters
-     *
-     * @return Response
-     */
     public function index()
     {
         $chapters = Chapter::all();
 
-        return View::make( 'chapter.index', compact( 'chapters' ) );
+        for ($i = 0; $i < count($chapters); $i++) {
+            $chapters[$i]->chapter_type = ucfirst($chapters[$i]->chapter_type);
+        }
+
+        return View::make( 'chapter.index', [ 'chapters' => $chapters ] );
+    }
+
+    public function show($chapterID)
+    {
+        $detail = Chapter::find($chapterID);
+
+        $detail->chapter_type = ucfirst($detail->chapter_type);
+
+        if (isset($detail->assigned_to)) {
+            $higher = Chapter::find($detail->assigned_to);
+        } else {
+            $higher = false;
+        }
+
+        return View::make( 'chapter.show', [ 'detail' => $detail, 'higher' => $higher]);
     }
 
     /**
@@ -21,121 +41,29 @@ class ChapterController extends \BaseController {
      */
     public function create()
     {
-        return View::make( 'chapter.create' );
-    }
+        $types = Type::all();
+        $chapterTypes = array();
 
-    /**
-     * Store a newly created chapter in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        $validator = Validator::make( $data = Input::all(), Chapter::$rules );
-
-        if ( $validator->fails() )
-        {
-            return Redirect::back()->withErrors( $validator )->withInput();
+        foreach($types as $chapterType) {
+            $chapterTypes[$chapterType->chapter_type] = $chapterType->chapter_description;
         }
 
-        Chapter::create( $data );
-
-        return Redirect::route( 'chapter.index' );
+        return View::make( 'chapter.create', [ 'chapterTypes' => $chapterTypes] );
     }
 
     /**
-     * Display the specified chapter.
+     * Save a newly created chapter
      *
-     * @param  int  $id
      * @return Response
      */
-    public function show( $id )
+    public function save()
     {
-        $chapter = Chapter::findOrFail( $id );
+        $data = Input::all();
 
-        return View::make( 'chapter.show', compact( 'chapter' ) );
+        die("<pre>" . print_r($data, true));
+//        Chapter::create( $data );
+//
+//        return Redirect::route( 'chapter.index' );
     }
 
-    /**
-     * Show the form for editing the specified chapter.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit( $id )
-    {
-        $chapter = Chapter::find( $id );
-
-        return View::make( 'chapter.edit', compact( 'chapter' ) );
-    }
-
-    /**
-     * Update the specified chapter in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update( $id )
-    {
-        $chapter = Chapter::findOrFail( $id );
-
-        $validator = Validator::make( $data = Input::all(), Chapter::$rules );
-
-        if ( $validator->fails() )
-        {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
-
-        $chapter->update( $data );
-
-        return Redirect::route( 'chapter.index' );
-    }
-
-    /**
-     * Remove the specified chapter from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy( $id )
-    {
-        Chapter::destroy( $id );
-
-        return Redirect::route( 'chapter.index' );
-    }
-
-    /**
-     * Add the specified member to the chapter's roster.
-     *
-     * @param  int  $userId
-     * @param  int  $chapterId
-     * @return Response
-     */
-    public function addMember( $userId, $chapterId )
-    {
-        $chapter = Chapter::findOrFail( $chapterId );
-        $user = User::findOrFail( $userId );
-
-        $chapter->members()->attach( $userId );
-
-        return Redirect::route( 'chapter.show', [ 'chapter' => $chapter->id ]);
-    }
-
-    /**
-     * Remove the specified member from the chapter's roster.
-     *
-     * @param  int  $userId
-     * @param  int  $chapterId
-     * @return Response
-     */
-    public function removeMember( $userId, $chapterId )
-    {
-        $chapter = Chapter::findOrFail( $chapterId );
-        $user = User::findOrFail( $userId );
-
-        $chapter->members()->detach( $userId );
-
-        return Redirect::route( 'chapter.show', [ 'chapter' => $chapter->id ]);
-    }
-
-}
+} 
