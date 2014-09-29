@@ -1,10 +1,10 @@
-jQuery( document ).ready( function( $ ) {
-    $( '#signin-btn' ).click( function() {
+jQuery( document ).ready( function ( $ ) {
+    $( '#signin-btn' ).click( function () {
         var data = { email: '', password: '' };
         data.email = $( '#email' ).val();
         data.password = $( '#password' ).val();
         $( '#signin-btn' ).prop( 'disabled', true );
-        $.post( '/signin', data, function( result ) {
+        $.post( '/signin', data, function ( result ) {
             $( '#signin-btn' ).prop( 'disabled', false );
             if ( result.status == 'success' ) {
                 window.location = '/dashboard';
@@ -13,5 +13,5 @@ jQuery( document ).ready( function( $ ) {
             }
         }, 'json' );
         return false;
-    });
-});
+    } );
+} );

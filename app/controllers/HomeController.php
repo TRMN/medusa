@@ -1,10 +1,12 @@
 <?php
 
-class HomeController extends BaseController {
+class HomeController extends BaseController
+{
 
-    public function showDashboard() {
+    public function showDashboard()
+    {
         if ( Auth::check() ) {
-            return View::make( 'dashboard' );    
+            return View::make( 'dashboard' );
         } else {
             return Redirect::intended( '/' );
         }

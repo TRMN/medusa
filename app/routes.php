@@ -25,5 +25,5 @@ Route::model( 'user', 'User' );
 Route::get( '/user/{user}/confirmdelete', 'UserController@confirmDelete' );
 Route::resource( 'user', 'UserController' );
 Route::resource( 'chapter', 'ChapterController' );
-Route::get('chapter/{chapterID}/show', 'ChapterController@show');
+Route::get( 'chapter/{chapterID}/show', 'ChapterController@show' );
 
