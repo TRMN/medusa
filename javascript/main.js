@@ -1,5 +1,3 @@
-var jQuery = require( 'jquery' );
-
 jQuery( document ).ready( function( $ ) {
     $( '#signin-btn' ).click( function() {
         var data = { email: '', password: '' };
@@ -11,8 +9,9 @@ jQuery( document ).ready( function( $ ) {
             if ( result.status == 'success' ) {
                 window.location = '/dashboard';
             } else {
-                console.log( result.status );
+                console.log( result );
             }
         }, 'json' );
+        return false;
     });
 });
