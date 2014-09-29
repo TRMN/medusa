@@ -5,9 +5,9 @@ class AuthController extends BaseController {
         $email = Input::get( 'email' );
         $password = Input::get( 'password' );
         if ( Auth::attempt( [ 'email' => $email, 'password' => $password ] ) ) {
-            return json_encode( [ 'status' => 'success' ]);
+            return json_encode( [ 'status' => 'success' ] );
         } else {
-            return json_encode( [ 'status' => 'error' ]);
+            return json_encode( [ 'status' => 'error' ] );
         }
     }
 
