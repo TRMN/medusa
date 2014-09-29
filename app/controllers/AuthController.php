@@ -1,7 +1,9 @@
 <?php
 
-class AuthController extends BaseController {
-    public function doSignin() {
+class AuthController extends BaseController
+{
+    public function doSignin()
+    {
         $email = Input::get( 'email' );
         $password = Input::get( 'password' );
         if ( Auth::attempt( [ 'email' => $email, 'password' => $password ] ) ) {
@@ -11,8 +13,10 @@ class AuthController extends BaseController {
         }
     }
 
-    public function doSignout() {
+    public function doSignout()
+    {
         Auth::logout();
+
         return Redirect::intended( '/' );
     }
 }
