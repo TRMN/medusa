@@ -17,7 +17,8 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'host' => 'ds039850.mongolab.com:39850',
+            'host' => 'localhost',
+            'port' => 27017,
             'database' => 'medusa',
             'username' => 'medusadev',
             'password' => 'medusadev',
