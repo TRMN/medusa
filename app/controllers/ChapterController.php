@@ -10,7 +10,7 @@ class ChapterController extends BaseController {
 
     public function index()
     {
-        $chapters = Chapter::all();
+        $chapters = Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get();
 
         for ($i = 0; $i < count($chapters); $i++) {
             $chapters[$i]->chapter_type = ucfirst($chapters[$i]->chapter_type);
@@ -31,7 +31,9 @@ class ChapterController extends BaseController {
             $higher = false;
         }
 
-        return View::make( 'chapter.show', [ 'detail' => $detail, 'higher' => $higher]);
+        $includes = Chapter::where('assigned_to', '=', $detail->_id)->get();
+
+        return View::make( 'chapter.show', [ 'detail' => $detail, 'higher' => $higher, 'includes' => $includes]);
     }
 
     /**
@@ -48,7 +50,15 @@ class ChapterController extends BaseController {
             $chapterTypes[$chapterType->chapter_type] = $chapterType->chapter_description;
         }
 
-        return View::make( 'chapter.create', [ 'chapterTypes' => $chapterTypes] );
+        $chapters = Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get(array('_id', 'chapter_name'));
+
+        $chapterList[''] = "N/A";
+
+        foreach($chapters as $chapter) {
+            $chapterList[$chapter->_id] = $chapter->chapter_name;
+        }
+
+        return View::make( 'chapter.create', [ 'chapterTypes' => $chapterTypes, 'chapter' => new Chapter, 'chapterList' => $chapterList] );
     }
 
     /**
@@ -56,14 +66,19 @@ class ChapterController extends BaseController {
      *
      * @return Response
      */
-    public function save()
+    public function store()
     {
         $data = Input::all();
 
-        die("<pre>" . print_r($data, true));
-//        Chapter::create( $data );
-//
-//        return Redirect::route( 'chapter.index' );
+        foreach($data as $k => $v) {
+            if(empty($data[$k]) === true) {
+                unset($data[$k]);
+            }
+        }
+
+        Chapter::create( $data );
+
+        return Redirect::route( 'chapter.index' );
     }
 
 } 
