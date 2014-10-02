@@ -22,4 +22,6 @@ Chapters
             @endforeach
         </tbody>
     </table>
+    <a href="/chapter/create">Create New Chapter</a>
 @stop
+
