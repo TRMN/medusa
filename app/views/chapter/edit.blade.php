@@ -15,6 +15,7 @@ Editing {{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . 
 </div>
 <div class="form-group">
     {{ Form::label('hull_number', 'Hull Number (if appropriate)') }} {{ Form::text('hull_number') }}
+    {{ Form::label('ship_class', 'Ship Class') }} {{ Form::text('ship_class') }}
 </div>
 <div class="form-group">
     {{ Form::label('Assigned To', 'Assigned To') }} {{ Form::select('assigned_to', $chapterList) }}
