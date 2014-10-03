@@ -6,6 +6,7 @@
 
 @section('content')
 <h2>{{{ $detail->chapter_name }}}{{{ isset($detail->hull_number) ? ' (' . $detail->hull_number . ')' : '' }}}</h2>
+<h3>{{{ isset($detail->ship_class) ? $detail->ship_class . ' Class' : '' }}}</h3>
     <table class="table table-striped">
         <tbody>
                 <tr>
