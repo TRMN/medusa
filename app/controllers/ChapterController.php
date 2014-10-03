@@ -61,10 +61,54 @@ class ChapterController extends BaseController {
         return View::make( 'chapter.create', [ 'chapterTypes' => $chapterTypes, 'chapter' => new Chapter, 'chapterList' => $chapterList] );
     }
 
+    public function edit($chapterID)
+    {
+
+        $detail = Chapter::find($chapterID);
+        $types = Type::all();
+        $chapterTypes = array();
+
+        foreach($types as $chapterType) {
+            $chapterTypes[$chapterType->chapter_type] = $chapterType->chapter_description;
+        }
+
+        $chapters = Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get(array('_id', 'chapter_name'));
+
+        $chapterList[''] = "N/A";
+
+        foreach($chapters as $chapter) {
+            $chapterList[$chapter->_id] = $chapter->chapter_name;
+        }
+
+        return View::make( 'chapter.edit', [ 'chapterTypes' => $chapterTypes, 'chapter' => $detail, 'chapterList' => $chapterList] );
+    }
+
+    public function update($chapterId)
+    {
+
+        $data = Input::all();
+
+        unset($data['_method'], $data['_token']);
+
+        $chapter = Chapter::find($chapterId);
+
+        foreach($data as $k => $v) {
+            if(empty($data[$k]) === true) {
+                unset($data[$k]);
+            } else {
+                $chapter->$k = $v;
+            }
+        }
+
+        $chapter->update($data);
+
+        return Redirect::route( 'chapter.index' );
+    }
+
     /**
      * Save a newly created chapter
      *
-     * @return Response
+     * @return Responsedb.
      */
     public function store()
     {
@@ -77,6 +121,30 @@ class ChapterController extends BaseController {
         }
 
         Chapter::create( $data );
+
+        return Redirect::route( 'chapter.index' );
+    }
+
+    /**
+     * Remove the specified Chapter.
+     *
+     * @param  $chapterID
+     * @return Response
+     */
+    public function destroy($chapterId)
+    {
+        // Remove the chapter
+        Chapter::destroy($chapterId);
+
+        // Update any records that were assigned to that chapter
+
+        $chapters = Chapter::where('assigned_to', '=', $chapterId)->get();
+
+        foreach($chapters as $chapter) {
+            $chapter->assigned_to = '';
+            $chapter->save();
+        }
+
 
         return Redirect::route( 'chapter.index' );
     }
