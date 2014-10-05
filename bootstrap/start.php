@@ -24,10 +24,10 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-$env = $app->detectEnvironment([ 
-
+$env = $app->detectEnvironment( [
 	'local' => [ 'Bens-MacBook-Pro.local', 'bens-mbp.star.local', 'homestead' ],
-]);
+	'staging' => [ 'dicejockey' ],
+] );
 
 /*
 |--------------------------------------------------------------------------
