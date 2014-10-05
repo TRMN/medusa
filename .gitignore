@@ -3,4 +3,5 @@ node_modules
 bower_components
 .sass-cache
 app/config/local
+app/config/staging
 .idea
