@@ -5,7 +5,7 @@ Editing {{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . 
 @stop
 
 @section('content')
-<h2>Editing {{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}}</h2>
+<h1>Editing {{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}}</h1>
 {{ Form::model( $chapter, [ 'route' => [ 'chapter.update', $chapter->_id ], 'method' => 'put' ] ) }}
 <div class="form-group">
     {{ Form::label('chapter_name', 'Chapter Name') }} {{ Form::text('chapter_name') }}
@@ -20,6 +20,6 @@ Editing {{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . 
 <div class="form-group">
     {{ Form::label('Assigned To', 'Assigned To') }} {{ Form::select('assigned_to', $chapterList) }}
 </div>
-{{ Form::submit('Save') }}
+{{ Form::submit( 'Save', [ 'class' => 'button' ] ) }}
 {{ Form::close() }}
 @stop

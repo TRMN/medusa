@@ -3,3 +3,38 @@
 
 .not-authenticated {
   display: normal; }
+
+.button {
+  background-color: #e30; }
+
+.container {
+  background-color: #222;
+  width: 978px;
+  margin: 0 auto;
+  padding: 0.75rem 2.5rem; }
+
+body, html {
+  background-color: black;
+  color: whitesmoke; }
+
+h1 {
+  color: #fe0; }
+
+h2, h3, h4 {
+  color: whitesmoke; }
+
+label {
+  color: whitesmoke; }
+
+nav {
+  width: 978px;
+  margin: 0 auto; }
+
+td.right {
+  text-align: right; }
+
+footer {
+  text-align: center; }
+  footer p {
+    color: whitesmoke;
+    font-size: 0.5rem; }

@@ -14,4 +14,19 @@ jQuery( document ).ready( function ( $ ) {
         }, 'json' );
         return false;
     } );
+
+    $( '.delete-chapter' ).click( function () {
+        var chapterId = $( this ).attr( 'data-mongoid' );
+        var containingRow = $( this ).parent().parent();
+        if ( typeof chapterId !== 'undefined' && chapterId !== '' ) {
+            $.ajax( {
+                'url': '/chapter/' + chapterId,
+                'type': 'DELETE',
+                'success': function () {
+                    containingRow.remove();
+                    alert( 'Deleted successfully.' );
+                }
+            } );
+        }
+    } );
 } );

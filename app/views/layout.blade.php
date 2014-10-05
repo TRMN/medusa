@@ -14,6 +14,10 @@
     <div class="container">
     @yield('content')
     </div>
+    <footer>
+        <p>Copyright &copy; 2008 &ndash; 2014 The Royal Manticoran Navy: The Official Honor Harrington Fan Association, Inc. Some Rights Reserved.
+           Honor Harrington and all related materials are &copy; David Weber.</p>
+    </footer>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/js/foundation.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/js/foundation/foundation.topbar.min.js"></script>
