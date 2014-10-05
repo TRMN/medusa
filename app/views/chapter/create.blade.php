@@ -20,6 +20,6 @@ Create a New Chapter
 <div class="form-group">
     {{ Form::label('Assigned To', 'Assigned To') }} {{ Form::select('assigned_to', $chapterList) }}
 </div>
-{{ Form::submit('Save') }}
+{{ Form::submit( 'Save', [ 'class' => 'button'] ) }}
 {{ Form::close() }}
 @stop
