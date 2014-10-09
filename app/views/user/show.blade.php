@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('pageTitle')
-User {{{ $user->member_id }}}
+{{{ $greeting }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}
 @stop
 
 @section('content')
-<h2>User {{{ $user->member_id }}}</h2>
+<h2>{{{ $greeting }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}</h2>
 <ul>
-    <li>{{{ $user->first_name }}} {{{ $user->last_name }}}</li>
-    <li>{{{ $user->email }}}</li>
+    <li>{{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}</li>
+    <li>{{{ $user->email_address }}}</li>
 </ul>
 @stop

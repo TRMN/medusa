@@ -12,7 +12,11 @@ class DatabaseSeeder extends Seeder
     {
         Eloquent::unguard();
 
-        $this->call( 'ChapterSeeder' );
+        $this->call('CountriesSeeder');
+        $this->call('ChapterSeeder');
+        $this->call('RatingSeeder');
+        $this->call('GradeSeeder');
+        $this->call("BranchSeeder");
     }
 
 }

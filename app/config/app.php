@@ -124,6 +124,7 @@ return [
         'Way\Generators\GeneratorsServiceProvider',
         'Jenssegers\Mongodb\MongodbServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Webpatser\Countries\CountriesServiceProvider',
     ],
 
     /*
@@ -191,6 +192,7 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View' => 'Illuminate\Support\Facades\View',
         'Moloquent' => 'Jenssegers\Mongodb\Model',
+        'Countries' => 'Webpatser\Countries\CountriesFacade',
 
     ],
 
