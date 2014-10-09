@@ -18,7 +18,8 @@
     "require": {
         "doctrine/dbal": "~2.3",
         "laravel/framework": "4.2.*",
-        "barryvdh/laravel-ide-helper": "1.11.*@dev"
+        "barryvdh/laravel-ide-helper": "1.11.*@dev",
+        "webpatser/laravel-countries": "dev-master"
     },
     "require-dev": {
         "way/generators": "~2.0",
