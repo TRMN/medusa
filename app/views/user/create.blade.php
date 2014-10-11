@@ -17,7 +17,7 @@ echo "<p>Please correct the following errors:</p>\n<ul>\n";
 echo "</ul>\n";
 ?>
 
-{{ Form::model( $user, [ 'route' => [ 'user.store' ] ] ) }}
+{{ Form::model( $user, [ 'route' => [ 'user.store' ], 'id' => 'newuser' ] ) }}
 <div class="form-group">
     {{ Form::label('member_id', 'Member ID') }} {{ Form::text('member_id', 'RMN-') }}
 </div>
@@ -52,6 +52,9 @@ echo "</ul>\n";
     {{ Form::label('country', 'Country') }} {{ Form::select('country') }}
 </div>
 <div class="form-group">
+    {{ Form::label('phone_number', "Phone Number") }} {{ Form::text('phone_number') }}
+</div>
+<div class="form-group">
     {{ Form::label('email_address', 'Email') }} {{ Form::email('email_address') }}
 </div>
 <div class="form-group">
@@ -81,15 +84,7 @@ echo "</ul>\n";
 <div class="form-group">
     {{ Form::label('primary_date_assigned', "Date Assigned") }} {{ Form::text('primary_date_assigned') }}
 </div>
-<div class="form-group">
-    {{ Form::label('secondary_assignment', "Secondary Assignment") }} {{ Form::select('secondary_assignment', ['' => 'Select a Chapter']) }}
-</div>
-<div class="form-group">
-    {{ Form::label('secondary_billet', 'Billet') }} {{ Form::text('secondary_billet') }}
-</div>
-<div class="form-group">
-    {{ Form::label('secondary_date_assigned', "Date Assigned") }} {{ Form::text('secondary_date_assigned') }}
-</div>
-{{ Form::submit( 'Save', [ 'class' => 'button'] ) }}
+
+<a class="btn btn-info" href="{{ route('user.index') }}">Cancel</a> {{ Form::submit( 'Save', [ 'class' => 'button'] ) }}
 {{ Form::close() }}
 @stop

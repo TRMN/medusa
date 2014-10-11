@@ -17,12 +17,12 @@ Users
         <tbody>
             @foreach( $users as $user )
                 <tr>
-                    <td>{{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}</td>
+                    <td><a href="{{ route('user.show' , [$user->_id]) }}">{{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}</a></td>
                     <td>{{{ $user->member_id }}}</td>
                     <td>{{{ $user->email_address }}}</td>
                     <td>
-                        <a class="btn" href="{{ route('user.edit', [ $user->id ]) }}">Edit</a> 
-
+                        <a class="btn" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
+                        <a class="btn" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>
                     </td>
                 </tr>
             @endforeach
