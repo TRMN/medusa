@@ -31,31 +31,27 @@ jQuery( document ).ready( function ( $ ) {
     } );
 
     $.getJSON( '/api/country', function( result ){
-        $('#country').empty();
+        $('#newuser #country').empty();
         $.each( result, function( key, value ) {
-            $('#country').append(
+            $('#newuser #country').append(
                 '<option value="' + key + '">' + value + '</option>'
             );
         });
     });
 
     $.getJSON( '/api/branch', function( result ){
-        $('#branch').empty();
+        $('#newuser #branch').empty();
         $.each( result, function( key, value ) {
-            $('#branch').append(
+            $('#newuser #branch').append(
                 '<option value="' + key + '">' + value + '</option>'
             );
         });
     });
 
     $.getJSON( '/api/chapter', function( result ){
-        $('#primary_assignment').empty();
-        $('#secondary_assignment').empty();
+        $('#newuser #primary_assignment').empty();
         $.each( result, function( key, value ) {
-            $('#primary_assignment').append(
-                '<option value="' + key + '">' + value + '</option>'
-            );
-            $('#secondary_assignment').append(
+            $('#newuser #primary_assignment').append(
                 '<option value="' + key + '">' + value + '</option>'
             );
         });

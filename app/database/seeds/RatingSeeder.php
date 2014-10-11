@@ -7,9 +7,9 @@ class RatingSeeder extends Seeder
         DB::collection('ratings')->delete();
 
         $ratings = [
-            "SRN-01" => [
+            "SRN-01" => ["description" => "Personnelman",
                 "RMN" => [
-                    "description" => "Personnelman",
+
                     "E1" => "Personnelman 3/c",
                     "E2" => "Personnelman 2/c",
                     "E3" => "Personnelman 1/c",
@@ -22,7 +22,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Personnelman"
                 ],
                 "GSN" => [
-                    "description" => "Personnelman",
+
                     "E1" => "Personnelman 3/c",
                     "E2" => "Personnelman 2/c",
                     "E3" => "Personnelman 1/c",
@@ -35,7 +35,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Personnelman"
                 ],
                 "RHN" => [
-                    "description" => "Personnelman",
+
                     "E1" => "Personnelman 3/c",
                     "E2" => "Personnelman 2/c",
                     "E3" => "Personnelman 1/c",
@@ -48,9 +48,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Personnelman"
                 ]
             ],
-            "SRN-02" => [
+            "SRN-02" => ["description" => "Navy Counselor",
                 "RMN" => [
-                    "description" => "Navy Counselor",
+
                     "E1" => "Navy Counselor 3/c",
                     "E2" => "Navy Counselor 2/c",
                     "E3" => "Navy Counselor 1/c",
@@ -63,7 +63,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Navy Counselor"
                 ],
                 "GSN" => [
-                    "description" => "Navy Counselor",
+
                     "E1" => "Navy Counselor 3/c",
                     "E2" => "Navy Counselor 2/c",
                     "E3" => "Navy Counselor 1/c",
@@ -76,7 +76,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Navy Counselor"
                 ],
                 "RHN" => [
-                    "description" => "Navy Counselor",
+
                     "E1" => "Navy Counselor 3/c",
                     "E2" => "Navy Counselor 2/c",
                     "E3" => "Navy Counselor 1/c",
@@ -89,9 +89,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Navy Counselor"
                 ],
             ],
-            "SRN-03" => [
+            "SRN-03" => ["description" => "Steward",
                 "RMN" => [
-                    "description" => "Steward",
+
                     "E1" => "Steward 3/c",
                     "E2" => "Steward 2/c",
                     "E3" => "Steward 1/c",
@@ -104,7 +104,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Steward"
                 ],
                 "GSN" => [
-                    "description" => "Steward",
+
                     "E1" => "Steward 3/c",
                     "E2" => "Steward 2/c",
                     "E3" => "Steward 1/c",
@@ -117,7 +117,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Steward"
                 ],
                 "RHN" => [
-                    "description" => "Steward",
+
                     "E1" => "Steward 3/c",
                     "E2" => "Steward 2/c",
                     "E3" => "Steward 1/c",
@@ -130,9 +130,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Steward"
                 ],
             ],
-            "SRN-04" => [
+            "SRN-04" => ["description" => "Yeoman",
                 "RMN" => [
-                    "description" => "Yeoman",
+
                     "E1" => "Yeoman 3/c",
                     "E2" => "Yeoman 2/c",
                     "E3" => "Yeoman 1/c",
@@ -145,7 +145,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Yeoman"
                 ],
                 "GSN" => [
-                    "description" => "Yeoman",
+
                     "E1" => "Yeoman 3/c",
                     "E2" => "Yeoman 2/c",
                     "E3" => "Yeoman 1/c",
@@ -158,7 +158,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Yeoman"
                 ],
                 "RHN" => [
-                    "description" => "Yeoman",
+
                     "E1" => "Yeoman 3/c",
                     "E2" => "Yeoman 2/c",
                     "E3" => "Yeoman 1/c",
@@ -171,9 +171,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Yeoman"
                 ],
             ],
-            "SRN-05" => [
+            "SRN-05" => ["description" => "Coxswain",
                 "RMN" => [
-                    "description" => "Coxswain",
+
                     "E1" => "Coxswain 3/c",
                     "E2" => "Coxswain 2/c",
                     "E3" => "Coxswain 1/c",
@@ -186,7 +186,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Coxswain"
                 ],
                 "GSN" => [
-                    "description" => "Coxswain",
+
                     "E1" => "Coxswain 3/c",
                     "E2" => "Coxswain 2/c",
                     "E3" => "Coxswain 1/c",
@@ -199,7 +199,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Coxswain"
                 ],
                 "RHN" => [
-                    "description" => "Coxswain",
+
                     "E1" => "Coxswain 3/c",
                     "E2" => "Coxswain 2/c",
                     "E3" => "Coxswain 1/c",
@@ -212,9 +212,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Coxswain"
                 ],
             ],
-            "SRN-06" => [
+            "SRN-06" => ["description" => "Helmsman",
                 "RMN" => [
-                    "description" => "Helmsman",
+
                     "E1" => "Helmsman 3/c",
                     "E2" => "Helmsman 2/c",
                     "E3" => "Helmsman 1/c",
@@ -227,7 +227,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Helmsman"
                 ],
                 "GSN" => [
-                    "description" => "Helmsman",
+
                     "E1" => "Helmsman 3/c",
                     "E2" => "Helmsman 2/c",
                     "E3" => "Helmsman 1/c",
@@ -240,7 +240,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Helmsman"
                 ],
                 "RHN" => [
-                    "description" => "Helmsman",
+
                     "E1" => "Helmsman 3/c",
                     "E2" => "Helmsman 2/c",
                     "E3" => "Helmsman 1/c",
@@ -253,9 +253,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Helmsman"
                 ],
             ],
-            "SRN-07" => [
+            "SRN-07" => ["description" => "Plotting Specialist",
                 "RMN" => [
-                    "description" => "Plotting Specialist",
+
                     "E1" => "Plotting Specialist 3/c",
                     "E2" => "Plotting Specialist 2/c",
                     "E3" => "Plotting Specialist 1/c",
@@ -268,7 +268,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Plotting Mate"
                 ],
                 "GSN" => [
-                    "description" => "Plotting Specialist",
+
                     "E1" => "Plotting Specialist 3/c",
                     "E2" => "Plotting Specialist 2/c",
                     "E3" => "Plotting Specialist 1/c",
@@ -281,7 +281,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Plotting Mate"
                 ],
                 "RHN" => [
-                    "description" => "Plotting Specialist",
+
                     "E1" => "Plotting Specialist 3/c",
                     "E2" => "Plotting Specialist 2/c",
                     "E3" => "Plotting Specialist 1/c",
@@ -294,9 +294,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Plotting Mate"
                 ],
             ],
-            "SRN-08" => [
+            "SRN-08" => ["description" => "Fire Control Technician",
                 "RMN" => [
-                    "description" => "Fire Control Technician",
+
                     "E1" => "Fire Control Technician 3/c",
                     "E2" => "Fire Control Technician 2/c",
                     "E3" => "Fire Control Technician 1/c",
@@ -309,7 +309,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Fire Control Mate"
                 ],
                 "GSN" => [
-                    "description" => "Fire Control Technician",
+
                     "E1" => "Fire Control Technician 3/c",
                     "E2" => "Fire Control Technician 2/c",
                     "E3" => "Fire Control Technician 1/c",
@@ -322,7 +322,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Fire Control Mate"
                 ],
                 "RHN" => [
-                    "description" => "Fire Control Technician",
+
                     "E1" => "Fire Control Technician 3/c",
                     "E2" => "Fire Control Technician 2/c",
                     "E3" => "Fire Control Technician 1/c",
@@ -335,9 +335,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Fire Control Mate"
                 ],
             ],
-            "SRN-09" => [
+            "SRN-09" => ["description" => "Electronic Warfare Technician",
                 "RMN" => [
-                    "description" => "Electronic Warfare Technician",
+
                     "E1" => "Electronic Warfare Technician 3/c",
                     "E2" => "Electronic Warfare Technician 2/c",
                     "E3" => "Electronic Warfare Technician 1/c",
@@ -350,7 +350,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Electronic Warfare Mate"
                 ],
                 "GSN" => [
-                    "description" => "Electronic Warfare Technician",
+
                     "E1" => "Electronic Warfare Technician 3/c",
                     "E2" => "Electronic Warfare Technician 2/c",
                     "E3" => "Electronic Warfare Technician 1/c",
@@ -363,7 +363,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Electronic Warfare Mate"
                 ],
                 "RHN" => [
-                    "description" => "Electronic Warfare Technician",
+
                     "E1" => "Electronic Warfare Technician 3/c",
                     "E2" => "Electronic Warfare Technician 2/c",
                     "E3" => "Electronic Warfare Technician 1/c",
@@ -376,9 +376,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Electronic Warfare Mate"
                 ],
             ],
-            "SRN-10" => [
+            "SRN-10" => ["description" => "Tracking Specialist",
                 "RMN" => [
-                    "description" => "Tracking Specialist",
+
                     "E1" => "Tracking Specialist 3/c",
                     "E2" => "Tracking Specialist 2/c",
                     "E3" => "Tracking Specialist 1/c",
@@ -391,7 +391,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Tracking Mate"
                 ],
                 "GSN" => [
-                    "description" => "Tracking Specialist",
+
                     "E1" => "Tracking Specialist 3/c",
                     "E2" => "Tracking Specialist 2/c",
                     "E3" => "Tracking Specialist 1/c",
@@ -404,7 +404,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Tracking Mate"
                 ],
                 "RHN" => [
-                    "description" => "Tracking Specialist",
+
                     "E1" => "Tracking Specialist 3/c",
                     "E2" => "Tracking Specialist 2/c",
                     "E3" => "Tracking Specialist 1/c",
@@ -417,9 +417,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Tracking Mate"
                 ]
             ],
-            "SRN-11" => [
+            "SRN-11" => ["description" => "Data System Technician",
                 "RMN" => [
-                    "description" => "Data System Technician",
+
                     "E1" => "Data Systems Technician 3/c",
                     "E2" => "Data Systems Technician 2/c",
                     "E3" => "Data Systems Technician 1/c",
@@ -432,7 +432,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Data Systems Mate"
                 ],
                 "GSN" => [
-                    "description" => "Data System Technician",
+
                     "E1" => "Data Systems Technician 3/c",
                     "E2" => "Data Systems Technician 2/c",
                     "E3" => "Data Systems Technician 1/c",
@@ -445,7 +445,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Data Systems Mate"
                 ],
                 "RHN" => [
-                    "description" => "Data System Technician",
+
                     "E1" => "Data Systems Technician 3/c",
                     "E2" => "Data Systems Technician 2/c",
                     "E3" => "Data Systems Technician 1/c",
@@ -458,9 +458,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Data Systems Mate"
                 ]
             ],
-            "SRN-12" => [
+            "SRN-12" => ["description" => "Electronics Technician",
                 "RMN" => [
-                    "description" => "Electronics Technician",
+
                     "E1" => "Electronics Technician 3/c",
                     "E2" => "Electronics Technician 2/c",
                     "E3" => "Electronics Technician 1/c",
@@ -473,7 +473,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Electronics Mate"
                 ],
                 "GSN" => [
-                    "description" => "Electronics Technician",
+
                     "E1" => "Electronics Technician 3/c",
                     "E2" => "Electronics Technician 2/c",
                     "E3" => "Electronics Technician 1/c",
@@ -486,7 +486,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Electronics Mate"
                 ],
                 "RHN" => [
-                    "description" => "Electronics Technician",
+
                     "E1" => "Electronics Technician 3/c",
                     "E2" => "Electronics Technician 2/c",
                     "E3" => "Electronics Technician 1/c",
@@ -499,9 +499,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Electronics Mate"
                 ]
             ],
-            "SRN-13" => [
+            "SRN-13" => ["description" => "Communications Technician",
                 "RMN" => [
-                    "description" => "Communications Technician",
+
                     "E1" => "Communications Technician 3/c",
                     "E2" => "Communications Technician 2/c",
                     "E3" => "Communications Technician 1/c",
@@ -527,7 +527,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Communications Mate"
                 ],
                 "RHN" => [
-                    "description" => "Communications Technician",
+
                     "E1" => "Communications Technician 3/c",
                     "E2" => "Communications Technician 2/c",
                     "E3" => "Communications Technician 1/c",
@@ -540,9 +540,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Communications Mate"
                 ]
             ],
-            "SRN-14" => [
+            "SRN-14" => ["description" => "Impeller Technician",
                 "RMN" => [
-                    "description" => "Impeller Technician",
+
                     "E1" => "Impeller Technician 3/c",
                     "E2" => "Impeller Technician 2/c",
                     "E3" => "Impeller Technician 1/c",
@@ -555,7 +555,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Impeller Mate"
                 ],
                 "GSN" => [
-                    "description" => "Impeller Technician",
+
                     "E1" => "Impeller Technician 3/c",
                     "E2" => "Impeller Technician 2/c",
                     "E3" => "Impeller Technician 1/c",
@@ -568,7 +568,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Impeller Mate"
                 ],
                 "RHN" => [
-                    "description" => "Impeller Technician",
+
                     "E1" => "Impeller Technician 3/c",
                     "E2" => "Impeller Technician 2/c",
                     "E3" => "Impeller Technician 1/c",
@@ -581,9 +581,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Impeller Mate"
                 ]
             ],
-            "SRN-15" => [
+            "SRN-15" => ["description" => "Power Technician",
                 "RMN" => [
-                    "description" => "Power Technician",
+
                     "E1" => "Power Technician 3/c",
                     "E2" => "Power Technician 2/c",
                     "E3" => "Power Technician 1/c",
@@ -596,7 +596,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Power Mate"
                 ],
                 "GSN" => [
-                    "description" => "Power Technician",
+
                     "E1" => "Power Technician 3/c",
                     "E2" => "Power Technician 2/c",
                     "E3" => "Power Technician 1/c",
@@ -609,7 +609,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Power Mate"
                 ],
                 "RHN" => [
-                    "description" => "Power Technician",
+
                     "E1" => "Power Technician 3/c",
                     "E2" => "Power Technician 2/c",
                     "E3" => "Power Technician 1/c",
@@ -622,9 +622,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Power Mate"
                 ]
             ],
-            "SRN-16" => [
+            "SRN-16" => ["description" => "Gravatics Technician",
                 "RMN" => [
-                    "description" => "Gravatics Technician",
+
                     "E1" => "Gravatics Technician 3/c",
                     "E2" => "Gravatics Technician 2/c",
                     "E3" => "Gravatics Technician 1/c",
@@ -637,7 +637,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Gravatics Mate"
                 ],
                 "GSN" => [
-                    "description" => "Gravatics Technician",
+
                     "E1" => "Gravatics Technician 3/c",
                     "E2" => "Gravatics Technician 2/c",
                     "E3" => "Gravatics Technician 1/c",
@@ -650,7 +650,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Gravatics Mate"
                 ],
                 "RHN" => [
-                    "description" => "Gravatics Technician",
+
                     "E1" => "Gravatics Technician 3/c",
                     "E2" => "Gravatics Technician 2/c",
                     "E3" => "Gravatics Technician 1/c",
@@ -663,9 +663,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Gravatics Mate"
                 ]
             ],
-            "SRN-17" => [
+            "SRN-17" => ["description" => "Environmental Technician",
                 "RMN" => [
-                    "description" => "Environmental Technician",
+
                     "E1" => "Environmental Technician 3/c",
                     "E2" => "Environmental Technician 2/c",
                     "E3" => "Environmental Technician 1/c",
@@ -678,7 +678,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Environmental Mate"
                 ],
                 "GSN" => [
-                    "description" => "Environmental Technician",
+
                     "E1" => "Environmental Technician 3/c",
                     "E2" => "Environmental Technician 2/c",
                     "E3" => "Environmental Technician 1/c",
@@ -691,7 +691,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Environmental Mate"
                 ],
                 "RHN" => [
-                    "description" => "Environmental Technician",
+
                     "E1" => "Environmental Technician 3/c",
                     "E2" => "Environmental Technician 2/c",
                     "E3" => "Environmental Technician 1/c",
@@ -704,9 +704,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Environmental Mate"
                 ]
             ],
-            "SRN-18" => [
+            "SRN-18" => ["description" => "Hydroponics Technician",
                 "RMN" => [
-                    "description" => "Hydroponics Technician",
+
                     "E1" => "Hydroponics Technician 3/c",
                     "E2" => "Hydroponics Technician 2/c",
                     "E3" => "Hydroponics Technician 1/c",
@@ -719,7 +719,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Hydroponics Mate"
                 ],
                 "GSN" => [
-                    "description" => "Hydroponics Technician",
+
                     "E1" => "Hydroponics Technician 3/c",
                     "E2" => "Hydroponics Technician 2/c",
                     "E3" => "Hydroponics Technician 1/c",
@@ -732,7 +732,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Hydroponics Mate"
                 ],
                 "RHN" => [
-                    "description" => "Hydroponics Technician",
+
                     "E1" => "Hydroponics Technician 3/c",
                     "E2" => "Hydroponics Technician 2/c",
                     "E3" => "Hydroponics Technician 1/c",
@@ -745,9 +745,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Hydroponics Mate"
                 ]
             ],
-            "SRN-19" => [
+            "SRN-19" => ["description" => "Damage Control Technician",
                 "RMN" => [
-                    "description" => "Damage Control Technician",
+
                     "E1" => "Damage Control Technician 3/c",
                     "E2" => "Damage Control Technician 2/c",
                     "E3" => "Damage Control Technician 1/c",
@@ -760,7 +760,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Damage Control Mate"
                 ],
                 "GSN" => [
-                    "description" => "Damage Control Technician",
+
                     "E1" => "Damage Control Technician 3/c",
                     "E2" => "Damage Control Technician 2/c",
                     "E3" => "Damage Control Technician 1/c",
@@ -773,7 +773,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Damage Control Mate"
                 ],
                 "RHN" => [
-                    "description" => "Damage Control Technician",
+
                     "E1" => "Damage Control Technician 3/c",
                     "E2" => "Damage Control Technician 2/c",
                     "E3" => "Damage Control Technician 1/c",
@@ -786,9 +786,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Damage Control Mate"
                 ]
             ],
-            "SRN-20" => [
+            "SRN-20" => ["description" => "Storekeeper",
                 "RMN" => [
-                    "description" => "Storekeeper",
+
                     "E1" => "Storekeeper 3/c",
                     "E2" => "Storekeeper 2/c",
                     "E3" => "Storekeeper 1/c",
@@ -801,7 +801,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Storekeeper"
                 ],
                 "GSN" => [
-                    "description" => "Storekeeper",
+
                     "E1" => "Storekeeper 3/c",
                     "E2" => "Storekeeper 2/c",
                     "E3" => "Storekeeper 1/c",
@@ -814,7 +814,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Storekeeper"
                 ],
                 "RHN" => [
-                    "description" => "Storekeeper",
+
                     "E1" => "Storekeeper 3/c",
                     "E2" => "Storekeeper 2/c",
                     "E3" => "Storekeeper 1/c",
@@ -827,9 +827,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Storekeeper"
                 ]
             ],
-            "SRN-21" => [
+            "SRN-21" => ["description" => "Disbursing Clerk",
                 "RMN" => [
-                    "description" => "Disbursing Clerk",
+
                     "E1" => "Disbursing Clerk 3/c",
                     "E2" => "Disbursing Clerk 2/c",
                     "E3" => "Disbursing Clerk 1/c",
@@ -842,7 +842,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Disbursing Clerk"
                 ],
                 "GSN" => [
-                    "description" => "Disbursing Clerk",
+
                     "E1" => "Disbursing Clerk 3/c",
                     "E2" => "Disbursing Clerk 2/c",
                     "E3" => "Disbursing Clerk 1/c",
@@ -855,7 +855,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Disbursing Clerk"
                 ],
                 "RHN" => [
-                    "description" => "Disbursing Clerk",
+
                     "E1" => "Disbursing Clerk 3/c",
                     "E2" => "Disbursing Clerk 2/c",
                     "E3" => "Disbursing Clerk 1/c",
@@ -868,9 +868,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Disbursing Clerk"
                 ]
             ],
-            "SRN-22" => [
+            "SRN-22" => ["description" => "Ship's Serviceman",
                 "RMN" => [
-                    "description" => "Ship's Serviceman",
+
                     "E1" => "Ship's Serviceman 3/c",
                     "E2" => "Ship's Serviceman 2/c",
                     "E3" => "Ship's Serviceman 1/c",
@@ -883,7 +883,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Ship's Serviceman"
                 ],
                 "GSN" => [
-                    "description" => "Ship's Serviceman",
+
                     "E1" => "Ship's Serviceman 3/c",
                     "E2" => "Ship's Serviceman 2/c",
                     "E3" => "Ship's Serviceman 1/c",
@@ -896,7 +896,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Ship's Serviceman"
                 ],
                 "RHN" => [
-                    "description" => "Ship's Serviceman",
+
                     "E1" => "Ship's Serviceman 3/c",
                     "E2" => "Ship's Serviceman 2/c",
                     "E3" => "Ship's Serviceman 1/c",
@@ -909,9 +909,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Ship's Serviceman"
                 ]
             ],
-            "SRN-23" => [
+            "SRN-23" => ["description" => "Corpsman",
                 "RMN" => [
-                    "description" => "Corpsman",
+
                     "E1" => "Corpsman 3/c",
                     "E2" => "Corpsman 2/c",
                     "E3" => "Corpsman 1/c",
@@ -924,7 +924,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Corpsman"
                 ],
                 "GSN" => [
-                    "description" => "Corpsman",
+
                     "E1" => "Corpsman 3/c",
                     "E2" => "Corpsman 2/c",
                     "E3" => "Corpsman 1/c",
@@ -937,7 +937,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Corpsman"
                 ],
                 "RHN" => [
-                    "description" => "Corpsman",
+
                     "E1" => "Corpsman 3/c",
                     "E2" => "Corpsman 2/c",
                     "E3" => "Corpsman 1/c",
@@ -950,9 +950,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Corpsman"
                 ]
             ],
-            "SRN-24" => [
+            "SRN-24" => ["description" => "Sick Berth Attendant",
                 "RMN" => [
-                    "description" => "Sick Berth Attendant",
+
                     "E1" => "Sick Berth Attendant 3/c",
                     "E2" => "Sick Berth Attendant 2/c",
                     "E3" => "Sick Berth Attendant 1/c",
@@ -965,7 +965,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Sick Berth Attendant"
                 ],
                 "GSN" => [
-                    "description" => "Sick Berth Attendant",
+
                     "E1" => "Sick Berth Attendant 3/c",
                     "E2" => "Sick Berth Attendant 2/c",
                     "E3" => "Sick Berth Attendant 1/c",
@@ -978,7 +978,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Sick Berth Attendant"
                 ],
                 "RHN" => [
-                    "description" => "Sick Berth Attendant",
+
                     "E1" => "Sick Berth Attendant 3/c",
                     "E2" => "Sick Berth Attendant 2/c",
                     "E3" => "Sick Berth Attendant 1/c",
@@ -991,9 +991,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Sick Berth Attendant"
                 ]
             ],
-            "SRN-25" => [
+            "SRN-25" => ["description" => "Operations Specialist",
                 "RMN" => [
-                    "description" => "Operations Specialist",
+
                     "E1" => "Operations Specialist 3/c",
                     "E2" => "Operations Specialist 2/c",
                     "E3" => "Operations Specialist 1/c",
@@ -1006,7 +1006,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Operations Mate"
                 ],
                 "GSN" => [
-                    "description" => "Operations Specialist",
+
                     "E1" => "Operations Specialist 3/c",
                     "E2" => "Operations Specialist 2/c",
                     "E3" => "Operations Specialist 1/c",
@@ -1019,7 +1019,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Operations Mate"
                 ],
                 "RHN" => [
-                    "description" => "Operations Specialist",
+
                     "E1" => "Operations Specialist 3/c",
                     "E2" => "Operations Specialist 2/c",
                     "E3" => "Operations Specialist 1/c",
@@ -1032,9 +1032,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Operations Mate"
                 ]
             ],
-            "SRN-26" => [
+            "SRN-26" => ["description" => "Intelligence Specialist",
                 "RMN" => [
-                    "description" => "Intelligence Specialist",
+
                     "E1" => "Intelligence Specialist 3/c",
                     "E2" => "Intelligence Specialist 2/c",
                     "E3" => "Intelligence Specialist 1/c",
@@ -1047,7 +1047,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Intelligence Mate"
                 ],
                 "GSN" => [
-                    "description" => "Intelligence Specialist",
+
                     "E1" => "Intelligence Specialist 3/c",
                     "E2" => "Intelligence Specialist 2/c",
                     "E3" => "Intelligence Specialist 1/c",
@@ -1060,7 +1060,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Intelligence Mate"
                 ],
                 "RHN" => [
-                    "description" => "Intelligence Specialist",
+
                     "E1" => "Intelligence Specialist 3/c",
                     "E2" => "Intelligence Specialist 2/c",
                     "E3" => "Intelligence Specialist 1/c",
@@ -1073,9 +1073,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Intelligence Mate"
                 ]
             ],
-            "SRN-27" => [
+            "SRN-27" => ["description" => "Missile Technician",
                 "RMN" => [
-                    "description" => "Missile Technician",
+
                     "E1" => "Missile Technician 3/c",
                     "E2" => "Missile Technician 2/c",
                     "E3" => "Missile Technician 1/c",
@@ -1088,7 +1088,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Missile Mate"
                 ],
                 "GSN" => [
-                    "description" => "Missile Technician",
+
                     "E1" => "Missile Technician 3/c",
                     "E2" => "Missile Technician 2/c",
                     "E3" => "Missile Technician 1/c",
@@ -1101,7 +1101,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Missile Mate"
                 ],
                 "RHN" => [
-                    "description" => "Missile Technician",
+
                     "E1" => "Missile Technician 3/c",
                     "E2" => "Missile Technician 2/c",
                     "E3" => "Missile Technician 1/c",
@@ -1114,9 +1114,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Missile Mate"
                 ]
             ],
-            "SRN-28" => [
+            "SRN-28" => ["description" => "Beam Weapons Technician",
                 "RMN" => [
-                    "description" => "Beam Weapons Technician",
+
                     "E1" => "Beam Weapons Technician 3/c",
                     "E2" => "Beam Weapons Technician 2/c",
                     "E3" => "Beam Weapons Technician 1/c",
@@ -1129,7 +1129,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Beam Weapons Mate"
                 ],
                 "GSN" => [
-                    "description" => "Beam Weapons Technician",
+
                     "E1" => "Beam Weapons Technician 3/c",
                     "E2" => "Beam Weapons Technician 2/c",
                     "E3" => "Beam Weapons Technician 1/c",
@@ -1142,7 +1142,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Beam Weapons Mate"
                 ],
                 "RHN" => [
-                    "description" => "Beam Weapons Technician",
+
                     "E1" => "Beam Weapons Technician 3/c",
                     "E2" => "Beam Weapons Technician 2/c",
                     "E3" => "Beam Weapons Technician 1/c",
@@ -1155,9 +1155,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Beam Weapons Mate"
                 ]
             ],
-            "SRN-29" => [
+            "SRN-29" => ["description" => "Gunner",
                 "RMN" => [
-                    "description" => "Gunner",
+
                     "E1" => "Gunner 3/c",
                     "E2" => "Gunner 2/c",
                     "E3" => "Gunner 1/c",
@@ -1170,7 +1170,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Gunner's Mate"
                 ],
                 "GSN" => [
-                    "description" => "Gunner",
+
                     "E1" => "Gunner 3/c",
                     "E2" => "Gunner 2/c",
                     "E3" => "Gunner 1/c",
@@ -1183,7 +1183,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Gunner's Mate"
                 ],
                 "RHN" => [
-                    "description" => "Gunner",
+
                     "E1" => "Gunner 3/c",
                     "E2" => "Gunner 2/c",
                     "E3" => "Gunner 1/c",
@@ -1196,9 +1196,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Gunner's Mate"
                 ]
             ],
-            "SRN-30" => [
+            "SRN-30" => ["description" => "Boatswain",
                 "RMN" => [
-                    "description" => "Boatswain",
+
                     "E1" => "Boatswain 3/c",
                     "E2" => "Boatswain 2/c",
                     "E3" => "Boatswain 1/c",
@@ -1211,7 +1211,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Boatswain's Mate"
                 ],
                 "GSN" => [
-                    "description" => "Boatswain",
+
                     "E1" => "Boatswain 3/c",
                     "E2" => "Boatswain 2/c",
                     "E3" => "Boatswain 1/c",
@@ -1224,7 +1224,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Boatswain's Mate"
                 ],
                 "RHN" => [
-                    "description" => "Boatswain",
+
                     "E1" => "Boatswain 3/c",
                     "E2" => "Boatswain 2/c",
                     "E3" => "Boatswain 1/c",
@@ -1237,9 +1237,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Boatswain's Mate"
                 ]
             ],
-            "SRN-31" => [
+            "SRN-31" => ["description" => "Master-at-Arms",
                 "RMN" => [
-                    "description" => "Master-at-Arms",
+
                     "E1" => "Master-at-Arms 3/c",
                     "E2" => "Master-at-Arms 2/c",
                     "E3" => "Master-at-Arms 1/c",
@@ -1252,7 +1252,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Master-at-Arms Mate"
                 ],
                 "GSN" => [
-                    "description" => "Master-at-Arms",
+
                     "E1" => "Master-at-Arms 3/c",
                     "E2" => "Master-at-Arms 2/c",
                     "E3" => "Master-at-Arms 1/c",
@@ -1265,7 +1265,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Master-at-Arms Mate"
                 ],
                 "RHN" => [
-                    "description" => "Master-at-Arms",
+
                     "E1" => "Master-at-Arms 3/c",
                     "E2" => "Master-at-Arms 2/c",
                     "E3" => "Master-at-Arms 1/c",
@@ -1278,9 +1278,9 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Master-at-Arms Mate"
                 ]
             ],
-            "SRN-32" => [
+            "SRN-32" => ["description" => "Sensor Technician",
                 "RMN" => [
-                    "description" => "Sensor Technician",
+
                     "E1" => "Sensor Technician 3/c",
                     "E2" => "Sensor Technician 2/c",
                     "E3" => "Sensor Technician 1/c",
@@ -1293,7 +1293,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Sensor Mate"
                 ],
                 "GSN" => [
-                    "description" => "Sensor Technician",
+
                     "E1" => "Sensor Technician 3/c",
                     "E2" => "Sensor Technician 2/c",
                     "E3" => "Sensor Technician 1/c",
@@ -1306,7 +1306,7 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Sensor Mate"
                 ],
                 "RHN" => [
-                    "description" => "Sensor Technician",
+
                     "E1" => "Sensor Technician 3/c",
                     "E2" => "Sensor Technician 2/c",
                     "E3" => "Sensor Technician 1/c",
@@ -1319,171 +1319,171 @@ class RatingSeeder extends Seeder
                     "E10" => "Senior Master Chief Sensor Mate"
                 ]
             ],
-            "SRMC-01" => [
+            "SRMC-01" => ["description" => "Armorer",
                 "RMMC" => [
-                    "description" => "Armorer"
+
                 ],
             ],
 
-            "SRMC-02" => [
+            "SRMC-02" => ["description" => "Marine Police",
                 "RMMC" => [
-                    "description" => "Marine Police"
+
                 ],
             ],
 
-            "SRMC-03" => [
+            "SRMC-03" => ["description" => "Missile Crew",
                 "RMMC" => [
-                    "description" => "Missile Crew"
+
                 ],
             ],
 
-            "SRMC-04" => [
+            "SRMC-04" => ["description" => "LASER/GRASER Crew",
                 "RMMC" => [
-                    "description" => "LASER/GRASER Crew"
+
                 ],
             ],
 
-            "SRMC-05" => [
+            "SRMC-05" => ["description" => "Assault Marine",
                 "RMMC" => [
-                    "description" => "Assault Marine"
+
                 ],
             ],
 
-            "SRMC-06" => [
+            "SRMC-06" => ["description" => "Recon Marine",
                 "RMMC" => [
-                    "description" => "Recon Marine"
+
                 ],
             ],
 
-            "SRMC-07" => [
+            "SRMC-07" => ["description" => "Rifleman/Grenadier",
                 "RMMC" => [
-                    "description" => "Rifleman/Grenadier"
+
                 ],
             ],
 
-            "SRMC-08" => [
+            "SRMC-08" => ["description" => "Heavy Weapons",
                 "RMMC" => [
-                    "description" => "Heavy Weapons"
+
                 ],
             ],
 
-            "SRMC-09" => [
+            "SRMC-09" => ["description" => "Admin Specialist",
                 "RMMC" => [
-                    "description" => "Admin Specialist"
+
                 ],
             ],
 
-            "SRMC-10" => [
+            "SRMC-10" => ["description" => "Embassy Guard",
                 "RMMC" => [
-                    "description" => "Embassy Guard"
+
                 ],
             ],
 
-            "RMAT-09" => [
+            "RMAT-09" => ["description" => "Skimmer Crewman",
                 "RMA" => [
-                    "description" => "Skimmer Crewman"
+
                 ],
             ],
 
-            "RMAT-03" => [
+            "RMAT-03" => ["description" => "Tank Crewman",
                 "RMA" => [
-                    "description" => "Tank Crewman"
+
                 ],
             ],
 
-            "RMAT-05" => [
+            "RMAT-05" => ["description" => "Stingship Pilot",
                 "RMA" => [
-                    "description" => "Stingship Pilot"
+
                 ],
             ],
 
-            "RMAT-10" => [
+            "RMAT-10" => ["description" => "Cargo Skimmer Pilot",
                 "RMA" => [
-                    "description" => "Cargo Skimmer Pilot"
+
                 ],
             ],
 
-            "RMAT-06" => [
+            "RMAT-06" => ["description" => "Indirect Fire Specialist",
                 "RMA" => [
-                    "description" => "Indirect Fire Specialist"
+
                 ],
             ],
 
-            "RMAT-11" => [
+            "RMAT-11" => ["description" => "Air Defense Specialist",
                 "RMA" => [
-                    "description" => "Air Defense Specialist"
+
                 ],
             ],
 
-            "RMAT-12" => [
+            "RMAT-12" => ["description" => "Orbital Defense Specialist",
                 "RMA" => [
-                    "description" => "Orbital Defense Specialist"
+
                 ],
             ],
 
-            "RMAT-13" => [
+            "RMAT-13" => ["description" => "Combat Engineer",
                 "RMA" => [
-                    "description" => "Combat Engineer"
+
                 ],
             ],
 
-            "RMAT-01" => [
+            "RMAT-01" => ["description" => "Armorer",
                 "RMA" => [
-                    "description" => "Armorer"
+
                 ],
             ],
 
-            "RMAT-08" => [
+            "RMAT-08" => ["description" => "Infantryman",
                 "RMA" => [
-                    "description" => "Infantryman"
+
                 ],
             ],
 
-            "RMAT-14" => [
+            "RMAT-14" => ["description" => "Assault Specialist (Battle Armor)",
                 "RMA" => [
-                    "description" => "Assault Specialist (Battle Armor)"
+
                 ],
             ],
 
-            "RMAT-04" => [
+            "RMAT-04" => ["description" => "Reconnaissance Specialist",
                 "RMA" => [
-                    "description" => "Reconnaissance Specialist"
+
                 ],
             ],
 
-            "RMAT-15" => [
+            "RMAT-15" => ["description" => "Military Criminal Investigator",
                 "RMA" => [
-                    "description" => "Military Criminal Investigator"
+
                 ],
             ],
 
-            "RMAT-02" => [
+            "RMAT-02" => ["description" => "Military Police",
                 "RMA" => [
-                    "description" => "Military Police"
+
                 ],
             ],
 
-            "RMAT-16" => [
+            "RMAT-16" => ["description" => "Military Law Specialist",
                 "RMA" => [
-                    "description" => "Military Law Specialist"
+
                 ],
             ],
 
-            "RMAT-07" => [
+            "RMAT-07" => ["description" => "Administrative Specialist",
                 "RMA" => [
-                    "description" => "Administrative Specialist"
+
                 ],
             ],
 
-            "RMAT-17" => [
+            "RMAT-17" => ["description" => "Logistics Specialist",
                 "RMA" => [
-                    "description" => "Logistics Specialist"
+
                 ],
             ],
 
-            "RMAT-18" => [
+            "RMAT-18" => ["description" => "Finance Specialist",
                 "RMA" => [
-                    "description" => "Finance Specialist"
+
                 ],
             ]
 
