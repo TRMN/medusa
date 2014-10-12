@@ -6,6 +6,16 @@ Create a New Chapter
 
 @section('content')
 <h2>Create a New Chapter</h2>
+<?php
+if (count($errors->all())) {
+echo "<p>Please correct the following errors:</p>\n<ul>\n";
+    foreach ($errors->all() as $message)
+    {
+        echo "<li>" . $message . "</li>\n";
+    }
+}
+echo "</ul>\n";
+?>
 {{ Form::model( $chapter, [ 'route' => [ 'chapter.store' ] ] ) }}
 <div class="form-group">
     {{ Form::label('chapter_name', 'Chapter Name') }} {{ Form::text('chapter_name') }}

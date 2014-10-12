@@ -33,6 +33,28 @@
                     </td>
                 </tr>
                 @endif
+                @if (count($command))
+                <tr>
+                    <td>Command Crew:</td>
+                    <td>
+                        @if ($command['CO'])
+                            Commanding Officer: <a href="{{ route('user.show' , [$command['CO']->_id]) }}">{{{ $command['CO']->greeting }}} {{{ $command['CO']->first_name }}}{{{ isset($command['CO']->middle_name) ? ' ' . $command['CO']->middle_name : '' }}} {{{ $command['CO']->last_name }}}{{{ isset($command['CO']->suffix) ? ' ' . $command['CO']->suffix : '' }}}</a><br />
+                            Executive Officer: <a href="{{ route('user.show' , [$command['XO']->_id]) }}">{{{ $command['XO']->greeting }}} {{{ $command['XO']->first_name }}}{{{ isset($command['XO']->middle_name) ? ' ' . $command['XO']->middle_name : '' }}} {{{ $command['XO']->last_name }}}{{{ isset($command['XO']->suffix) ? ' ' . $command['XO']->suffix : '' }}}</a><br />
+                            Bosun: <a href="{{ route('user.show' , [$command['Bosun']->_id]) }}">{{{ $command['Bosun']->greeting }}} {{{ $command['Bosun']->first_name }}}{{{ isset($command['Bosun']->middle_name) ? ' ' . $command['Bosun']->middle_name : '' }}} {{{ $command['Bosun']->last_name }}}{{{ isset($command['Bosun']->suffix) ? ' ' . $command['Bosun']->suffix : '' }}}</a>
+                        @endif
+                    </td>
+                </tr>
+                @endif
+                @if (count($crew))
+                <tr>
+                    <td>Crew Roster:</td>
+                    <td>
+                        @foreach($crew as $member)
+                        <a href="{{ route('user.show', [$member->_id]) }}">{{{ $member->greeting }}} {{{ $member->first_name }}}{{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}} {{{ $member->last_name }}}{{{ isset($member->suffix) ? ' ' . $member->suffix : '' }}}</a><br />
+                        @endforeach
+                    </td>
+                </tr>
+                @endif
         </tbody>
     </table>
     <a href="/chapter">Chapter Listing</a>

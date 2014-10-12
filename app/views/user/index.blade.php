@@ -23,7 +23,7 @@ Users
                     <td>{{{ $user->member_id }}}</td>
                     <td>{{{ $user->email_address }}}</td>
                     <td>{{{ $user->branch }}}</td>
-                    <td>{{{ $user->primary_assignment }}}</td>
+                    <td><a href="/chapter/{{{ $user->primary_assignment }}}">{{{ $user->primary_assignment_name }}}</a></td>
                     <td>
                         <a class="btn" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
                         <a class="btn" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>
