@@ -109,7 +109,7 @@ class UserController extends \BaseController
     public function show( User $user )
     {
 
-        list($greeting, $permRank, $brevetRank) = $this->_getRankTitle($user);
+        list($greeting, $permRank, $brevetRank) = User::getRankTitle($user);
 
         if (isset($user->rating) === true && empty($user->rating) === false) {
             $user->rating = ['rate' => $user->rating, 'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']];
@@ -132,7 +132,7 @@ class UserController extends \BaseController
      */
     public function edit( User $user )
     {
-        list($greeting, $permRank, $brevetRank) = $this->_getRankTitle($user);
+        list($greeting, $permRank, $brevetRank) = User::getRankTitle($user);
 
         if (isset($user->rating) === true && empty($user->rating) === false) {
             $user->rating = ['rate' => $user->rating, 'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']];
@@ -278,58 +278,4 @@ class UserController extends \BaseController
 
         return $countries;
     }
-
-    private function _getRankTitle(User $user)
-    {
-        // Figure out the correct rank title to use for this user based on branch
-        $branch = $user->branch;
-        $rank = $user->rank['permanent_rank']['grade'];
-
-        $gradeDetail = Grade::where('grade', '=', $rank)->get();
-
-        $permRank = $gradeDetail[0]->rank[$branch];
-
-        // Check for rating
-
-        if (isset($user->rating) === true && empty($user->rating) === false) {
-            if ($rateGreeting = $this->_getRateTitle(['rating' => $user->rating, 'branch' => $branch, 'rank' => $rank])) {
-                $permRank = $rateGreeting;
-            }
-        }
-
-        $greeting = $permRank;
-
-        if (isset($user->rank['brevet_rank']) === true && empty($user->rank['brevet_rank']) === false) {
-            $rank = $user->rank['brevet_rank']['grade'];
-
-            $gradeDetail = Grade::where('grade', '=', $rank)->get();
-
-            $brevetRank = $gradeDetail[0]->rank[$branch];
-
-            // Check for rating
-
-            if (isset($user->rating) === true && empty($user->rating) === false) {
-                if ($rateGreeting = $this->_getRateTitle(['rating' => $user->rating, 'branch' => $branch, 'rank' => $rank])) {
-                    $brevetRank = $rateGreeting;
-                }
-            }
-
-            $greeting = $brevetRank;
-
-        } else {
-            $brevetRank = '';
-        }
-
-        return [$greeting, $permRank, $brevetRank];
-    }
-
-    private function _getRateTitle($params)
-    {
-        $rateDetail = Rating::where('rate_code', '=', $params['rating'])->get();
-
-        if (isset($rateDetail[0]->rate[$params['branch']][$params['rank']]) === true && empty($rateDetail[0]->rate[$params['branch']][$params['rank']]) === false) {
-            return $rateDetail[0]->rate[$params['branch']][$params['rank']];
-        }
-    }
-
 }
