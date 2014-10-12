@@ -2,7 +2,7 @@ module.exports = function() {
     this.initMemberForm = function () {
 
         jQuery.getJSON( '/api/country', function ( result ) {
-            jQuery( '#country' ).empty();
+            jQuery( '#newuser #country' ).empty();
             jQuery.each( result, function ( key, value ) {
                 jQuery( '#country' ).append(
                     '<option value="' + key + '">' + value + '</option>'
@@ -11,7 +11,7 @@ module.exports = function() {
         } );
 
         jQuery.getJSON( '/api/branch', function ( result ) {
-            jQuery( '#branch' ).empty();
+            jQuery( '#newuser #branch' ).empty();
             jQuery.each( result, function ( key, value ) {
                 jQuery( '#branch' ).append(
                     '<option value="' + key + '">' + value + '</option>'
@@ -20,7 +20,7 @@ module.exports = function() {
         } );
 
         jQuery.getJSON( '/api/chapter', function ( result ) {
-            jQuery( '#primary_assignment' ).empty();
+            jQuery( '#newuser #primary_assignment' ).empty();
             jQuery.each( result, function ( key, value ) {
                 jQuery( '#primary_assignment' ).append(
                     '<option value="' + key + '">' + value + '</option>'
