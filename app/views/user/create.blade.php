@@ -62,7 +62,7 @@ echo "</ul>\n";
     {{ Form::label('email_address', 'Email') }} {{ Form::email('email_address') }}
 </div>
 <div class="form-group">
-    {{ Form::label('branch', "Branch") }} {{ Form::select('branch', $branches) }}
+    {{ Form::label('branch', "Branch") }} {{ Form::select('branch') }}
 </div>
 <div class="form-group">
     {{ Form::label('permanent_rank', "Permanent Rank") }} {{ Form::select('permanent_rank', ['' => "Select a Rank"]) }}
@@ -80,7 +80,7 @@ echo "</ul>\n";
     {{ Form::label('rating', "Rating (if any)") }} {{ Form::select('rating', ['' => 'Select a Rating']) }}
 </div>
 <div class="form-group">
-    {{ Form::label('primary_assignment', "Primary Assignment") }} {{ Form::select('primary_assignment', $chapters) }}
+    {{ Form::label('primary_assignment', "Primary Assignment") }} {{ Form::select('primary_assignment', ['' => 'Select a Chapter']) }}
 </div>
 <div class="form-group">
     {{ Form::label('primary_billet', 'Billet') }} {{ Form::text('primary_billet') }}

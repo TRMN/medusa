@@ -67,7 +67,7 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 
     protected $hidden = [ 'password', 'remember_token' ];
 
-    protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number', 'email_address', 'branch', 'rating', 'permanent_rank', 'primary_assignment', 'peerage_record', 'awards_record', 'exam_record' ];
+    protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number','email_address', 'branch', 'rating', 'rank', 'assignment', 'peerage_record', 'awards_record', 'exam_record'];
 
     static function getCommandCrew($chapterId)
     {
@@ -126,5 +126,18 @@ class User extends Moloquent implements UserInterface, RemindableInterface
         if (isset($rateDetail[0]->rate[$params['branch']][$params['rank']]) === true && empty($rateDetail[0]->rate[$params['branch']][$params['rank']]) === false) {
             return $rateDetail[0]->rate[$params['branch']][$params['rank']];
         }
+    }
+
+    static function getPrimaryAssignment(User $user)
+    {
+        foreach ( $user->assignment as $assignment ) {
+            if ( $assignment[ 'primary' ] === true ) {
+                $primary_assignment = $assignment[ 'chapter_id' ];
+                $primary_billet = $assignment[ 'billet' ];
+                $primary_date_assigned = $assignment[ 'date_assigned' ];
+            }
+        }
+
+        return [ $primary_assignment, $primary_billet, $primary_date_assigned ];
     }
 }

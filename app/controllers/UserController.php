@@ -22,12 +22,7 @@ class UserController extends \BaseController
      */
     public function create()
     {
-        return View::make( 'user.create', [
-            'user' => new User,
-            'countries' => $this->_getCountries(),
-            'branches' => Branch::getBranchList(),
-            'chapters' => Chapter::getChapters(),
-        ] );
+        return View::make( 'user.create', [ 'user' => new User ] );
     }
 
     /**
@@ -143,23 +138,16 @@ class UserController extends \BaseController
             $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
         }
 
+        $user->permanent_rank = $user->rank['permanent_rank']['grade'];
+
+        $user->perm_dor = $user->rank['permanent_rank']['date_of_rank'];
+
         if (empty($user->brevet_rank) === false) {
             $user->brevet_rank = $user->rank['brevet_rank']['grade'];
             $user->brevet_dor = $user->rank['brevet_rank']['date_of_rank'];
         }
 
-        $user->brevet_rank = $user->rank[ 'brevet_rank' ][ 'grade' ];
-
-        $user->brevet_dor = $user->rank[ 'brevet_rank' ][ 'date_of_rank' ];
-
-        foreach ( $user->assignment as $assignment ) {
-            if ( $assignment[ 'primary' ] === true ) {
-                $user->primary_assignment = $assignment[ 'chapter_id' ];
-                $user->primary_billet = $assignment[ 'billet' ];
-                $user->primary_date_assigned = $assignment[ 'date_assigned' ];
-            }
-
-        }
+        list($user->primary_assignment, $user->primary_billet, $user->primary_date_assigned) = User::getPrimaryAssignment($user);
 
         return View::make( 'user.edit', [
             'user' => $user,
