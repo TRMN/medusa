@@ -69,18 +69,62 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 
     protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number', 'email_address', 'branch', 'rating', 'permanent_rank', 'primary_assignment', 'peerage_record', 'awards_record', 'exam_record' ];
 
-    public function formalName()
+    static function getCommandCrew($chapterId)
     {
-        return $this->last_name . ', ' . $this->first_name;
+        return User::where('assignment.chapter_id', '=', $chapterId)->whereIn('assignment.billet', ['CO', 'XO', 'Bosun'])->get();
+
     }
 
-    public function fullName()
+    static function getRankTitle(User $user)
     {
-        return $this->first_name . ' ' . $this->last_name;
+        // Figure out the correct rank title to use for this user based on branch
+        $branch = $user->branch;
+        $rank = $user->rank['permanent_rank']['grade'];
+
+        $gradeDetail = Grade::where('grade', '=', $rank)->get();
+
+        $permRank = $gradeDetail[0]->rank[$branch];
+
+        // Check for rating
+
+        if (isset($user->rating) === true && empty($user->rating) === false) {
+            if ($rateGreeting = self::getRateTitle(['rating' => $user->rating, 'branch' => $branch, 'rank' => $rank])) {
+                $permRank = $rateGreeting;
+            }
+        }
+
+        $greeting = $permRank;
+
+        if (isset($user->rank['brevet_rank']) === true && empty($user->rank['brevet_rank']) === false) {
+            $rank = $user->rank['brevet_rank']['grade'];
+
+            $gradeDetail = Grade::where('grade', '=', $rank)->get();
+
+            $brevetRank = $gradeDetail[0]->rank[$branch];
+
+            // Check for rating
+
+            if (isset($user->rating) === true && empty($user->rating) === false) {
+                if ($rateGreeting = self::getRateTitle(['rating' => $user->rating, 'branch' => $branch, 'rank' => $rank])) {
+                    $brevetRank = $rateGreeting;
+                }
+            }
+
+            $greeting = $brevetRank;
+
+        } else {
+            $brevetRank = '';
+        }
+
+        return [$greeting, $permRank, $brevetRank];
     }
 
-    public function chapters()
+    static function getRateTitle($params)
     {
-        return $this->belongsToMany( 'Chapter' );
+        $rateDetail = Rating::where('rate_code', '=', $params['rating'])->get();
+
+        if (isset($rateDetail[0]->rate[$params['branch']][$params['rank']]) === true && empty($rateDetail[0]->rate[$params['branch']][$params['rank']]) === false) {
+            return $rateDetail[0]->rate[$params['branch']][$params['rank']];
+        }
     }
 }

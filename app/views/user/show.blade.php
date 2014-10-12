@@ -27,9 +27,9 @@
         <td>Branch of Service:</td><td>{{{$branches[$user->branch]}}}</td>
     </tr>
     <tr>
-        <td>Rank:</td><td>{{{$user->rank['permanent_rank']['grade']}}} / {{{$permRank}}} as of {{{$user->rank['permanent_rank']['date_of_rank']}}}@if($user->rank['brevet_rank']['grade'])<br />Brevet to  {{{$user->rank['brevet_rank']['grade']}}} / {{{$brevetRank}}} as of {{{$user->rank['brevet_rank']['date_of_rank']}}}@endif</td>
+        <td>Rank:</td><td>{{{$user->rank['permanent_rank']['grade']}}} / {{{$permRank}}} as of {{{$user->rank['permanent_rank']['date_of_rank']}}}@if(isset($user->rank['brevet_rank']))<br />Brevet to  {{{$user->rank['brevet_rank']['grade']}}} / {{{$brevetRank}}} as of {{{$user->rank['brevet_rank']['date_of_rank']}}}@endif</td>
     </tr>
-    @if($user->rating['rate'])
+    @if(isset($user->rating['rate']))
     <tr>
         <td>Rating:</td><td>{{{$user->rating['rate']}}} / {{{$user->rating['description']}}}</td>
     </tr>
