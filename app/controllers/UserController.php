@@ -12,6 +12,11 @@ class UserController extends \BaseController
     {
         $users = User::all();
 
+        for ($u=0; $u < count($users); $u++) {
+            list($users[$u]->primary_assignment, $users[$u]->primary_billet, $users[$u]->primary_date_assigned) = User::getPrimaryAssignment($users[$u]);
+            $users[$u]->primary_assignment_name = Chapter::getChapterName($users[$u]->primary_assignment);
+        }
+
         return View::make( 'user.index', [ 'users' => $users ] );
     }
 
@@ -109,7 +114,7 @@ class UserController extends \BaseController
     public function show( User $user )
     {
 
-        list($greeting, $permRank, $brevetRank) = User::getRankTitle($user);
+        list($greeting, $permRank, $brevetRank) = User::getRankTitles($user);
 
         if ( isset( $user->rating ) === true && empty( $user->rating ) === false ) {
             $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
@@ -132,7 +137,7 @@ class UserController extends \BaseController
      */
     public function edit( User $user )
     {
-        list($greeting, $permRank, $brevetRank) = User::getRankTitle($user);
+        list($greeting, $permRank, $brevetRank) = User::getRankTitles($user);
 
         if ( isset( $user->rating ) === true && empty( $user->rating ) === false ) {
             $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
@@ -142,7 +147,7 @@ class UserController extends \BaseController
 
         $user->perm_dor = $user->rank['permanent_rank']['date_of_rank'];
 
-        if (empty($user->brevet_rank) === false) {
+        if (empty($user->rank['brevet_rank']['grade']) === false) {
             $user->brevet_rank = $user->rank['brevet_rank']['grade'];
             $user->brevet_dor = $user->rank['brevet_rank']['date_of_rank'];
         }
@@ -157,8 +162,7 @@ class UserController extends \BaseController
             'grades' => Grade::getGradesForBranch( $user->branch ),
             'ratings' => Rating::getRatingsForBranch( $user->branch ),
             'chapters' => Chapter::getChapters(),
-            'permRank' => $permRank,
-            'brevetRank' => $brevetRank ]
+            ]
         );
     }
 

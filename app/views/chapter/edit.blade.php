@@ -6,6 +6,16 @@ Editing {{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . 
 
 @section('content')
 <h1>Editing {{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}}</h1>
+<?php
+if (count($errors->all())) {
+echo "<p>Please correct the following errors:</p>\n<ul>\n";
+    foreach ($errors->all() as $message)
+    {
+        echo "<li>" . $message . "</li>\n";
+    }
+}
+echo "</ul>\n";
+?>
 {{ Form::model( $chapter, [ 'route' => [ 'chapter.update', $chapter->_id ], 'method' => 'put' ] ) }}
 <div class="form-group">
     {{ Form::label('chapter_name', 'Chapter Name') }} {{ Form::text('chapter_name') }}

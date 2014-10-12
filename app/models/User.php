@@ -69,13 +69,47 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 
     protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number','email_address', 'branch', 'rating', 'rank', 'assignment', 'peerage_record', 'awards_record', 'exam_record'];
 
+    /**
+     * Get the command crew for a chapter
+     *
+     * @param $chapterId
+     * @return mixed
+     */
     static function getCommandCrew($chapterId)
     {
         return User::where('assignment.chapter_id', '=', $chapterId)->whereIn('assignment.billet', ['CO', 'XO', 'Bosun'])->get();
 
     }
 
-    static function getRankTitle(User $user)
+    /**
+     * Get all users/members assigned to a specific chapter excluding the command crew
+     *
+     * @param $chapterId
+     * @return mixed
+     */
+    static function getCrew($chapterId)
+    {
+        return User::where('assignment.chapter_id', '=', $chapterId)->whereNotIn('assignment.billet', ['CO', 'XO', 'Bosun'])->get();
+    }
+
+    /**
+     * Get all users/members assigned to a specific chapter, including the command crew
+     *
+     * @param $chapterId
+     * @return mixed
+     */
+    static function getAllCrew($chapterId)
+    {
+        return User::where('assignment.chapter_id', '=', $chapterId)->get();
+    }
+
+    /**
+     * Get the preferred rank title along with the rank title for the users permanent and brevet rank
+     *
+     * @param User $user
+     * @return array
+     */
+    static function getRankTitles(User $user)
     {
         // Figure out the correct rank title to use for this user based on branch
         $branch = $user->branch;
@@ -119,6 +153,25 @@ class User extends Moloquent implements UserInterface, RemindableInterface
         return [$greeting, $permRank, $brevetRank];
     }
 
+    /**
+     * Return only the preferred rank title for a user
+     *
+     * @param User $user
+     * @return mixed
+     */
+    static function getGreeting(User $user)
+    {
+        list($greeting, $permRank, $brevetRank) = self::getRankTitles($user);
+
+        return $greeting;
+    }
+
+    /**
+     * Get the rate specific rank title, if any
+     *
+     * @param $params
+     * @return mixed
+     */
     static function getRateTitle($params)
     {
         $rateDetail = Rating::where('rate_code', '=', $params['rating'])->get();
@@ -128,6 +181,12 @@ class User extends Moloquent implements UserInterface, RemindableInterface
         }
     }
 
+    /**
+     * Get a users primary assignment
+     *
+     * @param User $user
+     * @return array
+     */
     static function getPrimaryAssignment(User $user)
     {
         foreach ( $user->assignment as $assignment ) {

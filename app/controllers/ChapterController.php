@@ -34,7 +34,24 @@ class ChapterController extends BaseController
 
         $includes = Chapter::where( 'assigned_to', '=', $detail->_id )->get();
 
-        return View::make( 'chapter.show', [ 'detail' => $detail, 'higher' => $higher, 'includes' => $includes ] );
+        $commandCrew = [];
+
+        foreach(User::getCommandCrew($chapterID) as $user) {
+            foreach($user->assignment as $assignment) {
+                if (isset($assignment['chapter_id']) === true && empty($assignment['chapter_id']) === false && $assignment['chapter_id'] == $chapterID) {
+                    $user->greeting = User::getGreeting($user);
+                    $commandCrew[$assignment['billet']] = $user;
+                }
+            }
+        }
+
+        $crew = User::getCrew($chapterID);
+
+        for ($u=0; $u<count($crew); $u++) {
+            $crew[$u]->greeting = User::getGreeting($crew[$u]);
+        }
+
+        return View::make( 'chapter.show', [ 'detail' => $detail, 'higher' => $higher, 'includes' => $includes, 'command' => $commandCrew, 'crew' => $crew ] );
     }
 
     /**
@@ -44,12 +61,14 @@ class ChapterController extends BaseController
      */
     public function create()
     {
-        $types = Type::all();
+        $types = Type::orderBy('chapter_description')->get(['chapter_type', 'chapter_description']);
         $chapterTypes = [ ];
 
         foreach ( $types as $chapterType ) {
             $chapterTypes[ $chapterType->chapter_type ] = $chapterType->chapter_description;
         }
+
+        $chapterTypes = ['' => 'Select a Chapter Type'] + $chapterTypes;
 
         $chapters = Chapter::orderBy( 'chapter_type' )->orderBy( 'chapter_name' )->get( [ '_id', 'chapter_name' ] );
 
@@ -87,7 +106,11 @@ class ChapterController extends BaseController
     public function update( $chapterId )
     {
 
-        $data = Input::all();
+        $validator = Validator::make( $data = Input::all(), Chapter::$updateRules );
+
+        if ( $validator->fails() ) {
+            return Redirect::back()->withErrors( $validator )->withInput();
+        }
 
         unset( $data[ '_method' ], $data[ '_token' ] );
 
@@ -113,7 +136,11 @@ class ChapterController extends BaseController
      */
     public function store()
     {
-        $data = Input::all();
+        $validator = Validator::make( $data = Input::all(), Chapter::$rules );
+
+        if ( $validator->fails() ) {
+            return Redirect::back()->withErrors( $validator )->withInput();
+        }
 
         foreach ( $data as $k => $v ) {
             if ( empty( $data[ $k ] ) === true ) {
