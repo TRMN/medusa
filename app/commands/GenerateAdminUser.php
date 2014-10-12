@@ -4,7 +4,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class GenerateAdminUser extends Command {
+class GenerateAdminUser extends Command
+{
 
     /**
      * The console command name.
@@ -38,14 +39,16 @@ class GenerateAdminUser extends Command {
     public function fire()
     {
         $password = $this->argument( 'password' );
-        $username = $this->argument( 'first_name' );
+        $firstname = $this->argument( 'first_name' );
+        $lastname = $this->argument( 'last_name' );
         $email = $this->argument( 'email' );
 
         try {
             $user = new User();
             $user->password = Hash::make( $password );
-            $user->email = $email;
-            $user->first_name = $username;
+            $user->email_address = $email;
+            $user->first_name = $firstname;
+            $user->last_name = $lastname;
             $user->save();
             $this->info( 'User created successfully.' );
         } catch ( Exception $e ) {
@@ -62,6 +65,7 @@ class GenerateAdminUser extends Command {
     {
         return [
             [ 'first_name', InputArgument::REQUIRED, 'The user\'s first name.' ],
+            [ 'last_name', InputArgument::REQUIRED, 'The user\'s last name.' ],
             [ 'email', InputArgument::REQUIRED, 'User email.' ],
             [ 'password', InputArgument::REQUIRED, 'User password.' ]
         ];
@@ -74,7 +78,7 @@ class GenerateAdminUser extends Command {
      */
     protected function getOptions()
     {
-        return [];
+        return [ ];
     }
 
 }

@@ -1,89 +1,26 @@
+var ManticoreAuth = require( './ManticoreAuth.js' );
+var ManticoreUser = require( './ManticoreUser.js' );
+var ManticoreChapter = require( './ManticoreChapter.js' );
+
 jQuery( document ).ready( function ( $ ) {
+
+    var authController = new ManticoreAuth();
+    var userController = new ManticoreUser();
+    var chapterController = new ManticoreChapter();
+
+    if ( $( '.userform' ).length > 0 ) {
+        userController.initMemberForm();
+    }
+
     $( '#signin-btn' ).click( function () {
-        var data = { email: '', password: '' };
-        data.email = $( '#email' ).val();
-        data.password = $( '#password' ).val();
+
+        var email = $( '#email' ).val();
+        var password = $( '#password' ).val();
         $( '#signin-btn' ).prop( 'disabled', true );
-        $.post( '/signin', data, function ( result ) {
-            $( '#signin-btn' ).prop( 'disabled', false );
-            if ( result.status == 'success' ) {
-                window.location = '/dashboard';
-            } else {
-                console.log( result );
-            }
-        }, 'json' );
+
+        authController.doLogin( email, password );
+
         return false;
     } );
-
-    $( '.delete-chapter' ).click( function () {
-        var chapterId = $( this ).attr( 'data-mongoid' );
-        var containingRow = $( this ).parent().parent();
-        if ( typeof chapterId !== 'undefined' && chapterId !== '' ) {
-            $.ajax( {
-                'url': '/chapter/' + chapterId,
-                'type': 'DELETE',
-                'success': function () {
-                    containingRow.remove();
-                    alert( 'Deleted successfully.' );
-                }
-            } );
-        }
-    } );
-
-    $.getJSON( '/api/country', function( result ){
-        $('#newuser #country').empty();
-        $.each( result, function( key, value ) {
-            $('#newuser #country').append(
-                '<option value="' + key + '">' + value + '</option>'
-            );
-        });
-    });
-
-    $.getJSON( '/api/branch', function( result ){
-        $('#newuser #branch').empty();
-        $.each( result, function( key, value ) {
-            $('#newuser #branch').append(
-                '<option value="' + key + '">' + value + '</option>'
-            );
-        });
-    });
-
-    $.getJSON( '/api/chapter', function( result ){
-        $('#newuser #primary_assignment').empty();
-        $.each( result, function( key, value ) {
-            $('#newuser #primary_assignment').append(
-                '<option value="' + key + '">' + value + '</option>'
-            );
-        });
-    });
-
-    $('#perm_dor').datepicker({ dateFormat: "yy-mm-dd" });
-    $('#brevet_dor').datepicker({ dateFormat: "yy-mm-dd" });
-    $('#primary_date_assigned').datepicker({ dateFormat: "yy-mm-dd" });
-    $('#secondary_date_assigned').datepicker({ dateFormat: "yy-mm-dd" });
-
-    $('#branch').change(function(){
-        var branch = $('#branch').val();
-        $.getJSON( '/api/branch/' + branch + '/grade', function( result ){
-            $('#permanent_rank').empty();
-            $('#brevet_rank').empty();
-            $.each( result, function( key, value ) {
-                $('#permanent_rank').append(
-                    '<option value="' + key + '">' + value + '</option>'
-                );
-                $('#brevet_rank').append(
-                    '<option value="' + key + '">' + value + '</option>'
-                );
-            });
-        });
-        $.getJSON( '/api/branch/' + branch + '/rate', function( result ){
-            $('#rating').empty();
-            $.each( result, function( key, value ) {
-                $('#rating').append(
-                    '<option value="' + key + '">' + value + '</option>'
-                );
-            });
-        });
-    });
 
 } );

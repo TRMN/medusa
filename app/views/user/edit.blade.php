@@ -4,12 +4,16 @@
 Editing User {{{ $greeting }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}
 @stop
 
+@section('bodyclasses')
+userform
+@stop
+
 @section('content')
 <h2>Editing {{{ $greeting }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}</h2>
 <?php
 if (count($errors->all())) {
 echo "<p>Please correct the following errors:</p>\n<ul>\n";
-    foreach ($errors->all() as $message)
+foreach ($errors->all() as $message)
     {
         echo "<li>" . $message . "</li>\n";
     }
@@ -83,6 +87,6 @@ echo "</ul>\n";
 <div class="form-group">
     {{ Form::label('primary_date_assigned', "Date Assigned") }} {{ Form::text('primary_date_assigned') }}
 </div>
-<a class="btn btn-info" href="{{ route('user.index') }}">Cancel</a> {{ Form::submit('Save') }}
+<a class="button" href="{{ route('user.index') }}">Cancel</a> {{ Form::submit('Save', [ 'class' => 'button' ] ) }}
 {{ Form::close() }}
 @stop

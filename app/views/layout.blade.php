@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{{{ $serverUrl }}}/css/main.css">
 
 </head>
-<body>
+<body class=" @yield('bodyclasses')">
 
     @include('nav')
 
