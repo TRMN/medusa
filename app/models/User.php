@@ -74,4 +74,57 @@ class User extends Moloquent implements UserInterface, RemindableInterface
         return User::where('assignment.chapter_id', '=', $chapterId)->whereIn('assignment.billet', ['CO', 'XO', 'Bosun'])->get();
 
     }
+
+    static function getRankTitle(User $user)
+    {
+        // Figure out the correct rank title to use for this user based on branch
+        $branch = $user->branch;
+        $rank = $user->rank['permanent_rank']['grade'];
+
+        $gradeDetail = Grade::where('grade', '=', $rank)->get();
+
+        $permRank = $gradeDetail[0]->rank[$branch];
+
+        // Check for rating
+
+        if (isset($user->rating) === true && empty($user->rating) === false) {
+            if ($rateGreeting = self::getRateTitle(['rating' => $user->rating, 'branch' => $branch, 'rank' => $rank])) {
+                $permRank = $rateGreeting;
+            }
+        }
+
+        $greeting = $permRank;
+
+        if (isset($user->rank['brevet_rank']) === true && empty($user->rank['brevet_rank']) === false) {
+            $rank = $user->rank['brevet_rank']['grade'];
+
+            $gradeDetail = Grade::where('grade', '=', $rank)->get();
+
+            $brevetRank = $gradeDetail[0]->rank[$branch];
+
+            // Check for rating
+
+            if (isset($user->rating) === true && empty($user->rating) === false) {
+                if ($rateGreeting = self::getRateTitle(['rating' => $user->rating, 'branch' => $branch, 'rank' => $rank])) {
+                    $brevetRank = $rateGreeting;
+                }
+            }
+
+            $greeting = $brevetRank;
+
+        } else {
+            $brevetRank = '';
+        }
+
+        return [$greeting, $permRank, $brevetRank];
+    }
+
+    static function getRateTitle($params)
+    {
+        $rateDetail = Rating::where('rate_code', '=', $params['rating'])->get();
+
+        if (isset($rateDetail[0]->rate[$params['branch']][$params['rank']]) === true && empty($rateDetail[0]->rate[$params['branch']][$params['rank']]) === false) {
+            return $rateDetail[0]->rate[$params['branch']][$params['rank']];
+        }
+    }
 }
