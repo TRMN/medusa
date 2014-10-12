@@ -69,18 +69,9 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 
     protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number','email_address', 'branch', 'rating', 'rank', 'assignment', 'peerage_record', 'awards_record', 'exam_record'];
 
-    public function formalName()
+    static function getCommandCrew($chapterId)
     {
-        return $this->last_name . ', ' . $this->first_name;
-    }
+        return User::where('assignment.chapter_id', '=', $chapterId)->whereIn('assignment.billet', ['CO', 'XO', 'Bosun'])->get();
 
-    public function fullName()
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
-
-    public function chapters()
-    {
-        return $this->belongsToMany( 'Chapter' );
     }
 }

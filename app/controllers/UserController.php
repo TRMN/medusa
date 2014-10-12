@@ -142,9 +142,10 @@ class UserController extends \BaseController
         
         $user->perm_dor = $user->rank['permanent_rank']['date_of_rank'];
 
-        $user->brevet_rank = $user->rank['brevet_rank']['grade'];
-
-        $user->brevet_dor = $user->rank['brevet_rank']['date_of_rank'];
+        if (empty($user->brevet_rank) === false) {
+            $user->brevet_rank = $user->rank['brevet_rank']['grade'];
+            $user->brevet_dor = $user->rank['brevet_rank']['date_of_rank'];
+        }
 
         foreach ($user->assignment as $assignment) {
             if ($assignment['primary'] === true) {
@@ -315,6 +316,8 @@ class UserController extends \BaseController
 
             $greeting = $brevetRank;
 
+        } else {
+            $brevetRank = '';
         }
 
         return [$greeting, $permRank, $brevetRank];
