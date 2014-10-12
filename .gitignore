@@ -5,3 +5,4 @@ bower_components
 app/config/local
 app/config/staging
 .idea
+_ide_helper.php

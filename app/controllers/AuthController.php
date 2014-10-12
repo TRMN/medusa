@@ -6,11 +6,14 @@ class AuthController extends BaseController
     {
         $email = Input::get( 'email' );
         $password = Input::get( 'password' );
-        if ( Auth::attempt( [ 'email' => $email, 'password' => $password ] ) ) {
-            return json_encode( [ 'status' => 'success' ] );
+
+        if ( Auth::attempt( [ 'email_address' => $email, 'password' => $password ] ) ) {
+            $response = Response::make( json_encode( [ 'status' => 'success' ] ) );
         } else {
-            return json_encode( [ 'status' => 'error' ] );
+            $response = Response::make( json_encode( [ 'status' => 'error' ] ) );
         }
+
+        return $response;
     }
 
     public function doSignout()

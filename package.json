@@ -4,7 +4,8 @@
   "description": "Web app for the Royal Manticoran Navy Database",
   "main": "gulpfile.js",
   "dependencies": {
-    "gulp": "^3.8.7"
+    "gulp": "^3.8.7",
+    "jquery": "^2.1.1"
   },
   "devDependencies": {
     "browserify": "^5.12.0",

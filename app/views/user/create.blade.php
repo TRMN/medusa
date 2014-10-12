@@ -4,6 +4,10 @@
 Add a member
 @stop
 
+@section('bodyclasses')
+userform
+@stop
+
 @section('content')
 <h1>Add a Member</h1>
 <?php
@@ -58,7 +62,7 @@ echo "</ul>\n";
     {{ Form::label('email_address', 'Email') }} {{ Form::email('email_address') }}
 </div>
 <div class="form-group">
-    {{ Form::label('branch', "Branch") }} {{ Form::select('branch') }}
+    {{ Form::label('branch', "Branch") }} {{ Form::select('branch', $branches) }}
 </div>
 <div class="form-group">
     {{ Form::label('permanent_rank', "Permanent Rank") }} {{ Form::select('permanent_rank', ['' => "Select a Rank"]) }}
@@ -76,7 +80,7 @@ echo "</ul>\n";
     {{ Form::label('rating', "Rating (if any)") }} {{ Form::select('rating', ['' => 'Select a Rating']) }}
 </div>
 <div class="form-group">
-    {{ Form::label('primary_assignment', "Primary Assignment") }} {{ Form::select('primary_assignment', ['' => 'Select a Chapter']) }}
+    {{ Form::label('primary_assignment', "Primary Assignment") }} {{ Form::select('primary_assignment', $chapters) }}
 </div>
 <div class="form-group">
     {{ Form::label('primary_billet', 'Billet') }} {{ Form::text('primary_billet') }}
@@ -85,6 +89,6 @@ echo "</ul>\n";
     {{ Form::label('primary_date_assigned', "Date Assigned") }} {{ Form::text('primary_date_assigned') }}
 </div>
 
-<a class="btn btn-info" href="{{ route('user.index') }}">Cancel</a> {{ Form::submit( 'Save', [ 'class' => 'button'] ) }}
+<a class="button" href="{{ route('user.index') }}">Cancel</a> {{ Form::submit( 'Save', [ 'class' => 'button'] ) }}
 {{ Form::close() }}
 @stop

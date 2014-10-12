@@ -11,6 +11,8 @@ Users
                 <th>Name</th>
                 <th>Member ID</th>
                 <th>Email</th>
+                <th>Branch</th>
+                <th>Chapter</th>
                 <th></th>
             </tr>
         </thead>
@@ -20,6 +22,8 @@ Users
                     <td><a href="{{ route('user.show' , [$user->_id]) }}">{{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}</a></td>
                     <td>{{{ $user->member_id }}}</td>
                     <td>{{{ $user->email_address }}}</td>
+                    <td>{{{ $user->branch }}}</td>
+                    <td>{{{ $user->primary_assignment }}}</td>
                     <td>
                         <a class="btn" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
                         <a class="btn" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>

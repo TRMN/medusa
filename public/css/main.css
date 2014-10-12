@@ -1,8 +1,10 @@
-.authenticated {
+.authenticated .login-form {
   display: none; }
 
-.not-authenticated {
+.not-authenticated .login-form {
   display: normal; }
+.not-authenticated .sensitive {
+  display: none; }
 
 .button {
   background-color: #e30; }
