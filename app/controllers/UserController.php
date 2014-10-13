@@ -90,6 +90,10 @@ class UserController extends \BaseController
 
         $data[ 'assignment' ] = $assignment;
 
+        // Hash the password
+
+        $data['password'] = Hash::make($data['password']);
+
         // For future use
 
         $data[ 'peerage_record' ] = [ ];
@@ -98,7 +102,7 @@ class UserController extends \BaseController
 
         $data[ 'exam_record' ] = [ ];
 
-        unset( $data[ '_token' ] );
+        unset( $data[ '_token' ], $data['password_confirmation'] );
 
         User::create( $data );
 
@@ -226,6 +230,10 @@ class UserController extends \BaseController
 
         $data[ 'assignment' ] = $assignment;
 
+        // Hash the password
+
+        $data['password'] = Hash::make($data['password']);
+
         // For future use
 
         $data[ 'peerage_record' ] = [ ];
@@ -234,7 +242,7 @@ class UserController extends \BaseController
 
         $data[ 'exam_record' ] = [ ];
 
-        unset( $data[ '_method' ], $data[ '_token' ] );
+        unset( $data[ '_method' ], $data[ '_token' ], $data['password_confirmation'] );
 
         $user->update( $data );
 

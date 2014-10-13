@@ -60,6 +60,12 @@ echo "</ul>\n";
 <div class="form-group">
     {{ Form::label('email_address', 'Email') }} {{ Form::email('email_address') }}
 </div>
+<div class="form_group">
+    {{ Form::label('password', 'Password') }} {{ Form::password('password') }}
+</div>
+<div class="form_group">
+    {{ Form::label('password_confirmation', 'Confirm Password') }} {{ Form::password('password_confirmation') }}
+</div>
 <div class="form-group">
     {{ Form::label('branch', "Branch") }} {{ Form::select('branch', $branches) }}
 </div>
