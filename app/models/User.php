@@ -20,6 +20,7 @@ class User extends Moloquent implements UserInterface, RemindableInterface
         'postal_code' => 'required|min:2',
         'country' => 'required',
         'email_address' => 'required|email|unique:users',
+        'password' => 'confirmed',
         'branch' => 'required',
         'perm_dor' => 'date|date_format:Y-m-d|required_with:permanent_rank',
         'brevet_dor' => 'date|date_format:Y-m-d|required_with:brevet_rank',
@@ -37,6 +38,7 @@ class User extends Moloquent implements UserInterface, RemindableInterface
         'postal_code' => 'required|min:2',
         'country' => 'required',
         'email_address' => 'required|email',
+        'password' => 'confirmed',
         'branch' => 'required',
         'perm_dor' => 'date|date_format:Y-m-d|required_with:permanent_rank',
         'brevet_dor' => 'date|date_format:Y-m-d|required_with:brevet_rank',
@@ -67,7 +69,7 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 
     protected $hidden = [ 'password', 'remember_token' ];
 
-    protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number','email_address', 'branch', 'rating', 'rank', 'assignment', 'peerage_record', 'awards_record', 'exam_record'];
+    protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number','email_address', 'branch', 'rating', 'rank', 'assignment', 'peerage_record', 'awards_record', 'exam_record', 'password'];
 
     /**
      * Get the command crew for a chapter

@@ -6,7 +6,7 @@ class HomeController extends BaseController
     public function showDashboard()
     {
         if ( Auth::check() ) {
-            return View::make( 'dashboard' );
+            return View::make( 'dashboard', [ 'greeting' => User::getGreeting(Auth::user()) ] );
         } else {
             return Redirect::intended( '/' );
         }
