@@ -4,7 +4,7 @@ module.exports = function() {
         jQuery.getJSON( '/api/country', function ( result ) {
             jQuery( '#newuser #country' ).empty();
             jQuery.each( result, function ( key, value ) {
-                jQuery( '#country' ).append(
+                jQuery( '#newuser #country' ).append(
                     '<option value="' + key + '">' + value + '</option>'
                 );
             } );
@@ -13,7 +13,7 @@ module.exports = function() {
         jQuery.getJSON( '/api/branch', function ( result ) {
             jQuery( '#newuser #branch' ).empty();
             jQuery.each( result, function ( key, value ) {
-                jQuery( '#branch' ).append(
+                jQuery( '#newuser #branch' ).append(
                     '<option value="' + key + '">' + value + '</option>'
                 );
             } );
@@ -22,7 +22,7 @@ module.exports = function() {
         jQuery.getJSON( '/api/chapter', function ( result ) {
             jQuery( '#newuser #primary_assignment' ).empty();
             jQuery.each( result, function ( key, value ) {
-                jQuery( '#primary_assignment' ).append(
+                jQuery( '#newuser #primary_assignment' ).append(
                     '<option value="' + key + '">' + value + '</option>'
                 );
             } );
