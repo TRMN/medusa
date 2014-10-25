@@ -8,12 +8,12 @@ Users
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Member ID</th>
-                <th>Email</th>
-                <th>Branch</th>
-                <th>Chapter</th>
-                <th></th>
+                <th class="name">Name</th>
+                <th class="memberid">Member ID</th>
+                <th class="email">Email</th>
+                <th class="branch">Branch</th>
+                <th class="chapter">Chapter</th>
+                <th class="actions"></th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,14 @@ Users
                     <td>{{{ $user->member_id }}}</td>
                     <td>{{{ $user->email_address }}}</td>
                     <td>{{{ $user->branch }}}</td>
-                    <td><a href="/chapter/{{{ $user->primary_assignment }}}">{{{ $user->primary_assignment_name }}}</a></td>
+                    <td>
+                        @if($user->primary_assignment_name != 'No assignment')
+                            <a href="/chapter/{{{ $user->primary_assignment }}}">{{{ $user->primary_assignment_name }}}</a>
+                        @else
+                            No assignment
+                        @endif
+                    </td>
+
                     <td>
                         <a class="btn" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
                         <a class="btn" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>
