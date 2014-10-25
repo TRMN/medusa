@@ -12,9 +12,19 @@ class UserController extends \BaseController
     {
         $users = User::all();
 
-        for ($u=0; $u < count($users); $u++) {
-            list($users[$u]->primary_assignment, $users[$u]->primary_billet, $users[$u]->primary_date_assigned) = User::getPrimaryAssignment($users[$u]);
-            $users[$u]->primary_assignment_name = Chapter::getChapterName($users[$u]->primary_assignment);
+        for ( $u = 0; $u < count( $users ); $u++ ) {
+            list( $users[ $u ]->primary_assignment, $users[ $u ]->primary_billet, $users[ $u ]->primary_date_assigned ) = User::getPrimaryAssignment( $users[ $u ] );
+            if ( isset( $users[ $u ]->primary_assignment ) && $users[ $u ]->primary_assignment != null ) {
+                $primaryAssignmentChapter = Chapter::find( $users[ $u ]->primary_assignment );
+                if ( !empty( $primaryAssignmentChapter ) ) {
+                    $users[ $u ]->primary_assignment_name = $primaryAssignmentChapter->chapter_name;
+                } else {
+                    $users[ $u ]->primary_assignment_name = 'No assignment';
+                }
+
+            } else {
+                $users[ $u ]->primary_assignment_name = 'No assignment';
+            }
         }
 
         return View::make( 'user.index', [ 'users' => $users ] );
@@ -92,7 +102,7 @@ class UserController extends \BaseController
 
         // Hash the password
 
-        $data['password'] = Hash::make($data['password']);
+        $data[ 'password' ] = Hash::make( $data[ 'password' ] );
 
         // For future use
 
@@ -102,7 +112,7 @@ class UserController extends \BaseController
 
         $data[ 'exam_record' ] = [ ];
 
-        unset( $data[ '_token' ], $data['password_confirmation'] );
+        unset( $data[ '_token' ], $data[ 'password_confirmation' ] );
 
         User::create( $data );
 
@@ -118,7 +128,7 @@ class UserController extends \BaseController
     public function show( User $user )
     {
 
-        list($greeting, $permRank, $brevetRank) = User::getRankTitles($user);
+        list( $greeting, $permRank, $brevetRank ) = $user->getRankTitles();
 
         if ( isset( $user->rating ) === true && empty( $user->rating ) === false ) {
             $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
@@ -141,31 +151,31 @@ class UserController extends \BaseController
      */
     public function edit( User $user )
     {
-        list($greeting, $permRank, $brevetRank) = User::getRankTitles($user);
+        list( $greeting, $permRank, $brevetRank ) = $user->getRankTitles();
 
         if ( isset( $user->rating ) === true && empty( $user->rating ) === false ) {
             $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
         }
 
-        $user->permanent_rank = $user->rank['permanent_rank']['grade'];
+        $user->permanent_rank = $user->rank[ 'permanent_rank' ][ 'grade' ];
 
-        $user->perm_dor = $user->rank['permanent_rank']['date_of_rank'];
+        $user->perm_dor = $user->rank[ 'permanent_rank' ][ 'date_of_rank' ];
 
-        if (empty($user->rank['brevet_rank']['grade']) === false) {
-            $user->brevet_rank = $user->rank['brevet_rank']['grade'];
-            $user->brevet_dor = $user->rank['brevet_rank']['date_of_rank'];
+        if ( empty( $user->rank[ 'brevet_rank' ][ 'grade' ] ) === false ) {
+            $user->brevet_rank = $user->rank[ 'brevet_rank' ][ 'grade' ];
+            $user->brevet_dor = $user->rank[ 'brevet_rank' ][ 'date_of_rank' ];
         }
 
-        list($user->primary_assignment, $user->primary_billet, $user->primary_date_assigned) = User::getPrimaryAssignment($user);
+        list( $user->primary_assignment, $user->primary_billet, $user->primary_date_assigned ) = User::getPrimaryAssignment( $user );
 
         return View::make( 'user.edit', [
-            'user' => $user,
-            'greeting' => $greeting,
-            'countries' => $this->_getCountries(),
-            'branches' => Branch::getBranchList(),
-            'grades' => Grade::getGradesForBranch( $user->branch ),
-            'ratings' => Rating::getRatingsForBranch( $user->branch ),
-            'chapters' => Chapter::getChapters(),
+                'user' => $user,
+                'greeting' => $greeting,
+                'countries' => $this->_getCountries(),
+                'branches' => Branch::getBranchList(),
+                'grades' => Grade::getGradesForBranch( $user->branch ),
+                'ratings' => Rating::getRatingsForBranch( $user->branch ),
+                'chapters' => Chapter::getChapters(),
             ]
         );
     }
@@ -232,7 +242,7 @@ class UserController extends \BaseController
 
         // Hash the password
 
-        $data['password'] = Hash::make($data['password']);
+        $data[ 'password' ] = Hash::make( $data[ 'password' ] );
 
         // For future use
 
@@ -242,7 +252,7 @@ class UserController extends \BaseController
 
         $data[ 'exam_record' ] = [ ];
 
-        unset( $data[ '_method' ], $data[ '_token' ], $data['password_confirmation'] );
+        unset( $data[ '_method' ], $data[ '_token' ], $data[ 'password_confirmation' ] );
 
         $user->update( $data );
 

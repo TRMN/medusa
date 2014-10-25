@@ -69,7 +69,7 @@ class User extends Moloquent implements UserInterface, RemindableInterface
 
     protected $hidden = [ 'password', 'remember_token' ];
 
-    protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number','email_address', 'branch', 'rating', 'rank', 'assignment', 'peerage_record', 'awards_record', 'exam_record', 'password'];
+    protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number', 'email_address', 'branch', 'rating', 'rank', 'assignment', 'peerage_record', 'awards_record', 'exam_record', 'password' ];
 
     /**
      * Get the command crew for a chapter
@@ -77,9 +77,9 @@ class User extends Moloquent implements UserInterface, RemindableInterface
      * @param $chapterId
      * @return mixed
      */
-    static function getCommandCrew($chapterId)
+    static function getCommandCrew( $chapterId )
     {
-        return User::where('assignment.chapter_id', '=', $chapterId)->whereIn('assignment.billet', ['CO', 'XO', 'Bosun'])->get();
+        return User::where( 'assignment.chapter_id', '=', $chapterId )->whereIn( 'assignment.billet', [ 'CO', 'XO', 'Bosun' ] )->get();
 
     }
 
@@ -89,9 +89,9 @@ class User extends Moloquent implements UserInterface, RemindableInterface
      * @param $chapterId
      * @return mixed
      */
-    static function getCrew($chapterId)
+    static function getCrew( $chapterId )
     {
-        return User::where('assignment.chapter_id', '=', $chapterId)->whereNotIn('assignment.billet', ['CO', 'XO', 'Bosun'])->get();
+        return User::where( 'assignment.chapter_id', '=', $chapterId )->whereNotIn( 'assignment.billet', [ 'CO', 'XO', 'Bosun' ] )->get();
     }
 
     /**
@@ -100,9 +100,9 @@ class User extends Moloquent implements UserInterface, RemindableInterface
      * @param $chapterId
      * @return mixed
      */
-    static function getAllCrew($chapterId)
+    static function getAllCrew( $chapterId )
     {
-        return User::where('assignment.chapter_id', '=', $chapterId)->get();
+        return User::where( 'assignment.chapter_id', '=', $chapterId )->get();
     }
 
     /**
@@ -111,37 +111,37 @@ class User extends Moloquent implements UserInterface, RemindableInterface
      * @param User $user
      * @return array
      */
-    static function getRankTitles(User $user)
+    public function getRankTitles()
     {
         // Figure out the correct rank title to use for this user based on branch
-        $branch = $user->branch;
-        $rank = $user->rank['permanent_rank']['grade'];
+        $branch = $this->branch;
+        $rank = $this->rank[ 'permanent_rank' ][ 'grade' ];
 
-        $gradeDetail = Grade::where('grade', '=', $rank)->get();
+        $gradeDetail = Grade::where( 'grade', '=', $rank )->get();
 
-        $permRank = $gradeDetail[0]->rank[$branch];
+        $permRank = $gradeDetail[ 0 ]->rank[ $branch ];
 
         // Check for rating
 
-        if (isset($user->rating) === true && empty($user->rating) === false) {
-            if ($rateGreeting = self::getRateTitle(['rating' => $user->rating, 'branch' => $branch, 'rank' => $rank])) {
+        if ( isset( $this->rating ) === true && empty( $this->rating ) === false ) {
+            if ( $rateGreeting = self::getRateTitle( $this->rating, $branch, $rank ) ) {
                 $permRank = $rateGreeting;
             }
         }
 
         $greeting = $permRank;
 
-        if (isset($user->rank['brevet_rank']) === true && empty($user->rank['brevet_rank']) === false) {
-            $rank = $user->rank['brevet_rank']['grade'];
+        if ( isset( $this->rank[ 'brevet_rank' ] ) === true && empty( $this->rank[ 'brevet_rank' ] ) === false ) {
+            $rank = $this->rank[ 'brevet_rank' ][ 'grade' ];
 
-            $gradeDetail = Grade::where('grade', '=', $rank)->get();
+            $gradeDetail = Grade::where( 'grade', '=', $rank )->get();
 
-            $brevetRank = $gradeDetail[0]->rank[$branch];
+            $brevetRank = $gradeDetail[ 0 ]->rank[ $branch ];
 
             // Check for rating
 
-            if (isset($user->rating) === true && empty($user->rating) === false) {
-                if ($rateGreeting = self::getRateTitle(['rating' => $user->rating, 'branch' => $branch, 'rank' => $rank])) {
+            if ( isset( $this->rating ) === true && empty( $this->rating ) === false ) {
+                if ( $rateGreeting = self::getRateTitle( $this->rating, $branch, $rank ) ) {
                     $brevetRank = $rateGreeting;
                 }
             }
@@ -152,7 +152,7 @@ class User extends Moloquent implements UserInterface, RemindableInterface
             $brevetRank = '';
         }
 
-        return [$greeting, $permRank, $brevetRank];
+        return [ $greeting, $permRank, $brevetRank ];
     }
 
     /**
@@ -161,9 +161,9 @@ class User extends Moloquent implements UserInterface, RemindableInterface
      * @param User $user
      * @return mixed
      */
-    static function getGreeting(User $user)
+    public function getGreeting()
     {
-        list($greeting, $permRank, $brevetRank) = self::getRankTitles($user);
+        list( $greeting, $permRank, $brevetRank ) = self::getRankTitles();
 
         return $greeting;
     }
@@ -171,16 +171,20 @@ class User extends Moloquent implements UserInterface, RemindableInterface
     /**
      * Get the rate specific rank title, if any
      *
-     * @param $params
+     * @param $rating
+     * @param $branch
+     * @param $rank
      * @return mixed
      */
-    static function getRateTitle($params)
+    static function getRateTitle( $rating, $branch, $rank )
     {
-        $rateDetail = Rating::where('rate_code', '=', $params['rating'])->get();
+        $rateDetail = Rating::where( 'rate_code', '=', $rating )->get();
 
-        if (isset($rateDetail[0]->rate[$params['branch']][$params['rank']]) === true && empty($rateDetail[0]->rate[$params['branch']][$params['rank']]) === false) {
-            return $rateDetail[0]->rate[$params['branch']][$params['rank']];
+        if ( isset( $rateDetail[ 0 ]->rate[ $branch ][ $rank ] ) === true && empty( $rateDetail[ 0 ]->rate[ $branch ][ $rank ] ) === false ) {
+            return $rateDetail[ 0 ]->rate[ $branch ][ $rank ];
         }
+
+        return false;
     }
 
     /**
@@ -189,14 +193,20 @@ class User extends Moloquent implements UserInterface, RemindableInterface
      * @param User $user
      * @return array
      */
-    static function getPrimaryAssignment(User $user)
+    static function getPrimaryAssignment( User $user )
     {
-        foreach ( $user->assignment as $assignment ) {
-            if ( $assignment[ 'primary' ] === true ) {
-                $primary_assignment = $assignment[ 'chapter_id' ];
-                $primary_billet = $assignment[ 'billet' ];
-                $primary_date_assigned = $assignment[ 'date_assigned' ];
+        if ( isset( $user->assignment ) ) {
+            foreach ( $user->assignment as $assignment ) {
+                if ( $assignment[ 'primary' ] === true ) {
+                    $primary_assignment = $assignment[ 'chapter_id' ];
+                    $primary_billet = $assignment[ 'billet' ];
+                    $primary_date_assigned = $assignment[ 'date_assigned' ];
+                }
             }
+        } else {
+            $primary_assignment = null;
+            $primary_billet = null;
+            $primary_date_assigned = null;
         }
 
         return [ $primary_assignment, $primary_billet, $primary_date_assigned ];

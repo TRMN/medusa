@@ -22,36 +22,25 @@ class ChapterController extends BaseController
 
     public function show( $chapterID )
     {
-        $detail = Chapter::find( $chapterID );
+        $chapter = Chapter::find( $chapterID );
 
-        $detail->chapter_type = ucfirst( $detail->chapter_type );
-
-        if ( isset( $detail->assigned_to ) ) {
-            $higher = Chapter::find( $detail->assigned_to );
+        if ( isset( $chapter->assigned_to ) ) {
+            $parentChapter = Chapter::find( $chapter->assigned_to );
         } else {
-            $higher = false;
+            $parentChapter = false;
         }
 
-        $includes = Chapter::where( 'assigned_to', '=', $detail->_id )->get();
+        $includes = Chapter::where( 'assigned_to', '=', $chapter->_id )->get();
 
-        $commandCrew = [];
+        $commandCrew = [
+            'co' => $chapter->getCO(),
+            'xo' => $chapter->getXO(),
+            'bosun' => $chapter->getBosun(),
+        ];
 
-        foreach(User::getCommandCrew($chapterID) as $user) {
-            foreach($user->assignment as $assignment) {
-                if (isset($assignment['chapter_id']) === true && empty($assignment['chapter_id']) === false && $assignment['chapter_id'] == $chapterID) {
-                    $user->greeting = User::getGreeting($user);
-                    $commandCrew[$assignment['billet']] = $user;
-                }
-            }
-        }
+        $crew = $chapter->getCrew();
 
-        $crew = User::getCrew($chapterID);
-
-        for ($u=0; $u<count($crew); $u++) {
-            $crew[$u]->greeting = User::getGreeting($crew[$u]);
-        }
-
-        return View::make( 'chapter.show', [ 'detail' => $detail, 'higher' => $higher, 'includes' => $includes, 'command' => $commandCrew, 'crew' => $crew ] );
+        return View::make( 'chapter.show', [ 'detail' => $chapter, 'higher' => $parentChapter, 'includes' => $includes, 'command' => $commandCrew, 'crew' => $crew ] );
     }
 
     /**
@@ -176,4 +165,4 @@ class ChapterController extends BaseController
         return Response::json( [ 'status' => 'success' ] );
     }
 
-} 
+}
