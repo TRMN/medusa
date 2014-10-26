@@ -37,11 +37,11 @@
                 <tr>
                     <td>Command Crew:</td>
                     <td>
-                        @if ( isset( $command[ 'CO' ] ) )
+                        @if ( isset( $command['CO'][0] ) )
                             <ul>
-                                <li>Commanding Officer: <a href="{{ route('user.show' , [$command['CO']->_id]) }}">{{{ $command['CO']->greeting }}} {{{ $command['CO']->first_name }}}{{{ isset($command['CO']->middle_name) ? ' ' . $command['CO']->middle_name : '' }}} {{{ $command['CO']->last_name }}}{{{ isset($command['CO']->suffix) ? ' ' . $command['CO']->suffix : '' }}}</a></li>
-                                <li>Executive Officer: <a href="{{ route('user.show' , [$command['XO']->_id]) }}">{{{ $command['XO']->greeting }}} {{{ $command['XO']->first_name }}}{{{ isset($command['XO']->middle_name) ? ' ' . $command['XO']->middle_name : '' }}} {{{ $command['XO']->last_name }}}{{{ isset($command['XO']->suffix) ? ' ' . $command['XO']->suffix : '' }}}</a></li>
-                                <li>Bosun: <a href="{{ route('user.show' , [$command['Bosun']->_id]) }}">{{{ $command['Bosun']->greeting }}} {{{ $command['Bosun']->first_name }}}{{{ isset($command['Bosun']->middle_name) ? ' ' . $command['Bosun']->middle_name : '' }}} {{{ $command['Bosun']->last_name }}}{{{ isset($command['Bosun']->suffix) ? ' ' . $command['Bosun']->suffix : '' }}}</a></li>
+                                <li>Commanding Officer: <a href="{{ route('user.show' , [(string)$command['CO'][0]->_id]) }}">{{{ $command['CO'][0]->getGreeting() }}} {{{ $command['CO'][0]->first_name }}}{{{ isset($command['CO'][0]->middle_name) ? ' ' . $command['CO'][0]->middle_name : '' }}} {{{ $command['CO'][0]->last_name }}}{{{ isset($command['CO'][0]->suffix) ? ' ' . $command['CO'][0]->suffix : '' }}}</a></li>
+                                <li>Executive Officer: <a href="{{ route('user.show' , [(string)$command['XO'][0]->id]) }}">{{{ $command['XO'][0]->getGreeting() }}} {{{ $command['XO'][0]->first_name }}}{{{ isset($command['XO'][0]->middle_name) ? ' ' . $command['XO'][0]->middle_name : '' }}} {{{ $command['XO'][0]->last_name }}}{{{ isset($command['XO'][0]->suffix) ? ' ' . $command['XO'][0]->suffix : '' }}}</a></li>
+                                <li>Bosun: <a href="{{ route('user.show' , [(string)$command['Bosun'][0]->id]) }}">{{{ $command['Bosun'][0]->getGreeting() }}} {{{ $command['Bosun'][0]->first_name }}}{{{ isset($command['Bosun'][0]->middle_name) ? ' ' . $command['Bosun'][0]->middle_name : '' }}} {{{ $command['Bosun'][0]->last_name }}}{{{ isset($command['Bosun'][0]->suffix) ? ' ' . $command['Bosun'][0]->suffix : '' }}}</a></li>
                             </ul>
                         @endif
                     </td>
@@ -52,7 +52,7 @@
                     <td>Crew Roster:</td>
                     <td>
                         @foreach($crew as $member)
-                        <a href="{{ route('user.show', [$member->_id]) }}">{{{ $member->greeting }}} {{{ $member->first_name }}}{{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}} {{{ $member->last_name }}}{{{ isset($member->suffix) ? ' ' . $member->suffix : '' }}}</a><br />
+                        <a href="{{ route('user.show', [$member->_id]) }}">{{{ $member->getGreeting() }}} {{{ $member->first_name }}}{{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}} {{{ $member->last_name }}}{{{ isset($member->suffix) ? ' ' . $member->suffix : '' }}}</a><br />
                         @endforeach
                     </td>
                 </tr>
