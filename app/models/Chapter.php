@@ -37,25 +37,24 @@ class Chapter extends Moloquent
     }
 
     public function getCrew() {
-        $users = User::where( 'chapter_id', '=', $this->_id );
+        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->whereNotIn( 'assignment.billet', [ 'CO', 'XO', 'Bosun' ])->get();
 
         return $users;
     }
 
     public function getCO() {
-        $users = User::where( 'chapter_id', '=', $this->_id )->where( 'billet', '=', 'CO' );
-
+        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'CO' )->get();
         return $users;
     }
 
     public function getXO() {
-        $users = User::where( 'chapter_id', '=', $this->_id )->where( 'billet', '=', 'XO' );
+        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'XO' )->get();
 
         return $users;
     }
 
     public function getBosun() {
-        $users = User::where( 'chapter_id', '=', $this->_id )->where( 'billet', '=', 'Bosun' );
+        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Bosun' )->get();
 
         return $users;
     }

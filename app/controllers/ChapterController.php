@@ -33,11 +33,11 @@ class ChapterController extends BaseController
         $includes = Chapter::where( 'assigned_to', '=', $chapter->_id )->get();
 
         $commandCrew = [
-            'co' => $chapter->getCO(),
-            'xo' => $chapter->getXO(),
-            'bosun' => $chapter->getBosun(),
+            'CO' => $chapter->getCO(),
+            'XO' => $chapter->getXO(),
+            'Bosun' => $chapter->getBosun(),
         ];
-
+//die('<pre>' . print_r($commandCrew, true));
         $crew = $chapter->getCrew();
 
         return View::make( 'chapter.show', [ 'detail' => $chapter, 'higher' => $parentChapter, 'includes' => $includes, 'command' => $commandCrew, 'crew' => $crew ] );
