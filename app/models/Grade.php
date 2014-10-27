@@ -8,6 +8,8 @@
 class Grade extends Moloquent
 {
 
+    protected $fillable = [ 'grade', 'rank' ];
+
     static function getGradesForBranch($branchID)
     {
         $results = Grade::all();

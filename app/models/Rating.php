@@ -7,6 +7,8 @@
  */
 class Rating extends Moloquent {
 
+    protected $fillable = [ 'rate_code', 'rate' ];
+
     static function getRatingsForBranch($branchID)
     {
         $results = Rating::all();
