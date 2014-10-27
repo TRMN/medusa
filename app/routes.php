@@ -27,7 +27,11 @@ Route::get( '/', 'HomeController@showWelcome' );
 Route::model( 'user', 'User' );
 Route::get( '/user/{user}/confirmdelete', 'UserController@confirmDelete' );
 Route::resource( 'user', 'UserController' );
+
+// Other Routes
+
 Route::resource( 'chapter', 'ChapterController' );
+Route::resource( 'announcement', 'AnnouncementController' );
 
 // API calls
 

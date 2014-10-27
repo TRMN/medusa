@@ -24,6 +24,5 @@ Chapters
             @endforeach
         </tbody>
     </table>
-    <a href="/chapter/create" class="button">Create New Chapter</a>
+    <a href="{{ route('chapter.create') }}" class="button">Create New Chapter</a>
 @stop
-

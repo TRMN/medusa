@@ -4,8 +4,9 @@ use Illuminate\Auth\UserTrait;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
+use Jenssegers\Mongodb\Model as Eloquent;
 
-class User extends Moloquent implements UserInterface, RemindableInterface
+class User extends Eloquent implements UserInterface, RemindableInterface
 {
 
     use UserTrait, RemindableTrait;
@@ -70,6 +71,10 @@ class User extends Moloquent implements UserInterface, RemindableInterface
     protected $hidden = [ 'password', 'remember_token' ];
 
     protected $fillable = [ 'member_id', 'first_name', 'middle_name', 'last_name', 'suffix', 'address_1', 'address_2', 'city', 'state_province', 'postal_code', 'country', 'phone_number', 'email_address', 'branch', 'rating', 'rank', 'assignment', 'peerage_record', 'awards_record', 'exam_record', 'password' ];
+
+    public function announcements() {
+        return $this->hasMany( 'Announcement' );
+    }
 
     /**
      * Get the command crew for a chapter

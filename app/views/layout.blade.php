@@ -28,5 +28,6 @@
         jQuery( document ).foundation();
     </script>
     <script src="{{{ $serverUrl }}}/js/bundle.min.js"></script>
+    @yield('scriptFooter')
 </body>
 </html>
