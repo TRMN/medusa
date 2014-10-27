@@ -3,6 +3,8 @@
 
 class Branch extends Moloquent {
 
+    protected $fillable = [ 'branch', 'branch_name' ];
+
     static function getBranchList()
     {
         foreach (Branch::all(array('branch', 'branch_name')) as $branch) {
