@@ -1,0 +1,19 @@
+---
+- hosts: all
+  sudo: true
+  vars:
+    web_server: nginxphp
+    servername: medusa.dev www.medusa.dev 192.168.33.99
+    timezone: America/Chicago
+  vars_files:
+    - vars/common.yml
+    - [ "vars/nginxphp.yml", "vars/ws_defaults.yml" ]
+  roles:
+    - init
+    - php5-cli
+    - nginx
+    - php5-fpm
+    - composer
+    - phpcommon
+    - app
+    - mongodb
