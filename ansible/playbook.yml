@@ -17,3 +17,5 @@
     - phpcommon
     - app
     - mongodb
+    - redis
+    - nodejs
