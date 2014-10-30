@@ -30,7 +30,6 @@ Users
                             No assignment
                         @endif
                     </td>
-
                     <td>
                         <a class="button tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
                         <a class="button tiny" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>
