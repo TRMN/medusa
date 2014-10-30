@@ -10,9 +10,10 @@
   background-color: #e30; }
 
 .container {
-  background-color: #222;
+  background: black url("../img/content-background.png") repeat center top;
+  min-height: 150px;
   width: 978px;
-  margin: 0 auto;
+  margin: 300px auto 0;
   padding: 0.75rem 2.5rem; }
 
 th.memberid {
@@ -25,8 +26,11 @@ th.branch {
   width: 80px; }
 
 body, html {
-  background-color: black;
+  background: black url("../img/header-background.jpg") no-repeat center top;
   color: whitesmoke; }
+
+a {
+  color: #fe0; }
 
 h1 {
   color: #fe0; }
@@ -38,14 +42,33 @@ label {
   color: whitesmoke; }
 
 nav {
-  width: 978px;
+  background: none;
+  height: 30px;
+  width: 500px;
   margin: 0 auto; }
+  nav .topbar {
+    background: none; }
+  nav ul {
+    list-style: none;
+    margin: 0; }
+    nav ul li {
+      list-style: none;
+      display: block;
+      height: 35px;
+      float: left;
+      margin-right: 1em; }
+      nav ul li a {
+        line-height: 35px; }
 
 td.right {
   text-align: right; }
 
 footer {
-  text-align: center; }
+  background: black url("../img/footer-background.jpg") no-repeat center top;
+  text-align: center;
+  height: 152px;
+  width: 100%; }
   footer p {
+    padding-top: 2em;
     color: whitesmoke;
     font-size: 0.5rem; }

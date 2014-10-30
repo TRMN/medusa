@@ -18,9 +18,10 @@ $medusa-yellow: #fe0
     background-color: $manticore-red
 
 .container
-    background-color: $backdrop-color
+    background: black url('../img/content-background.png') repeat center top
+    min-height: 150px
     width: $body-width
-    margin: 0 auto
+    margin: 300px auto 0
     padding: 0.75rem 2.5rem
 
 th.memberid
@@ -33,8 +34,11 @@ th.branch
     width: 80px
 
 body,html
-    background-color: black
+    background: black url('../img/header-background.jpg') no-repeat center top
     color: $text-primary
+
+a
+    color: $medusa-yellow
 
 h1
     color: $medusa-yellow
@@ -46,14 +50,33 @@ label
     color: $text-primary
 
 nav
-    width: $body-width
+    background: none
+    height: 30px
+    width: 500px
     margin: 0 auto
+    .topbar
+        background: none
+    ul
+        list-style: none
+        margin: 0
+        li
+            list-style: none
+            display: block
+            height: 35px
+            float: left
+            margin-right: 1em
+            a
+                line-height: 35px
 
 td.right
     text-align: right
 
 footer
+    background: black url('../img/footer-background.jpg') no-repeat center top
     text-align: center
+    height: 152px
+    width: 100%
     p
+        padding-top: 2em
         color: $text-primary
         font-size: 0.5rem
