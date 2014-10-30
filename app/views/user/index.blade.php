@@ -39,5 +39,5 @@ Users
             @endforeach
         </tbody>
     </table>
-    <a class="btn btn-info" href="{{ route('user.create') }}">Create User</a>
+    <a class="button" href="{{ route('user.create') }}">Create User</a>
 @stop

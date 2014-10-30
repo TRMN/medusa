@@ -25,7 +25,7 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment( [
-	'local' => [ 'Bens-MacBook-Pro.local', 'bens-mbp.star.local', 'homestead' ],
+	'local' => [ 'Bens-MacBook-Pro.local', 'bens-mbp.star.local', 'homestead', 'vagrant-ubuntu-trusty-64' ],
 	'staging' => [ 'dicejockey' ],
 ] );
 
