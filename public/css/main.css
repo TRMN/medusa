@@ -41,6 +41,9 @@ nav {
   width: 978px;
   margin: 0 auto; }
 
+table a {
+  color: black; }
+
 td.right {
   text-align: right; }
 
