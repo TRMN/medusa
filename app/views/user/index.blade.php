@@ -32,8 +32,8 @@ Users
                     </td>
 
                     <td>
-                        <a class="btn" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
-                        <a class="btn" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>
+                        <a class="button tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
+                        <a class="button tiny" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>
                     </td>
                 </tr>
             @endforeach
