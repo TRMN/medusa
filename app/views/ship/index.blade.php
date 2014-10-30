@@ -19,7 +19,7 @@ Ships
                     <td>{{{ $ship->chapter()->title }}}</td>
                     <td></td>
                     <td>
-                        <a class="btn" href="{{ route('ship.edit', [ $ship->id ]) }}">Edit</a> 
+                        <a class="button tiny" href="{{ route('ship.edit', [ $ship->id ]) }}">Edit</a> 
                     </td>
                 </tr>
             @endforeach
