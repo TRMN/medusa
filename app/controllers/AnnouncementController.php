@@ -14,7 +14,7 @@ class AnnouncementController extends BaseController {
 
     public function show( $id ) {
 
-        $announcement = Announcement::with( 'author' )->find( $id );
+        $announcement = Announcement::with( 'user' )->find( $id );
 
         $viewData = [
             'announcement' => $announcement,

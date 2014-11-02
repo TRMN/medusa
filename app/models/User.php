@@ -111,66 +111,66 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     }
 
     /**
-     * Get the preferred rank title along with the rank title for the users permanent and brevet rank
+     * Return only the preferred rank title for a user
      *
-     * @param User $user
-     * @return array
+     * @return mixed
      */
-    public function getRankTitles()
-    {
-        // Figure out the correct rank title to use for this user based on branch
-        $branch = $this->branch;
-        $rank = $this->rank[ 'permanent_rank' ][ 'grade' ];
+    public function getGreeting() {
 
-        $gradeDetail = Grade::where( 'grade', '=', $rank )->get();
+        $this->getDisplayRank();
+        $brevert = false;
 
-        $permRank = $gradeDetail[ 0 ]->rank[ $branch ];
+        $rank = $this->perm_display;
 
-        // Check for rating
+        if( isset( $this->brevet_rank ) && !empty( $this->brevet_rank ) ) {
+            $rank = $this->brevet_display;
+            $brevert = true;
+        }
 
-        if ( isset( $this->rating ) === true && empty( $this->rating ) === false ) {
-            if ( $rateGreeting = self::getRateTitle( $this->rating, $branch, $rank ) ) {
-                $permRank = $rateGreeting;
+        $greeting[ 'rank' ] = $rank;
+
+        if ( isset( $this->rating ) && !empty( $this->rating ) && !$brevert ) {
+            if ( $rateGreeting = $this->getRateTitle( $this->rating, $this->branch, $rank ) ) {
+                $greeting[ 'rank' ] = $rateGreeting;
             }
         }
 
-        $greeting = $permRank;
+        // Here for now, but $authUser->last_name will probably do
+        $greeting[ 'last_name' ] = $this->last_name;
 
-        if ( isset( $this->rank[ 'brevet_rank' ] ) === true && empty( $this->rank[ 'brevet_rank' ] ) === false ) {
-            $rank = $this->rank[ 'brevet_rank' ][ 'grade' ];
-
-            $gradeDetail = Grade::where( 'grade', '=', $rank )->get();
-
-            $brevetRank = $gradeDetail[ 0 ]->rank[ $branch ];
-
-            // Check for rating
-
-            if ( isset( $this->rating ) === true && empty( $this->rating ) === false ) {
-                if ( $rateGreeting = self::getRateTitle( $this->rating, $branch, $rank ) ) {
-                    $brevetRank = $rateGreeting;
-                }
-            }
-
-            $greeting = $brevetRank;
-
-        } else {
-            $brevetRank = '';
-        }
-
-        return [ $greeting, $permRank, $brevetRank ];
+        return $greeting;
     }
 
     /**
-     * Return only the preferred rank title for a user
-     *
-     * @param User $user
-     * @return mixed
+     * Set permanent rank, brevet rank and rating in one place
      */
-    public function getGreeting()
-    {
-        list( $greeting, $permRank, $brevetRank ) = self::getRankTitles();
+    public function getDisplayRank() {
+        $ranks = [ 'perm' => 'permanent_rank' , 'brevet' => 'brevet_rank' ];
 
-        return $greeting;
+        foreach( $ranks as $shortLabel => $rank ) {
+
+            $displayVarName = $shortLabel . '_display';
+            $dorVarName = $shortLabel . '_dor';
+
+            $this->$rank = '';
+            $this->$dorVarName = '';
+            $this->$displayVarName = '';
+
+            if( isset( $this->rank[ $rank ] ) && !empty( $this->rank[ $rank ] ) ) {
+
+                $grade = $this->rank[ $rank ][ 'grade' ];
+
+                $gradeDetails = Grade::where( 'grade', '=', $grade )->get();
+
+                $this->$rank = $this->rank[ $rank ][ 'grade' ];
+                $this->$displayVarName = $gradeDetails[ 0 ]->rank[ $this->branch ];
+                $this->$dorVarName = $this->rank[ $rank ][ 'date_of_rank' ];
+            }
+        }
+
+        if ( isset( $this->rating ) && !empty( $this->rating ) ) {
+            $this->rating = [ 'rate' => $this->rating, 'description' => Rating::where( 'rate_code', '=', $this->rating )->get()[ 0 ]->rate[ 'description' ] ];
+        }
     }
 
     /**
@@ -181,7 +181,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      * @param $rank
      * @return mixed
      */
-    static function getRateTitle( $rating, $branch, $rank )
+    function getRateTitle( $rating, $branch, $rank )
     {
         $rateDetail = Rating::where( 'rate_code', '=', $rating )->get();
 
@@ -195,23 +195,22 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     /**
      * Get a users primary assignment
      *
-     * @param User $user
      * @return array
      */
-    static function getPrimaryAssignment( User $user )
+    function getPrimaryAssignment()
     {
-        if ( isset( $user->assignment ) ) {
-            foreach ( $user->assignment as $assignment ) {
+        $primary_assignment = null;
+        $primary_billet = null;
+        $primary_date_assigned = null;
+
+        if ( isset( $this->assignment ) ) {
+            foreach ( $this->assignment as $assignment ) {
                 if ( $assignment[ 'primary' ] === true ) {
                     $primary_assignment = $assignment[ 'chapter_id' ];
                     $primary_billet = $assignment[ 'billet' ];
                     $primary_date_assigned = $assignment[ 'date_assigned' ];
                 }
             }
-        } else {
-            $primary_assignment = null;
-            $primary_billet = null;
-            $primary_date_assigned = null;
         }
 
         return [ $primary_assignment, $primary_billet, $primary_date_assigned ];

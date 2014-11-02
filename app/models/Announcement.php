@@ -11,10 +11,9 @@ class Announcement extends Eloquent {
         'is_published',
     ];
 
-    public function author() {
-
+    public function user()
+    {
         return $this->belongsTo( 'User' );
-        
     }
 
 }
