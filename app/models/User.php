@@ -135,7 +135,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             }
         }
 
-        // Here for now, but $authUser->last_name will probably do
+        // To be used when viewing an announcement no published by the current user
         $greeting[ 'last_name' ] = $this->last_name;
 
         return $greeting;

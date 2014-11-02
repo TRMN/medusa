@@ -7,9 +7,9 @@
 @section('content')
 <h1>{{{ $announcement->summary }}}</h1>
 <div class="meta">
-    @if($announcement->user)
+    @if($announcementUser)
     <div class="author">
-        Written By <span>{{{ $announcement->user->getGreeting() }}}</span>
+        Written By <span>{{{ $announcementUser[ 'rank' ] }}} {{ $announcementUser['last_name'] }}</span>
     </div>
     @endif
     @if($announcement->is_published)
