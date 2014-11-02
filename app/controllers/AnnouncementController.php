@@ -18,6 +18,7 @@ class AnnouncementController extends BaseController {
 
         $viewData = [
             'announcement' => $announcement,
+            'announcementUser' => $announcement->user->getGreeting(),
         ];
 
         return Response::view( 'announcement.show', $viewData );
