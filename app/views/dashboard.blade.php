@@ -9,5 +9,10 @@ Dashboard
 
 <div id="user-profile">
     <p>Welcome, <span class="user-rank">{{ $greeting }}</span> <span class="user-last-name">{{ $authUser->last_name }}</span>!</p>
+
+    @if ($user->getPrimaryBillet() == "CO")
+
+    @endif
 </div>
+<pre><?php print_r($chapter->reports()->where('report.draft', '=', true), true); ?></pre>
 @stop

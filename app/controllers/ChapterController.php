@@ -37,7 +37,7 @@ class ChapterController extends BaseController
             'XO' => $chapter->getXO(),
             'Bosun' => $chapter->getBosun(),
         ];
-//die('<pre>' . print_r($commandCrew, true));
+
         $crew = $chapter->getCrew();
 
         return View::make( 'chapter.show', [ 'detail' => $chapter, 'higher' => $parentChapter, 'includes' => $includes, 'command' => $commandCrew, 'crew' => $crew ] );

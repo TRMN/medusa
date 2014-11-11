@@ -8,7 +8,7 @@ class HomeController extends BaseController
         if ( Auth::check() ) {
             $user = Auth::user();
 
-            return View::make( 'dashboard', [ 'greeting' => $user->getGreeting() ] );
+            return View::make( 'dashboard', [ 'greeting' => $user->getGreeting(), 'user' => $user, 'chapter' => Chapter::find($user->getPrimaryAssignmentId()) ] );
         } else {
             return Redirect::intended( '/' );
         }

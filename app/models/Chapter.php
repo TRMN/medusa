@@ -59,4 +59,9 @@ class Chapter extends Moloquent
         return $users;
     }
 
+    public function reports()
+    {
+        return $this->hasMany('Report', 'foreign_key', 'ship_information.chapter_id');
+    }
+
 }
