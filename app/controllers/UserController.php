@@ -12,21 +12,6 @@ class UserController extends \BaseController
     {
         $users = User::all();
 
-        for ( $u = 0; $u < count( $users ); $u++ ) {
-            list( $users[ $u ]->primary_assignment, $users[ $u ]->primary_billet, $users[ $u ]->primary_date_assigned ) = User::getPrimaryAssignment( $users[ $u ] );
-            if ( isset( $users[ $u ]->primary_assignment ) && $users[ $u ]->primary_assignment != null ) {
-                $primaryAssignmentChapter = Chapter::find( $users[ $u ]->primary_assignment );
-                if ( !empty( $primaryAssignmentChapter ) ) {
-                    $users[ $u ]->primary_assignment_name = $primaryAssignmentChapter->chapter_name;
-                } else {
-                    $users[ $u ]->primary_assignment_name = 'No assignment';
-                }
-
-            } else {
-                $users[ $u ]->primary_assignment_name = 'No assignment';
-            }
-        }
-
         return View::make( 'user.index', [ 'users' => $users ] );
     }
 
@@ -166,7 +151,9 @@ class UserController extends \BaseController
             $user->brevet_dor = $user->rank[ 'brevet_rank' ][ 'date_of_rank' ];
         }
 
-        list( $user->primary_assignment, $user->primary_billet, $user->primary_date_assigned ) = User::getPrimaryAssignment( $user );
+        $user->primary_assignment = $user->getPrimaryAssignmentId();
+        $user->primary_billet = $user->getPrimaryBillet();
+        $user->primary_date_assigned = $user->getPrimaryDateAssigned();
 
         return View::make( 'user.edit', [
                 'user' => $user,

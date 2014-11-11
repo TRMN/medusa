@@ -192,28 +192,55 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return false;
     }
 
-    /**
-     * Get a users primary assignment
-     *
-     * @param User $user
-     * @return array
-     */
-    static function getPrimaryAssignment( User $user )
+    public function getPrimaryAssignmentId()
     {
-        if ( isset( $user->assignment ) ) {
-            foreach ( $user->assignment as $assignment ) {
-                if ( $assignment[ 'primary' ] === true ) {
-                    $primary_assignment = $assignment[ 'chapter_id' ];
-                    $primary_billet = $assignment[ 'billet' ];
-                    $primary_date_assigned = $assignment[ 'date_assigned' ];
+        if (isset($this->assignment) == true) {
+            foreach($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
+                    return $assignment['chapter_id'];
                 }
             }
+            return false;
         } else {
-            $primary_assignment = null;
-            $primary_billet = null;
-            $primary_date_assigned = null;
+            return false;
         }
+    }
 
-        return [ $primary_assignment, $primary_billet, $primary_date_assigned ];
+    public function getPrimaryAssignmentName()
+    {
+        $chapter = Chapter::find( $this->getPrimaryAssignmentId() );
+        if ( !empty( $chapter ) ) {
+            return $chapter->chapter_name;
+        } else {
+            return false;
+        }
+    }
+
+    public function getPrimaryBillet()
+    {
+        if (isset($this->assignment) == true) {
+            foreach($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
+                    return $assignment['billet'];
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    public function getPrimaryDateAssigned()
+    {
+        if (isset($this->assignment) == true) {
+            foreach($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
+                    return $assignment['date_assigned'];
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 }
