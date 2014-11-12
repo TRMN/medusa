@@ -1,7 +1,9 @@
 <?php
 
 
-class Branch extends Moloquent {
+use Jenssegers\Mongodb\Model as Eloquent;
+
+class Branch extends Eloquent {
 
     protected $fillable = [ 'branch', 'branch_name' ];
 

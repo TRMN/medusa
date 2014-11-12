@@ -1,6 +1,8 @@
 <?php
 
-class Chapter extends Moloquent
+use Jenssegers\Mongodb\Model as Eloquent;
+
+class Chapter extends Eloquent
 {
 
     protected $fillable = [ 'chapter_name', 'chapter_type', 'hull_number', 'assigned_to', 'ship_class' ];
@@ -15,6 +17,10 @@ class Chapter extends Moloquent
         'chapter_name' => 'required|min:6',
         'chapter_type' => 'required'
     ];
+
+    public function report() {
+        return $this->hasMany( 'Report' );
+    }
 
     static function getChapters()
     {

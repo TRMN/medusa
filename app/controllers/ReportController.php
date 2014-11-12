@@ -9,7 +9,13 @@ class ReportController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+        $reports = Report::orderBy( 'publish_date' )->get();
+
+        $viewData = [
+            'reports' => $reports,
+        ];
+
+        return Response::view( 'report.index', $viewData );
 	}
 
 
