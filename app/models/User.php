@@ -118,25 +118,24 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getGreeting() {
 
         $this->getDisplayRank();
-        $brevert = false;
 
         $rank = $this->perm_display;
 
-        if( isset( $this->brevet_rank ) && !empty( $this->brevet_rank ) ) {
-            $rank = $this->brevet_display;
-            $brevert = true;
-        }
+        if ( isset( $this->rating ) && !empty( $this->rating ) ) {
 
-        $greeting[ 'rank' ] = $rank;
-
-        if ( isset( $this->rating ) && !empty( $this->rating ) && !$brevert ) {
-            if ( $rateGreeting = $this->getRateTitle( $this->rating, $this->branch, $rank ) ) {
+            if ( $rateGreeting = $this->getRateTitle( $rank ) ) {
                 $greeting[ 'rank' ] = $rateGreeting;
             }
         }
+        if( isset( $this->brevet_rank ) && !empty( $this->brevet_rank ) ) {
+            $rank = $this->brevet_display;
+        }
 
-        // To be used when viewing an announcement no published by the current user
+        $greeting[ 'rank' ] = $rank;
+        // To be used when viewing an announcement not published by the current user
         $greeting[ 'last_name' ] = $this->last_name;
+        //To link to the user who published an announcement
+        $greeting[ 'user_id' ] = $this->user_id;
 
         return $greeting;
     }
@@ -176,17 +175,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     /**
      * Get the rate specific rank title, if any
      *
-     * @param $rating
-     * @param $branch
      * @param $rank
      * @return mixed
      */
-    function getRateTitle( $rating, $branch, $rank )
+    function getRateTitle( $rank )
     {
-        $rateDetail = Rating::where( 'rate_code', '=', $rating )->get();
+        $rateDetail = Rating::where( 'rate_code', '=', $this->rating )->get();
 
-        if ( isset( $rateDetail[ 0 ]->rate[ $branch ][ $rank ] ) === true && empty( $rateDetail[ 0 ]->rate[ $branch ][ $rank ] ) === false ) {
-            return $rateDetail[ 0 ]->rate[ $branch ][ $rank ];
+        if ( isset( $rateDetail[ 0 ]->rate[ $this->branch ][ $rank ] ) === true && empty( $rateDetail[ 0 ]->rate[ $this->branch ][ $rank ] ) === false ) {
+            return $rateDetail[ 0 ]->rate[ $this->branch ][ $rank ];
         }
 
         return false;
