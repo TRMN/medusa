@@ -32,6 +32,7 @@ Route::resource( 'user', 'UserController' );
 
 Route::resource( 'chapter', 'ChapterController' );
 Route::resource( 'announcement', 'AnnouncementController' );
+Route::resource( 'report', 'ReportController' );
 
 // API calls
 
