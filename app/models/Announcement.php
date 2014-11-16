@@ -16,4 +16,8 @@ class Announcement extends Eloquent {
         return $this->belongsTo( 'User' );
     }
 
+    public function getPublishLabels() {
+        return [  0  => 'Unpublished' , 1 => 'Publish' , ];
+    }
+
 }
