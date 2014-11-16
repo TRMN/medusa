@@ -17,19 +17,21 @@ View::share( 'authUser', $authUser );
 
 // Authentication
 
-Route::get( '/signout', 'AuthController@doSignout' );
-Route::post( '/signin', 'AuthController@doSignin' );
-Route::get( '/dashboard', 'HomeController@showDashboard' );
-Route::get( '/', 'HomeController@showWelcome' );
+Route::get( '/signout', [ 'as' => 'signout', 'uses' => 'AuthController@signout' ] );
+Route::post( '/signin', [ 'as' => 'signin', 'uses' => 'AuthController@signin' ] );
+Route::get( '/register', [ 'as' => 'register', 'uses' => 'UserController@register' ] );
+Route::post( '/apply', [ 'as' => 'user.apply', 'uses' => 'UserController@apply' ] );
 
 // Users
 
 Route::model( 'user', 'User' );
-Route::get( '/user/{user}/confirmdelete', 'UserController@confirmDelete' );
+Route::get( '/user/{user}/confirmdelete', [ 'as' => 'user.confirmdelete', 'uses' => 'UserController@confirmDelete' ] );
 Route::resource( 'user', 'UserController' );
 
 // Other Routes
 
+Route::get( '/dashboard', [ 'as' => 'dashboard', 'uses' => 'HomeController@dashboard' ] );
+Route::get( '/', [ 'as' => 'home', 'uses' => 'HomeController@home' ] );
 Route::resource( 'chapter', 'ChapterController' );
 Route::resource( 'announcement', 'AnnouncementController' );
 Route::resource( 'report', 'ReportController' );

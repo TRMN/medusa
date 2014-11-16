@@ -3,20 +3,26 @@
 class HomeController extends BaseController
 {
 
-    public function showDashboard()
+    public function dashboard()
     {
         if ( Auth::check() ) {
             $user = Auth::user();
 
-            return View::make( 'dashboard', [ 'greeting' => $user->getGreeting(), 'user' => $user, 'chapter' => Chapter::find($user->getPrimaryAssignmentId()) ] );
-        } else {
-            return Redirect::intended( '/' );
+            $viewData = [
+                'greeting' => $user->getGreeting(),
+                'user' => $user,
+                'chapter' => Chapter::find( $user->getPrimaryAssignmentId() ),
+            ];
+
+            return View::make( 'dashboard', $viewData );
         }
+
+        return Redirect::intended( '/' );
     }
 
-    public function showWelcome()
+    public function home()
     {
-        return View::make( 'welcome' );
+        return View::make( 'home' );
     }
 
 }
