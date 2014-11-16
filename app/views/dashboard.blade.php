@@ -14,5 +14,4 @@ Dashboard
 
     @endif
 </div>
-<pre><?php print_r($chapter->reports()->where('report.draft', '=', true), true); ?></pre>
 @stop

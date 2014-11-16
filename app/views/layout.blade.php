@@ -9,18 +9,23 @@
     <link rel="stylesheet" type="text/css" href="{{{ $serverUrl }}}/css/main.css">
 
 </head>
-<body class=" @yield('bodyclasses')">
-
-    @include('nav')
-
+<body class="@yield('bodyclasses')">
     <div class="container">
-    @yield('content')
+        <header class="row">
+            @include( 'nav' )
+            <h1>The Royal Manticoran Navy <small>The Official Honor Harrington Fan Association</small></h1>
+        </header>
+
+        <div class="row">
+            @yield( 'content' )
+        </div>
+
+        <footer class="row">
+            <p>Copyright &copy; 2008 &ndash; 2014 The Royal Manticoran Navy: The Official Honor Harrington Fan Association, Inc. Some Rights Reserved.
+               Honor Harrington and all related materials are &copy; David Weber.</p>
+        </footer>
     </div>
-    
-    <footer>
-        <p>Copyright &copy; 2008 &ndash; 2014 The Royal Manticoran Navy: The Official Honor Harrington Fan Association, Inc. Some Rights Reserved.
-           Honor Harrington and all related materials are &copy; David Weber.</p>
-    </footer>
+
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/js/foundation.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/js/foundation/foundation.topbar.min.js"></script>
@@ -29,6 +34,6 @@
         jQuery( document ).foundation();
     </script>
     <script src="{{{ $serverUrl }}}/js/bundle.min.js"></script>
-    @yield('scriptFooter')
+    @yield( 'scriptFooter' )
 </body>
 </html>

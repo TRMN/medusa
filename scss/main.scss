@@ -1,0 +1,106 @@
+@import "settings";
+@import "foundation";
+
+$backdrop-color: #222;
+$text-primary: whitesmoke;
+$body-width: 978px;
+$manticore-red: #ee3300;
+$medusa-yellow: #ffee00;
+
+.button {
+  background-color: $manticore-red;
+}
+
+.container {
+  background: black;
+  width: $body-width;
+  margin: 0 auto;
+  padding: 0.75rem 2.5rem;
+}
+
+th.actions {
+  width: 175px;
+}
+
+th.memberid {
+  width: 110px;
+}
+
+th.email {
+  width: 280px;
+}
+
+th.branch {
+  width: 80px;
+}
+
+body,html {
+  background: black;
+  color: $text-primary;
+}
+
+a {
+  color: $medusa-yellow;
+}
+
+h1 {
+  color: $medusa-yellow;
+}
+
+h2,h3,h4 {
+  color: $text-primary;
+}
+
+label {
+  color: $text-primary;
+}
+
+nav {
+  background: none;
+  height: 30px;
+  width: 500px;
+  margin: 0 auto;
+  .topbar {
+    background: none;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    li {
+      list-style: none;
+      display: block;
+      height: 35px;
+      float: left;
+      margin-right: 1em;
+      a {
+        line-height: 35px;
+      }
+    }
+  }
+}
+
+table {
+  a {
+    color: black;
+  }
+}
+
+td.right {
+  text-align: right;
+}
+
+header {
+    height: 150px;
+}
+
+footer {
+  background: black;
+  text-align: center;
+  height: 152px;
+  width: 100%;
+  p {
+    padding-top: 2em;
+    color: $text-primary;
+    font-size: 0.5rem;
+  }
+}

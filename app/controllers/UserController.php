@@ -99,9 +99,84 @@ class UserController extends \BaseController
 
         unset( $data[ '_token' ], $data[ 'password_confirmation' ] );
 
-        User::create( $data );
+        $user = User::create( $data );
+
+        Event::fire( 'user.created', $user );
 
         return Redirect::route( 'user.index' );
+    }
+
+    /**
+     * Store a new applicant
+     *
+     * @return Response
+     */
+    public function apply()
+    {
+        $rules = [
+            'first_name' => 'required|min:2',
+            'last_name' => 'required|min:2',
+            'address_1' => 'required|min:4',
+            'city' => 'required|min:2',
+            'state_province' => 'required|min:2',
+            'postal_code' => 'required|min:2',
+            'country' => 'required',
+            'email_address' => 'required|email|unique:users',
+            'password' => 'required|confirmed',
+        ];
+
+        $validator = Validator::make( $data = Input::all(), $rules );
+
+        if ( $validator->fails() ) {
+            return Redirect::back()->withErrors( $validator )->withInput();
+        }
+
+        $memberId = $this->getNextAvailableMemberId();
+
+        $data[ 'member_id' ] = $data[ 'branch' ] . $memberId;
+
+        $rank = [
+            'permanent_rank' => [ 'grade' => 'E1', 'date_of_rank' => date( 'Y-m-d' ) ],
+            'brevet_rank' => [ 'grade' => 'E1', 'date_of_rank' => date( 'Y-m-d' ) ],
+        ];
+
+        $data[ 'rank' ] = $rank;
+
+        $assignment = [];
+
+        if ( isset( $data[ 'primary_assignment' ] ) && !empty( $data[ 'primary_assignment' ] ) ) {
+            $chapterName = Chapter::find( $data[ 'primary_assignment' ] )->chapter_name;
+
+            $assignment[ ] = [
+                'chapter_id' => $data[ 'primary_assignment' ],
+                'chapter_name' => $chapterName,
+                'date_assigned' => date( 'Y-m-d' ),
+                'billet' => '',
+                'primary' => true
+            ];
+
+            unset( $data[ 'primary_assignment' ], $data[ 'primary_date_assigned' ], $data[ 'primary_billet' ] );
+        }
+
+        $data[ 'assignment' ] = $assignment;
+
+        // Hash the password
+
+        $data[ 'password' ] = Hash::make( $data[ 'password' ] );
+
+        // For future use
+
+        $data[ 'peerage_record' ] = [ ];
+        $data[ 'awards_record' ] = [ ];
+        $data[ 'exam_record' ] = [ ];
+
+        unset( $data[ '_token' ], $data[ 'password_confirmation' ] );
+
+        $user = User::create( $data );
+
+        Event::fire( 'user.registered', $user );
+
+        return Redirect::route( 'home' )->with( 'message', 'User created. You may now log in!' );
     }
 
     /**
@@ -270,6 +345,47 @@ class UserController extends \BaseController
         return Redirect::route( 'user.index' );
     }
 
+    public function register()
+    {
+        $fullCountryList = Countries::getList();
+        $countries = [ ];
+
+        foreach( $fullCountryList as $country ) {
+            $countries[ $country[ 'iso_3166_3' ] ] = $country[ 'name' ];
+        }
+
+        asort( $countries );
+
+        $fullChapterList = Chapter::all();
+        $chapters = [ ];
+
+        foreach( $fullChapterList as $chapter ) {
+            $chapters[ $chapter[ '_id' ] ] = $chapter[ 'chapter_name' ];
+        }
+
+        asort( $chapters );
+
+        $finalChapters = array_merge( [ '' => 'Select a Chapter' ], $chapters );
+
+        $fullBranchList = Branch::all();
+        $branches = [ ];
+
+        foreach( $fullBranchList as $branch ) {
+            $branches[ $branch[ 'branch' ] ] = $branch[ 'branch_name' ];
+        }
+
+        asort( $branches );
+
+        $viewData = [
+            'user' => new User,
+            'countries' => $countries,
+            'branches' => $branches,
+            'chapters' => $finalChapters,
+        ];
+
+        return View::make( 'user.register', $viewData );
+    }
+
     private function _getCountries()
     {
         $results = Countries::getList();
@@ -280,6 +396,36 @@ class UserController extends \BaseController
         }
 
         return $countries;
+    }
+
+    public function getNextAvailableMemberId()
+    {
+        $memberIds = User::lists( 'member_id' );
+        $uniqueMemberIds = [ ];
+
+        foreach( $memberIds as $memberId ) {
+            $uniqueMemberIds[ ] = intval( substr( $memberId, 4, 4 ) );
+        }
+
+        if ( sizeof( $uniqueMemberIds ) == 0 ) {
+            return "-0000-" . date( 'y' );
+        }
+
+        asort( $uniqueMemberIds );
+
+        $lastUsedId = array_pop( $uniqueMemberIds );
+
+        $newNumber = $lastUsedId + 1;
+
+        if ( $newNumber > 9999 ) {
+            $newNumber = 0;
+        }
+
+        $newNumber = str_pad( $newNumber, 4, '0', STR_PAD_LEFT );
+
+        $yearCode = date( 'y' );
+
+        return "-$newNumber-$yearCode";
     }
 
 }
