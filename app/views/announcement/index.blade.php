@@ -14,7 +14,16 @@ Announcements
     <tbody>
 
 @foreach($announcements as $announcement)
-    <tr><td><a href="{{ route('announcement.edit', [ $announcement->id ] )}}">{{{ $announcement->summary }}}</a></td><td>{{{ $announcement->author ? $announcement->author->getGreeting() : '' }}}</td><td>{{{ $announcement->updated_at }}}</td><td>{{{ $announcement->is_published ? 'Published' : 'Unpublished' }}}</td><td><button class="btn">Delete</button></td></tr>
+    @if( $announcement->user && $author = $announcement->user->getGreeting() )
+    @elseif( $author = '' && true )
+    @endif
+    <tr>
+        <td><a href="{{ route('announcement.edit', [ $announcement->id ] )}}">{{{ $announcement->summary }}}</a></td>
+        <td>{{{ $author ? $author[ 'rank' ] . ' ' . $author[ 'last_name' ] : '' }}}</td>
+        <td>{{{ $announcement->updated_at }}}</td>
+        <td>{{{ $announcement->is_published ? 'Published' : 'Unpublished' }}}</td>
+        <td><button class="btn">Delete</button></td>
+    </tr>
 @endforeach
 
     </tbody>
