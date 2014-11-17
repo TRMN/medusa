@@ -1,5 +1,6 @@
 ---
+ - name: Install MongoDB
+   apt: pkg=mongodb state=installed
 
-- include: mongodb.yml
-  when: mongodb_enabled
-  tags: [mongodb]
+ - name: MongoDB | Ensure deamon is running correctly
+   service: name=mongodb state=started enabled=true

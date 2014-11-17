@@ -5,7 +5,10 @@
  *
  * Pay Grades and descriptions
  */
-class Grade extends Moloquent
+
+use Jenssegers\Mongodb\Model as Eloquent;
+
+class Grade extends Eloquent
 {
 
     protected $fillable = [ 'grade', 'rank' ];

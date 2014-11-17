@@ -2,21 +2,31 @@
 
 class AuthController extends BaseController
 {
-    public function doSignin()
+    public function signin()
     {
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required',
+        ];
+
+        $validator = Validator::make( Input::all(), $rules );
+
+        if ( $validator->fails() )
+        {
+            return Redirect::route( 'home' )->withErrors( $validator );
+        }
+
         $email = Input::get( 'email' );
         $password = Input::get( 'password' );
 
         if ( Auth::attempt( [ 'email_address' => $email, 'password' => $password ] ) ) {
-            $response = Response::make( json_encode( [ 'status' => 'success' ] ) );
-        } else {
-            $response = Response::make( json_encode( [ 'status' => 'error' ] ) );
+            return Redirect::route( 'dashboard' );
         }
 
-        return $response;
+        return Redirect::route( 'home' )->withErrors( $validator );
     }
 
-    public function doSignout()
+    public function signout()
     {
         Auth::logout();
 

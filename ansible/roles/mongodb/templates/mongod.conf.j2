@@ -1,5 +1,0 @@
-# {{ ansible_managed }}
-
-{% for k, v in mongodb_conf.iteritems()|sort %}
-{{ k }} = {{ v }}
-{% endfor %}

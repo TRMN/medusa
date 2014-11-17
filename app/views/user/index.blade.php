@@ -24,16 +24,15 @@ Users
                     <td>{{{ $user->email_address }}}</td>
                     <td>{{{ $user->branch }}}</td>
                     <td>
-                        @if($user->primary_assignment_name != 'No assignment')
-                            <a href="/chapter/{{{ $user->primary_assignment }}}">{{{ $user->primary_assignment_name }}}</a>
+                        @if($user->getPrimaryAssignmentName() !== false)
+                            <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
                         @else
                             No assignment
                         @endif
                     </td>
-
                     <td>
-                        <a class="btn" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
-                        <a class="btn" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>
+                        <a class="button tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>&nbsp;&nbsp;
+                        <a class="button tiny" href="{{ route('user.destroy', [ $user->_id]) }}">Delete</a>
                     </td>
                 </tr>
             @endforeach
