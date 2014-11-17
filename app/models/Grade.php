@@ -13,7 +13,7 @@ class Grade extends Eloquent
 
     protected $fillable = [ 'grade', 'rank' ];
 
-    static function getGradesForBranch($branchID)
+    static function getGradesForBranch( $branchID )
     {
         $results = Grade::all();
         $grades[''] = "Select a Rank";

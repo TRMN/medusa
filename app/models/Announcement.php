@@ -11,10 +11,13 @@ class Announcement extends Eloquent {
         'is_published',
     ];
 
-    public function author() {
-
+    public function user()
+    {
         return $this->belongsTo( 'User' );
-        
+    }
+
+    public function getPublishLabels() {
+        return [  0  => 'Unpublished' , 1 => 'Publish' , ];
     }
 
 }
