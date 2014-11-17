@@ -24,10 +24,15 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-$env = $app->detectEnvironment( [
-	'local' => [ 'Bens-MacBook-Pro.local', 'bens-mbp.star.local', 'homestead', 'vagrant-ubuntu-trusty-64' ],
-	'staging' => [ 'dicejockey' ],
-] );
+$env = $app->detectEnvironment(function ()
+{
+    if (file_exists(__DIR__ . '/environment.php'))
+    {
+        return require __DIR__ . '/environment.php';
+    }
+
+    return 'local';
+});
 
 /*
 |--------------------------------------------------------------------------

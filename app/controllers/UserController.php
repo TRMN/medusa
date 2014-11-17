@@ -187,20 +187,15 @@ class UserController extends \BaseController
      */
     public function show( User $user )
     {
-
-        list( $greeting, $permRank, $brevetRank ) = $user->getRankTitles();
-
-        if ( isset( $user->rating ) === true && empty( $user->rating ) === false ) {
-            $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
-        }
+        $greeting = $user->getGreeting();
 
         return View::make( 'user.show', [
             'user' => $user,
             'greeting' => $greeting,
             'countries' => $this->_getCountries(),
             'branches' => Branch::getBranchList(),
-            'permRank' => $permRank,
-            'brevetRank' => $brevetRank ] );
+            'permRank' => $user->perm_display,
+            'brevetRank' => $user->brevet_display ] );
     }
 
     /**
@@ -211,20 +206,7 @@ class UserController extends \BaseController
      */
     public function edit( User $user )
     {
-        list( $greeting, $permRank, $brevetRank ) = $user->getRankTitles();
-
-        if ( isset( $user->rating ) === true && empty( $user->rating ) === false ) {
-            $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
-        }
-
-        $user->permanent_rank = $user->rank[ 'permanent_rank' ][ 'grade' ];
-
-        $user->perm_dor = $user->rank[ 'permanent_rank' ][ 'date_of_rank' ];
-
-        if ( empty( $user->rank[ 'brevet_rank' ][ 'grade' ] ) === false ) {
-            $user->brevet_rank = $user->rank[ 'brevet_rank' ][ 'grade' ];
-            $user->brevet_dor = $user->rank[ 'brevet_rank' ][ 'date_of_rank' ];
-        }
+        $greeting = $user->getGreeting();
 
         $user->primary_assignment = $user->getPrimaryAssignmentId();
         $user->primary_billet = $user->getPrimaryBillet();

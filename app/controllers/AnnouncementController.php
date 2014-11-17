@@ -14,10 +14,11 @@ class AnnouncementController extends BaseController {
 
     public function show( $id ) {
 
-        $announcement = Announcement::with( 'author' )->find( $id );
+        $announcement = Announcement::with( 'user' )->find( $id );
 
         $viewData = [
             'announcement' => $announcement,
+            'announcementUser' => $announcement->user->getGreeting(),
         ];
 
         return Response::view( 'announcement.show', $viewData );
@@ -36,10 +37,17 @@ class AnnouncementController extends BaseController {
 
     public function edit( $id ) {
 
-        $announcement = Announcement::find( $id );
+        $announcement = Announcement::with( 'user' )->find( $id );
+
+        $announcementUserId = $announcement->user->id;
+
+        if( Auth::id() != $announcementUserId ) {
+            return Redirect::to( 'announcement/' . $id );
+        }
 
         $viewData = [
             'announcement' => $announcement,
+            'announcementUser' => $announcement->user->getGreeting(),
         ];
 
         return Response::view( 'announcement.edit', $viewData );

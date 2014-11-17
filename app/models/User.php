@@ -111,82 +111,79 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     }
 
     /**
-     * Get the preferred rank title along with the rank title for the users permanent and brevet rank
-     *
-     * @param User $user
-     * @return array
-     */
-    public function getRankTitles()
-    {
-        // Figure out the correct rank title to use for this user based on branch
-        $branch = $this->branch;
-        $rank = $this->rank[ 'permanent_rank' ][ 'grade' ];
-
-        $gradeDetail = Grade::where( 'grade', '=', $rank )->get();
-
-        $permRank = $gradeDetail[ 0 ]->rank[ $branch ];
-
-        // Check for rating
-
-        if ( isset( $this->rating ) === true && empty( $this->rating ) === false ) {
-            if ( $rateGreeting = self::getRateTitle( $this->rating, $branch, $rank ) ) {
-                $permRank = $rateGreeting;
-            }
-        }
-
-        $greeting = $permRank;
-
-        if ( isset( $this->rank[ 'brevet_rank' ] ) === true && empty( $this->rank[ 'brevet_rank' ] ) === false ) {
-            $rank = $this->rank[ 'brevet_rank' ][ 'grade' ];
-
-            $gradeDetail = Grade::where( 'grade', '=', $rank )->get();
-
-            $brevetRank = $gradeDetail[ 0 ]->rank[ $branch ];
-
-            // Check for rating
-
-            if ( isset( $this->rating ) === true && empty( $this->rating ) === false ) {
-                if ( $rateGreeting = self::getRateTitle( $this->rating, $branch, $rank ) ) {
-                    $brevetRank = $rateGreeting;
-                }
-            }
-
-            $greeting = $brevetRank;
-
-        } else {
-            $brevetRank = '';
-        }
-
-        return [ $greeting, $permRank, $brevetRank ];
-    }
-
-    /**
      * Return only the preferred rank title for a user
      *
-     * @param User $user
      * @return mixed
      */
-    public function getGreeting()
-    {
-        list( $greeting, $permRank, $brevetRank ) = self::getRankTitles();
+    public function getGreeting() {
+
+        $this->getDisplayRank();
+
+        $rank = $this->perm_display;
+
+        if ( isset( $this->rating ) && !empty( $this->rating ) ) {
+
+            if ( $rateGreeting = $this->getRateTitle( $rank ) ) {
+                $greeting[ 'rank' ] = $rateGreeting;
+            }
+        }
+        if( isset( $this->brevet_rank ) && !empty( $this->brevet_rank ) ) {
+            $rank = $this->brevet_display;
+        }
+
+        $greeting[ 'rank' ] = $rank;
+        // To be used when viewing an announcement not published by the current user
+        $greeting[ 'last_name' ] = $this->last_name;
+        //To link to the user who published an announcement
+        $greeting[ 'user_id' ] = $this->user_id;
 
         return $greeting;
     }
 
     /**
+     * Set permanent rank, brevet rank and rating in one place
+     */
+    public function getDisplayRank() {
+        $ranks = [ 'perm' => 'permanent_rank' , 'brevet' => 'brevet_rank' ];
+
+        foreach( $ranks as $shortLabel => $rank ) {
+
+            $displayVarName = $shortLabel . '_display';
+            $dorVarName = $shortLabel . '_dor';
+
+            $this->$rank = '';
+            $this->$dorVarName = '';
+            $this->$displayVarName = '';
+
+            if( isset( $this->rank[ $rank ] ) && !empty( $this->rank[ $rank ] ) ) {
+
+                $grade = $this->rank[ $rank ][ 'grade' ];
+
+                $gradeDetails = Grade::where( 'grade', '=', $grade )->get();
+
+                $this->$rank = $this->rank[ $rank ][ 'grade' ];
+                $this->$displayVarName = $gradeDetails[ 0 ]->rank[ $this->branch ];
+                $this->$dorVarName = $this->rank[ $rank ][ 'date_of_rank' ];
+            }
+        }
+
+        if ( isset( $this->rating ) && !empty( $this->rating ) ) {
+            $this->rating = [ 'rate' => $this->rating, 'description' => Rating::where( 'rate_code', '=', $this->rating )->get()[ 0 ]->rate[ 'description' ] ];
+        }
+    }
+
+    /**
      * Get the rate specific rank title, if any
      *
-     * @param $rating
-     * @param $branch
      * @param $rank
      * @return mixed
      */
-    static function getRateTitle( $rating, $branch, $rank )
+    function getRateTitle( $rank )
     {
-        $rateDetail = Rating::where( 'rate_code', '=', $rating )->get();
+        $rateDetail = Rating::where( 'rate_code', '=', $this->rating )->get();
 
-        if ( isset( $rateDetail[ 0 ]->rate[ $branch ][ $rank ] ) === true && empty( $rateDetail[ 0 ]->rate[ $branch ][ $rank ] ) === false ) {
-            return $rateDetail[ 0 ]->rate[ $branch ][ $rank ];
+        if ( isset( $rateDetail[ 0 ]->rate[ $this->branch ][ $rank ] ) === true && empty( $rateDetail[ 0 ]->rate[ $this->branch ][ $rank ] ) === false ) {
+            return $rateDetail[ 0 ]->rate[ $this->branch ][ $rank ];
         }
 
         return false;
