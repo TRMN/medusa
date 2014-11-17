@@ -189,27 +189,55 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return false;
     }
 
-    /**
-     * Get a users primary assignment
-     *
-     * @return array
-     */
-    function getPrimaryAssignment()
+    public function getPrimaryAssignmentId()
     {
-        $primary_assignment = null;
-        $primary_billet = null;
-        $primary_date_assigned = null;
-
-        if ( isset( $this->assignment ) ) {
-            foreach ( $this->assignment as $assignment ) {
-                if ( $assignment[ 'primary' ] === true ) {
-                    $primary_assignment = $assignment[ 'chapter_id' ];
-                    $primary_billet = $assignment[ 'billet' ];
-                    $primary_date_assigned = $assignment[ 'date_assigned' ];
+        if (isset($this->assignment) == true) {
+            foreach($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
+                    return $assignment['chapter_id'];
                 }
             }
+            return false;
+        } else {
+            return false;
         }
+    }
 
-        return [ $primary_assignment, $primary_billet, $primary_date_assigned ];
+    public function getPrimaryAssignmentName()
+    {
+        $chapter = Chapter::find( $this->getPrimaryAssignmentId() );
+        if ( !empty( $chapter ) ) {
+            return $chapter->chapter_name;
+        } else {
+            return false;
+        }
+    }
+
+    public function getPrimaryBillet()
+    {
+        if (isset($this->assignment) == true) {
+            foreach($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
+                    return $assignment['billet'];
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    public function getPrimaryDateAssigned()
+    {
+        if (isset($this->assignment) == true) {
+            foreach($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
+                    return $assignment['date_assigned'];
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 }

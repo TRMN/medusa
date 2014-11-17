@@ -5,7 +5,10 @@
  *
  * Enlisted Ratings
  */
-class Rating extends Moloquent {
+
+use Jenssegers\Mongodb\Model as Eloquent;
+
+class Rating extends Eloquent {
 
     protected $fillable = [ 'rate_code', 'rate' ];
 

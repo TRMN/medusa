@@ -10,16 +10,14 @@ userform
 
 @section('content')
 <h1>Add a Member</h1>
-<?php
-if (count($errors->all())) {
-echo "<p>Please correct the following errors:</p>\n<ul>\n";
-    foreach ($errors->all() as $message)
-    {
-        echo "<li>" . $message . "</li>\n";
-    }
-}
-echo "</ul>\n";
-?>
+
+@if( count( $errors ) )
+    <ul class="errors">
+        @foreach( $errors as $error )
+            <li>$error</li>
+        @endforeach
+    </ul>
+@endif
 
 {{ Form::model( $user, [ 'route' => [ 'user.store' ], 'id' => 'newuser' ] ) }}
 <div class="form-group">

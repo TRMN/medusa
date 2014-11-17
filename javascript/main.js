@@ -12,15 +12,4 @@ jQuery( document ).ready( function ( $ ) {
         userController.initMemberForm();
     }
 
-    $( '#signin-btn' ).click( function () {
-
-        var email = $( '#email' ).val();
-        var password = $( '#password' ).val();
-        $( '#signin-btn' ).prop( 'disabled', true );
-
-        authController.doLogin( email, password );
-
-        return false;
-    } );
-
 } );
