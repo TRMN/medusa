@@ -22,7 +22,11 @@ Announcements
         <td>{{{ $author ? $author[ 'rank' ] . ' ' . $author[ 'last_name' ] : '' }}}</td>
         <td>{{{ $announcement->updated_at }}}</td>
         <td>{{{ $announcement->is_published ? 'Published' : 'Unpublished' }}}</td>
-        <td><button class="btn">Delete</button></td>
+        <td><button id="{{{ $announcement->id }}}" class="btn" onclick="confirmDelete( '{{ $announcement->id }}' );" data-title="{{{ $announcement->summary }}}">Delete</button>
+            {{ Form::open([ 'url' => route( 'announcement.destroy' , [ $announcement->id ] ) , 'method'=> 'delete' , 'id' => 'deleteFeature' , 'style' => 'display:none;' ]) }}
+                {{ Form::submit( 'Delete' )  }}
+            {{ Form::close() }}
+        </td>
     </tr>
 @endforeach
 
@@ -31,4 +35,18 @@ Announcements
 
 <a href="{{ route('announcement.create')}}" class="button">Create New</a>
 
+@stop
+
+@section('scriptFooter')
+<script>
+    var confirmDelete = function( id ) {
+        var title = jQuery( '#' + id ).data( 'title' );
+        var message = confirm( 'Are you sure you want to delete the ' + title +' announcement?' );
+        if( message == true ) {
+          return document.getElementById( 'deleteFeature' ).submit();
+        } else {
+          return false;
+        }
+      }
+</script>
 @stop
