@@ -41,6 +41,7 @@ class AnnouncementController extends BaseController {
 
         $announcementUserId = $announcement->user->id;
 
+        // @todo: ACL will probably do more checking
         if( Auth::id() != $announcementUserId ) {
             return Redirect::to( 'announcement/' . $id );
         }
@@ -57,7 +58,14 @@ class AnnouncementController extends BaseController {
 
         $data = Input::all();
 
-        $announcement = Announcement::find( $id );
+        $announcement = Announcement::with( 'user' )->find( $id );
+
+        $announcementUserId = $announcement->user->id;
+
+        // @todo: ACL will probably do more checking
+        if( Auth::id() != $announcementUserId ) {
+            return Redirect::to( 'announcement/' . $id );
+        }
 
         $announcement->update( $data );
 
