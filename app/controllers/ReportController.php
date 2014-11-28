@@ -26,7 +26,15 @@ class ReportController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+        $user = Auth::user();
+        $chapter = Chapter::findOrFail($user->getPrimaryAssignmentId()); // TODO: Register exception handler for this
+        $commandCrew = $chapter->getCommandCrew();
+
+        $viewData = [
+            'user' => $user
+        ];
+
+		return Response::view( 'report.form', $viewData);
 	}
 
 
@@ -87,6 +95,7 @@ class ReportController extends \BaseController {
 	{
 		//
 	}
+
 
 
 }

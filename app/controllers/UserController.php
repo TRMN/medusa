@@ -207,6 +207,20 @@ class UserController extends \BaseController
     public function edit( User $user )
     {
         $greeting = $user->getGreeting();
+        $greeting = $user->getGreeting();
+
+        if ( isset( $user->rating ) === true && empty( $user->rating ) === false ) {
+            $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
+        }
+
+        $user->permanent_rank = $user->rank[ 'permanent_rank' ][ 'grade' ];
+
+        $user->perm_dor = $user->rank[ 'permanent_rank' ][ 'date_of_rank' ];
+
+        if ( empty( $user->rank[ 'brevet_rank' ][ 'grade' ] ) === false ) {
+            $user->brevet_rank = $user->rank[ 'brevet_rank' ][ 'grade' ];
+            $user->brevet_dor = $user->rank[ 'brevet_rank' ][ 'date_of_rank' ];
+        }
 
         $user->primary_assignment = $user->getPrimaryAssignmentId();
         $user->primary_billet = $user->getPrimaryBillet();
