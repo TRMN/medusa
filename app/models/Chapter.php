@@ -18,10 +18,6 @@ class Chapter extends Eloquent
         'chapter_type' => 'required'
     ];
 
-    public function report() {
-        return $this->hasMany( 'Report' );
-    }
-
     static function getChapters()
     {
         $results = Chapter::all();
@@ -42,10 +38,27 @@ class Chapter extends Eloquent
         return $chapters;
     }
 
+    /**
+     * Get all users/members assigned to a specific chapter excluding the command crew
+     *
+     * @param $chapterId
+     * @return mixed
+     */
     public function getCrew() {
         $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->whereNotIn( 'assignment.billet', [ 'CO', 'XO', 'Bosun' ])->get();
 
         return $users;
+    }
+
+    /**
+     * Get all users/members assigned to a specific chapter, including the command crew
+     *
+     * @param $chapterId
+     * @return mixed
+     */
+    public function getAllCrew( $chapterId )
+    {
+        return User::where( 'assignment.chapter_id', '=', $chapterId )->get();
     }
 
     public function getCO() {
@@ -65,9 +78,20 @@ class Chapter extends Eloquent
         return $users;
     }
 
-    public function reports()
-    {
-        return $this->hasMany('Report', 'foreign_key', 'ship_information.chapter_id');
+    /**
+     * Get the command crew for a chapter
+     *
+     * @param $chapterId
+     * @return mixed
+     */
+    public function getCommandCrew() {
+        $users['CO'] = $this->getCO();
+        $users['XO'] = $this->getXO();
+        $users['BOSUN'] = $this->getBosun();
+
+        return $users;
     }
+
+
 
 }

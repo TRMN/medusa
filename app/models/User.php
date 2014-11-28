@@ -77,40 +77,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     }
 
     /**
-     * Get the command crew for a chapter
-     *
-     * @param $chapterId
-     * @return mixed
-     */
-    static function getCommandCrew( $chapterId )
-    {
-        return User::where( 'assignment.chapter_id', '=', $chapterId )->whereIn( 'assignment.billet', [ 'CO', 'XO', 'Bosun' ] )->get();
-
-    }
-
-    /**
-     * Get all users/members assigned to a specific chapter excluding the command crew
-     *
-     * @param $chapterId
-     * @return mixed
-     */
-    static function getCrew( $chapterId )
-    {
-        return User::where( 'assignment.chapter_id', '=', $chapterId )->whereNotIn( 'assignment.billet', [ 'CO', 'XO', 'Bosun' ] )->get();
-    }
-
-    /**
-     * Get all users/members assigned to a specific chapter, including the command crew
-     *
-     * @param $chapterId
-     * @return mixed
-     */
-    static function getAllCrew( $chapterId )
-    {
-        return User::where( 'assignment.chapter_id', '=', $chapterId )->get();
-    }
-
-    /**
      * Return only the preferred rank title for a user
      *
      * @return mixed

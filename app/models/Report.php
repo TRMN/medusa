@@ -6,8 +6,8 @@ class Report extends Eloquent {
 
 	protected $fillable = [];
 
-    public function chapter()
+    public function getDraftReport()
     {
-        return $this->belongsTo( 'Chapter', 'local_key', '_id' );
+
     }
 }
