@@ -18,7 +18,7 @@ class AnnouncementController extends BaseController {
 
         $viewData = [
             'announcement' => $announcement,
-            'announcementUser' => $announcement->user->getGreeting(),
+            'announcementUser' => $announcement->user->getGreetingArray(),
         ];
 
         return Response::view( 'announcement.show', $viewData );
@@ -48,7 +48,7 @@ class AnnouncementController extends BaseController {
 
         $viewData = [
             'announcement' => $announcement,
-            'announcementUser' => $announcement->user->getGreeting(),
+            'announcementUser' => $announcement->user->getGreetingArray(),
         ];
 
         return Response::view( 'announcement.edit', $viewData );

@@ -82,7 +82,24 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      * @return mixed
      */
     public function getGreeting() {
+        $this->getDisplayRank();
 
+        $displayRank = $this->perm_display;
+
+        if ( isset( $this->rating ) && !empty( $this->rating ) ) {
+
+            if ( $rateGreeting = $this->getRateTitle( $displayRank ) ) {
+                $displayRank = $rateGreeting;
+            }
+        }
+        if( isset( $this->brevet_rank ) && !empty( $this->brevet_rank ) ) {
+            $displayRank = $this->brevet_display;
+        }
+
+        return $displayRank;
+    }
+
+    public function getGreetingArray() {
         $this->getDisplayRank();
 
         $rank = $this->perm_display;
