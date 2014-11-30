@@ -9,7 +9,7 @@ class HomeController extends BaseController
             $user = Auth::user();
 
             $viewData = [
-                'greeting' => $user->getGreeting(),
+                'greeting' => $user->getGreetingArray(),
                 'user' => $user,
                 'chapter' => Chapter::find( $user->getPrimaryAssignmentId() ),
             ];

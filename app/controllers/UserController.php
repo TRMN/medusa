@@ -187,7 +187,7 @@ class UserController extends \BaseController
      */
     public function show( User $user )
     {
-        $greeting = $user->getGreeting();
+        $greeting = $user->getGreetingArray();
 
         return View::make( 'user.show', [
             'user' => $user,
@@ -206,8 +206,7 @@ class UserController extends \BaseController
      */
     public function edit( User $user )
     {
-        $greeting = $user->getGreeting();
-        $greeting = $user->getGreeting();
+        $greeting = $user->getGreetingArray();
 
         if ( isset( $user->rating ) === true && empty( $user->rating ) === false ) {
             $user->rating = [ 'rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[ 0 ]->rate[ 'description' ] ];
