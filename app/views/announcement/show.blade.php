@@ -8,9 +8,9 @@
 <h1>{{{ $announcement->summary }}}</h1>
 <div class="meta"><a href="{{ route( 'announcement.index') }}" title="Back to Announcement List">Back to Announcement List</a></div>
 <div class="meta">
-    @if( $announcementUser )
+    @if( $announcement->user )
     <div class="author">
-        Written By <span>{{{ $announcementUser[ 'rank' ] }}} {{ $announcementUser[ 'last_name' ] }}</span>
+        Written By <span>{{{ $announcement->user->getGreeting() }}} {{ $announcement->user->last_name }}</span>
     </div>
     @endif
     @if($announcement->is_published)

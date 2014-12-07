@@ -14,12 +14,9 @@ Announcements
     <tbody>
 
 @foreach($announcements as $announcement)
-    @if( $announcement->user && $author = $announcement->user->getGreeting() )
-    @elseif( $author = '' && true )
-    @endif
     <tr>
         <td><a href="{{ route('announcement.edit', [ $announcement->id ] )}}">{{{ $announcement->summary }}}</a></td>
-        <td>{{{ $author ? $author[ 'rank' ] . ' ' . $author[ 'last_name' ] : '' }}}</td>
+        <td>@if( $announcement->user ){{{ $announcement->user->getGreeting() . ' ' . $announcement->user->last_name }}} @else Undefined @endif</td>
         <td>{{{ $announcement->updated_at }}}</td>
         <td>{{{ $announcement->is_published ? 'Published' : 'Unpublished' }}}</td>
         <td><button id="{{{ $announcement->id }}}" class="btn" onclick="confirmDelete( '{{ $announcement->id }}' );" data-title="{{{ $announcement->summary }}}">Delete</button>

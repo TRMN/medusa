@@ -1,11 +1,11 @@
 @extends('layout')
 
 @section('pageTitle')
-{{{ $greeting['rank'] }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}
+{{{  $user->getGreeting() }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}
 @stop
 
 @section('content')
-<h2>{{{ $greeting['rank'] }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}</h2>
+<h2>{{{  $user->getGreeting() }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}</h2>
 <table class="table table-striped">
 <tbody>
     <tr>
@@ -27,7 +27,7 @@
         <td>Branch of Service:</td><td>{{{$branches[$user->branch]}}}</td>
     </tr>
     <tr>
-        <td>Rank:</td><td>{{{$user->rank['permanent_rank']['grade']}}} / {{{$permRank}}} as of {{{$user->rank['permanent_rank']['date_of_rank']}}}@if(isset($user->rank['brevet_rank']))<br />Brevet to  {{{$user->rank['brevet_rank']['grade']}}} / {{{$brevetRank}}} as of {{{$user->rank['brevet_rank']['date_of_rank']}}}@endif</td>
+        <td>Rank:</td><td>{{{ $user->rank['permanent_rank']['grade'] }}} / {{{$permRank}}} as of {{{ $user->rank['permanent_rank']['date_of_rank'] }}}@if(isset($user->rank['brevet_rank']))<br />Brevet to  {{{$user->rank['brevet_rank']['grade']}}} / {{{$brevetRank}}} as of {{{$user->rank['brevet_rank']['date_of_rank']}}}@endif</td>
     </tr>
     @if(isset($user->rating['rate']))
     <tr>
