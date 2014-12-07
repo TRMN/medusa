@@ -37,19 +37,29 @@
                 <tr>
                     <td>Command Crew:</td>
                     <td>
-                        @if ( isset( $command['CO'][0] ) || isset( $command['XO'][0] ) || isset( $command['Bosun'][0] ) )
-                            <ul>
+                        <ul>
+                            <li>Commanding Officer:
                             @if( isset( $command['CO'][0] ) )
-                                <li>Commanding Officer: <a href="{{ route('user.show' , [(string)$command['CO'][0]->_id]) }}">{{{ $command['CO'][0]->getGreeting() }}} {{{ $command['CO'][0]->first_name }}}{{{ isset($command['CO'][0]->middle_name) ? ' ' . $command['CO'][0]->middle_name : '' }}} {{{ $command['CO'][0]->last_name }}}{{{ isset($command['CO'][0]->suffix) ? ' ' . $command['CO'][0]->suffix : '' }}}</a></li>
+                                <a href="{{ route('user.show' , [(string)$command['CO'][0]->_id]) }}">{{{ $command['CO'][0]->getGreeting() }}} {{{ $command['CO'][0]->first_name }}}{{{ isset($command['CO'][0]->middle_name) ? ' ' . $command['CO'][0]->middle_name : '' }}} {{{ $command['CO'][0]->last_name }}}{{{ isset($command['CO'][0]->suffix) ? ' ' . $command['CO'][0]->suffix : '' }}}</a>
+                            @else
+                                N/A
                             @endif
+                            </li>
+                            <li>Executive Officer:
                             @if( isset( $command['XO'][0] ) )
-                                <li>Executive Officer: <a href="{{ route('user.show' , [(string)$command['XO'][0]->id]) }}">{{{ $command['XO'][0]->getGreeting() }}} {{{ $command['XO'][0]->first_name }}}{{{ isset($command['XO'][0]->middle_name) ? ' ' . $command['XO'][0]->middle_name : '' }}} {{{ $command['XO'][0]->last_name }}}{{{ isset($command['XO'][0]->suffix) ? ' ' . $command['XO'][0]->suffix : '' }}}</a></li>
+                                <a href="{{ route('user.show' , [(string)$command['XO'][0]->id]) }}">{{{ $command['XO'][0]->getGreeting() }}} {{{ $command['XO'][0]->first_name }}}{{{ isset($command['XO'][0]->middle_name) ? ' ' . $command['XO'][0]->middle_name : '' }}} {{{ $command['XO'][0]->last_name }}}{{{ isset($command['XO'][0]->suffix) ? ' ' . $command['XO'][0]->suffix : '' }}}</a>
+                            @else
+                                N/A
                             @endif
+                            </li>
+                            <li>Bosun:
                             @if( isset( $command['Bosun'][0] ) )
-                                <li>Bosun: <a href="{{ route('user.show' , [(string)$command['Bosun'][0]->id]) }}">{{{ $command['Bosun'][0]->getGreeting() }}} {{{ $command['Bosun'][0]->first_name }}}{{{ isset($command['Bosun'][0]->middle_name) ? ' ' . $command['Bosun'][0]->middle_name : '' }}} {{{ $command['Bosun'][0]->last_name }}}{{{ isset($command['Bosun'][0]->suffix) ? ' ' . $command['Bosun'][0]->suffix : '' }}}</a></li>
+                                <a href="{{ route('user.show' , [(string)$command['Bosun'][0]->id]) }}">{{{ $command['Bosun'][0]->getGreeting() }}} {{{ $command['Bosun'][0]->first_name }}}{{{ isset($command['Bosun'][0]->middle_name) ? ' ' . $command['Bosun'][0]->middle_name : '' }}} {{{ $command['Bosun'][0]->last_name }}}{{{ isset($command['Bosun'][0]->suffix) ? ' ' . $command['Bosun'][0]->suffix : '' }}}</a>
+                            @else
+                                N/A
                             @endif
-                            </ul>
-                        @endif
+                            </li>
+                        </ul>
                     </td>
                 </tr>
                 @endif

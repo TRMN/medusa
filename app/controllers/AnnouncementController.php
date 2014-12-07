@@ -16,9 +16,12 @@ class AnnouncementController extends BaseController {
 
         $announcement = Announcement::with( 'user' )->find( $id );
 
+        if( empty( $announcement ) ) {
+            return Redirect::route( 'announcement.index' );
+        }
+
         $viewData = [
             'announcement' => $announcement,
-            'announcementUser' => $announcement->user->getGreetingArray(),
         ];
 
         return Response::view( 'announcement.show', $viewData );
@@ -39,16 +42,13 @@ class AnnouncementController extends BaseController {
 
         $announcement = Announcement::with( 'user' )->find( $id );
 
-        $announcementUserId = $announcement->user->id;
-
         // @todo: ACL will probably do more checking
-        if( Auth::id() != $announcementUserId ) {
+        if( Auth::id() != $announcement->user->id ) {
             return Redirect::to( 'announcement/' . $id );
         }
 
         $viewData = [
             'announcement' => $announcement,
-            'announcementUser' => $announcement->user->getGreetingArray(),
         ];
 
         return Response::view( 'announcement.edit', $viewData );
@@ -80,6 +80,7 @@ class AnnouncementController extends BaseController {
 
         $announcement->is_published = false;
 
+        // @todo: ACL will probably do more checking
         $currentUser = Auth::getUser();
 
         $currentUser->announcements()->save( $announcement );
@@ -89,6 +90,7 @@ class AnnouncementController extends BaseController {
 
     public function destroy( $id ) {
 
+        // @todo: ACL will probably do more checking
         Announcement::destroy( $id );
 
         return Redirect::route( 'announcement.index' );

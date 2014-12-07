@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('pageTitle')
-Editing User {{{ $greeting[ 'rank' ] }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}
+Editing User {{{ $user->getGreeting() }}} {{{ $user->first_name }}}{{{ isset( $user->middle_name ) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset( $user->suffix ) ? ' ' . $user->suffix : '' }}}
 @stop
 
 @section('bodyclasses')
@@ -9,7 +9,7 @@ userform
 @stop
 
 @section('content')
-<h2>Editing {{{ $greeting[ 'rank' ] }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}</h2>
+<h2>Editing {{{  $user->getGreeting() }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}</h2>
 <?php
 if (count($errors->all())) {
 echo "<p>Please correct the following errors:</p>\n<ul>\n";

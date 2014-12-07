@@ -100,21 +100,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     }
 
     public function getGreetingArray() {
-        $this->getDisplayRank();
-
-        $rank = $this->perm_display;
-
-        if ( isset( $this->rating ) && !empty( $this->rating ) ) {
-
-            if ( $rateGreeting = $this->getRateTitle( $rank ) ) {
-                $greeting[ 'rank' ] = $rateGreeting;
-            }
-        }
-        if( isset( $this->brevet_rank ) && !empty( $this->brevet_rank ) ) {
-            $rank = $this->brevet_display;
-        }
-
-        $greeting[ 'rank' ] = $rank;
+        $greeting[ 'rank' ] = $this->getGreeting();
         // To be used when viewing an announcement not published by the current user
         $greeting[ 'last_name' ] = $this->last_name;
         //To link to the user who published an announcement
