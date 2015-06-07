@@ -8,11 +8,24 @@ class TypeSeeder extends Seeder {
 
         DB::collection( 'types' )->delete();
 
-        Type::create( [ 'chapter_type' => 'district', 'chapter_description' => 'Naval District', 'can_have' => [ 'fleet' ] ] );
-        Type::create( [ 'chapter_type' => 'fleet', 'chapter_description' => 'RMN Fleet', 'can_have' => [ 'ship', 'division', 'squadron', 'task group', 'task force' ] ] );
-        Type::create( [ 'chapter_type' => 'squadron', 'chapter_description' => 'Squadron of Ships', 'can_have' => [ 'ship', 'division' ] ] );
-        Type::create( [ 'chapter_type' => 'division', 'chapter_description' => 'Division of Ships', 'can_have' => [ 'ship' ] ] );
-        Type::create( [ 'chapter_type' => 'ship', 'chapter_description' => 'Naval Ship', 'can_have' => [ 'mardet', 'ship' ] ] );
-        Type::create( [ 'chapter_type' => 'mardet', 'chapter_description' => 'Marine Detachment', 'can_have' => [ ] ] );
+        $this->createChapter('district', 'Naval District', [ 'fleet']);
+        $this->createChapter('fleet', 'Fleet', ['ship', 'division', 'squadron', 'task_group', 'task_force']);
+        $this->createChapter('task_force', 'Task Force', ['task_group', 'squadron', 'division', 'ship']);
+        $this->createChapter('task_group', 'Task Group', ['squadron', 'division', 'ship']);
+        $this->createChapter('squadron', 'Squadron of Ships', ['ship', 'division']);
+        $this->createChapter('division', 'Division of Ships', [ 'ship']);
+        $this->createChapter('ship', 'Naval Ship', ['mardet']);
+        $this->createChapter('mardet', 'Marine Detachment');
+        $this->createChapter('station', 'Space Station');
+        $this->createChapter('headquarters', 'Headquarters Chapter');
+        $this->createChapter('bivouac', 'Army Bivouac');
+        $this->createChapter('barracks', 'Army Barracks');
+        $this->createChapter('outpost', 'Army Outpost');
+        $this->createChapter('fort', 'Army Fort');
     }
-} 
+
+    function createChapter($type, $description, array $can_have=[]) {
+        $this->command->comment('Creating ' . $description . ' type');
+        Type::create( [ 'chapter_type' => $type, 'chapter_description' => $description, 'can_have' => $can_have]);
+    }
+}

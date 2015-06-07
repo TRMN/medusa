@@ -25,7 +25,8 @@ class BranchSeeder extends Seeder {
         );
 
         foreach($branches as $branch => $name) {
+            $this->command->comment('Creating ' . $name . ' branch');
             Branch::create(["branch" => $branch, "branch_name" => $name]);
         }
     }
-} 
+}

@@ -7,28 +7,65 @@ class ChapterSeeder extends Seeder
     {
         DB::collection( 'chapters' )->delete();
 
-        $district = Chapter::create( [ 'chapter_name' => "Third Naval District", "chapter_type" => 'district' ] );
+        // Setup the Naval Districts
 
-        $fleet = Chapter::create( [ 'chapter_name' => 'Third Fleet (San Martino)', 'chapter_type' => 'fleet', 'assigned_to' => $district->_id ] );
+        $districts = [
+          1 => ['chapter_name' => 'First Naval District', 'tool_tip' => 'DC, MD, NJ, DE, PA, NY, CT, MA, RI, VT, ME, NH, Northern VA*, Quebec, New Brunswick, Nova Scotia, P.E.I. & Newfoundland', 'chapter_type' => 'district', 'hull_number' => '1'],
+          2 => ['chapter_name' => 'Second  Naval District', 'tool_tip' => 'MI, OH, IL, WI, IN, KY, MN & Ontario', 'chapter_type' => 'district', 'hull_number' => '2'],
+          3 => ['chapter_name' => 'Third Naval District', 'tool_tip' => 'Southern VA, WV, NC, SC, AL, TN, MS, GA, FL, Mexico & The Caribbean', 'chapter_type' => 'district', 'hull_number' => '3'],
+          4 => ['chapter_name' => 'Fourth Naval District', 'tool_tip' => 'Correspondence Chapters', 'chapter_type' => 'district', 'hull_number' => '4'],
+          5 => ['chapter_name' => 'Fifth Naval District', 'tool_tip' => 'Australia, New Zealand, Oceania, China, Japan, Philippines and the Indochina Peninsula', 'chapter_type' => 'district', 'hull_number' => '5'],
+          6 => ['chapter_name' => 'Sixth Naval District', 'tool_tip' => 'LA, TX, AR, OK, MO, KS, IA, NE, SD, ND and Manitoba', 'chapter_type' => 'district', 'hull_number' => '6'],
+          7 => ['chapter_name' => 'Seventh Naval District', 'tool_tip' => 'Europe, The Russian Federation and South Africa', 'chapter_type' => 'district', 'hull_number' => '7'],
+          8 => ['chapter_name' => 'Eight Naval District', 'tool_tip' => 'AZ, NM, UT, CO, WY, MT, Alberta and Saskatchewan', 'chapter_type' => 'district', 'hull_number' => '8'],
+          9 => ['chapter_name' => 'Ninth Naval District', 'tool_tip' => 'Special Operations (Ad Astra and BuNine Staffs Only)', 'chapter_type' => 'district', 'hull_number' => '9'],
+          10 => ['chapter_name' => 'Tenth Naval District', 'tool_tip' => 'CA, NV, OR, ID, WA, HI, AK, British Columbia and the Yukon Territory', 'chapter_type' => 'district', 'hull_number' => '10'],
+        ];
 
-        $desron31 = Chapter::create( [ "chapter_name" => "DesRon 31", "chapter_type" => 'squadron', 'assigned_to' => $fleet->_id ] );
+        // Setup the Fleets
 
-        $desdiv311 = Chapter::create( [ "chapter_name" => "DesDiv 311", 'chapter_type' => "division", 'assigned_to' => $desron31->_id ] );
+        $fleets = [
+            1  => ['chapter_name' => 'Home Fleet', 'chapter_type' => 'fleet', 'hull_number' => '1'],
+            2  => ['chapter_name' => 'Gryphon Fleet', 'chapter_type' => 'fleet', 'hull_number' => '2'],
+            3  => ['chapter_name' => 'San Martino Fleet', 'chapter_type' => 'fleet', 'hull_number' => '3'],
+            4  => ['chapter_name' => 'Grayson Space Navy', 'chapter_type' => 'fleet', 'hull_number' => '4'],
+            5  => ['chapter_name' => 'Zanzibar Fleet', 'chapter_type' => 'fleet', 'hull_number' => '5'],
+            6  => ['chapter_name' => 'Sphinx Fleet', 'chapter_type' => 'fleet', 'hull_number' => '6'],
+            7  => ['chapter_name' => 'Andermani Fleet', 'chapter_type' => 'fleet', 'hull_number' => '7'],
+            8  => ['chapter_name' => 'Basilisk Fleet', 'chapter_type' => 'fleet', 'hull_number' => '8'],
+            9  => ['chapter_name' => 'Torch Fleet', 'chapter_type' => 'fleet', 'hull_number' => '9'],
+            10 => ['chapter_name' => 'Talbott Fleet', 'chapter_type' => 'fleet', 'hull_number' => '10'],
+        ];
 
-        $desdiv312 = Chapter::create( [ "chapter_name" => "DesDiv 312", 'chapter_type' => "division", 'assigned_to' => $desron31->_id ] );
+        foreach ($districts as  $district) {
+            $this->command->comment("Creating " . $district['chapter_name']);
+            $result = Chapter::create($district);
+            $fleets[$district['hull_number']]['assigned_to'] = $result->_id;
+        }
 
-        $desdiv313 = Chapter::create( [ "chapter_name" => "DesDiv 313", 'chapter_type' => "division", 'assigned_to' => $desron31->_id ] );
+        foreach ($fleets as $fleet) {
+            $this->command->comment("Creating " . $fleet['chapter_name'] . " assigned to " . $districts[$fleet['hull_number']]['chapter_name']);
+            $result = Chapter::create($fleet);
+            $fleets[$fleet['hull_number']]['_id'] = $result->_id;
+        }
 
-        // Let's create some Tin cans!
+        // Create Admiralty House
+        $this->createChapter('Admiralty House', 'headquarters', 'AH');
 
-        Chapter::create( [ "chapter_name" => 'HMS Gaheris', 'chapter_type' => 'ship', 'hull_number' => 'DD-482', 'assigned_to' => $desdiv311->_id ] );
-        Chapter::create( [ "chapter_name" => 'HMS Chaos', 'chapter_type' => 'ship', 'hull_number' => 'DD-57', 'assigned_to' => $desdiv311->_id ] );
-        Chapter::create( [ "chapter_name" => 'HMS Devastation', 'chapter_type' => 'ship', 'hull_number' => 'DD-44', 'assigned_to' => $desdiv312->_id ] );
-        Chapter::create( [ "chapter_name" => 'HMS Saladin', 'chapter_type' => 'ship', 'hull_number' => 'DD-515', 'assigned_to' => $desdiv312->_id ] );
-        Chapter::create( [ "chapter_name" => 'HMS Ivanhoe', 'chapter_type' => 'ship', 'hull_number' => 'DD-480', 'assigned_to' => $desdiv313->_id ] );
-        Chapter::create( [ "chapter_name" => 'HMS Vengeance', 'chapter_type' => 'ship', 'hull_number' => 'DD-11', 'assigned_to' => $desdiv313->_id ] );
+        // Create King William's Tower
+        $this->createChapter('King William\'s Tower', 'headquarters', 'KWT');
 
-
+        // Add the holding chapters
+        $this->createChapter('HMSS Greenwich', 'station', 'SS-001');
+        $this->createChapter('GNSS Katherine Mayhew', 'station', 'SS-002');
+        $this->createChapter('London Point', 'headquarters', 'LP');
+        $this->createChapter('Headquarters Company', 'headquarters', 'HC');
 
     }
-} 
+
+    function createChapter( $name, $type = "ship", $hull_number = '' )
+    {
+        $this->command->comment('Creating ' . $name);
+        Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number] );
+    }
+}
