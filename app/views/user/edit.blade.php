@@ -70,16 +70,10 @@ echo "</ul>\n";
     {{ Form::label('branch', "Branch") }} {{ Form::select('branch', $branches) }}
 </div>
 <div class="form-group">
-    {{ Form::label('permanent_rank', "Permanent Rank") }} {{ Form::select('permanent_rank', $grades) }}
+    {{ Form::label('display_rank', "Rank") }} {{ Form::select('display_rank', $grades) }}
 </div>
 <div class="form-group">
-    {{ Form::label('perm_dor', "Date of Rank") }} {{ Form::text('perm_dor') }}
-</div>
-<div class="form-group">
-    {{ Form::label('brevet_rank', "Brevet Rank") }} {{ Form::select('brevet_rank', $grades) }}
-</div>
-<div class="form-group">
-    {{ Form::label('brevet_dor', "Date of Rank") }} {{ Form::text('brevet_dor') }}
+    {{ Form::label('dor', "Date of Rank") }} {{ Form::text('dor') }}
 </div>
 <div class="form-group">
     {{ Form::label('rating', "Rating (if any)") }} {{ Form::select('rating', $ratings) }}

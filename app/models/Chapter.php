@@ -5,12 +5,11 @@ use Jenssegers\Mongodb\Model as Eloquent;
 class Chapter extends Eloquent
 {
 
-    protected $fillable = [ 'chapter_name', 'chapter_type', 'hull_number', 'assigned_to', 'ship_class' ];
+    protected $fillable = [ 'chapter_name', 'chapter_type', 'hull_number', 'assigned_to', 'ship_class', 'commission_date', 'decommission_date' ];
 
     public static $rules = [
         'chapter_name' => 'required|min:6|unique:chapters',
         'chapter_type' => 'required',
-        'hull_number' => 'unique:chapters|required_if:chapter_type,ship'
     ];
 
     public static $updateRules = [
@@ -45,7 +44,7 @@ class Chapter extends Eloquent
      * @return mixed
      */
     public function getCrew() {
-        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->whereNotIn( 'assignment.billet', [ 'CO', 'XO', 'Bosun' ])->get();
+        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->whereNotIn( 'assignment.billet', [ 'Commanding Officer', 'Executive Officer', 'Bosun' ])->get();
 
         return $users;
     }
@@ -62,12 +61,12 @@ class Chapter extends Eloquent
     }
 
     public function getCO() {
-        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'CO' )->get();
+        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Commanding Officer' )->get();
         return $users;
     }
 
     public function getXO() {
-        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'XO' )->get();
+        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Executive Officer' )->get();
 
         return $users;
     }

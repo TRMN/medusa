@@ -13,7 +13,7 @@ class HomeController extends BaseController
                 'user' => $user,
                 'chapter' => Chapter::find( $user->getPrimaryAssignmentId() ),
             ];
-
+//die("<pre>" . print_r($viewData, true));
             return View::make( 'dashboard', $viewData );
         }
 
