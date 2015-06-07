@@ -49,15 +49,13 @@ class ImportChapters extends Command {
             $fleets[$fleet['hull_number']] = [ 'chapter_name' => $fleet['chapter_name'], '_id' => $fleet['_id']];
         }
 
-        // Open the Master Berthing Registry
+        // Open the Master Berthing Registry.  Only import sheets with values
 
         $trmn = ['RMN' => Excel::selectSheets( 'RMN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
             ->formatDates( true, 'Y-m-d' )
             ->toArray(), 'GSN' => Excel::selectSheets( 'GSN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
             ->formatDates( true, 'Y-m-d' )
             ->toArray(), 'IAN' => Excel::selectSheets( 'IAN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
-            ->formatDates( true, 'Y-m-d' )
-            ->toArray(), 'RHN' => Excel::selectSheets( 'RHN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
             ->formatDates( true, 'Y-m-d' )
             ->toArray()];
 
