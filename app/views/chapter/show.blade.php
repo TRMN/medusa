@@ -28,7 +28,7 @@
                     <td>Includes:</td>
                     <td>
                     @foreach($includes as $chapter)
-                        <a href="/chapter/{{{ $chapter->_id }}}">{{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}}</a>&nbsp;
+                        <a href="/chapter/{{{ $chapter->_id }}}">{{{ $chapter->chapter_name }}}{{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}}</a>&nbsp;<br />
                     @endforeach
                     </td>
                 </tr>

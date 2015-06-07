@@ -125,6 +125,8 @@ return [
         'Jenssegers\Mongodb\MongodbServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Webpatser\Countries\CountriesServiceProvider',
+        'mnshankar\CSV\CSVServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
     ],
 
     /*
@@ -193,7 +195,8 @@ return [
         'View' => 'Illuminate\Support\Facades\View',
         'Moloquent' => 'Jenssegers\Mongodb\Model',
         'Countries' => 'Webpatser\Countries\CountriesFacade',
-
+        'CSV' => 'mnshankar\CSV\CSVFacade',
+        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
     ],
 
 ];

@@ -16,7 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call('ChapterSeeder');
         $this->call('RatingSeeder');
         $this->call('GradeSeeder');
-        $this->call("BranchSeeder");
+        $this->call('BranchSeeder');
+        $this->call('TigSeeder');
+        $this->call('TypeSeeder');
+        $this->call('UserSeeder');
     }
 
 }
