@@ -52,7 +52,7 @@ class ImportChapters extends Command {
         // Open the Master Berthing Registry
 
         $registry = Excel::load( app_path() . '/database/berthing_registry.xls' )->formatDates( true, 'Y-m-d' )->toArray();
-
+print_r($registry);
         $trmn = ['RMN' => $registry[0], 'GSN' => $registry[1], 'IAN' => $registry[2], 'RHN' => $registry[3]];
 
         foreach ( $trmn as $branch => $ships )
