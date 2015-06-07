@@ -2,7 +2,7 @@
 
 return array(
 
-	'driver' => 'redis',
+	'driver' => 'file',
 	'lifetime' => 120,
 	'expire_on_close' => false,
 	'files' => storage_path().'/sessions',
