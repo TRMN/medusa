@@ -51,9 +51,15 @@ class ImportChapters extends Command {
 
         // Open the Master Berthing Registry
 
-        $registry = Excel::load( app_path() . '/database/berthing_registry.xls' )->formatDates( true, 'Y-m-d' )->toArray();
-print_r($registry);
-        $trmn = ['RMN' => $registry[0], 'GSN' => $registry[1], 'IAN' => $registry[2], 'RHN' => $registry[3]];
+        $trmn = ['RMN' => Excel::selectSheets( 'RMN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
+            ->formatDates( true, 'Y-m-d' )
+            ->toArray(), 'GSN' => Excel::selectSheets( 'GSN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
+            ->formatDates( true, 'Y-m-d' )
+            ->toArray(), 'IAN' => Excel::selectSheets( 'IAN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
+            ->formatDates( true, 'Y-m-d' )
+            ->toArray(), 'RHN' => Excel::selectSheets( 'RHN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
+            ->formatDates( true, 'Y-m-d' )
+            ->toArray()];
 
         foreach ( $trmn as $branch => $ships )
         {
