@@ -19,9 +19,13 @@ class AuthController extends BaseController
         $email = Input::get( 'email' );
         $password = Input::get( 'password' );
 
-        if ( Auth::attempt( [ 'email_address' => $email, 'password' => $password ] ) ) {
+        $pwd_check = User::where( 'email_address', '=', $email )->where( 'password', '=', sha1( $password ) )->get();
+
+        if ( count( $pwd_check) > 0 ) {
+            Auth::login($pwd_check[0]);
             return Redirect::route( 'dashboard' );
         }
+
 
         return Redirect::route( 'home' )->withErrors( $validator );
     }

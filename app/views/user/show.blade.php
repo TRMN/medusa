@@ -27,7 +27,7 @@
         <td>Branch of Service:</td><td>{{{$branches[$user->branch]}}}</td>
     </tr>
     <tr>
-        <td>Rank:</td><td>{{{ $user->rank['permanent_rank']['grade'] }}} / {{{$permRank}}} as of {{{ $user->rank['permanent_rank']['date_of_rank'] }}}@if(isset($user->rank['brevet_rank']))<br />Brevet to  {{{$user->rank['brevet_rank']['grade']}}} / {{{$brevetRank}}} as of {{{$user->rank['brevet_rank']['date_of_rank']}}}@endif</td>
+        <td>Rank:</td><td>{{{ $user->rank['grade'] }}} / {{{$user->getGreeting()}}} as of {{{ $user->rank['date_of_rank'] }}}</td>
     </tr>
     @if(isset($user->rating['rate']))
     <tr>
@@ -35,7 +35,7 @@
     </tr>
     @endif
     <tr>
-        <td>Current Assignment:</td><td>@foreach($user->assignment as $assignment)<a href="{{ route('chapter.show' , [$assignment['chapter_id']]) }}">{{{$assignment['chapter_name']}}}</a> on {{{$assignment['date_assigned']}}}
+        <td>Current Assignment:</td><td>@foreach($user->assignment as $assignment)<a href="{{ route('chapter.show' , [$assignment['chapter_id']]) }}">{{{$user->getPrimaryAssignmentName()}}}</a> on {{{$user->getPrimaryDateAssigned()}}}
         @if($assignment['billet']) as {{{$assignment['billet']}}}@endif @if($assignment['primary']) (Primary)@endif<br />@endforeach</td>
     </tr>
     <tr>

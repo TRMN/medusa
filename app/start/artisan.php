@@ -11,4 +11,6 @@
 |
 */
 
-Artisan::add( new GenerateAdminUser );
+#Artisan::add( new GenerateAdminUser );
+Artisan::add(new ImportChapters);
+Artisan::add(new ImportUsers);
