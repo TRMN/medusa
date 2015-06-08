@@ -85,7 +85,7 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'host' => 'newdb.hms-achilles.org',
+            'host' => 'localhost',
             'port' => 27017,
             'username' => '',
             'password' => '',
