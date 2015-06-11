@@ -1,8 +1,9 @@
+@import url(trmn-fonts.css);
 .button {
   background-color: #ee3300; }
 
 .container {
-  background-color: transparent;
+  background: transparent;
   width: 978px;
   margin: 0 auto;
   padding: 0.75rem 2.5rem; }
@@ -20,16 +21,32 @@ th.branch {
   width: 80px; }
 
 body, html {
-    background: url("/images/trmn-subdued.png");
-    background-color: #000000;
-    background-repeat: no-repeat;
-    background-position: center bottom;
-  color: whitesmoke; }
+  background: url("/images/trmn-subdued.png");
+  color: whitesmoke;
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-position: center bottom; }
 
 a {
   color: #ffee00; }
 
 h1 {
+  color: #ffee00; }
+
+.trmn {
+  font-family: "Incised 901 W01 Nord"; }
+
+h1.trmn {
+  text-transform: uppercase;
+  color: white; }
+
+.NordItalic {
+  font-family: "Incised901W01-NordItali"; }
+
+h4.NordItalic {
+  color: #ffee00; }
+
+h3.trmn {
   color: #ffee00; }
 
 h2, h3, h4 {
@@ -63,11 +80,8 @@ table a {
 td.right {
   text-align: right; }
 
-header {
-  height: 150px; }
-
 footer {
-  background: none;
+  background: transparent;
   text-align: center;
   height: 152px;
   width: 100%; }

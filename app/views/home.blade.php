@@ -5,7 +5,7 @@ Welcome
 @stop
 
 @section('content')
-<h1>Welcome to the Royal Manticoran Navy!</h1>
+<h4 class="NordItalic">Sign In</h4>
 @if( !Auth::check() )
 <div class="row">
     <div class="login-form small-6 columns">
