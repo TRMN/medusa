@@ -17,16 +17,38 @@ class Chapter extends Eloquent
         'chapter_type' => 'required'
     ];
 
-    static function getChapters()
+
+    static function getChapters($branch='')
     {
-        $results = Chapter::all();
+        $holdingChapters = [ 'SS-001', 'SS-002', 'LP', 'HC' ];
+
+        if (empty($branch) === false) {
+            $results = Chapter::where('branch', '=', strtoupper($branch))->get();
+        } else {
+            $results = Chapter::all();
+        }
+
+        if (count($results) === 0) {
+            $results = Chapter::where('hull_number','=','SS-001')->get();
+        }
         $chapters = [ ];
 
         foreach ( $results as $chapter ) {
             $chapters[ $chapter->_id ] = $chapter->chapter_name;
 
+
             if ( isset( $chapter->hull_number ) === true && empty( $chapter->hull_number ) === false ) {
-                $chapters[ $chapter->_id ] .= ' (' . $chapter->hull_number . ')';
+                if ( in_array( $chapter->hull_number, $holdingChapters ) === true ) {
+                    $chapters[$chapter->_id] .= ' (Holding Chapter)';
+                } else {
+                    $co = Chapter::find($chapter->_id)->getCO();
+                    //die("<pre>" . print_r($co, true));
+                    $append = '';
+                    if (empty($co[0]) === false && empty($co[0]['city']) === false && empty($co[0]['state_province']) == false) {
+                        $append = ' (' . $co[0]['city'] . ', ' . $co[0]['state_province'] . ')';
+                    }
+                    $chapters[ $chapter->_id ] .= $append;
+                }
             }
         }
 

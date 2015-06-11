@@ -5,21 +5,21 @@ Membership Application
 @stop
 
 @section( 'bodyclasses' )
-
+registerform
 @stop
 
 @section( 'content' )
 <h1>Membership Application</h1>
 
-@if( count( $errors ) )
+@if( $errors->any() )
     <ul class="errors">
-        @foreach( $errors as $error )
-            <li>$error</li>
+        @foreach( $errors->all() as $error )
+            <li>{{ $error }}</li>
         @endforeach
     </ul>
 @endif
 
-{{ Form::model( $user, [ 'route' => [ 'user.apply' ], 'id' => 'newuser' ] ) }}
+{{ Form::model( $user, [ 'route' => [ 'user.apply' ], 'id' => 'register' ] ) }}
 
 <h2>The Basics</h2>
 
@@ -42,7 +42,7 @@ Membership Application
 
 <h2>Name</h2>
 
-<p>We'll need to know what to call you!</p>
+<p>We need to know what to call you!</p>
 
 <div class="row">
     <div class="small-4 columns">
@@ -61,7 +61,7 @@ Membership Application
 
 <h2>Address</h2>
 
-<p>We only use this to place you in the right chapter. We won't share this with anyone.</p>
+<p>We only use this to help place you in the right chapter. We won't share this with anyone outside of the organization.</p>
 
 <div class="row">
     <div class="small-6 columns">
@@ -89,7 +89,7 @@ Membership Application
 
 <h2>Branch and Chapter</h2>
 
-<p>If you know what branch and chapter you'd like to join, choose them here. Otherwise leave these as they are.</p>
+<p>If you know what branch and chapter you'd like to join, you may choose them here. One of the holding chapters is a good choice if you're not sure.</p>
 
 <div class="row">
     <div class="small-6 columns">
@@ -100,7 +100,7 @@ Membership Application
     </div>
 </div>
 
-{{ Form::submit( 'Apply', [ 'class' => 'button' ] ) }}
+{{ Form::submit( 'Sign me up!', [ 'class' => 'button' ] ) }}
 
 {{ Form::close() }}
 

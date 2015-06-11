@@ -105,7 +105,7 @@ return [
         'Illuminate\Database\DatabaseServiceProvider',
         'Illuminate\Encryption\EncryptionServiceProvider',
         'Illuminate\Filesystem\FilesystemServiceProvider',
-        'Illuminate\Hashing\HashServiceProvider',
+        'MedusaHasherServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Illuminate\Log\LogServiceProvider',
         'Illuminate\Mail\MailServiceProvider',

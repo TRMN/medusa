@@ -58,7 +58,7 @@ class ImportUsers extends Command
             unset( $user['grade'] );
 
             $user['assignment'][] =
-                ['chapter_id' => $this->getChapterByName( $user['ship_name'] )[0]['_id'], 'billet' => $user['primary_billet'], 'primary' => true];
+                ['chapter_id' => $this->getChapterByName( $user['ship_name'] )[0]['_id'], 'billet' => $user['primary_billet'], 'primary' => true, 'chapter_name' => $user['ship_name']];
             unset( $user['ship_name'] );
             unset( $user['primary_billet'] );
 
@@ -87,10 +87,6 @@ class ImportUsers extends Command
 
             $user['awards'] = [];
 
-            // The active field comes in as a double and mongo drops it, make it a boolen
-
-            $user['active'] = (int)$user['active'];
-            $user['status'] = "active";
             foreach ( $user as $key => $value )
             {
                 if ( is_null( $value ) === true || $value === 'NULL' )
@@ -101,7 +97,15 @@ class ImportUsers extends Command
 
             // Make sure this is not a duplicate user
             if (count(User::where('member_id', '=', $user['member_id'])->get()) === 0) {
-                User::create( $user );
+                $result = User::create( $user );
+
+                $u = User::find($result['_id']);
+
+                foreach ($user as $key => $value) {
+                    $u[$key] = $value;
+                }
+
+                $u->save();
             } else {
                 $this->error("Duplicate user found! " . $user['member_id'] . " already exists in the database!");
             }
@@ -136,7 +140,7 @@ class ImportUsers extends Command
             return $results;
         } else {
             $this->info("Chapter " . $name . " not found, creating...");
-            Chapter::create( ['chapter_name' => $name] );
+            Chapter::create( ['chapter_name' => $name, 'chapter_type' => ''] );
             return Chapter::where( 'chapter_name', '=', $name )->get();
         }
     }
