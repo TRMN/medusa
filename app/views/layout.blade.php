@@ -13,7 +13,8 @@
     <div class="container">
         <header class="row">
             @include( 'nav' )
-            <h1>The Royal Manticoran Navy <small>The Official Honor Harrington Fan Association</small></h1>
+            <h1 class="trmn">The Royal<br />Manticoran Navy</h1>
+            <h3 class="trmn">Membership Database</h3>
         </header>
 
         <div class="row">
