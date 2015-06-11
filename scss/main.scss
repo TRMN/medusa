@@ -1,4 +1,5 @@
 @import "settings";
+@import "trmn-fonts.css";
 //@import "foundation";
 
 $backdrop-color: #222;
@@ -12,7 +13,7 @@ $medusa-yellow: #ffee00;
 }
 
 .container {
-  background: black;
+  background: transparent;
   width: $body-width;
   margin: 0 auto;
   padding: 0.75rem 2.5rem;
@@ -37,6 +38,9 @@ th.branch {
 body,html {
   background: url("/images/trmn-subdued.png");
   color: $text-primary;
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-position: center bottom;
 }
 
 a {
@@ -44,6 +48,27 @@ a {
 }
 
 h1 {
+  color: $medusa-yellow;
+}
+
+.trmn {
+  font-family: "Incised 901 W01 Nord";
+}
+
+h1.trmn {
+  text-transform: uppercase;
+  color: white
+}
+
+.NordItalic {
+  font-family: "Incised901W01-NordItali";
+}
+
+h4.NordItalic {
+  color: $medusa-yellow;
+}
+
+h3.trmn {
   color: $medusa-yellow;
 }
 
@@ -89,12 +114,8 @@ td.right {
   text-align: right;
 }
 
-header {
-    height: 150px;
-}
-
 footer {
-  background: black;
+  background: transparent;
   text-align: center;
   height: 152px;
   width: 100%;

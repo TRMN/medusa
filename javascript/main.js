@@ -18,4 +18,12 @@ jQuery( document ).ready( function ( $ ) {
 		registerController.initRegisterForm();
 	}
 
+    var MTIProjectId = '5c059f73-3466-4691-8b9a-27e7d9c1a9c7';
+    (function () {
+        var mtiTracking = document.createElement('script');
+        mtiTracking.type = 'text/javascript';
+        mtiTracking.async = 'true';
+        mtiTracking.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + '//fast.fonts.net/t/trackingCode.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mtiTracking);
+    })();
 } );
