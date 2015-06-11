@@ -12,7 +12,7 @@ class UserController extends \BaseController
     {
         $users = User::all();
 
-        return View::make( 'user.index', ['users' => $users] );
+        return View::make('user.index', ['users' => $users]);
     }
 
     /**
@@ -22,7 +22,7 @@ class UserController extends \BaseController
      */
     public function create()
     {
-        return View::make( 'user.create', ['user' => new User] );
+        return View::make('user.create', ['user' => new User]);
     }
 
     /**
@@ -33,26 +33,25 @@ class UserController extends \BaseController
     public function store()
     {
 
-        $validator = Validator::make( $data = Input::all(), User::$rules, User::$error_message );
+        $validator = Validator::make($data = Input::all(), User::$rules, User::$error_message);
 
-        if ( $validator->fails() )
-        {
-            return Redirect::back()->withErrors( $validator )->withInput();
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
         }
 
         // Massage the data a little bit.  First, build up the rank array
 
         $rank = [];
 
-        if ( isset( $data['permanent_rank'] ) === true && empty( $data['permanent_rank'] ) === false )
-        {
-            $rank['permanent_rank'] = ['grade' => $data['permanent_rank'], 'date_of_rank' => date( 'Y-m-d', strtotime( $data['perm_dor'] ) )];
+        if (isset( $data['permanent_rank'] ) === true && empty( $data['permanent_rank'] ) === false) {
+            $rank['permanent_rank'] =
+                ['grade' => $data['permanent_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['perm_dor']))];
             unset( $data['permanent_rank'], $data['perm_dor'] );
         }
 
-        if ( isset( $data['brevet_rank'] ) === true && empty( $data['brevet_rank'] ) === false )
-        {
-            $rank['brevet_rank'] = ['grade' => $data['brevet_rank'], 'date_of_rank' => date( 'Y-m-d', strtotime( $data['brevet_dor'] ) )];
+        if (isset( $data['brevet_rank'] ) === true && empty( $data['brevet_rank'] ) === false) {
+            $rank['brevet_rank'] =
+                ['grade' => $data['brevet_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['brevet_dor']))];
             unset( $data['brevet_rank'], $data['brevet_dor'] );
         }
 
@@ -60,26 +59,25 @@ class UserController extends \BaseController
 
         // Build up the member assignments
 
-        $chapterName = Chapter::find( $data['primary_assignment'] )->chapter_name;
+        $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
         $assignment[] = [
             'chapter_id'    => $data['primary_assignment'],
             'chapter_name'  => $chapterName,
-            'date_assigned' => date( 'Y-m-d', strtotime( $data['primary_date_assigned'] ) ),
+            'date_assigned' => date('Y-m-d', strtotime($data['primary_date_assigned'])),
             'billet'        => $data['primary_billet'],
             'primary'       => true
         ];
 
         unset( $data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet'] );
 
-        if ( isset( $data['secondary_assignment'] ) === true && empty( $data['secondary_assignment'] ) === false )
-        {
-            $chapterName = Chapter::find( $data['secondary_assignment'] )->chapter_name;
+        if (isset( $data['secondary_assignment'] ) === true && empty( $data['secondary_assignment'] ) === false) {
+            $chapterName = Chapter::find($data['secondary_assignment'])->chapter_name;
 
             $assignment[] = [
                 'chapter_id'    => $data['secondary_assignment'],
                 'chapter_name'  => $chapterName,
-                'date_assigned' => date( 'Y-m-d', strtotime( $data['secondary_date_assigned'] ) ),
+                'date_assigned' => date('Y-m-d', strtotime($data['secondary_date_assigned'])),
                 'billet'        => $data['secondary_billet'],
                 'primary'       => false
             ];
@@ -91,7 +89,7 @@ class UserController extends \BaseController
 
         // Hash the password
 
-        $data['password'] = Hash::make( $data['password'] );
+        $data['password'] = Hash::make($data['password']);
 
         // For future use
 
@@ -103,11 +101,11 @@ class UserController extends \BaseController
 
         unset( $data['_token'], $data['password_confirmation'] );
 
-        $user = User::create( $data );
+        $user = User::create($data);
 
-        Event::fire( 'user.created', $user );
+        Event::fire('user.created', $user);
 
-        return Redirect::route( 'user.index' );
+        return Redirect::route('user.index');
     }
 
     /**
@@ -129,35 +127,42 @@ class UserController extends \BaseController
             'password'       => 'required|confirmed',
         ];
 
-        $validator = Validator::make( $data = Input::all(), $rules );
+        $validator = Validator::make($data = Input::all(), $rules);
 
-        if ( $validator->fails() )
-        {
-            return Redirect::back()->withErrors( $validator )->withInput();
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
         }
 
         $memberId = $this->getNextAvailableMemberId();
 
-        $data['member_id'] = $data['branch'] . $memberId;
+        $data['member_id'] = 'RMN' . $memberId;
 
-        $rank = [
-            'permanent_rank' => ['grade' => 'E1', 'date_of_rank' => date( 'Y-m-d' )],
-            'brevet_rank'    => ['grade' => 'E1', 'date_of_rank' => date( 'Y-m-d' )],
-        ];
+        $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
 
-        $data['rank'] = $rank;
+        switch($data['rank']) {
+            case "CIVIL":
+            case "INTEL":
+            case "SFS":
+                $data['rank']['grade'] = 'C-1';
+                $billet = "Civilian One";
+            case "RMMC":
+                $billet = "Marine";
+            case "RMA":
+                $billet = "Soldier";
+            default:
+                $billet = "Crewman";
+        }
 
         $assignment = [];
 
-        if ( isset( $data['primary_assignment'] ) && !empty( $data['primary_assignment'] ) )
-        {
-            $chapterName = Chapter::find( $data['primary_assignment'] )->chapter_name;
+        if (isset( $data['primary_assignment'] ) === true && empty( $data['primary_assignment'] ) === false) {
+            $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
             $assignment[] = [
                 'chapter_id'    => $data['primary_assignment'],
                 'chapter_name'  => $chapterName,
-                'date_assigned' => date( 'Y-m-d' ),
-                'billet'        => '',
+                'date_assigned' => date('Y-m-d'),
+                'billet'        => $billet,
                 'primary'       => true
             ];
 
@@ -168,21 +173,33 @@ class UserController extends \BaseController
 
         // Hash the password
 
-        $data['password'] = Hash::make( $data['password'] );
+        $data['password'] = Hash::make($data['password']);
 
         // For future use
 
         $data['peerage_record'] = [];
-        $data['awards_record'] = [];
-        $data['exam_record'] = [];
+        $data['awards'] = [];
+        $data['active'] = (int) 0;
+        $data['application_date'] = date('Y-m-d');
+
 
         unset( $data['_token'], $data['password_confirmation'] );
 
-        $user = User::create( $data );
+        $user = User::create($data);
 
-        Event::fire( 'user.registered', $user );
+        // Until I figure out why mongo drops fields, I'm doing this hack!
 
-        return Redirect::route( 'home' )->with( 'message', 'User created. You may now log in!' );
+        $u = User::find($user['_id']);
+
+        foreach ($data as $key => $value) {
+            $u[$key] = $value;
+        }
+
+        $u->save();
+
+        Event::fire('user.registered', $user);
+
+        return Redirect::route('home')->with('message', 'User created. You may now log in!');
     }
 
     /**
@@ -192,14 +209,14 @@ class UserController extends \BaseController
      *
      * @return Response
      */
-    public function show( User $user )
+    public function show(User $user)
     {
         return View::make(
             'user.show',
             [
-                'user'       => $user,
-                'countries'  => $this->_getCountries(),
-                'branches'   => Branch::getBranchList()
+                'user'      => $user,
+                'countries' => $this->_getCountries(),
+                'branches'  => Branch::getBranchList()
             ]
         );
     }
@@ -211,24 +228,22 @@ class UserController extends \BaseController
      *
      * @return Response
      */
-    public function edit( User $user )
+    public function edit(User $user)
     {
         $greeting = $user->getGreetingArray();
 
-        if ( isset( $user->rating ) === true && empty( $user->rating ) === false )
-        {
+        if (isset( $user->rating ) === true && empty( $user->rating ) === false) {
             $user->rating =
-                ['rate' => $user->rating, 'description' => Rating::where( 'rate_code', '=', $user->rating )->get()[0]->rate['description']];
+                ['rate'        => $user->rating,
+                 'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']
+                ];
         }
 
         $user->display_rank = $user->rank['grade'];
 
-        if ( isset( $user->rank['date_of_rank'] ) )
-        {
+        if (isset( $user->rank['date_of_rank'] )) {
             $user->dor = $user->rank['date_of_rank'];
-        }
-        else
-        {
+        } else {
             $user->dor = '';
         }
 
@@ -243,8 +258,8 @@ class UserController extends \BaseController
                 'greeting'  => $greeting,
                 'countries' => $this->_getCountries(),
                 'branches'  => Branch::getBranchList(),
-                'grades'    => Grade::getGradesForBranch( $user->branch ),
-                'ratings'   => Rating::getRatingsForBranch( $user->branch ),
+                'grades'    => Grade::getGradesForBranch($user->branch),
+                'ratings'   => Rating::getRatingsForBranch($user->branch),
                 'chapters'  => Chapter::getChapters(),
             ]
         );
@@ -257,28 +272,27 @@ class UserController extends \BaseController
      *
      * @return Response
      */
-    public function update( User $user )
+    public function update(User $user)
     {
-        $validator = Validator::make( $data = Input::all(), User::$updateRules, User::$error_message );
+        $validator = Validator::make($data = Input::all(), User::$updateRules, User::$error_message);
 
-        if ( $validator->fails() )
-        {
-            return Redirect::back()->withErrors( $validator )->withInput();
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
         }
 
         // Massage the data a little bit.  First, build up the rank array
 
         $rank = [];
 
-        if ( isset( $data['permanent_rank'] ) === true && empty( $data['permanent_rank'] ) === false )
-        {
-            $rank['permanent_rank'] = ['grade' => $data['permanent_rank'], 'date_of_rank' => date( 'Y-m-d', strtotime( $data['perm_dor'] ) )];
+        if (isset( $data['permanent_rank'] ) === true && empty( $data['permanent_rank'] ) === false) {
+            $rank['permanent_rank'] =
+                ['grade' => $data['permanent_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['perm_dor']))];
             unset( $data['permanent_rank'], $data['perm_dor'] );
         }
 
-        if ( isset( $data['brevet_rank'] ) === true && empty( $data['brevet_rank'] ) === false )
-        {
-            $rank['brevet_rank'] = ['grade' => $data['brevet_rank'], 'date_of_rank' => date( 'Y-m-d', strtotime( $data['brevet_dor'] ) )];
+        if (isset( $data['brevet_rank'] ) === true && empty( $data['brevet_rank'] ) === false) {
+            $rank['brevet_rank'] =
+                ['grade' => $data['brevet_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['brevet_dor']))];
             unset( $data['brevet_rank'], $data['brevet_dor'] );
         }
 
@@ -286,26 +300,25 @@ class UserController extends \BaseController
 
         // Build up the member assignments
 
-        $chapterName = Chapter::find( $data['primary_assignment'] )->chapter_name;
+        $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
         $assignment[] = [
             'chapter_id'    => $data['primary_assignment'],
             'chapter_name'  => $chapterName,
-            'date_assigned' => date( 'Y-m-d', strtotime( $data['primary_date_assigned'] ) ),
+            'date_assigned' => date('Y-m-d', strtotime($data['primary_date_assigned'])),
             'billet'        => $data['primary_billet'],
             'primary'       => true
         ];
 
         unset( $data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet'] );
 
-        if ( isset( $data['secondary_assignment'] ) === true && empty( $data['secondary_assignment'] ) === false )
-        {
-            $chapterName = Chapter::find( $data['secondary_assignment'] )->chapter_name;
+        if (isset( $data['secondary_assignment'] ) === true && empty( $data['secondary_assignment'] ) === false) {
+            $chapterName = Chapter::find($data['secondary_assignment'])->chapter_name;
 
             $assignment[] = [
                 'chapter_id'    => $data['secondary_assignment'],
                 'chapter_name'  => $chapterName,
-                'date_assigned' => date( 'Y-m-d', strtotime( $data['secondary_date_assigned'] ) ),
+                'date_assigned' => date('Y-m-d', strtotime($data['secondary_date_assigned'])),
                 'billet'        => $data['secondary_billet'],
                 'primary'       => false
             ];
@@ -317,7 +330,7 @@ class UserController extends \BaseController
 
         // Hash the password
 
-        $data['password'] = Hash::make( $data['password'] );
+        $data['password'] = Hash::make($data['password']);
 
         // For future use
 
@@ -329,9 +342,9 @@ class UserController extends \BaseController
 
         unset( $data['_method'], $data['_token'], $data['password_confirmation'] );
 
-        $user->update( $data );
+        $user->update($data);
 
-        return Redirect::route( 'user.index' );
+        return Redirect::route('user.index');
     }
 
     /**
@@ -341,9 +354,9 @@ class UserController extends \BaseController
      *
      * @return Response
      */
-    public function confirmDelete( User $user )
+    public function confirmDelete(User $user)
     {
-        return View::make( 'user.confirm-delete', ['user' => $user] );
+        return View::make('user.confirm-delete', ['user' => $user]);
     }
 
     /**
@@ -353,11 +366,11 @@ class UserController extends \BaseController
      *
      * @return Response
      */
-    public function destroy( User $user )
+    public function destroy(User $user)
     {
-        User::destroy( $user->_id );
+        User::destroy($user->_id);
 
-        return Redirect::route( 'user.index' );
+        return Redirect::route('user.index');
     }
 
     public function register()
@@ -365,43 +378,29 @@ class UserController extends \BaseController
         $fullCountryList = Countries::getList();
         $countries = [];
 
-        foreach ( $fullCountryList as $country )
-        {
+        foreach ($fullCountryList as $country) {
             $countries[$country['iso_3166_3']] = $country['name'];
         }
 
-        asort( $countries );
-
-        $fullChapterList = Chapter::all();
-        $chapters = [];
-
-        foreach ( $fullChapterList as $chapter )
-        {
-            $chapters[$chapter['_id']] = $chapter['chapter_name'];
-        }
-
-        asort( $chapters );
-
-        $finalChapters = array_merge( ['' => 'Select a Chapter'], $chapters );
+        asort($countries);
 
         $fullBranchList = Branch::all();
         $branches = [];
 
-        foreach ( $fullBranchList as $branch )
-        {
+        foreach ($fullBranchList as $branch) {
             $branches[$branch['branch']] = $branch['branch_name'];
         }
 
-        asort( $branches );
+        asort($branches);
 
         $viewData = [
             'user'      => new User,
             'countries' => $countries,
             'branches'  => $branches,
-            'chapters'  => $finalChapters,
+            'chapters'  => ['' => 'Select a Chapter'],
         ];
 
-        return View::make( 'user.register', $viewData );
+        return View::make('user.register', $viewData);
     }
 
     private function _getCountries()
@@ -409,8 +408,7 @@ class UserController extends \BaseController
         $results = Countries::getList();
         $countries = [];
 
-        foreach ( $results as $country )
-        {
+        foreach ($results as $country) {
             $countries[$country['iso_3166_3']] = $country['name'];
         }
 
@@ -419,35 +417,31 @@ class UserController extends \BaseController
 
     public function getNextAvailableMemberId()
     {
-        $memberIds = User::lists( 'member_id' );
+        $memberIds = User::lists('member_id');
         $uniqueMemberIds = [];
 
-        foreach ( $memberIds as $memberId )
-        {
-            $uniqueMemberIds[] = intval( substr( $memberId, 4, 4 ) );
+        foreach ($memberIds as $memberId) {
+            $uniqueMemberIds[] = intval(substr($memberId, 4, 4));
         }
 
-        if ( sizeof( $uniqueMemberIds ) == 0 )
-        {
-            return "-0000-" . date( 'y' );
+        if (sizeof($uniqueMemberIds) == 0) {
+            return "-0000-" . date('y');
         }
 
-        asort( $uniqueMemberIds );
+        asort($uniqueMemberIds);
 
-        $lastUsedId = array_pop( $uniqueMemberIds );
+        $lastUsedId = array_pop($uniqueMemberIds);
 
         $newNumber = $lastUsedId + 1;
 
-        if ( $newNumber > 9999 )
-        {
+        if ($newNumber > 9999) {
             $newNumber = 0;
         }
 
-        $newNumber = str_pad( $newNumber, 4, '0', STR_PAD_LEFT );
+        $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
-        $yearCode = date( 'y' );
+        $yearCode = date('y');
 
         return "-$newNumber-$yearCode";
     }
-
 }
