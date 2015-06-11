@@ -1,5 +1,5 @@
 @import "settings";
-@import "foundation";
+//@import "foundation";
 
 $backdrop-color: #222;
 $text-primary: whitesmoke;
@@ -35,7 +35,7 @@ th.branch {
 }
 
 body,html {
-  background: black;
+  background: url("/images/trmn-subdued.png");
   color: $text-primary;
 }
 

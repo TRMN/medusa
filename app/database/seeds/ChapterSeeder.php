@@ -56,16 +56,16 @@ class ChapterSeeder extends Seeder
         $this->createChapter('King William\'s Tower', 'headquarters', 'KWT');
 
         // Add the holding chapters
-        $this->createChapter('HMSS Greenwich', 'station', 'SS-001');
-        $this->createChapter('GNSS Katherine Mayhew', 'station', 'SS-002');
-        $this->createChapter('London Point', 'headquarters', 'LP');
-        $this->createChapter('Headquarters Company', 'headquarters', 'HC');
+        $this->createChapter('HMSS Greenwich', 'station', 'SS-001', 'RMN');
+        $this->createChapter('GNSS Katherine Mayhew', 'station', 'SS-002', 'GSN');
+        $this->createChapter('London Point', 'headquarters', 'LP', 'RMMC');
+        $this->createChapter('Headquarters Company', 'headquarters', 'HC', 'RMA');
 
     }
 
-    function createChapter( $name, $type = "ship", $hull_number = '' )
+    function createChapter( $name, $type = "ship", $hull_number = '', $branch='' )
     {
         $this->command->comment('Creating ' . $name);
-        Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number] );
+        Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number, 'branch' => $branch] );
     }
 }

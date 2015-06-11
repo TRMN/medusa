@@ -2,18 +2,18 @@ module.exports = function() {
     this.initMemberForm = function () {
 
         jQuery.getJSON( '/api/country', function ( result ) {
-            jQuery( '#newuser #country' ).empty();
+            jQuery( '#country' ).empty();
             jQuery.each( result, function ( key, value ) {
-                jQuery( '#newuser #country' ).append(
+                jQuery( '#country' ).append(
                     '<option value="' + key + '">' + value + '</option>'
                 );
             } );
         } );
 
         jQuery.getJSON( '/api/branch', function ( result ) {
-            jQuery( '#newuser #branch' ).empty();
+            jQuery( '#branch' ).empty();
             jQuery.each( result, function ( key, value ) {
-                jQuery( '#newuser #branch' ).append(
+                jQuery( '#branch' ).append(
                     '<option value="' + key + '">' + value + '</option>'
                 );
             } );
@@ -33,29 +33,29 @@ module.exports = function() {
         jQuery( '#primary_date_assigned' ).datepicker( { dateFormat: "yy-mm-dd" } );
         jQuery( '#secondary_date_assigned' ).datepicker( { dateFormat: "yy-mm-dd" } );
 
-        jQuery( '#branch' ).change( function () {
+        jQuery( '#newuser #branch' ).change( function () {
+			alert('New User');
             var branch = jQuery( '#branch' ).val();
             jQuery.getJSON( '/api/branch/' + branch + '/grade', function ( result ) {
-                jQuery( '#permanent_rank' ).empty();
-                jQuery( '#brevet_rank' ).empty();
+                jQuery( '#newuser #permanent_rank' ).empty();
+                jQuery( '#newuser #brevet_rank' ).empty();
                 jQuery.each( result, function ( key, value ) {
-                    jQuery( '#permanent_rank' ).append(
+                    jQuery( '#newuser #permanent_rank' ).append(
                         '<option value="' + key + '">' + value + '</option>'
                     );
-                    jQuery( '#brevet_rank' ).append(
+                    jQuery( '#newuser #brevet_rank' ).append(
                         '<option value="' + key + '">' + value + '</option>'
                     );
                 } );
             } );
             jQuery.getJSON( '/api/branch/' + branch + '/rate', function ( result ) {
-                jQuery( '#rating' ).empty();
+                jQuery( '#newuser #rating' ).empty();
                 jQuery.each( result, function ( key, value ) {
-                    jQuery( '#rating' ).append(
+                    jQuery( '#newuser #rating' ).append(
                         '<option value="' + key + '">' + value + '</option>'
                     );
                 } );
             } );
         } );
-
     };
 };
