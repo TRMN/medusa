@@ -1,10 +1,19 @@
 @import url(trmn-fonts.css);
 .button {
-  background-color: #ee3300; }
+  color: #ffee00;
+  font-size: 1.5rem;
+  background: #ee3300;
+  padding: 10px 20px 10px 20px;
+  border: solid #ffee00 4px;
+  text-decoration: none;
+  font-family: "Incised 901 W01 Bold Cd"; }
+
+.button:hover {
+  text-decoration: none; }
 
 .container {
   background: transparent;
-  width: 978px;
+  width: 1000px;
   margin: 0 auto;
   padding: 0.75rem 2.5rem; }
 
@@ -22,16 +31,21 @@ th.branch {
 
 body, html {
   background: url("/images/trmn-subdued.png");
-  color: whitesmoke;
+  color: white;
   background-color: #000000;
   background-repeat: no-repeat;
-  background-position: center bottom; }
+  background-position: center bottom;
+  font-family: "Incised 901 W01 Light"; }
+
+p {
+  font-family: "Incised 901 W01 Light"; }
 
 a {
   color: #ffee00; }
 
 h1 {
-  color: #ffee00; }
+  color: #ffee00;
+  font-family: "Incised 901 W01 Light"; }
 
 .trmn {
   font-family: "Incised 901 W01 Nord"; }
@@ -50,10 +64,12 @@ h3.trmn {
   color: #ffee00; }
 
 h2, h3, h4 {
-  color: whitesmoke; }
+  color: white;
+  font-family: "Incised 901 W01 Light"; }
 
 label {
-  color: whitesmoke; }
+  color: white;
+  font-family: "Incised 901 W01 Light"; }
 
 nav {
   background: none;
@@ -77,6 +93,30 @@ nav {
 table a {
   color: black; }
 
+#left-nav {
+  width: 175px; }
+
+div.rnav {
+  clear: both;
+  float: left;
+  display: block;
+  padding-bottom: 1em;
+  text-align: right;
+  width: 175px;
+  color: white;
+  font-family: "Incised 901 W01 Bold Cd";
+  font-size: 1.25rem; }
+
+div.rnav a {
+  color: white; }
+
+div.lnav {
+  clear: both;
+  float: left;
+  display: inline;
+  text-align: left;
+  width: 175px; }
+
 td.right {
   text-align: right; }
 
@@ -87,7 +127,13 @@ footer {
   width: 100%; }
   footer p {
     padding-top: 2em;
-    color: whitesmoke;
-    font-size: 0.5rem; }
+    color: white;
+    font-size: 0.5rem;
+    font-family: "Incised 901 W01 Light"; }
+
+.left-nav {
+  height: 100%;
+  display: block;
+  float: left; }
 
 /*# sourceMappingURL=main.css.map */

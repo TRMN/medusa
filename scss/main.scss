@@ -3,13 +3,23 @@
 //@import "foundation";
 
 $backdrop-color: #222;
-$text-primary: whitesmoke;
-$body-width: 978px;
+$text-primary: white;
+$body-width: 1000px;
 $manticore-red: #ee3300;
 $medusa-yellow: #ffee00;
 
 .button {
-  background-color: $manticore-red;
+  color: $medusa-yellow;
+  font-size: 1.5rem;
+  background: $manticore-red;
+  padding: 10px 20px 10px 20px;
+  border: solid $medusa-yellow 4px;
+  text-decoration: none;
+  font-family: "Incised 901 W01 Bold Cd";
+}
+
+.button:hover {
+  text-decoration: none;
 }
 
 .container {
@@ -41,6 +51,11 @@ body,html {
   background-color: #000000;
   background-repeat: no-repeat;
   background-position: center bottom;
+  font-family: "Incised 901 W01 Light";
+}
+
+p {
+  font-family: "Incised 901 W01 Light";
 }
 
 a {
@@ -49,6 +64,7 @@ a {
 
 h1 {
   color: $medusa-yellow;
+  font-family: "Incised 901 W01 Light";
 }
 
 .trmn {
@@ -74,10 +90,12 @@ h3.trmn {
 
 h2,h3,h4 {
   color: $text-primary;
+  font-family: "Incised 901 W01 Light";
 }
 
 label {
   color: $text-primary;
+  font-family: "Incised 901 W01 Light";
 }
 
 nav {
@@ -110,6 +128,33 @@ table {
   }
 }
 
+#left-nav {
+  width: 175px;
+}
+div.rnav {
+  clear: both;
+  float: left;
+  display: block;
+  padding-bottom: 1em;
+  text-align: right;
+  width: 175px;
+  color: white;
+  font-family: "Incised 901 W01 Bold Cd";
+  font-size: 1.25rem;
+}
+
+div.rnav a {
+  color: white;
+}
+
+div.lnav {
+  clear: both;
+  float: left;
+  display: inline;
+  text-align: left;
+  width: 175px;
+}
+
 td.right {
   text-align: right;
 }
@@ -123,5 +168,12 @@ footer {
     padding-top: 2em;
     color: $text-primary;
     font-size: 0.5rem;
+    font-family: "Incised 901 W01 Light";
   }
+}
+
+.left-nav {
+  height: 100%;
+  display: block;
+  float: left;
 }
