@@ -139,7 +139,7 @@ class UserController extends \BaseController
 
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
 
-        switch($data['rank']) {
+        switch ($data['rank']) {
             case "CIVIL":
             case "INTEL":
             case "SFS":
@@ -179,9 +179,8 @@ class UserController extends \BaseController
 
         $data['peerage_record'] = [];
         $data['awards'] = [];
-        $data['active'] = (int) 0;
+        $data['active'] = (int)0;
         $data['application_date'] = date('Y-m-d');
-
 
         unset( $data['_token'], $data['password_confirmation'] );
 
@@ -199,7 +198,10 @@ class UserController extends \BaseController
 
         Event::fire('user.registered', $user);
 
-        return Redirect::route('home')->with('message', 'User created. You may now log in!');
+        return Redirect::route('home')->with(
+            'message',
+            'Thank you for joining The Royal Manticoran Navy: The Official Honor Harrington Fan Association.  Your application will be reviewed and you should receive an email in 48 to 72 hours once your account has been activated.'
+        );
     }
 
     /**
@@ -234,8 +236,9 @@ class UserController extends \BaseController
 
         if (isset( $user->rating ) === true && empty( $user->rating ) === false) {
             $user->rating =
-                ['rate'        => $user->rating,
-                 'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']
+                [
+                    'rate'        => $user->rating,
+                    'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']
                 ];
         }
 

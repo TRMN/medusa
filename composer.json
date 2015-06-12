@@ -24,6 +24,7 @@
     "laravel",
     "trmn"
   ],
+  "type" : "project",
   "license": "MIT",
   "require": {
     "doctrine/dbal": "~2.3",
