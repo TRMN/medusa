@@ -29,11 +29,29 @@ $medusa-yellow: #ffee00;
   display: inline;
 }
 
-.filePhoto {
+div.filePhoto {
   position: absolute;
   top: 0;
   right: 0;
   width: 200px;
+  text-align: center;
+}
+
+.filePhotoBox {
+  width: 150px;
+  height: 200px;
+  background-color: #4D4D4D;
+  border: solid 1px #CCCCCC;
+  margin: auto;
+}
+
+.ofpt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  margin: -12.5% 0 0 -50%;
 }
 
 .container {
@@ -102,6 +120,13 @@ h1.trmn {
   font-family: "Incised 901 W01 Bold";
 }
 
+.Incised901Black {
+  font-family: "Incised 901 W01 Black";
+}
+
+.seventy-five {
+  font-size: 75%;
+}
 h4.NordItalic {
   color: $medusa-yellow;
 }
@@ -114,7 +139,7 @@ h3.trmn {
   color: $medusa-yellow;
 }
 
-h2,h3,h4 {
+h2,h3,h4,h5 {
   color: $text-primary;
   font-family: "Incised 901 W01 Light";
 }
@@ -215,4 +240,12 @@ footer {
 .content {
   padding-left: 2.5rem;
   width: 80%;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.textLeft {
+  text-align: left;
 }
