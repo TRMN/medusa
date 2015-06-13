@@ -1,6 +1,7 @@
 @import "settings";
 @import "trmn-fonts.css";
 
+
 $backdrop-color: #222;
 $text-primary: white;
 $body-width: 1000px;
@@ -19,14 +20,27 @@ $medusa-yellow: #ffee00;
 
 .button:hover {
   text-decoration: none;
+  background: $medusa-yellow;
+  color: $manticore-red;
+  border: solid $manticore-red 4px;
 }
 
+.inline {
+  display: inline;
+}
+
+.filePhoto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+}
 
 .container {
   background: transparent;
-  width: $body-width;
+
   margin: 0 auto;
-  padding: 0.75rem 2.5rem;
+  padding: 0.75rem 1rem;
 }
 
 th.actions {
@@ -71,6 +85,10 @@ h1 {
   font-family: "Incised 901 W01 Nord";
 }
 
+.Incised901Light {
+  font-family: "Incised 901 W01 Light";
+}
+
 h1.trmn {
   text-transform: uppercase;
   color: white
@@ -80,11 +98,19 @@ h1.trmn {
   font-family: "Incised901W01-NordItali";
 }
 
+.Incised901Bold {
+  font-family: "Incised 901 W01 Bold";
+}
+
 h4.NordItalic {
   color: $medusa-yellow;
 }
 
 h3.trmn {
+  color: $medusa-yellow;
+}
+
+.my {
   color: $medusa-yellow;
 }
 
@@ -176,4 +202,17 @@ footer {
   height: 100%;
   display: block;
   float: left;
+}
+
+.reg-button {
+  width: 150px;
+}
+
+.trmn-width {
+  max-width: none;
+}
+
+.content {
+  padding-left: 2.5rem;
+  width: 80%;
 }

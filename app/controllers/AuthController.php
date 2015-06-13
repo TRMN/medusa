@@ -13,18 +13,18 @@ class AuthController extends BaseController
 
         if ( $validator->fails() )
         {
-            return Redirect::route( 'home' )->withErrors( $validator );
+            return Redirect::route('login')->withErrors( $validator );
         }
 
         $email = Input::get( 'email' );
         $password = Input::get( 'password' );
 
         if ( Auth::attempt(['email_address' => $email, 'password' => $password, 'active' => 1])) {
-            return Redirect::route( 'dashboard' );
+            return Redirect::route('home');
         }
 
 
-        return Redirect::route( 'home' )->withErrors( $validator );
+        return Redirect::route('login')->withErrors( $validator );
     }
 
     public function signout()
