@@ -210,9 +210,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 }
             }
 
-            return false;
+            return '';
         } else {
-            return false;
+            return '';
         }
     }
 
@@ -232,6 +232,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             return false;
         } else {
             return false;
+        }
+    }
+
+    public function getExamList(){
+        $exams = Exam::where('member_id', '=', $this->member_id)->get();
+
+        if (isset($exams[0]) === true) {
+            $list = $exams[0]['exams'];
+            ksort($list);
+            return $list;
+        } else {
+            return [];
         }
     }
 }
