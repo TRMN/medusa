@@ -36,7 +36,7 @@ class UserController extends \BaseController
         $validator = Validator::make($data = Input::all(), User::$rules, User::$error_message);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::to('register')->withErrors($validator)->withInput();
         }
 
         // Massage the data a little bit.  First, build up the rank array
@@ -130,7 +130,7 @@ class UserController extends \BaseController
         $validator = Validator::make($data = Input::all(), $rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::to('register')->withErrors($validator)->withInput();
         }
 
         $memberId = $this->getNextAvailableMemberId();
@@ -153,12 +153,12 @@ class UserController extends \BaseController
                 $billet = "Crewman";
         }
 
-        $assignment = [];
 
         if (isset( $data['primary_assignment'] ) === true && empty( $data['primary_assignment'] ) === false) {
+
             $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
-            $assignment[] = [
+            $data['assignment'] = [
                 'chapter_id'    => $data['primary_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date('Y-m-d'),
@@ -166,10 +166,11 @@ class UserController extends \BaseController
                 'primary'       => true
             ];
 
-            unset( $data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet'] );
+        } else {
+            $data['assignment'] = [];
         }
 
-        $data['assignment'] = $assignment;
+        unset( $data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet'] );
 
         // Hash the password
 
@@ -179,7 +180,7 @@ class UserController extends \BaseController
 
         $data['peerage_record'] = [];
         $data['awards'] = [];
-        $data['active'] = (int)0;
+        $data['active'] = false;
         $data['application_date'] = date('Y-m-d');
 
         unset( $data['_token'], $data['password_confirmation'] );
@@ -198,7 +199,7 @@ class UserController extends \BaseController
 
         Event::fire('user.registered', $user);
 
-        return Redirect::route('home')->with(
+        return Redirect::route('login')->with(
             'message',
             'Thank you for joining The Royal Manticoran Navy: The Official Honor Harrington Fan Association.  Your application will be reviewed and you should receive an email in 48 to 72 hours once your account has been activated.'
         );
