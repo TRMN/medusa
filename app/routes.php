@@ -30,8 +30,9 @@ Route::resource( 'user', 'UserController' );
 
 // Other Routes
 
-Route::get( '/dashboard', [ 'as' => 'dashboard', 'uses' => 'HomeController@dashboard' ] );
-Route::get( '/', [ 'as' => 'home', 'uses' => 'HomeController@home' ] );
+Route::get( '/home', [ 'as' => 'home', 'uses' => 'HomeController@index' ] );
+Route::get( '/', [ 'as' => 'login', 'uses' => 'HomeController@index' ] );
+Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
 Route::resource( 'chapter', 'ChapterController' );
 Route::resource( 'announcement', 'AnnouncementController' );
 Route::resource( 'report', 'ReportController' );

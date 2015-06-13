@@ -9,13 +9,24 @@
   font-family: "Incised 901 W01 Bold Cd"; }
 
 .button:hover {
-  text-decoration: none; }
+  text-decoration: none;
+  background: #ffee00;
+  color: #ee3300;
+  border: solid #ee3300 4px; }
+
+.inline {
+  display: inline; }
+
+.filePhoto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px; }
 
 .container {
   background: transparent;
-  width: 1000px;
   margin: 0 auto;
-  padding: 0.75rem 2.5rem; }
+  padding: 0.75rem 1rem; }
 
 th.actions {
   width: 175px; }
@@ -50,6 +61,9 @@ h1 {
 .trmn {
   font-family: "Incised 901 W01 Nord"; }
 
+.Incised901Light {
+  font-family: "Incised 901 W01 Light"; }
+
 h1.trmn {
   text-transform: uppercase;
   color: white; }
@@ -57,10 +71,16 @@ h1.trmn {
 .NordItalic {
   font-family: "Incised901W01-NordItali"; }
 
+.Incised901Bold {
+  font-family: "Incised 901 W01 Bold"; }
+
 h4.NordItalic {
   color: #ffee00; }
 
 h3.trmn {
+  color: #ffee00; }
+
+.my {
   color: #ffee00; }
 
 h2, h3, h4 {
@@ -135,5 +155,15 @@ footer {
   height: 100%;
   display: block;
   float: left; }
+
+.reg-button {
+  width: 150px; }
+
+.trmn-width {
+  max-width: none; }
+
+.content {
+  padding-left: 2.5rem;
+  width: 80%; }
 
 /*# sourceMappingURL=main.css.map */
