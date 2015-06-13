@@ -14,3 +14,4 @@
 #Artisan::add( new GenerateAdminUser );
 Artisan::add(new ImportChapters);
 Artisan::add(new ImportUsers);
+Artisan::add(new ImportGrades);
