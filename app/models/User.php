@@ -96,7 +96,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function announcements()
     {
-        return $this->hasMany( 'Announcement' );
+        return $this->hasMany('Announcement');
     }
 
     /**
@@ -110,11 +110,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         $displayRank = $this->rank_title;
 
-        if ( isset( $this->rating ) && !empty( $this->rating ) )
-        {
+        if (isset( $this->rating ) && !empty( $this->rating )) {
 
-            if ( $rateGreeting = $this->getRateTitle( $this->rank['grade'] ) )
-            {
+            if ($rateGreeting = $this->getRateTitle($this->rank['grade'])) {
                 $displayRank = $rateGreeting;
             }
         }
@@ -138,14 +136,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      */
     public function getDisplayRank()
     {
-        $gradeDetails = Grade::where( 'grade', '=', $this->rank['grade'] )->get();
+        $gradeDetails = Grade::where('grade', '=', $this->rank['grade'])->get();
 
         $this->rank_title = $gradeDetails[0]->rank[$this->branch];
 
-        if ( isset( $this->rating ) && !empty( $this->rating ) )
-        {
+        if (isset( $this->rating ) && !empty( $this->rating )) {
             $this->rating =
-                ['rate' => $this->rating, 'description' => Rating::where( 'rate_code', '=', $this->rating )->get()[0]->rate['description']];
+                ['rate'        => $this->rating,
+                 'description' => Rating::where('rate_code', '=', $this->rating)->get()[0]->rate['description']
+                ];
         }
     }
 
@@ -156,12 +155,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      *
      * @return mixed
      */
-    function getRateTitle( $rank )
+    function getRateTitle($rank)
     {
-        $rateDetail = Rating::where( 'rate_code', '=', $this->rating['rate'] )->get();
+        $rateDetail = Rating::where('rate_code', '=', $this->rating['rate'])->get();
 
-        if ( isset( $rateDetail[0]->rate[$this->branch][$rank] ) === true && empty( $rateDetail[0]->rate[$this->branch][$rank] ) === false )
-        {
+        if (isset( $rateDetail[0]->rate[$this->branch][$rank] ) === true && empty( $rateDetail[0]->rate[$this->branch][$rank] ) === false) {
             return $rateDetail[0]->rate[$this->branch][$rank];
         }
 
@@ -170,80 +168,69 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getPrimaryAssignmentId()
     {
-        if ( isset( $this->assignment ) == true )
-        {
-            foreach ( $this->assignment as $assignment )
-            {
-                if ( $assignment['primary'] == true )
-                {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
                     return $assignment['chapter_id'];
                 }
             }
 
             return false;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     public function getPrimaryAssignmentName()
     {
-        $chapter = Chapter::find( $this->getPrimaryAssignmentId() );
-        if ( !empty( $chapter ) )
-        {
+        $chapter = Chapter::find($this->getPrimaryAssignmentId());
+        if (!empty( $chapter )) {
             return $chapter->chapter_name;
+        } else {
+            return false;
         }
-        else
-        {
+    }
+
+    public function getPrimaryAssignmentDesignation()
+    {
+        $chapter = Chapter::find($this->getPrimaryAssignmentId());
+        if (!empty( $chapter )) {
+            return $chapter->hull_number;
+        } else {
             return false;
         }
     }
 
     public function getPrimaryBillet()
     {
-        if ( isset( $this->assignment ) == true )
-        {
-            foreach ( $this->assignment as $assignment )
-            {
-                if ( $assignment['primary'] == true )
-                {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
                     return $assignment['billet'];
                 }
             }
 
             return false;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     public function getPrimaryDateAssigned()
     {
-        if ( isset( $this->assignment ) == true )
-        {
-            foreach ( $this->assignment as $assignment )
-            {
-                if ( $assignment['primary'] == true )
-                {
-                    if ( isset( $assignment['date_assigned'] ) === true )
-                    {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
+                if ($assignment['primary'] == true) {
+                    if (isset( $assignment['date_assigned'] ) === true) {
                         return $assignment['date_assigned'];
-                    }
-                    else
-                    {
+                    } else {
                         return 'Unknown';
                     }
                 }
             }
 
             return false;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
