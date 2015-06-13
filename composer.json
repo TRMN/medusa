@@ -33,7 +33,8 @@
     "webpatser/laravel-countries": "1.3.4",
     "jenssegers/mongodb": "*",
     "mnshankar/CSV": "dev-master",
-    "maatwebsite/excel": "~1.3.0"
+    "maatwebsite/excel": "~1.3.0",
+    "google/apiclient": "1.*"
   },
   "require-dev": {
     "way/generators": "~2.0"
