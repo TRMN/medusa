@@ -5,7 +5,7 @@
 @stop
 
 @section('bodyclasses')
-    createuserform
+    userform
 @stop
 
 @section('content')
@@ -21,7 +21,7 @@
     echo "</ul>\n";
     ?>
 
-    {{ Form::model( $user, [ 'route' => [ 'user.store' ], 'id' => 'newuser' ] ) }}
+    {{ Form::model( $user, [ 'route' => [ 'user.store' ], 'id' => 'user' ] ) }}
 
     <div class="row">
         <div class="small-3 columns ninety Incised901Light end">

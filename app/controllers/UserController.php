@@ -272,7 +272,7 @@ class UserController extends \BaseController
                 'branches'  => Branch::getBranchList(),
                 'grades'    => Grade::getGradesForBranch($user->branch),
                 'ratings'   => Rating::getRatingsForBranch($user->branch),
-                'chapters'  => Chapter::getChapters($user->branch),
+                'chapters'  => Chapter::getChapters(),
             ]
         );
     }
