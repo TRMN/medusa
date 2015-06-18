@@ -16,3 +16,4 @@ Thumbs.db
 tmp
 .vagrant
 vendor
+composer.lock
