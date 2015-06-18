@@ -235,7 +235,7 @@ class UserController extends \BaseController
     {
         $greeting = $user->getGreetingArray();
 
-        if (isset( $user->rating ) === true && empty( $user->rating ) === false) {
+        if (isset( $user->rating ) === true && empty( $user->rating ) === false && is_array($user->rating) === false) {
             $user->rating =
                 [
                     'rate'        => $user->rating,
@@ -288,19 +288,13 @@ class UserController extends \BaseController
 
         $rank = [];
 
-        if (isset( $data['permanent_rank'] ) === true && empty( $data['permanent_rank'] ) === false) {
-            $rank['permanent_rank'] =
-                ['grade' => $data['permanent_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['perm_dor']))];
-            unset( $data['permanent_rank'], $data['perm_dor'] );
+        if (isset( $data['display_rank'] ) === true && empty( $data['display_rank'] ) === false) {
+            $data['rank'] =
+                ['grade' => $data['display_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['dor']))];
+            unset( $data['display_rank'], $data['dor'] );
         }
 
-        if (isset( $data['brevet_rank'] ) === true && empty( $data['brevet_rank'] ) === false) {
-            $rank['brevet_rank'] =
-                ['grade' => $data['brevet_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['brevet_dor']))];
-            unset( $data['brevet_rank'], $data['brevet_dor'] );
-        }
 
-        $data['rank'] = $rank;
 
         // Build up the member assignments
 
@@ -332,17 +326,16 @@ class UserController extends \BaseController
 
         $data['assignment'] = $assignment;
 
-        // Hash the password
+        if (isset($data['password']) === true && empty($data['password']) === false ) {
+            // Hash the password
 
-        $data['password'] = Hash::make($data['password']);
+            $data['password'] = Hash::make($data['password']);
 
-        // For future use
+        } else {
+            unset($data['password']);
+        }
 
-        $data['peerage_record'] = [];
-
-        $data['awards_record'] = [];
-
-        $data['exam_record'] = [];
+        $data['awards'] = [];
 
         unset( $data['_method'], $data['_token'], $data['password_confirmation'] );
 
