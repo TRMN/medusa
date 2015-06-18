@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    {{ Form::model( $user, [ 'route' => [ 'user.update', $user->id ], 'method' => 'put' ] ) }}
+    {{ Form::model( $user, [ 'route' => [ 'user.update', $user->id ], 'method' => 'put', 'id' => 'user' ] ) }}
     {{ Form::hidden('member_id', $user->member_idØ) }}
     <div class="row">
         <div class="small-8 columns ninety Incised901Light end">
