@@ -18,6 +18,20 @@ $medusa-yellow: #ffee00;
   font-family: "Incised 901 W01 Bold Cd";
 }
 
+.yellow-border {
+  border: solid $medusa-yellow 1px;
+  padding: 5px;
+  width: auto;
+}
+
+.padding-5 {
+  padding: 2px;
+}
+
+.margin-5 {
+  margin: 5px;
+}
+
 .button:hover {
   text-decoration: none;
   background: $medusa-yellow;
@@ -43,6 +57,21 @@ div.filePhoto {
   background-color: #4D4D4D;
   border: solid 1px #CCCCCC;
   margin: auto;
+}
+
+.editButton {
+  background-color: #4D4D4D;
+  border: solid 1px #CCCCCC;
+  margin: auto;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.editButton:hover {
+  color: $manticore-red;
 }
 
 .ofpt {
@@ -84,6 +113,7 @@ body,html {
   background-repeat: no-repeat;
   background-position: center bottom;
   font-family: "Incised 901 W01 Light";
+  line-height: 100%;
 }
 
 p {
@@ -127,6 +157,11 @@ h1.trmn {
 .seventy-five {
   font-size: 75%;
 }
+
+.ninety {
+  font-size: 90%;
+}
+
 h4.NordItalic {
   color: $medusa-yellow;
 }

@@ -15,10 +15,10 @@ gulp.task( 'browserify', function() {
             this.emit( 'end' );
         })
         // Pass desired output filename to vinyl-source-stream
-        .pipe( source( 'bundle.min.js' ) )
+        .pipe( source( 'bundle.js' ) )
         .pipe( buffer() )
         // Uglify that thing
-        .pipe( uglify() )
+        //.pipe( uglify() )
         // Start piping stream to tasks!
         .pipe( gulp.dest( './public/js' ) );
 });

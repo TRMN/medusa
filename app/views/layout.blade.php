@@ -40,6 +40,7 @@
         <p>Copyright &copy; 2008 &ndash; {{{ date('Y') }}} The Royal Manticoran Navy: The Official Honor Harrington Fan Association,
             Inc. Some Rights Reserved.
             Honor Harrington and all related materials are &copy; David Weber.</p>
+        <p>Medusa Version {{{ Config::get('app.version') }}}</p>
     </footer>
 </div>
 
@@ -49,11 +50,11 @@
         src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.topbar.min.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.accordion.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.js"></script>
 <script>
     jQuery(document).foundation();
 </script>
-<script src="{{{ $serverUrl }}}/js/bundle.min.js"></script>
+<script src="{{{ $serverUrl }}}/js/bundle.js"></script>
 @yield( 'scriptFooter' )
 </body>
 </html>
