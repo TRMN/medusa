@@ -19,14 +19,7 @@ module.exports = function() {
                     );
                 } );
             } );
-            jQuery.getJSON('/api/chapter/' + branch, function (result) {
-                jQuery('#user #primary_assignment').empty();
-                jQuery.each(result, function (key, value) {
-                    jQuery('#user #primary_assignment').append(
-                        '<option value="' + key + '">' + value + '</option>'
-                    );
-                });
-            });
+
         } );
     };
 };
