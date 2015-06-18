@@ -1,6 +1,5 @@
 var ManticoreAuth = require( './ManticoreAuth.js' );
 var ManticoreUser = require( './ManticoreUser.js' );
-var ManticoreCreateUser = require('./ManticoreCreateUser.js');
 var ManticoreChapter = require( './ManticoreChapter.js' );
 var ManticoreRegister = require( './ManticoreRegister.js');
 
@@ -8,7 +7,6 @@ jQuery( document ).ready( function ( $ ) {
 
     var authController = new ManticoreAuth();
     var userController = new ManticoreUser();
-    var createUserController = new ManticoreCreateUser();
     var chapterController = new ManticoreChapter();
 	var registerController = new ManticoreRegister();
 
@@ -19,10 +17,6 @@ jQuery( document ).ready( function ( $ ) {
 	if ($('.registerform').length > 0) {
 		registerController.initRegisterForm();
 	}
-
-    if ($('.createuserform').length > 0) {
-        createUserController.initCreateMemberForm();
-    }
 
     var MTIProjectId = '5c059f73-3466-4691-8b9a-27e7d9c1a9c7';
     (function () {
