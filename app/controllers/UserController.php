@@ -22,7 +22,17 @@ class UserController extends \BaseController
      */
     public function create()
     {
-        return View::make('user.create', ['user' => new User]);
+        return View::make(
+            'user.create',
+            [
+                'user'      => new User,
+                'countries' => $this->_getCountries(),
+                'branches'  => Branch::getBranchList(),
+                'grades'   => Grade::getGradesForBranch('RMN'),
+                'ratings'  => Rating::getRatingsForBranch('RMN'),
+                'chapters' => Chapter::getChapters(),
+            ]
+        );
     }
 
     /**
@@ -153,7 +163,6 @@ class UserController extends \BaseController
                 $billet = "Crewman";
         }
 
-
         if (isset( $data['primary_assignment'] ) === true && empty( $data['primary_assignment'] ) === false) {
 
             $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
@@ -165,7 +174,6 @@ class UserController extends \BaseController
                 'billet'        => $billet,
                 'primary'       => true
             ];
-
         } else {
             $data['assignment'] = [];
         }
@@ -264,7 +272,7 @@ class UserController extends \BaseController
                 'branches'  => Branch::getBranchList(),
                 'grades'    => Grade::getGradesForBranch($user->branch),
                 'ratings'   => Rating::getRatingsForBranch($user->branch),
-                'chapters'  => Chapter::getChapters(),
+                'chapters'  => Chapter::getChapters($user->branch),
             ]
         );
     }
@@ -293,8 +301,6 @@ class UserController extends \BaseController
                 ['grade' => $data['display_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['dor']))];
             unset( $data['display_rank'], $data['dor'] );
         }
-
-
 
         // Build up the member assignments
 
@@ -326,13 +332,12 @@ class UserController extends \BaseController
 
         $data['assignment'] = $assignment;
 
-        if (isset($data['password']) === true && empty($data['password']) === false ) {
+        if (isset( $data['password'] ) === true && empty( $data['password'] ) === false) {
             // Hash the password
 
             $data['password'] = Hash::make($data['password']);
-
         } else {
-            unset($data['password']);
+            unset( $data['password'] );
         }
 
         $data['awards'] = [];
