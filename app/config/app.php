@@ -127,6 +127,7 @@ return [
         'Webpatser\Countries\CountriesServiceProvider',
         'mnshankar\CSV\CSVServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
+        'Smalldogs\Html5inputs\Html5InputsServiceProvider',
     ],
 
     /*
@@ -169,7 +170,7 @@ return [
         'Eloquent' => 'Illuminate\Database\Eloquent\Model',
         'Event' => 'Illuminate\Support\Facades\Event',
         'File' => 'Illuminate\Support\Facades\File',
-        'Form' => 'Illuminate\Support\Facades\Form',
+        'Form' => 'Smalldogs\Html5inputs\Html5InputsFacade',
         'Hash' => 'Illuminate\Support\Facades\Hash',
         'HTML' => 'Illuminate\Support\Facades\HTML',
         'Input' => 'Illuminate\Support\Facades\Input',
@@ -198,5 +199,7 @@ return [
         'CSV' => 'mnshankar\CSV\CSVFacade',
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
     ],
+
+    'version' => '0.6.10',
 
 ];
