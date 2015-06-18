@@ -1,98 +1,130 @@
 @extends('layout')
 
 @section('pageTitle')
-Add a member
+    Add a member
 @stop
 
 @section('bodyclasses')
-userform
+    createuserform
 @stop
 
 @section('content')
-<h1>Add a Member</h1>
+    <h1>Add a Member</h1>
 
-@if( count( $errors ) )
-    <ul class="errors">
-        @foreach( $errors as $error )
-            <li>$error</li>
-        @endforeach
-    </ul>
-@endif
+    <?php
+    if (count($errors->all())) {
+        echo "<p>Please correct the following errors:</p>\n<ul>\n";
+        foreach ($errors->all() as $message) {
+            echo "<li>" . $message . "</li>\n";
+        }
+    }
+    echo "</ul>\n";
+    ?>
 
-{{ Form::model( $user, [ 'route' => [ 'user.store' ], 'id' => 'newuser' ] ) }}
-<div class="form-group">
-    {{ Form::label('member_id', 'Member ID') }} {{ Form::text('member_id', 'RMN-') }}
-</div>
-<div class="form-group">
-    {{ Form::label('first_name', 'First Name') }} {{ Form::text('first_name') }}
-</div>
-<div class="form-group">
-    {{ Form::label('middle_name', 'Middle Name') }} {{ Form::text('middle_name') }}
-</div>
-<div class="form-group">
-    {{ Form::label('last_name', 'Last Name') }} {{ Form::text('last_name') }}
-</div>
-<div class="form-group">
-    {{ Form::label('suffix', 'Suffix') }} {{ Form::text('suffix') }}
-</div>
-<div class="form-group">
-    {{ Form::label('address_1', 'Street Address') }} {{ Form::text('address_1') }}
-</div>
-<div class="form-group">
-    {{ Form::label('address_2', 'Address Line 2') }} {{ Form::text('address_2') }}
-</div>
-<div class="form-group">
-    {{ Form::label('city', 'City') }} {{ Form::text('city') }}
-</div>
-<div class="form-group">
-    {{ Form::label('state_province', 'State/Province') }} {{ Form::text('state_province') }}
-</div>
-<div class="form-group">
-    {{ Form::label('postal_code', 'Zip/Postal Code') }} {{ Form::text('postal_code') }}
-</div>
-<div class="form-group">
-    {{ Form::label('country', 'Country') }} {{ Form::select('country') }}
-</div>
-<div class="form-group">
-    {{ Form::label('phone_number', "Phone Number") }} {{ Form::text('phone_number') }}
-</div>
-<div class="form-group">
-    {{ Form::label('email_address', 'Email') }} {{ Form::email('email_address') }}
-</div>
-<div class="form_group">
-    {{ Form::label('password', 'Password') }} {{ Form::password('password') }}
-</div>
-<div class="form_group">
-    {{ Form::label('password_confirmation', 'Confirm Password') }} {{ Form::password('password_confirmation') }}
-</div>
-<div class="form-group">
-    {{ Form::label('branch', "Branch") }} {{ Form::select('branch') }}
-</div>
-<div class="form-group">
-    {{ Form::label('permanent_rank', "Permanent Rank") }} {{ Form::select('permanent_rank', ['' => "Select a Rank"]) }}
-</div>
-<div class="form-group">
-    {{ Form::label('perm_dor', "Date of Rank") }} {{ Form::text('perm_dor') }}
-</div>
-<div class="form-group">
-    {{ Form::label('brevet_rank', "Brevet Rank") }} {{ Form::select('brevet_rank', ['' => 'Select a Rank']) }}
-</div>
-<div class="form-group">
-    {{ Form::label('brevet_dor', "Date of Rank") }} {{ Form::text('brevet_dor') }}
-</div>
-<div class="form-group">
-    {{ Form::label('rating', "Rating (if any)") }} {{ Form::select('rating', ['' => 'Select a Rating']) }}
-</div>
-<div class="form-group">
-    {{ Form::label('primary_assignment', "Primary Assignment") }} {{ Form::select('primary_assignment', ['' => 'Select a Chapter']) }}
-</div>
-<div class="form-group">
-    {{ Form::label('primary_billet', 'Billet') }} {{ Form::text('primary_billet') }}
-</div>
-<div class="form-group">
-    {{ Form::label('primary_date_assigned', "Date Assigned") }} {{ Form::text('primary_date_assigned') }}
-</div>
+    {{ Form::model( $user, [ 'route' => [ 'user.store' ], 'id' => 'newuser' ] ) }}
 
-<a class="button" href="{{ route('user.index') }}">Cancel</a> {{ Form::submit( 'Save', [ 'class' => 'button'] ) }}
-{{ Form::close() }}
+    <div class="row">
+        <div class="small-3 columns ninety Incised901Light end">
+            {{ Form::checkbox('honorary', 1) }} Honorary Membership
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-8 columns ninety Incised901Light end">
+            {{ Form::label('email_address', 'E-Mail Address (This will be the Username)', ['class' => 'my']) }}
+            {{ Form::email('email_address') }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-3 columns ninety Incised901Light">
+            {{ Form::label('first_name', 'First Name', ['class' => 'my']) }} {{ Form::text('first_name') }}
+        </div>
+        <div class="small-2 columns ninety Incised901Light">
+            {{ Form::label('middle_name', 'Middle Name', ['class' => 'my']) }} {{ Form::text('middle_name') }}
+        </div>
+        <div class="small-3 columns ninety Incised901Light">
+            {{ Form::label('last_name', 'Last Name', ['class' => 'my']) }} {{ Form::text('last_name') }}
+        </div>
+        <div class="small-1 columns ninety Incised901Light end">
+            {{ Form::label('suffix', 'Suffix', ['class' => 'my']) }} {{ Form::text('suffix') }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-8 columns ninety Incised901Light end">
+            {{ Form::label('address_1', 'Street Address', ['class' => 'my']) }} {{ Form::text('address_1') }}
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="small-8 columns ninety Incised901Light end">
+            {{ Form::label('address_2', 'Address Line 2', ['class' => 'my']) }} {{ Form::text('address_2') }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-3 columns ninety Incised901Light">
+            {{ Form::label('city', 'City', ['class' => 'my']) }} {{ Form::text('city') }}
+        </div>
+        <div class="small-2 columns ninety Incised901Light">
+            {{ Form::label('state_province', 'State/Province', ['class' => 'my']) }} {{ Form::text('state_province') }}
+        </div>
+        <div class="small-2 columns ninety Incised901Light">
+            {{ Form::label('postal_code', 'Postal Code', ['class' => 'my']) }} {{ Form::text('postal_code') }}
+        </div>
+        <div class="end small-3 columns ninety Incised901Light">
+            {{ Form::label('country', 'Country', ['class' => 'my']) }} {{ Form::select('country', $countries, $user->country) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-4 columns ninety Incised901Light">
+            {{ Form::label('phone_number', "Phone Number", ['class' => 'my']) }} {{ Form::text('phone_number') }}
+        </div>
+        <div class="end small-4 columns ninety Incised901Light">
+            {{ Form::label('dob', 'Date of Birth', ['class' => 'my']) }} {{Form::date('dob', $user->dob)}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-4 columns ninety Incised901Light">
+            {{ Form::label('password', 'Password', ['class' => 'my']) }} {{ Form::password('password') }}
+        </div>
+        <div class="end small-4 columns ninety Incised901Light">
+            {{ Form::label('password_confirmation', 'Confirm Password', ['class' => 'my']) }} {{ Form::password('password_confirmation') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="end small-4 columns ninety Incised901Light end">
+            {{ Form::label('branch', "Branch", ['class' => 'my']) }} {{ Form::select('branch', $branches) }}
+        </div>
+        <div class="end small-4 columns ninety Incised901Light end">
+            {{ Form::label('primary_assignment', "Primary Assignment", ['class' => 'my']) }} {{ Form::select('primary_assignment', $chapters) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="end small-4 columns ninety Incised901Light">
+            {{ Form::label('display_rank', "Rank", ['class' => 'my']) }} {{ Form::select('display_rank', $grades) }}
+        </div>
+        <div class="end small-4 columns ninety Incised901Light end">
+            {{ Form::label('primary_billet', 'Billet', ['class' => 'my']) }} {{ Form::text('primary_billet') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="end small-4 columns ninety Incised901Light">
+            {{ Form::label('dor', "Date of Rank", ['class' => 'my']) }} {{ Form::date('dor') }}
+        </div>
+        <div class="end small-4 columns ninety Incised901Light end">
+            {{ Form::label('primary_date_assigned', "Date Assigned", ['class' => 'my']) }} {{ Form::date('primary_date_assigned') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="end small-4 columns ninety Incised901Light">
+            {{ Form::label('rating', "Rating (if any)", ['class' => 'my']) }} {{ Form::select('rating', $ratings) }}
+        </div>
+    </div>
+
+    <a class="button" href="{{ route('user.index') }}">Cancel</a> {{ Form::submit( 'Save', [ 'class' => 'button'] ) }}
+    {{ Form::close() }}
 @stop

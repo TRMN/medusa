@@ -38,22 +38,24 @@ class ChapterSeeder extends Seeder
         ];
 
         foreach ($districts as  $district) {
+            $district['joinable'] = false;
             $this->command->comment("Creating " . $district['chapter_name']);
             $result = Chapter::create($district);
             $fleets[$district['hull_number']]['assigned_to'] = $result->_id;
         }
 
         foreach ($fleets as $fleet) {
+            $fleet['joinable'] = false;
             $this->command->comment("Creating " . $fleet['chapter_name'] . " assigned to " . $districts[$fleet['hull_number']]['chapter_name']);
             $result = Chapter::create($fleet);
             $fleets[$fleet['hull_number']]['_id'] = $result->_id;
         }
 
         // Create Admiralty House
-        $this->createChapter('Admiralty House', 'headquarters', 'AH');
+        $this->createChapter('Admiralty House', 'headquarters', 'AH', 'RMN', false);
 
         // Create King William's Tower
-        $this->createChapter('King William\'s Tower', 'headquarters', 'KWT');
+        $this->createChapter('King William\'s Tower', 'headquarters', 'KWT', 'RMA', false);
 
         // Add the holding chapters
         $this->createChapter('HMSS Greenwich', 'station', 'SS-001', 'RMN');
@@ -63,9 +65,9 @@ class ChapterSeeder extends Seeder
 
     }
 
-    function createChapter( $name, $type = "ship", $hull_number = '', $branch='' )
+    function createChapter( $name, $type = "ship", $hull_number = '', $branch='', $joinable = true )
     {
         $this->command->comment('Creating ' . $name);
-        Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number, 'branch' => $branch] );
+        Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number, 'branch' => $branch, 'joinable' => $joinable] );
     }
 }
