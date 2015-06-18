@@ -95,6 +95,14 @@ class ImportUsers extends Command
                 }
             }
 
+            if (isset($user['postal_code']) === true && empty($user['postal_code'])===false) {
+                $user['postal_code'] = (string)$user['postal_code'];
+            } else {
+                $user['postal_code'] = '';
+            }
+
+
+
             // Make sure this is not a duplicate user
             if (count(User::where('member_id', '=', $user['member_id'])->get()) === 0) {
                 $result = User::create( $user );

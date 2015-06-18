@@ -112,7 +112,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         if (isset( $this->rating ) && !empty( $this->rating )) {
 
-            if ($rateGreeting = $this->getRateTitle($this->rank['grade'])) {
+            $rateGreeting = $this->getRateTitle($this->rank['grade']);
+
+            if (isset($rateGreeting) === true && empty($rateGreeting) === false) {
                 $displayRank = $rateGreeting;
             }
         }
@@ -141,9 +143,23 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $this->rank_title = $gradeDetails[0]->rank[$this->branch];
 
         if (isset( $this->rating ) && !empty( $this->rating )) {
+            if (is_array($this->rating) === true) {
+                $results = Rating::where('rate_code', '=', $this->rating['rate'])->get();
+            } else {
+                $results = Rating::where('rate_code', '=', $this->rating)->get();
+            }
+
+            $rate = $results[0];
+
+            if (is_array($this->rating) === true) {
+                $currentRating = $this->rating['rate'];
+            } else {
+                $currentRating = $this->rating;
+            }
+
             $this->rating =
-                ['rate'        => $this->rating,
-                 'description' => Rating::where('rate_code', '=', $this->rating)->get()[0]->rate['description']
+                ['rate'        => $currentRating,
+                 'description' => $rate->rate['description']
                 ];
         }
     }
@@ -157,13 +173,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      */
     function getRateTitle($rank)
     {
-        $rateDetail = Rating::where('rate_code', '=', $this->rating['rate'])->get();
+        if (is_array($this->rating) === true) {
+            $rateDetail = Rating::where('rate_code', '=', $this->rating['rate'])->get();
+        } else {
+            $rateDetail = Rating::where('rate_code', '=', $this->rating)->get();
+        }
+
 
         if (isset( $rateDetail[0]->rate[$this->branch][$rank] ) === true && empty( $rateDetail[0]->rate[$this->branch][$rank] ) === false) {
             return $rateDetail[0]->rate[$this->branch][$rank];
         }
 
-        return false;
+        return '';
     }
 
     public function getPrimaryAssignmentId()
@@ -235,6 +256,28 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
+    public function getTimeInGrade() {
+        if (empty($this->rank['date_of_rank']) === false) {
+            $dorObj = new DateTime(date('Y-m-d', strtotime($this->rank['date_of_rank'])));
+            $timeInGrade = $dorObj->diff(new DateTime("now"));
+            return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
+        } else {
+            return "Unknown";
+        }
+
+    }
+
+    public function getTimeInService() {
+        if (empty($this->registration_date) === false) {
+            $regDateObj = new DateTime(date('Y-m-d', strtotime($this->registration_date)));
+            $timeInService = $regDateObj->diff(new DateTime("now"));
+            return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
+        } else {
+            return "Unknown";
+        }
+
+    }
+
     public function getExamList(){
         $exams = Exam::where('member_id', '=', $this->member_id)->get();
 
@@ -244,6 +287,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             return $list;
         } else {
             return [];
+        }
+    }
+
+    public function getExamLastUpdated() {
+        $exams = Exam::where('member_id', '=', $this->member_id)->get();
+
+        if (isset( $exams[0] ) === true) {
+            return $exams[0]['updated_at'];
         }
     }
 }

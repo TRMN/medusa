@@ -3,7 +3,7 @@
         <div class="button lnav">MEMBER</div>
         <div class="rnav">
 
-            <a href="/dashboard">Dashboard</a><br />
+            <a href="/home">Service Record</a><br />
             <a href="/signout">logout</a>
 
         </div>
