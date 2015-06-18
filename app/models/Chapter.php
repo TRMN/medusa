@@ -23,7 +23,7 @@ class Chapter extends Eloquent
         $holdingChapters = [ 'SS-001', 'SS-002', 'LP', 'HC' ];
 
         if (empty($branch) === false) {
-            $results = Chapter::where('branch', '=', strtoupper($branch))->get();
+            $results = Chapter::where('branch', '=', strtoupper($branch))->where('joinable', '!=', false)->get();
         } else {
             $results = Chapter::all();
         }
@@ -42,7 +42,6 @@ class Chapter extends Eloquent
                     $chapters[$chapter->_id] .= ' (Holding Chapter)';
                 } else {
                     $co = Chapter::find($chapter->_id)->getCO();
-                    //die("<pre>" . print_r($co, true));
                     $append = '';
                     if (empty($co[0]) === false && empty($co[0]['city']) === false && empty($co[0]['state_province']) == false) {
                         $append = ' (' . $co[0]['city'] . ', ' . $co[0]['state_province'] . ')';
