@@ -27,7 +27,7 @@ module.exports = function () {
 };
 
 
-},{"jquery":7}],2:[function(require,module,exports){
+},{"jquery":6}],2:[function(require,module,exports){
 module.exports = function() {
     this.initList = function () {
         jQuery( '.delete-chapter' ).click( function () {
@@ -48,31 +48,6 @@ module.exports = function() {
 };
 
 },{}],3:[function(require,module,exports){
-module.exports = function () {
-    this.initCreateMemberForm = function () {
-
-        jQuery('#newuser #branch').change(function () {
-            var branch = jQuery('#branch').val();
-            jQuery.getJSON('/api/branch/' + branch + '/grade', function (result) {
-                jQuery('#newuser #display_rank').empty();
-                jQuery.each(result, function (key, value) {
-                    jQuery('#newuser #display_rank').append(
-                        '<option value="' + key + '">' + value + '</option>'
-                    );
-                });
-            });
-            jQuery.getJSON('/api/branch/' + branch + '/rate', function (result) {
-                jQuery('#newuser #rating').empty();
-                jQuery.each(result, function (key, value) {
-                    jQuery('#newuser #rating').append(
-                        '<option value="' + key + '">' + value + '</option>'
-                    );
-                });
-            });
-        });
-    };
-};
-},{}],4:[function(require,module,exports){
 module.exports = function() {
     this.initRegisterForm = function () {
 
@@ -103,7 +78,7 @@ module.exports = function() {
 
     };
 };
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = function() {
     this.initMemberForm = function () {
 
@@ -125,21 +100,13 @@ module.exports = function() {
                     );
                 } );
             } );
-            jQuery.getJSON('/api/chapter/' + branch, function (result) {
-                jQuery('#user #primary_assignment').empty();
-                jQuery.each(result, function (key, value) {
-                    jQuery('#user #primary_assignment').append(
-                        '<option value="' + key + '">' + value + '</option>'
-                    );
-                });
-            });
+
         } );
     };
 };
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var ManticoreAuth = require( './ManticoreAuth.js' );
 var ManticoreUser = require( './ManticoreUser.js' );
-var ManticoreCreateUser = require('./ManticoreCreateUser.js');
 var ManticoreChapter = require( './ManticoreChapter.js' );
 var ManticoreRegister = require( './ManticoreRegister.js');
 
@@ -147,7 +114,6 @@ jQuery( document ).ready( function ( $ ) {
 
     var authController = new ManticoreAuth();
     var userController = new ManticoreUser();
-    var createUserController = new ManticoreCreateUser();
     var chapterController = new ManticoreChapter();
 	var registerController = new ManticoreRegister();
 
@@ -159,10 +125,6 @@ jQuery( document ).ready( function ( $ ) {
 		registerController.initRegisterForm();
 	}
 
-    if ($('.createuserform').length > 0) {
-        createUserController.initCreateMemberForm();
-    }
-
     var MTIProjectId = '5c059f73-3466-4691-8b9a-27e7d9c1a9c7';
     (function () {
         var mtiTracking = document.createElement('script');
@@ -173,7 +135,7 @@ jQuery( document ).ready( function ( $ ) {
     })();
 } );
 
-},{"./ManticoreAuth.js":1,"./ManticoreChapter.js":2,"./ManticoreCreateUser.js":3,"./ManticoreRegister.js":4,"./ManticoreUser.js":5}],7:[function(require,module,exports){
+},{"./ManticoreAuth.js":1,"./ManticoreChapter.js":2,"./ManticoreRegister.js":3,"./ManticoreUser.js":4}],6:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -9385,4 +9347,4 @@ return jQuery;
 
 }));
 
-},{}]},{},[6]);
+},{}]},{},[5]);
