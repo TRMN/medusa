@@ -128,7 +128,6 @@ return [
         'mnshankar\CSV\CSVServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Smalldogs\Html5inputs\Html5InputsServiceProvider',
-        'Intervention\Image\ImageServiceProvider',
 
     ],
 
