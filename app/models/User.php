@@ -12,7 +12,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     use UserTrait, RemindableTrait;
 
     public static $rules = [
-        'member_id'             => 'required|size:11|unique:users',
         'first_name'            => 'required|min:2',
         'last_name'             => 'required|min:2',
         'address_1'             => 'required|min:4',
@@ -30,7 +29,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     ];
 
     public static $updateRules = [
-        'member_id'             => 'required|size:11',
         'first_name'            => 'required|min:2',
         'last_name'             => 'required|min:2',
         'address_1'             => 'required|min:4',
@@ -48,9 +46,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     ];
 
     public static $error_message = [
-        'member_id.required'             => 'A Member ID is required',
-        'member_id.size'                 => 'The Member ID must follow the format RMN-XXXX-YY',
-        'member_id.unique'               => 'That member ID is already in use',
         'min'                            => 'The members :attribute must be at least :min characters long',
         'address_1.required'             => 'Please enter the members street address',
         'address_1.min'                  => 'The street address must be at least :size characters long',
@@ -71,7 +66,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     protected $hidden = ['password', 'remember_token'];
 
     protected $fillable = [
-        'member_id',
         'first_name',
         'middle_name',
         'last_name',
@@ -89,8 +83,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'rank',
         'assignment',
         'peerage_record',
-        'awards_record',
-        'exam_record',
+        'awards',
         'password'
     ];
 
@@ -202,6 +195,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
+    public function getSecondaryAssignmentId()
+    {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
+                if ($assignment['primary'] == false) {
+                    return $assignment['chapter_id'];
+                }
+            }
+
+            return false;
+        } else {
+            return false;
+        }
+    }
+
     public function getPrimaryAssignmentName()
     {
         $chapter = Chapter::find($this->getPrimaryAssignmentId());
@@ -212,9 +220,29 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
+    public function getSecondaryAssignmentName()
+    {
+        $chapter = Chapter::find($this->getSecondaryAssignmentId());
+        if (!empty( $chapter )) {
+            return $chapter->chapter_name;
+        } else {
+            return false;
+        }
+    }
+
     public function getPrimaryAssignmentDesignation()
     {
         $chapter = Chapter::find($this->getPrimaryAssignmentId());
+        if (!empty( $chapter )) {
+            return $chapter->hull_number;
+        } else {
+            return false;
+        }
+    }
+
+    public function getSecondaryAssignmentDesignation()
+    {
+        $chapter = Chapter::find($this->getSecondaryAssignmentId());
         if (!empty( $chapter )) {
             return $chapter->hull_number;
         } else {
@@ -237,11 +265,45 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
+    public function getSecondaryBillet()
+    {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
+                if ($assignment['primary'] == false) {
+                    return $assignment['billet'];
+                }
+            }
+
+            return '';
+        } else {
+            return '';
+        }
+    }
+
     public function getPrimaryDateAssigned()
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
                 if ($assignment['primary'] == true) {
+                    if (isset( $assignment['date_assigned'] ) === true) {
+                        return $assignment['date_assigned'];
+                    } else {
+                        return 'Unknown';
+                    }
+                }
+            }
+
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    public function getSecondaryDateAssigned()
+    {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
+                if ($assignment['primary'] == false) {
                     if (isset( $assignment['date_assigned'] ) === true) {
                         return $assignment['date_assigned'];
                     } else {
@@ -295,6 +357,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         if (isset( $exams[0] ) === true) {
             return $exams[0]['updated_at'];
+        } else {
+            return false;
         }
     }
 }

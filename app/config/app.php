@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'debug' => false,
+    'debug' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -128,6 +128,8 @@ return [
         'mnshankar\CSV\CSVServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Smalldogs\Html5inputs\Html5InputsServiceProvider',
+        'Intervention\Image\ImageServiceProvider',
+
     ],
 
     /*
@@ -198,6 +200,7 @@ return [
         'Countries' => 'Webpatser\Countries\CountriesFacade',
         'CSV' => 'mnshankar\CSV\CSVFacade',
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+        'Image' => 'Intervention\Image\Facades\Image',
     ],
 
     'version' => '0.6.10',

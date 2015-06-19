@@ -112,6 +112,10 @@ class Chapter extends Eloquent
         return $users;
     }
 
-
+    static function getChapterType($chapterId)
+    {
+        $chapter = Chapter::find($chapterId);
+        return $chapter->chapter_type;
+    }
 
 }
