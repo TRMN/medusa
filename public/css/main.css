@@ -122,6 +122,12 @@ body, html {
   font-family: "Incised 901 W01 Light";
   line-height: 100%; }
 
+#photoModal {
+  color: white;
+  background-color: #000000;
+  font-family: "Incised 901 W01 Light";
+  line-height: 100%; }
+
 p {
   font-family: "Incised 901 W01 Light"; }
 
