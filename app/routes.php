@@ -45,3 +45,4 @@ Route::get( '/api/branch/{branchID}/grade', 'ApiController@getGradesForBranch' )
 Route::get( '/api/chapter', 'ApiController@getChapters' ); // Get a list of all the chapters
 Route::get( '/api/chapter/{branchID}', 'ApiController@getChaptersByBranch');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch' ); // Get a list of all the ratings
+Route::post('/api/photo', 'ApiController@savePhoto'); // File Photo upload
