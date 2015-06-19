@@ -21,13 +21,17 @@
     echo "</ul>\n";
     ?>
     <div class="Incised901Light filePhoto">
+
         {{{$user->member_id}}}
-        <div class="filePhotoBox" id="trmnDropzone">
+        <div class="filePhotoBox">
+
             @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
                 <img src="{{{$user->filePhoto}}}" alt="Official File Photo">
             @endif
             <div class="ofpt">
-                Drop File Here<br/>&nbsp<br/>150 px X 200 px
+                <form action='/api/photo' class='dropzone' id='trmnDropzone' method='post'>
+                    {{ Form::hidden('member_id', $user->member_id) }}
+                </form>
             </div>
         </div>
     </div>
