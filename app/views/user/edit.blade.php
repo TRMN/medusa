@@ -29,7 +29,8 @@
                 <img src="{{{$user->filePhoto}}}" alt="Official File Photo">
             @endif
             <div class="ofpt">
-                <form action='/api/photo' class='dropzone' id='trmnDropzone' method='post'>
+                <form action='/api/photo' class='dropzone' id='trmnDropzone' method='post'
+                      title="Drag and drop image files here or click.  Only .png, .gif and .jpg files will be accepted.  All images uploaded will be scaled to 150 pixels wide by 200 pixels tall.  After the image has been dropped, the form will be submitted and processed.">
                     {{ Form::hidden('member_id', $user->member_id) }}
                 </form>
             </div>
@@ -170,5 +171,18 @@
        href="{{ route('user.index') }}">Cancel</a> {{ Form::submit('Save', [ 'class' => 'button' ] ) }}
 
     {{ Form::close() }}
+
+    <div id="photoModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <div class="row">
+            <div class="small-2 columns trmn-width" id="pm1">
+                <img src="{{{$serverUrl}}}/images/trmn-seal.png" alt="TRMN Seal">
+            </div>
+            <div class="small-10 columns Incised901Light" id="pm2">
+                <p></p>
+            </div>
+        </div>
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
+
 @stop
 
