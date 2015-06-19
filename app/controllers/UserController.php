@@ -28,9 +28,9 @@ class UserController extends \BaseController
                 'user'      => new User,
                 'countries' => $this->_getCountries(),
                 'branches'  => Branch::getBranchList(),
-                'grades'   => Grade::getGradesForBranch('RMN'),
-                'ratings'  => Rating::getRatingsForBranch('RMN'),
-                'chapters' => Chapter::getChapters(),
+                'grades'    => Grade::getGradesForBranch('RMN'),
+                'ratings'   => Rating::getRatingsForBranch('RMN'),
+                'chapters'  => Chapter::getChapters(),
             ]
         );
     }
@@ -43,29 +43,28 @@ class UserController extends \BaseController
     public function store()
     {
 
-        $validator = Validator::make($data = Input::all(), User::$rules, User::$error_message);
+        $rules = User::$rules;
+        $errMsg = User::$error_message;
+
+        $rules['password'] = 'required|min:8';
+        $errMsg['password.required'] = 'You must set a password for the user';
+        $errMsg['password.min'] = 'The password must be at least 8 characters long';
+        $validator = Validator::make($data = Input::all(), $rules, $errMsg);
 
         if ($validator->fails()) {
-            return Redirect::to('register')->withErrors($validator)->withInput();
+            return Redirect::route('user.create')->withErrors($validator)->withInput();
         }
 
         // Massage the data a little bit.  First, build up the rank array
 
-        $rank = [];
-
-        if (isset( $data['permanent_rank'] ) === true && empty( $data['permanent_rank'] ) === false) {
-            $rank['permanent_rank'] =
-                ['grade' => $data['permanent_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['perm_dor']))];
-            unset( $data['permanent_rank'], $data['perm_dor'] );
-        }
-
-        if (isset( $data['brevet_rank'] ) === true && empty( $data['brevet_rank'] ) === false) {
-            $rank['brevet_rank'] =
-                ['grade' => $data['brevet_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['brevet_dor']))];
-            unset( $data['brevet_rank'], $data['brevet_dor'] );
-        }
-
-        $data['rank'] = $rank;
+        $data['rank'] = [
+            'grade'        => $data['display_rank'],
+            'date_of_rank' => date(
+                'Y-m-d',
+                strtotime($data['dor'])
+            )
+        ];
+        unset( $data['display_rank'], $data['dor'] );
 
         // Build up the member assignments
 
@@ -91,9 +90,9 @@ class UserController extends \BaseController
                 'billet'        => $data['secondary_billet'],
                 'primary'       => false
             ];
-
-            unset( $data['secondary_assignment'], $data['secondary_date_assigned'], $data['secondary_billet'] );
         }
+
+        unset( $data['secondary_assignment'], $data['secondary_date_assigned'], $data['secondary_billet'] );
 
         $data['assignment'] = $assignment;
 
@@ -101,17 +100,41 @@ class UserController extends \BaseController
 
         $data['password'] = Hash::make($data['password']);
 
+        // Assign a member id
+
+        $data['member_id'] = 'RMN' . $this->getNextAvailableMemberId();
+
+        if (isset( $data['honorary'] ) === true && $data['honorary'] === "1") {
+            $data['member_id'] .= '-H';
+            unset( $data['honorary'] );
+        }
+
+        // Set the active flag, application date and registration date
+
+        $data['active'] = (int)1;
+
+        $data['application_date'] = date('Y-m-d');
+        $data['registration_date'] = date('Y-m-d');
+
         // For future use
 
         $data['peerage_record'] = [];
 
-        $data['awards_record'] = [];
-
-        $data['exam_record'] = [];
+        $data['awards'] = [];
 
         unset( $data['_token'], $data['password_confirmation'] );
 
         $user = User::create($data);
+
+        // Until I figure out why mongo drops fields, I'm doing this hack!
+
+        $u = User::find($user['_id']);
+
+        foreach ($data as $key => $value) {
+            $u->$key = $value;
+        }
+
+        $u->save();
 
         Event::fire('user.created', $user);
 
@@ -200,7 +223,7 @@ class UserController extends \BaseController
         $u = User::find($user['_id']);
 
         foreach ($data as $key => $value) {
-            $u[$key] = $value;
+            $u->$key = $value;
         }
 
         $u->save();
@@ -263,6 +286,10 @@ class UserController extends \BaseController
         $user->primary_billet = $user->getPrimaryBillet();
         $user->primary_date_assigned = $user->getPrimaryDateAssigned();
 
+        $user->secondary_assignment = $user->getSecondaryAssignmentId();
+        $user->secondary_billet = $user->getSecondaryBillet();
+        $user->secondary_date_assigned = $user->getSecondaryDateAssigned();
+
         return View::make(
             'user.edit',
             [
@@ -272,7 +299,7 @@ class UserController extends \BaseController
                 'branches'  => Branch::getBranchList(),
                 'grades'    => Grade::getGradesForBranch($user->branch),
                 'ratings'   => Rating::getRatingsForBranch($user->branch),
-                'chapters'  => Chapter::getChapters(),
+                'chapters'  => Chapter::getChapters()
             ]
         );
     }
@@ -342,11 +369,21 @@ class UserController extends \BaseController
 
         $data['awards'] = [];
 
-        unset( $data['_method'], $data['_token'], $data['password_confirmation'] );
+        $redirect = 'user.index';
+
+        if ($data['reload_form'] === "yes") {
+            $redirect = 'user.edit';
+        }
+
+        if (Auth::user()->member_id === $data['member_id']) {
+            $redirect = 'home';
+        }
+
+        unset( $data['_method'], $data['_token'], $data['password_confirmation'], $data['reload_form'] );
 
         $user->update($data);
 
-        return Redirect::route('user.index');
+        return Redirect::route($redirect);
     }
 
     /**
@@ -419,11 +456,11 @@ class UserController extends \BaseController
 
     public function getNextAvailableMemberId()
     {
-        $memberIds = User::lists('member_id');
+        $memberIds = User::all(['member_id']);
         $uniqueMemberIds = [];
 
-        foreach ($memberIds as $memberId) {
-            $uniqueMemberIds[] = intval(substr($memberId, 4, 4));
+        foreach ($memberIds as $record) {
+            $uniqueMemberIds[] = intval(substr($record->member_id, 4, 4));
         }
 
         if (sizeof($uniqueMemberIds) == 0) {
