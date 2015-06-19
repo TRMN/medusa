@@ -22,15 +22,19 @@
     ?>
     <div class="Incised901Light filePhoto">
         {{{$user->member_id}}}
-        <div class="filePhotoBox">
+        <div class="filePhotoBox" id="trmnDropzone">
+            @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
+                <img src="{{{$user->filePhoto}}}" alt="Official File Photo">
+            @endif
             <div class="ofpt">
-                Official<br/>File<br/>Photo
+                Drop File Here<br/>&nbsp<br/>150 px X 200 px
             </div>
         </div>
     </div>
 
     {{ Form::model( $user, [ 'route' => [ 'user.update', $user->id ], 'method' => 'put', 'id' => 'user' ] ) }}
     {{ Form::hidden('member_id', $user->member_idØ) }}
+    {{ Form::hidden('reload_form', 'no', ['id' => 'reload_form']) }}
     <div class="row">
         <div class="small-8 columns ninety Incised901Light end">
             {{ Form::label('email_address', 'E-Mail Address (This is your Username)', ['class' => 'my']) }}
@@ -123,6 +127,23 @@
                 {{ Form::label('primary_date_assigned', "Date Assigned", ['class' => 'my']) }} {{ Form::date('primary_date_assigned', $user->primary_date_assigned) }}
             </div>
         </div>
+
+        <div class="row">
+            <div class="end small-11 columns ninety Incised901Light">
+                {{ Form::label('secondary_assignment', "Secondary Assignment", ['class' => 'my']) }} {{ Form::select('secondary_assignment', $chapters) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="end small-11 columns ninety Incised901Light">
+                {{ Form::label('secondary_billet', 'Billet', ['class' => 'my']) }} {{ Form::text('secondary_billet') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="end small-11 columns ninety Incised901Light">
+                {{ Form::label('secondary_date_assigned', "Date Assigned", ['class' => 'my']) }} {{ Form::date('secondary_date_assigned', $user->secondary_date_assigned) }}
+            </div>
+        </div>
+
     </fieldset>
 
     <div class="row">
@@ -146,3 +167,4 @@
 
     {{ Form::close() }}
 @stop
+

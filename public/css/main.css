@@ -8,6 +8,23 @@
   text-decoration: none;
   font-family: "Incised 901 W01 Bold Cd"; }
 
+.button:hover {
+  text-decoration: none;
+  background: #ffee00;
+  color: #ee3300;
+  border: solid #ee3300 4px; }
+
+.nav-header {
+  color: #ffee00;
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-family: "Incised 901 W01 Bold Cd";
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.nav-header:hover {
+  color: #ee3300; }
+
 .yellow-border {
   border: solid #ffee00 1px;
   padding: 5px;
@@ -19,12 +36,6 @@
 .margin-5 {
   margin: 5px; }
 
-.button:hover {
-  text-decoration: none;
-  background: #ffee00;
-  color: #ee3300;
-  border: solid #ee3300 4px; }
-
 .inline {
   display: inline; }
 
@@ -35,12 +46,34 @@ div.filePhoto {
   width: 200px;
   text-align: center; }
 
+#photoPreview {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px; }
+
 .filePhotoBox {
   width: 150px;
   height: 200px;
   background-color: #4D4D4D;
   border: solid 1px #CCCCCC;
-  margin: auto; }
+  margin: auto;
+  margin-bottom: 10px; }
+
+.filePhotoBox img {
+  width: 150px;
+  height: 200px; }
+
+.photoUpload {
+  background-color: #4D4D4D;
+  border: solid 1px #CCCCCC;
+  margin: auto;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  width: 150px; }
 
 .editButton {
   background-color: #4D4D4D;
@@ -170,12 +203,12 @@ div.rnav {
   clear: both;
   float: left;
   display: block;
-  padding-bottom: 1em;
   text-align: right;
   width: 175px;
   color: white;
   font-family: "Incised 901 W01 Bold Cd";
-  font-size: 1.25rem; }
+  font-size: 1.25rem;
+  line-height: 1.50rem; }
 
 div.rnav a {
   color: white; }
@@ -221,5 +254,11 @@ footer {
 
 .textLeft {
   text-align: left; }
+
+#user fieldset {
+  width: auto; }
+
+#user legend {
+  background: none; }
 
 /*# sourceMappingURL=main.css.map */
