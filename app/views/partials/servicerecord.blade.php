@@ -6,15 +6,27 @@
     <div class="Incised901Bold">
         {{{ $user->getGreeting() }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}
     </div>
-    <div class="NordItalic ninety padding-5">{{{$user->getPrimaryAssignmentName()}}} {{{$user->getPrimaryAssignmentDesignation()}}}</div>
+    <div class="NordItalic ninety padding-5">{{{$user->getPrimaryAssignmentName()}}}
+        <?php
+        $chapterType = Chapter::getChapterType($user->getPrimaryAssignmentId());
+        ?>
+        @if($chapterType == "ship" || $chapterType == "station")
+            {{{$user->getPrimaryAssignmentDesignation()}}}
+        @endif
+    </div>
     <div class="Incised901Light filePhoto">
         {{{$user->member_id}}}
         <div class="filePhotoBox">
-            <div class="ofpt">
-                Official<br/>File<br/>Photo
-            </div>
+
+                @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
+                    <img src="{{{$user->filePhoto}}}" alt="Official File Photo">
+                @else
+                <div class="ofpt">Official<br/>File<br/>Photo</div>
+                @endif
+
         </div>
         {{{$user->getPrimaryBillet()}}}<br/>
+
         <div class="Incised901Light seventy-five">Assigned: {{{$user->getPrimaryDateAssigned()}}}</div>
     </div>
     <div class="Incised901Black ninety">
@@ -29,8 +41,10 @@
 
     <div class="Incised901Black ninety">
         Academy Coursework:
-        <h5 class="Incised901Light ninety">Last
-            Updated: {{{ date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) }}}</h5>
+        @if($user->getExamLastUpdated() !== false)
+            <h5 class="Incised901Light ninety">Last
+                Updated: {{{ date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) }}}</h5>
+        @endif
         @foreach($user->getExamList() as $exam => $gradeInfo)
             <div class="row">
                 <div class="small-1 columns Incised901Light ninety">&nbsp;</div>

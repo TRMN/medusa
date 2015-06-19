@@ -42,4 +42,20 @@ class ApiController extends BaseController
     {
         return Response::json(Rating::getRatingsForBranch($branchID));
     }
+
+    public function savePhoto() {
+        $user = Auth::user();
+
+        if (Input::file('file')->isValid() === true) {
+            $ext = Input::file('file')->getClientOriginalExtension();
+
+            Input::file('file')->move(public_path() . '/images', $user->member_id . '.' . $ext);
+
+            // File uploaded, add filename to user record
+
+            $u = User::find($user->_id);
+            $u->filePhoto = '/images/' . $user->member_id . '.' . $ext;
+            $u->save();
+        }
+    }
 }
