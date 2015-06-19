@@ -375,7 +375,7 @@ class UserController extends \BaseController
             $redirect = 'user.edit';
         }
 
-        if (Auth::user()->member_id === $data['member_id']) {
+        if (Auth::user()->member_id === $data['member_id'] && $data['reload_form'] === "no") {
             $redirect = 'home';
         }
 

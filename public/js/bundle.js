@@ -1867,17 +1867,18 @@ jQuery(document).ready(function ($) {
 
 
 
-    jQuery("#trmnDropzone").dropzone({
+    Dropzone.options.trmnDropzone = {
         url: "/api/photo",
         acceptedFiles: ".png,.gif,.jpg",
         uploadMultiple: false,
+        dictDefaultMessage: 'Drop File Here<br />&nbsp;<br />150 px X 200 px',
         init: function() {
             this.on("complete", function (file) {
                 jQuery('#reload-form').val('yes');
                 jQuery('#user').submit();
             });
         }
-    });
+    };
 });
 
 },{"./ManticoreAuth.js":1,"./ManticoreChapter.js":2,"./ManticoreRegister.js":3,"./ManticoreUser.js":4,"./dropzone.js":5}],7:[function(require,module,exports){

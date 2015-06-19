@@ -44,18 +44,21 @@ class ApiController extends BaseController
     }
 
     public function savePhoto() {
-        $user = Auth::user();
-
         if (Input::file('file')->isValid() === true) {
-            $ext = Input::file('file')->getClientOriginalExtension();
+            $res = User::where('member_id','=', Input::get('member_id'))->get();
 
-            Input::file('file')->move(public_path() . '/images', $user->member_id . '.' . $ext);
+            if (count($res) === 1 && $res[0]->member_id == Input::get('member_id')) {
 
-            // File uploaded, add filename to user record
+                $user = $res[0];
+                $ext = Input::file('file')->getClientOriginalExtension();
+                $fileName = $user->member_id . '.' . $ext;
 
-            $u = User::find($user->_id);
-            $u->filePhoto = '/images/' . $user->member_id . '.' . $ext;
-            $u->save();
+                Input::file('file')->move(public_path() . '/images', $fileName);
+
+                // File uploaded, add filename to user record
+                $user->filePhoto = '/images/' . $fileName;
+                $user->save();
+            }
         }
     }
 }
