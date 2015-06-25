@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'EST',
 
     /*
     |--------------------------------------------------------------------------
@@ -202,6 +202,6 @@ return [
         'Image' => 'Intervention\Image\Facades\Image',
     ],
 
-    'version' => '0.6.13',
+    'version' => '0.6.14',
 
 ];
