@@ -67,4 +67,14 @@ jQuery(document).ready(function ($) {
         console.log('Top Margin ' + vMargin);
         jQuery('#pm2').css('margin-top', vMargin);
     });
+
+    jQuery('#chapterList').DataTable( {
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            {"orderable": false}
+        ]
+    });
 });
