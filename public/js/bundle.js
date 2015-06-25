@@ -1904,6 +1904,16 @@ jQuery(document).ready(function ($) {
         console.log('Top Margin ' + vMargin);
         jQuery('#pm2').css('margin-top', vMargin);
     });
+
+    jQuery('#chapterList').DataTable( {
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            {"orderable": false}
+        ]
+    });
 });
 
 },{"./ManticoreAuth.js":1,"./ManticoreChapter.js":2,"./ManticoreRegister.js":3,"./ManticoreUser.js":4,"./dropzone.js":5}],7:[function(require,module,exports){
