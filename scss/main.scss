@@ -1,5 +1,6 @@
 @import "settings";
 @import "trmn-fonts.css";
+@import "datatables";
 
 $backdrop-color: #222;
 $text-primary: white;
@@ -254,7 +255,7 @@ nav {
 
 table {
   a {
-    color: black;
+    color: $medusa-yellow;
   }
 }
 
@@ -336,4 +337,16 @@ footer {
 
 #user legend {
   background: none;
+}
+
+#chapterList {
+  width: 75%;
+}
+
+.actionButtons {
+  column-width: 50px;
+}
+
+.ui-toolbar {
+  width: 75%;
 }
