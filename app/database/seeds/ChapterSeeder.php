@@ -52,7 +52,19 @@ class ChapterSeeder extends Seeder
         }
 
         // Create Admiralty House
-        $this->createChapter('Admiralty House', 'headquarters', 'AH', 'RMN', false);
+        $ah = $this->createChapter('Admiralty House', 'headquarters', 'AH', 'RMN', false);
+
+        // Create the Bureau's
+        $ct = 'bureau';
+
+        $bureaus = [
+            '2' => 'Planning (BuPlan)',
+            '3' => 'Ships (BuShip)',
+            '4' => 'Communications (BuComm)',
+            '5' => 'Personnel (BuPers)',
+            '6' => 'Training (BuTrain)',
+            '7' => 'Supply (BuSup)'
+        ];
 
         // Create King William's Tower
         $this->createChapter('King William\'s Tower', 'headquarters', 'KWT', 'RMA', false);
