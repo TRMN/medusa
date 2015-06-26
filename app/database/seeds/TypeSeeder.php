@@ -22,6 +22,8 @@ class TypeSeeder extends Seeder {
         $this->createChapter('barracks', 'Army Barracks');
         $this->createChapter('outpost', 'Army Outpost');
         $this->createChapter('fort', 'Army Fort');
+        $this->createChapter('bureau', 'Admiralty Bureau');
+        $this->createChatper('academy', 'Service Academy');
     }
 
     function createChapter($type, $description, array $can_have=[]) {
