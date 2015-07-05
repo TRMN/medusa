@@ -4,15 +4,18 @@
 
 <div id="user-profile">
     <div class="Incised901Bold">
-        {{{ $user->getGreeting() }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}}
+        {{{ $user->getGreeting() }}} {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}} {{{ $user->last_name }}}{{{ !empty($user->suffix) ? ' ' . $user->suffix : '' }}}, {{{$user->branch}}}
     </div>
-    <div class="NordItalic ninety padding-5">{{{$user->getPrimaryAssignmentName()}}}
+    <div class="NordItalic ninety padding-5">
+        <a href="{{route('chapter.show',$user->getPrimaryAssignmentId())}}">
+        {{{$user->getPrimaryAssignmentName()}}}
         <?php
         $chapterType = Chapter::getChapterType($user->getPrimaryAssignmentId());
         ?>
         @if($chapterType == "ship" || $chapterType == "station")
             {{{$user->getPrimaryAssignmentDesignation()}}}
         @endif
+        </a>
     </div>
     <div class="Incised901Light filePhoto">
         {{{$user->member_id}}}
