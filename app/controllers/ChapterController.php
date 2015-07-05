@@ -32,11 +32,7 @@ class ChapterController extends BaseController
 
         $includes = Chapter::where( 'assigned_to', '=', $chapter->_id )->get();
 
-        $commandCrew = [
-            'CO' => $chapter->getCO(),
-            'XO' => $chapter->getXO(),
-            'Bosun' => $chapter->getBosun(),
-        ];
+        $commandCrew = $chapter->getCommandCrew();
 
         $crew = $chapter->getCrew();
 
