@@ -55,16 +55,22 @@ class ChapterSeeder extends Seeder
         $ah = $this->createChapter('Admiralty House', 'headquarters', 'AH', 'RMN', false);
 
         // Create the Bureau's
-        $ct = 'bureau';
 
         $bureaus = [
-            '2' => 'Planning (BuPlan)',
-            '3' => 'Ships (BuShip)',
-            '4' => 'Communications (BuComm)',
-            '5' => 'Personnel (BuPers)',
-            '6' => 'Training (BuTrain)',
-            '7' => 'Supply (BuSup)'
+            '1' => 'Office of the First Space Lord',
+            '2' => 'Bureau of Planning (BuPlan)',
+            '3' => 'Bureau of Ships (BuShip)',
+            '4' => 'Bureau of Communications (BuComm)',
+            '5' => 'Bureau of Personnel (BuPers)',
+            '6' => 'Bureau of Training (BuTrain)',
+            '7' => 'Bureau of Supply (BuSup)'
         ];
+
+        foreach ($bureaus as $num => $bureau) {
+            $record = ['chapter_name' => $bureau, 'chapter_type' => 'bureau', 'hull_number' => $num, 'assigned_to' => $ah->_id, 'joinable' => false];
+            $this->command->comment('Creating ' . $bureau);
+            Chapter::create($record);
+        }
 
         // Create King William's Tower
         $this->createChapter('King William\'s Tower', 'headquarters', 'KWT', 'RMA', false);
