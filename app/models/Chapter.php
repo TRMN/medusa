@@ -23,9 +23,9 @@ class Chapter extends Eloquent
         $holdingChapters = [ 'SS-001', 'SS-002', 'LP', 'HC' ];
 
         if (empty($branch) === false) {
-            $results = Chapter::where('branch', '=', strtoupper($branch))->where('joinable', '!=', false)->get();
+            $results = Chapter::where('branch', '=', strtoupper($branch))->where('joinable', '!=', false)->orderBy('chapter_name','asc')->get();
         } else {
-            $results = Chapter::all();
+            $results = Chapter::all()->orderBy('chapter_name','asc');
         }
 
         if (count($results) === 0) {
@@ -65,7 +65,7 @@ class Chapter extends Eloquent
      * @return mixed
      */
     public function getCrew() {
-        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->whereNotIn( 'assignment.billet', [ 'Commanding Officer', 'Executive Officer', 'Bosun' ])->get();
+        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->whereNotIn( 'assignment.billet', [ 'Commanding Officer', 'Executive Officer', 'Bosun' ])->orderBy('last_name', 'asc')->get();
 
         return $users;
     }
@@ -78,23 +78,30 @@ class Chapter extends Eloquent
      */
     public function getAllCrew( $chapterId )
     {
-        return User::where( 'assignment.chapter_id', '=', $chapterId )->get();
+        return User::where( 'assignment.chapter_id', '=', $chapterId )->orderBy('last_name', 'asc')->get();
     }
 
     public function getCO() {
         $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Commanding Officer' )->get();
+        if (isset($users[0]) === false) {
+            return [];
+        }
         return $users;
     }
 
     public function getXO() {
         $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Executive Officer' )->get();
-
+        if (isset( $users[0]) === false) {
+            return [];
+        }
         return $users;
     }
 
     public function getBosun() {
         $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Bosun' )->get();
-
+        if (isset( $users[0]) === false) {
+            return [];
+        }
         return $users;
     }
 
@@ -108,6 +115,12 @@ class Chapter extends Eloquent
         $users['CO'] = $this->getCO();
         $users['XO'] = $this->getXO();
         $users['BOSUN'] = $this->getBosun();
+
+        foreach(['CO','XO','BOSUN'] as $command) {
+            if (empty($users[$command]) === true) {
+                unset($users[$command]);
+            }
+        }
 
         return $users;
     }
