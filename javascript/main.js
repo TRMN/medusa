@@ -60,11 +60,8 @@ jQuery(document).ready(function ($) {
 
     jQuery(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
         imageHeight = jQuery('#pm1').height();
-        console.log('Image Height ' + imageHeight);
         textHeight = jQuery('#pm2 p').height();
-        console.log('Text Height ' + textHeight);
         vMargin = ((imageHeight - textHeight) / 2) + 'px';
-        console.log('Top Margin ' + vMargin);
         jQuery('#pm2').css('margin-top', vMargin);
     });
 
@@ -77,4 +74,175 @@ jQuery(document).ready(function ($) {
             {"orderable": false}
         ]
     });
+
+    jQuery('#memberList-1').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order" : [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#memberList-2').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#memberList-3').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#memberList-4').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ], "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#memberList-5').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#memberList-6').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ], "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#memberList-7').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#memberList-8').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#memberList-9').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#members').tabs();
 });
