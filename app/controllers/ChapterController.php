@@ -55,7 +55,7 @@ class ChapterController extends BaseController
 
         $chapterTypes = ['' => 'Select a Chapter Type'] + $chapterTypes;
 
-        $chapters = Chapter::orderBy( 'chapter_type' )->orderBy( 'chapter_name' )->get( [ '_id', 'chapter_name' ] );
+        $chapters = Chapter::orderBy( 'chapter_name' )->get( [ '_id', 'chapter_name' ] );
 
         $chapterList[ '' ] = "N/A";
 

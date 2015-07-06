@@ -256,6 +256,7 @@ nav {
 table {
   a {
     color: $medusa-yellow;
+    background: none;
   }
 }
 
@@ -349,4 +350,27 @@ footer {
 
 .ui-toolbar {
   width: 75%;
+}
+
+#members .ui-toolbar {
+  width: 100%;
+}
+
+.ui-widget-content {
+  border: 0px;
+  background: none;
+  color: $medusa-yellow;
+}
+
+.ui-widget {
+  font-family: "Incised 901 W01 Light";
+  font-size: .9rem;
+}
+
+.ui-widget-content a {
+  color: $medusa-yellow;
+}
+
+.ui-widget-header {
+  border: none;
 }
