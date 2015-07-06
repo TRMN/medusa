@@ -627,7 +627,8 @@ nav {
         line-height: 35px; }
 
 table a {
-  color: #ffee00; }
+  color: #ffee00;
+  background: none; }
 
 #left-nav {
   width: 175px; }
@@ -702,5 +703,23 @@ footer {
 
 .ui-toolbar {
   width: 75%; }
+
+#members .ui-toolbar {
+  width: 100%; }
+
+.ui-widget-content {
+  border: 0px;
+  background: none;
+  color: #ffee00; }
+
+.ui-widget {
+  font-family: "Incised 901 W01 Light";
+  font-size: .9rem; }
+
+.ui-widget-content a {
+  color: #ffee00; }
+
+.ui-widget-header {
+  border: none; }
 
 /*# sourceMappingURL=main.css.map */

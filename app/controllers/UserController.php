@@ -12,7 +12,13 @@ class UserController extends \BaseController
     {
         $users = User::all();
 
-        return View::make('user.index', ['users' => $users]);
+        $usersByBranch = [];
+
+        foreach($users as $user) {
+            $usersByBranch[$user->branch][] = $user;
+        }
+
+        return View::make('user.index', ['users' => $usersByBranch]);
     }
 
     /**

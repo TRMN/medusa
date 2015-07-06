@@ -1,5 +1,3 @@
-var jQuery = require( 'jquery' );
-
 module.exports = function () {
 
     this.doLogin = function ( email, password ) {

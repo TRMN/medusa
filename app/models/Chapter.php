@@ -25,7 +25,7 @@ class Chapter extends Eloquent
         if (empty($branch) === false) {
             $results = Chapter::where('branch', '=', strtoupper($branch))->where('joinable', '!=', false)->orderBy('chapter_name','asc')->get();
         } else {
-            $results = Chapter::all()->orderBy('chapter_name','asc');
+            $results = Chapter::all();
         }
 
         if (count($results) === 0) {
