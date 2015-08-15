@@ -689,10 +689,10 @@ footer {
 .textLeft {
   text-align: left; }
 
-#user fieldset {
+#user fieldset, #register fieldset {
   width: auto; }
 
-#user legend {
+#user legend, #register legend {
   background: none; }
 
 #chapterList {
@@ -705,6 +705,9 @@ footer {
   width: 75%; }
 
 #members .ui-toolbar {
+  width: 100%; }
+
+#announcementList_wrapper .ui-toolbar {
   width: 100%; }
 
 .ui-widget-content {

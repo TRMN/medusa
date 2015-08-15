@@ -7,11 +7,27 @@ Announcements
 @section('content')
 <h1>Announcements</h1>
 
-<table>
+<table id="announcementList" class="compact row-border stripe" width="75%">
     <thead>
-        <tr><th>Summary</th><th>Author</th><th>Modified On<th>Status</th><th></th></tr>
+        <tr>
+            <th>Summary</th>
+            <th>Author</th>
+            <th>Modified On</th>
+            <th>Status</th>
+            <th>&nbsp;</th>
+        </tr>
     </thead>
+    <tfoot>
+    <tr>
+        <th>Summary</th>
+        <th>Author</th>
+        <th>Modified On</th>
+        <th>Status</th>
+        <th>&nbsp;</th>
+    </tr>
+    </tfoot>
     <tbody>
+
 
 @foreach($announcements as $announcement)
     <tr>
@@ -19,7 +35,7 @@ Announcements
         <td>@if( $announcement->user ){{{ $announcement->user->getGreeting() . ' ' . $announcement->user->last_name }}} @else Undefined @endif</td>
         <td>{{{ $announcement->updated_at }}}</td>
         <td>{{{ $announcement->is_published ? 'Published' : 'Unpublished' }}}</td>
-        <td><button id="{{{ $announcement->id }}}" class="btn" onclick="confirmDelete( '{{ $announcement->id }}' );" data-title="{{{ $announcement->summary }}}">Delete</button>
+        <td><a href="#" id="{{{ $announcement->id }}}" class="btn" onclick="confirmDelete( '{{ $announcement->id }}' );" data-title="{{{ $announcement->summary }}}">Delete</a>
             {{ Form::open([ 'url' => route( 'announcement.destroy' , [ $announcement->id ] ) , 'method'=> 'delete' , 'id' => 'deleteAnnouncement-' . $announcement->id , 'style' => 'display:none;' ]) }}
                 {{ Form::submit( 'Delete' )  }}
             {{ Form::close() }}
@@ -45,5 +61,18 @@ Announcements
           return false;
         }
       }
+
+    jQuery('#announcementList').DataTable({
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No announcements found."
+        }
+    });
 </script>
 @stop
