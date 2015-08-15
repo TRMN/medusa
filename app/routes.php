@@ -26,7 +26,13 @@ Route::post( '/apply', [ 'as' => 'user.apply', 'uses' => 'UserController@apply' 
 
 Route::model( 'user', 'User');
 Route::get( '/user/{user}/confirmdelete', [ 'as' => 'user.confirmdelete', 'uses' => 'UserController@confirmDelete', 'before' => 'auth' ] );
+Route::get('/user/review', ['as' => 'user.review', 'uses' => 'UserController@reviewApplications', 'before' => 'auth']);
 Route::resource( 'user', 'UserController', ['before' => 'auth'] );
+Route::get('/user/{user}/approve', ['as' => 'user.approve', 'uses' => 'UserController@approveApplication', 'before' => 'auth']);
+Route::get(
+    '/user/{user}/deny',
+    ['as' => 'user.deny', 'uses' => 'UserController@denyApplication', 'before' => 'auth']
+);
 
 // Other Routes
 
@@ -43,6 +49,9 @@ Route::get( '/api/branch', 'ApiController@getBranchList', ['before' => 'auth'] )
 Route::get( '/api/country', 'ApiController@getCountries', ['before' => 'auth'] ); // Get a list of Countries and Country Codes
 Route::get( '/api/branch/{branchID}/grade', 'ApiController@getGradesForBranch', ['before' => 'auth'] ); // Get a list of pay grades for that branch
 Route::get( '/api/chapter', 'ApiController@getChapters', ['before' => 'auth'] ); // Get a list of all the chapters
-Route::get( '/api/chapter/{branchID}', 'ApiController@getChaptersByBranch', ['before' => 'auth']);
+Route::get( '/api/chapter/{branchID}/{location}', 'ApiController@getChaptersByBranch', ['before' => 'auth']);
+Route::get( '/api/locations', 'ApiController@getChapterLocations');
+Route::get( '/api/holding', 'ApiController@getHoldingChapters');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch', ['before' => 'auth'] ); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
+Route::get('/api/mtest', 'ApiController@testMongo');

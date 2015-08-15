@@ -1,6 +1,7 @@
 <?php
 
 use Jenssegers\Mongodb\Model as Eloquent;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Chapter extends Eloquent
 {
@@ -18,42 +19,64 @@ class Chapter extends Eloquent
     ];
 
 
-    static function getChapters($branch='')
+    static function getHoldingChapters()
+    {
+        $results = Chapter::where('joinable', '!=', false)->whereIn('hull_number', ['SS-001', 'SS-002', 'LP', 'HC'])->get();
+
+        $chapters = [];
+
+        foreach ($results as $chapter) {
+
+            $chapters[$chapter->_id] = $chapter->chapter_name;
+        }
+
+        return $chapters;
+    }
+    static function getChapters($branch = '', $location = 0)
     {
         $holdingChapters = [ 'SS-001', 'SS-002', 'LP', 'HC' ];
 
         if (empty($branch) === false) {
             $results = Chapter::where('branch', '=', strtoupper($branch))->where('joinable', '!=', false)->orderBy('chapter_name','asc')->get();
         } else {
-            $results = Chapter::all();
+            $results = Chapter::where('joinable', '!=', false)->orderBy('chapter_name', 'asc')->get();
         }
 
         if (count($results) === 0) {
-            $results = Chapter::where('hull_number','=','SS-001')->get();
+            //$results = Chapter::where('hull_number','=','SS-001')->get();
+            return [];
         }
+
         $chapters = [ ];
 
         foreach ( $results as $chapter ) {
-            $chapters[ $chapter->_id ] = $chapter->chapter_name;
-
-
             if ( isset( $chapter->hull_number ) === true && empty( $chapter->hull_number ) === false ) {
                 if ( in_array( $chapter->hull_number, $holdingChapters ) === true ) {
-                    $chapters[$chapter->_id] .= ' (Holding Chapter)';
+                    continue;
                 } else {
                     $co = Chapter::find($chapter->_id)->getCO();
-                    $append = '';
-                    if (empty($co[0]) === false && empty($co[0]['city']) === false && empty($co[0]['state_province']) == false) {
-                        $append = ' (' . $co[0]['city'] . ', ' . $co[0]['state_province'] . ')';
+
+                    if (empty($co[0]) === true) {
+                        $co = ['city' => null, 'state_province' => null];
+                    } else {
+                        $co = $co[0]->toArray();
                     }
-                    $chapters[ $chapter->_id ] .= $append;
+
+                    $append = '';
+                    if (empty($co) === false && empty($co['city']) === false && empty($co['state_province']) == false) {
+                        $append = ' (' . $co['city'] . ', ' . $co['state_province'] . ')';
+                    }
+
+                    if (is_numeric($location) === true || $co['state_province'] == $location) {
+                        $chapters[$chapter->_id] = $chapter->chapter_name . $append;
+                    }
                 }
             }
         }
 
         asort( $chapters, SORT_NATURAL );
 
-        $chapters = [ '' => "Select a Chapter" ] + $chapters;
+        //$chapters = [ '' => "Select a Chapter" ] + $chapters;
 
         return $chapters;
     }
@@ -129,6 +152,29 @@ class Chapter extends Eloquent
     {
         $chapter = Chapter::find($chapterId);
         return $chapter->chapter_type;
+    }
+
+    static function getChapterLocations()
+    {
+        $states = \Medusa\Enums\MedusaDefaults::STATES_BY_ABREVIATION;
+
+        $results = User::where('assignment.billet', '=', 'Commanding Officer')->get(['state_province','assignment']);
+
+        $chapterLocations = [];
+
+        foreach ($results as $location) {
+            $chapterLocations[$location->state_province] = true;
+        }
+
+        ksort($chapterLocations);
+
+        $retVal = [];
+
+        foreach(array_keys($chapterLocations) as $location) {
+            $retVal[$location] = array_key_exists($location, $states) === true?$states[$location]:$location;
+        }
+
+        return $retVal;
     }
 
 }

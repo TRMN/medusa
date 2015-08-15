@@ -34,13 +34,23 @@ class ApiController extends BaseController
         return Response::json(Chapter::getChapters());
     }
 
-    public function getChaptersByBranch($branchID) {
-        return Response::json( Chapter::getChapters( $branchID ) );
+    public function getChaptersByBranch($branchID, $location) {
+        return Response::json( Chapter::getChapters( $branchID, $location ) );
     }
 
     public function getRatingsForBranch($branchID)
     {
         return Response::json(Rating::getRatingsForBranch($branchID));
+    }
+
+    public function getChapterLocations()
+    {
+        return Response::json(Chapter::getChapterLocations());
+    }
+
+    public function getHoldingChapters()
+    {
+        return Response::json(Chapter::getHoldingChapters());
     }
 
     public function savePhoto() {
