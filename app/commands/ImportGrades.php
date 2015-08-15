@@ -100,6 +100,13 @@ class ImportGrades extends Command
     {
         $value = strtoupper($value);
 
+        $_date = strtoupper(date('d M Y', strtotime($value)));
+
+        if (strpos($value, '%') === false && $_date !== '01 JAN 1970') {
+            // Valid date and no score
+            return ['score' => '100%', 'date' => $_date];
+        }
+
         $scoreAndDate = preg_split('/[ -]+/', $value, 2);
 
         if (isset( $scoreAndDate[1] ) === true) {
