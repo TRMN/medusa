@@ -17,6 +17,7 @@
         <div class="nav-header lnav">BuPers (5SL)</div>
         <div class="rnav">
             <a href="{{ route('user.index') }}">List Members</a><br/>
+            <a href="{{ route('user.review') }}">Approve Applications</a>
             <a href="{{ route('user.create') }}">Add Member</a>
         </div>
 

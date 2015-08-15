@@ -22,8 +22,8 @@ registerform
 {{ Form::model( $user, [ 'route' => [ 'user.apply' ], 'id' => 'register' ] ) }}
 
 <h2>The Basics</h2>
-
-<p>You'll use your email address and password to log in to the site.</p>
+<fieldset>
+<legend>You'll use your email address and password to log in to the site</legend>
 
 <div class="row">
     <div class="small-6 columns">
@@ -39,10 +39,11 @@ registerform
         {{ Form::label( 'password_confirmation', 'Confirm Password' ) }} {{ Form::password( 'password_confirmation' ) }}
     </div>
 </div>
+</fieldset>
 
 <h2>Name</h2>
-
-<p>We need to know what to call you!</p>
+<fieldset>
+    <legend>We need to know what to call you</legend>
 
 <div class="row">
     <div class="small-4 columns">
@@ -58,10 +59,12 @@ registerform
         {{ Form::label( 'suffix', 'Suffix' ) }} {{ Form::text( 'suffix' ) }}
     </div>
 </div>
+</fieldset>
 
 <h2>Address</h2>
 
-<p>We only use this to help place you in the right chapter. We won't share this with anyone outside of the organization.</p>
+<fieldset>
+    <legend>We only use this to help place you in the right chapter. We won't share this with anyone outside of the organization.</legend>
 
 <div class="row">
     <div class="small-6 columns">
@@ -86,20 +89,31 @@ registerform
         {{ Form::label( 'country', 'Country' ) }} {{ Form::select( 'country', $countries, 'USA' ) }}
     </div>
 </div>
+</fieldset>
 
-<h2>Branch and Chapter</h2>
+<h2>Branch</h2>
 
-<p>If you know what branch and chapter you'd like to join, you may choose them here. One of the holding chapters is a good choice if you're not sure.</p>
-
+<fieldset>
+    <legend>Please choose which branch you would like to be part of</legend>
 <div class="row">
-    <div class="small-6 columns">
+    <div class="small-6 columns end">
         {{ Form::label( 'branch', "Branch") }} {{ Form::select( 'branch', $branches, 'RMN' ) }}
     </div>
-    <div class="small-6 columns">
-        {{ Form::label( 'primary_assignment', "Chapter") }} {{ Form::select( 'primary_assignment', $chapters ) }}
-    </div>
 </div>
+</fieldset>
 
+<h2>Chapter</h2>
+<fieldset>
+    <legend>Please choose what chapter you would like to join.  If you're not sure, choose one of the holding chapters.  You may join any chapter, regardless of your branch</legend>
+    <div class="row">
+        <div class="small-2 columns">
+            {{ Form::label( 'location', 'Location') }} {{ Form::select('location', $locations) }}
+        </div>
+        <div class="small-6 columns end">
+            {{ Form::label( 'primary_assignment', "Chapter") }} {{ Form::select( 'primary_assignment', $chapters ) }}
+        </div>
+    </div>
+</fieldset>
 {{ Form::submit( 'Sign me up!', [ 'class' => 'button' ] ) }}
 
 {{ Form::close() }}

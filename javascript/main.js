@@ -83,14 +83,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order" : [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order" : [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -102,14 +100,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -121,14 +117,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -140,13 +134,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
-        ], "language": {
+        ],
+        "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -158,14 +151,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -177,13 +168,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
-        ], "language": {
+        ],
+        "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -195,14 +185,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -214,14 +202,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -233,14 +219,22 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#reviewApplications').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 

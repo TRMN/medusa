@@ -10,7 +10,7 @@ class UserController extends \BaseController
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::where('active', '=', "1")->where('registration_status', '=', 'Active')->get();
 
         $usersByBranch = [];
 
@@ -18,7 +18,75 @@ class UserController extends \BaseController
             $usersByBranch[$user->branch][] = $user;
         }
 
-        return View::make('user.index', ['users' => $usersByBranch]);
+        return View::make('user.index', ['users' => $usersByBranch, 'title' => 'Membership List']);
+    }
+
+    public function reviewApplications()
+    {
+        $users = User::where('active', '!=', "1")->where('registration_status', '=', 'Pending')->get();
+
+        return View::make('user.review', ['users' => $users, 'title' => 'Approve Membership Applications']);
+    }
+
+    public function approveApplication(User $user)
+    {
+        $user->registration_status = 'Active';
+        $user->registration_date = date('Y-m-d');
+
+        switch ($user->branch) {
+            case 'RMN':
+            case 'GSN':
+            case 'RHN':
+            case 'IAN':
+                $billet = 'Crewman';
+
+                $dob = new DateTime($user->dob);
+                $ageCutOff = new DateTime('now');
+                $ageCutOff->modify('-18 year');
+
+                if ($ageCutOff < $dob) {
+                    $billet = 'Midshipman';
+                }
+
+                $assignment = $user->assignment;
+                $assignment[0]['billet'] = $billet;
+                $user->assignment = $assignment;
+
+                break;
+            case 'RMMC':
+                $assignment = $user->assignment;
+                $assignment[0]['billet'] = 'Marine';
+                $user->assignment = $assignment;
+
+                break;
+            case 'RMA':
+                $assignment = $user->assignment;
+                $assignment[0]['billet'] = 'Soldier';
+                $user->assignment = $assignment;
+
+                break;
+            default:
+                $assignment = $user->assignment;
+                $assignment[0]['billet'] = 'Civilian';
+                $user->assignment = $assignment;
+        }
+
+        $rank = $user['rank'];
+        $rank['date_of_rank'] = date('Y-m-d');
+        $user->rank = $rank;
+
+        $user->save();
+
+        return Redirect::route('user.review');
+    }
+
+    public function denyApplication(User $user)
+    {
+        $user->registration_status = 'Denied';
+        $user->registration_date = date('Y-m-d');
+        $user->save();
+
+        return Redirect::route('user.review');
     }
 
     /**
@@ -442,7 +510,8 @@ class UserController extends \BaseController
             'user'      => new User,
             'countries' => $countries,
             'branches'  => $branches,
-            'chapters'  => ['' => 'Select a Chapter'],
+            'chapters'  => ['0' => 'Select a Chapter'],
+            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations()
         ];
 
         return View::make('user.register', $viewData);

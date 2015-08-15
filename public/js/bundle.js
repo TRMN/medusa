@@ -49,31 +49,44 @@ module.exports = function() {
 module.exports = function() {
     this.initRegisterForm = function () {
 
-		jQuery.getJSON('/api/chapter/RMN', function(result) {
-			jQuery('#register #primary_assignment').empty();
-			jQuery.each(result, function(key, value) {
-				var selected = '';
-				if (value.match(/Holding Chapter/)) {
-					selected = ' selected';
-				}
-				jQuery('#register #primary_assignment').append('<option value="' + key + '"' + selected + '>' + value + '</option>');
-			});
-		});
+        jQuery('#register #location').change(buildChapterList);
 
-		jQuery('#register #branch').change(function() {
-			var branch = jQuery('#branch').val();
-			jQuery.getJSON('/api/chapter/' + branch, function(result) {
-				jQuery('#register #primary_assignment').empty();
-				jQuery.each(result, function(key, value) {
-					var selected = '';
-					if (value.match(/Holding Chapter/)) {
-						selected = ' selected';
-					}
-					jQuery('#register #primary_assignment').append('<option value="' + key + '"' + selected + '>' + value + '</option>');
-				});
-			});
-		});
+        buildChapterList();
 
+        function buildChapterList() {
+            jQuery('#register #primary_assignment').empty();
+            jQuery('#register #primary_assignment').append('<option value="0">Select a Chapter');
+            jQuery('#register #primary_assignment').append('<optgroup label="Holding Chapters">' + getURI('holding') + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="RMN">' + getURI('chapter/RMN/' + jQuery('#register #location').val()) + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="RMMC">' + getURI('chapter/RMMC/' + jQuery('#register #location').val()) + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="RMA">' + getURI('chapter/RMA/' + jQuery('#register #location').val()) + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="GSN">' + getURI('chapter/GSN/' + jQuery('#register #location').val()) + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="IAN">' + getURI('chapter/IAN/' + jQuery('#register #location').val()) + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="RHN">' + getURI('chapter/RHN/' + jQuery('#register #location').val()) + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="SFS">' + getURI('chapter/SFS/' + jQuery('#register #location').val()) + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="CIVIL">' + getURI('chapter/CIVIL/' + jQuery('#register #location').val()) + '</optgroup>');
+            jQuery('#register #primary_assignment').append('<optgroup label="INTEL">' + getURI('chapter/INTEL/' + jQuery('#register #location').val()) + '</optgroup>');
+        }
+
+        function getURI(url) {
+            var options = '';
+            jQuery.ajax({
+                url: '/api/' + url,
+                dataType: 'json',
+                async: false,
+                success: function (result) {
+                    jQuery.each(result, function (key, value) {
+                        options += '<option value="' + key + '">' + value + '</option>';
+
+                    });
+                }
+            });
+
+            if (options == '') {
+                options = '<option disabled>No Chapters Found</option>';
+            }
+            return options;
+        }
     };
 };
 },{}],4:[function(require,module,exports){
@@ -1918,14 +1931,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order" : [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order" : [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -1937,14 +1948,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -1956,14 +1965,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -1975,13 +1982,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
-        ], "language": {
+        ],
+        "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -1993,14 +1999,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -2012,13 +2016,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
-        ], "language": {
+        ],
+        "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -2030,14 +2033,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -2049,14 +2050,12 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -2068,14 +2067,22 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
-            null,
-            null,
             {"orderable": false}
         ],
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order": [[2, 'asc'], [0, 'asc'], [1, 'asc']],
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+
+    jQuery('#reviewApplications').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
