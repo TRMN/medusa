@@ -86,6 +86,6 @@ class ChapterSeeder extends Seeder
     function createChapter( $name, $type = "ship", $hull_number = '', $branch='', $joinable = true )
     {
         $this->command->comment('Creating ' . $name);
-        Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number, 'branch' => $branch, 'joinable' => $joinable] );
+        return Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number, 'branch' => $branch, 'joinable' => $joinable] );
     }
 }

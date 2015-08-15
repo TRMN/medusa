@@ -1,4 +1,10 @@
-<h4 class="trmn my">Service Record</h4>
+<h4 class="trmn my">
+    @if($user->registration_status != "Pending")
+        Service Record
+    @else
+        Member Application
+    @endif
+</h4>
 <h5 class="Incised901Light ninety">Last
     Updated: {{{ date('d M Y @ g:i A T', strtotime($user->updated_at)) }}}</h5>
 
@@ -17,6 +23,7 @@
         @endif
         </a>
     </div>
+    @if($user->registration_status != "Pending")
     <div class="Incised901Light filePhoto">
         {{{$user->member_id}}}
         <div class="filePhotoBox">
@@ -57,14 +64,15 @@
             </div>
         @endforeach
     </div>
+    @endif
     <div class="Incised901Black ninety">
         Contact:
         <div class="row">
             <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
             <div class="small-10 columns Incised901Light ninety textLeft end">
-                {{{ $user->address_1 }}}<br/>
-                @if(!empty($user->address_2))
-                    {{{ $user->address_2 }}}<br/>
+                {{{ $user->address1 }}}<br/>
+                @if(!empty($user->address2))
+                    {{{ $user->address2 }}}<br/>
                 @endif
                 {{{ $user->city }}}, {{{ $user->state_province }}} {{{ $user->postal_code }}}<br/>
                 {{{ $user->email_address }}}<br/>
@@ -74,7 +82,13 @@
         <div class="row">
             <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
             <div class="small-10 columns Incised901Light ninety textLeft end">
-                <br/><a href="{{route('user.edit', [$user->_id])}}" class="editButton Incised901Black margin-5">EDIT</a>
+                <br/>
+                @if($user->registration_status != "Pending")
+                    <a href="{{route('user.edit', [$user->_id])}}" class="editButton Incised901Black margin-5">EDIT</a>
+                @else
+                    <a href="{{action('user.approve', [$user->_id])}}" class="editButton Incised901Black margin-5">Approve</a> <a href="{{action('user.deny', [$user->_id])}}" class="editButton
+                        Incised901Black margin-5">DENY</a>
+                @endif
             </div>
         </div>
     </div>
