@@ -165,7 +165,7 @@ class ImportUsers extends Command
                 $user['country'] = 'USA';
             }
 
-            $user['state_province'] = $this->normalizeStateProvince($user['state_province']);
+            $user['state_province'] = User::normalizeStateProvince($user['state_province']);
             $user['awards'] = [];
 
             foreach ( $user as $key => $value )
@@ -232,43 +232,6 @@ class ImportUsers extends Command
             Chapter::create( ['chapter_name' => $name, 'chapter_type' => ''] );
             return Chapter::where( 'chapter_name', '=', $name )->get();
         }
-    }
-
-    protected function normalizeStateProvince($state)
-    {
-        if (strlen($state) == 2) {
-            /** No need to validate, we don't know all 2 letter state and province abbreviations */
-            return strtoupper($state);
-        }
-
-        if (strlen($state) == 3 && substr($state,-1) == '.') {
-            // We have a 2 letter abbreviation followed by a period.  Strip the period and slam to upper case
-            return strtoupper(substr($state,0,2));
-        }
-
-        if (strlen($state) == 4 && substr($state,-1) == '.' && substr($state,-3, 1) == '.') {
-            // We have a 2 letter abbreviation with periods between the letters, like D.C. or B.C.
-            return strtoupper(substr($state,0,1) . substr($state,-2,1));
-        }
-
-        if (substr($state, 2,2) == ' -') {
-            // We may have a 2 letter abbreviation followed by the full name, try and validate
-            if (array_key_exists(strtoupper(substr($state,0,2)), MedusaDefaults::STATES_BY_ABREVIATION) === true) {
-                return strtoupper(substr($state, 0, 2));
-            }
-
-        }
-
-        // Nothing else hits, check and see if we know the 2 letter abbreviation
-
-        if (array_key_exists(strtoupper($state), MedusaDefaults::STATES_BY_NAME) === true) {
-            $tmp = MedusaDefaults::STATES_BY_NAME;
-            return $tmp[strtoupper($state)];
-        }
-
-        // No hits, return it un altered
-
-        return $state;
     }
 
 }
