@@ -68,10 +68,10 @@ registerform
 
 <div class="row">
     <div class="small-6 columns">
-        {{ Form::label( 'address_1', 'Street Address' ) }} {{ Form::text( 'address_1' ) }}
+        {{ Form::label( 'address1', 'Street Address' ) }} {{ Form::text( 'address1' ) }}
     </div>
     <div class="small-6 columns">
-        {{ Form::label( 'address_2', 'Address Line 2' ) }} {{ Form::text( 'address_2' ) }}
+        {{ Form::label( 'address2', 'Address Line 2' ) }} {{ Form::text( 'address2' ) }}
     </div>
 </div>
 
@@ -89,6 +89,14 @@ registerform
         {{ Form::label( 'country', 'Country' ) }} {{ Form::select( 'country', $countries, 'USA' ) }}
     </div>
 </div>
+</fieldset>
+
+<h2>Age Verification</h2>
+<fieldset>
+    <legend>We only use this to vereify your elgibility for certain leadership postions</legend>
+    <div class="small-6 columns end">
+        {{ Form::label('dob', 'Date of Birth') }} {{Form::date('dob', $user->dob)}}
+    </div>
 </fieldset>
 
 <h2>Branch</h2>

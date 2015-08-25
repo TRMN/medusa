@@ -77,6 +77,20 @@ class UserController extends \BaseController
 
         $user->save();
 
+        // Get Chapter CO's email
+        $user->co_email = Chapter::find($user->getPrimaryAssignmentId())->getCO()[0]->email_address;
+
+        // Send welcome email
+        Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
+                $message->from('membership@trmn.org', 'TRMN Membership');
+
+                $message->to($user->email_address)->bcc($user->co_email);
+
+                $message->subject('TRMN Membership');
+            }
+        );
+
+
         return Redirect::route('user.review');
     }
 
@@ -105,6 +119,7 @@ class UserController extends \BaseController
                 'grades'    => Grade::getGradesForBranch('RMN'),
                 'ratings'   => Rating::getRatingsForBranch('RMN'),
                 'chapters'  => Chapter::getChapters(),
+                'billets'   => Billet::getBillets(),
             ]
         );
     }
@@ -176,7 +191,7 @@ class UserController extends \BaseController
 
         // Assign a member id
 
-        $data['member_id'] = 'RMN' . $this->getNextAvailableMemberId();
+        $data['member_id'] = 'RMN' . User::getFirstAvailableMemberId($data['honorary']);
 
         if (isset( $data['honorary'] ) === true && $data['honorary'] === "1") {
             $data['member_id'] .= '-H';
@@ -185,10 +200,13 @@ class UserController extends \BaseController
 
         // Set the active flag, application date and registration date
 
-        $data['active'] = (int)1;
+        $data['active'] = '1';
 
         $data['application_date'] = date('Y-m-d');
         $data['registration_date'] = date('Y-m-d');
+
+        // Normalize State and Province
+        $data['state_province'] = User::normalizeStateProvince($data['state_province']);
 
         // For future use
 
@@ -223,24 +241,51 @@ class UserController extends \BaseController
     public function apply()
     {
         $rules = [
-            'first_name'     => 'required|min:2',
-            'last_name'      => 'required|min:2',
-            'address_1'      => 'required|min:4',
-            'city'           => 'required|min:2',
-            'state_province' => 'required|min:2',
-            'postal_code'    => 'required|min:2',
-            'country'        => 'required',
-            'email_address'  => 'required|email|unique:users',
-            'password'       => 'required|confirmed',
+            'email_address'      => 'required|email|unique:users',
+            'first_name'         => 'required|min:2',
+            'last_name'          => 'required|min:2',
+            'address1'           => 'required|min:4',
+            'city'               => 'required|min:2',
+            'state_province'     => 'required|min:2',
+            'postal_code'        => 'required|min:2',
+            'country'            => 'required|min:2',
+            'password'           => 'required|confirmed',
+            'dob'                => 'required|date|date_format:Y-m-d',
+            'branch'             => 'required',
+            'primary_assignment' => 'required',
         ];
 
-        $validator = Validator::make($data = Input::all(), $rules);
+        $error_message = [
+            'first_name.required' => 'Please enter your first name',
+            'first_name.min' => 'Your first name must be at least 2 characters long',
+            'last_name.required' => 'Please enter your last name',
+            'last_name.min' => 'Your last name must be at least 2 characters long',
+            'address1.required'              => 'Please enter your street address',
+            'address1.min'                   => 'The street address must be at least 4 characters long',
+            'city.required' => 'Please enter your city',
+            'city.min' => 'Your city must be at least 2 characters long',
+            'state_province.required'        => 'Please enter your state or province',
+            'state_province.min'             => 'Your state or province must be at least 2 characters long',
+            'postal_code.required' => 'Please enter your zip or postal code',
+            'postal_code.min' => 'Your zip or postal code must be at least 2 characters long',
+            'country.required' => 'Please enter your country',
+            'country.min' => 'Your country must be at least 2 characters long',
+            'dob.required' => 'Please enter your date of birth',
+            'dob.date_format' => 'Please enter your date of birth in the YYYY-MM-DD format',
+            'dob.date' => 'Please enter a valid date of birth',
+            'primary_assignment.required'    => "Please select a chapter",
+            'branch.required'                => "Please select the members branch",
+            'email_address.unique'           => 'That email address is already in use',
+            'email_address.required' => 'Please enter your email address',
+        ];
+
+        $validator = Validator::make($data = Input::all(), $rules, $error_message);
 
         if ($validator->fails()) {
             return Redirect::to('register')->withErrors($validator)->withInput();
         }
 
-        $memberId = $this->getNextAvailableMemberId();
+        $memberId = User::getFirstAvailableMemberId();
 
         $data['member_id'] = 'RMN' . $memberId;
 
@@ -264,7 +309,7 @@ class UserController extends \BaseController
 
             $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
-            $data['assignment'] = [
+            $data['assignment'][] = [
                 'chapter_id'    => $data['primary_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date('Y-m-d'),
@@ -272,7 +317,7 @@ class UserController extends \BaseController
                 'primary'       => true
             ];
         } else {
-            $data['assignment'] = [];
+            $data['assignment'][] = [];
         }
 
         unset( $data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet'] );
@@ -281,12 +326,16 @@ class UserController extends \BaseController
 
         $data['password'] = Hash::make($data['password']);
 
+        // Normalize State and Province
+        $data['state_province'] = User::normalizeStateProvince($data['state_province']);
+
         // For future use
 
         $data['peerage_record'] = [];
         $data['awards'] = [];
-        $data['active'] = false;
+        $data['active'] = '0';
         $data['application_date'] = date('Y-m-d');
+        $data['registration_status'] = 'Pending';
 
         unset( $data['_token'], $data['password_confirmation'] );
 
@@ -373,7 +422,8 @@ class UserController extends \BaseController
                 'branches'  => Branch::getBranchList(),
                 'grades'    => Grade::getGradesForBranch($user->branch),
                 'ratings'   => Rating::getRatingsForBranch($user->branch),
-                'chapters'  => Chapter::getChapters()
+                'chapters'  => Chapter::getChapters(),
+                'billets'   => Billet::getBillets(),
             ]
         );
     }
@@ -440,6 +490,9 @@ class UserController extends \BaseController
         } else {
             unset( $data['password'] );
         }
+
+        // Normalize State and Province
+        $data['state_province'] = User::normalizeStateProvince($data['state_province']);
 
         $data['awards'] = [];
 
@@ -529,33 +582,4 @@ class UserController extends \BaseController
         return $countries;
     }
 
-    public function getNextAvailableMemberId()
-    {
-        $memberIds = User::all(['member_id']);
-        $uniqueMemberIds = [];
-
-        foreach ($memberIds as $record) {
-            $uniqueMemberIds[] = intval(substr($record->member_id, 4, 4));
-        }
-
-        if (sizeof($uniqueMemberIds) == 0) {
-            return "-0000-" . date('y');
-        }
-
-        asort($uniqueMemberIds);
-
-        $lastUsedId = array_pop($uniqueMemberIds);
-
-        $newNumber = $lastUsedId + 1;
-
-        if ($newNumber > 9999) {
-            $newNumber = 0;
-        }
-
-        $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-
-        $yearCode = date('y');
-
-        return "-$newNumber-$yearCode";
-    }
 }
