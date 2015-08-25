@@ -2080,7 +2080,7 @@ jQuery(document).ready(function ($) {
         "autoWidth": true,
         "pageLength": 50,
         "language": {
-            "emptyTable": "No members for this branch"
+            "emptyTable": "No applications to review"
         },
         "order": [[0, 'asc']],
         "jQueryUI": true
