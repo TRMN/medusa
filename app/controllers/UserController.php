@@ -74,6 +74,7 @@ class UserController extends \BaseController
         $rank = $user['rank'];
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
+        $user->member_id = 'RMN' . User::getFirstAvailableMemberId();
 
         $user->save();
 
@@ -284,10 +285,6 @@ class UserController extends \BaseController
         if ($validator->fails()) {
             return Redirect::to('register')->withErrors($validator)->withInput();
         }
-
-        $memberId = User::getFirstAvailableMemberId();
-
-        $data['member_id'] = 'RMN' . $memberId;
 
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
 
