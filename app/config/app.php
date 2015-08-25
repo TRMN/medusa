@@ -202,6 +202,6 @@ return [
         'Image' => 'Intervention\Image\Facades\Image',
     ],
 
-    'version' => '0.6.17',
+    'version' => '0.7.0',
 
 ];
