@@ -5,6 +5,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Jenssegers\Mongodb\Model as Eloquent;
+use Medusa\Enums\MedusaDefaults;
 
 class User extends Eloquent implements UserInterface, RemindableInterface
 {
@@ -14,7 +15,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public static $rules = [
         'first_name'            => 'required|min:2',
         'last_name'             => 'required|min:2',
-        'address_1'             => 'required|min:4',
+        'address1'             => 'required|min:4',
         'city'                  => 'required|min:2',
         'state_province'        => 'required|min:2',
         'postal_code'           => 'required|min:2',
@@ -31,7 +32,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public static $updateRules = [
         'first_name'            => 'required|min:2',
         'last_name'             => 'required|min:2',
-        'address_1'             => 'required|min:4',
+        'address1'             => 'required|min:4',
         'city'                  => 'required|min:2',
         'state_province'        => 'required|min:2',
         'postal_code'           => 'required|min:2',
@@ -47,8 +48,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public static $error_message = [
         'min'                            => 'The members :attribute must be at least :min characters long',
-        'address_1.required'             => 'Please enter the members street address',
-        'address_1.min'                  => 'The street address must be at least :size characters long',
+        'address1.required'             => 'Please enter the members street address',
+        'address1.min'                  => 'The street address must be at least :size characters long',
         'required'                       => 'Please enter the members :attribute',
         'state_province.required'        => 'Please enter the members state or province',
         'state_province.min'             => 'The members state or province must be at least :size character long',
@@ -70,8 +71,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'middle_name',
         'last_name',
         'suffix',
-        'address_1',
-        'address_2',
+        'address1',
+        'address2',
         'city',
         'state_province',
         'postal_code',
@@ -164,7 +165,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      *
      * @return mixed
      */
-    function getRateTitle($rank)
+    public function getRateTitle($rank)
     {
         if (is_array($this->rating) === true) {
             $rateDetail = Rating::where('rate_code', '=', $this->rating['rate'])->get();
@@ -360,5 +361,100 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         } else {
             return false;
         }
+    }
+
+    static function normalizeStateProvince($state)
+    {
+        if (strlen($state) == 2) {
+            /** No need to validate, we don't know all 2 letter state and province abbreviations */
+            return strtoupper($state);
+        }
+
+        if (strlen($state) == 3 && substr($state, -1) == '.') {
+            // We have a 2 letter abbreviation followed by a period.  Strip the period and slam to upper case
+            return strtoupper(substr($state, 0, 2));
+        }
+
+        if (strlen($state) == 4 && substr($state, -1) == '.' && substr($state, -3, 1) == '.') {
+            // We have a 2 letter abbreviation with periods between the letters, like D.C. or B.C.
+            return strtoupper(substr($state, 0, 1) . substr($state, -2, 1));
+        }
+
+        if (substr($state, 2, 2) == ' -') {
+            // We may have a 2 letter abbreviation followed by the full name, try and validate
+            if (array_key_exists(strtoupper(substr($state, 0, 2)), MedusaDefaults::STATES_BY_ABREVIATION) === true) {
+                return strtoupper(substr($state, 0, 2));
+            }
+        }
+
+        // Nothing else hits, check and see if we know the 2 letter abbreviation
+
+        if (array_key_exists(strtoupper($state), MedusaDefaults::STATES_BY_NAME) === true) {
+            $tmp = MedusaDefaults::STATES_BY_NAME;
+            return $tmp[strtoupper($state)];
+        }
+
+        // No hits, return it un altered
+
+        return $state;
+    }
+
+    static function getNextAvailableMemberId()
+    {
+        $uniqueMemberIds = self::_getMemberIds();
+
+        if (sizeof($uniqueMemberIds) == 0) {
+            return "-0000-" . date('y');
+        }
+
+        asort($uniqueMemberIds);
+
+        $lastUsedId = array_pop($uniqueMemberIds);
+
+        $newNumber = $lastUsedId + 1;
+
+        if ($newNumber > 9999) {
+            $newNumber = 0;
+        }
+
+        $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        $yearCode = date('y');
+
+        return "-$newNumber-$yearCode";
+    }
+
+    static function getFirstAvailableMemberId($honorary=false)
+    {
+        $uniqueMemberIds = self::_getMemberIds();
+
+        if (sizeof($uniqueMemberIds) == 0) {
+            return "-0000" . date('y');
+        }
+
+        asort($uniqueMemberIds);
+
+        $lastId = 0;
+
+        foreach ($uniqueMemberIds as $memberId) {
+            if ((intval($lastId) + 1 < intval($memberId)) && ($honorary === true || intval($lastId) + 1 > 200)) {
+                return '-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT) . '-' . date('y');
+            }
+            $lastId = $memberId;
+        }
+
+        return self::getNextAvailableMemberId();
+    }
+
+    static function _getMemberIds()
+    {
+        $memberIds = self::all(['member_id']);
+        $uniqueMemberIds = [];
+
+        foreach ($memberIds as $record) {
+            $uniqueMemberIds[] = intval(substr($record->member_id, 4, 4));
+        }
+
+        return $uniqueMemberIds;
     }
 }
