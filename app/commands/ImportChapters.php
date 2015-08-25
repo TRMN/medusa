@@ -71,26 +71,30 @@ class ImportChapters extends Command
             {
                 foreach ( $ships as $ship )
                 {
-                    $this->comment( "Creating " . $ship['name'] . ", assigned to " . $fleets[$ship['fleet']]['chapter_name'] );
+                    // Make sure that the ship doesn't already exist
+                    if (count(Chapter::where('chapter_name', '=', $ship['name'])->get()->toArray()) === 0) {
+                        $this->comment( "Creating " . $ship['name'] . ", assigned to " . $fleets[$ship['fleet']]['chapter_name'] );
 
-                    $result = Chapter::create(
-                        [
-                            'branch'          => "$branch",
-                            'chapter_name'    => $ship['name'],
-                            'chapter_type'    => 'ship',
-                            'hull_number'     => $ship['hull_number'],
-                            'ship_class'      => $ship['class'],
-                            'commission_date' => $ship['commissioned'],
-                            'assigned_to'     => $fleets[$ship['fleet']]['_id']
-                        ]
-                    );
+                        $result = Chapter::create(
+                            [
+                                'branch'          => "$branch",
+                                'chapter_name'    => $ship['name'],
+                                'chapter_type'    => 'ship',
+                                'hull_number'     => $ship['hull_number'],
+                                'ship_class'      => $ship['class'],
+                                'commission_date' => $ship['commissioned'],
+                                'assigned_to'     => $fleets[$ship['fleet']]['_id']
+                            ]
+                        );
 
-                    // For some reason, mongo drops the branch field, so let's update the document after the initial save
+                        // For some reason, mongo drops the branch field, so let's update the document after the initial save
 
-                    $chapter = Chapter::find($result['_id']);
-                    $chapter['branch'] = $branch;
-                    $chapter->save();
-
+                        $chapter = Chapter::find($result['_id']);
+                        $chapter['branch'] = $branch;
+                        $chapter->save();
+                    } else {
+                        $this->comment($ship['name'] . ' already exists, skipping');
+                    }
                 }
             }
         }
