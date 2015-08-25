@@ -64,13 +64,13 @@
 
     <div class="row">
         <div class="small-8 columns ninety Incised901Light end">
-            {{ Form::label('address_1', 'Street Address', ['class' => 'my']) }} {{ Form::text('address_1') }}
+            {{ Form::label('address1', 'Street Address', ['class' => 'my']) }} {{ Form::text('address1') }}
         </div>
 
     </div>
     <div class="row">
         <div class="small-8 columns ninety Incised901Light end">
-            {{ Form::label('address_2', 'Address Line 2', ['class' => 'my']) }} {{ Form::text('address_2') }}
+            {{ Form::label('address2', 'Address Line 2', ['class' => 'my']) }} {{ Form::text('address2') }}
         </div>
     </div>
 
@@ -124,7 +124,7 @@
         </div>
         <div class="row">
             <div class="end small-11 columns ninety Incised901Light">
-                {{ Form::label('primary_billet', 'Billet', ['class' => 'my']) }} {{ Form::text('primary_billet') }}
+                {{ Form::label('primary_billet', 'Billet', ['class' => 'my']) }} {{ Form::select('primary_billet', $billets) }}
             </div>
         </div>
         <div class="row">
@@ -140,7 +140,7 @@
         </div>
         <div class="row">
             <div class="end small-11 columns ninety Incised901Light">
-                {{ Form::label('secondary_billet', 'Billet', ['class' => 'my']) }} {{ Form::text('secondary_billet') }}
+                {{ Form::label('secondary_billet', 'Billet', ['class' => 'my']) }} {{ Form::select('secondary_billet', $billets) }}
             </div>
         </div>
         <div class="row">
