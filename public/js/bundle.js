@@ -1931,6 +1931,7 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
+            null,
             {"orderable": false}
         ],
         "language": {
@@ -1944,6 +1945,7 @@ jQuery(document).ready(function ($) {
         "autoWidth": true,
         "pageLength": 50,
         "columns": [
+            null,
             null,
             null,
             null,
@@ -1965,6 +1967,7 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
+            null,
             {"orderable": false}
         ],
         "language": {
@@ -1978,6 +1981,7 @@ jQuery(document).ready(function ($) {
         "autoWidth": true,
         "pageLength": 50,
         "columns": [
+            null,
             null,
             null,
             null,
@@ -1999,6 +2003,7 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
+            null,
             {"orderable": false}
         ],
         "language": {
@@ -2012,6 +2017,7 @@ jQuery(document).ready(function ($) {
         "autoWidth": true,
         "pageLength": 50,
         "columns": [
+            null,
             null,
             null,
             null,
@@ -2033,6 +2039,7 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
+            null,
             {"orderable": false}
         ],
         "language": {
@@ -2050,6 +2057,7 @@ jQuery(document).ready(function ($) {
             null,
             null,
             null,
+            null,
             {"orderable": false}
         ],
         "language": {
@@ -2063,6 +2071,7 @@ jQuery(document).ready(function ($) {
         "autoWidth": true,
         "pageLength": 50,
         "columns": [
+            null,
             null,
             null,
             null,
