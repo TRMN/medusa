@@ -10,12 +10,16 @@ class UserController extends \BaseController
      */
     public function index()
     {
-        $users = User::where('active', '=', "1")->where('registration_status', '=', 'Active')->get();
+        $branches = ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN', 'SFS', 'CIVIL', 'INTEL'];
 
-        $usersByBranch = [];
+        foreach($branches as $branch) {
+            $users = User::where('active', '=', "1")
+                ->where('registration_status', '=', 'Active')
+                ->where('branch', '=', $branch)
+                ->remember(30)
+                ->get();
 
-        foreach($users as $user) {
-            $usersByBranch[$user->branch][] = $user;
+            $usersByBranch[$branch] = $users;
         }
 
         return View::make('user.index', ['users' => $usersByBranch, 'title' => 'Membership List']);

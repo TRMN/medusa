@@ -27,6 +27,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br />Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -45,6 +46,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -60,6 +62,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
@@ -75,6 +78,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -93,6 +97,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -108,6 +113,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
@@ -122,6 +128,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -140,6 +147,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -155,6 +163,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
@@ -169,6 +178,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -187,6 +197,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -202,6 +213,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
@@ -216,6 +228,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -234,6 +247,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -249,6 +263,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
@@ -263,6 +278,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -281,6 +297,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -296,6 +313,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
@@ -310,6 +328,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -328,6 +347,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -343,6 +363,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
@@ -357,6 +378,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -375,6 +397,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -390,6 +413,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
@@ -404,6 +428,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -422,6 +447,7 @@
                                     No assignment
                                 @endif
                             </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
                                 <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
                                 <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
@@ -437,6 +463,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </tfoot>
