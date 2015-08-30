@@ -128,6 +128,7 @@ return [
         'mnshankar\CSV\CSVServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Smalldogs\Html5inputs\Html5InputsServiceProvider',
+        'Iorme\SimpleCaptcha\SimpleCaptchaServiceProvider',
 
     ],
 
@@ -200,8 +201,9 @@ return [
         'CSV' => 'mnshankar\CSV\CSVFacade',
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Image' => 'Intervention\Image\Facades\Image',
+        'SimpleCaptcha' => 'Iorme\SimpleCaptcha\Facades\SimpleCaptcha',
     ],
 
-    'version' => '0.7.1',
+    'version' => '0.7.2',
 
 ];

@@ -52,6 +52,10 @@ Route::get( '/api/chapter', 'ApiController@getChapters', ['before' => 'auth'] );
 Route::get( '/api/chapter/{branchID}/{location}', 'ApiController@getChaptersByBranch', ['before' => 'auth']);
 Route::get( '/api/locations', 'ApiController@getChapterLocations');
 Route::get( '/api/holding', 'ApiController@getHoldingChapters');
+Route::get( '/api/fleet', 'ApiController@getFleets');
+Route::get( '/api/hq', 'ApiController@getHeadquarters');
+Route::get( '/api/bureau', 'ApiController@getBureaus');
+Route::get( '/api/su', 'ApiController@getSeparationUnits');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch', ['before' => 'auth'] ); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 Route::get('/api/mtest', 'ApiController@testMongo');

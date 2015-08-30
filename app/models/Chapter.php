@@ -32,6 +32,33 @@ class Chapter extends Eloquent
 
         return $chapters;
     }
+
+    static function getChaptersByType($type)
+    {
+        $results = Chapter::where('chapter_type', '=', $type)->get();
+
+        $chapters = [];
+
+        foreach ($results as $chapter) {
+
+            switch ($type) {
+                case 'SU':
+                    $name = $chapter->chapter_name . ' (' . $chapter->hull_number . ')';
+                    break;
+                case 'headquarters':
+                    $name = $chapter->chapter_name . ' (' . $chapter->branch . ')';
+                    break;
+                default:
+                    $name = $chapter->chapter_name;
+            }
+
+            $chapters[$chapter->_id] = $name;
+
+        }
+
+        return $chapters;
+    }
+
     static function getChapters($branch = '', $location = 0)
     {
         $holdingChapters = [ 'SS-001', 'SS-002', 'LP', 'HC' ];
