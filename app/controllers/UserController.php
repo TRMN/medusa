@@ -123,8 +123,9 @@ class UserController extends \BaseController
                 'branches'  => Branch::getBranchList(),
                 'grades'    => Grade::getGradesForBranch('RMN'),
                 'ratings'   => Rating::getRatingsForBranch('RMN'),
-                'chapters'  => Chapter::getChapters(),
-                'billets'   => Billet::getBillets(),
+                'chapters'  => ['0' => 'Select a Chapter'],
+                'billets'   => ['0' => 'Select a Billet'] + Billet::getBillets(),
+                'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations()
             ]
         );
     }
@@ -290,6 +291,11 @@ class UserController extends \BaseController
             return Redirect::to('register')->withErrors($validator)->withInput();
         }
 
+        // Check Captcha
+        if (\Iorme\SimpleCaptcha\SimpleCaptcha::check(Input::get('captcha')) === false) {
+            return Redirect::to('register')->withErrors(['message' => 'The code you entered was not correct'])->withInput();
+        }
+
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
 
         switch ($data['rank']) {
@@ -321,7 +327,7 @@ class UserController extends \BaseController
             $data['assignment'][] = [];
         }
 
-        unset( $data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet'] );
+        unset( $data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet'], $data['captcha'] );
 
         // Hash the password
 
@@ -425,6 +431,7 @@ class UserController extends \BaseController
                 'ratings'   => Rating::getRatingsForBranch($user->branch),
                 'chapters'  => Chapter::getChapters(),
                 'billets'   => Billet::getBillets(),
+                'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations()
             ]
         );
     }
