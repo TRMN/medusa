@@ -119,28 +119,42 @@
     <fieldset>
         <legend class="seventy-five Incised901Light">&nbsp;Assignment Information&nbsp;</legend>
         <div class="row">
-            <div class="end small-4 columns ninety Incised901Light end">
-                {{ Form::label('primary_assignment', "Primary Assignment", ['class' => 'my']) }} {{ Form::select('primary_assignment', $chapters) }}
+            <div class="end small-6 columns ninety Incised901Light end">
+                <div class="row">
+                    <div class="small-3 columns ninety Incised901Light">
+                        {{ Form::label( 'plocation', 'Location', ['class' => 'my']) }} {{ Form::select('plocation', $locations) }}
+                    </div>
+                    <div class="small-9 columns ninety Incised901Light end">
+                        {{ Form::label('primary_assignment', "Primary Assignment", ['class' => 'my']) }} {{ Form::select('primary_assignment', $chapters) }}
+                    </div>
+                </div>
             </div>
-            <div class="end small-4 columns ninety Incised901Light end">
-                {{ Form::label('secondary_assignment', "Secondary Assignment", ['class' => 'my']) }} {{ Form::select('secondary_assignment', $chapters) }}
+            <div class="end small-6 columns ninety Incised901Light end">
+                <div class="row">
+                    <div class="small-3 columns ninety Incised901Light">
+                        {{ Form::label( 'slocation', 'Location', ['class' => 'my']) }} {{ Form::select('slocation', $locations) }}
+                    </div>
+                    <div class="small-9 columns ninety Incised901Light end">
+                        {{ Form::label('secondary_assignment', "Secondary Assignment", ['class' => 'my']) }} {{ Form::select('secondary_assignment', $chapters) }}
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="end small-4 columns ninety Incised901Light end">
+            <div class="end small-6 columns ninety Incised901Light end">
                 {{ Form::label('primary_billet', 'Billet', ['class' => 'my']) }} {{ Form::select('primary_billet', $billets) }}
             </div>
-            <div class="end small-4 columns ninety Incised901Light end">
+            <div class="end small-6 columns ninety Incised901Light end">
                 {{ Form::label('secondary_billet', 'Billet', ['class' => 'my']) }} {{ Form::select('secondary_billet', $billets) }}
             </div>
         </div>
 
         <div class="row">
-            <div class="end small-4 columns ninety Incised901Light end">
+            <div class="end small-6 columns ninety Incised901Light end">
                 {{ Form::label('primary_date_assigned', "Date Assigned", ['class' => 'my']) }} {{ Form::date('primary_date_assigned') }}
             </div>
-            <div class="end small-4 columns ninety Incised901Light end">
+            <div class="end small-6 columns ninety Incised901Light end">
                 {{ Form::label('secondary_date_assigned', "Date Assigned", ['class' => 'my']) }} {{ Form::date('secondary_date_assigned') }}
             </div>
         </div>

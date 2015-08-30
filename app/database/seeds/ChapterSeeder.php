@@ -82,9 +82,9 @@ class ChapterSeeder extends Seeder
         $this->createChapter('Headquarters Company', 'headquarters', 'HC', 'RMA');
 
         // Create the special non-joinable holding chapters
-        $this->createChapter('HMS Valhalla', 'ship', '', 'RMN', false);
-        $this->createChapter('HMS Tartarus', 'ship', 'Expelled', 'RMN', false);
-        $this->createChapter('HMS Charon', 'ship', 'Withdrawl', 'RMN', false);
+        $this->createChapter('HMS Valhalla', 'SU', 'Passed Away', 'RMN', false);
+        $this->createChapter('HMS Tartarus', 'SU', 'Expelled', 'RMN', false);
+        $this->createChapter('HMS Charon', 'SU', 'Withdrawn', 'RMN', false);
 
     }
 
