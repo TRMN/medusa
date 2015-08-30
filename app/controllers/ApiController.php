@@ -53,6 +53,26 @@ class ApiController extends BaseController
         return Response::json(Chapter::getHoldingChapters());
     }
 
+    public function getFleets()
+    {
+        return Response::json(Chapter::getChaptersByType('fleet'));
+    }
+
+    public function getHeadquarters()
+    {
+        return Response::json(Chapter::getChaptersByType('headquarters'));
+    }
+
+    public function getBureaus()
+    {
+        return Response::json(Chapter::getChaptersByType('bureau'));
+    }
+
+    public function getSeparationUnits()
+    {
+        return Response::json(Chapter::getChaptersByType('SU'));
+    }
+
     public function savePhoto() {
         if (Input::file('file')->isValid() === true) {
             $res = User::where('member_id','=', Input::get('member_id'))->get();
