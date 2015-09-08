@@ -122,7 +122,12 @@ registerform
         </div>
     </div>
 </fieldset>
-
+<fieldset>
+    <legend>Terms of Service</legend>
+    <div class="row">
+        {{ Form::checkbox('tos',1) }} I have read and agree to the <a href="#" data-reveal-id="tos">Terms of Service</a>
+    </div>
+</fieldset>
 <fieldset>
     <legend>Please prove that you're a sentient being</legend>
     <div class="row">
@@ -136,4 +141,8 @@ registerform
 
 {{ Form::close() }}
 
+<div id="tos" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    @include('partials.tos')
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
 @stop
