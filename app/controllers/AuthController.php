@@ -33,6 +33,7 @@ class AuthController extends BaseController
     public function signout()
     {
         Auth::logout();
+        Session::flush();
 
         return Redirect::intended( '/' );
     }

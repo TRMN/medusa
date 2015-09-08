@@ -247,5 +247,23 @@ jQuery(document).ready(function ($) {
         "jQueryUI": true
     });
 
+    jQuery('#changeRequests').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No change requests to review"
+        },
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+
     jQuery('#members').tabs();
 });
