@@ -259,6 +259,7 @@ class UserController extends \BaseController
             'dob'                => 'required|date|date_format:Y-m-d',
             'branch'             => 'required',
             'primary_assignment' => 'required',
+            'tos'                => 'required',
         ];
 
         $error_message = [
@@ -283,6 +284,7 @@ class UserController extends \BaseController
             'branch.required'                => "Please select the members branch",
             'email_address.unique'           => 'That email address is already in use',
             'email_address.required' => 'Please enter your email address',
+            'tos.required' => 'You must agree to the Terms of Service to apply',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $error_message);
@@ -519,6 +521,29 @@ class UserController extends \BaseController
         $user->update($data);
 
         return Redirect::route($redirect);
+    }
+
+    public function tos()
+    {
+        $data = Input::all();
+
+        if (empty($data['tos']) === false) {
+            $user = User::find($data['id']);
+            $user->tos = true;
+            $user->save();
+
+            $viewData = [
+                'greeting' => $user->getGreetingArray(),
+                'user'     => $user,
+                'chapter'  => Chapter::find($user->getPrimaryAssignmentId()),
+            ];
+
+            return View::make('home', $viewData);
+
+        }
+
+        return Redirect::to('signout');
+
     }
 
     /**
