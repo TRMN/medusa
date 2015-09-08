@@ -1,3 +1,6 @@
+@if(Auth::user() === false)
+        {{Redirect::to('signin')}}
+@endif
 <!DOCTYPE html>
 <html>
 <head>

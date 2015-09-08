@@ -2,6 +2,7 @@
 /*
  * Table styles
  */
+@import url(foundation-icons.css);
 table.dataTable {
   width: 100%;
   margin: 0 auto;
@@ -441,6 +442,12 @@ table.dataTable.display tbody tr:first-child td {
   color: #ee3300;
   border: solid #ee3300 4px; }
 
+.green {
+  color: darkgreen; }
+
+.red {
+  color: #ee3300; }
+
 .nav-header {
   color: #ffee00;
   font-size: 1.5rem;
@@ -549,6 +556,12 @@ body, html {
   font-family: "Incised 901 W01 Light";
   line-height: 100%; }
 
+#tos {
+  color: white;
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-position: center bottom; }
+
 #photoModal {
   color: white;
   background-color: #000000;
@@ -641,8 +654,8 @@ div.rnav {
   width: 175px;
   color: white;
   font-family: "Incised 901 W01 Bold Cd";
-  font-size: 1.25rem;
-  line-height: 1.50rem; }
+  font-size: 1rem;
+  line-height: 1.25rem; }
 
 div.rnav a {
   color: white; }
@@ -689,10 +702,10 @@ footer {
 .textLeft {
   text-align: left; }
 
-#user fieldset, #register fieldset {
+#user fieldset, #register fieldset, #changeRequest fieldset {
   width: auto; }
 
-#user legend, #register legend {
+#user legend, #register legend, #changeRequest legend {
   background: none; }
 
 #chapterList {
@@ -724,5 +737,27 @@ footer {
 
 .ui-widget-header {
   border: none; }
+
+#user fieldset {
+  width: 75%; }
+
+.button-group {
+  position: relative;
+  display: inline-block;
+  margin: 1rem 0; }
+  .button-group:before {
+    content: attr(data-grouptype);
+    z-index: 99999;
+    color: #999;
+    display: block;
+    font-size: 1rem;
+    padding: 0.25em;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    left: 42.5%;
+    top: 0.35rem; }
+  .button-group button + button {
+    margin-left: 5px; }
 
 /*# sourceMappingURL=main.css.map */

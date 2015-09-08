@@ -36,23 +36,25 @@ module.exports = function() {
         function buildChapterList(assignment) {
             jQuery('#' + assignment + '_assignment').empty();
             jQuery('#' + assignment + '_assignment').append('<option value="0">Select a Chapter');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="Holding Chapters">' + getURI('holding') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="Headquarters">' + getURI('hq') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="Bureaus">' + getURI('bureau') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="Fleets">' + getURI('fleet') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="Separation Units">' + getURI('su') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMN">' + getURI('chapter/RMN/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMMC">' + getURI('chapter/RMMC/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMA">' + getURI('chapter/RMA/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="GSN">' + getURI('chapter/GSN/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="IAN">' + getURI('chapter/IAN/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RHN">' + getURI('chapter/RHN/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="SFS">' + getURI('chapter/SFS/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="CIVIL">' + getURI('chapter/CIVIL/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="INTEL">' + getURI('chapter/INTEL/' + jQuery('#' + assignment.charAt(0) + 'location').val()) + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="Holding Chapters">' + getURI('holding', assignment.charAt(0) + 'assignment') + '</optgroup>');
+            if (jQuery('#showUnjoinable').val() == 'true') {
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Headquarters">' + getURI('hq', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Bureaus">' + getURI('bureau', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Fleets">' + getURI('fleet', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Separation Units">' + getURI('su', assignment.charAt(0) + 'assignment') + '</optgroup>');
+            }
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMN">' + getURI('chapter/RMN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMMC">' + getURI('chapter/RMMC/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMA">' + getURI('chapter/RMA/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="GSN">' + getURI('chapter/GSN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="IAN">' + getURI('chapter/IAN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="RHN">' + getURI('chapter/RHN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="SFS">' + getURI('chapter/SFS/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="CIVIL">' + getURI('chapter/CIVIL/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery('#' + assignment + '_assignment').append('<optgroup label="INTEL">' + getURI('chapter/INTEL/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
         }
 
-        function getURI(url) {
+        function getURI(url, sel) {
             var options = '';
             jQuery.ajax({
                 url: '/api/' + url,
@@ -60,7 +62,12 @@ module.exports = function() {
                 async: false,
                 success: function (result) {
                     jQuery.each(result, function (key, value) {
-                        options += '<option value="' + key + '">' + value + '</option>';
+                        var option = '';
+                        option = '<option value="' + key +'"';
+                        if (jQuery('#' + sel).val() == key) {
+                            option += ' selected';
+                        }
+                        options += option + '>' + value + '</option>';
 
                     });
                 }

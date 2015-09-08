@@ -22,6 +22,7 @@
     ?>
 
     {{ Form::model( $user, [ 'route' => [ 'user.store' ], 'id' => 'user' ] ) }}
+    {{ Form::hidden('showUnjoinable', 'true', ['id' => 'showUnjoinable']) }}
     <fieldset>
         <legend class="seventy-five Incised901Light">&nbsp;Personal Information&nbsp;</legend>
         <div class="row">

@@ -15,3 +15,4 @@
 Artisan::add(new ImportChapters);
 Artisan::add(new ImportUsers);
 Artisan::add(new ImportGrades);
+Artisan::add(new ViewsCommand);
