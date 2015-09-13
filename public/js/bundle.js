@@ -133,6 +133,10 @@ module.exports = function() {
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Headquarters">' + getURI('hq', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Bureaus">' + getURI('bureau', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Fleets">' + getURI('fleet', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Forces">' + getURI('tf', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Groups">' + getURI('tg', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Squadrons">' + getURI('squadron', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Divisions">' + getURI('division', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Separation Units">' + getURI('su', assignment.charAt(0) + 'assignment') + '</optgroup>');
             }
             jQuery('#' + assignment + '_assignment').append('<optgroup label="RMN">' + getURI('chapter/RMN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
@@ -1960,9 +1964,7 @@ jQuery(document).ready(function ($) {
         }
     };
 
-    jQuery(document).tooltip({
-        tooltipClass: "Incised901Light"
-    });
+    jQuery(document).tooltip();
 
     jQuery(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
         imageHeight = jQuery('#pm1').height();
@@ -2153,6 +2155,16 @@ jQuery(document).ready(function ($) {
         "jQueryUI": true
     });
 
+    jQuery('#crewRoster').DataTable({
+        "autoWidth": true,
+        "pageLength": 25,
+        "language": {
+            "emptyTable": "No crew members found"
+        },
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+
     jQuery('#changeRequests').DataTable({
         "autoWidth": true,
         "pageLength": 50,
@@ -2172,6 +2184,16 @@ jQuery(document).ready(function ($) {
     });
 
     jQuery('#members').tabs();
+
+    $('#DUTY_ROSTER').on('click', function() {
+        if ($("#DUTY_ROSTER").is(':checked')) {
+            $('#chooseShip').foundation('reveal', 'open');
+        }
+    });
+
+    $('.dr').on('click', function() {
+       $('#dutyroster').val($('.dr:checked').val());
+    });
 });
 
 },{"./ManticoreAuth.js":1,"./ManticoreChapter.js":2,"./ManticoreRegister.js":3,"./ManticoreUser.js":4,"./dropzone.js":5}]},{},[6]);

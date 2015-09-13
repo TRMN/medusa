@@ -54,9 +54,7 @@ jQuery(document).ready(function ($) {
         }
     };
 
-    jQuery(document).tooltip({
-        tooltipClass: "Incised901Light"
-    });
+    jQuery(document).tooltip();
 
     jQuery(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
         imageHeight = jQuery('#pm1').height();
@@ -247,6 +245,16 @@ jQuery(document).ready(function ($) {
         "jQueryUI": true
     });
 
+    jQuery('#crewRoster').DataTable({
+        "autoWidth": true,
+        "pageLength": 25,
+        "language": {
+            "emptyTable": "No crew members found"
+        },
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+
     jQuery('#changeRequests').DataTable({
         "autoWidth": true,
         "pageLength": 50,
@@ -266,4 +274,14 @@ jQuery(document).ready(function ($) {
     });
 
     jQuery('#members').tabs();
+
+    $('#DUTY_ROSTER').on('click', function() {
+        if ($("#DUTY_ROSTER").is(':checked')) {
+            $('#chooseShip').foundation('reveal', 'open');
+        }
+    });
+
+    $('.dr').on('click', function() {
+       $('#dutyroster').val($('.dr:checked').val());
+    });
 });

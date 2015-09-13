@@ -10,10 +10,14 @@ class UserController extends \BaseController
      */
     public function index()
     {
+        if ($this->hasPermissions(['VIEW_MEMBERS']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         $branches = ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN', 'SFS', 'CIVIL', 'INTEL'];
 
         foreach($branches as $branch) {
-            $users = User::where('active', '=', "1")
+            $users = User::where('active', '=', 1)
                 ->where('registration_status', '=', 'Active')
                 ->where('branch', '=', $branch)
                 ->remember(30)
@@ -22,18 +26,27 @@ class UserController extends \BaseController
             $usersByBranch[$branch] = $users;
         }
 
-        return View::make('user.index', ['users' => $usersByBranch, 'title' => 'Membership List']);
+        return View::make('user.index', ['users' => $usersByBranch, 'title' => 'Membership List', ]);
     }
 
     public function reviewApplications()
     {
+        if ($this->hasPermissions(['PROC_APPLICATIONS']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         $users = User::where('active', '!=', "1")->where('registration_status', '=', 'Pending')->get();
 
-        return View::make('user.review', ['users' => $users, 'title' => 'Approve Membership Applications']);
+        return View::make('user.review', ['users' => $users, 'title' => 'Approve Membership Applications',
+                                          ]);
     }
 
     public function approveApplication(User $user)
     {
+        if ($this->hasPermissions(['PROC_APPLICATIONS']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         $user->registration_status = 'Active';
         $user->registration_date = date('Y-m-d');
 
@@ -83,7 +96,7 @@ class UserController extends \BaseController
         $user->save();
 
         // Get Chapter CO's email
-        $user->co_email = Chapter::find($user->getPrimaryAssignmentId())->getCO()[0]->email_address;
+        $user->co_email = Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address;
 
         // Send welcome email
         Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
@@ -101,6 +114,10 @@ class UserController extends \BaseController
 
     public function denyApplication(User $user)
     {
+        if ($this->hasPermissions(['PROC_APPLICATIONS']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         $user->registration_status = 'Denied';
         $user->registration_date = date('Y-m-d');
         $user->save();
@@ -115,6 +132,10 @@ class UserController extends \BaseController
      */
     public function create()
     {
+        if ($this->hasPermissions(['ADD_MEMBER']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         return View::make(
             'user.create',
             [
@@ -125,7 +146,8 @@ class UserController extends \BaseController
                 'ratings'   => Rating::getRatingsForBranch('RMN'),
                 'chapters'  => ['0' => 'Select a Chapter'],
                 'billets'   => ['0' => 'Select a Billet'] + Billet::getBillets(),
-                'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations()
+                'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+
             ]
         );
     }
@@ -137,6 +159,9 @@ class UserController extends \BaseController
      */
     public function store()
     {
+        if ($this->hasPermissions(['ADD_MEMBER']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
 
         $rules = User::$rules;
         $errMsg = User::$error_message;
@@ -197,7 +222,7 @@ class UserController extends \BaseController
 
         // Assign a member id
 
-        $data['member_id'] = 'RMN' . User::getFirstAvailableMemberId($data['honorary']);
+        $data['member_id'] = 'RMN' . User::getFirstAvailableMemberId(empty($data['honorary']));
 
         if (isset( $data['honorary'] ) === true && $data['honorary'] === "1") {
             $data['member_id'] .= '-H';
@@ -207,12 +232,22 @@ class UserController extends \BaseController
         // Set the active flag, application date and registration date
 
         $data['active'] = '1';
+        $data['registration_status'] = 'Active';
 
         $data['application_date'] = date('Y-m-d');
         $data['registration_date'] = date('Y-m-d');
 
         // Normalize State and Province
         $data['state_province'] = User::normalizeStateProvince($data['state_province']);
+
+        // Standard User Permissions
+        $data['permissions'] = [
+            'LOGOUT',
+            'CHANGE_PWD',
+            'EDIT_SELF',
+            'ROSTER',
+            'TRANSFER'
+        ];
 
         // For future use
 
@@ -377,12 +412,21 @@ class UserController extends \BaseController
      */
     public function show(User $user)
     {
+        if (
+                $this->isInChainOfCommand($user) === false &&
+                Auth::user()->id != $user->id &&
+                $this->hasPermissions(['VIEW_MEMBERS']) === false
+            ) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         return View::make(
             'user.show',
             [
                 'user'      => $user,
                 'countries' => $this->_getCountries(),
-                'branches'  => Branch::getBranchList()
+                'branches'  => Branch::getBranchList(),
+
             ]
         );
     }
@@ -396,6 +440,10 @@ class UserController extends \BaseController
      */
     public function edit(User $user)
     {
+        if ($this->hasPermissions(['EDIT_MEMBER','EDIT_SELF']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         $greeting = $user->getGreetingArray();
 
         if (isset( $user->rating ) === true && empty( $user->rating ) === false && is_array($user->rating) === false) {
@@ -431,9 +479,11 @@ class UserController extends \BaseController
                 'branches'  => Branch::getBranchList(),
                 'grades'    => Grade::getGradesForBranch($user->branch),
                 'ratings'   => Rating::getRatingsForBranch($user->branch),
-                'chapters'  => Chapter::getChapters(),
-                'billets'   => Billet::getBillets(),
-                'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations()
+                'chapters'  => array_merge(Chapter::getChapters('', 0, false), Chapter::getHoldingChapters()),
+                'billets'   => ['0' => 'Select a billet'] + Billet::getBillets(),
+                'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+                'permissions' => DB::table('permissions')->orderBy('name', 'asc')->get(),
+
             ]
         );
     }
@@ -447,6 +497,10 @@ class UserController extends \BaseController
      */
     public function update(User $user)
     {
+        if ($this->hasPermissions(['EDIT_MEMBER', 'EDIT_SELF']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         $validator = Validator::make($data = Input::all(), User::$updateRules, User::$error_message);
 
         if ($validator->fails()) {
@@ -458,8 +512,13 @@ class UserController extends \BaseController
         $rank = [];
 
         if (isset( $data['display_rank'] ) === true && empty( $data['display_rank'] ) === false) {
-            $data['rank'] =
-                ['grade' => $data['display_rank'], 'date_of_rank' => date('Y-m-d', strtotime($data['dor']))];
+            $data['rank'] = ['grade' => $data['display_rank']];
+
+            if (empty($data['dor']) === true) {
+                $data['rank']['date_of_rank'] = '';
+            } else {
+                $data['rank']['date_of_rank'] = date('Y-m-d', strtotime($data['dor']));
+            }
             unset( $data['display_rank'], $data['dor'] );
         }
 
@@ -512,7 +571,7 @@ class UserController extends \BaseController
             $redirect = 'user.edit';
         }
 
-        if (Auth::user()->member_id === $data['member_id'] && $data['reload_form'] === "no") {
+        if ($user->member_id === $data['member_id'] && $data['reload_form'] === "no") {
             $redirect = 'home';
         }
 
@@ -525,6 +584,9 @@ class UserController extends \BaseController
 
     public function tos()
     {
+        if (Auth::check() === false) {
+            return Redirect::route('signin')->with('message', 'You do not have permission to view that page');
+        }
         $data = Input::all();
 
         if (empty($data['tos']) === false) {
@@ -536,6 +598,7 @@ class UserController extends \BaseController
                 'greeting' => $user->getGreetingArray(),
                 'user'     => $user,
                 'chapter'  => Chapter::find($user->getPrimaryAssignmentId()),
+
             ];
 
             return View::make('home', $viewData);
@@ -555,7 +618,11 @@ class UserController extends \BaseController
      */
     public function confirmDelete(User $user)
     {
-        return View::make('user.confirm-delete', ['user' => $user]);
+        if ($this->hasPermissions(['DEL_MEMBER']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
+        return View::make('user.confirm-delete', ['user' => $user, ]);
     }
 
     /**
@@ -567,6 +634,10 @@ class UserController extends \BaseController
      */
     public function destroy(User $user)
     {
+        if ($this->hasPermissions(['DEL_MEMBER']) === false) {
+            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+        }
+
         User::destroy($user->_id);
 
         return Redirect::route('user.index');
@@ -597,7 +668,8 @@ class UserController extends \BaseController
             'countries' => $countries,
             'branches'  => $branches,
             'chapters'  => ['0' => 'Select a Chapter'],
-            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations()
+            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+
         ];
 
         return View::make('user.register', $viewData);
@@ -611,6 +683,8 @@ class UserController extends \BaseController
         foreach ($results as $country) {
             $countries[$country['iso_3166_3']] = $country['name'];
         }
+
+        asort($countries);
 
         return $countries;
     }

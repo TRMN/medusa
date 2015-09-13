@@ -13,9 +13,9 @@ class BranchSeeder extends Seeder {
         DB::collection('branches')->delete();
 
         $branches = array(
-            "RMA" => "Royal Manticore Army",
-            "RMMC" => "Royal Manticore Marine Corp",
-            "RMN" => "Royal Manticore Navy",
+            "RMA" => "Royal Manticoran Army",
+            "RMMC" => "Royal Manticoran Marine Corp",
+            "RMN" => "Royal Manticoran Navy",
             "GSN" => "Grayson Space Navy",
             "IAN" => "Imperial Andermani Navy",
             "RHN" => "Republic of Haven Navy",

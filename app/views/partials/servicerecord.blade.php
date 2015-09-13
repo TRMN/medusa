@@ -51,8 +51,9 @@
 
         <div class="Incised901Light seventy-five">Assigned: {{$user->getPrimaryDateAssigned()}}</div>
     </div>
+
     <div class="Incised901Black ninety">
-        Time In Grade: {{$user->getTimeInGrade()}}
+        Time In Grade: {{is_null($tig = $user->getTimeInGrade())?'No Time In Grade information available at this time':$tig}}
     </div>
     <div class="Incised901Black ninety">
         Time In Service: {{$user->getTimeInService()}}
@@ -95,9 +96,9 @@
             <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
             <div class="small-10 columns Incised901Light ninety textLeft end">
                 <br/>
-                @if($user->registration_status != "Pending")
+                @if($user->registration_status != "Pending" && $permsObj->hasPermissions(['EDIT_SELF', 'EDIT_MEMBER']))
                     <a href="{{route('user.edit', [$user->_id])}}" class="editButton Incised901Black margin-5">EDIT</a>
-                @else
+                @elseif($permsObj->hasPermissions(['PROC_APPLICATIONS']))
                     <a href="{{action('user.approve', [$user->_id])}}" class="editButton Incised901Black margin-5">Approve</a> <a href="{{action('user.deny', [$user->_id])}}" class="editButton
                         Incised901Black margin-5">DENY</a>
                 @endif

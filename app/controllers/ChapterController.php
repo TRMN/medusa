@@ -1,21 +1,11 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: dweiner
- * Date: 9/27/14
- * Time: 10:08 PM
- */
 class ChapterController extends BaseController
 {
 
     public function index()
     {
         $chapters = Chapter::orderBy( 'chapter_type' )->orderBy( 'chapter_name' )->get();
-
-        for ( $i = 0; $i < count( $chapters ); $i++ ) {
-            $chapters[ $i ]->chapter_type = ucfirst( $chapters[ $i ]->chapter_type );
-        }
 
         return View::make( 'chapter.index', [ 'chapters' => $chapters ] );
     }
@@ -30,7 +20,7 @@ class ChapterController extends BaseController
             $parentChapter = false;
         }
 
-        $includes = Chapter::where( 'assigned_to', '=', $chapter->_id )->get();
+        $includes = Chapter::where( 'assigned_to', '=', $chapter->_id )->orderBy('chapter_name')->get()->toArray();
 
         $commandCrew = $chapter->getCommandCrew();
 

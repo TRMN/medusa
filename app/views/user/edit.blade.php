@@ -113,58 +113,97 @@
 
         <div class="row">
             <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label('branch', "Branch", ['class' => 'my']) }} {{ Form::select('branch', $branches, $user->branch) }}
+                {{ Form::label('branch', "Branch", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::select('branch', $branches, $user->branch) }}
             </div>
         </div>
+        @else
+            {{Form::hidden('branch', $user->branch)}} {{$branches[$user->branch]}}
+        @endif
     </fieldset>
+
     <fieldset>
         <legend>Primary Assignment Information</legend>
-        <div class="row">
-            <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label( 'plocation', 'Location', ['class' => 'my']) }} {{ Form::select('plocation', $locations) }}
+        @if($permsObj->hasPermissions(['EDIT_USER']) === true)
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label( 'plocation', 'Location', ['class' => 'my']) }} {{ Form::select('plocation', $locations) }}
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label('primary_assignment', "Chapter", ['class' => 'my']) }} {{ Form::select('primary_assignment', $chapters) }}
-                {{ Form::hidden('passignment', $user->primary_assignment, ['id' => 'passignment']) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label('primary_billet', 'Billet', ['class' => 'my']) }} {{ Form::select('primary_billet', $billets) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label('primary_date_assigned', "Date Assigned", ['class' => 'my']) }} {{ Form::date('primary_date_assigned', $user->primary_date_assigned) }}
-            </div>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend>Secondary Assignment Information</legend>
+        @endif
 
         <div class="row">
             <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label( 'slocation', 'Location', ['class' => 'my']) }} {{ Form::select('slocation', $locations) }}
+                {{ Form::label('primary_assignment', "Chapter", ['class' => 'my']) }}  @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::select('primary_assignment', $chapters) }}
+                {{ Form::hidden('passignment', $user->primary_assignment, ['id' => 'passignment']) }}
+                @else
+                    {{Form::hidden('primary_assignment', $user->primary_assignment)}} {{$chapters[$user->primary_assignment]}}
+                    <br/>
+                    <br/>
+                @endif
             </div>
         </div>
         <div class="row">
             <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label('secondary_assignment', "Chapter", ['class' => 'my']) }} {{ Form::select('secondary_assignment', $chapters) }}
-                {{ Form::hidden('sassignment', $user->secondary_assignment, ['id' => 'sassignment']) }}
+                {{ Form::label('primary_billet', 'Billet', ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::select('primary_billet', $billets) }}
+                @else
+                    {{Form::hidden('primary_billet', $user->primary_billet)}} {{$user->primary_billet}}<br/><br/>
+                @endif
             </div>
         </div>
         <div class="row">
             <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label('secondary_billet', 'Billet', ['class' => 'my']) }} {{ Form::select('secondary_billet', $billets) }}
+                {{ Form::label('primary_date_assigned', "Date Assigned", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::date('primary_date_assigned', $user->primary_date_assigned) }}
+                @else
+                    {{Form::hidden('primary_date_assigned', $user->primary_date_assigned)}} {{$user->primary_date_assigned}}
+                    <br/><br/>
+                @endif
             </div>
         </div>
-        <div class="row">
-            <div class="end small-6 columns ninety Incised901Light">
-                {{ Form::label('secondary_date_assigned', "Date Assigned", ['class' => 'my']) }} {{ Form::date('secondary_date_assigned', $user->secondary_date_assigned) }}
+    </fieldset>
+
+    <fieldset>
+        <legend>Secondary Assignment Information</legend>
+        @if($permsObj->hasPermissions(['EDIT_USER']) === true)
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label( 'slocation', 'Location', ['class' => 'my']) }} {{ Form::select('slocation', $locations) }}
+                </div>
             </div>
-        </div>
+        @endif
+        @if(empty($user->secondary_assignment) === false || $permsObj->hasPermissions(['EDIT_USER']) === true)
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('secondary_assignment', "Chapter", ['class' => 'my']) }}  @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::select('secondary_assignment', $chapters) }}
+                    {{ Form::hidden('sassignment', $user->secondary_assignment, ['id' => 'sassignment']) }}
+                    @else
+                        {{Form::hidden('secondary_assignment', $user->secondary_assignment)}} {{$chapters[$user->secondary_assignment]}}
+                        <br/><br/>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('secondary_billet', 'Billet', ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::select('secondary_billet', $billets) }}
+                    @else
+                        {{Form::hidden('secondary_billet', $user->secondary_billet)}} {{$user->secondary_billet}}<br/>
+                        <br/>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('secondary_date_assigned', "Date Assigned", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::date('secondary_date_assigned', $user->secondary_date_assigned) }}
+                    @else
+                        {{Form::hidden('secondary_date_assigned', $user->secondary_date_assigned)}} {{$user->secondary_date_assigned}}
+                        <br/><br/>
+                    @endif
+                </div>
+            </div>
+        @else
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">None</div>
+            </div>
+        @endif
     </fieldset>
 
     <fieldset>
@@ -172,20 +211,66 @@
 
         <div class="row">
             <div class="end small-4 columns ninety Incised901Light">
-                {{ Form::label('display_rank', "Rank", ['class' => 'my']) }} {{ Form::select('display_rank', $grades) }}
+                {{ Form::label('display_rank', "Rank", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::select('display_rank', $grades) }}
+                @else
+                    {{Form::hidden('display_rank', $user->display_rank)}} {{$grades[$user->display_rank]}}<br/><br/>
+                @endif
             </div>
         </div>
         <div class="row">
             <div class="end small-4 columns ninety Incised901Light">
-                {{ Form::label('dor', "Date of Rank", ['class' => 'my']) }} {{ Form::date('dor') }}
+                {{ Form::label('dor', "Date of Rank", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::date('dor') }}
+                @else
+                    {{Form::hidden('dor', $user->dor)}} @if(empty($user->dor) === true)
+                        Unknown<br/><br/> @else {{$user->dor}} @endif
+                @endif
             </div>
         </div>
         <div class="row">
             <div class="end small-4 columns ninety Incised901Light">
-                {{ Form::label('rating', "Rating (if any)", ['class' => 'my']) }} {{ Form::select('rating', $ratings) }}
+                {{ Form::label('rating', "Rating (if any)", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::select('rating', $ratings) }}
+                @else
+                    {{Form::hidden('rating', $user->rating)}} @if(empty($user->rating)===true)
+                        None @else {{$user->rating['description']}} @endif
+                @endif
             </div>
         </div>
     </fieldset>
+    @if($permsObj->hasPermissions(['ASSIGN_PERMS']) === true)
+        <fieldset>
+            <legend>Database Permissions</legend>
+            <ul class="small-block-grid-3">
+                @foreach($permissions as $permission)
+                    <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name']]) }}
+                        <span title="{{$permission['description']}}">{{$permission['name']}}</span></li>
+                @endforeach
+            </ul>
+        </fieldset>
+    @else
+        @foreach($permissions as $permission)
+            @if(in_array($permission['name'], $user->permissions))
+                {{Form::hidden('permissions[]', $permission['name'])}}
+            @endif
+        @endforeach
+    @endif
+    {{Form::hidden('duty_roster', $user->duty_roster, ['id' => 'dutyroster'])}}
+
+    <div id="chooseShip" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <div class="row">
+            Which Chapter does the DUTY_ROSTER permission apply to?<br /><br />
+        </div>
+        <div class="row">
+            {{Form::radio('dr_radio',$user->primary_assignment, $user->duty_roster == $user->primary_assignment, ['class' => 'dr'])}} {{$chapters[$user->primary_assignment]}}
+            @if(empty($user->secondary_assignment) === false)
+            <br/>
+            {{Form::radio('dr_radio',$user->secondary_assignment, $user->duty_roster == $user->secondary_assignment, ['class' => 'dr'])}} {{$chapters[$user->secondary_assignment]}}
+            @endif
+        </div>
+        <div class="row">
+            <button class="button" onclick="$('#chooseShip').foundation('reveal', 'close');">OK</button>
+        </div>
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>
 
     <a class="button"
        href="{{ route('user.index') }}">Cancel</a> {{ Form::submit('Save', [ 'class' => 'button' ] ) }}
@@ -203,6 +288,4 @@
         </div>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     </div>
-
 @stop
-
