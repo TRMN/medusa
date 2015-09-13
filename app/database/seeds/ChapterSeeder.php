@@ -17,7 +17,7 @@ class ChapterSeeder extends Seeder
           5 => ['chapter_name' => 'Fifth Naval District', 'tool_tip' => 'Australia, New Zealand, Oceania, China, Japan, Philippines and the Indochina Peninsula', 'chapter_type' => 'district', 'hull_number' => '5'],
           6 => ['chapter_name' => 'Sixth Naval District', 'tool_tip' => 'LA, TX, AR, OK, MO, KS, IA, NE, SD, ND and Manitoba', 'chapter_type' => 'district', 'hull_number' => '6'],
           7 => ['chapter_name' => 'Seventh Naval District', 'tool_tip' => 'Europe, The Russian Federation and South Africa', 'chapter_type' => 'district', 'hull_number' => '7'],
-          8 => ['chapter_name' => 'Eight Naval District', 'tool_tip' => 'AZ, NM, UT, CO, WY, MT, Alberta and Saskatchewan', 'chapter_type' => 'district', 'hull_number' => '8'],
+          8 => ['chapter_name' => 'Eighth Naval District', 'tool_tip' => 'AZ, NM, UT, CO, WY, MT, Alberta and Saskatchewan', 'chapter_type' => 'district', 'hull_number' => '8'],
           9 => ['chapter_name' => 'Ninth Naval District', 'tool_tip' => 'Special Operations (Ad Astra and BuNine Staffs Only)', 'chapter_type' => 'district', 'hull_number' => '9'],
           10 => ['chapter_name' => 'Tenth Naval District', 'tool_tip' => 'CA, NV, OR, ID, WA, HI, AK, British Columbia and the Yukon Territory', 'chapter_type' => 'district', 'hull_number' => '10'],
         ];
