@@ -36,7 +36,7 @@ class ChapterController extends BaseController
      */
     public function create()
     {
-        $types = Type::orderBy('chapter_description')->get(['chapter_type', 'chapter_description']);
+        $types = Type::whereIn('chapter_type', ['ship', 'station'])->orderBy('chapter_description')->get(['chapter_type', 'chapter_description']);
         $chapterTypes = [ ];
 
         foreach ( $types as $chapterType ) {
@@ -45,15 +45,11 @@ class ChapterController extends BaseController
 
         $chapterTypes = ['' => 'Select a Chapter Type'] + $chapterTypes;
 
-        $chapters = Chapter::orderBy( 'chapter_name' )->get( [ '_id', 'chapter_name' ] );
-
-        $chapterList[ '' ] = "N/A";
-
-        foreach ( $chapters as $chapter ) {
-            $chapterList[ $chapter->_id ] = $chapter->chapter_name;
-        }
-
-        return View::make( 'chapter.create', [ 'chapterTypes' => $chapterTypes, 'chapter' => new Chapter, 'chapterList' => $chapterList ] );
+        return View::make('chapter.create', [
+            'chapterTypes' => $chapterTypes,
+            'chapter' => new Chapter,
+            'branches' => Branch::getNavalBranchList()]
+        );
     }
 
     public function edit( $chapterID )
