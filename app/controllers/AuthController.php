@@ -19,7 +19,7 @@ class AuthController extends BaseController
         $email = Input::get( 'email' );
         $password = Input::get( 'password' );
 
-        if ( Auth::attempt(['email_address' => $email, 'password' => $password, 'active' => '1'])) {
+        if ( Auth::attempt(['email_address' => $email, 'password' => $password, 'active' => 1])) {
             return Redirect::route('home');
         } else {
             return Redirect::route('login')->with('message', 'Your username/password combination was incorrect')

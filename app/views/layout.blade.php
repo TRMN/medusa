@@ -32,6 +32,7 @@
 
     @endif
     <link rel="stylesheet" type="text/css" href="{{{ $serverUrl }}}/css/main.css">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
 </head>
 <body class="@yield('bodyclasses')">
@@ -50,7 +51,7 @@
 
     <div class="row trmn-width">
         <div class="small-2 columns trmn-width">
-            @include( 'nav' )
+            @include( 'nav', ['permsObj' => $permsObj] )
         </div>
         <div class="small-9 columns trmn-width content end">
             @yield( 'content' )

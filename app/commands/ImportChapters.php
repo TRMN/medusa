@@ -40,44 +40,54 @@ class ImportChapters extends Command
     {
         // Need to know about the fleets
 
-        $results = Chapter::where( 'chapter_type', '=', 'fleet' )->get();
+        $results = Chapter::where('chapter_type', '=', 'fleet')->get();
 
         // Make a lookup table that's easier to use, indexed by the fleet number
 
         $fleets = [];
 
-        foreach ( $results as $fleet )
-        {
+        foreach ($results as $fleet) {
             $fleets[$fleet['hull_number']] = ['chapter_name' => $fleet['chapter_name'], '_id' => $fleet['_id']];
         }
 
         // Open the Master Berthing Registry.  Only import sheets with values
 
         $trmn = [
-            'RMN' => Excel::selectSheets( 'RMN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
-                ->formatDates( true, 'Y-m-d' )
-                ->toArray(),
-            'GSN' => Excel::selectSheets( 'GSN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
-                ->formatDates( true, 'Y-m-d' )
-                ->toArray(),
-            'IAN' => Excel::selectSheets( 'IAN Ships' )->load( app_path() . '/database/berthing_registry.xls' )
-                ->formatDates( true, 'Y-m-d' )
-                ->toArray()
+            'RMN' => Excel::selectSheets('RMN Ships')->load(app_path() . '/database/berthing_registry.xls')
+                          ->formatDates(true, 'Y-m-d')
+                          ->toArray(),
+            'GSN' => Excel::selectSheets('GSN Ships')->load(app_path() . '/database/berthing_registry.xls')
+                          ->formatDates(true, 'Y-m-d')
+                          ->toArray(),
+            'IAN' => Excel::selectSheets('IAN Ships')->load(app_path() . '/database/berthing_registry.xls')
+                          ->formatDates(true, 'Y-m-d')
+                          ->toArray()
         ];
 
-        foreach ( $trmn as $branch => $ships )
-        {
-            if ( count( $ships ) !== 0 )
-            {
-                foreach ( $ships as $ship )
-                {
+        //die(print_r($trmn['GSN'], true));
+
+        $decomissioned =
+            Excel::selectSheets('Decommissioned Ships')
+                 ->load(app_path() . '/database/berthing_registry.xls')
+                 ->formatDates(true, 'Y-m-d')
+                 ->toArray();
+
+        foreach ($trmn as $branch => $ships) {
+            if (count($ships) !== 0) {
+                foreach ($ships as $ship) {
+                    if (empty($ship['name']) === true) {
+                        continue;
+                    }
+
                     // Make sure that the ship doesn't already exist
                     if (count(Chapter::where('chapter_name', '=', $ship['name'])->get()->toArray()) === 0) {
-                        $this->comment( "Creating " . $ship['name'] . ", assigned to " . $fleets[$ship['fleet']]['chapter_name'] );
+                        $this->comment(
+                            "Creating " . $ship['name'] . ", assigned to " . $fleets[$ship['fleet']]['chapter_name']
+                        );
 
                         $result = Chapter::create(
                             [
-                                'branch'          => "$branch",
+                                'branch'          => $branch,
                                 'chapter_name'    => $ship['name'],
                                 'chapter_type'    => 'ship',
                                 'hull_number'     => $ship['hull_number'],
@@ -96,6 +106,41 @@ class ImportChapters extends Command
                         $this->comment($ship['name'] . ' already exists, skipping');
                     }
                 }
+            }
+        }
+
+        // Process the decomissioned ships
+
+        $this->comment('Adding Decommissioned Ships');
+
+        foreach ($decomissioned as $ship) {
+            if (empty( $ship['name'] ) === true) {
+                continue;
+            }
+            // Make sure that the ship doesn't already exist
+            if (count(Chapter::where('chapter_name', '=', $ship['name'])->get()->toArray()) === 0) {
+                $this->comment(
+                    "Creating " . $ship['name'] . ", assigned to " . $fleets[$ship['fleet']]['chapter_name']
+                );
+
+                $result = Chapter::create(
+                    [
+                        'branch'          => $ship['branch'],
+                        'chapter_name'    => $ship['name'],
+                        'chapter_type'    => 'ship',
+                        'hull_number'     => $ship['hull_number'],
+                        'decommission_date' => $ship['decommissioned'],
+                        'assigned_to'     => $fleets[$ship['fleet']]['_id']
+                    ]
+                );
+
+                // For some reason, mongo drops the branch field, so let's update the document after the initial save
+
+                $chapter = Chapter::find($result['_id']);
+                $chapter['branch'] = $ship['branch'];
+                $chapter->save();
+            } else {
+                $this->comment($ship['name'] . ' already exists, skipping');
             }
         }
     }

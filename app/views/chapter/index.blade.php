@@ -16,18 +16,29 @@ Chapters
         </thead>
         <tbody>
             @foreach( $chapters as $chapter )
+                @if(empty($chapter->decommission_date) === false && $permsObj->hasPermissions(['VIEW_DSHIPS']) === false)
+                @elseif($chapter->chapter_type == 'SU' && $permsObj->hasPermissions(['VIEW_SU']) === false)
+                @else
                 <tr>
-                    <td><a href="/chapter/{{{ $chapter->_id }}}">{{{ $chapter->chapter_name }}}
-                            <?php
-                            $chapterType = Chapter::getChapterType($chapter->_id);
-                            ?>
-                            @if($chapterType == "ship" || $chapterType == "station")
-                                {{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}}
+                    <td><a href="{{route('chapter.show', [$chapter->id])}}">{{ $chapter->chapter_name }}
+                            @if(in_array($chapter->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true)
+                                {{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}
                             @endif
-                        </a></td>
-                    <td>{{{ $chapter->chapter_type }}}</td>
-                    <td width="12%"><a href="/chapter/{{{ $chapter->_id }}}/edit" class="tiny">Edit</a> <a href="#" data-mongoid="{{$chapter->_id}}" class="tiny delete-chapter">Delete</a></td>
+                        </a> @if(empty($chapter->decommission_date) === false)
+                            <i class='fi-anchor' title='Reserve Fleet / Decomissioned'
+                               alt="Reserve Fleet / Decomissioned"></i>
+                        @endif</td>
+                    <td>{{ ucfirst($chapter->chapter_type) }}</td>
+                    <td width="12%">
+                        @if($permsObj->hasPermissions(['EDIT_SHIP']) === true)
+                            <a href="{{route('chapter.edit', [$chapter->id])}}" class="fi-list green" title="Edit Chapter"></a>
+                        @endif
+                        @if($permsObj->hasPermissions(['DECOMMISSION_SHIP']) === true)
+                            <a href="#" data-mongoid="{{$chapter->_id}}" class="fi-x red delete-chapter" title="Delete Chapter"></a>
+                        @endif
+                    </td>
                 </tr>
+                @endif
             @endforeach
         </tbody>
         <tfoot>
@@ -38,5 +49,7 @@ Chapters
         </tr>
         </tfoot>
     </table>
-    <a href="{{ route('chapter.create') }}" class="button">Create New Chapter</a>
+    @if($permsObj->hasPermissions(['COMMISSION_SHIP']) === true)
+        <a href="{{ route('chapter.create') }}" class="button">Create New Chapter</a>
+    @endif
 @stop

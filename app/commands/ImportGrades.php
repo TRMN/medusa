@@ -71,6 +71,90 @@ class ImportGrades extends Command
             }
 
             $examRecord['exams'] = $this->importMainLineExams($userRecord);
+            try {
+                $this->updateExamGrades($examRecord);
+            } catch (Exception $e) {
+                $this->error('Error updating ' . $userRecord['member_number'] . ' ' . $userRecord['first_name'] . ' ' . $userRecord['last_name']);
+                die();
+            }
+
+        }
+
+        $gsnMainLine =
+            Excel::selectSheets('IMNA Exam Grades')->load(
+                app_path() . '/database/TRMN Exam grading spreadsheet.xlsx'
+            )
+                 ->formatDates(true, 'Y-m-d')
+                 ->toArray();
+
+        foreach ($gsnMainLine as $userRecord) {
+
+            if (empty( $userRecord['last_name'] ) === true) {
+                continue;
+            }
+
+            $examRecord = []; // start with a clean array
+
+            $examRecord['member_id'] = $userRecord['member_number'];
+
+            if ($this->validateMemberId($examRecord['member_id']) === false) {
+                // Not a valid member id, attempt to find it by first and last name
+                $users =
+                    User::where('last_name', '=', $userRecord['last_name'])
+                        ->where('first_name', '=', $userRecord['first_name'])
+                        ->get();
+
+                if (isset( $users[0] ) === true) {
+                    $examRecord['member_id'] = $users[0]['member_id'];
+                } else {
+                    $this->error(
+                        'Invalid MemberID for ' . $userRecord['first_name'] . ' ' . $userRecord['last_name'] . ' and I was unable to find a match in the User database.'
+                    );
+                    continue;
+                }
+            }
+
+            $examRecord['exams'] = $this->importGsnMainLineExams($userRecord);
+
+            $this->updateExamGrades($examRecord);
+        }
+
+        // RMMC Exam Grading Sheet
+
+        $rmaMainLine = Excel::selectSheets('RMA Exam Grading Sheet')->load(
+            app_path() . '/database/TRMN Exam grading spreadsheet.xlsx'
+        )
+                             ->formatDates(true, 'Y-m-d')
+                             ->toArray();
+
+        foreach ($rmaMainLine as $userRecord) {
+
+            if (empty( $userRecord['last_name'] ) === true) {
+                continue;
+            }
+
+            $examRecord = []; // start with a clean array
+
+            $examRecord['member_id'] = $userRecord['member_number'];
+
+            if ($this->validateMemberId($examRecord['member_id']) === false) {
+                // Not a valid member id, attempt to find it by first and last name
+                $users =
+                    User::where('last_name', '=', $userRecord['last_name'])
+                        ->where('first_name', '=', $userRecord['first_name'])
+                        ->get();
+
+                if (isset( $users[0] ) === true) {
+                    $examRecord['member_id'] = $users[0]['member_id'];
+                } else {
+                    $this->error(
+                        'Invalid MemberID for ' . $userRecord['first_name'] . ' ' . $userRecord['last_name'] . ' and I was unable to find a match in the User database.'
+                    );
+                    continue;
+                }
+            }
+
+            $examRecord['exams'] = $this->importRmaMainLineExams($userRecord);
 
             $this->updateExamGrades($examRecord);
         }
@@ -102,7 +186,10 @@ class ImportGrades extends Command
 
         $_date = strtoupper(date('d M Y', strtotime($value)));
 
-        if (strpos($value, '%') === false && $_date !== '01 JAN 1970') {
+        if (strpos($value, '%') === false &&
+            strpos($value, 'BETA') === false &&
+            strpos($value, 'CREA') === false &&
+            $_date !== '01 JAN 1970') {
             // Valid date and no score
             return ['score' => '100%', 'date' => $_date];
         }
@@ -162,29 +249,136 @@ class ImportGrades extends Command
         return $exam;
     }
 
+    protected function importRmaMainLineExams(array $record)
+    {
+        $mainLineExams = [
+            '0001_exam_e_1' => 'KR1MA-RMA-0001',
+            '0002_exam_e_2' => 'KR1MA-RMA-0002',
+            '0003_exam_e_3' => 'KR1MA-RMA-0003',
+            '0004_exam_e_4' => 'KR1MA-RMA-0004',
+            '0005_exam_e_6' => 'KR1MA-RMA-0005',
+            '0006_exam_e_7' => 'KR1MA-RMA-0006',
+            '0007_exam_e_8' => 'KR1MA-RMA-0007',
+            '0008_exam_e_9' => 'KR1MA-RMA-0008',
+            'wo_0011_exam_wo1' => 'KR1MA-RMA-0011',
+            'cwo_0012_exam_wo2' => 'KR1MA-RMA-0012',
+            'scwo_0013_exam' => 'KR1MA-RMA-0013',
+            'mcwo_0014_exam' => 'KR1MA-RMA-0014',
+            '0101_o_1_exam_2nd_lt' => 'KR1MA-RMA-0101',
+            '0102_o_2_exam_1st_lt' => 'KR1MA-RMA-0102',
+            '0103_o_3_exam_cpt' => 'KR1MA-RMA-0103',
+            'rma_2001_military_admin' => 'KR1MA-RMA-2001',
+            '0104_o_4_exam_maj' => 'KR1MA-RMA-0104',
+            'rma_2002_large_unit_tactics' => 'KR1MA-RMA-2002',
+            '0105_o_5_ltcol' => 'KR1MA-RMA-0105',
+            '0106_o_6_exam_col' => 'KR1MA-RMA-0106',
+            'rma_2003_advanced_leadership' => 'KR1MA-RMA-2003',
+            '1001_f_1_exam_briggen' => 'KR1MA-RMA-1001',
+            '1002_f_2_exam_mg' => 'KR1MA-RMA-1002',
+            '1003_f_3_exam_lg' => 'KR1MA-RMA-1003',
+            '1004_f_4_exam_gen' => 'KR1MA-RMA-1004',
+            '1005_f_5_exam_fm' => 'KR1MA-RMA-1005',
+        ];
+
+        $exam = [];
+
+        foreach ($mainLineExams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+            }
+        }
+
+        return $exam;
+    }
+
+    protected function importGsnMainLineExams(array $record)
+    {
+        $mainLineExams = [
+            'imna_gsn_0001_e_2e_3' => 'IMNA-GSN-0001',
+            'imna_gsn_0002_e_4e_5' => 'IMNA-GSN-0002',
+            'imna_gsn_0003_e_6e_7' => 'IMNA-GSN-0003',
+            'imna_gsn_0004_e_8' => 'IMNA-GSN-0004',
+            'imna_gsn_0005_e_9' => 'IMNA-GSN-0005',
+            'imna_gsn_0006_e_10' => 'IMNA-GSN-0006',
+            'wo1wo2_imna_gsn_0011' => 'IMNA-GSN-0011',
+            'wo3wo4_imna_gsn_0012' => 'IMNA-GSN-0012',
+            'wo5_imna_gsn_0013' => 'IMNA-GSN-0013',
+            'mid_imna_gsn_0100' => 'IMNA-GSN-0100',
+            'ens_imna_gsn_0101' => 'IMNA-GSN-0101',
+            'lt_jg_imna_gsn_0102' => 'IMNA-GSN-0102',
+            'lt_sg_imna_gsn_0103' => 'IMNA-GSN-0103',
+            'lcdr_imna_gsn_0104' => 'IMNA-GSN-0104',
+            'cdr_imna_gsn_0105' => 'IMNA-GSN-0105',
+            'cpt_imna_gsn_0106' => 'IMNA-GSN-0106',
+            'com_imna_gsn_1001' => 'IMNA-GSN-1001',
+            'radm_imna_gsn_1002' => 'IMNA-GSN-1002',
+            'vadm_imna_gsn_1003' => 'IMNA-GSN-1003',
+            'adm_imna_gsn_1004' => 'IMNA-GSN-1004',
+        ];
+
+        $exam = [];
+
+        foreach ($mainLineExams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+            }
+        }
+
+        return $exam;
+    }
+
+    protected function importRmmcMainLineExams(array $record)
+    {
+        $mainLineExams = [
+            'e_1_exam' => 'SIA-RMMC-0001',
+            'e_4_exam' => 'SIA-RMMC-0002',
+            'e_6_exam' => 'SIA-RMMC-0003',
+            'e_8_exam' => 'SIA-RMMC-0004',
+            'e_9_exam' => 'SIA-RMMC-0005',
+            'e_10_exam' => 'SIA-RMMC-0006',
+            'wo_1_exam' => 'SIA-RMMC-0011',
+            'cwo_exam' => 'SIA-RMMC-0012',
+            'mcwo_exam' => 'SIA-RMMC-0013',
+            'o_1_exam' => 'SIA-RMMC-0101',
+            'o_2_exam' => 'SIA-RMMC-0102',
+            'o_3_exam' => 'SIA-RMMC-0103',
+            'o_4_exam' => 'SIA-RMMC-0104',
+            'o_5_exam' => 'SIA-RMMC-0105',
+            'o_6_a_exam' => 'SIA-RMMC-0106',
+            'o_6_b_exam' => 'SIA-RMMC-',
+            'f_2_exam' => 'SIA-RMMC-',
+            'f_3_exam' => 'SIA-RMMC-',
+            'f_4_exam' => 'SIA-RMMC-',
+            's_a_exam' => 'SIA-RMMC-',
+            's_b_exam' => 'SIA-RMMC-',
+            's_c_exam' => 'SIA-RMMC-',
+            'g_a_exam' => 'SIA-RMMC-',
+            'g_b_exam' => 'SIA-RMMC-',
+            'g_c_exam' => 'SIA-RMMC-',
+            'j_a_exam' => 'SIA-RMMC-',
+            'j_b_exam' => 'SIA-RMMC-',
+            'j_c_exam' => 'SIA-RMMC-',
+        ];
+    }
+
     protected function updateExamGrades(array $record)
     {
-        $res = Exam::where('member_id', '=', $record['member_id'])->get();
 
-        if (isset( $res[0] ) === true) {
+        $res = Exam::where('member_id', '=', $record['member_id'])->First();
+
+        if (is_null($res) === false) {
 
             // Exam record exists, update it
-            unset( $record['member_id'] );
+            $res->exams = array_merge($res->exams, $record['exams']);
 
-            foreach ($record as $key => $value) {
-                $res[0][$key] = $value;
-            }
-
-            $res[0]->save();
+            $res->save();
         } else {
-
             $newExamRecord = Exam::create($record);
 
             $examRecord = Exam::find($newExamRecord['_id']);
 
-            foreach ($record as $key => $value) {
-                $examRecord[$key] = $value;
-            }
+            $examRecord->exams = $record['exams'];
+            $examRecord->member_id = $record['member_id'];
 
             $examRecord->save();
         }
