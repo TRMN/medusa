@@ -11,7 +11,7 @@ trait MedusaPermissions
 
     public function hasPermissions($permissions)
     {
-        if (empty( \Auth::user() ) === true) {
+        if (\Auth::check() === true) {
             return false; // Not logged in, don't waste time
         }
 
