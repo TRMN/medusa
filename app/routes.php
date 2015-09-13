@@ -7,9 +7,9 @@ $host = Request::server( 'HTTP_HOST' );
 $hostFull = $protocol . "//" . $host;
 
 if ( Auth::check() ) {
-    $authUser = Auth::getUser();
+    $authUser = Auth::user();
 } else {
-    $authUser = false;
+    $authUser = null;
 }
 
 View::share( 'serverUrl', $hostFull );
@@ -36,9 +36,9 @@ Route::get(
 Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
 
 // Assignment Change Requests
-Route::get('/user_request/{user}/create', ['as' => 'user.change.request', 'uses' => 'UserChangeRequest@create', 'before' => 'auth']);
-Route::post('/user_request', ['as' => 'user.change.store', 'uses' => 'UserChangeRequest@store', 'before' => 'auth']);
-Route::get('/user_request/review', ['as' => 'user.change.review', 'uses' => 'UserChangeRequest@review', 'before' => 'auth']);
+Route::get('/user_request/{user}/create', ['as' => 'user.change.request', 'uses' => 'UserChangeRequestController@create', 'before' => 'auth']);
+Route::post('/user_request', ['as' => 'user.change.store', 'uses' => 'UserChangeRequestController@store', 'before' => 'auth']);
+Route::get('/user_request/review', ['as' => 'user.change.review', 'uses' => 'UserChangeRequestController@review', 'before' => 'auth']);
 
 // Other Routes
 
@@ -62,6 +62,10 @@ Route::get( '/api/fleet', 'ApiController@getFleets');
 Route::get( '/api/hq', 'ApiController@getHeadquarters');
 Route::get( '/api/bureau', 'ApiController@getBureaus');
 Route::get( '/api/su', 'ApiController@getSeparationUnits');
+Route::get( '/api/tf', 'ApiController@getTaskForces');
+Route::get('/api/tg', 'ApiController@getTaskGroups');
+Route::get('/api/squadron', 'ApiController@getSquadrons');
+Route::get('/api/division', 'ApiController@getDivisions');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch', ['before' => 'auth'] ); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 Route::get('/api/mtest', 'ApiController@testMongo');
