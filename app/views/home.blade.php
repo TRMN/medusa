@@ -5,5 +5,5 @@
 @stop
 
 @section('content')
-    @include('partials.servicerecord', array('user' => $user))
+    @include('partials.servicerecord', ['user' => $user, 'permsObj' => $permsObj])
 @stop

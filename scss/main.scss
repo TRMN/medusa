@@ -27,11 +27,15 @@ $medusa-yellow: #ffee00;
 }
 
 .green {
-  color: darkgreen;
+  color: green !important;
 }
 
 .red {
-  color: $manticore-red;
+  color: $manticore-red !important;
+}
+
+.blue {
+  color: mediumblue !important;
 }
 .nav-header {
   color: $medusa-yellow;
@@ -161,7 +165,7 @@ body, html {
   font-family: "Incised 901 W01 Light";
   line-height: 100%;
 }
-#tos {
+#tos, #chooseShip {
   color: $text-primary;
   background-color: #000000;
   background-repeat: no-repeat;
@@ -173,6 +177,13 @@ body, html {
   background-color: #000000;
   font-family: "Incised 901 W01 Light";
   line-height: 100%;
+}
+
+.ui-tooltip {
+  padding: 10px 20px;
+  color: white;
+  border-radius: 20px;
+  background-color: black !important;
 }
 
 p {
@@ -395,26 +406,4 @@ footer {
 
 #user fieldset {
   width: 75%;
-}
-
-.button-group {
-  position: relative;
-  display: inline-block;
-  margin: 1rem 0;
-  &:before {
-    content: attr(data-grouptype);
-    z-index: 99999;
-    color: #999;
-    display: block;
-    font-size: 1rem;
-    padding: 0.25em;
-    border-radius: 50%;
-    background: #fff;
-    position: absolute;
-    left: 42.5%;
-    top: 0.35rem;
-  }
-  button + button {
-    margin-left: 5px;
-  }
 }

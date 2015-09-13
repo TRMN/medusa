@@ -141,6 +141,50 @@ class ImportUsers extends Command
                 $user['assignment'] = [];
             }
 
+            // Default user permissions
+
+            $user['permissions'] = [
+                'LOGOUT',
+                'CHANGE_PWD',
+                'EDIT_SELF',
+                'ROSTER',
+                'TRANSFER'
+            ];
+
+            if (substr($user['primary_billet'], 0, 2) == "CO" ||
+                $user['primary_billet'] == "Commanding Officer") {
+
+                $user['permissions'] = array_merge($user['permissions'],[
+                    'DUTY_ROSTER',
+                    'EXPORT_ROSTER',
+                    'EDIT_WEBSITE',
+                    'ASSIGN_NONCOMMAND_BILLET',
+                    'PROMOTE_E601',
+                    'REQUEST_PROMOTION',
+                    'CHAPTER_REPORT'
+                ]);
+
+                $user['duty_roster'] = $user['assignment'][0]['chapter_id'];
+            }
+
+            if (( empty( $user['secondary_billet'] ) === false ) &&
+                ( substr($user['secondary_billet'], 0, 2) == "CO" ||
+                  $user['secondary_billet'] == "Commanding Officer" )) {
+                      $user['permissions'] = array_merge($user['permissions'],
+                        [
+                            'DUTY_ROSTER',
+                            'EXPORT_ROSTER',
+                            'EDIT_WEBSITE',
+                            'ASSIGN_NONCOMMAND_BILLET',
+                            'PROMOTE_E601',
+                            'REQUEST_PROMOTION',
+                            'CHAPTER_REPORT'
+                        ]
+                    );
+            }
+
+            $user['permissions'] = array_unique($user['permissions']);
+
             unset( $user['ship_name'], $user['primary_billet'], $user['secondary_billet'] );
 
             if ($user['registration_status'] === 'NULL') {
@@ -155,6 +199,11 @@ class ImportUsers extends Command
             if ( $user['application_date'] === 'NULL' )
             {
                 $user['application_date'] = $user['registration_date'];
+            }
+
+            if ($user['rank']['grade'] == "E-1" ||
+                $user['rank']['grade'] == "C-1") {
+                    $user['rank']['date_of_rank'] = $user['application_date'];
             }
 
             if (isset($user['country'])) {
@@ -181,8 +230,6 @@ class ImportUsers extends Command
             } else {
                 $user['postal_code'] = '';
             }
-
-
 
             // Make sure this is not a duplicate user
             if (count(User::where('member_id', '=', $user['member_id'])->get()) === 0) {
@@ -224,14 +271,59 @@ class ImportUsers extends Command
     protected function getChapterByName( $name )
     {
 
+        foreach(['-One' => '01', '-Two' => '02', ' One' => '01', ' Two' => '02'] as $pnum => $pid) {
+            $name = $this->normalizePinnaceName($name, $pnum, $pid);
+        }
+
         $results = Chapter::where( 'chapter_name', '=', $name )->get();
         if (count($results) > 0) {
             return $results;
         } else {
             $this->info("Chapter " . $name . " not found, creating...");
-            Chapter::create( ['chapter_name' => $name, 'chapter_type' => ''] );
+            $branch = '';
+            $type = 'ship';
+
+            $tmp = substr($name, 0, 3);
+
+            switch($tmp) {
+                case 'GNS':
+                    $branch = 'GSN';
+                    break;
+                case 'SMS':
+                    $branch = 'IAN';
+                    break;
+                case 'Biv':
+                    $branch = "RMA";
+                    $type='bivouac';
+                    break;
+                case 'For':
+                    $branch = "RMA";
+                    $type = 'fort';
+                    break;
+                case 'HG ':
+                    $branch = "RMA";
+                    $type = 'outpost';
+                    break;
+                default:
+                    $branch = 'RMN';
+                    $type = 'ship';
+            }
+
+            Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch] );
             return Chapter::where( 'chapter_name', '=', $name )->get();
         }
     }
 
+    protected function normalizePinnaceName($name, $pnum, $pid)
+    {
+        // Normalize Pinnace names
+        if (( $pos = strpos($name, $pnum) ) > 0) {
+            if (substr($name, 0, 3) == 'Pin') {
+                $name = substr($name, 0, $pos) . ' ' . $pid;
+            } else {
+                $name = 'Pinnace ' . substr($name, 0, $pos) . ' ' . $pid;
+            }
+        }
+        return $name;
+    }
 }

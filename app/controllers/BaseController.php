@@ -2,6 +2,12 @@
 
 class BaseController extends Controller
 {
+    use Medusa\Permissions\MedusaPermissions;
+
+    public function __construct()
+    {
+        View::share('permsObj', $this);
+    }
 
     /**
      * Setup the layout used by the controller.
@@ -14,5 +20,4 @@ class BaseController extends Controller
             $this->layout = View::make( $this->layout );
         }
     }
-
 }

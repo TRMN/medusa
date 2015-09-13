@@ -59,12 +59,14 @@ class Chapter extends Eloquent
         return $chapters;
     }
 
-    static function getChapters($branch = '', $location = 0)
+    static function getChapters($branch = '', $location = 0, $joinableOnly=true)
     {
         $holdingChapters = [ 'SS-001', 'SS-002', 'LP', 'HC' ];
 
         if (empty($branch) === false) {
             $results = Chapter::where('branch', '=', strtoupper($branch))->where('joinable', '!=', false)->orderBy('chapter_name','asc')->get();
+        } elseif ($joinableOnly === false) {
+            $results = Chapter::orderBy('chapter_name', 'asc')->get();
         } else {
             $results = Chapter::where('joinable', '!=', false)->orderBy('chapter_name', 'asc')->get();
         }
@@ -78,15 +80,15 @@ class Chapter extends Eloquent
 
         foreach ( $results as $chapter ) {
             if ( isset( $chapter->hull_number ) === true && empty( $chapter->hull_number ) === false ) {
-                if ( in_array( $chapter->hull_number, $holdingChapters ) === true ) {
+                if ( in_array( $chapter->hull_number, $holdingChapters ) === true) {
                     continue;
                 } else {
                     $co = Chapter::find($chapter->_id)->getCO();
 
-                    if (empty($co[0]) === true) {
+                    if (empty($co) === true) {
                         $co = ['city' => null, 'state_province' => null];
                     } else {
-                        $co = $co[0]->toArray();
+                        $co = $co->toArray();
                     }
 
                     $append = '';
@@ -102,8 +104,6 @@ class Chapter extends Eloquent
         }
 
         asort( $chapters, SORT_NATURAL );
-
-        //$chapters = [ '' => "Select a Chapter" ] + $chapters;
 
         return $chapters;
     }
@@ -132,27 +132,73 @@ class Chapter extends Eloquent
     }
 
     public function getCO() {
-        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Commanding Officer' )->get();
-        if (isset($users[0]) === false) {
+        $user = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Commanding Officer' )->first();
+
+        if (empty( $user ) === true) {
             return [];
         }
-        return $users;
+
+        // Sanity Check for strange edge cases
+
+        $valid = false;
+
+        foreach ($user->assignment as $assignment) {
+            if ($assignment['chapter_id'] === (string)$this->_id && $assignment['billet'] === "Commanding Officer") {
+                $valid = true;
+            }
+        }
+
+        if ($valid === false) {
+            return [];
+        }
+
+        return $user;
     }
 
     public function getXO() {
-        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Executive Officer' )->get();
-        if (isset( $users[0]) === false) {
+        $user = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Executive Officer' )->first();
+        if (empty( $user ) === true) {
             return [];
         }
-        return $users;
+
+        // Sanity Check for strange edge cases
+
+        $valid = false;
+
+        foreach ($user->assignment as $assignment) {
+            if ($assignment['chapter_id'] === (string)$this->_id && $assignment['primary'] === true) {
+                $valid = true;
+            }
+        }
+
+        if ($valid === false) {
+            return [];
+        }
+
+        return $user;
     }
 
     public function getBosun() {
-        $users = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Bosun' )->get();
-        if (isset( $users[0]) === false) {
+        $user = User::where( 'assignment.chapter_id', '=', (string)$this->_id )->where( 'assignment.billet', '=', 'Bosun' )->first();
+        if (empty( $user ) === true) {
             return [];
         }
-        return $users;
+
+        // Sanity Check for strange edge cases
+
+        $valid = false;
+
+        foreach ($user->assignment as $assignment) {
+            if ($assignment['chapter_id'] === (string)$this->_id && $assignment['primary'] === true) {
+                $valid = true;
+            }
+        }
+
+        if ($valid === false) {
+            return [];
+        }
+
+        return $user;
     }
 
     /**
@@ -173,6 +219,15 @@ class Chapter extends Eloquent
         }
 
         return $users;
+    }
+
+    public function getChapterIdWithParents()
+    {
+        if (empty($this->assigned_to) === false) {
+            return array_merge([$this->id], Chapter::find($this->assigned_to)->getChapterIdWithParents());
+        } else {
+            return [$this->id];
+        }
     }
 
     static function getChapterType($chapterId)
