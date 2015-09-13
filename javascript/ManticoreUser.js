@@ -41,6 +41,10 @@ module.exports = function() {
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Headquarters">' + getURI('hq', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Bureaus">' + getURI('bureau', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Fleets">' + getURI('fleet', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Forces">' + getURI('tf', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Groups">' + getURI('tg', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Squadrons">' + getURI('squadron', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Divisions">' + getURI('division', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Separation Units">' + getURI('su', assignment.charAt(0) + 'assignment') + '</optgroup>');
             }
             jQuery('#' + assignment + '_assignment').append('<optgroup label="RMN">' + getURI('chapter/RMN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');

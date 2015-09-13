@@ -23,10 +23,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'email_address'         => 'required|email|unique:users',
         'password'              => 'confirmed',
         'branch'                => 'required',
-        'perm_dor'              => 'date|date_format:Y-m-d|required_with:permanent_rank',
-        'brevet_dor'            => 'date|date_format:Y-m-d|required_with:brevet_rank',
-        'primary_assignment'    => 'required',
-        'primary_date_assigned' => 'required|date|date_format:Y-m-d'
     ];
 
     public static $updateRules = [
@@ -40,10 +36,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'email_address'         => 'required|email',
         'password'              => 'confirmed',
         'branch'                => 'required',
-        'perm_dor'              => 'date|date_format:Y-m-d|required_with:permanent_rank',
-        'brevet_dor'            => 'date|date_format:Y-m-d|required_with:brevet_rank',
-        'primary_assignment'    => 'required',
-        'primary_date_assigned' => 'required|date|date_format:Y-m-d'
     ];
 
     public static $error_message = [
@@ -53,13 +45,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'required'                       => 'Please enter the members :attribute',
         'state_province.required'        => 'Please enter the members state or province',
         'state_province.min'             => 'The members state or province must be at least :size character long',
-        'perm_dor.required_with'         => 'If a permanent rank has been selected, a date of rank must be entered',
-        'perm_dor.date'                  => 'The permanent date of rank must be a valid date',
-        'brevet_dor.required_with'       => 'If a brevet rank has been selected, a date of rank must be entered',
-        'brevet_dor.date'                => 'The permanent date of rank must be a valid date',
         'date_format'                    => 'Please enter a date in the format YYYY-MM-DD',
-        'primary_assignment.required'    => "Please select the members primary chapter assignment",
-        'primary_date_assigned.required' => 'Please enter the date the member was assigned to their primary chapter',
         'branch.required'                => "Please select the members branch",
         'email_address.unique'           => 'That email address is already in use',
     ];
@@ -85,7 +71,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'assignment',
         'peerage_record',
         'awards',
-        'password'
+        'password',
+        'permissions',
+        'duty_roster',
     ];
 
     public function announcements()
@@ -132,9 +120,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      */
     public function getDisplayRank()
     {
-        $gradeDetails = Grade::where('grade', '=', $this->rank['grade'])->get();
+        $gradeDetails = Grade::where('grade', '=', $this->rank['grade'])->First();
 
-        $this->rank_title = $gradeDetails[0]->rank[$this->branch];
+        if (empty($this->branch) === true) {
+            $this->branch = 'RMN';
+        }
+
+        $this->rank_title = $gradeDetails->rank[$this->branch];
 
         if (isset( $this->rating ) && !empty( $this->rating )) {
             if (is_array($this->rating) === true) {
@@ -186,6 +178,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
                 if ($assignment['primary'] == true) {
+                    if (empty( $assignment['chapter_id'] )) {
+                        return false;
+                    }
                     return $assignment['chapter_id'];
                 }
             }
@@ -200,8 +195,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if ($assignment['primary'] == false) {
-                    return $assignment['chapter_id'];
+                if (empty($assignment['primary']) === true ||
+                    $assignment['primary'] == false) {
+                        if (empty( $assignment['chapter_id'])) return false;
+                        return $assignment['chapter_id'];
                 }
             }
 
@@ -270,7 +267,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if ($assignment['primary'] == false) {
+                if (empty( $assignment['primary'] ) === true || $assignment['primary'] == false) {
                     return $assignment['billet'];
                 }
             }
@@ -304,7 +301,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if ($assignment['primary'] == false) {
+                if (empty( $assignment['primary'] ) === true || $assignment['primary'] == false) {
                     if (isset( $assignment['date_assigned'] ) === true) {
                         return $assignment['date_assigned'];
                     } else {
@@ -325,7 +322,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $timeInGrade = $dorObj->diff(new DateTime("now"));
             return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
-            return "Unknown";
+            return null;
         }
 
     }
@@ -336,7 +333,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $timeInService = $regDateObj->diff(new DateTime("now"));
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
-            return "Unknown";
+            return null;
         }
 
     }
@@ -361,6 +358,75 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         } else {
             return false;
         }
+    }
+
+    public function assignCoPerms()
+    {
+        $this->updatePerms(
+            [
+                'DUTY_ROSTER',
+                'EXPORT_ROSTER',
+                'EDIT_WEBSITE',
+                'ASSIGN_NONCOMMAND_BILLET',
+                'PROMOTE_E6O1',
+                'REQUEST_PROMOTION',
+                'CHAPTER_REPORT',
+            ]);
+
+        return true;
+    }
+
+    public function assignAllPerms()
+    {
+        $this->updatePerms(['ALL_PERMS']);
+
+        return true;
+    }
+
+    public function assignBuShipPerms()
+    {
+        $this->updatePerms([
+            'COMMISSION_SHIP',
+            'DECOMMISSION_SHIP',
+            'EDIT_SHIP',
+            'VIEW_DSHIPS',
+            'VIEW_SU',
+        ]);
+
+        return true;
+    }
+
+    public function assignBuPersPerms()
+    {
+        $this->updatePerms([
+            'ADD_MEMBER',
+            'DEL_MEMBER',
+            'EDIT_MEMBER',
+            'VIEW_MEMBERS',
+            'PROC_APPLICATIONS',
+            'PROC_XFERS',
+            'ADD_BILLET',
+            'DEL_BILLET',
+            'EDIT_BILLET',]);
+
+        return true;
+    }
+
+    public function assignSpaceLordPerms()
+    {
+        $this->assignCoPerms();
+        $this->updatePerms(['VIEW_CHAPTER_REPORTS']);
+
+        return true;
+    }
+
+    public function updatePerms(array $perms)
+    {
+        $this->permissions = array_unique(array_merge($this->permissions, $perms));
+
+        $this->save();
+
+        return true;
     }
 
     static function normalizeStateProvince($state)

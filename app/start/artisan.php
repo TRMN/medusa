@@ -11,8 +11,11 @@
 |
 */
 
-#Artisan::add( new GenerateAdminUser );
-Artisan::add(new ImportChapters);
-Artisan::add(new ImportUsers);
-Artisan::add(new ImportGrades);
-Artisan::add(new ViewsCommand);
+Artisan::add(new ImportChapters());
+Artisan::add(new ImportUsers());
+Artisan::add(new ImportGrades());
+Artisan::add(new ViewsCommand());
+Artisan::add(new CodeTest());
+Artisan::add(new AddPermission());
+Artisan::add(new CreateEchelons());
+Artisan::add(new assignAHPerms());

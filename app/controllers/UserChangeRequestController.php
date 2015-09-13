@@ -1,6 +1,6 @@
 <?php
 
-class UserChangeRequest extends \BaseController {
+class UserChangeRequestController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -26,7 +26,7 @@ class UserChangeRequest extends \BaseController {
             ['user' => $user,
              'req' => Auth::user(),
              'branches' => Branch::getBranchList(),
-             'chapters' => Chapter::getChapters(),
+             'chapters' => Chapter::getChapters(null, 0, false),
              'billets'  => ['0' => 'Select a Billet'] + Billet::getBillets(),
              'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
             ]

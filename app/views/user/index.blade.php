@@ -18,6 +18,58 @@
             <li><a href="#members-8">Civilian</a></li>
             <li><a href="#members-9">Intelligence</a></li>
         </ul>
+
+        <div id="members-1">
+            <table id="memberList-1" class="compact row-border stripe">
+                <thead>
+                <tr>
+                    <th width="30%">Name</th>
+                    <th width="10%">Member ID</th>
+                    <th width="15%">Email</th>
+                    <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
+                    <th width="9%">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if(isset($users['RMN']))
+                    @foreach( $users['RMN'] as $user )
+                        <tr>
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}
+                                {{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            </td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
+                            <td width="10%">
+                                @if($user->getPrimaryAssignmentName() !== false)
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
+                                @else
+                                    No assignment
+                                @endif
+                            </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="9%">
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th width="30%">Name</th>
+                    <th width="10%">Member ID</th>
+                    <th width="15%">Email</th>
+                    <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
+                    <th width="9%">Actions</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
         <div id="members-9">
 
             <table id="memberList-9" class="compact row-border stripe">
@@ -35,22 +87,25 @@
                 @if(isset($users['INTEL']))
                     @foreach( $users['INTEL'] as $user )
                         <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
                             <td width="10%">
                                 @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
                                 @else
                                     No assignment
                                 @endif
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -86,22 +141,25 @@
                 @if(isset($users['CIVIL']))
                     @foreach( $users['CIVIL'] as $user )
                         <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
                             <td width="10%">
                                 @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
                                 @else
                                     No assignment
                                 @endif
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -136,22 +194,25 @@
                 @if(isset($users['SFS']))
                     @foreach( $users['SFS'] as $user )
                         <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
                             <td width="10%">
                                 @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
                                 @else
                                     No assignment
                                 @endif
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -186,22 +247,25 @@
                 @if(isset($users['IAN']))
                     @foreach( $users['IAN'] as $user )
                         <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
                             <td width="10%">
                                 @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
                                 @else
                                     No assignment
                                 @endif
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -236,22 +300,25 @@
                 @if(isset($users['RHN']))
                     @foreach( $users['RHN'] as $user )
                         <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
                             <td width="10%">
                                 @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
                                 @else
                                     No assignment
                                 @endif
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -286,22 +353,25 @@
                 @if(isset($users['GSN']))
                     @foreach( $users['GSN'] as $user )
                         <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
                             <td width="10%">
                                 @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
                                 @else
                                     No assignment
                                 @endif
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -336,22 +406,25 @@
                 @if(isset($users['RMA']))
                     @foreach( $users['RMA'] as $user )
                         <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
                             <td width="10%">
                                 @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
                                 @else
                                     No assignment
                                 @endif
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -386,22 +459,25 @@
                 @if(isset($users['RMMC']))
                     @foreach( $users['RMMC'] as $user )
                         <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
                             <td width="10%">
                                 @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
                                 @else
                                     No assignment
                                 @endif
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -420,54 +496,6 @@
             </table>
 
         </div>
-        <div id="members-1">
-            <table id="memberList-1" class="compact row-border stripe">
-                <thead>
-                <tr>
-                    <th width="30%">Name</th>
-                    <th width="10%">Member ID</th>
-                    <th width="15%">Email</th>
-                    <th width="10%">Ship</th>
-                    <th width="10%" class="center">Registration<br/>Date</th>
-                    <th width="9%">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                @if(isset($users['RMN']))
-                    @foreach( $users['RMN'] as $user )
-                        <tr>
-                            <td width="30%">{{{ $user->last_name }}}, {{{ $user->first_name }}}{{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}}
-                            </td>
-                            <td width="10%">{{{ $user->member_id }}}</td>
-                            <td width="15%">{{{ $user->email_address }}}</td>
-                            <td width="10%">
-                                @if($user->getPrimaryAssignmentName() !== false)
-                                    <a href="/chapter/{{{ $user->getPrimaryAssignmentId() }}}">{{{ $user->getPrimaryAssignmentName() }}}</a>
-                                @else
-                                    No assignment
-                                @endif
-                            </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
-                            <td width="9%">
-                                <a class="tiny" href="{{ route('user.show' , [$user->_id]) }}">View</a>
-                                <a class="tiny" href="{{ route('user.edit', [ $user->_id ]) }}">Edit</a>
-                                <a class="tiny" href="{{ route('user.confirmdelete', [ $user->_id]) }}">Delete</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th width="30%">Name</th>
-                    <th width="10%">Member ID</th>
-                    <th width="15%">Email</th>
-                    <th width="10%">Ship</th>
-                    <th width="10%" class="center">Registration<br/>Date</th>
-                    <th width="9%">Actions</th>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
+
     </div>
 @stop
