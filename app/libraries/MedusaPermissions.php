@@ -11,7 +11,7 @@ trait MedusaPermissions
 
     public function hasPermissions($permissions)
     {
-        if (\Auth::check() === true) {
+        if (empty( \Auth::user() ) === true) {
             return false; // Not logged in, don't waste time
         }
 
@@ -34,7 +34,7 @@ trait MedusaPermissions
 
     public function hasAllPermissions($permissions)
     {
-        if (\Auth::check() === true) {
+        if (empty( \Auth::user() ) === true) {
             return false; // Not logged in, don't waste time
         }
 
@@ -65,10 +65,6 @@ trait MedusaPermissions
      */
     public function isInChainOfCommand(\User $user)
     {
-        if (\Auth::check() === true) {
-            return false; // Not logged in, don't waste time
-        }
-
         // Get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
         $primaryChapterId = $user->getPrimaryAssignmentId();
         $secondaryChapterId = $user->getSecondaryAssignmentId();
