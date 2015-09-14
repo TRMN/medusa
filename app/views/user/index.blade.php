@@ -9,7 +9,7 @@
     <div id="members">
         <ul>
             <li><a href="#members-1">RMN</a></li>
-            <li><a href="#members-2">RMNMC</a></li>
+            <li><a href="#members-2">RMMC</a></li>
             <li><a href="#members-3">RMA</a></li>
             <li><a href="#members-4">GSN</a></li>
             <li><a href="#members-5">RHN</a></li>
