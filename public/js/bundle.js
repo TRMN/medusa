@@ -1964,7 +1964,19 @@ jQuery(document).ready(function ($) {
         }
     };
 
-    jQuery(document).tooltip();
+    jQuery(document).tooltip({
+        items: "[data-src], [title]",
+        content: function() {
+            var element = jQuery( this );
+            if (element.is("[data-src")) {
+                var source = element.attr("data-src");
+                return "<img src='" + source + "'>";
+            }
+            if (element.is("[title]")) {
+                return element.attr("title");
+            }
+        }
+    });
 
     jQuery(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
         imageHeight = jQuery('#pm1').height();
