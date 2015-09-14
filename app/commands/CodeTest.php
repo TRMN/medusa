@@ -39,7 +39,7 @@ class CodeTest extends Command
      */
     public function fire()
     {
-
+        var_dump(file_exists(public_path() . '/crests/' . $hull_number . '.svg'));
     }
 
     /**
