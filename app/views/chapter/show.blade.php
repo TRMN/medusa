@@ -13,8 +13,20 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
 @stop
 
 @section('content')
-    <h2 class="Incised901Bold padding-5">{{ $detail->chapter_name }} {{$hull_number}}</h2>
-    <h3 class="Incised901Bold padding-5">{{ isset($detail->ship_class) ? $detail->ship_class . ' Class' : '' }}</h3>
+    <div class="row">
+        @if(file_exists(public_path() . '/crests/' . $detail->hull_number . '.svg') === true)
+            <div class="columns small-2">
+                <img class='crest' src="{{asset('/crests/' . $detail->hull_number . '.svg')}}" alt="{{$detail->chapter_name}} Crest"
+                     height="100px" width="100px" data-src="{{asset('/crests/' . $detail->hull_number . '.svg')}}">
+            </div>
+        @endif
+        <div class="columns small-10 end">
+            <h2 class="Incised901Bold padding-5">{{ $detail->chapter_name }} {{$hull_number}}</h2>
+            <h3 class="Incised901Bold padding-5">{{ isset($detail->ship_class) ? $detail->ship_class . ' Class' : '' }}</h3>
+        </div>
+    </div>
+
+
 
     <div class="row padding-5">
         <div class="small-2 columns Incised901Light">
@@ -142,4 +154,5 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
             </div>
         </div>
     @endif
+
 @stop
