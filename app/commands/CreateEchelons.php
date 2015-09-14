@@ -134,11 +134,19 @@ class CreateEchelons extends Command {
                 'Chapter Name' => $name,
             ];
 
+            $member->duty_roster = $echelon;
+
             // Update the members record
             $member->assignment = $assignments;
 
             $member->save();
+
+
         }
+
+        // Assign CO permissions
+        $member->assignCoPerms();
+
         $this->info(' CO for ' . $name . ' set');
         return true;
     }
