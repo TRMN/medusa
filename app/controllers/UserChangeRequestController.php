@@ -44,7 +44,7 @@ class UserChangeRequestController extends \BaseController {
         $data = Input::all();
 
         $user = User::find($data['user_id']);
-        if ($data['user_id'] !== $data['req_id']) {
+        if (empty($data['req_id']) === false && $data['user_id'] !== $data['req_id']) {
             $requestor = User::find($data['req_id']);
         } else {
             $requestor = $user;
@@ -142,13 +142,12 @@ class UserChangeRequestController extends \BaseController {
     public function review()
     {
         $records = ChangeRequest::all();
-
         foreach ($records as $index => $record) {
             $records[$index]['user'] = User::find($record['user']);
             $records[$index]['requestor'] = User::find($record['requestor']);
             if ($record['req_type'] === 'assignment.chapter') {
-                $records[$index]['old_chapter'] = Chapter::find($record['old_value'])->get()[0]->chapter_name;
-                $records[$index]['new_chapter'] = Chapter::find($record['new_value'])->get()[0]->chapter_name;
+                $records[$index]['old_chapter'] = Chapter::where('_id', '=', $record['old_value'])->first()->chapter_name;
+                $records[$index]['new_chapter'] = Chapter::where('_id', '=', $record['new_value'])->first()->chapter_name;
             }
         }
 
