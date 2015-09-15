@@ -10,9 +10,7 @@ class UserController extends \BaseController
      */
     public function index()
     {
-        if ($this->hasPermissions(['VIEW_MEMBERS']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions('VIEW_MEMBERS');
 
         $branches = ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN', 'SFS', 'CIVIL', 'INTEL'];
 
@@ -26,14 +24,20 @@ class UserController extends \BaseController
             $usersByBranch[$branch] = $users;
         }
 
-        return View::make('user.index', ['users' => $usersByBranch, 'title' => 'Membership List', ]);
+        $usersOtherThanActive = [];
+
+
+
+        foreach(User::whereIn('registration_status', ['Inactive', 'Suspended', 'Expelled'])->get() as $user) {
+            $usersOtherThanActive[$user->registration_status][] = $user;
+        }
+
+        return View::make('user.index', ['users' => $usersByBranch, 'title' => 'Membership List', 'otherThanActive' => $usersOtherThanActive]);
     }
 
     public function reviewApplications()
     {
-        if ($this->hasPermissions(['PROC_APPLICATIONS']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions('PROC_APPLICATIONS');
 
         $users = User::where('active', '!=', "1")->where('registration_status', '=', 'Pending')->get();
 
@@ -43,9 +47,7 @@ class UserController extends \BaseController
 
     public function approveApplication(User $user)
     {
-        if ($this->hasPermissions(['PROC_APPLICATIONS']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions('PROC_APPLICATIONS');
 
         $user->registration_status = 'Active';
         $user->registration_date = date('Y-m-d');
@@ -114,9 +116,7 @@ class UserController extends \BaseController
 
     public function denyApplication(User $user)
     {
-        if ($this->hasPermissions(['PROC_APPLICATIONS']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions('PROC_APPLICATIONS');
 
         $user->registration_status = 'Denied';
         $user->registration_date = date('Y-m-d');
@@ -132,10 +132,7 @@ class UserController extends \BaseController
      */
     public function create()
     {
-        if ($this->hasPermissions(['ADD_MEMBER']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
-
+        $this->checkPermissions('ADD_MEMBER');
         return View::make(
             'user.create',
             [
@@ -159,9 +156,7 @@ class UserController extends \BaseController
      */
     public function store()
     {
-        if ($this->hasPermissions(['ADD_MEMBER']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions('ADD_MEMBER');
 
         $rules = User::$rules;
         $errMsg = User::$error_message;
@@ -412,12 +407,11 @@ class UserController extends \BaseController
      */
     public function show(User $user)
     {
-        if (
-                $this->isInChainOfCommand($user) === false &&
-                Auth::user()->id != $user->id &&
-                $this->hasPermissions(['VIEW_MEMBERS']) === false
+        if ($this->isInChainOfCommand($user) === false &&
+            Auth::user()->id != $user->id &&
+            $this->hasPermissions(['VIEW_MEMBERS']) === false
             ) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
+                return Redirect::back()->with('message', 'You do not have permission to view that page');
         }
 
         return View::make(
@@ -429,6 +423,8 @@ class UserController extends \BaseController
 
             ]
         );
+
+
     }
 
     /**
@@ -440,9 +436,7 @@ class UserController extends \BaseController
      */
     public function edit(User $user)
     {
-        if ($this->hasPermissions(['EDIT_MEMBER','EDIT_SELF']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF']);
 
         $greeting = $user->getGreetingArray();
 
@@ -497,9 +491,7 @@ class UserController extends \BaseController
      */
     public function update(User $user)
     {
-        if ($this->hasPermissions(['EDIT_MEMBER', 'EDIT_SELF']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF']);
 
         $validator = Validator::make($data = Input::all(), User::$updateRules, User::$error_message);
 
@@ -565,28 +557,24 @@ class UserController extends \BaseController
 
         $data['awards'] = [];
 
-        $redirect = 'user.index';
-
-        if ($data['reload_form'] === "yes") {
-            $redirect = 'user.edit';
-        }
-
-        if ($user->member_id === $data['member_id'] && $data['reload_form'] === "no") {
-            $redirect = 'home';
-        }
-
-        unset( $data['_method'], $data['_token'], $data['password_confirmation'], $data['reload_form'] );
+        unset( $data['_method'], $data['_token'], $data['password_confirmation'] );
 
         $user->update($data);
 
-        return Redirect::route($redirect);
+        if ($data['reload_form'] === "yes") {
+            return Redirect::route('user.edit', [$user->_id]);
+        }
+
+        Cache::flush();
+
+        return Redirect::to($data['redirectTo']);
+
     }
 
     public function tos()
     {
-        if (Auth::check() === false) {
-            return Redirect::route('signin')->with('message', 'You do not have permission to view that page');
-        }
+        $this->loginValid();
+
         $data = Input::all();
 
         if (empty($data['tos']) === false) {
@@ -618,9 +606,7 @@ class UserController extends \BaseController
      */
     public function confirmDelete(User $user)
     {
-        if ($this->hasPermissions(['DEL_MEMBER']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions('DEL_MEMBER');
 
         return View::make('user.confirm-delete', ['user' => $user, ]);
     }
@@ -634,11 +620,11 @@ class UserController extends \BaseController
      */
     public function destroy(User $user)
     {
-        if ($this->hasPermissions(['DEL_MEMBER']) === false) {
-            return Redirect::route('home')->with('message', 'You do not have permission to view that page');
-        }
+        $this->checkPermissions('DEL_MEMBER');
 
         User::destroy($user->_id);
+
+        Cache::flush();
 
         return Redirect::route('user.index');
     }

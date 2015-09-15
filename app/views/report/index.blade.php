@@ -14,7 +14,7 @@ Announcements
     <tbody>
 
 @foreach($reports as $report)
-    <tr><td><a href="{{ route('report.edit', [ $report->id ] )}}">{{{ $report->summary }}}</a></td><td>{{{ $report->author ? $report->user->getGreeting() : '' }}}</td><td>{{{ $report->updated_at }}}</td><td>{{{ $report->is_published ? 'Published' : 'Unpublished' }}}</td><td><button class="btn">Delete</button></td></tr>
+    <tr><td><a href="{{ route('report.edit', [ $report->id ] )}}">{{ $report->summary }}</a></td><td>{{ $report->author ? $report->user->getGreeting() : '' }}</td><td>{{ $report->updated_at }}</td><td>{{ $report->is_published ? 'Published' : 'Unpublished' }}</td><td><button class="btn">Delete</button></td></tr>
 @endforeach
 
     </tbody>

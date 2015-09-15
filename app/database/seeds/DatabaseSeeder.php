@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call('StatusSeeder');
         $this->call('BilletSeeder');
         $this->call('PermissionSeeder');
+        $this->call('RegStatusSeeder');
     }
 
 }

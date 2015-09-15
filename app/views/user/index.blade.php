@@ -17,6 +17,11 @@
             <li><a href="#members-7">SFS</a></li>
             <li><a href="#members-8">Civilian</a></li>
             <li><a href="#members-9">Intelligence</a></li>
+            <li><a href="#inactive">Inactive</a></li>
+            @if($permsObj->hasPermissions('ALL_PERMS') === true)
+                <li><a href="#suspended">Suspended</a></li>
+                <li><a href="#expelled">Expelled</a></li>
+            @endif
         </ul>
 
         <div id="members-1">
@@ -69,6 +74,172 @@
                 </tfoot>
             </table>
         </div>
+
+        <div id="inactive">
+            <table id="inactiveList" class="compact row-border stripe">
+                <thead>
+                <tr>
+                    <th width="30%">Name</th>
+                    <th width="10%">Member ID</th>
+                    <th width="15%">Email</th>
+                    <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
+                    <th width="9%">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if(isset($otherThanActive['Inactive']))
+                    @foreach( $otherThanActive['Inactive'] as $user )
+                        <tr>
+                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}
+                                {{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            </td>
+                            <td width="10%">{{ $user->member_id }}</td>
+                            <td width="15%">{{ $user->email_address }}</td>
+                            <td width="10%">
+                                @if($user->getPrimaryAssignmentName() !== false)
+                                    <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
+                                @else
+                                    No assignment
+                                @endif
+                            </td>
+                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="9%">
+                                <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
+                                <a class="tiny fi-pencil green size-48" href="{{ route('user.edit', [ $user->_id ]) }}"
+                                   title="Edit User"></a>
+                                <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                   title="Delete User"></a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th width="30%">Name</th>
+                    <th width="10%">Member ID</th>
+                    <th width="15%">Email</th>
+                    <th width="10%">Ship</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
+                    <th width="9%">Actions</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        @if($permsObj->hasPermissions('ALL_PERMS') === true)
+            <div id="suspended">
+                <table id="suspendedList" class="compact row-border stripe">
+                    <thead>
+                    <tr>
+                        <th width="30%">Name</th>
+                        <th width="10%">Member ID</th>
+                        <th width="15%">Email</th>
+                        <th width="10%">Ship</th>
+                        <th width="10%" class="center">Registration<br/>Date</th>
+                        <th width="9%">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if(isset($otherThanActive['Suspended']))
+                        @foreach( $otherThanActive['Suspended'] as $user )
+                            <tr>
+                                <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}
+                                    {{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                                </td>
+                                <td width="10%">{{ $user->member_id }}</td>
+                                <td width="15%">{{ $user->email_address }}</td>
+                                <td width="10%">
+                                    @if($user->getPrimaryAssignmentName() !== false)
+                                        <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
+                                    @else
+                                        No assignment
+                                    @endif
+                                </td>
+                                <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                                <td width="9%">
+                                    <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                       title="View User"></a>
+                                    <a class="tiny fi-pencil green size-48"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}"
+                                       title="Edit User"></a>
+                                    <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th width="30%">Name</th>
+                        <th width="10%">Member ID</th>
+                        <th width="15%">Email</th>
+                        <th width="10%">Ship</th>
+                        <th width="10%" class="center">Registration<br/>Date</th>
+                        <th width="9%">Actions</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div id="expelled">
+                <table id="expelledList" class="compact row-border stripe">
+                    <thead>
+                    <tr>
+                        <th width="30%">Name</th>
+                        <th width="10%">Member ID</th>
+                        <th width="15%">Email</th>
+                        <th width="10%">Ship</th>
+                        <th width="10%" class="center">Registration<br/>Date</th>
+                        <th width="9%">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if(isset($otherThanActive['Expelled']))
+                        @foreach( $otherThanActive['Expelled'] as $user )
+                            <tr>
+                                <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}
+                                    {{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                                </td>
+                                <td width="10%">{{ $user->member_id }}</td>
+                                <td width="15%">{{ $user->email_address }}</td>
+                                <td width="10%">
+                                    @if($user->getPrimaryAssignmentName() !== false)
+                                        <a href="/chapter/{{ $user->getPrimaryAssignmentId() }}">{{ $user->getPrimaryAssignmentName() }}</a>
+                                    @else
+                                        No assignment
+                                    @endif
+                                </td>
+                                <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                                <td width="9%">
+                                    <a class="fi-torso blue size-48" href="{{ route('user.show' , [$user->_id]) }}"
+                                       title="View User"></a>
+                                    <a class="tiny fi-pencil green size-48"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}"
+                                       title="Edit User"></a>
+                                    <a class="fi-x red size-48" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th width="30%">Name</th>
+                        <th width="10%">Member ID</th>
+                        <th width="15%">Email</th>
+                        <th width="10%">Ship</th>
+                        <th width="10%" class="center">Registration<br/>Date</th>
+                        <th width="9%">Actions</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        @endif
 
         <div id="members-9">
 
