@@ -151,8 +151,7 @@ class ImportUsers extends Command
                 'TRANSFER'
             ];
 
-            if (substr($user['primary_billet'], 0, 2) == "CO" ||
-                $user['primary_billet'] == "Commanding Officer") {
+            if ($user['primary_billet'] == "Commanding Officer") {
 
                 $user['permissions'] = array_merge($user['permissions'],[
                     'DUTY_ROSTER',
@@ -168,8 +167,7 @@ class ImportUsers extends Command
             }
 
             if (( empty( $user['secondary_billet'] ) === false ) &&
-                ( substr($user['secondary_billet'], 0, 2) == "CO" ||
-                  $user['secondary_billet'] == "Commanding Officer" )) {
+                  $user['secondary_billet'] == "Commanding Officer") {
                       $user['permissions'] = array_merge($user['permissions'],
                         [
                             'DUTY_ROSTER',

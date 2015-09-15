@@ -10,10 +10,8 @@ class ChapterController extends BaseController
         return View::make( 'chapter.index', [ 'chapters' => $chapters ] );
     }
 
-    public function show( $chapterID )
+    public function show( $chapter )
     {
-        $chapter = Chapter::find( $chapterID );
-
         if ( isset( $chapter->assigned_to ) ) {
             $parentChapter = Chapter::find( $chapter->assigned_to );
         } else {
@@ -36,6 +34,8 @@ class ChapterController extends BaseController
      */
     public function create()
     {
+        $this->checkPermissions('COMMISSION_SHIP');
+
         $types = Type::whereIn('chapter_type', ['ship', 'station'])->orderBy('chapter_description')->get(['chapter_type', 'chapter_description']);
         $chapterTypes = [ ];
 
@@ -43,39 +43,55 @@ class ChapterController extends BaseController
             $chapterTypes[ $chapterType->chapter_type ] = $chapterType->chapter_description;
         }
 
-        $chapterTypes = ['' => 'Select a Chapter Type'] + $chapterTypes;
+        $chapterTypes = ['' => 'Select a Ship Type'] + $chapterTypes;
+
+        $chapters = Chapter::getChaptersByType('fleet');
+
+        asort($chapters);
 
         return View::make('chapter.create', [
             'chapterTypes' => $chapterTypes,
             'chapter' => new Chapter,
-            'branches' => Branch::getNavalBranchList()]
+            'branches' => Branch::getNavalBranchList(),
+            'fleets' => ['' => 'Select a Fleet'] + $chapters,]
         );
     }
 
-    public function edit( $chapterID )
+    public function edit(Chapter $chapter )
     {
+        $this->checkPermissions('EDIT_SHIP');
 
-        $detail = Chapter::find( $chapterID );
-        $types = Type::all();
-        $chapterTypes = [ ];
+        $types =
+            Type::whereIn('chapter_type', ['ship', 'station'])->orderBy('chapter_description')->get(
+                ['chapter_type', 'chapter_description']
+            );
+        $chapterTypes = [];
 
-        foreach ( $types as $chapterType ) {
-            $chapterTypes[ $chapterType->chapter_type ] = $chapterType->chapter_description;
+        foreach ($types as $chapterType) {
+            $chapterTypes[$chapterType->chapter_type] = $chapterType->chapter_description;
         }
 
-        $chapters = Chapter::orderBy( 'chapter_type' )->orderBy( 'chapter_name' )->get( [ '_id', 'chapter_name' ] );
+        $chapterTypes = ['' => 'Select a Ship Type'] + $chapterTypes;
 
-        $chapterList[ '' ] = "N/A";
+        $chapters = array_merge(Chapter::getChaptersByType('fleet'),
+            Chapter::getChaptersByType('task_force'),
+            Chapter::getChaptersByType('task_group'),
+            Chapter::getChaptersByType('squadron'),
+            Chapter::getChaptersByType('division')
+            );
 
-        foreach ( $chapters as $chapter ) {
-            $chapterList[ $chapter->_id ] = $chapter->chapter_name;
-        }
+        asort($chapters);
 
-        return View::make( 'chapter.edit', [ 'chapterTypes' => $chapterTypes, 'chapter' => $detail, 'chapterList' => $chapterList ] );
+        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+
+        return View::make( 'chapter.edit', [ 'chapterTypes' => $chapterTypes, 'chapter' => $chapter, 'chapterList' => $chapters,
+                                             'branches' => Branch::getNavalBranchList(), 'numCrew' => count($crew),
+        ]);
     }
 
-    public function update( $chapterId )
+    public function update(Chapter $chapter )
     {
+        $this->checkPermissions('EDIT_SHIP');
 
         $validator = Validator::make( $data = Input::all(), Chapter::$updateRules );
 
@@ -85,17 +101,30 @@ class ChapterController extends BaseController
 
         unset( $data[ '_method' ], $data[ '_token' ] );
 
-        $chapter = Chapter::find( $chapterId );
+        if (empty($data['decommission_date']) === false &&
+            empty($data['commission_date'])=== false) {
+            // Figure out if the ship is in commission or not
+
+            if (strtotime($data['commission_date']) > strtotime($data['decommission_date'])) {
+                // Commission date is newer than decommission date
+                unset($data['decommission_date']);
+                $chapter->decommission_date = '';
+            } else {
+                // Decommission date is newer
+                unset($data['commission_date']);
+                $chapter->commission_date = '';
+            }
+        }
 
         foreach ( $data as $k => $v ) {
-            if ( empty( $data[ $k ] ) === true ) {
-                unset( $data[ $k ] );
-            } else {
+            if ( empty( $data[ $k ] ) === false ) {
                 $chapter->$k = $v;
             }
         }
 
-        $chapter->update( $data );
+        $chapter->save();;
+
+        Cache::flush();
 
         return Redirect::route( 'chapter.index' );
     }
@@ -107,6 +136,8 @@ class ChapterController extends BaseController
      */
     public function store()
     {
+        $this->checkPermissions('COMMISSION_SHIP');
+
         $validator = Validator::make( $data = Input::all(), Chapter::$rules );
 
         if ( $validator->fails() ) {
@@ -124,26 +155,30 @@ class ChapterController extends BaseController
         return Redirect::route( 'chapter.index' );
     }
 
+    public function decommission(Chapter $chapter)
+    {
+        $this->checkPermissions('DECOMMISSION_SHIP');
+
+        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+
+        return View::make('chapter.confirm-decommission', ['chapter' => $chapter, 'numCrew' => count($crew),]);
+    }
     /**
      * Remove the specified Chapter.
      *
      * @param  $chapterID
      * @return Response
      */
-    public function destroy( $chapterId )
+    public function destroy(Chapter $chapter )
     {
-        // Remove the chapter
-        Chapter::destroy( $chapterId );
+        $this->checkPermissions('DECOMMISSION_SHIP');
 
-        // Update any records that were assigned to that chapter
+        $chapter->commission_date = '';
+        $chapter->decommission_date = date('Y-m-d');
 
-        $chapters = Chapter::where( 'assigned_to', '=', $chapterId )->get();
+        $chapter->save();
 
-        foreach ( $chapters as $chapter ) {
-            $chapter->assigned_to = '';
-            $chapter->save();
-        }
+        return Redirect::route('chapter.index');
 
-        return Response::json( [ 'status' => 'success' ] );
     }
 }

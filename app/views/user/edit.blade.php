@@ -12,15 +12,7 @@
     <h4 class="my NordItalic ninety">
         Editing {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
         {{ $user->last_name }}{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}</h4>
-    <?php
-    if (count($errors->all())) {
-        echo "<p>Please correct the following errors:</p>\n<ul>\n";
-        foreach ($errors->all() as $message) {
-            echo "<li>" . $message . "</li>\n";
-        }
-    }
-    echo "</ul>\n";
-    ?>
+
     <div class="Incised901Light filePhoto">
 
         {{$user->member_id}}
@@ -42,6 +34,7 @@
     {{ Form::hidden('member_id', $user->member_id) }}
     {{ Form::hidden('reload_form', 'no', ['id' => 'reload_form']) }}
     {{ Form::hidden('showUnjoinable', 'true', ['id' => 'showUnjoinable']) }}
+    {{ Form::hidden('redirectTo', URL::previous()) }}
     <fieldset>
         <legend>Member Information</legend>
         <div class="row">
@@ -114,11 +107,22 @@
         <div class="row">
             <div class="end small-6 columns ninety Incised901Light">
                 {{ Form::label('branch', "Branch", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_USER']) === true){{ Form::select('branch', $branches, $user->branch) }}
+                @else
+                    {{Form::hidden('branch', $user->branch)}} {{$branches[$user->branch]}}
+                @endif
             </div>
         </div>
-        @else
-            {{Form::hidden('branch', $user->branch)}} {{$branches[$user->branch]}}
+
+        @if($permsObj->hasPermissions(['EDIT_USER']) === true)
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{Form::label('registration_status', 'Registration Status', ['class' => 'my'])}} {{Form::select('registration_status', RegStatus::getRegStatuses(), $user->registration_status) }}
+                </div>
+            </div>
         @endif
+
+
+
     </fieldset>
 
     <fieldset>
@@ -273,7 +277,7 @@
     </div>
 
     <a class="button"
-       href="{{ route('user.index') }}">Cancel</a> {{ Form::submit('Save', [ 'class' => 'button' ] ) }}
+       href="{{ URL::previous() }}">Cancel</a> {{ Form::submit('Save', [ 'class' => 'button' ] ) }}
 
     {{ Form::close() }}
 
