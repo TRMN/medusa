@@ -119,6 +119,8 @@
                     {{Form::label('registration_status', 'Registration Status', ['class' => 'my'])}} {{Form::select('registration_status', RegStatus::getRegStatuses(), $user->registration_status) }}
                 </div>
             </div>
+        @else
+            {{Form::hidden('registration_status', $user->registration_status)}}
         @endif
 
 
@@ -244,18 +246,14 @@
         <fieldset>
             <legend>Database Permissions</legend>
             <ul class="small-block-grid-3">
-                @foreach($permissions as $permission)
+                @foreach(DB::table('permissions')->orderBy('name', 'asc')->get() as $permission)
                     <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name']]) }}
                         <span title="{{$permission['description']}}">{{$permission['name']}}</span></li>
                 @endforeach
             </ul>
         </fieldset>
     @else
-        @foreach($permissions as $permission)
-            @if(in_array($permission['name'], $user->permissions))
-                {{Form::hidden('permissions[]', $permission['name'])}}
-            @endif
-        @endforeach
+        {{Form::hidden('permissions', serialize($user->permissions))}}
     @endif
     {{Form::hidden('duty_roster', $user->duty_roster, ['id' => 'dutyroster'])}}
 
