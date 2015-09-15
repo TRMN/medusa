@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('pageTitle')
-    Editing "{{{ $announcement->summary }}}"
+    Editing "{{ $announcement->summary }}"
 @stop
 
 @section('content')

@@ -19,6 +19,7 @@ class BilletSeeder extends Seeder
             'Staff Logistics Officer, HA',
             'Staff Intelligence Officer, HA',
             'Chief of Staff, HA',
+            'Chief of Staff',
             'Aide-de-Camp, FSL',
             'Staff Communications Officer,FSL',
             'Staff Logistics Officer,FSL',

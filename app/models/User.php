@@ -74,6 +74,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'password',
         'permissions',
         'duty_roster',
+        'registration_status',
     ];
 
     public function announcements()
