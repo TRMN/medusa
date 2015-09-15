@@ -9,6 +9,24 @@ namespace Medusa\Permissions;
 trait MedusaPermissions
 {
 
+    public function checkPermissions($permissions)
+    {
+        if ($this->hasPermissions($permissions) === false) {
+            return \Redirect::back()->with('message', 'You do not have permission to view that page');
+        }
+
+        return true;
+    }
+
+    public function loginValid()
+    {
+        if (\Auth::check() === false) {
+            return \Redirect::back()->with('message', 'You do not have permission to view that page');
+        }
+
+        return true;
+    }
+
     public function hasPermissions($permissions)
     {
         if (empty( \Auth::user() ) === true) {

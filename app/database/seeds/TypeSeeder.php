@@ -22,6 +22,8 @@ class TypeSeeder extends Seeder {
         $this->createChapter('barracks', 'Army Barracks');
         $this->createChapter('outpost', 'Army Outpost');
         $this->createChapter('fort', 'Army Fort');
+        $this->createChapter('planetary', 'Army Planetary Command');
+        $this->createChapter('theater', 'Army Theater Command');
         $this->createChapter('bureau', 'Admiralty Bureau');
         $this->createChapter('academy', 'Service Academy');
     }
