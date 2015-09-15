@@ -21,7 +21,8 @@ class Chapter extends Eloquent
 
     static function getHoldingChapters()
     {
-        $results = Chapter::where('joinable', '!=', false)->whereIn('hull_number', ['SS-001', 'SS-002', 'LP', 'HC'])->get();
+        $results = Chapter::where('joinable', '!=', false)->whereIn('hull_number', ['SS-001', 'SS-002', 'LP', 'HC'])
+                                                          ->orderBy('chapter_name')->get();
 
         $chapters = [];
 
@@ -35,7 +36,7 @@ class Chapter extends Eloquent
 
     static function getChaptersByType($type)
     {
-        $results = Chapter::where('chapter_type', '=', $type)->get();
+        $results = Chapter::where('chapter_type', '=', $type)->orderBy('chapter_name')->get();
 
         $chapters = [];
 
@@ -47,6 +48,10 @@ class Chapter extends Eloquent
                     break;
                 case 'headquarters':
                     $name = $chapter->chapter_name . ' (' . $chapter->branch . ')';
+                    break;
+                case 'fleet':
+                    $fleet = new NumberFormatter('en_US', NumberFormatter::ORDINAL);
+                    $name = $chapter->chapter_name . ' (' . $fleet->format($chapter->hull_number) . ')';
                     break;
                 default:
                     $name = $chapter->chapter_name;

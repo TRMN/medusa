@@ -9,6 +9,19 @@
             <a href="/signout">Logout</a>
 
         </div>
+        @if($permsObj->hasPermissions(['CREATE_ECHELON',
+            'EDIT_ECHELON',
+            'DEL_ECHELON',
+            'ASSIGN_SHIP',
+            'CHANGE_ASSIGNMENT',]) === true)
+            <div class="nav-header lnav">First Space Lord</div>
+            <div class="rnav">
+
+                @if($permsObj->hasPermissions(['CREATE_ECHELON']) === true)<a
+                        href="{{ route('echelon.create') }}">Activate Echelon</a>
+                @endif
+            </div>
+        @endif
         @if($permsObj->hasPermissions(['COMMISSION_SHIP', 'DECOMISSION_SHIP', 'EDIT_SHIP', 'VIEW_DSHIPS']) === true)
         <div class="nav-header lnav">BuShips (3SL)</div>
         <div class="rnav">
@@ -33,6 +46,13 @@
         <div class="nav-header lnav">ADMIRALTY</div>
         <div class="rnav">
             <a href="{{ route('announcement.index') }}">Announcements</a>
+        </div>
+
+        <div class="nav-header lnav">RMA</div>
+        <div class="rnav">
+            @if($permsObj->hasPermissions(['ADD_UNIT']) === true)<a
+                    href="{{ route('unit.create') }}">Stand-up Command/Unit</a>
+            @endif
         </div>
     @endif
 </div>
