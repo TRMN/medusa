@@ -5,18 +5,6 @@
 @stop
 
 @section('content')
-    @if( $errors->any() )
-        <ul class="errors">
-            @foreach( $errors->all() as $error )
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
-
-    @if(Session::has('message'))
-        <p>{{Session::get('message')}}</p>
-    @endif
-
     @if( !Auth::check() )
         <div class="login-form row">
             <div class="small-6 small-centered columns">
