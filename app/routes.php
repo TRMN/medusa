@@ -65,7 +65,7 @@ Route::get(
     '/unit/{unit}/deactivate',
     ['as' => 'unit.deactivate', 'uses' => 'unitController@deactivate', 'before' => 'auth']
 );
-Route::resource('unit', 'unitController', ['before' => 'auth']);
+Route::resource('unit', 'UnitController', ['before' => 'auth']);
 
 // API calls
 
