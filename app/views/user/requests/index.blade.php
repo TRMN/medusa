@@ -10,16 +10,6 @@
 @section('content')
     <h1>Assignment Change Request</h1>
 
-    <?php
-    if (count($errors->all())) {
-        echo "<p>Please correct the following errors:</p>\n<ul>\n";
-        foreach ($errors->all() as $message) {
-            echo "<li>" . $message . "</li>\n";
-        }
-    }
-    echo "</ul>\n";
-    ?>
-
     {{ Form::model( $user, ['route' => 'user.change.store', 'method' => 'post', 'id' => 'changeRequest' ] ) }}
     <div id="user" class="userform">
         <fieldset>
@@ -40,11 +30,13 @@
             {{ Form::select('branch', $branches, '') }}
             {{ Form::hidden('old_branch', $user->branch) }}
         </fieldset>
+        <!--
         <fieldset>
             <legend>Change Billet From {{$user->getPrimaryBillet()}} to</legend>
             {{ Form::select('primary_billet', $billets) }}
             {{ Form::hidden('old_billet', $user->getPrimaryBillet()) }}
         </fieldset>
+        -->
         <fieldset>
             <legend>Change Chapter From {{$chapters[$user->getPrimaryAssignmentId()]}} to</legend>
             <div class="row">
