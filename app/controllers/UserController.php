@@ -559,6 +559,11 @@ class UserController extends \BaseController
 
         unset( $data['_method'], $data['_token'], $data['password_confirmation'] );
 
+        // Normal user edits don't set permissions as an array but as seralized data.  Need to deal with that
+        if (is_array($data['permissions']) === false) {
+            $data['permissions'] = unserialize($data['permissions']);
+        }
+
         $user->update($data);
 
         if ($data['reload_form'] === "yes") {
