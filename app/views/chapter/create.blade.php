@@ -1,21 +1,12 @@
 @extends('layout')
 
 @section('pageTitle')
-Create a New Ship
+Commission a Ship
 @stop
 
 @section('content')
-<h2>Create a New Ship</h2>
-<?php
-if (count($errors->all())) {
-echo "<p>Please correct the following errors:</p>\n<ul>\n";
-    foreach ($errors->all() as $message)
-    {
-        echo "<li>" . $message . "</li>\n";
-    }
-}
-echo "</ul>\n";
-?>
+<h2>Commission a Ship</h2>
+
 {{ Form::model( $chapter, [ 'route' => [ 'chapter.store' ] ] ) }}
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
@@ -29,7 +20,7 @@ echo "</ul>\n";
 </div>
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
-    {{ Form::label('Chapter Type', 'Chapter Type') }} {{ Form::select('chapter_type', $chapterTypes) }}
+    {{ Form::label('chapter_type', 'Chapter Type') }} {{ Form::select('chapter_type', $chapterTypes) }}
         </div>
 </div>
 <div class="row">
@@ -41,6 +32,23 @@ echo "</ul>\n";
     <div class="small-6 columns ninety Incised901Light end">
     {{ Form::label('ship_class', 'Ship Class') }} {{ Form::text('ship_class') }}
         </div>
+</div>
+<div class="row">
+    <div class="small-6 columns ninety Incised901Light end">
+        {{ Form::label('assigned_to', 'Assigned To') }} {{ Form::select('assigned_to', $fleets) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-6 columns ninety Incised901Light end">
+        {{ Form::label('commission_date', 'Commission Date (if appropriate') }}  {{Form::date('commission_date')}}
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-6 columns ninety Incised901Light end">
+        {{ Form::label('decommision_date', 'Decomission Date (if appropriate') }}  {{Form::date('decomission_date')}}
+    </div>
 </div>
 
 {{ Form::submit( 'Save', [ 'class' => 'button round'] ) }}

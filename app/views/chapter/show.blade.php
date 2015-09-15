@@ -42,6 +42,13 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
         </div>
         <div class="small-10 columns Incised901Light">
             {{ucfirst($detail->chapter_type)}}
+            @if(in_array($detail->chapter_type, ['ship', 'station']) === true)
+               @if(empty($detail->decommission_date) === true)
+                    (Commissoned {{date('F jS, Y', strtotime($detail->commission_date))}})
+               @else
+                    (Decommissoned {{date('F jS, Y', strtotime($detail->decommission_date))}})
+                @endif
+            @endif
         </div>
     </div>
     @if($higher)

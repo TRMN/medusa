@@ -41,13 +41,31 @@ Route::post('/user_request', ['as' => 'user.change.store', 'uses' => 'UserChange
 Route::get('/user_request/review', ['as' => 'user.change.review', 'uses' => 'UserChangeRequestController@review', 'before' => 'auth']);
 
 // Other Routes
-
+Route::model('chapter', 'Chapter');
+Route::model('echelon', 'Chapter');
 Route::get( '/home', [ 'as' => 'home', 'uses' => 'HomeController@index', 'before' => 'auth' ] );
 Route::get( '/', [ 'as' => 'login', 'uses' => 'HomeController@index' ] );
 Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
+Route::get(
+    '/chapter/{chapter}/decommission',
+    ['as' => 'chapter.decommission', 'uses' => 'ChapterController@decommission', 'before' => 'auth']
+);
 Route::resource( 'chapter', 'ChapterController', ['before' => 'auth'] );
 Route::resource( 'announcement', 'AnnouncementController', ['before' => 'auth'] );
 Route::resource( 'report', 'ReportController', ['before' => 'auth'] );
+
+Route::get(
+    '/echelon/{echelon}/deactivate',
+    ['as' => 'echelon.deactivate', 'uses' => 'EchelonController@deactivate', 'before' => 'auth']
+);
+Route::resource('echelon', 'EchelonController', ['before' => 'auth']);
+
+Route::model('unit', 'Chapter');
+Route::get(
+    '/unit/{unit}/deactivate',
+    ['as' => 'unit.deactivate', 'uses' => 'unitController@deactivate', 'before' => 'auth']
+);
+Route::resource('unit', 'unitController', ['before' => 'auth']);
 
 // API calls
 

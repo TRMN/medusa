@@ -1,15 +1,3 @@
-@if( $errors->any() )
-    <ul class="errors">
-        @foreach( $errors->all() as $error )
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
-
-@if(Session::has('message'))
-    <p>{{Session::get('message')}}</p>
-@endif
-
 <h4 class="trmn my">
     @if($user->registration_status != "Pending")
         Service Record

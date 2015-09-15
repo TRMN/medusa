@@ -247,6 +247,60 @@ jQuery(document).ready(function ($) {
         "jQueryUI": true
     });
 
+    $('#inactiveList').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No inactive members found"
+        },
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+
+    $('#suspendedList').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No inactive members found"
+        },
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+
+    $('#expelledList').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No inactive members found"
+        },
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+
     jQuery('#reviewApplications').DataTable({
         "autoWidth": true,
         "pageLength": 50,
