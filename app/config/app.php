@@ -123,6 +123,7 @@ return [
         'Illuminate\Workbench\WorkbenchServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
         'Jenssegers\Mongodb\MongodbServiceProvider',
+        'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Webpatser\Countries\CountriesServiceProvider',
         'mnshankar\CSV\CSVServiceProvider',
@@ -204,6 +205,6 @@ return [
         'SimpleCaptcha' => 'Iorme\SimpleCaptcha\Facades\SimpleCaptcha',
     ],
 
-    'version' => '0.8RC1',
+    'version' => '0.8RC2',
 
 ];

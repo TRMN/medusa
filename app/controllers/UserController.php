@@ -35,6 +35,43 @@ class UserController extends \BaseController
         return View::make('user.index', ['users' => $usersByBranch, 'title' => 'Membership List', 'otherThanActive' => $usersOtherThanActive]);
     }
 
+    public function getReset(User $user)
+    {
+        return View::make('user.reset', ['user' => $user]);
+    }
+
+    public function postReset(User $user)
+    {
+        $in = Input::only(['current_password', 'password', 'password_confirmation']);
+
+        // Did they enter their current password?
+
+        if (Hash::make($in['current_password']) !== $user->getAuthPassword()) {
+            return Redirect::route('user.getReset', [$user->id])->with('message', 'Please re-enter your current password');
+        }
+
+        // Does the new password and confirmation match?
+
+        if ($in['password'] === $in['password_confirmation']) {
+            // Check that it meets some minimum standards
+            $rules['password'] = 'required|min:8';
+            $errMsg['password.min'] = 'The password must be at least 8 characters long';
+            $validator = Validator::make($in, $rules, $errMsg);
+
+            if ($validator->fails()) {
+                return Redirect::route('user.getReset', [$user->id])->with('message', 'The password must be at least 8 characters long');
+            }
+
+            // Everything is good, reset the password, update their record in the database
+            $user->password = Hash::make($in['password']);
+            $user->save();
+
+            return Redirect::route('home')->with('message', 'Your password has been changed');
+        } else {
+            return Redirect::route('user.getReset', [$user->id])->with('message','The passwords do not match');
+        }
+    }
+
     public function reviewApplications()
     {
         $this->checkPermissions('PROC_APPLICATIONS');
