@@ -18,7 +18,14 @@
         </div>
         <div class="row">
             <div class="small-6 small-centered columns">
-                <p style="font-style: italic">Not a member? Register here!</p>
+                <a href="{{ action('RemindersController@getRemind') }}" class="right"><p
+                            style="font-style: italic">Forgot your password?</p></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-6 small-centered columns">
+                <p style="font-style: italic" class="right">Not a member? Register here!</p><br clear="right">
                 <a href="{{ URL::route( 'register' ) }}" class="button right reg-button">Register</a>
             </div>
         </div>
