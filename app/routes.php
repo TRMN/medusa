@@ -33,6 +33,8 @@ Route::get(
     '/user/{user}/deny',
     ['as' => 'user.deny', 'uses' => 'UserController@denyApplication', 'before' => 'auth']
 );
+Route::get('/user/{user}/reset', ['as' => 'user.getReset', 'uses' => 'UserController@getReset', 'before' => 'auth']);
+Route::post('/user/{user}/reset', ['as' => 'user.postReset', 'uses' => 'UserController@postReset', 'before' => 'auth']);
 Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
 
 // Assignment Change Requests
@@ -66,6 +68,8 @@ Route::get(
     ['as' => 'unit.deactivate', 'uses' => 'unitController@deactivate', 'before' => 'auth']
 );
 Route::resource('unit', 'UnitController', ['before' => 'auth']);
+
+Route::controller('password', 'RemindersController');
 
 // API calls
 
