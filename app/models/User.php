@@ -524,4 +524,19 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         return $uniqueMemberIds;
     }
+
+    public function getReminderEmail()
+    {
+        return $this->email_address;
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->id;
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
 }
