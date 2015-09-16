@@ -6,6 +6,7 @@
             <a href="/home">Service Record</a><br/>
             <a href="{{route('user.change.request', [Auth::user()->id])}}">Branch/Chapter Change</a><br/>
             <a href="{{ route('chapter.index') }}">Ship/Unit List</a><br/>
+            <a href="{{route('user.getReset', [Auth::user()->id])}}">Change Password</a><br><br>
             <a href="/signout">Logout</a>
 
         </div>
