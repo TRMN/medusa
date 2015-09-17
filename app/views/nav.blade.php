@@ -44,10 +44,6 @@
                     Change Requests</a>@endif
             </div>
         @endif
-        <div class="nav-header lnav">ADMIRALTY</div>
-        <div class="rnav">
-            <a href="{{ route('announcement.index') }}">Announcements</a>
-        </div>
 
         <div class="nav-header lnav">RMA</div>
         <div class="rnav">
