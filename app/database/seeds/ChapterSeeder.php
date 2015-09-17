@@ -2,6 +2,7 @@
 
 class ChapterSeeder extends Seeder
 {
+    use \Medusa\Audit\MedusaAudit;
 
     public function run()
     {
@@ -40,6 +41,16 @@ class ChapterSeeder extends Seeder
         foreach ($districts as  $district) {
             $district['joinable'] = false;
             $this->command->comment("Creating " . $district['chapter_name']);
+
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'chapters',
+                null,
+                json_encode($district),
+                'chapter'
+            );
+
             $result = Chapter::create($district);
             $fleets[$district['hull_number']]['assigned_to'] = $result->_id;
         }
@@ -47,6 +58,16 @@ class ChapterSeeder extends Seeder
         foreach ($fleets as $fleet) {
             $fleet['joinable'] = false;
             $this->command->comment("Creating " . $fleet['chapter_name'] . " assigned to " . $districts[$fleet['hull_number']]['chapter_name']);
+
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'chapters',
+                null,
+                json_encode($fleet),
+                'chapter'
+            );
+
             $result = Chapter::create($fleet);
             $fleets[$fleet['hull_number']]['_id'] = $result->_id;
         }
@@ -69,6 +90,16 @@ class ChapterSeeder extends Seeder
         foreach ($bureaus as $num => $bureau) {
             $record = ['chapter_name' => $bureau, 'chapter_type' => 'bureau', 'hull_number' => $num, 'assigned_to' => $ah->_id, 'joinable' => false];
             $this->command->comment('Creating ' . $bureau);
+
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'chapters',
+                null,
+                json_encode($record),
+                'chapter'
+            );
+
             Chapter::create($record);
         }
 
@@ -78,8 +109,9 @@ class ChapterSeeder extends Seeder
         // Add the holding chapters
         $this->createChapter('HMSS Greenwich', 'station', 'SS-001', 'RMN');
         $this->createChapter('GNSS Katherine Mayhew', 'station', 'SS-002', 'GSN');
-        $this->createChapter('London Point', 'headquarters', 'LP', 'RMMC');
+        $this->createChapter('London Point', 'headquarters', 'RMOP-01', 'RMMC');
         $this->createChapter('Headquarters Company', 'headquarters', 'HC', 'RMA');
+        $this->createChapter('Ft. Cadmus', 'headquarters', 'FT-001', 'RMA');
 
         // Create the special non-joinable holding chapters
         $this->createChapter('HMS Valhalla', 'SU', 'Passed Away', 'RMN', false);
@@ -91,6 +123,23 @@ class ChapterSeeder extends Seeder
     function createChapter( $name, $type = "ship", $hull_number = '', $branch='', $joinable = true )
     {
         $this->command->comment('Creating ' . $name);
+
+        $this->writeAuditTrail(
+            'db:seed',
+            'create',
+            'chapters',
+            null,
+            json_encode(
+                [
+                    'chapter_name' => $name,
+                    'chapter_type' => $type,
+                    'hull_number'  => $hull_number,
+                    'branch'       => $branch,
+                    'joinable'     => $joinable
+                ]),
+            'chapter'
+        );
+
         return Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number, 'branch' => $branch, 'joinable' => $joinable] );
     }
 }

@@ -205,6 +205,6 @@ return [
         'SimpleCaptcha' => 'Iorme\SimpleCaptcha\Facades\SimpleCaptcha',
     ],
 
-    'version' => '0.8RC2',
+    'version' => '0.9',
 
 ];
