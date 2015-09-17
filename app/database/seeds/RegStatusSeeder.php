@@ -1,7 +1,10 @@
 <?php
 
 
-class RegStatusSeeder extends Seeder {
+class RegStatusSeeder extends Seeder
+{
+
+    use \Medusa\Audit\MedusaAudit;
 
 	public function run()
 	{
@@ -12,6 +15,16 @@ class RegStatusSeeder extends Seeder {
         $this->command->info('Adding Registration Statuses');
 
         foreach ($statuses as $status) {
+
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'status',
+                null,
+                json_encode(['status' => $status]),
+                'regstatus'
+            );
+
             RegStatus::create(['status' => $status]);
         }
 	}

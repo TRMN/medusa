@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class CreateEchelons extends Command {
 
+    use \Medusa\Audit\MedusaAudit;
+
 	/**
 	 * The console command name.
 	 *
@@ -100,6 +102,15 @@ class CreateEchelons extends Command {
             // Update the assigned to field
             $shipInfo->assigned_to = $echelon;
 
+            $this->writeAuditTrail(
+                'import',
+                'update',
+                'chapters',
+                $shipInfo->_id,
+                $shipInfo->toJson(),
+                'CreateEchelons'
+            );
+
             // Save it
             $shipInfo->save();
             $this->info(' Assigned ' . $ship . ' to echelon');
@@ -139,13 +150,22 @@ class CreateEchelons extends Command {
             // Update the members record
             $member->assignment = $assignments;
 
+            $this->writeAuditTrail(
+                'import',
+                'update',
+                'users',
+                $member->_id,
+                $member->toJson(),
+                'CreateEchelons'
+            );
+
             $member->save();
 
 
         }
 
         // Assign CO permissions
-        $member->assignCoPerms();
+        //$member->assignCoPerms();
 
         $this->info(' CO for ' . $name . ' set');
         return true;
@@ -172,6 +192,16 @@ class CreateEchelons extends Command {
 
         // Create the echelon unless it already exists
         if (count(Chapter::where('hull_number', '=', $designation)->get()) === 0) {
+
+            $this->writeAuditTrail(
+                'import',
+                'create',
+                'chapters',
+                null,
+                json_encode($echelonRecord),
+                'CreateEchelons'
+            );
+
             $echelon = Chapter::create($echelonRecord);
         } else {
             $echelon = Chapter::where('hull_number', '=', $designation)->First();
