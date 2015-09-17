@@ -8,7 +8,7 @@ class BaseController extends Controller
     public function __construct()
     {
         if (Auth::check() === false) {
-            return Redirect::route('login');
+            return Redirect::route('signout');
         }
 
         View::share('permsObj', $this);
