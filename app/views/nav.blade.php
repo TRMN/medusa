@@ -24,12 +24,12 @@
             </div>
         @endif
         @if($permsObj->hasPermissions(['COMMISSION_SHIP', 'DECOMISSION_SHIP', 'EDIT_SHIP', 'VIEW_DSHIPS']) === true)
-        <div class="nav-header lnav">BuShips (3SL)</div>
-        <div class="rnav">
+            <div class="nav-header lnav">BuShips (3SL)</div>
+            <div class="rnav">
 
-            @if($permsObj->hasPermissions(['COMMISSION_SHIP', 'DECOMISSION_SHIP']) === true)<a
-                    href="{{ route('chapter.create') }}">Commission Ship</a>@endif
-        </div>
+                @if($permsObj->hasPermissions(['COMMISSION_SHIP', 'DECOMISSION_SHIP']) === true)<a
+                        href="{{ route('chapter.create') }}">Commission Ship</a>@endif
+            </div>
         @endif
         @if($permsObj->hasPermissions(['ADD_MEMBER','DEL_MEMBER','EDIT_MEMBER','VIEW_MEMBERS','PROC_APPLICATIONS','PROC_XFERS','ADD_BILLET','DEL_BILLET','EDIT_BILLET',]) === true)
             <div class="nav-header lnav">BuPers (5SL)</div>
@@ -44,12 +44,13 @@
                     Change Requests</a>@endif
             </div>
         @endif
-
-        <div class="nav-header lnav">RMA</div>
-        <div class="rnav">
-            @if($permsObj->hasPermissions(['ADD_UNIT']) === true)<a
-                    href="{{ route('unit.create') }}">Stand-up Command/Unit</a>
-            @endif
-        </div>
+        @if($permsObj->hasPermissions(['ADD_UNIT','EDIT_UNIT','DELETE_UNIT']) === true)
+            <div class="nav-header lnav">RMA</div>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['ADD_UNIT']) === true)<a
+                        href="{{ route('unit.create') }}">Stand-up Command/Unit</a>
+                @endif
+            </div>
+        @endif
     @endif
 </div>
