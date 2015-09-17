@@ -45,8 +45,8 @@ Route::get('/user_request/review', ['as' => 'user.change.review', 'uses' => 'Use
 // Other Routes
 Route::model('chapter', 'Chapter');
 Route::model('echelon', 'Chapter');
-Route::get( '/home', [ 'as' => 'home', 'uses' => 'HomeController@index', 'before' => 'auth' ] );
-Route::get( '/', [ 'as' => 'login', 'uses' => 'HomeController@index' ] );
+Route::get( '/home', [ 'as' => 'home', 'uses' => 'HomeController@index'] );
+Route::get( '/', [ 'as' => 'root', 'uses' => 'HomeController@index' ] );
 Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
 Route::get(
     '/chapter/{chapter}/decommission',
@@ -73,11 +73,11 @@ Route::controller('password', 'RemindersController');
 
 // API calls
 
-Route::get( '/api/branch', 'ApiController@getBranchList', ['before' => 'auth'] ); // Get a list of all the tRMN branches
-Route::get( '/api/country', 'ApiController@getCountries', ['before' => 'auth'] ); // Get a list of Countries and Country Codes
-Route::get( '/api/branch/{branchID}/grade', 'ApiController@getGradesForBranch', ['before' => 'auth'] ); // Get a list of pay grades for that branch
-Route::get( '/api/chapter', 'ApiController@getChapters', ['before' => 'auth'] ); // Get a list of all the chapters
-Route::get( '/api/chapter/{branchID}/{location}', 'ApiController@getChaptersByBranch', ['before' => 'auth']);
+Route::get( '/api/branch', 'ApiController@getBranchList'); // Get a list of all the tRMN branches
+Route::get( '/api/country', 'ApiController@getCountries'); // Get a list of Countries and Country Codes
+Route::get( '/api/branch/{branchID}/grade', 'ApiController@getGradesForBranch'); // Get a list of pay grades for that branch
+Route::get( '/api/chapter', 'ApiController@getChapters'); // Get a list of all the chapters
+Route::get( '/api/chapter/{branchID}/{location}', 'ApiController@getChaptersByBranch');
 Route::get( '/api/locations', 'ApiController@getChapterLocations');
 Route::get( '/api/holding', 'ApiController@getHoldingChapters');
 Route::get( '/api/fleet', 'ApiController@getFleets');
@@ -88,6 +88,5 @@ Route::get( '/api/tf', 'ApiController@getTaskForces');
 Route::get('/api/tg', 'ApiController@getTaskGroups');
 Route::get('/api/squadron', 'ApiController@getSquadrons');
 Route::get('/api/division', 'ApiController@getDivisions');
-Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch', ['before' => 'auth'] ); // Get a list of all the ratings
+Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
-Route::get('/api/mtest', 'ApiController@testMongo');
