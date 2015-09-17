@@ -81,6 +81,15 @@ class UnitController extends \BaseController {
             }
         }
 
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'create',
+            'chapters',
+            null,
+            json_encode($data),
+            'UnitController@store'
+        );
+
         Chapter::create($data);
 
         return Redirect::route('chapter.index');
@@ -211,6 +220,15 @@ class UnitController extends \BaseController {
             }
         }
 
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'chapters',
+            (string)$chapter->_id,
+            $chapter->toJson(),
+            'UnitController@update'
+        );
+
         $chapter->save();;
 
         Cache::flush();
@@ -232,6 +250,15 @@ class UnitController extends \BaseController {
 
         $chapter->commission_date = '';
         $chapter->decommission_date = date('Y-m-d');
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'chapters',
+            (string)$chapter->_id,
+            $chapter->toJson(),
+            'UnitController@destroy'
+        );
 
         $chapter->save();
 

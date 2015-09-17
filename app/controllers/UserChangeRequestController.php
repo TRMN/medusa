@@ -65,6 +65,15 @@ class UserChangeRequestController extends \BaseController {
             $record['old_value'] = $data['old_branch'];
             $record['new_value'] = $data['branch'];
 
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'create',
+                'change_request',
+                null,
+                json_encode($record),
+                'UserChangeRequestController@store'
+            );
+
             ChangeRequest::create($record);
         }
 
@@ -73,6 +82,15 @@ class UserChangeRequestController extends \BaseController {
             $record['old_value'] = $data['old_billet'];
             $record['new_value'] = $data['primary_billet'];
 
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'create',
+                'change_request',
+                null,
+                json_encode($record),
+                'UserChangeRequestController@store'
+            );
+
             ChangeRequest::create($record);
         }
 
@@ -80,6 +98,15 @@ class UserChangeRequestController extends \BaseController {
             $record['req_type'] = 'assignment.chapter';
             $record['old_value'] = $data['old_assignment'];
             $record['new_value'] = $data['primary_assignment'];
+
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'create',
+                'change_request',
+                null,
+                json_encode($record),
+                'UserChangeRequestController@store'
+            );
 
             ChangeRequest::create($record);
         }

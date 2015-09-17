@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class ImportGrades extends Command
 {
+    use \Medusa\Audit\MedusaAudit;
 
     /**
      * The console command name.
@@ -371,8 +372,27 @@ class ImportGrades extends Command
             // Exam record exists, update it
             $res->exams = array_merge($res->exams, $record['exams']);
 
+            $this->writeAuditTrail(
+                'import',
+                'update',
+                'exam',
+                (string)$res->_id,
+                json_encode($res),
+                'import.grades'
+            );
+
             $res->save();
         } else {
+
+            $this->writeAuditTrail(
+                'import',
+                'create',
+                'exam',
+                null,
+                json_encode($record),
+                'import.grades'
+            );
+
             $newExamRecord = Exam::create($record);
 
             $examRecord = Exam::find($newExamRecord['_id']);
