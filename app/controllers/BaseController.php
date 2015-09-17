@@ -3,6 +3,7 @@
 class BaseController extends Controller
 {
     use Medusa\Permissions\MedusaPermissions;
+    use Medusa\Audit\MedusaAudit;
 
     public function __construct()
     {

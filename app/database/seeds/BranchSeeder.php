@@ -8,6 +8,8 @@
 
 class BranchSeeder extends Seeder {
 
+    use \Medusa\Audit\MedusaAudit;
+
     public function run()
     {
         DB::collection('branches')->delete();
@@ -26,6 +28,16 @@ class BranchSeeder extends Seeder {
 
         foreach($branches as $branch => $name) {
             $this->command->comment('Creating ' . $name . ' branch');
+
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'billets',
+                null,
+                json_encode(["branch" => $branch, "branch_name" => $name]),
+                'billet'
+            );
+
             Branch::create(["branch" => $branch, "branch_name" => $name]);
         }
     }
