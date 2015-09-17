@@ -4,7 +4,7 @@ return [
 
     'driver' => 'redis',
     'path' => storage_path() . '/cache',
-    'connection' => null,
+    'connection' => 'default',
     'table' => 'cache',
     'prefix' => 'laravel',
 

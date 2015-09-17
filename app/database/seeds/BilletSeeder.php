@@ -2,6 +2,7 @@
 
 class BilletSeeder extends Seeder
 {
+    use \Medusa\Audit\MedusaAudit;
 
     public function run()
     {
@@ -308,6 +309,7 @@ class BilletSeeder extends Seeder
 
         foreach ($billets as $billet) {
             $this->command->comment('Adding ' . $billet);
+            $this->writeAuditTrail('db:seed', 'create', 'billets', null, json_encode(["billet_name" => $billet]), 'billet');
             Billet::create(["billet_name" => $billet]);
         }
     }

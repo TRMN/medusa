@@ -64,6 +64,8 @@ class UserController extends \BaseController
 
             // Everything is good, reset the password, update their record in the database
             $user->password = Hash::make($in['password']);
+
+            $this->writeAuditTrail((string)Auth::user()->_id, 'update', 'users', (string)$user->_id, 'Password Change', 'UserController@postReset');
             $user->save();
 
             return Redirect::route('home')->with('message', 'Your password has been changed');
@@ -132,6 +134,15 @@ class UserController extends \BaseController
         $user->rank = $rank;
         $user->member_id = 'RMN' . User::getFirstAvailableMemberId();
 
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@approveApplication'
+        );
+
         $user->save();
 
         // Get Chapter CO's email
@@ -157,6 +168,16 @@ class UserController extends \BaseController
 
         $user->registration_status = 'Denied';
         $user->registration_date = date('Y-m-d');
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@denyApplication'
+        );
+
         $user->save();
 
         return Redirect::route('user.review');
@@ -289,6 +310,15 @@ class UserController extends \BaseController
 
         unset( $data['_token'], $data['password_confirmation'] );
 
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'create',
+            'users',
+            null,
+            json_encode($data),
+            'UserController@store'
+        );
+
         $user = User::create($data);
 
         // Until I figure out why mongo drops fields, I'm doing this hack!
@@ -414,6 +444,15 @@ class UserController extends \BaseController
         $data['registration_status'] = 'Pending';
 
         unset( $data['_token'], $data['password_confirmation'] );
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'create',
+            'users',
+            null,
+            json_encode($data),
+            'UserController@apply'
+        );
 
         $user = User::create($data);
 
@@ -601,6 +640,15 @@ class UserController extends \BaseController
             $data['permissions'] = unserialize($data['permissions']);
         }
 
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            json_encode($data),
+            'UserController@update'
+        );
+
         $user->update($data);
 
         if ($data['reload_form'] === "yes") {
@@ -622,6 +670,16 @@ class UserController extends \BaseController
         if (empty($data['tos']) === false) {
             $user = User::find($data['id']);
             $user->tos = true;
+
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                $user->toJson(),
+                'UserController@tos'
+            );
+
             $user->save();
 
             $viewData = [
@@ -663,6 +721,15 @@ class UserController extends \BaseController
     public function destroy(User $user)
     {
         $this->checkPermissions('DEL_MEMBER');
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'hard delete',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@destroy'
+        );
 
         User::destroy($user->_id);
 

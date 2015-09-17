@@ -107,6 +107,16 @@ class ApiController extends BaseController
 
                 // File uploaded, add filename to user record
                 $user->filePhoto = '/images/' . $fileName;
+
+                $this->writeAuditTrail(
+                    (string)Auth::user()->_id,
+                    'update',
+                    'users',
+                    (string)$user->_id,
+                    $user->toJson(),
+                    'ApiController@savePhoto'
+                );
+
                 $user->save();
             }
         }

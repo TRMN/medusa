@@ -64,6 +64,7 @@ use Medusa\Enums\MedusaDefaults;
 
 class ImportUsers extends Command
 {
+    use \Medusa\Audit\MedusaAudit;
 
     /**
      * The console command name.
@@ -231,6 +232,9 @@ class ImportUsers extends Command
 
             // Make sure this is not a duplicate user
             if (count(User::where('member_id', '=', $user['member_id'])->get()) === 0) {
+
+                $this->writeAuditTrail('import', 'create', 'users', null, json_encode($user), 'import.user');
+
                 $result = User::create( $user );
 
                 $u = User::find($result['_id']);
@@ -307,6 +311,8 @@ class ImportUsers extends Command
                     $type = 'ship';
             }
 
+            $this->writeAuditTrail('import', 'create', 'chapters', null, json_encode(
+                ['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch]), 'import.user');
             Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch] );
             return Chapter::where( 'chapter_name', '=', $name )->get();
         }

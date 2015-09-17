@@ -11,6 +11,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 {
 
     use UserTrait, RemindableTrait;
+    use \Medusa\Audit\MedusaAudit;
 
     public static $rules = [
         'first_name'            => 'required|min:2',
@@ -424,6 +425,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function updatePerms(array $perms)
     {
         $this->permissions = array_unique(array_merge($this->permissions, $perms));
+
+        if (is_null(Auth::user())) {
+            $user = 'system user';
+        } else {
+            $user = (string)Auth::user()->_id;
+        }
+
+        $this->writeAuditTrail(
+            $user,
+            'update',
+            'users',
+            (string)$this->_id,
+            json_encode($this->permissions),
+            'User@updatePerms'
+        );
 
         $this->save();
 

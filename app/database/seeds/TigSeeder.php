@@ -6,7 +6,10 @@
  * Time: 7:19 AM
  */
 
-class TigSeeder extends Seeder {
+class TigSeeder extends Seeder
+{
+
+    use \Medusa\Audit\MedusaAudit;
 
     public function run()
     {
@@ -57,6 +60,16 @@ class TigSeeder extends Seeder {
         );
 
         foreach ($tigs as $grade => $tig) {
+
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'tig',
+                null,
+                json_encode(['grade' => $grade, 'tig' => $tig]),
+                'tig'
+            );
+
             Tig::create([ 'grade' => $grade, 'tig' => $tig ]);
         }
     }

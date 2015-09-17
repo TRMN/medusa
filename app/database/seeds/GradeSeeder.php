@@ -2,6 +2,8 @@
 
 class GradeSeeder extends Seeder
 {
+    use \Medusa\Audit\MedusaAudit;
+
     public function run()
     {
         DB::collection( 'grades' )->delete();
@@ -411,6 +413,14 @@ class GradeSeeder extends Seeder
         foreach ( $grades as $grade => $ranks )
         {
             $this->command->comment('Creating ' . $grade);
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'grades',
+                null,
+                json_encode(["grade" => $grade, "rank" => $ranks]),
+                'grade'
+            );
             Grade::create( ["grade" => $grade, "rank" => $ranks] );
         }
     }
