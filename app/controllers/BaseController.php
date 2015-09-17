@@ -7,6 +7,10 @@ class BaseController extends Controller
 
     public function __construct()
     {
+        if (Auth::check() === false) {
+            return View::make('login');
+        }
+
         View::share('permsObj', $this);
     }
 
