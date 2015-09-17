@@ -65,7 +65,7 @@ class RemindersController extends \BaseController {
 			$user->password = Hash::make($password);
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                'password reset from ' . Request::ip(),
                 'update',
                 'users',
                 (string)$user->_id,
