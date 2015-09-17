@@ -13,7 +13,18 @@
 
 App::before(function($request)
 {
-	//
+
+    $uri = $request->getRequestUri();
+
+    if ($uri === '/login' || $uri = '/' || $uri = '/register') {
+        return;
+    } elseif (Auth::check() === false) {
+        if (Request::ajax()) {
+            return Response::make('Unauthorized', 401);
+        } else {
+            return Redirect::guest('login');
+        }
+    }
 });
 
 
