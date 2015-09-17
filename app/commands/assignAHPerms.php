@@ -37,8 +37,8 @@ class assignAHPerms extends Command {
 	 */
 	public function fire()
 	{
-        // Martin Lessem, Scott Akers, Steph Taylor, Dave Weiner
-        foreach(['RMN-0001-07', 'RMN-0011-08', 'RMN-0147-11', 'RMN-1094-12'] as $member) {
+        // Martin Lessem, Scott Akers, Steph Taylor, Dave Weiner, Bob Bulkeley
+        foreach(['RMN-0001-07', 'RMN-0011-08', 'RMN-0147-11', 'RMN-1094-12', 'RMN-0055-10'] as $member) {
             $rec = $this->_getMember($member);
             $rec->assignAllPerms();
             $this->info('Assigned All Permissions to ' . $rec->first_name . ' ' . $rec->last_name);
@@ -50,8 +50,8 @@ class assignAHPerms extends Command {
         $rec->assignSpaceLordPerms();
         $this->info('Assigned BuShip and Space Lord permissions to John Roberts');
 
-        // Drew Drentlaw, Jame Friedline, Brandi Hinson, Bob Bulkeley
-        foreach(['RMN-0903-12', 'RMN-0119-11', 'RMN-0151-11', 'RMN-0055-10'] as $member) {
+        // Drew Drentlaw, Jame Friedline, Brandi Hinson
+        foreach(['RMN-0903-12', 'RMN-0119-11', 'RMN-0151-11'] as $member) {
             $rec = $this->_getMember($member);
             $rec->assignSpaceLordPerms();
             $this->info('Assigned Space Lord permissions to ' . $rec->first_name . ' ' . $rec->last_name);
