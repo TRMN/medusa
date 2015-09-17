@@ -2,6 +2,7 @@
 
 class PermissionSeeder extends Seeder
 {
+    use \Medusa\Audit\MedusaAudit;
 
     public function run()
     {
@@ -52,6 +53,16 @@ class PermissionSeeder extends Seeder
 
         foreach ($perms as $perm => $desc) {
             $this->command->comment('Adding ' . $perm);
+
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'permissions',
+                null,
+                json_encode(["name" => $perm, 'description' => $desc]),
+                'permission'
+            );
+
             Permission::create(["name" => $perm, 'description' => $desc]);
         }
     }

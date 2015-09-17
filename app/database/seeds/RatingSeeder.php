@@ -2,6 +2,8 @@
 
 class RatingSeeder extends Seeder
 {
+    use \Medusa\Audit\MedusaAudit;
+
     public function run()
     {
         DB::collection('ratings')->delete();
@@ -1491,6 +1493,16 @@ class RatingSeeder extends Seeder
 
 
         foreach ($ratings as $rating => $description) {
+
+            $this->writeAuditTrail(
+                'db:seed',
+                'create',
+                'ratings',
+                null,
+                json_encode(["rate_code" => $rating, "rate" => $description]),
+                'rating'
+            );
+
             Rating::create(["rate_code" => $rating, "rate" => $description]);
         }
     }
