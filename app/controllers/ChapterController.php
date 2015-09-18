@@ -18,7 +18,7 @@ class ChapterController extends BaseController
             $parentChapter = false;
         }
 
-        $includes = Chapter::where( 'assigned_to', '=', $chapter->_id )->orderBy('chapter_name')->get()->toArray();
+        $includes = Chapter::where( 'assigned_to', '=', $chapter->_id )->whereNull('decommission_date')->orderBy('chapter_name')->get()->toArray();
 
         $commandCrew = $chapter->getCommandCrew();
 
