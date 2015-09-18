@@ -99,7 +99,10 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
             </div>
             <div class="small-10 columns Incised901Light">
                 <div style="padding-bottom: 2px">
-                    Commanding Officer:
+                    @if($detail->chapter_type == 'fleet')Fleet Commander:
+                    @else
+                        Commanding Officer:
+                    @endif
                     @if( isset( $command['CO'] ) )
                         <a href="{{ route('user.show' , [(string)$command['CO']->_id]) }}">{{ $command['CO']->getGreeting() }} {{ $command['CO']->first_name }}{{ isset($command['CO']->middle_name) ? ' ' . $command['CO']->middle_name : '' }} {{ $command['CO']->last_name }}{{ !empty($command['CO']->suffix) ? ' ' . $command['CO']->suffix : '' }}, {{$command['CO']->branch}}</a>
                     @else
@@ -108,7 +111,10 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                 </div>
                 @if(Auth::user()->getPrimaryAssignmentId() == $detail->id || Auth::user()->getSecondaryAssignmentId() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS']))
                 <div style="padding-bottom: 2px;">
-                    Executive Officer:
+                    @if($detail->chapter_type == 'fleet')Deputy Fleet Commander:
+                    @else
+                        Executive Officer:
+                    @endif
                     @if( isset( $command['XO'] ) )
                         <a href="{{ route('user.show' , [(string)$command['XO']->id]) }}">{{ $command['XO']->getGreeting() }} {{ $command['XO']->first_name }}{{ isset($command['XO']->middle_name) ? ' ' . $command['XO']->middle_name : '' }} {{ $command['XO']->last_name }}{{ !empty($command['XO']->suffix) ? ' ' . $command['XO']->suffix : '' }}, {{$command['XO']->branch}}</a>
                     @else
@@ -116,7 +122,9 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                     @endif
                 </div>
                 <div style="padding-bottom: 2px;">
-                    Bosun:
+                    @if($detail->chapter_type == 'fleet')Fleet
+                    @endif
+                        Bosun:
                     @if( isset( $command['BOSUN'] ) )
                         <a href="{{ route('user.show' , [(string)$command['BOSUN']->id]) }}">{{ $command['BOSUN']->getGreeting() }} {{ $command['BOSUN']->first_name }}{{ isset($command['BOSUN']->middle_name) ? ' ' . $command['BOSUN']->middle_name : '' }} {{ $command['BOSUN']->last_name }}{{ !empty($command['BOSUN']->suffix) ? ' ' . $command['BOSUN']->suffix : '' }}, {{$command['BOSUN']->branch}}</a>
                     @else
@@ -133,11 +141,12 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                 Crew Roster:
             </div>
             <div class="small-10 columns Incised901Light">
-                <table id="crewRoster" class="compact row-border stripe" width="75%">
+                <table id="crewRoster" class="compact row-border" width="75%">
                     <thead>
                     <tr>
                         <th>Name</th>
                         <th>Rank</th>
+                        <th>Billet</th>
                         <th>Branch</th>
                     </tr>
                     </thead>
@@ -146,6 +155,7 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                     <tr>
                         <td><a href="{{ route('user.show', [$member->_id]) }}">{{ $member->last_name }}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}, {{ $member->first_name }}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}</a></td>
                         <td>{{ $member->getGreeting() }}</td>
+                        <td>{{ $member->getBilletForChapter($detail->id) }}</td>
                         <td>{{$member->branch}}</td>
                     </tr>
                 @endforeach
@@ -154,6 +164,7 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                     <tr>
                         <th>Name</th>
                         <th>Rank</th>
+                        <th>Billet</th>
                         <th>Branch</th>
                     </tr>
                     </tfoot>

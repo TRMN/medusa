@@ -172,7 +172,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             return $rateDetail[0]->rate[$this->branch][$rank];
         }
 
-        return '';
+        return false;
     }
 
     public function getPrimaryAssignmentId()
@@ -259,9 +259,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 }
             }
 
-            return '';
+            return false;
         } else {
-            return '';
+            return false;
         }
     }
 
@@ -274,9 +274,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 }
             }
 
-            return '';
+            return false;
         } else {
-            return '';
+            return false;
         }
     }
 
@@ -309,6 +309,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                     } else {
                         return 'Unknown';
                     }
+                }
+            }
+
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    public function getBilletForChapter($chapterId)
+    {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
+                if ($assignment['chapter_id'] == $chapterId) {
+                    return $assignment['billet'];
                 }
             }
 
