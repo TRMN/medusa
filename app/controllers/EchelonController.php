@@ -84,6 +84,8 @@ class EchelonController extends \BaseController {
             }
         }
 
+        $data['joinable'] = false;
+
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'create',
@@ -222,6 +224,8 @@ class EchelonController extends \BaseController {
                 $chapter->$k = $v;
             }
         }
+
+        $chapter->joinable = false;
 
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
