@@ -6,7 +6,7 @@
 
 @section('content')
     <h1>Chapter List</h1>
-    <table id="chapterList" class="compact row-border stripe" width="75%">
+    <table id="chapterList" class="compact row-border" width="75%">
         <thead>
         <tr>
             <th>Chapter Name</th>
