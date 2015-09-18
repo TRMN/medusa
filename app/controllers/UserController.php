@@ -310,6 +310,8 @@ class UserController extends \BaseController
 
         unset( $data['_token'], $data['password_confirmation'] );
 
+        $data['email_address'] = strtolower($data['email_address']);
+
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'create',
@@ -444,6 +446,8 @@ class UserController extends \BaseController
         $data['registration_status'] = 'Pending';
 
         unset( $data['_token'], $data['password_confirmation'] );
+
+        $data['email_address'] = strtolower($data['email_address']);
 
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
@@ -639,6 +643,8 @@ class UserController extends \BaseController
         if (is_array($data['permissions']) === false) {
             $data['permissions'] = unserialize($data['permissions']);
         }
+
+        $data['email_address'] = strtolower($data['email_address']);
 
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
