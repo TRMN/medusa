@@ -19,3 +19,4 @@ Artisan::add(new CodeTest());
 Artisan::add(new AddPermission());
 Artisan::add(new CreateEchelons());
 Artisan::add(new assignAHPerms());
+Artisan::add(new AddFleetCoPermission());

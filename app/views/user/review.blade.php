@@ -6,7 +6,7 @@
 
 @section('content')
     <div><h3 class="trmn">{{ $title }}</h3></div>
-            <table id="reviewApplications" class="compact row-border stripe">
+            <table id="reviewApplications" class="compact row-border">
                 <thead>
                 <tr>
                     <th>Name</th>
