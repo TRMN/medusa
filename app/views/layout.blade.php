@@ -25,7 +25,8 @@
         <link rel="stylesheet" type="text/css"
               href="//cdn.datatables.net/plug-ins/1.10.7/integration/foundation/dataTables.foundation.css">
         <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.css">
+        <link rel="stylesheet" type="text/css"
+              href="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.css">
 
     @endif
     <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/main.css">
@@ -62,8 +63,43 @@
             @if(Session::has('message'))
                 <p>{{Session::get('message')}}</p>
             @endif
-
+            @if(Auth::check() ||
+                in_array(\Route::currentRouteName(),[
+                    'user.apply',
+                    'register'
+                ]) ||
+                in_array(Route::currentRouteAction(), [
+                    'RemindersController@getRemind',
+                    'RemindersController@postRemind',
+                    'RemindersController@getReset',
+                    'RemindersController@postReset'
+                ]))
             @yield('content')
+            @else
+                <div class="login-form row">
+                    <div class="small-6 small-centered columns">
+                        <h4 class="NordItalic">Sign In</h4>
+                        {{ Form::open( [ 'route' => 'signin' ] ) }}
+                        {{ Form::label( 'email', 'Email' ) }} {{ Form::email( 'email' ) }}
+                        {{ Form::label( 'password', 'Password' ) }} {{ Form::password( 'password' ) }}
+                        {{ Form::submit( 'Sign in', [ 'class' => 'button right reg-button' ] ) }}
+                        {{ Form::close() }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-6 small-centered columns">
+                        <a href="{{ action('RemindersController@getRemind') }}" class="right"><p
+                                    style="font-style: italic">Forgot your password?</p></a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="small-6 small-centered columns">
+                        <p style="font-style: italic" class="right">Not a member? Register here!</p><br clear="right">
+                        <a href="{{ URL::route( 'register' ) }}" class="button right reg-button">Register</a>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -102,7 +138,8 @@
     <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script type="javascript"
             src="//cdn.datatables.net/plug-ins/1.10.7/integration/foundation/dataTables.foundation.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.js"></script>
+    <script type="text/javascript"
+            src="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.js"></script>
 @endif
 <script>
     jQuery(document).foundation();

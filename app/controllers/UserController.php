@@ -450,7 +450,7 @@ class UserController extends \BaseController
         $data['email_address'] = strtolower($data['email_address']);
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            'Guest from ' . \Request::getClientIp(),
             'create',
             'users',
             null,
@@ -770,7 +770,7 @@ class UserController extends \BaseController
             'branches'  => $branches,
             'chapters'  => ['0' => 'Select a Chapter'],
             'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
-
+            'register' => true,
         ];
 
         return View::make('user.register', $viewData);
