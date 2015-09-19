@@ -17,7 +17,7 @@ View::share( 'authUser', $authUser );
 
 // Authentication
 
-Route::get( '/signout', [ 'as' => 'signout', 'uses' => 'AuthController@signout', 'before' => 'auth' ] );
+Route::get( '/signout', [ 'as' => 'signout', 'uses' => 'AuthController@signout' ] );
 Route::post( '/signin', [ 'as' => 'signin', 'uses' => 'AuthController@signin' ] );
 Route::get( '/register', [ 'as' => 'register', 'uses' => 'UserController@register' ] );
 Route::post( '/apply', [ 'as' => 'user.apply', 'uses' => 'UserController@apply' ] );
