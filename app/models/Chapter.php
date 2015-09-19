@@ -95,32 +95,32 @@ class Chapter extends Eloquent
         $chapters = [];
 
         foreach ($results as $chapter) {
-            if (isset( $chapter->hull_number ) === true && empty( $chapter->hull_number ) === false) {
-                if (in_array($chapter->hull_number, $holdingChapters) === true) {
-                    continue;
+            if (isset( $chapter->hull_number ) === false) {
+                $chapter->hull_number = null;
+            }
+            if (in_array($chapter->hull_number, $holdingChapters) === true) {
+                continue;
+            } else {
+                $co = Chapter::find($chapter->_id)->getCO();
+
+                if (empty( $co ) === true) {
+                    $co = ['city' => null, 'state_province' => null];
                 } else {
-                    $co = Chapter::find($chapter->_id)->getCO();
+                    $co = $co->toArray();
+                }
 
-                    if (empty( $co ) === true) {
-                        $co = ['city' => null, 'state_province' => null];
-                    } else {
-                        $co = $co->toArray();
-                    }
+                $append = '';
+                if (empty( $co ) === false && empty( $co['city'] ) === false && empty( $co['state_province'] ) == false) {
+                    $append = ' (' . $co['city'] . ', ' . $co['state_province'] . ')';
+                }
 
-                    $append = '';
-                    if (empty( $co ) === false && empty( $co['city'] ) === false && empty( $co['state_province'] ) == false) {
-                        $append = ' (' . $co['city'] . ', ' . $co['state_province'] . ')';
-                    }
-
-                    if (is_numeric($location) === true || $co['state_province'] == $location) {
-                        $chapters[$chapter->_id] = $chapter->chapter_name . $append;
-                    }
+                if (is_numeric($location) === true || $co['state_province'] == $location) {
+                    $chapters[$chapter->_id] = $chapter->chapter_name . $append;
                 }
             }
         }
 
         asort($chapters, SORT_NATURAL);
-
         return $chapters;
     }
 

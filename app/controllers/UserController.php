@@ -553,7 +553,7 @@ class UserController extends \BaseController
                 'branches'  => Branch::getBranchList(),
                 'grades'    => Grade::getGradesForBranch($user->branch),
                 'ratings'   => Rating::getRatingsForBranch($user->branch),
-                'chapters'  => array_merge(Chapter::getChapters('', 0, false), Chapter::getHoldingChapters()),
+                'chapters'  => array_merge(Chapter::getChapters(null, 0, false), Chapter::getHoldingChapters()),
                 'billets'   => ['0' => 'Select a billet'] + Billet::getBillets(),
                 'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
                 'permissions' => DB::table('permissions')->orderBy('name', 'asc')->get(),
