@@ -41,6 +41,8 @@ Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before
 Route::get('/user_request/{user}/create', ['as' => 'user.change.request', 'uses' => 'UserChangeRequestController@create', 'before' => 'auth']);
 Route::post('/user_request', ['as' => 'user.change.store', 'uses' => 'UserChangeRequestController@store', 'before' => 'auth']);
 Route::get('/user_request/review', ['as' => 'user.change.review', 'uses' => 'UserChangeRequestController@review', 'before' => 'auth']);
+Route::get('/user_request/approve/{record_id}', ['as' => 'user.change.approve', 'uses' => 'UserChangeRequestController@approve', 'before' => 'auth']);
+Route::get('/user_request/deny/{record_id}', ['as' => 'user.change.approve', 'uses' => 'UserChangeRequestController@deny', 'before' => 'auth']);
 
 // Other Routes
 Route::model('chapter', 'Chapter');
