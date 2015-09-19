@@ -36,13 +36,13 @@ Create an Echelon
 
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
-        {{ Form::label('commission_date', 'Creation Date (if appropriate)' }}  {{Form::date('commission_date')}}
+        {{ Form::label('commission_date', 'Creation Date (if appropriate)') }}  {{Form::date('commission_date')}}
     </div>
 </div>
 
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
-        {{ Form::label('decommision_date', 'Deactivation Date (if appropriate)' }}  {{Form::date('decomission_date')}}
+        {{ Form::label('decommision_date', 'Deactivation Date (if appropriate)') }}  {{Form::date('decomission_date')}}
     </div>
 </div>
 
