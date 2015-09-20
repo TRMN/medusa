@@ -57,7 +57,8 @@ class UserChangeRequestController extends \BaseController
 
         $record = [
             'user'      => $user->id,
-            'requestor' => $requestor->id
+            'requestor' => $requestor->id,
+            'status'    => 'open',
         ];
 
         // Branch Change
@@ -122,6 +123,7 @@ class UserChangeRequestController extends \BaseController
     public function review()
     {
         $records = ChangeRequest::all();
+
         foreach ($records as $index => $record) {
             $records[$index]['user'] = User::find($record['user']);
             $records[$index]['requestor'] = User::find($record['requestor']);
@@ -138,18 +140,144 @@ class UserChangeRequestController extends \BaseController
 
     public function approve(ChangeRequest $request)
     {
+        $user = User::find($request->user);
+
         switch ($request->req_type) {
             case 'branch':
+                if ($user->branch == $request->old_value) {
+                    $user->branch = $request->new_value;
+                }
+
+                $email = 'emails.branch-change';
+                $subject = 'Your branch transfer request has been approved';
+
+                // CO's email
+                $cc = [Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address];
+
+                $oldValue = $request->old_value;
+                $newValue = $request->new_value;
+
                 break;
             case 'assignment.chapter':
+                $assignments = $user->assignment;
+
+                // Old CO's email
+                $cc = [Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address];
+
+                foreach ($assignments as $key => $assignment) {
+                    if ($assignment['chapter_id'] == $request->old_value) {
+                        $assignments[$key]['chapter_id'] = $request->new_value;
+                        $assignments[$key]['chapter_name'] = Chapter::find($request->new_value)->chapter_name;
+                        $assignments[$key]['date_assigned'] = date('Y-m-d');
+                    }
+                }
+                $user->assignment = $assignments;
+
+                $email = 'emails.chapter-change';
+                $subject = 'Your chapter transfer request has been approved';
+
+                $oldValue = Chapter::find($request->old_value)->chapter_name;
+                $newValue = Chapter::find($request->new_value)->chapter_name;
+
+                // New CO's email
+                $cc[] = Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address;
+
                 break;
         }
+
+        // Update the user
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            null,
+            $user->toJson(),
+            'UserChangeRequestController@approve'
+        );
+
+        $user->save();
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'soft delete',
+            'change_request',
+            null,
+            $request->toJson(),
+            'UserChangeRequestController@approve'
+        );
+
+        $request->delete();
+
+        // Send the email
+
+        if ($user->branch == "RMMC") {
+            $cc[] = 'comforcecom@rmmc.trmn.org';
+        }
+
+        // Send approved email
+        Mail::send(
+            $email,
+            ['user' => $user, 'fromValue' => $oldValue, 'toValue' => $newValue],
+            function ($message) use ($user, $cc, $subject) {
+                $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
+
+                $message->to($user->email_address);
+
+                foreach ($cc as $address) {
+                    $message->cc($address);
+                }
+
+                $message->subject($subject);
+            }
+        );
+
+        return Redirect::route('user.change.review');
     }
 
     public function deny(ChangeRequest $request)
     {
+        $user = User::find($request->user);
+
         switch ($request->req_type) {
+            case 'branch':
+                $oldValue = $request->old_value;
+                $newValue = $request->new_value;
+                $type = 'Branch';
+                break;
+
+            case 'assignment.chapter':
+                $oldValue = Chapter::find($request->old_value)->chapter_name;
+                $newValue = Chapter::find($request->new_value)->chapter_name;
+                $type = 'Chapter';
+                break;
         }
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'soft delete',
+            'change_request',
+            null,
+            $request->toJson(),
+            'UserChangeRequestController@approve'
+        );
+
+        $request->delete();
+
+        // Send denied email
+        Mail::send(
+            'emails.change-denied',
+            ['user' => $user,
+             'type' => $type, 'fromValue' => $oldValue, 'toValue' => $newValue],
+            function ($message) use ($user, $type) {
+                $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
+
+                $message->to($user->email_address)->cc('bupers@trmn.org');
+
+                $message->subject('Your ' . strtolower($type) . ' change request has been denied');
+            }
+        );
+
+        return Redirect::route('user.change.review');
     }
 
 }

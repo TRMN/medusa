@@ -12,13 +12,13 @@
 </table>
 <p>Dear {{$user->getGreeting()}} {{$user->first_name}} {{$user->last_name}},</p>
 
-<p>I have processed your transfer and I am including your old and new CO @if($user->branch == 'RMMC') as well as COMFORCECOM @endif so
-    they can update their records.</p>
+<p>Your requested {{$type}} change has been denied. For more information, you may email
+    <a href="mailto:bupers@trmn.org">bupers@trmn.org</a> and request more information.</p>
 
 <table border="1">
     <tr>
-        <th>Old Chapter</th>
-        <th>New Chapter</th>
+        <th>Old {{$type}}</th>
+        <th>New {{$type}}</th>
     </tr>
     <tr>
         <td>{{$fromValue}}</td>
