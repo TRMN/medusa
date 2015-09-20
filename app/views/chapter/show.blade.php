@@ -109,7 +109,7 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                         N/A
                     @endif
                 </div>
-                @if(Auth::user()->getPrimaryAssignmentId() == $detail->id || Auth::user()->getSecondaryAssignmentId() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS']))
+                @if(Auth::user()->getPrimaryAssignmentId() == $detail->id || Auth::user()->getSecondaryAssignmentId() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS'] || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true))
                 <div style="padding-bottom: 2px;">
                     @if($detail->chapter_type == 'fleet')Deputy Fleet Commander:
                     @else
@@ -135,7 +135,7 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
             </div>
         </div>
     @endif
-    @if (count($crew) > 0 && (Auth::user()->getPrimaryAssignmentId() == $detail->id || Auth::user()->getSecondaryAssignmentId() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS'])))
+    @if (count($crew) > 0 && (Auth::user()->getPrimaryAssignmentId() == $detail->id || Auth::user()->getSecondaryAssignmentId() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true))
         <div class="row padding-5">
             <div class="small-2 columns Incised901Light">
                 Crew Roster:
