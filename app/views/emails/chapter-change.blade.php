@@ -26,10 +26,16 @@
     </tr>
 </table>
 
-<p>Lt. Colonel Mark Morgan<br>
-    Chief of Staff<br>
-    5th Space Lord, Bureau of Personnel - TRMN<br><br>
-    "Possimus Perficio!"
-</p>
+<p>In Service,</p>
+
+<p>Rear Admiral of the Red<br>
+    Stephanie Taylor SC GS<br>
+    5th Space Lord, BuPersonnel - TRMN<br/>
+    <a href="mailto:bupers@trmn.org">bupers@trmn.org</a></p>
+
+<p><em>-- <br>
+        &quot;Any truly cultivated palate realizes how completely cocoa outclasses coffee as a beverage of choice.
+        Anyone but a barbarian knows that&quot;<br>
+        -Quote from Honor Among Enemies by David Weber</em></p>
 </body>
 </html>
