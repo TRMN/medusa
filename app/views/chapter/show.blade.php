@@ -146,6 +146,7 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                     <tr>
                         <th>Name</th>
                         <th>Rank</th>
+						<th>Time in Grade</th>
                         <th>Billet</th>
                         <th>Branch</th>
                     </tr>
@@ -155,6 +156,7 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                     <tr>
                         <td><a href="{{ route('user.show', [$member->_id]) }}">{{ $member->last_name }}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}, {{ $member->first_name }}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}</a></td>
                         <td>{{ $member->getGreeting() }}</td>
+						<td>{{is_null($tig = $member->getTimeInGrade())?'N/A':$tig}}</td>
                         <td>{{ $member->getBilletForChapter($detail->id) }}</td>
                         <td>{{$member->branch}}</td>
                     </tr>
@@ -164,6 +166,7 @@ if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division'
                     <tr>
                         <th>Name</th>
                         <th>Rank</th>
+						<th>Time in Grade</th>
                         <th>Billet</th>
                         <th>Branch</th>
                     </tr>
