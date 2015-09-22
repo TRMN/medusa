@@ -147,6 +147,22 @@ class Chapter extends Eloquent
 
         return $users;
     }
+    /**
+     * Get all users/members assigned to a specific chapter or subordinate chapters
+     *
+     * @param $chapterId
+     *
+     * @return mixed
+     */
+	
+	public function getCrewWithChildren()
+    {
+        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(	'member_id','=',Auth::user()->member_id
+        )->orderBy('last_name', 'asc')->get();
+
+        return $users;
+    }
+ 
 
     /**
      * Get all users/members assigned to a specific chapter, including the command crew
@@ -285,7 +301,18 @@ class Chapter extends Eloquent
             return [$this->id];
         }
     }
-
+   
+    public function getChapterIdWithChildren()
+    {
+        $children = Chapter::where('assigned_to', '=', (string)$this->_id)->get();
+        
+        $results = [];
+        foreach($children as $child) {
+            $results = array_merge($results, Chapter::find($child->id)->getChapterIdWithChildren());
+        }
+        return array_unique(array_merge([$this->id], $results));
+    }
+    
     static function getChapterType($chapterId)
     {
         $chapter = Chapter::find($chapterId);

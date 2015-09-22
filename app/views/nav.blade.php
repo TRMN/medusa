@@ -10,6 +10,15 @@
             <a href="/signout">Logout</a>
 
         </div>
+		@if($permsObj->hasPermissions(['DUTY_ROSTER',]) === true)
+		<div class="nav-header lnav">CO Tools</div>
+        <div class="rnav">
+
+            <a href="">Chapter Report</a><br/>
+            <a href="">View Combined Roster</a><br />
+
+        </div>
+		@endif
         @if($permsObj->hasPermissions(['CREATE_ECHELON',
             'EDIT_ECHELON',
             'DEL_ECHELON',
