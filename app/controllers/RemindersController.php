@@ -19,9 +19,11 @@ class RemindersController extends \BaseController {
 	 */
 	public function postRemind()
 	{
-        $email_address = Input::get('email_address');
+        $in = Input::only('email_address');
+        $in['email_address'] = strtolower($in['email_address']);
+
         $response = Password::remind(
-            ['email_address', strtolower($email_address)],
+            $in,
             function ($message) {
                 $message->subject('TRMN Password Reset');
             }
