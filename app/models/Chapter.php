@@ -301,7 +301,29 @@ class Chapter extends Eloquent
             return [$this->id];
         }
     }
-   
+
+      /**
+     * Get the chapter IDs of all subordinate chapters, but strip this one
+     *
+     * @param none
+     *
+     * @return mixed
+     */  
+    public function getChildChapters()
+    {
+    
+        return array_except($this->getChapterIdWithChildren();,(this->id));
+    
+    }
+    
+    /**
+     * Get the chapter ID with all subordinate chapter IDs
+     *
+     * @param none
+     *
+     * @return mixed
+     */
+     
     public function getChapterIdWithChildren()
     {
         $children = Chapter::where('assigned_to', '=', (string)$this->_id)->get();
