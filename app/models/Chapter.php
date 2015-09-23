@@ -157,7 +157,7 @@ class Chapter extends Eloquent
 	
 	public function getCrewWithChildren()
     {
-        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(	'member_id','=',Auth::user()->member_id
+        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(	'member_id','!=',Auth::user()->member_id
         )->orderBy('last_name', 'asc')->get();
 
         return $users;
@@ -311,8 +311,9 @@ class Chapter extends Eloquent
      */  
     public function getChildChapters()
     {
+        
     
-        return array_except($this->getChapterIdWithChildren();,(this->id));
+        return array_where($this->getChapterIdWithChildren(), function($key, $value) { if ($value != $this->id) return $value;});
     
     }
     
