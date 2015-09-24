@@ -156,6 +156,8 @@ class UserChangeRequestController extends \BaseController
 
                 if (empty($co) === false) {
                     $cc = [$co->email_address];
+                } else {
+                    $cc = [];
                 }
 
 
