@@ -157,7 +157,7 @@ class Chapter extends Eloquent
 	
 	public function getCrewWithChildren()
     {
-        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(	'member_id','=',Auth::user()->member_id
+        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(	'member_id','!=',Auth::user()->member_id
         )->orderBy('last_name', 'asc')->get();
 
         return $users;
@@ -301,7 +301,30 @@ class Chapter extends Eloquent
             return [$this->id];
         }
     }
-   
+
+      /**
+     * Get the chapter IDs of all subordinate chapters, but strip this one
+     *
+     * @param none
+     *
+     * @return mixed
+     */  
+    public function getChildChapters()
+    {
+        
+    
+        return array_where($this->getChapterIdWithChildren(), function($key, $value) { if ($value != $this->id) return $value;});
+    
+    }
+    
+    /**
+     * Get the chapter ID with all subordinate chapter IDs
+     *
+     * @param none
+     *
+     * @return mixed
+     */
+     
     public function getChapterIdWithChildren()
     {
         $children = Chapter::where('assigned_to', '=', (string)$this->_id)->get();
