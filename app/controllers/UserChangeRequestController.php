@@ -152,7 +152,12 @@ class UserChangeRequestController extends \BaseController
                 $subject = 'Your branch transfer request has been approved';
 
                 // CO's email
-                $cc = [Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address];
+                $co = Chapter::find($user->getPrimaryAssignmentId())->getCO();
+
+                if (empty($co) === false) {
+                    $cc = [$co->email_address];
+                }
+
 
                 $oldValue = $request->old_value;
                 $newValue = $request->new_value;
@@ -190,7 +195,7 @@ class UserChangeRequestController extends \BaseController
             (string)Auth::user()->_id,
             'update',
             'users',
-            null,
+            $user->id,
             $user->toJson(),
             'UserChangeRequestController@approve'
         );
@@ -201,7 +206,7 @@ class UserChangeRequestController extends \BaseController
             (string)Auth::user()->_id,
             'soft delete',
             'change_request',
-            null,
+            $request->id,
             $request->toJson(),
             'UserChangeRequestController@approve'
         );
@@ -256,7 +261,7 @@ class UserChangeRequestController extends \BaseController
             (string)Auth::user()->_id,
             'soft delete',
             'change_request',
-            null,
+            $request->id,
             $request->toJson(),
             'UserChangeRequestController@approve'
         );
