@@ -14,41 +14,41 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     use \Medusa\Audit\MedusaAudit;
 
     public static $rules = [
-        'first_name'            => 'required|min:2',
-        'last_name'             => 'required|min:2',
-        'address1'             => 'required|min:4',
-        'city'                  => 'required|min:2',
-        'state_province'        => 'required|min:2',
-        'postal_code'           => 'required|min:2',
-        'country'               => 'required',
-        'email_address'         => 'required|email|unique:users',
-        'password'              => 'confirmed',
-        'branch'                => 'required',
+        'first_name'     => 'required|min:2',
+        'last_name'      => 'required|min:2',
+        'address1'       => 'required|min:4',
+        'city'           => 'required|min:2',
+        'state_province' => 'required|min:2',
+        'postal_code'    => 'required|min:2',
+        'country'        => 'required',
+        'email_address'  => 'required|email|unique:users',
+        'password'       => 'confirmed',
+        'branch'         => 'required',
     ];
 
     public static $updateRules = [
-        'first_name'            => 'required|min:2',
-        'last_name'             => 'required|min:2',
-        'address1'             => 'required|min:4',
-        'city'                  => 'required|min:2',
-        'state_province'        => 'required|min:2',
-        'postal_code'           => 'required|min:2',
-        'country'               => 'required',
-        'email_address'         => 'required|email',
-        'password'              => 'confirmed',
-        'branch'                => 'required',
+        'first_name'     => 'required|min:2',
+        'last_name'      => 'required|min:2',
+        'address1'       => 'required|min:4',
+        'city'           => 'required|min:2',
+        'state_province' => 'required|min:2',
+        'postal_code'    => 'required|min:2',
+        'country'        => 'required',
+        'email_address'  => 'required|email',
+        'password'       => 'confirmed',
+        'branch'         => 'required',
     ];
 
     public static $error_message = [
-        'min'                            => 'The members :attribute must be at least :min characters long',
-        'address1.required'             => 'Please enter the members street address',
-        'address1.min'                  => 'The street address must be at least :size characters long',
-        'required'                       => 'Please enter the members :attribute',
-        'state_province.required'        => 'Please enter the members state or province',
-        'state_province.min'             => 'The members state or province must be at least :size character long',
-        'date_format'                    => 'Please enter a date in the format YYYY-MM-DD',
-        'branch.required'                => "Please select the members branch",
-        'email_address.unique'           => 'That email address is already in use',
+        'min'                     => 'The members :attribute must be at least :min characters long',
+        'address1.required'       => 'Please enter the members street address',
+        'address1.min'            => 'The street address must be at least :size characters long',
+        'required'                => 'Please enter the members :attribute',
+        'state_province.required' => 'Please enter the members state or province',
+        'state_province.min'      => 'The members state or province must be at least :size character long',
+        'date_format'             => 'Please enter a date in the format YYYY-MM-DD',
+        'branch.required'         => "Please select the members branch",
+        'email_address.unique'    => 'That email address is already in use',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -98,7 +98,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
             $rateGreeting = $this->getRateTitle($this->rank['grade']);
 
-            if (isset($rateGreeting) === true && empty($rateGreeting) === false) {
+            if (isset( $rateGreeting ) === true && empty( $rateGreeting ) === false) {
                 $displayRank = $rateGreeting;
             }
         }
@@ -124,11 +124,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $gradeDetails = Grade::where('grade', '=', $this->rank['grade'])->First();
 
-        if (empty($this->branch) === true) {
+        if (empty( $this->branch ) === true) {
             $this->branch = 'RMN';
         }
 
-        $this->rank_title = $gradeDetails->rank[$this->branch];
+        if (empty($gradeDetails->rank[$this->branch]) === false) {
+            $this->rank_title = $gradeDetails->rank[$this->branch];
+        } else {
+            $this->rank_title = $this->rank['grade'];
+        }
 
         if (isset( $this->rating ) && !empty( $this->rating )) {
             if (is_array($this->rating) === true) {
@@ -146,8 +150,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             }
 
             $this->rating =
-                ['rate'        => $currentRating,
-                 'description' => $rate->rate['description']
+                [
+                    'rate'        => $currentRating,
+                    'description' => $rate->rate['description']
                 ];
         }
     }
@@ -166,7 +171,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         } else {
             $rateDetail = Rating::where('rate_code', '=', $this->rating)->get();
         }
-
 
         if (isset( $rateDetail[0]->rate[$this->branch][$rank] ) === true && empty( $rateDetail[0]->rate[$this->branch][$rank] ) === false) {
             return $rateDetail[0]->rate[$this->branch][$rank];
@@ -197,10 +201,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if (empty($assignment['primary']) === true ||
-                    $assignment['primary'] == false) {
-                        if (empty( $assignment['chapter_id'])) return false;
-                        return $assignment['chapter_id'];
+                if (empty( $assignment['primary'] ) === true ||
+                    $assignment['primary'] == false
+                ) {
+                    if (empty( $assignment['chapter_id'] )) {
+                        return false;
+                    }
+                    return $assignment['chapter_id'];
                 }
             }
 
@@ -333,33 +340,75 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
-    public function getTimeInGrade() {
-        if (empty($this->rank['date_of_rank']) === false) {
+    public function getTimeInGrade()
+    {
+        if (empty( $this->rank['date_of_rank'] ) === false) {
             $dorObj = new DateTime(date('Y-m-d', strtotime($this->rank['date_of_rank'])));
             $timeInGrade = $dorObj->diff(new DateTime("now"));
             return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
             return null;
         }
-
     }
 
-    public function getTimeInService() {
-        if (empty($this->registration_date) === false) {
+    public function getTimeInService()
+    {
+        if (empty( $this->registration_date ) === false) {
             $regDateObj = new DateTime(date('Y-m-d', strtotime($this->registration_date)));
             $timeInService = $regDateObj->diff(new DateTime("now"));
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
             return null;
         }
-
     }
 
-    public function getExamList(){
-        $exams = Exam::where('member_id', '=', $this->member_id)->get();
+    public function getExamList($options = null)
+    {
+        if (is_null($options) === false) {
+            if (is_array($options) === false) {
+                $branch = $options; // backwards compatibility
+            } else {
+                if (empty($options['branch']) === true) {
+                    $branch = null;
+                } else {
+                    $branch = $options['branch'];
+                }
 
-        if (isset($exams[0]) === true) {
-            $list = $exams[0]['exams'];
+                if (empty($options['after']) === true) {
+                    $after = null;
+                } else {
+                    $after = strtotime($options['after']);
+                }
+            }
+        } else {
+            $branch = null;
+        }
+
+        $exams = Exam::where('member_id', '=', $this->member_id)->first();
+
+        if (empty( $exams ) === false) {
+            if (is_null($branch) === true) {
+                $list = $exams->exams;
+            } else {
+                // filter by branch
+                $list = array_where(
+                    $exams->exams,
+                    function ($key, $value) use ($branch) {
+                        if (strpos($key, strtoupper($branch)) > 0) {
+                            return $value;
+                        }
+                    }
+                );
+            }
+
+            if (empty($after) === false) {
+                // filter by date
+                $list = array_where($exams->exams, function ($key, $value) use ($after) {
+                    if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime('+2 month', $after)) {
+                        return $value;
+                    }
+                });
+            }
             ksort($list);
             return $list;
         } else {
@@ -367,7 +416,53 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
-    public function getExamLastUpdated() {
+    public function getHighestMainLineExamForBranch()
+    {
+        $exams = $this->getExamList($this->branch);
+
+        if (count($exams) < 1) {
+            // No exams found for branch, check RMN
+
+            $exams = $this->getExamList('RMN');
+        }
+
+        end($exams);
+
+        while (true) {
+            $examName = key($exams);
+            $exam = array_pop($exams);
+
+            if (intval($exam['score']) > 70 || strtoupper($exam['score']) == 'PASS') {
+                break;
+            }
+
+            end($exams);
+        }
+
+        if (intval($exam['score']) > 70 || strtoupper($exam['score']) == 'PASS') {
+            return $examName;
+        } else {
+            return 'None found';
+        }
+    }
+
+    public function getCompletedExams($after)
+    {
+        $exams = $this->getExamList(['after' => $after]);
+
+        $list = array_where($exams, function ($key, $value) use ($after) {
+            if (intval($value['score']) > 70 || strtoupper($value['score'] == 'PASS')) {
+                return $value;
+            }
+        });
+
+        return implode(', ', array_keys($list));
+
+    }
+
+
+    public function getExamLastUpdated()
+    {
         $exams = Exam::where('member_id', '=', $this->member_id)->get();
 
         if (isset( $exams[0] ) === true) {
@@ -388,7 +483,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 'PROMOTE_E6O1',
                 'REQUEST_PROMOTION',
                 'CHAPTER_REPORT',
-            ]);
+            ]
+        );
 
         return true;
     }
@@ -402,29 +498,34 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function assignBuShipPerms()
     {
-        $this->updatePerms([
-            'COMMISSION_SHIP',
-            'DECOMMISSION_SHIP',
-            'EDIT_SHIP',
-            'VIEW_DSHIPS',
-            'VIEW_SU',
-        ]);
+        $this->updatePerms(
+            [
+                'COMMISSION_SHIP',
+                'DECOMMISSION_SHIP',
+                'EDIT_SHIP',
+                'VIEW_DSHIPS',
+                'VIEW_SU',
+            ]
+        );
 
         return true;
     }
 
     public function assignBuPersPerms()
     {
-        $this->updatePerms([
-            'ADD_MEMBER',
-            'DEL_MEMBER',
-            'EDIT_MEMBER',
-            'VIEW_MEMBERS',
-            'PROC_APPLICATIONS',
-            'PROC_XFERS',
-            'ADD_BILLET',
-            'DEL_BILLET',
-            'EDIT_BILLET',]);
+        $this->updatePerms(
+            [
+                'ADD_MEMBER',
+                'DEL_MEMBER',
+                'EDIT_MEMBER',
+                'VIEW_MEMBERS',
+                'PROC_APPLICATIONS',
+                'PROC_XFERS',
+                'ADD_BILLET',
+                'DEL_BILLET',
+                'EDIT_BILLET',
+            ]
+        );
 
         return true;
     }
@@ -522,7 +623,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return "-$newNumber-$yearCode";
     }
 
-    static function getFirstAvailableMemberId($honorary=false)
+    static function getFirstAvailableMemberId($honorary = false)
     {
         $uniqueMemberIds = self::_getMemberIds();
 
@@ -535,7 +636,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $lastId = 0;
 
         foreach ($uniqueMemberIds as $memberId) {
-            if ((intval($lastId) + 1 < intval($memberId)) && ($honorary === true || intval($lastId) + 1 > 200)) {
+            if (( intval($lastId) + 1 < intval($memberId) ) && ( $honorary === true || intval($lastId) + 1 > 200 )) {
                 return '-' . str_pad($lastId + 1, 4, '0', STR_PAD_LEFT) . '-' . date('y');
             }
             $lastId = $memberId;
