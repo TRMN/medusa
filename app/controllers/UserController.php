@@ -539,10 +539,8 @@ class UserController extends \BaseController
      */
     public function edit(User $user)
     {
-        if ($this->hasPermissions(['EDIT_MEMBER']) === false || ( $this->hasPermissions(
-                    ['EDIT_SELF']
-                ) === false && Auth::user()->id != $user->id )
-        ) {
+
+        if (($this->hasPermissions(['EDIT_SELF']) === false && Auth::user()->id != $user->id) || $this->hasPermissions(['EDIT_MEMBER'] === false)) {
             return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
