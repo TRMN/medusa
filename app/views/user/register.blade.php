@@ -93,7 +93,7 @@ registerform
 
 <h2>Age Verification</h2>
 <fieldset>
-    <legend>We only use this to vereify your elgibility for certain leadership postions</legend>
+    <legend>We only use this to verify your eligibility for certain leadership positions</legend>
     <div class="small-6 columns end">
         {{ Form::label('dob', 'Date of Birth') }} {{Form::date('dob', $user->dob)}}
     </div>

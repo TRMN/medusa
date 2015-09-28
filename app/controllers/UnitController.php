@@ -25,7 +25,9 @@ class UnitController extends \BaseController {
      */
     public function create()
     {
-        $this->checkPermissions('ADD_UNIT');
+        if (($redirect = $this->checkPermissions('ADD_UNIT')) !== true) {
+            return $redirect;
+        }
 
         $types =
             Type::whereIn('chapter_type', $this->armyChapterTypes)
@@ -67,7 +69,9 @@ class UnitController extends \BaseController {
      */
     public function store()
     {
-        $this->checkPermissions('ADD_UNIT');
+        if (($redirect = $this->checkPermissions('ADD_UNIT')) !== true) {
+            return $redirect;
+        }
 
         $validator = Validator::make($data = Input::all(), Chapter::$rules);
 
@@ -139,7 +143,9 @@ class UnitController extends \BaseController {
      */
     public function edit(Chapter $chapter)
     {
-        $this->checkPermissions('EDIT_UNIT');
+        if (($redirect = $this->checkPermissions('EDIT_UNIT')) !== true) {
+            return $redirect;
+        }
 
         $types =
             Type::whereIn('chapter_type', $this->armyChapterTypes)
@@ -188,7 +194,9 @@ class UnitController extends \BaseController {
      */
     public function update(Chapter $chapter)
     {
-        $this->checkPermissions('EDIT_UNIT');
+        if (($redirect = $this->checkPermissions('EDIT_UNIT')) !== true) {
+            return $redirect;
+        }
 
         $validator = Validator::make($data = Input::all(), Chapter::$updateRules);
 
@@ -246,7 +254,9 @@ class UnitController extends \BaseController {
      */
     public function destroy(Chapter $chapter)
     {
-        $this->checkPermissions('DELETE_UNIT');
+        if (($redirect = $this->checkPermissions('DELETE_UNIT')) !== true) {
+            return $redirect;
+        }
 
         $chapter->commission_date = '';
         $chapter->decommission_date = date('Y-m-d');
@@ -267,7 +277,9 @@ class UnitController extends \BaseController {
 
     public function deactivate(Chapter $chapter)
     {
-        $this->checkPermissions('DELETE_UNIT');
+        if (($redirect = $this->checkPermissions('DELETE_UNIT')) !== true) {
+            return $redirect;
+        }
 
         $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
 

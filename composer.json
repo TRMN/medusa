@@ -16,6 +16,16 @@
       "name": "Robert Bulkeley",
       "email": "bob.bulkeley@gmail.com",
       "role": "Graphic Design/Layout"
+    },
+    {
+      "name": "Erik Plossl",
+      "email": "eplossl@gmail.com",
+      "role": "Back End Developer"
+    },
+    {
+      "name": "Dan Brandow",
+      "email": "dan.brandow@gmail.com",
+      "role": "QA"
     }
   ],
   "description": "The web Database for the Royal Manticoran Navy.",

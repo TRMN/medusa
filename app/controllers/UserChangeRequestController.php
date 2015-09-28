@@ -122,6 +122,10 @@ class UserChangeRequestController extends \BaseController
 
     public function review()
     {
+        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+            return $redirect;
+        }
+
         $records = ChangeRequest::all();
 
         foreach ($records as $index => $record) {
@@ -140,6 +144,10 @@ class UserChangeRequestController extends \BaseController
 
     public function approve(ChangeRequest $request)
     {
+        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+            return $redirect;
+        }
+
         $user = User::find($request->user);
 
         switch ($request->req_type) {
@@ -152,7 +160,13 @@ class UserChangeRequestController extends \BaseController
                 $subject = 'Your branch transfer request has been approved';
 
                 // CO's email
-                $cc = [Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address];
+                $co = Chapter::find($user->getPrimaryAssignmentId())->getCO();
+
+                if (empty( $co ) === false) {
+                    $cc = [$co->email_address];
+                } else {
+                    $cc = [];
+                }
 
                 $oldValue = $request->old_value;
                 $newValue = $request->new_value;
@@ -180,7 +194,7 @@ class UserChangeRequestController extends \BaseController
                 $newValue = Chapter::find($request->new_value)->chapter_name;
 
                 // New CO's email
-                $cc[] = Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address;
+                $cc[] = $newValue->getCO()->email_address;
 
                 break;
         }
@@ -190,7 +204,7 @@ class UserChangeRequestController extends \BaseController
             (string)Auth::user()->_id,
             'update',
             'users',
-            null,
+            $user->id,
             $user->toJson(),
             'UserChangeRequestController@approve'
         );
@@ -201,7 +215,7 @@ class UserChangeRequestController extends \BaseController
             (string)Auth::user()->_id,
             'soft delete',
             'change_request',
-            null,
+            $request->id,
             $request->toJson(),
             'UserChangeRequestController@approve'
         );
@@ -236,6 +250,10 @@ class UserChangeRequestController extends \BaseController
 
     public function deny(ChangeRequest $request)
     {
+        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+            return $redirect;
+        }
+
         $user = User::find($request->user);
 
         switch ($request->req_type) {
@@ -256,7 +274,7 @@ class UserChangeRequestController extends \BaseController
             (string)Auth::user()->_id,
             'soft delete',
             'change_request',
-            null,
+            $request->id,
             $request->toJson(),
             'UserChangeRequestController@approve'
         );
@@ -266,8 +284,12 @@ class UserChangeRequestController extends \BaseController
         // Send denied email
         Mail::send(
             'emails.change-denied',
-            ['user' => $user,
-             'type' => $type, 'fromValue' => $oldValue, 'toValue' => $newValue],
+            [
+                'user'      => $user,
+                'type'      => $type,
+                'fromValue' => $oldValue,
+                'toValue'   => $newValue
+            ],
             function ($message) use ($user, $type) {
                 $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
 

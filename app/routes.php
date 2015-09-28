@@ -59,6 +59,9 @@ Route::resource( 'chapter', 'ChapterController', ['before' => 'auth'] );
 Route::resource( 'announcement', 'AnnouncementController', ['before' => 'auth'] );
 Route::resource( 'report', 'ReportController', ['before' => 'auth'] );
 
+Route::get('/report/getexams/{id}', ['as' => 'report.getexams', 'uses' => 'ReportController@getCompletedExamsForCrew', 'before' => 'auth']);
+Route::get('/report/send/{id}', ['as' => 'report.send', 'uses' => 'ReportController@sendReport', 'before' => 'auth']);
+
 Route::get(
     '/echelon/{echelon}/deactivate',
     ['as' => 'echelon.deactivate', 'uses' => 'EchelonController@deactivate', 'before' => 'auth']
@@ -68,11 +71,14 @@ Route::resource('echelon', 'EchelonController', ['before' => 'auth']);
 Route::model('unit', 'Chapter');
 Route::get(
     '/unit/{unit}/deactivate',
-    ['as' => 'unit.deactivate', 'uses' => 'unitController@deactivate', 'before' => 'auth']
+    ['as' => 'unit.deactivate', 'uses' => 'UnitController@deactivate', 'before' => 'auth']
 );
 Route::resource('unit', 'UnitController', ['before' => 'auth']);
 
 Route::controller('password', 'RemindersController');
+
+Route::get('/exam', ['as' => 'exam.index', 'uses' => 'ExamController@index', 'before' => 'auth']);
+Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@upload', 'before' => 'auth']);
 
 // API calls
 

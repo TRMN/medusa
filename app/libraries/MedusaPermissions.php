@@ -12,7 +12,8 @@ trait MedusaPermissions
     public function checkPermissions($permissions)
     {
         if ($this->hasPermissions($permissions) === false) {
-            return \Redirect::back()->with('message', 'You do not have permission to view that page');
+
+            return \Redirect::to(\URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
         return true;
@@ -21,7 +22,7 @@ trait MedusaPermissions
     public function loginValid()
     {
         if (\Auth::check() === false) {
-            return \Redirect::back()->with('message', 'You do not have permission to view that page');
+            return \Redirect::to(\URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
         return true;

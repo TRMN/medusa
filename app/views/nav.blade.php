@@ -10,15 +10,16 @@
             <a href="/signout">Logout</a>
 
         </div>
-		@if($permsObj->hasPermissions(['DUTY_ROSTER',]) === true)
-		<div class="nav-header lnav">CO Tools</div>
-        <div class="rnav">
+        @if($permsObj->hasPermissions(['DUTY_ROSTER',]) === true)
+            <div class="nav-header lnav">CO Tools</div>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true)
+                    <a href="{{route('report.index')}}">Chapter Reports</a><br/>
+                    @endif
+                            <!-- <a href="">View Combined Roster</a><br /> -->
 
-            <a href="">Chapter Report</a><br/>
-            <a href="">View Combined Roster</a><br />
-
-        </div>
-		@endif
+            </div>
+        @endif
         @if($permsObj->hasPermissions(['CREATE_ECHELON',
             'EDIT_ECHELON',
             'DEL_ECHELON',
@@ -51,6 +52,13 @@
                     Member</a><br/>@endif
                 @if($permsObj->hasPermissions(['PROC_XFERS']) === true)<a href="{{ route('user.change.review') }}">Review
                     Change Requests</a>@endif
+            </div>
+        @endif
+
+        @if($permsObj->hasPermissions(['UPLOAD_EXAMS']) === true)
+            <div class="nav-header lnav">BuTrain (6SL)</div>
+            <div class="rnav">
+                <a href="{{route('exam.index')}}">Upload Exams</a>
             </div>
         @endif
         @if($permsObj->hasPermissions(['ADD_UNIT','EDIT_UNIT','DELETE_UNIT']) === true)

@@ -131,7 +131,7 @@ class Chapter extends Eloquent
      *
      * @return mixed
      */
-    public function getCrew()
+    public function getCrew($forReport = false, $ts = null)
     {
         $users = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereNotIn(
             'assignment.billet',
@@ -143,7 +143,34 @@ class Chapter extends Eloquent
                 'Deputy Fleet Commander',
                 'Fleet Bosun'
             ]
-        )->orderBy('last_name', 'asc')->get();
+        )->where('active', '=', 1)->where('registration_status', '=', 'Active')->orderBy('last_name', 'asc')->orderBy(
+            'rank.grade',
+            'asc'
+        )->get();
+
+        if ($forReport === true) {
+
+            $users = $users->toArray();
+            // Only need members that have been assigned to the chapter since the last report
+
+            foreach ($users as $key => $user) {
+                foreach ($user['assignment'] as $assignment) {
+                    $include = true;
+                    if ($assignment['chapter_id'] == (string)$this->id) {
+                        if (empty( $assignment['date_assigned'] ) === false && $assignment['date_assigned'] != '1969-01-01') {
+
+                            if (strtotime($assignment['date_assigned']) < $ts) {
+                                $include = false;
+                            }
+                        }
+                    }
+
+                    if ($include === false) {
+                        unset( $users[$key] );
+                    }
+                }
+            }
+        }
 
         return $users;
     }
@@ -154,7 +181,7 @@ class Chapter extends Eloquent
      *
      * @return mixed
      */
-	
+
 	public function getCrewWithChildren()
     {
         $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(	'member_id','!=',Auth::user()->member_id
@@ -162,7 +189,8 @@ class Chapter extends Eloquent
 
         return $users;
     }
- 
+
+
 
     /**
      * Get all users/members assigned to a specific chapter, including the command crew
@@ -308,15 +336,15 @@ class Chapter extends Eloquent
      * @param none
      *
      * @return mixed
-     */  
+     */
     public function getChildChapters()
     {
-        
-    
+
+
         return array_where($this->getChapterIdWithChildren(), function($key, $value) { if ($value != $this->id) return $value;});
-    
+
     }
-    
+
     /**
      * Get the chapter ID with all subordinate chapter IDs
      *
@@ -324,18 +352,18 @@ class Chapter extends Eloquent
      *
      * @return mixed
      */
-     
+
     public function getChapterIdWithChildren()
     {
         $children = Chapter::where('assigned_to', '=', (string)$this->_id)->get();
-        
+
         $results = [];
         foreach($children as $child) {
             $results = array_merge($results, Chapter::find($child->id)->getChapterIdWithChildren());
         }
         return array_unique(array_merge([$this->id], $results));
     }
-    
+
     static function getChapterType($chapterId)
     {
         $chapter = Chapter::find($chapterId);

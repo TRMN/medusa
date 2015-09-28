@@ -26,7 +26,9 @@ class EchelonController extends \BaseController {
 	 */
 	public function create()
 	{
-        $this->checkPermissions('CREATE_ECHELON');
+        if (($redirect = $this->checkPermissions('CREATE_ECHELON')) !== true) {
+            return $redirect;
+        }
 
         $types =
             Type::whereIn('chapter_type', ['district', 'fleet', 'task_force', 'task_group', 'squadron', 'division'])->orderBy('chapter_description')->get(
@@ -70,7 +72,9 @@ class EchelonController extends \BaseController {
 	 */
 	public function store()
 	{
-        $this->checkPermissions('CREATE_ECHELON');
+        if (($redirect = $this->checkPermissions('CREATE_ECHELON')) !== true) {
+            return $redirect;
+        }
 
         $validator = Validator::make($data = Input::all(), Chapter::$rules);
 
@@ -141,7 +145,9 @@ class EchelonController extends \BaseController {
 	 */
 	public function edit(Chapter $chapter)
 	{
-        $this->checkPermissions('EDIT_ECHELON');
+        if (($redirect = $this->checkPermissions('EDIT_ECHELON')) !== true) {
+            return $redirect;
+        }
 
         $types =
             Type::whereIn('chapter_type', ['district', 'fleet', 'task_force', 'task_group', 'squadron', 'division'])
@@ -193,7 +199,9 @@ class EchelonController extends \BaseController {
 	 */
     public function update(Chapter $chapter)
     {
-        $this->checkPermissions('EDIT_ECHELON');
+        if (($redirect = $this->checkPermissions('EDIT_ECHELON')) !== true) {
+            return $redirect;
+        }
 
         $validator = Validator::make($data = Input::all(), Chapter::$updateRules);
 
@@ -252,7 +260,9 @@ class EchelonController extends \BaseController {
 	 */
     public function destroy(Chapter $chapter)
     {
-        $this->checkPermissions('DEL_ECHELON');
+        if (($redirect = $this->checkPermissions('DEL_ECHELON')) !== true) {
+            return $redirect;
+        }
 
         $chapter->commission_date = '';
         $chapter->decommission_date = date('Y-m-d');
@@ -273,7 +283,9 @@ class EchelonController extends \BaseController {
 
     public function deactivate(Chapter $chapter)
     {
-        $this->checkPermissions('DEL_ECHELON');
+        if (($redirect = $this->checkPermissions('DEL_ECHELON')) !== true) {
+            return $redirect;
+        }
 
         $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
 

@@ -26,22 +26,20 @@
             </fieldset>
         @endif
         <fieldset>
-            <legend>Change Branch From {{$branches[$user->branch]}} to</legend>
+            <legend>Branch Change Request</legend>
+            <p>Only use this option if you are requesting a branch change.  If you are only requesting a chapter change, you do not need to select a branch.</p>
+            <p>Change Branch From {{$branches[$user->branch]}} to</p>
             {{ Form::select('branch', $branches, '') }}
             {{ Form::hidden('old_branch', $user->branch) }}
         </fieldset>
-        <!--
+
         <fieldset>
-            <legend>Change Billet From {{$user->getPrimaryBillet()}} to</legend>
-            {{ Form::select('primary_billet', $billets) }}
-            {{ Form::hidden('old_billet', $user->getPrimaryBillet()) }}
-        </fieldset>
-        -->
-        <fieldset>
-            <legend>Change Chapter From {{$chapters[$user->getPrimaryAssignmentId()]}} to</legend>
+            <legend>Chapter Change Request</legend>
+            <p>Only use this option if you are requesting a chapter change.  If you are only requesting a branch change, you do not need to select a chapter.</p>
+            <p>Change Chapter From {{$chapters[$user->getPrimaryAssignmentId()]}} to</p>
             <div class="row">
                 <div class="end small-6 columns ninety Incised901Light">
-                    {{ Form::label( 'plocation', 'Location', ['class' => 'my']) }} {{ Form::select('plocation', $locations) }}
+                    {{ Form::label( 'plocation', 'Filter Chapters by Location', ['class' => 'my']) }} {{ Form::select('plocation', $locations) }}
                 </div>
             </div>
             <div class="row">

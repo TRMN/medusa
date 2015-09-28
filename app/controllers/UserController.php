@@ -10,29 +10,32 @@ class UserController extends \BaseController
      */
     public function index()
     {
-        $this->checkPermissions('VIEW_MEMBERS');
+        if (($redirect = $this->checkPermissions('VIEW_MEMBERS')) !== true) {
+            return $redirect;
+        }
 
         $branches = ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN', 'SFS', 'CIVIL', 'INTEL'];
 
-        foreach($branches as $branch) {
+        foreach ($branches as $branch) {
             $users = User::where('active', '=', 1)
-                ->where('registration_status', '=', 'Active')
-                ->where('branch', '=', $branch)
-                ->remember(30)
-                ->get();
+                         ->where('registration_status', '=', 'Active')
+                         ->where('branch', '=', $branch)
+                         ->remember(30)
+                         ->get();
 
             $usersByBranch[$branch] = $users;
         }
 
         $usersOtherThanActive = [];
 
-
-
-        foreach(User::whereIn('registration_status', ['Inactive', 'Suspended', 'Expelled'])->get() as $user) {
+        foreach (User::whereIn('registration_status', ['Inactive', 'Suspended', 'Expelled'])->get() as $user) {
             $usersOtherThanActive[$user->registration_status][] = $user;
         }
 
-        return View::make('user.index', ['users' => $usersByBranch, 'title' => 'Membership List', 'otherThanActive' => $usersOtherThanActive]);
+        return View::make(
+            'user.index',
+            ['users' => $usersByBranch, 'title' => 'Membership List', 'otherThanActive' => $usersOtherThanActive]
+        );
     }
 
     public function getReset(User $user)
@@ -47,7 +50,10 @@ class UserController extends \BaseController
         // Did they enter their current password?
 
         if (Hash::make($in['current_password']) !== $user->getAuthPassword()) {
-            return Redirect::route('user.getReset', [$user->id])->with('message', 'Please re-enter your current password');
+            return Redirect::route('user.getReset', [$user->id])->with(
+                'message',
+                'Please re-enter your current password'
+            );
         }
 
         // Does the new password and confirmation match?
@@ -59,34 +65,53 @@ class UserController extends \BaseController
             $validator = Validator::make($in, $rules, $errMsg);
 
             if ($validator->fails()) {
-                return Redirect::route('user.getReset', [$user->id])->with('message', 'The password must be at least 8 characters long');
+                return Redirect::route('user.getReset', [$user->id])->with(
+                    'message',
+                    'The password must be at least 8 characters long'
+                );
             }
 
             // Everything is good, reset the password, update their record in the database
             $user->password = Hash::make($in['password']);
 
-            $this->writeAuditTrail((string)Auth::user()->_id, 'update', 'users', (string)$user->_id, 'Password Change', 'UserController@postReset');
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                'Password Change',
+                'UserController@postReset'
+            );
             $user->save();
 
             return Redirect::route('home')->with('message', 'Your password has been changed');
         } else {
-            return Redirect::route('user.getReset', [$user->id])->with('message','The passwords do not match');
+            return Redirect::route('user.getReset', [$user->id])->with('message', 'The passwords do not match');
         }
     }
 
     public function reviewApplications()
     {
-        $this->checkPermissions('PROC_APPLICATIONS');
+        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+            return $redirect;
+        }
 
         $users = User::where('active', '!=', "1")->where('registration_status', '=', 'Pending')->get();
 
-        return View::make('user.review', ['users' => $users, 'title' => 'Approve Membership Applications',
-                                          ]);
+        return View::make(
+            'user.review',
+            [
+                'users' => $users,
+                'title' => 'Approve Membership Applications',
+            ]
+        );
     }
 
     public function approveApplication(User $user)
     {
-        $this->checkPermissions('PROC_APPLICATIONS');
+        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+            return $redirect;
+        }
 
         $user->registration_status = 'Active';
         $user->registration_date = date('Y-m-d');
@@ -149,7 +174,10 @@ class UserController extends \BaseController
         $user->co_email = Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address;
 
         // Send welcome email
-        Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
+        Mail::send(
+            'emails.welcome',
+            ['user' => $user],
+            function ($message) use ($user) {
                 $message->from('membership@trmn.org', 'TRMN Membership');
 
                 $message->to($user->email_address)->bcc($user->co_email);
@@ -158,13 +186,14 @@ class UserController extends \BaseController
             }
         );
 
-
         return Redirect::route('user.review');
     }
 
     public function denyApplication(User $user)
     {
-        $this->checkPermissions('PROC_APPLICATIONS');
+        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+            return $redirect;
+        }
 
         $user->registration_status = 'Denied';
         $user->registration_date = date('Y-m-d');
@@ -190,7 +219,9 @@ class UserController extends \BaseController
      */
     public function create()
     {
-        $this->checkPermissions('ADD_MEMBER');
+        if (($redirect = $this->checkPermissions('ADD_MEMBER')) !== true) {
+            return $redirect;
+        }
         return View::make(
             'user.create',
             [
@@ -214,7 +245,9 @@ class UserController extends \BaseController
      */
     public function store()
     {
-        $this->checkPermissions('ADD_MEMBER');
+        if (($redirect = $this->checkPermissions('ADD_MEMBER')) !== true) {
+            return $redirect;
+        }
 
         $rules = User::$rules;
         $errMsg = User::$error_message;
@@ -261,7 +294,7 @@ class UserController extends \BaseController
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date('Y-m-d', strtotime($data['secondary_date_assigned'])),
                 'billet'        => $data['secondary_billet'],
-                'primary'       => false
+                'secondary'     => true
             ];
         }
 
@@ -275,7 +308,7 @@ class UserController extends \BaseController
 
         // Assign a member id
 
-        $data['member_id'] = 'RMN' . User::getFirstAvailableMemberId(empty($data['honorary']));
+        $data['member_id'] = 'RMN' . User::getFirstAvailableMemberId(empty( $data['honorary'] ));
 
         if (isset( $data['honorary'] ) === true && $data['honorary'] === "1") {
             $data['member_id'] .= '-H';
@@ -362,28 +395,28 @@ class UserController extends \BaseController
         ];
 
         $error_message = [
-            'first_name.required' => 'Please enter your first name',
-            'first_name.min' => 'Your first name must be at least 2 characters long',
-            'last_name.required' => 'Please enter your last name',
-            'last_name.min' => 'Your last name must be at least 2 characters long',
-            'address1.required'              => 'Please enter your street address',
-            'address1.min'                   => 'The street address must be at least 4 characters long',
-            'city.required' => 'Please enter your city',
-            'city.min' => 'Your city must be at least 2 characters long',
-            'state_province.required'        => 'Please enter your state or province',
-            'state_province.min'             => 'Your state or province must be at least 2 characters long',
-            'postal_code.required' => 'Please enter your zip or postal code',
-            'postal_code.min' => 'Your zip or postal code must be at least 2 characters long',
-            'country.required' => 'Please enter your country',
-            'country.min' => 'Your country must be at least 2 characters long',
-            'dob.required' => 'Please enter your date of birth',
-            'dob.date_format' => 'Please enter your date of birth in the YYYY-MM-DD format',
-            'dob.date' => 'Please enter a valid date of birth',
-            'primary_assignment.required'    => "Please select a chapter",
-            'branch.required'                => "Please select the members branch",
-            'email_address.unique'           => 'That email address is already in use',
-            'email_address.required' => 'Please enter your email address',
-            'tos.required' => 'You must agree to the Terms of Service to apply',
+            'first_name.required'         => 'Please enter your first name',
+            'first_name.min'              => 'Your first name must be at least 2 characters long',
+            'last_name.required'          => 'Please enter your last name',
+            'last_name.min'               => 'Your last name must be at least 2 characters long',
+            'address1.required'           => 'Please enter your street address',
+            'address1.min'                => 'The street address must be at least 4 characters long',
+            'city.required'               => 'Please enter your city',
+            'city.min'                    => 'Your city must be at least 2 characters long',
+            'state_province.required'     => 'Please enter your state or province',
+            'state_province.min'          => 'Your state or province must be at least 2 characters long',
+            'postal_code.required'        => 'Please enter your zip or postal code',
+            'postal_code.min'             => 'Your zip or postal code must be at least 2 characters long',
+            'country.required'            => 'Please enter your country',
+            'country.min'                 => 'Your country must be at least 2 characters long',
+            'dob.required'                => 'Please enter your date of birth',
+            'dob.date_format'             => 'Please enter your date of birth in the YYYY-MM-DD format',
+            'dob.date'                    => 'Please enter a valid date of birth',
+            'primary_assignment.required' => "Please select a chapter",
+            'branch.required'             => "Please select the members branch",
+            'email_address.unique'        => 'That email address is already in use',
+            'email_address.required'      => 'Please enter your email address',
+            'tos.required'                => 'You must agree to the Terms of Service to apply',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $error_message);
@@ -394,7 +427,9 @@ class UserController extends \BaseController
 
         // Check Captcha
         if (\Iorme\SimpleCaptcha\SimpleCaptcha::check(Input::get('captcha')) === false) {
-            return Redirect::to('register')->withErrors(['message' => 'The code you entered was not correct'])->withInput();
+            return Redirect::to('register')
+                           ->withErrors(['message' => 'The code you entered was not correct'])
+                           ->withInput();
         }
 
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
@@ -441,13 +476,15 @@ class UserController extends \BaseController
 
         $data['peerage_record'] = [];
         $data['awards'] = [];
-        $data['active'] = '0';
+        $data['active'] = 0;
         $data['application_date'] = date('Y-m-d');
         $data['registration_status'] = 'Pending';
 
         unset( $data['_token'], $data['password_confirmation'] );
 
         $data['email_address'] = strtolower($data['email_address']);
+
+        asort($data);
 
         $this->writeAuditTrail(
             'Guest from ' . \Request::getClientIp(),
@@ -459,16 +496,6 @@ class UserController extends \BaseController
         );
 
         $user = User::create($data);
-
-        // Until I figure out why mongo drops fields, I'm doing this hack!
-
-        $u = User::find($user['_id']);
-
-        foreach ($data as $key => $value) {
-            $u->$key = $value;
-        }
-
-        $u->save();
 
         Event::fire('user.registered', $user);
 
@@ -490,8 +517,8 @@ class UserController extends \BaseController
         if ($this->isInChainOfCommand($user) === false &&
             Auth::user()->id != $user->id &&
             $this->hasPermissions(['VIEW_MEMBERS']) === false
-            ) {
-                return Redirect::back()->with('message', 'You do not have permission to view that page');
+        ) {
+            return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
         return View::make(
@@ -503,8 +530,6 @@ class UserController extends \BaseController
 
             ]
         );
-
-
     }
 
     /**
@@ -516,50 +541,64 @@ class UserController extends \BaseController
      */
     public function edit(User $user)
     {
-        $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF']);
 
-        $greeting = $user->getGreetingArray();
+        if (( $this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id ) || $this->hasPermissions(
+                ['EDIT_MEMBER'] === true
+            )
+        ) {
 
-        if (isset( $user->rating ) === true && empty( $user->rating ) === false && is_array($user->rating) === false) {
-            $user->rating =
+            $greeting = $user->getGreetingArray();
+
+            if (isset( $user->rating ) === true && empty( $user->rating ) === false && is_array(
+                    $user->rating
+                ) === false
+            ) {
+                $user->rating =
+                    [
+                        'rate'        => $user->rating,
+                        'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']
+                    ];
+            }
+
+            $user->display_rank = $user->rank['grade'];
+
+            if (isset( $user->rank['date_of_rank'] )) {
+                $user->dor = $user->rank['date_of_rank'];
+            } else {
+                $user->dor = '';
+            }
+
+            $user->primary_assignment = $user->getPrimaryAssignmentId();
+            $user->primary_billet = $user->getPrimaryBillet();
+            $user->primary_date_assigned = $user->getPrimaryDateAssigned();
+
+            $user->secondary_assignment = $user->getSecondaryAssignmentId();
+            $user->secondary_billet = $user->getSecondaryBillet();
+            $user->secondary_date_assigned = $user->getSecondaryDateAssigned();
+
+            $user->additional_assignment = $user->getAssignmentId('additional');
+            $user->additional_billet = $user->getBillet('additional');
+            $user->additional_date_assigned = $user->getDateAssigned('additional');
+
+            return View::make(
+                'user.edit',
                 [
-                    'rate'        => $user->rating,
-                    'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']
-                ];
-        }
+                    'user'        => $user,
+                    'greeting'    => $greeting,
+                    'countries'   => $this->_getCountries(),
+                    'branches'    => Branch::getBranchList(),
+                    'grades'      => Grade::getGradesForBranch($user->branch),
+                    'ratings'     => Rating::getRatingsForBranch($user->branch),
+                    'chapters'    => array_merge(Chapter::getChapters(null, 0, false), Chapter::getHoldingChapters()),
+                    'billets'     => ['0' => 'Select a billet'] + Billet::getBillets(),
+                    'locations'   => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+                    'permissions' => DB::table('permissions')->orderBy('name', 'asc')->get(),
 
-        $user->display_rank = $user->rank['grade'];
-
-        if (isset( $user->rank['date_of_rank'] )) {
-            $user->dor = $user->rank['date_of_rank'];
+                ]
+            );
         } else {
-            $user->dor = '';
+            return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
         }
-
-        $user->primary_assignment = $user->getPrimaryAssignmentId();
-        $user->primary_billet = $user->getPrimaryBillet();
-        $user->primary_date_assigned = $user->getPrimaryDateAssigned();
-
-        $user->secondary_assignment = $user->getSecondaryAssignmentId();
-        $user->secondary_billet = $user->getSecondaryBillet();
-        $user->secondary_date_assigned = $user->getSecondaryDateAssigned();
-
-        return View::make(
-            'user.edit',
-            [
-                'user'      => $user,
-                'greeting'  => $greeting,
-                'countries' => $this->_getCountries(),
-                'branches'  => Branch::getBranchList(),
-                'grades'    => Grade::getGradesForBranch($user->branch),
-                'ratings'   => Rating::getRatingsForBranch($user->branch),
-                'chapters'  => array_merge(Chapter::getChapters(null, 0, false), Chapter::getHoldingChapters()),
-                'billets'   => ['0' => 'Select a billet'] + Billet::getBillets(),
-                'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
-                'permissions' => DB::table('permissions')->orderBy('name', 'asc')->get(),
-
-            ]
-        );
     }
 
     /**
@@ -571,12 +610,14 @@ class UserController extends \BaseController
      */
     public function update(User $user)
     {
-        $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF']);
+        if (($redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF'])) !== true) {
+            return $redirect;
+        }
 
         $validator = Validator::make($data = Input::all(), User::$updateRules, User::$error_message);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::to(URL::previous())->withErrors($validator)->withInput();
         }
 
         // Massage the data a little bit.  First, build up the rank array
@@ -586,7 +627,7 @@ class UserController extends \BaseController
         if (isset( $data['display_rank'] ) === true && empty( $data['display_rank'] ) === false) {
             $data['rank'] = ['grade' => $data['display_rank']];
 
-            if (empty($data['dor']) === true) {
+            if (empty( $data['dor'] ) === true) {
                 $data['rank']['date_of_rank'] = '';
             } else {
                 $data['rank']['date_of_rank'] = date('Y-m-d', strtotime($data['dor']));
@@ -616,7 +657,21 @@ class UserController extends \BaseController
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date('Y-m-d', strtotime($data['secondary_date_assigned'])),
                 'billet'        => $data['secondary_billet'],
-                'primary'       => false
+                'secondary'     => true
+            ];
+
+            unset( $data['secondary_assignment'], $data['secondary_date_assigned'], $data['secondary_billet'] );
+        }
+
+        if (isset( $data['additional_assignment'] ) === true && empty( $data['additional_assignment'] ) === false) {
+            $chapterName = Chapter::find($data['additional_assignment'])->chapter_name;
+
+            $assignment[] = [
+                'chapter_id'    => $data['additional_assignment'],
+                'chapter_name'  => $chapterName,
+                'date_assigned' => date('Y-m-d', strtotime($data['additional_date_assigned'])),
+                'billet'        => $data['additional_billet'],
+                'additional'    => true
             ];
 
             unset( $data['secondary_assignment'], $data['secondary_date_assigned'], $data['secondary_billet'] );
@@ -664,7 +719,6 @@ class UserController extends \BaseController
         Cache::flush();
 
         return Redirect::to($data['redirectTo']);
-
     }
 
     public function tos()
@@ -673,7 +727,7 @@ class UserController extends \BaseController
 
         $data = Input::all();
 
-        if (empty($data['tos']) === false) {
+        if (empty( $data['tos'] ) === false) {
             $user = User::find($data['id']);
             $user->tos = true;
 
@@ -696,11 +750,9 @@ class UserController extends \BaseController
             ];
 
             return View::make('home', $viewData);
-
         }
 
         return Redirect::to('signout');
-
     }
 
     /**
@@ -712,9 +764,11 @@ class UserController extends \BaseController
      */
     public function confirmDelete(User $user)
     {
-        $this->checkPermissions('DEL_MEMBER');
+        if (($redirect = $this->checkPermissions('DEL_MEMBER')) !== true) {
+            return $redirect;
+        }
 
-        return View::make('user.confirm-delete', ['user' => $user, ]);
+        return View::make('user.confirm-delete', ['user' => $user,]);
     }
 
     /**
@@ -726,7 +780,9 @@ class UserController extends \BaseController
      */
     public function destroy(User $user)
     {
-        $this->checkPermissions('DEL_MEMBER');
+        if (($redirect = $this->checkPermissions('DEL_MEMBER')) !== true) {
+            return $redirect;
+        }
 
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
@@ -770,7 +826,7 @@ class UserController extends \BaseController
             'branches'  => $branches,
             'chapters'  => ['0' => 'Select a Chapter'],
             'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
-            'register' => true,
+            'register'  => true,
         ];
 
         return View::make('user.register', $viewData);

@@ -109,7 +109,7 @@
             Inc. Some Rights Reserved.
             Honor Harrington and all related materials are &copy; David Weber.</p>
 
-        <p>Medusa Version {{ Config::get('app.version') }}</p>
+        <p>{{ Config::get('app.version') }}</p>
         <span id="siteseal"><script type="text/javascript"
                                     src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
     </footer>

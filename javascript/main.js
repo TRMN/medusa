@@ -56,8 +56,8 @@ jQuery(document).ready(function ($) {
 
     jQuery(document).tooltip({
         items: "[data-src], [title]",
-        content: function() {
-            var element = jQuery( this );
+        content: function () {
+            var element = jQuery(this);
             if (element.is("[data-src")) {
                 var source = element.attr("data-src");
                 return "<img src='" + source + "'>";
@@ -75,7 +75,7 @@ jQuery(document).ready(function ($) {
         jQuery('#pm2').css('margin-top', vMargin);
     });
 
-    jQuery('#chapterList').DataTable( {
+    jQuery('#chapterList').DataTable({
         "autoWidth": true,
         "pageLength": 50,
         "columns": [
@@ -99,7 +99,7 @@ jQuery(document).ready(function ($) {
         "language": {
             "emptyTable": "No members for this branch"
         },
-        "order" : [[0, 'asc']],
+        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -317,7 +317,6 @@ jQuery(document).ready(function ($) {
         "language": {
             "emptyTable": "No crew members found"
         },
-        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -359,13 +358,24 @@ jQuery(document).ready(function ($) {
 
     jQuery('#members').tabs();
 
-    $('#DUTY_ROSTER').on('click', function() {
+    $('#DUTY_ROSTER').on('click', function () {
         if ($("#DUTY_ROSTER").is(':checked')) {
             $('#chooseShip').foundation('reveal', 'open');
         }
     });
 
-    $('.dr').on('click', function() {
-       $('#dutyroster').val($('.dr:checked').val());
+    $('.dr').on('click', function () {
+        $('#dutyroster').val($('.dr:checked').val());
+    });
+
+    $('#refreshExamList').on('click', function () {
+        $.get('/report/getexams/' + $('#chapter_id').val(), function (data) {
+            $('#results').html(data);
+        });
+    });
+
+    $('#copyExams').on('click', function () {
+        $('#courses').val($('#courses').val() + $('#results').val());
+        $('#examList').foundation('reveal', 'close');
     });
 });

@@ -122,20 +122,20 @@
         <div class="row">
             <div class="end small-6 columns ninety Incised901Light end">
                 <div class="row">
-                    <div class="small-3 columns ninety Incised901Light">
-                        {{ Form::label( 'plocation', 'Location', ['class' => 'my']) }} {{ Form::select('plocation', $locations) }}
+                    <div class="small-4 columns ninety Incised901Light">
+                        {{ Form::label( 'plocation', 'Filter by Location', ['class' => 'my']) }} {{ Form::select('plocation', $locations) }}
                     </div>
-                    <div class="small-9 columns ninety Incised901Light end">
+                    <div class="small-8 columns ninety Incised901Light end">
                         {{ Form::label('primary_assignment', "Primary Assignment", ['class' => 'my']) }} {{ Form::select('primary_assignment', $chapters) }}
                     </div>
                 </div>
             </div>
             <div class="end small-6 columns ninety Incised901Light end">
                 <div class="row">
-                    <div class="small-3 columns ninety Incised901Light">
-                        {{ Form::label( 'slocation', 'Location', ['class' => 'my']) }} {{ Form::select('slocation', $locations) }}
+                    <div class="small-4 columns ninety Incised901Light">
+                        {{ Form::label( 'slocation', 'Filter by Location', ['class' => 'my']) }} {{ Form::select('slocation', $locations) }}
                     </div>
-                    <div class="small-9 columns ninety Incised901Light end">
+                    <div class="small-8 columns ninety Incised901Light end">
                         {{ Form::label('secondary_assignment', "Secondary Assignment", ['class' => 'my']) }} {{ Form::select('secondary_assignment', $chapters) }}
                     </div>
                 </div>

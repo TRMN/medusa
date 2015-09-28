@@ -34,7 +34,9 @@ class ChapterController extends BaseController
      */
     public function create()
     {
-        $this->checkPermissions('COMMISSION_SHIP');
+        if (($redirect = $this->checkPermissions('COMMISSION_SHIP')) !== true) {
+            return $redirect;
+        }
 
         $types = Type::whereIn('chapter_type', ['ship', 'station'])->orderBy('chapter_description')->get(['chapter_type', 'chapter_description']);
         $chapterTypes = [ ];
@@ -59,7 +61,10 @@ class ChapterController extends BaseController
 
     public function edit(Chapter $chapter )
     {
-        $this->checkPermissions('EDIT_SHIP');
+
+        if (($redirect = $this->checkPermissions('EDIT_SHIP')) !== true) {
+            return $redirect;
+        }
 
         $types =
             Type::whereIn('chapter_type', ['ship', 'station'])->orderBy('chapter_description')->get(
@@ -91,7 +96,9 @@ class ChapterController extends BaseController
 
     public function update(Chapter $chapter )
     {
-        $this->checkPermissions('EDIT_SHIP');
+        if (($redirect = $this->checkPermissions('EDIT_SHIP')) !== true) {
+            return $redirect;
+        }
 
         $validator = Validator::make( $data = Input::all(), Chapter::$updateRules );
 
@@ -145,7 +152,9 @@ class ChapterController extends BaseController
      */
     public function store()
     {
-        $this->checkPermissions('COMMISSION_SHIP');
+        if (($redirect = $this->checkPermissions('COMMISSION_SHIP')) !== true) {
+            return $redirect;
+        }
 
         $validator = Validator::make( $data = Input::all(), Chapter::$rules );
 
@@ -175,7 +184,9 @@ class ChapterController extends BaseController
 
     public function decommission(Chapter $chapter)
     {
-        $this->checkPermissions('DECOMMISSION_SHIP');
+        if (($redirect = $this->checkPermissions('DECOMMISSION_SHIP')) !== true) {
+            return $redirect;
+        }
 
         $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
 
@@ -189,7 +200,9 @@ class ChapterController extends BaseController
      */
     public function destroy(Chapter $chapter )
     {
-        $this->checkPermissions('DECOMMISSION_SHIP');
+        if (($redirect = $this->checkPermissions('DECOMMISSION_SHIP')) !== true) {
+            return $redirect;
+        }
 
         $chapter->commission_date = '';
         $chapter->decommission_date = date('Y-m-d');
