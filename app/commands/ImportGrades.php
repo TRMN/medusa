@@ -190,6 +190,7 @@ class ImportGrades extends Command
         if (strpos($value, '%') === false &&
             strpos($value, 'BETA') === false &&
             strpos($value, 'CREA') === false &&
+            strpos($value, 'PASS') === false &&
             $_date !== '01 JAN 1970') {
             // Valid date and no score
             return ['score' => '100%', 'date' => $_date];

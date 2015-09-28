@@ -37,6 +37,7 @@ $medusa-yellow: #ffee00;
 .blue {
   color: mediumblue !important;
 }
+
 .nav-header {
   color: $medusa-yellow;
   font-size: 1.5rem;
@@ -103,6 +104,7 @@ div.filePhoto {
 .reportSubHeader {
   background-color: #cccccc;
 }
+
 .filePhotoBox img {
   width: 150px;
   height: 200px;
@@ -176,6 +178,7 @@ body, html {
   font-family: "Incised 901 W01 Light";
   line-height: 100%;
 }
+
 #tos, #chooseShip, #examList {
   color: $text-primary;
   background-color: #000000;
@@ -419,22 +422,42 @@ footer {
   width: 75%;
 }
 
-.size-12 { font-size: 12px; }
+.size-12 {
+  font-size: 12px;
+}
 
-.size-14 { font-size: 14px; }
+.size-14 {
+  font-size: 14px;
+}
 
-.size-16 { font-size: 16px; }
+.size-16 {
+  font-size: 16px;
+}
 
-.size-18 { font-size: 18px; }
+.size-18 {
+  font-size: 18px;
+}
 
-.size-21 { font-size: 21px; }
+.size-21 {
+  font-size: 21px;
+}
 
-.size-24 { font-size: 24px; }
+.size-24 {
+  font-size: 24px;
+}
 
-.size-36 { font-size: 36px; }
+.size-36 {
+  font-size: 36px;
+}
 
-.size-48 { font-size: 48px; }
+.size-48 {
+  font-size: 48px;
+}
 
-.size-60 { font-size: 60px; }
+.size-60 {
+  font-size: 60px;
+}
 
-.size-72 { font-size: 72px; }
+.size-72 {
+  font-size: 72px;
+}
