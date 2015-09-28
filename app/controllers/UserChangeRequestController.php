@@ -122,6 +122,10 @@ class UserChangeRequestController extends \BaseController
 
     public function review()
     {
+        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+            return $redirect;
+        }
+
         $records = ChangeRequest::all();
 
         foreach ($records as $index => $record) {
@@ -140,6 +144,10 @@ class UserChangeRequestController extends \BaseController
 
     public function approve(ChangeRequest $request)
     {
+        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+            return $redirect;
+        }
+
         $user = User::find($request->user);
 
         switch ($request->req_type) {
@@ -154,12 +162,11 @@ class UserChangeRequestController extends \BaseController
                 // CO's email
                 $co = Chapter::find($user->getPrimaryAssignmentId())->getCO();
 
-                if (empty($co) === false) {
+                if (empty( $co ) === false) {
                     $cc = [$co->email_address];
                 } else {
                     $cc = [];
                 }
-
 
                 $oldValue = $request->old_value;
                 $newValue = $request->new_value;
@@ -243,6 +250,10 @@ class UserChangeRequestController extends \BaseController
 
     public function deny(ChangeRequest $request)
     {
+        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+            return $redirect;
+        }
+
         $user = User::find($request->user);
 
         switch ($request->req_type) {
@@ -273,8 +284,12 @@ class UserChangeRequestController extends \BaseController
         // Send denied email
         Mail::send(
             'emails.change-denied',
-            ['user' => $user,
-             'type' => $type, 'fromValue' => $oldValue, 'toValue' => $newValue],
+            [
+                'user'      => $user,
+                'type'      => $type,
+                'fromValue' => $oldValue,
+                'toValue'   => $newValue
+            ],
             function ($message) use ($user, $type) {
                 $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
 

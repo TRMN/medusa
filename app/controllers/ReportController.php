@@ -10,7 +10,9 @@ class ReportController extends \BaseController
      */
     public function index()
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         return Response::view(
             'report.index',
@@ -29,7 +31,9 @@ class ReportController extends \BaseController
      */
     public function create()
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         $chapter = Chapter::findOrFail(Auth::user()->getPrimaryAssignmentId());
 
@@ -79,7 +83,9 @@ class ReportController extends \BaseController
 
     public function getCompletedExamsForCrew($id, $ts)
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         $chapter = Chapter::find($id);
 
@@ -105,7 +111,9 @@ class ReportController extends \BaseController
      */
     public function store()
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         $data = Input::all();
         $chapter = Chapter::findOrFail($data['chapter_id']);
@@ -195,7 +203,9 @@ class ReportController extends \BaseController
      */
     public function show($id)
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         return Response::view('report.chapter-show', ['report' => Report::find($id)]);
     }
@@ -209,7 +219,9 @@ class ReportController extends \BaseController
      */
     public function edit($id)
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         $this->updateNewCrew($id);
 
@@ -218,7 +230,9 @@ class ReportController extends \BaseController
 
     private function updateNewCrew($id)
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         $report = Report::find($id);
 
@@ -262,7 +276,9 @@ class ReportController extends \BaseController
      */
     public function update($id)
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         $report = Report::find($id);
 
@@ -311,7 +327,9 @@ class ReportController extends \BaseController
 
     public function sendReport($id)
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         $this->updateNewCrew($id);
 
@@ -341,7 +359,9 @@ class ReportController extends \BaseController
 
     public function emailReport($id)
     {
-        $this->checkPermissions('CHAPTER_REPORT');
+        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+            return $redirect;
+        }
 
         // Get the report
         $report = Report::find($id);

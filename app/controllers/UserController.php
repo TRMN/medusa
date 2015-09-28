@@ -10,7 +10,9 @@ class UserController extends \BaseController
      */
     public function index()
     {
-        $this->checkPermissions('VIEW_MEMBERS');
+        if (($redirect = $this->checkPermissions('VIEW_MEMBERS')) !== true) {
+            return $redirect;
+        }
 
         $branches = ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN', 'SFS', 'CIVIL', 'INTEL'];
 
@@ -90,7 +92,9 @@ class UserController extends \BaseController
 
     public function reviewApplications()
     {
-        $this->checkPermissions('PROC_APPLICATIONS');
+        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+            return $redirect;
+        }
 
         $users = User::where('active', '!=', "1")->where('registration_status', '=', 'Pending')->get();
 
@@ -105,7 +109,9 @@ class UserController extends \BaseController
 
     public function approveApplication(User $user)
     {
-        $this->checkPermissions('PROC_APPLICATIONS');
+        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+            return $redirect;
+        }
 
         $user->registration_status = 'Active';
         $user->registration_date = date('Y-m-d');
@@ -185,7 +191,9 @@ class UserController extends \BaseController
 
     public function denyApplication(User $user)
     {
-        $this->checkPermissions('PROC_APPLICATIONS');
+        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+            return $redirect;
+        }
 
         $user->registration_status = 'Denied';
         $user->registration_date = date('Y-m-d');
@@ -211,7 +219,9 @@ class UserController extends \BaseController
      */
     public function create()
     {
-        $this->checkPermissions('ADD_MEMBER');
+        if (($redirect = $this->checkPermissions('ADD_MEMBER')) !== true) {
+            return $redirect;
+        }
         return View::make(
             'user.create',
             [
@@ -235,7 +245,9 @@ class UserController extends \BaseController
      */
     public function store()
     {
-        $this->checkPermissions('ADD_MEMBER');
+        if (($redirect = $this->checkPermissions('ADD_MEMBER')) !== true) {
+            return $redirect;
+        }
 
         $rules = User::$rules;
         $errMsg = User::$error_message;
@@ -485,16 +497,6 @@ class UserController extends \BaseController
 
         $user = User::create($data);
 
-        // Until I figure out why mongo drops fields, I'm doing this hack!
-
-//        $u = User::find($user['_id']);
-//
-//        foreach ($data as $key => $value) {
-//            $u->$key = $value;
-//        }
-//
-//        $u->save();
-
         Event::fire('user.registered', $user);
 
         return Redirect::route('login')->with(
@@ -608,7 +610,9 @@ class UserController extends \BaseController
      */
     public function update(User $user)
     {
-        $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF']);
+        if (($redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF'])) !== true) {
+            return $redirect;
+        }
 
         $validator = Validator::make($data = Input::all(), User::$updateRules, User::$error_message);
 
@@ -760,7 +764,9 @@ class UserController extends \BaseController
      */
     public function confirmDelete(User $user)
     {
-        $this->checkPermissions('DEL_MEMBER');
+        if (($redirect = $this->checkPermissions('DEL_MEMBER')) !== true) {
+            return $redirect;
+        }
 
         return View::make('user.confirm-delete', ['user' => $user,]);
     }
@@ -774,7 +780,9 @@ class UserController extends \BaseController
      */
     public function destroy(User $user)
     {
-        $this->checkPermissions('DEL_MEMBER');
+        if (($redirect = $this->checkPermissions('DEL_MEMBER')) !== true) {
+            return $redirect;
+        }
 
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
