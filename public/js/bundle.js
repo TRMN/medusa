@@ -116,9 +116,11 @@ module.exports = function() {
 
         jQuery('#plocation').change({assignment: 'primary'}, getChapterList);
         jQuery('#slocation').change({assignment: 'secondary'}, getChapterList);
+        jQuery('#alocation').change({assignment: 'additional'}, getChapterList);
 
         buildChapterList('primary');
         buildChapterList('secondary');
+        buildChapterList('additional');
 
         function getChapterList(event) {
             var assignemnt = event.data.assignment;
@@ -2227,7 +2229,6 @@ jQuery(document).ready(function ($) {
         "language": {
             "emptyTable": "No crew members found"
         },
-        "order": [[0, 'asc']],
         "jQueryUI": true
     });
 
@@ -2259,6 +2260,17 @@ jQuery(document).ready(function ($) {
 
     $('.dr').on('click', function() {
        $('#dutyroster').val($('.dr:checked').val());
+    });
+
+    $('#refreshExamList').on('click', function() {
+        $.get('/report/getexams/' + $('#chapter_id').val(), function (data) {
+           $('#results').html(data);
+        });
+    });
+
+    $('#copyExams').on('click', function() {
+        $('#courses').val($('#courses').val() + $('#results').val());
+        $('#examList').foundation('reveal', 'close');
     });
 });
 

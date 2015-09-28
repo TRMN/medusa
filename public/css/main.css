@@ -476,6 +476,9 @@ table.dataTable.display tbody tr:first-child td {
 .inline {
   display: inline; }
 
+.underline {
+  text-decoration: underline; }
+
 div.filePhoto {
   position: absolute;
   top: 0;
@@ -496,6 +499,12 @@ div.filePhoto {
   border: solid 1px #CCCCCC;
   margin: auto;
   margin-bottom: 10px; }
+
+.reportHeader {
+  background-color: #4D4D4D; }
+
+.reportSubHeader {
+  background-color: #cccccc; }
 
 .filePhotoBox img {
   width: 150px;
@@ -552,21 +561,21 @@ th.branch {
 
 body, html {
   background: url("/images/trmn-subdued.png");
-  color: white;
+  color: WhiteSmoke;
   background-color: #000000;
   background-repeat: no-repeat;
   background-position: center bottom;
   font-family: "Incised 901 W01 Light";
   line-height: 100%; }
 
-#tos, #chooseShip {
-  color: white;
+#tos, #chooseShip, #examList {
+  color: WhiteSmoke;
   background-color: #000000;
   background-repeat: no-repeat;
   background-position: center bottom; }
 
 #photoModal {
-  color: white;
+  color: WhiteSmoke;
   background-color: #000000;
   font-family: "Incised 901 W01 Light";
   line-height: 100%; }
@@ -622,11 +631,11 @@ h3.trmn {
   color: #ffee00; }
 
 h2, h3, h4, h5 {
-  color: white;
+  color: WhiteSmoke;
   font-family: "Incised 901 W01 Light"; }
 
 label {
-  color: white;
+  color: WhiteSmoke;
   font-family: "Incised 901 W01 Light"; }
 
 nav {
@@ -686,7 +695,7 @@ footer {
   width: 100%; }
   footer p {
     padding-top: 2em;
-    color: white;
+    color: WhiteSmoke;
     font-size: 0.5rem;
     font-family: "Incised 901 W01 Light"; }
 
@@ -749,5 +758,35 @@ footer {
 
 #user fieldset {
   width: 75%; }
+
+.size-12 {
+  font-size: 12px; }
+
+.size-14 {
+  font-size: 14px; }
+
+.size-16 {
+  font-size: 16px; }
+
+.size-18 {
+  font-size: 18px; }
+
+.size-21 {
+  font-size: 21px; }
+
+.size-24 {
+  font-size: 24px; }
+
+.size-36 {
+  font-size: 36px; }
+
+.size-48 {
+  font-size: 48px; }
+
+.size-60 {
+  font-size: 60px; }
+
+.size-72 {
+  font-size: 72px; }
 
 /*# sourceMappingURL=main.css.map */

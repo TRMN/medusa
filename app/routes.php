@@ -59,6 +59,9 @@ Route::resource( 'chapter', 'ChapterController', ['before' => 'auth'] );
 Route::resource( 'announcement', 'AnnouncementController', ['before' => 'auth'] );
 Route::resource( 'report', 'ReportController', ['before' => 'auth'] );
 
+Route::get('/report/getexams/{id}', ['as' => 'report.getexams', 'uses' => 'ReportController@getCompletedExamsForCrew', 'before' => 'auth']);
+Route::get('/report/send/{id}', ['as' => 'report.send', 'uses' => 'ReportController@sendReport', 'before' => 'auth']);
+
 Route::get(
     '/echelon/{echelon}/deactivate',
     ['as' => 'echelon.deactivate', 'uses' => 'EchelonController@deactivate', 'before' => 'auth']

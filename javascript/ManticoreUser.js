@@ -24,9 +24,11 @@ module.exports = function() {
 
         jQuery('#plocation').change({assignment: 'primary'}, getChapterList);
         jQuery('#slocation').change({assignment: 'secondary'}, getChapterList);
+        jQuery('#alocation').change({assignment: 'additional'}, getChapterList);
 
         buildChapterList('primary');
         buildChapterList('secondary');
+        buildChapterList('additional');
 
         function getChapterList(event) {
             var assignemnt = event.data.assignment;

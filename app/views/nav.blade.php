@@ -13,9 +13,10 @@
 		@if($permsObj->hasPermissions(['DUTY_ROSTER',]) === true)
 		<div class="nav-header lnav">CO Tools</div>
         <div class="rnav">
-
-            <a href="">Chapter Report</a><br/>
-            <a href="">View Combined Roster</a><br />
+        @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true)
+            <a href="{{route('report.index')}}">Chapter Reports</a><br/>
+        @endif
+           <!-- <a href="">View Combined Roster</a><br /> -->
 
         </div>
 		@endif

@@ -76,6 +76,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'permissions',
         'duty_roster',
         'registration_status',
+        'application_date',
+        'registration_date',
+        'active',
     ];
 
     public function announcements()
@@ -128,7 +131,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $this->branch = 'RMN';
         }
 
-        if (empty($gradeDetails->rank[$this->branch]) === false) {
+        if (empty( $gradeDetails->rank[$this->branch] ) === false) {
             $this->rank_title = $gradeDetails->rank[$this->branch];
         } else {
             $this->rank_title = $this->rank['grade'];
@@ -179,39 +182,44 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return false;
     }
 
-    public function getPrimaryAssignmentId()
+    public function getAssignmentId($position)
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if ($assignment['primary'] == true) {
+                if (empty($assignment[$position]) === false) {
                     if (empty( $assignment['chapter_id'] )) {
                         return false;
                     }
                     return $assignment['chapter_id'];
                 }
             }
-
             return false;
         } else {
             return false;
         }
     }
 
+    public function getPrimaryAssignmentId()
+    {
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getAssignmentId()
+
+        return $this->getAssignmentId('primary');
+    }
+
     public function getSecondaryAssignmentId()
     {
-        if (isset( $this->assignment ) == true) {
-            foreach ($this->assignment as $assignment) {
-                if (empty( $assignment['primary'] ) === true ||
-                    $assignment['primary'] == false
-                ) {
-                    if (empty( $assignment['chapter_id'] )) {
-                        return false;
-                    }
-                    return $assignment['chapter_id'];
-                }
-            }
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getAssignmentId()
 
-            return false;
+        return $this->getAssignmentId('secondary');
+    }
+
+    public function getAssignmentName($position)
+    {
+        $chapter = Chapter::find($this->getAssignmentId($position));
+        if (empty( $chapter ) === false) {
+            return $chapter->chapter_name;
         } else {
             return false;
         }
@@ -219,19 +227,27 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getPrimaryAssignmentName()
     {
-        $chapter = Chapter::find($this->getPrimaryAssignmentId());
-        if (!empty( $chapter )) {
-            return $chapter->chapter_name;
-        } else {
-            return false;
-        }
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getAssignmentName()
+
+        return $this->getAssignmentName('primary');
     }
 
     public function getSecondaryAssignmentName()
     {
-        $chapter = Chapter::find($this->getSecondaryAssignmentId());
-        if (!empty( $chapter )) {
-            return $chapter->chapter_name;
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getAssignmentName()
+
+        return $this->getAssignmentName('secondary');
+    }
+
+    public function getAssignmentDesignation($position)
+    {
+        // Why didn't I follow DRY for all of these???
+
+        $chapter = Chapter::find($this->getAssignmentId($position));
+        if (empty( $chapter ) === false) {
+            return $chapter->hull_number;
         } else {
             return false;
         }
@@ -239,19 +255,29 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getPrimaryAssignmentDesignation()
     {
-        $chapter = Chapter::find($this->getPrimaryAssignmentId());
-        if (!empty( $chapter )) {
-            return $chapter->hull_number;
-        } else {
-            return false;
-        }
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getAssignmentDesignation()
+
+        return $this->getAssignmentDesignation('primary');
     }
 
     public function getSecondaryAssignmentDesignation()
     {
-        $chapter = Chapter::find($this->getSecondaryAssignmentId());
-        if (!empty( $chapter )) {
-            return $chapter->hull_number;
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getAssignmentDesignation()
+
+        return $this->getAssignmentDesignation('secondary');
+    }
+
+    public function getBillet($position)
+    {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
+                if (empty($assignment[$position]) === false) {
+                    return $assignment['billet'];
+                }
+            }
+            return false;
         } else {
             return false;
         }
@@ -259,28 +285,32 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getPrimaryBillet()
     {
-        if (isset( $this->assignment ) == true) {
-            foreach ($this->assignment as $assignment) {
-                if ($assignment['primary'] == true) {
-                    return $assignment['billet'];
-                }
-            }
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getBillet()
 
-            return false;
-        } else {
-            return false;
-        }
+        return $this->getBillet('primary');
     }
 
     public function getSecondaryBillet()
     {
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getBillet()
+
+        return $this->getBillet('secondary');
+    }
+
+    public function getDateAssigned($position)
+    {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if (empty( $assignment['primary'] ) === true || $assignment['primary'] == false) {
-                    return $assignment['billet'];
+                if (empty($assignment[$position]) === false) {
+                    if (isset( $assignment['date_assigned'] ) === true) {
+                        return $assignment['date_assigned'];
+                    } else {
+                        return 'Unknown';
+                    }
                 }
             }
-
             return false;
         } else {
             return false;
@@ -289,40 +319,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getPrimaryDateAssigned()
     {
-        if (isset( $this->assignment ) == true) {
-            foreach ($this->assignment as $assignment) {
-                if ($assignment['primary'] == true) {
-                    if (isset( $assignment['date_assigned'] ) === true) {
-                        return $assignment['date_assigned'];
-                    } else {
-                        return 'Unknown';
-                    }
-                }
-            }
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getDateAssigned()
 
-            return false;
-        } else {
-            return false;
-        }
+        return $this->getDateAssigned('primary');
     }
 
     public function getSecondaryDateAssigned()
     {
-        if (isset( $this->assignment ) == true) {
-            foreach ($this->assignment as $assignment) {
-                if (empty( $assignment['primary'] ) === true || $assignment['primary'] == false) {
-                    if (isset( $assignment['date_assigned'] ) === true) {
-                        return $assignment['date_assigned'];
-                    } else {
-                        return 'Unknown';
-                    }
-                }
-            }
+        // Maintain backward compatibility
+        // TODO: Refactor all calls to use getDateAssigned()
 
-            return false;
-        } else {
-            return false;
-        }
+        return $this->getDateAssigned('secondary');
     }
 
     public function getBilletForChapter($chapterId)
@@ -333,19 +341,27 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                     return $assignment['billet'];
                 }
             }
-
             return false;
         } else {
             return false;
         }
     }
 
-    public function getTimeInGrade()
+    public function getTimeInGrade($short=false)
     {
         if (empty( $this->rank['date_of_rank'] ) === false) {
             $dorObj = new DateTime(date('Y-m-d', strtotime($this->rank['date_of_rank'])));
             $timeInGrade = $dorObj->diff(new DateTime("now"));
-            return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
+
+            if ($short === true) {
+                $tig = ($timeInGrade->format('%y') * 12) + $timeInGrade->format('%m');
+                if ($timeInGrade->format('%d') > 25) {
+                    $tig += 1;
+                }
+                return str_pad($tig, 2, '0', STR_PAD_LEFT) . ' Mo';
+            } else {
+                return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
+            }
         } else {
             return null;
         }
@@ -368,13 +384,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             if (is_array($options) === false) {
                 $branch = $options; // backwards compatibility
             } else {
-                if (empty($options['branch']) === true) {
+                if (empty( $options['branch'] ) === true) {
                     $branch = null;
                 } else {
                     $branch = $options['branch'];
                 }
 
-                if (empty($options['after']) === true) {
+                if (empty( $options['after'] ) === true) {
                     $after = null;
                 } else {
                     $after = strtotime($options['after']);
@@ -401,13 +417,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 );
             }
 
-            if (empty($after) === false) {
+            if (empty( $after ) === false) {
                 // filter by date
-                $list = array_where($exams->exams, function ($key, $value) use ($after) {
-                    if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime('+2 month', $after)) {
-                        return $value;
+                $list = array_where(
+                    $exams->exams,
+                    function ($key, $value) use ($after) {
+                        if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime(
+                                '+2 month',
+                                $after
+                            )
+                        ) {
+                            return $value;
+                        }
                     }
-                });
+                );
             }
             ksort($list);
             return $list;
@@ -450,16 +473,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $exams = $this->getExamList(['after' => $after]);
 
-        $list = array_where($exams, function ($key, $value) use ($after) {
-            if (intval($value['score']) > 70 || strtoupper($value['score'] == 'PASS')) {
-                return $value;
+        $list = array_where(
+            $exams,
+            function ($key, $value) use ($after) {
+                if (intval($value['score']) > 70 || strtoupper($value['score'] == 'PASS')) {
+                    return $value;
+                }
             }
-        });
+        );
 
         return implode(', ', array_keys($list));
-
     }
-
 
     public function getExamLastUpdated()
     {
