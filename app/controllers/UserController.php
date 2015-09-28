@@ -540,56 +540,63 @@ class UserController extends \BaseController
     public function edit(User $user)
     {
 
-        if (($this->hasPermissions(['EDIT_SELF']) === false && Auth::user()->id != $user->id) || $this->hasPermissions(['EDIT_MEMBER'] === false)) {
+        if (( $this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id ) || $this->hasPermissions(
+                ['EDIT_MEMBER'] === true
+            )
+        ) {
+
+            $greeting = $user->getGreetingArray();
+
+            if (isset( $user->rating ) === true && empty( $user->rating ) === false && is_array(
+                    $user->rating
+                ) === false
+            ) {
+                $user->rating =
+                    [
+                        'rate'        => $user->rating,
+                        'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']
+                    ];
+            }
+
+            $user->display_rank = $user->rank['grade'];
+
+            if (isset( $user->rank['date_of_rank'] )) {
+                $user->dor = $user->rank['date_of_rank'];
+            } else {
+                $user->dor = '';
+            }
+
+            $user->primary_assignment = $user->getPrimaryAssignmentId();
+            $user->primary_billet = $user->getPrimaryBillet();
+            $user->primary_date_assigned = $user->getPrimaryDateAssigned();
+
+            $user->secondary_assignment = $user->getSecondaryAssignmentId();
+            $user->secondary_billet = $user->getSecondaryBillet();
+            $user->secondary_date_assigned = $user->getSecondaryDateAssigned();
+
+            $user->additional_assignment = $user->getAssignmentId('additional');
+            $user->additional_billet = $user->getBillet('additional');
+            $user->additional_date_assigned = $user->getDateAssigned('additional');
+
+            return View::make(
+                'user.edit',
+                [
+                    'user'        => $user,
+                    'greeting'    => $greeting,
+                    'countries'   => $this->_getCountries(),
+                    'branches'    => Branch::getBranchList(),
+                    'grades'      => Grade::getGradesForBranch($user->branch),
+                    'ratings'     => Rating::getRatingsForBranch($user->branch),
+                    'chapters'    => array_merge(Chapter::getChapters(null, 0, false), Chapter::getHoldingChapters()),
+                    'billets'     => ['0' => 'Select a billet'] + Billet::getBillets(),
+                    'locations'   => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+                    'permissions' => DB::table('permissions')->orderBy('name', 'asc')->get(),
+
+                ]
+            );
+        } else {
             return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
         }
-
-        $greeting = $user->getGreetingArray();
-
-        if (isset( $user->rating ) === true && empty( $user->rating ) === false && is_array($user->rating) === false) {
-            $user->rating =
-                [
-                    'rate'        => $user->rating,
-                    'description' => Rating::where('rate_code', '=', $user->rating)->get()[0]->rate['description']
-                ];
-        }
-
-        $user->display_rank = $user->rank['grade'];
-
-        if (isset( $user->rank['date_of_rank'] )) {
-            $user->dor = $user->rank['date_of_rank'];
-        } else {
-            $user->dor = '';
-        }
-
-        $user->primary_assignment = $user->getPrimaryAssignmentId();
-        $user->primary_billet = $user->getPrimaryBillet();
-        $user->primary_date_assigned = $user->getPrimaryDateAssigned();
-
-        $user->secondary_assignment = $user->getSecondaryAssignmentId();
-        $user->secondary_billet = $user->getSecondaryBillet();
-        $user->secondary_date_assigned = $user->getSecondaryDateAssigned();
-
-        $user->additional_assignment = $user->getAssignmentId('additional');
-        $user->additional_billet = $user->getBillet('additional');
-        $user->additional_date_assigned = $user->getDateAssigned('additional');
-
-        return View::make(
-            'user.edit',
-            [
-                'user'        => $user,
-                'greeting'    => $greeting,
-                'countries'   => $this->_getCountries(),
-                'branches'    => Branch::getBranchList(),
-                'grades'      => Grade::getGradesForBranch($user->branch),
-                'ratings'     => Rating::getRatingsForBranch($user->branch),
-                'chapters'    => array_merge(Chapter::getChapters(null, 0, false), Chapter::getHoldingChapters()),
-                'billets'     => ['0' => 'Select a billet'] + Billet::getBillets(),
-                'locations'   => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
-                'permissions' => DB::table('permissions')->orderBy('name', 'asc')->get(),
-
-            ]
-        );
     }
 
     /**
