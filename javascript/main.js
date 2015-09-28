@@ -320,6 +320,24 @@ jQuery(document).ready(function ($) {
         "jQueryUI": true
     });
 
+    jQuery('#subCrewRoster').DataTable({
+        "autoWidth": true,
+        "pageLength": 25,
+        "columns": [
+            {"orderable": false},
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "language": {
+            "emptyTable": "No crew members found"
+        },
+        "order": [[0, 'asc']],
+        "jQueryUI": true
+    });
+    
     jQuery('#changeRequests').DataTable({
         "autoWidth": true,
         "pageLength": 50,

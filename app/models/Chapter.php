@@ -191,6 +191,7 @@ class Chapter extends Eloquent
     }
 
 
+
     /**
      * Get all users/members assigned to a specific chapter, including the command crew
      *
@@ -328,6 +329,29 @@ class Chapter extends Eloquent
             return [$this->id];
         }
     }
+
+      /**
+     * Get the chapter IDs of all subordinate chapters, but strip this one
+     *
+     * @param none
+     *
+     * @return mixed
+     */
+    public function getChildChapters()
+    {
+
+
+        return array_where($this->getChapterIdWithChildren(), function($key, $value) { if ($value != $this->id) return $value;});
+
+    }
+
+    /**
+     * Get the chapter ID with all subordinate chapter IDs
+     *
+     * @param none
+     *
+     * @return mixed
+     */
 
     public function getChapterIdWithChildren()
     {
