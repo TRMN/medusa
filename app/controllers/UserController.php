@@ -541,11 +541,7 @@ class UserController extends \BaseController
      */
     public function edit(User $user)
     {
-
-        if (( $this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id ) || $this->hasPermissions(
-                ['EDIT_MEMBER'] === true
-            )
-        ) {
+        if (( $this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id ) || $this->hasPermissions(['EDIT_MEMBER']) === true) {
 
             $greeting = $user->getGreetingArray();
 
