@@ -36,18 +36,15 @@ class ReportController extends \BaseController
         }
 
         foreach (['primary', 'secondary', 'additional'] as $assignment) {
-            Log::debug('Checking ' . $assignment);
-            $assignmentId = Auth::user()->getAssignmentId($assignment);
-            Log::debug('Found ' . $assignmentId);
-            $chapter = Chapter::findOrFail($assignmentId);
-            Log::debug('Query Results: ' . print_r($chapter->toArray(), true));
+            $chapter = Chapter::findOrFail(Auth::user()->getAssignmentId($assignment));
+
             if ($chapter->chapter_type == 'ship') {
                 break;
             }
         }
 
         if ($chapter->chapter_type != 'ship') {
-            return \Redirect::to(\URL::previous())->with('message', 'I was unable to find an appropriate command for this report');
+            return \Redirect::to(\URL::previous())->with('message', 'I was unable to find an appropriate command for this report.');
         }
 
 
