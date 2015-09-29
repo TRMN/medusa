@@ -83,138 +83,153 @@
         </div>
     </div>
     <br>
+
     <div class="row">
         <div class="columns small-12 small-text-center my reportSubHeader">
             <br>EXECUTIVE OFFICER<br><br>
         </div>
     </div>
     <br>
-    <div class="row">
-        <div class="columns small-3 my">
-            Name:
+    @if(empty($command['XO']) === false)
+        <div class="row">
+            <div class="columns small-3 my">
+                Name:
+            </div>
+            <div class="columns small-9">
+                {{$command['XO']->first_name}} @if(empty($command['XO']->middile_name) === false) {{$command['XO']->middle_name}} @endif {{$command['XO']->last_name}} @if(empty($command['XO']->suffix) === false) {{$command['XO']->suffix}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$command['XO']->first_name}} @if(empty($command['XO']->middile_name) === false) {{$command['XO']->middle_name}} @endif {{$command['XO']->last_name}} @if(empty($command['XO']->suffix) === false) {{$command['XO']->suffix}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            SID#:
+        <div class="row">
+            <div class="columns small-3 my">
+                SID#:
+            </div>
+            <div class="columns small-9">
+                {{$command['XO']->member_id}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$command['XO']->member_id}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Rank:
+        <div class="row">
+            <div class="columns small-3 my">
+                Rank:
+            </div>
+            <div class="columns small-9">
+                {{$command['XO']->rank['grade']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$command['XO']->rank['grade']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Last Course Completed:
+        <div class="row">
+            <div class="columns small-3 my">
+                Last Course Completed:
+            </div>
+            <div class="columns small-3">
+                {{$command['XO']->getHighestMainLineExamForBranch()}}
+            </div>
+            <div class="columns small-2 my">
+                Date of Birth:
+            </div>
+            <div class="columns small-4">
+                {{date('m/d/Y', strtotime($command['XO']->dob))}}
+            </div>
         </div>
-        <div class="columns small-3">
-            {{$command['XO']->getHighestMainLineExamForBranch()}}
-        </div>
-        <div class="columns small-2 my">
-            Date of Birth:
-        </div>
-        <div class="columns small-4">
-            {{date('m/d/Y', strtotime($command['XO']->dob))}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Phone:
+        <div class="row">
+            <div class="columns small-3 my">
+                Phone:
+            </div>
+            <div class="columns small-9">
+                @if(empty($command['XO']) === true)N/A @else {{$command['XO']->phone_number}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            @if(empty($command['XO']) === true)N/A @else {{$command['XO']->phone_number}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="small-3 columns my">
-            Email:
+        <div class="row">
+            <div class="small-3 columns my">
+                Email:
+            </div>
+            <div class="columns small-9">
+                {{$command['XO']->email_address}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$command['XO']->email_address}}
+    @else
+        <div class="row">
+            <div class="columns small-12 small-text-center my">None Found</div>
         </div>
-    </div>
+    @endif
     <br>
+
+
+
     <div class="row">
         <div class="columns small-12 small-text-center my reportSubHeader">
             <br>CHIEF PETTY OFFICER<br><br>
         </div>
     </div>
     <br>
-    <div class="row">
-        <div class="columns small-3 my">
-            Name:
+    @if(empty($command['BOSUN']) === false)
+        <div class="row">
+            <div class="columns small-3 my">
+                Name:
+            </div>
+            <div class="columns small-9">
+                {{$command['BOSUN']->first_name}} @if(empty($command['BOSUN']->middile_name) === false) {{$command['BOSUN']->middle_name}} @endif {{$command['BOSUN']->last_name}} @if(empty($command['BOSUN']->suffix) === false) {{$command['BOSUN']->suffix}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$command['BOSUN']->first_name}} @if(empty($command['BOSUN']->middile_name) === false) {{$command['BOSUN']->middle_name}} @endif {{$command['BOSUN']->last_name}} @if(empty($command['BOSUN']->suffix) === false) {{$command['BOSUN']->suffix}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            SID#:
+        <div class="row">
+            <div class="columns small-3 my">
+                SID#:
+            </div>
+            <div class="columns small-9">
+                {{$command['BOSUN']->member_id}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$command['BOSUN']->member_id}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Rank:
+        <div class="row">
+            <div class="columns small-3 my">
+                Rank:
+            </div>
+            <div class="columns small-9">
+                {{$command['BOSUN']->rank['grade']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$command['BOSUN']->rank['grade']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Last Course Completed:
+        <div class="row">
+            <div class="columns small-3 my">
+                Last Course Completed:
+            </div>
+            <div class="columns small-3">
+                {{$command['BOSUN']->getHighestMainLineExamForBranch()}}
+            </div>
+            <div class="columns small-2 my">
+                Date of Birth:
+            </div>
+            <div class="columns small-4">
+                {{date('m/d/Y', strtotime($command['BOSUN']->dob))}}
+            </div>
         </div>
-        <div class="columns small-3">
-            {{$command['BOSUN']->getHighestMainLineExamForBranch()}}
-        </div>
-        <div class="columns small-2 my">
-            Date of Birth:
-        </div>
-        <div class="columns small-4">
-            {{date('m/d/Y', strtotime($command['BOSUN']->dob))}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Phone:
+        <div class="row">
+            <div class="columns small-3 my">
+                Phone:
+            </div>
+            <div class="columns small-9">
+                @if(empty($command['BOSUN']) === true)N/A @else {{$command['BOSUN']->phone_number}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            @if(empty($command['BOSUN']) === true)N/A @else {{$command['BOSUN']->phone_number}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="small-3 columns my">
-            Email:
+        <div class="row">
+            <div class="small-3 columns my">
+                Email:
+            </div>
+            <div class="columns small-9">
+                {{$command['BOSUN']->email_address}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$command['BOSUN']->email_address}}
+    @else
+        <div class="row">
+            <div class="columns small-12 small-text-center my">None Found</div>
         </div>
-    </div>
-
+    @endif
     <br>
 
     <div class="row">
@@ -262,6 +277,8 @@
         <div class="columns small-4">
             @if(empty($chapter->ship_class) === false)
                 {{$chapter->ship_class}}
+            @else
+                N/A
             @endif
         </div>
         <div class="columns small-2">
@@ -270,6 +287,8 @@
         <div class="columns small-4">
             @if(empty($chapter->hull_number) === false)
                 {{$chapter->hull_number}}
+            @else
+                N/A
             @endif
         </div>
     </div>

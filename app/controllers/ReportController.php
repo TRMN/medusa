@@ -35,7 +35,18 @@ class ReportController extends \BaseController
             return $redirect;
         }
 
-        $chapter = Chapter::findOrFail(Auth::user()->getPrimaryAssignmentId());
+        foreach (['primary', 'secondary', 'additional'] as $assignment) {
+            $chapter = Chapter::findOrFail(Auth::user()->getAssignmentId($assignment));
+
+            if ($chapter->chapter_type == 'ship') {
+                break;
+            }
+        }
+
+        if ($chapter->chapter_type != 'ship') {
+            return \Redirect::to(\URL::previous())->with('message', 'I was unable to find an appropriate command for this report');
+        }
+
 
         $first = strtotime(date('Y') . '-' . date('m') . '-01');
 

@@ -22,8 +22,10 @@ Phone:@if(empty($report->command_crew['CO']['phone_number']) === true)
     N/A @else {{$report->command_crew['CO']['phone_number']}} @endif <br>
 Email: {{$report->command_crew['CO']['email_address']}}<br>
 <br>
+
 EXECUTIVE OFFICER<br>
 <br>
+@if(empty($report->command_crew['XO']) === false)
 Name: {{$report->command_crew['XO']['first_name']}} @if(empty($report->command_crew['XO']->middile_name) === false) {{$report->command_crew['XO']['middle_name']}} @endif {{$report->command_crew['XO']['last_name']}} @if(empty($report->command_crew['XO']->suffix) === false) {{$report->command_crew['XO']->suffix}} @endif
 <br>
 SID#: {{$report->command_crew['XO']['member_id']}}<br>
@@ -36,9 +38,15 @@ Date of Birth: {{date('m/d/Y', strtotime($report->command_crew['XO']['dob']))}}<
 Phone:@if(empty($report->command_crew['XO']['phone_number']) === true)
     N/A @else {{$report->command_crew['XO']['phone_number']}} @endif <br>
 Email: {{$report->command_crew['XO']['email_address']}}<br>
+@else
+None Found
+@endif
 <br>
+
+
 CHIEF PETTY OFFICER<br>
 <br>
+@if(empty($report->command_crew['BOSUN']) === false)
 Name: {{$report->command_crew['BOSUN']['first_name']}} @if(empty($report->command_crew['BOSUN']->middile_name) === false) {{$report->command_crew['BOSUN']['middle_name']}} @endif {{$report->command_crew['BOSUN']['last_name']}} @if(empty($report->command_crew['BOSUN']->suffix) === false) {{$report->command_crew['BOSUN']->suffix}} @endif
 <br>
 SID#: {{$report->command_crew['BOSUN']['member_id']}}<br>
@@ -51,7 +59,11 @@ Date of Birth: {{date('m/d/Y', strtotime($report->command_crew['BOSUN']['dob']))
 Phone:@if(empty($report->command_crew['BOSUN']['phone_number']) === true)
     N/A @else {{$report->command_crew['BOSUN']['phone_number']}} @endif <br>
 Email: {{$report->command_crew['BOSUN']['email_address']}}<br>
+@else
+None Found
+@endif
 <br>
+
 NEW REGULAR CREW SINCE LAST REPORT<br><br>
 
 
@@ -70,8 +82,8 @@ NEW REGULAR CREW SINCE LAST REPORT<br><br>
 
 
 SHIP INFORMATION<br><br>
-Class: @if(empty($report->chapter_info['ship_class']) === false) {{$report->chapter_info['ship_class']}} @endif <br>
-Class Code: @if(empty($report->chapter_info['hull_number']) === false) {{$report->chapter_info['hull_number']}} @endif
+Class: @if(empty($report->chapter_info['ship_class']) === false) {{$report->chapter_info['ship_class']}} @else N/A @endif <br>
+Class Code: @if(empty($report->chapter_info['hull_number']) === false) {{$report->chapter_info['hull_number']}} @else N/A @endif
 <br>
 <br>
 Ship Name: {{$report->chapter_info['chapter_name']}}<br>
