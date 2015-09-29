@@ -36,8 +36,11 @@ class ReportController extends \BaseController
         }
 
         foreach (['primary', 'secondary', 'additional'] as $assignment) {
-            $chapter = Chapter::findOrFail(Auth::user()->getAssignmentId($assignment));
-
+            Log::debug('Checking ' . $assignment);
+            $assignmentId = Auth::user()->getAssignmentId($assignment);
+            Log::debug('Found ' . $assignmentId);
+            $chapter = Chapter::findOrFail($assignmentId);
+            Log::debug('Query Results: ' . print_r($chapter->toArray(), true));
             if ($chapter->chapter_type == 'ship') {
                 break;
             }
