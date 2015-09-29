@@ -133,20 +133,35 @@ class Chapter extends Eloquent
      */
     public function getCrew($forReport = false, $ts = null)
     {
-        $users = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereNotIn(
-            'assignment.billet',
-            [
-                'Commanding Officer',
-                'Executive Officer',
-                'Bosun',
-                'Fleet Commander',
-                'Deputy Fleet Commander',
-                'Fleet Bosun'
-            ]
-        )->where('active', '=', 1)->where('registration_status', '=', 'Active')->orderBy('last_name', 'asc')->orderBy(
-            'rank.grade',
-            'asc'
-        )->get();
+        $users =
+            User::where('assignment.chapter_id', '=', (string)$this->_id)->where('active', '=', 1)->where(
+                'registration_status',
+                '=',
+                'Active'
+            )->orderBy('last_name', 'asc')->orderBy(
+                'rank.grade',
+                'asc'
+            )->get();
+
+        // Because of the way that mongo stores arrays, need to post process
+        foreach ($users as $key => $user) {
+            foreach ($user->assignment as $assignment) {
+                if ($assignment['chapter_id'] == $this->id && in_array(
+                        $assignment['billet'],
+                        [
+                            'Commanding Officer',
+                            'Executive Officer',
+                            'Bosun',
+                            'Fleet Commander',
+                            'Deputy Fleet Commander',
+                            'Fleet Bosun'
+                        ]
+                    ) === true
+                ) {
+                    unset( $users[$key] );
+                }
+            }
+        }
 
         if ($forReport === true) {
 
@@ -174,6 +189,7 @@ class Chapter extends Eloquent
 
         return $users;
     }
+
     /**
      * Get all users/members assigned to a specific chapter or subordinate chapters
      *
@@ -182,15 +198,16 @@ class Chapter extends Eloquent
      * @return mixed
      */
 
-	public function getCrewWithChildren()
+    public function getCrewWithChildren()
     {
-        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(	'member_id','!=',Auth::user()->member_id
+        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(
+            'member_id',
+            '!=',
+            Auth::user()->member_id
         )->orderBy('last_name', 'asc')->get();
 
         return $users;
     }
-
-
 
     /**
      * Get all users/members assigned to a specific chapter, including the command crew
@@ -206,97 +223,81 @@ class Chapter extends Eloquent
 
     public function getCO()
     {
-        $user =
+        $users =
             User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
                 'assignment.billet',
                 ['Commanding Officer', 'Fleet Commander']
-            )->first();
+            )->get();
 
-        if (empty( $user ) === true) {
+        if (empty( $users ) === true) {
             return [];
         }
 
-        // Sanity Check for strange edge cases
+        // Way too many edge cases
 
-        $valid = false;
-
-        foreach ($user->assignment as $assignment) {
-            if ($assignment['chapter_id'] === (string)$this->_id && in_array(
-                    $assignment['billet'],
-                    ['Commanding Officer', 'Fleet Commander']
-                )
-            ) {
-                $valid = true;
+        foreach ($users as $user) {
+            foreach ($user->assignment as $assignment) {
+                if ($assignment['chapter_id'] === (string)$this->_id && in_array(
+                        $assignment['billet'],
+                        ['Commanding Officer', 'Fleet Commander']
+                    )
+                ) {
+                    return $user;
+                }
             }
         }
 
-        if ($valid === false) {
-            return [];
-        }
-
-        return $user;
+        return [];
     }
 
     public function getXO()
     {
-        $user = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
+        $users = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
             'assignment.billet',
             ['Executive Officer', 'Deputy Fleet Commander']
-        )->first();
-        if (empty( $user ) === true) {
+        )->get();
+        if (empty( $users ) === true) {
             return [];
         }
 
-        // Sanity Check for strange edge cases
-
-        $valid = false;
-
-        foreach ($user->assignment as $assignment) {
-            if ($assignment['chapter_id'] === (string)$this->_id && in_array(
-                    $assignment['billet'],
-                    ['Executive Officer', 'Deputy Fleet Commander']
-                )
-            ) {
-                $valid = true;
+        foreach ($users as $user) {
+            foreach ($user->assignment as $assignment) {
+                if ($assignment['chapter_id'] === (string)$this->_id && in_array(
+                        $assignment['billet'],
+                        ['Executive Officer', 'Deputy Fleet Commander']
+                    )
+                ) {
+                    return $user;
+                }
             }
         }
 
-        if ($valid === false) {
-            return [];
-        }
-
-        return $user;
+        return [];
     }
 
     public function getBosun()
     {
-        $user = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
+        $users = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
             'assignment.billet',
             ['Bosun', 'Fleet Bosun']
-        )->first();
-        if (empty( $user ) === true) {
+        )->get();
+        if (empty( $users ) === true) {
             return [];
         }
 
-        // Sanity Check for strange edge cases
-
-        $valid = false;
-
-        foreach ($user->assignment as $assignment) {
-            if ($assignment['chapter_id'] === (string)$this->_id && in_array(
-                    $assignment['billet'],
-                    ['Bosun', 'Fleet Bosun']
-                )
-            ) {
-                $valid = true;
+        foreach ($users as $user) {
+            foreach ($user->assignment as $assignment) {
+                if ($assignment['chapter_id'] === (string)$this->_id && in_array(
+                        $assignment['billet'],
+                        ['Bosun', 'Fleet Bosun']
+                    )
+                ) {
+                    return $user;
+                }
             }
         }
 
-        if ($valid === false) {
-            return [];
-        }
-
-        return $user;
+        return [];
     }
 
     /**
@@ -330,7 +331,7 @@ class Chapter extends Eloquent
         }
     }
 
-      /**
+    /**
      * Get the chapter IDs of all subordinate chapters, but strip this one
      *
      * @param none
@@ -340,9 +341,14 @@ class Chapter extends Eloquent
     public function getChildChapters()
     {
 
-
-        return array_where($this->getChapterIdWithChildren(), function($key, $value) { if ($value != $this->id) return $value;});
-
+        return array_where(
+            $this->getChapterIdWithChildren(),
+            function ($key, $value) {
+                if ($value != $this->id) {
+                    return $value;
+                }
+            }
+        );
     }
 
     /**
@@ -358,7 +364,7 @@ class Chapter extends Eloquent
         $children = Chapter::where('assigned_to', '=', (string)$this->_id)->get();
 
         $results = [];
-        foreach($children as $child) {
+        foreach ($children as $child) {
             $results = array_merge($results, Chapter::find($child->id)->getChapterIdWithChildren());
         }
         return array_unique(array_merge([$this->id], $results));
