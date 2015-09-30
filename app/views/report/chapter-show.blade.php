@@ -2,7 +2,7 @@
 
 @section('pageTitle')
     {{date('F, Y', strtotime($report->report_date))}} Chapter Report
-        for {{$report->chapter_info['chapter_name']}}
+    for {{$report->chapter_info['chapter_name']}}
 @stop
 
 @section('content')
@@ -89,66 +89,73 @@
         </div>
     </div>
     <br>
-    <div class="row">
-        <div class="columns small-3 my">
-            Name:
+    @if(empty($report->command_crew['XO']) === false)
+        <div class="row">
+            <div class="columns small-3 my">
+                Name:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['XO']['first_name']}} @if(empty($report->command_crew['XO']->middile_name) === false) {{$report->command_crew['XO']['middle_name']}} @endif {{$report->command_crew['XO']['last_name']}} @if(empty($report->command_crew['XO']->suffix) === false) {{$report->command_crew['XO']->suffix}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['XO']['first_name']}} @if(empty($report->command_crew['XO']->middile_name) === false) {{$report->command_crew['XO']['middle_name']}} @endif {{$report->command_crew['XO']['last_name']}} @if(empty($report->command_crew['XO']->suffix) === false) {{$report->command_crew['XO']->suffix}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            SID#:
+        <div class="row">
+            <div class="columns small-3 my">
+                SID#:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['XO']['member_id']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['XO']['member_id']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Rank:
+        <div class="row">
+            <div class="columns small-3 my">
+                Rank:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['XO']['rank']['grade']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['XO']['rank']['grade']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Last Course Completed:
+        <div class="row">
+            <div class="columns small-3 my">
+                Last Course Completed:
+            </div>
+            <div class="columns small-3">
+                {{$report->command_crew['XO']['last_course']}}
+            </div>
+            <div class="columns small-2 my">
+                Date of Birth:
+            </div>
+            <div class="columns small-4">
+                {{date('m/d/Y', strtotime($report->command_crew['XO']['dob']))}}
+            </div>
         </div>
-        <div class="columns small-3">
-            {{$report->command_crew['XO']['last_course']}}
-        </div>
-        <div class="columns small-2 my">
-            Date of Birth:
-        </div>
-        <div class="columns small-4">
-            {{date('m/d/Y', strtotime($report->command_crew['XO']['dob']))}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Phone:
+        <div class="row">
+            <div class="columns small-3 my">
+                Phone:
+            </div>
+            <div class="columns small-9">
+                @if(empty($report->command_crew['XO']['phone_number']) === true)
+                    N/A @else {{$report->command_crew['XO']['phone_number']}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            @if(empty($report->command_crew['XO']['phone_number']) === true)
-                N/A @else {{$report->command_crew['XO']['phone_number']}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="small-3 columns my">
-            Email:
+        <div class="row">
+            <div class="small-3 columns my">
+                Email:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['XO']['email_address']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['XO']['email_address']}}
+    @else
+        <div class="row">
+            <div class="columns small-12 small-text-center my">None Found</div>
         </div>
-    </div>
+    @endif
+
     <br>
     <div class="row">
         <div class="columns small-12 small-text-center my reportSubHeader">
@@ -156,67 +163,72 @@
         </div>
     </div>
     <br>
-    <div class="row">
-        <div class="columns small-3 my">
-            Name:
+    @if(empty($report->command_crew['BOSUN']) === false)
+        <div class="row">
+            <div class="columns small-3 my">
+                Name:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['BOSUN']['first_name']}} @if(empty($report->command_crew['BOSUN']->middile_name) === false) {{$report->command_crew['BOSUN']['middle_name']}} @endif {{$report->command_crew['BOSUN']['last_name']}} @if(empty($report->command_crew['BOSUN']->suffix) === false) {{$report->command_crew['BOSUN']->suffix}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['BOSUN']['first_name']}} @if(empty($report->command_crew['BOSUN']->middile_name) === false) {{$report->command_crew['BOSUN']['middle_name']}} @endif {{$report->command_crew['BOSUN']['last_name']}} @if(empty($report->command_crew['BOSUN']->suffix) === false) {{$report->command_crew['BOSUN']->suffix}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            SID#:
+        <div class="row">
+            <div class="columns small-3 my">
+                SID#:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['BOSUN']['member_id']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['BOSUN']['member_id']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Rank:
+        <div class="row">
+            <div class="columns small-3 my">
+                Rank:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['BOSUN']['rank']['grade']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['BOSUN']['rank']['grade']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Last Course Completed:
+        <div class="row">
+            <div class="columns small-3 my">
+                Last Course Completed:
+            </div>
+            <div class="columns small-3">
+                {{$report->command_crew['BOSUN']['last_course']}}
+            </div>
+            <div class="columns small-2 my">
+                Date of Birth:
+            </div>
+            <div class="columns small-4">
+                {{date('m/d/Y', strtotime($report->command_crew['BOSUN']['dob']))}}
+            </div>
         </div>
-        <div class="columns small-3">
-            {{$report->command_crew['BOSUN']['last_course']}}
-        </div>
-        <div class="columns small-2 my">
-            Date of Birth:
-        </div>
-        <div class="columns small-4">
-            {{date('m/d/Y', strtotime($report->command_crew['BOSUN']['dob']))}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Phone:
+        <div class="row">
+            <div class="columns small-3 my">
+                Phone:
+            </div>
+            <div class="columns small-9">
+                @if(empty($report->command_crew['BOSUN']['phone_number']) === true)
+                    N/A @else {{$report->command_crew['BOSUN']['phone_number']}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            @if(empty($report->command_crew['BOSUN']['phone_number']) === true)
-                N/A @else {{$report->command_crew['BOSUN']['phone_number']}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="small-3 columns my">
-            Email:
+        <div class="row">
+            <div class="small-3 columns my">
+                Email:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['BOSUN']['email_address']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['BOSUN']['email_address']}}
+    @else
+        <div class="row">
+            <div class="columns small-12 small-text-center my">None Found</div>
         </div>
-    </div>
-
+    @endif
     <br>
 
     <div class="row">
@@ -375,7 +387,7 @@
             @endif
         </div>
     </div>
-<br>
+    <br>
     <div class="text-center button-bar">
         <a href="{{ URL::previous() }}" class="button round"> Back </a>
         @if(empty($report['report_sent']) === true)

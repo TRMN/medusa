@@ -2,11 +2,12 @@
 
 @section('pageTitle')
     {{date('F, Y', strtotime($report->report_date))}} Chapter Report
-        for {{$report->chapter_info['chapter_name']}}
+    for {{$report->chapter_info['chapter_name']}}
 @stop
 
 @section('content')
-    <h1 class="text-center">{{date('F, Y', strtotime($report->report_date))}} Chapter Report for {{$report->chapter_info['chapter_name']}}</h1>
+    <h1 class="text-center">{{date('F, Y', strtotime($report->report_date))}} Chapter Report
+        for {{$report->chapter_info['chapter_name']}}</h1>
     <hr>
 
     {{Form::model($report, [ 'route' => [ 'report.update', $report->id ], 'method' => 'put'])}}
@@ -70,7 +71,8 @@
             Phone:
         </div>
         <div class="columns small-9">
-            @if(empty($report->command_crew['CO']['phone_number']) === true)N/A @else {{$report->command_crew['CO']['phone_number']}} @endif
+            @if(empty($report->command_crew['CO']['phone_number']) === true)
+                N/A @else {{$report->command_crew['CO']['phone_number']}} @endif
         </div>
     </div>
 
@@ -89,65 +91,73 @@
         </div>
     </div>
     <br>
-    <div class="row">
-        <div class="columns small-3 my">
-            Name:
+    @if(empty($report->command_crew['XO']) === false)
+        <div class="row">
+            <div class="columns small-3 my">
+                Name:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['XO']['first_name']}} @if(empty($report->command_crew['XO']->middile_name) === false) {{$report->command_crew['XO']['middle_name']}} @endif {{$report->command_crew['XO']['last_name']}} @if(empty($report->command_crew['XO']->suffix) === false) {{$report->command_crew['XO']->suffix}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['XO']['first_name']}} @if(empty($report->command_crew['XO']->middile_name) === false) {{$report->command_crew['XO']['middle_name']}} @endif {{$report->command_crew['XO']['last_name']}} @if(empty($report->command_crew['XO']->suffix) === false) {{$report->command_crew['XO']->suffix}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            SID#:
+        <div class="row">
+            <div class="columns small-3 my">
+                SID#:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['XO']['member_id']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['XO']['member_id']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Rank:
+        <div class="row">
+            <div class="columns small-3 my">
+                Rank:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['XO']['rank']['grade']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['XO']['rank']['grade']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Last Course Completed:
+        <div class="row">
+            <div class="columns small-3 my">
+                Last Course Completed:
+            </div>
+            <div class="columns small-3">
+                {{$report->command_crew['XO']['last_course']}}
+            </div>
+            <div class="columns small-2 my">
+                Date of Birth:
+            </div>
+            <div class="columns small-4">
+                {{date('m/d/Y', strtotime($report->command_crew['XO']['dob']))}}
+            </div>
         </div>
-        <div class="columns small-3">
-            {{$report->command_crew['XO']['last_course']}}
-        </div>
-        <div class="columns small-2 my">
-            Date of Birth:
-        </div>
-        <div class="columns small-4">
-            {{date('m/d/Y', strtotime($report->command_crew['XO']['dob']))}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Phone:
+        <div class="row">
+            <div class="columns small-3 my">
+                Phone:
+            </div>
+            <div class="columns small-9">
+                @if(empty($report->command_crew['XO']['phone_number']) === true)
+                    N/A @else {{$report->command_crew['XO']['phone_number']}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            @if(empty($report->command_crew['XO']['phone_number']) === true)N/A @else {{$report->command_crew['XO']['phone_number']}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="small-3 columns my">
-            Email:
+        <div class="row">
+            <div class="small-3 columns my">
+                Email:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['XO']['email_address']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['XO']['email_address']}}
+    @else
+        <div class="row">
+            <div class="columns small-12 small-text-center my">None Found</div>
         </div>
-    </div>
+    @endif
+
     <br>
     <div class="row">
         <div class="columns small-12 small-text-center my reportSubHeader">
@@ -155,66 +165,72 @@
         </div>
     </div>
     <br>
-    <div class="row">
-        <div class="columns small-3 my">
-            Name:
+    @if(empty($report->command_crew['BOSUN']) === false)
+        <div class="row">
+            <div class="columns small-3 my">
+                Name:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['BOSUN']['first_name']}} @if(empty($report->command_crew['BOSUN']->middile_name) === false) {{$report->command_crew['BOSUN']['middle_name']}} @endif {{$report->command_crew['BOSUN']['last_name']}} @if(empty($report->command_crew['BOSUN']->suffix) === false) {{$report->command_crew['BOSUN']->suffix}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['BOSUN']['first_name']}} @if(empty($report->command_crew['BOSUN']->middile_name) === false) {{$report->command_crew['BOSUN']['middle_name']}} @endif {{$report->command_crew['BOSUN']['last_name']}} @if(empty($report->command_crew['BOSUN']->suffix) === false) {{$report->command_crew['BOSUN']->suffix}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            SID#:
+        <div class="row">
+            <div class="columns small-3 my">
+                SID#:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['BOSUN']['member_id']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['BOSUN']['member_id']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Rank:
+        <div class="row">
+            <div class="columns small-3 my">
+                Rank:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['BOSUN']['rank']['grade']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['BOSUN']['rank']['grade']}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Last Course Completed:
+        <div class="row">
+            <div class="columns small-3 my">
+                Last Course Completed:
+            </div>
+            <div class="columns small-3">
+                {{$report->command_crew['BOSUN']['last_course']}}
+            </div>
+            <div class="columns small-2 my">
+                Date of Birth:
+            </div>
+            <div class="columns small-4">
+                {{date('m/d/Y', strtotime($report->command_crew['BOSUN']['dob']))}}
+            </div>
         </div>
-        <div class="columns small-3">
-            {{$report->command_crew['BOSUN']['last_course']}}
-        </div>
-        <div class="columns small-2 my">
-            Date of Birth:
-        </div>
-        <div class="columns small-4">
-            {{date('m/d/Y', strtotime($report->command_crew['BOSUN']['dob']))}}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="columns small-3 my">
-            Phone:
+        <div class="row">
+            <div class="columns small-3 my">
+                Phone:
+            </div>
+            <div class="columns small-9">
+                @if(empty($report->command_crew['BOSUN']['phone_number']) === true)
+                    N/A @else {{$report->command_crew['BOSUN']['phone_number']}} @endif
+            </div>
         </div>
-        <div class="columns small-9">
-            @if(empty($report->command_crew['BOSUN']['phone_number']) === true)N/A @else {{$report->command_crew['BOSUN']['phone_number']}} @endif
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="small-3 columns my">
-            Email:
+        <div class="row">
+            <div class="small-3 columns my">
+                Email:
+            </div>
+            <div class="columns small-9">
+                {{$report->command_crew['BOSUN']['email_address']}}
+            </div>
         </div>
-        <div class="columns small-9">
-            {{$report->command_crew['BOSUN']['email_address']}}
+    @else
+        <div class="row">
+            <div class="columns small-12 small-text-center my">None Found</div>
         </div>
-    </div>
-
+    @endif
     <br>
 
     <div class="row">
@@ -329,7 +345,8 @@
     <div class="row">
         <div class="columns small-3">
             {{Form::hidden('chapter_id',$report->chapter_id, ['id' => 'chapter_id'])}}
-            <a href="#" data-reveal-id="examList" class="fi-refresh green size-21" id="refreshExamList" title="Refresh Course List"></a> Courses Completed:
+            <a href="#" data-reveal-id="examList" class="fi-refresh green size-21" id="refreshExamList"
+               title="Refresh Course List"></a> Courses Completed:
         </div>
         <div class="columns small-9">
             {{Form::textarea('courses', $report->courses, ['id' => 'courses'])}}
@@ -374,12 +391,14 @@
 
     <div id="examList" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
         <h4 class="text-center">Current Completed Exams</h4>
+
         <p>You may copy and paste select elements from this or click the 'Append to Report' button to add it to the end
-        of what is already in the input box.</p>
+            of what is already in the input box.</p>
+
         <div class="row">
-           <div>
+            <div>
                 {{Form::textarea('results', null, ['id' => 'results', 'disabled'])}}
-           </div>
+            </div>
         </div>
         <div class="row">
             <button class="button round" id="copyExams">Append to Report</button>
