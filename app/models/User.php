@@ -455,14 +455,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $examName = key($exams);
             $exam = array_pop($exams);
 
-            if (intval($exam['score']) > 70 || strtoupper($exam['score']) == 'PASS') {
+            if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
                 break;
             }
 
             end($exams);
         }
 
-        if (intval($exam['score']) > 70 || strtoupper($exam['score']) == 'PASS') {
+        // Sanity check
+
+        if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
             return $examName;
         } else {
             return 'None found';
