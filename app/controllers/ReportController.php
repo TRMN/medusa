@@ -100,7 +100,7 @@ class ReportController extends \BaseController
 
         $chapter = Chapter::find($id);
 
-        $crewList = $chapter->getCrew();
+        $crewList = $chapter->getAllCrew();
 
         $examsCompleted = '';
 

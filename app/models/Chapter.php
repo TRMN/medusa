@@ -218,7 +218,7 @@ class Chapter extends Eloquent
      */
     public function getAllCrew($chapterId)
     {
-        return User::where('assignment.chapter_id', '=', $chapterId)->orderBy('last_name', 'asc')->get();
+        return User::where('assignment.chapter_id', '=', $chapterId)->where('active', '=', 1)->where('registration_status','=','Active')->orderBy('last_name', 'asc')->get();
     }
 
     public function getCO()
