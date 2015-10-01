@@ -10,7 +10,7 @@ class UserController extends \BaseController
      */
     public function index()
     {
-        if (($redirect = $this->checkPermissions('VIEW_MEMBERS')) !== true) {
+        if (( $redirect = $this->checkPermissions('VIEW_MEMBERS') ) !== true) {
             return $redirect;
         }
 
@@ -92,7 +92,7 @@ class UserController extends \BaseController
 
     public function reviewApplications()
     {
-        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+        if (( $redirect = $this->checkPermissions('PROC_APPLICATIONS') ) !== true) {
             return $redirect;
         }
 
@@ -109,7 +109,7 @@ class UserController extends \BaseController
 
     public function approveApplication(User $user)
     {
-        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+        if (( $redirect = $this->checkPermissions('PROC_APPLICATIONS') ) !== true) {
             return $redirect;
         }
 
@@ -160,6 +160,14 @@ class UserController extends \BaseController
         $user->rank = $rank;
         $user->member_id = 'RMN' . User::getFirstAvailableMemberId();
 
+        $user->permissions = [
+            'LOGOUT',
+            'CHANGE_PWD',
+            'EDIT_SELF',
+            'ROSTER',
+            'TRANSFER'
+        ];
+
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'update',
@@ -192,7 +200,7 @@ class UserController extends \BaseController
 
     public function denyApplication(User $user)
     {
-        if (($redirect = $this->checkPermissions('PROC_APPLICATIONS')) !== true) {
+        if (( $redirect = $this->checkPermissions('PROC_APPLICATIONS') ) !== true) {
             return $redirect;
         }
 
@@ -220,7 +228,7 @@ class UserController extends \BaseController
      */
     public function create()
     {
-        if (($redirect = $this->checkPermissions('ADD_MEMBER')) !== true) {
+        if (( $redirect = $this->checkPermissions('ADD_MEMBER') ) !== true) {
             return $redirect;
         }
         return View::make(
@@ -246,7 +254,7 @@ class UserController extends \BaseController
      */
     public function store()
     {
-        if (($redirect = $this->checkPermissions('ADD_MEMBER')) !== true) {
+        if (( $redirect = $this->checkPermissions('ADD_MEMBER') ) !== true) {
             return $redirect;
         }
 
@@ -542,7 +550,10 @@ class UserController extends \BaseController
      */
     public function edit(User $user)
     {
-        if (( $this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id ) || $this->hasPermissions(['EDIT_MEMBER']) === true) {
+        if (( $this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id ) || $this->hasPermissions(
+                ['EDIT_MEMBER']
+            ) === true
+        ) {
 
             $greeting = $user->getGreetingArray();
 
@@ -577,6 +588,16 @@ class UserController extends \BaseController
             $user->additional_billet = $user->getBillet('additional');
             $user->additional_date_assigned = $user->getDateAssigned('additional');
 
+            if (empty( $user->permissions ) === true) {
+                $user->permissions = [
+                    'LOGOUT',
+                    'CHANGE_PWD',
+                    'EDIT_SELF',
+                    'ROSTER',
+                    'TRANSFER'
+                ];
+            }
+
             return View::make(
                 'user.edit',
                 [
@@ -607,7 +628,7 @@ class UserController extends \BaseController
      */
     public function update(User $user)
     {
-        if (($redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF'])) !== true) {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF']) ) !== true) {
             return $redirect;
         }
 
@@ -761,7 +782,7 @@ class UserController extends \BaseController
      */
     public function confirmDelete(User $user)
     {
-        if (($redirect = $this->checkPermissions('DEL_MEMBER')) !== true) {
+        if (( $redirect = $this->checkPermissions('DEL_MEMBER') ) !== true) {
             return $redirect;
         }
 
@@ -777,7 +798,7 @@ class UserController extends \BaseController
      */
     public function destroy(User $user)
     {
-        if (($redirect = $this->checkPermissions('DEL_MEMBER')) !== true) {
+        if (( $redirect = $this->checkPermissions('DEL_MEMBER') ) !== true) {
             return $redirect;
         }
 
