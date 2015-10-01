@@ -115,6 +115,7 @@ class UserController extends \BaseController
 
         $user->registration_status = 'Active';
         $user->registration_date = date('Y-m-d');
+        $user->active = 1;
 
         switch ($user->branch) {
             case 'RMN':
