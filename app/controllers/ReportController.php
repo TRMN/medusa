@@ -10,7 +10,7 @@ class ReportController extends \BaseController
      */
     public function index()
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -31,7 +31,7 @@ class ReportController extends \BaseController
      */
     public function create()
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -44,9 +44,11 @@ class ReportController extends \BaseController
         }
 
         if ($chapter->chapter_type != 'ship') {
-            return \Redirect::to(\URL::previous())->with('message', 'I was unable to find an appropriate command for this report.');
+            return \Redirect::to(\URL::previous())->with(
+                'message',
+                'I was unable to find an appropriate command for this report.'
+            );
         }
-
 
         $first = strtotime(date('Y') . '-' . date('m') . '-01');
 
@@ -92,15 +94,23 @@ class ReportController extends \BaseController
         return Response::view('report.chapter-create', $viewData);
     }
 
-    public function getCompletedExamsForCrew($id, $ts)
+    public function getCompletedExamsForCrew($id, $ts = null)
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
         $chapter = Chapter::find($id);
 
-        $crewList = $chapter->getAllCrew();
+        if (is_null($ts) === true) {
+            if (date('n') & 1 == 1) {
+                $ts = strtotime('-1 month', strtotime(date('Y') . '-' . date('m') . '-01'));
+            } else {
+                $ts = strtotime('-2 month', strtotime(date('Y') . '-' . date('m') . '-01'));
+            }
+        }
+
+        $crewList = $chapter->getAllCrew($id);
 
         $examsCompleted = '';
 
@@ -122,7 +132,7 @@ class ReportController extends \BaseController
      */
     public function store()
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -192,7 +202,10 @@ class ReportController extends \BaseController
 
             $report->save();
 
-            return Redirect::route('report.index')->with('message', date('F, Y', strtotime($report->report_date)) . ' Report Sent');
+            return Redirect::route('report.index')->with(
+                'message',
+                date('F, Y', strtotime($report->report_date)) . ' Report Sent'
+            );
         }
 
         return Response::view(
@@ -214,7 +227,7 @@ class ReportController extends \BaseController
      */
     public function show($id)
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -230,7 +243,7 @@ class ReportController extends \BaseController
      */
     public function edit($id)
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -241,7 +254,7 @@ class ReportController extends \BaseController
 
     private function updateNewCrew($id)
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -287,7 +300,7 @@ class ReportController extends \BaseController
      */
     public function update($id)
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -338,7 +351,7 @@ class ReportController extends \BaseController
 
     public function sendReport($id)
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -370,7 +383,7 @@ class ReportController extends \BaseController
 
     public function emailReport($id)
     {
-        if (($redirect = $this->checkPermissions('CHAPTER_REPORT')) !== true) {
+        if (( $redirect = $this->checkPermissions('CHAPTER_REPORT') ) !== true) {
             return $redirect;
         }
 
@@ -401,17 +414,25 @@ class ReportController extends \BaseController
             ],
             function ($message) use ($report, $echelonEmails) {
 
-                $message->from($report->command_crew['CO']['email_address'], 'CO, ' . $report['chapter_info']['chapter_name']);
+                $message->from(
+                    $report->command_crew['CO']['email_address'],
+                    'CO, ' . $report['chapter_info']['chapter_name']
+                );
 
                 $message->to($report->command_crew['CO']['email_address']);
 
                 $message->cc('cno@trmn.org')->cc('buplan@trmn.org')->cc('buships@trmn.org')->cc('bupers@trmn.org');
 
-                foreach($echelonEmails as $echelon) {
+                foreach ($echelonEmails as $echelon) {
                     $message->cc($echelon);
                 }
 
-                $message->subject(date('F, Y', strtotime($report->report_date)) . ' Chapter Report for ' . $report['chapter_info']['chapter_name']);
+                $message->subject(
+                    date(
+                        'F, Y',
+                        strtotime($report->report_date)
+                    ) . ' Chapter Report for ' . $report['chapter_info']['chapter_name']
+                );
             }
         );
     }
