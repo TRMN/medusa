@@ -20,4 +20,8 @@ class Billet extends Eloquent {
         asort($billets, SORT_NATURAL);
 		return $billets;
 	}
+    
+    public function getName() {
+        return $billet_name;
+    }
 }

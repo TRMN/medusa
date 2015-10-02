@@ -14,9 +14,9 @@ Billets List
             </tr>
         </thead>
         <tbody>
-        @foreach(Billet:all() as $billet)
+        @foreach(Billet::all() as $billet)
             <tr>
-                <td>(($billet))</td>
+                <td>{{ $billet->billet_name }}</td>
             </tr>
         @endforeach
         </tbody>

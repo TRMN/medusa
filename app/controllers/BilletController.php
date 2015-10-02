@@ -10,7 +10,7 @@ class BilletController extends \BaseController {
 	 */
 	public function index()
 	{
-		return View::make('billets.index');
+		return View::make('billet.index');
 	}
 
 	/**
