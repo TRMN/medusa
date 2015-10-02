@@ -2272,9 +2272,50 @@ jQuery(document).ready(function ($) {
 
     $('#DUTY_ROSTER').on('click', function () {
         if ($("#DUTY_ROSTER").is(':checked')) {
+            buildDutyRosterSelection();
             $('#chooseShip').foundation('reveal', 'open');
         }
     });
+
+    function buildDutyRosterSelection() {
+        var primary = $('#primary_assignment option:selected').val();
+        var primary_text = $('#primary_assignment option:selected').text();
+        var secondary = $('#secondary_assignment option:selected').val();
+        var secondary_text = $('#secondary_assignment option:selected').text();
+        var additional = $('#additional_assignment option:selected').val();
+        var additional_text = $('#additional_assignment option:selected').text();
+        var duty_roster = $('#dutyroster').val();
+
+        $('#selectDR').empty();
+
+        if (primary != 0) {
+            var select = '<input class="dr"';
+            if (primary == duty_roster) {
+                select += ' checked="checked"';
+            }
+            select += ' name="dr_radio" type="radio" value="' + primary + '">' + primary_text + '</option>';
+
+            $('#selectDR').append(select);
+        }
+
+        if (secondary != 0) {
+            var select = '<br /><input class="dr"';
+            if (secondary == duty_roster) {
+                select += ' checked="checked"';
+            }
+            select += ' name="dr_radio" type="radio" value="' + secondary + '">' + secondary_text + '</option>';
+            $('#selectDR').append(select);
+        }
+
+        if (additional != 0) {
+            var select = '<br /><input class="dr"';
+            if (additional == duty_roster) {
+                select += ' checked="checked"';
+            }
+            select += ' name="dr_radio" type="radio" value="' + additional + '">' + additional_text + '</option>';
+            $('#selectDR').append(select);
+        }
+    }
 
     $('.dr').on('click', function () {
         $('#dutyroster').val($('.dr:checked').val());
@@ -2289,6 +2330,38 @@ jQuery(document).ready(function ($) {
     $('#copyExams').on('click', function () {
         $('#courses').val($('#courses').val() + $('#results').val());
         $('#examList').foundation('reveal', 'close');
+    });
+
+    $('#coPerms').on('click', function () {
+        $('#DUTY_ROSTER').prop('checked', true);
+        $('#EXPORT_ROSTER').prop('checked', true);
+        $('#EDIT_WEBSITE').prop('checked', true);
+        $('#ASSIGN_NONCOMMAND_BILLET').prop('checked', true);
+        $('#PROMOTE_E6O1').prop('checked', true);
+        $('#REQUEST_PROMOTION').prop('checked', true);
+        $('#CHAPTER_REPORT').prop('checked', true);
+        
+        $('#chooseShip').foundation('reveal', 'open');
+        return false;
+    });
+
+    $('#slPerms').on('click', function () {
+        $('#VIEW_CHAPTER_REPORTS').prop('checked', true);
+        return false;
+    });
+
+    $('#rmaPerms').on('click', function () {
+        $('#ADD_UNIT').prop('checked', true);
+        $('#EDIT_UNIT').prop('checked', true);
+        $('#DELETE_UNIT').prop('checked', true);
+        return false;
+    });
+
+    $('#rmmcPerms').on('click', function () {
+        $('#ADD_MARDET').prop('checked', true);
+        $('#EDIT_MARDET').prop('checked', true);
+        $('#DELETE_MARDET').prop('checked', true);
+        return false;
     });
 
 

@@ -290,6 +290,17 @@
     @if($permsObj->hasPermissions(['ASSIGN_PERMS']) === true)
         <fieldset>
             <legend>Database Permissions</legend>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    Common Permission Sets<br />
+
+                        <button class="tiny secondary" id="coPerms">Commanding Officer</button>
+                        <button class="tiny secondary" id="slPerms">Space Lord</button>
+                        <button class="tiny secondary" id="rmaPerms">RMA</button>
+                        <button class="tiny secondary" id="rmmcPerms">RMMC</button>
+
+                </div>
+            </div>
             <ul class="small-block-grid-3">
                 @foreach(DB::table('permissions')->orderBy('name', 'asc')->get() as $permission)
                     <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name']]) }}
@@ -306,12 +317,8 @@
         <div class="row">
             Which Chapter does the DUTY_ROSTER permission apply to?<br /><br />
         </div>
-        <div class="row">
-            {{Form::radio('dr_radio',$user->primary_assignment, $user->duty_roster == $user->primary_assignment, ['class' => 'dr'])}} {{$chapters[$user->primary_assignment]}}
-            @if(empty($user->secondary_assignment) === false)
-            <br/>
-            {{Form::radio('dr_radio',$user->secondary_assignment, $user->duty_roster == $user->secondary_assignment, ['class' => 'dr'])}} {{$chapters[$user->secondary_assignment]}}
-            @endif
+        <div class="row" id="selectDR">
+
         </div>
         <div class="row">
             <button class="button" onclick="$('#chooseShip').foundation('reveal', 'close');">OK</button>
