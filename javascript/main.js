@@ -475,4 +475,8 @@ jQuery(document).ready(function ($) {
         "order": [[2, 'asc']],
         "jQueryUI": true
     });
+
+    $('#uploadGrades').on('click', function() {
+       $('.wait').show();
+    });
 });

@@ -2387,6 +2387,10 @@ jQuery(document).ready(function ($) {
         "order": [[2, 'asc']],
         "jQueryUI": true
     });
+
+    $('#uploadGrades').on('click', function() {
+       $('.wait').show();
+    });
 });
 
 },{"./ManticoreAuth.js":1,"./ManticoreChapter.js":2,"./ManticoreRegister.js":3,"./ManticoreUser.js":4,"./dropzone.js":5}]},{},[6]);
