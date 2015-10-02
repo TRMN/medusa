@@ -10,6 +10,10 @@ class BilletController extends \BaseController {
 	 */
 	public function index()
 	{
+        if (($redirect = $this->checkPermissions('EDIT_BILLET','DEL_BILLET')) !== true) {
+            return $redirect;
+        }
+        
 		return View::make('billet.index');
 	}
 
