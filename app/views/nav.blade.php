@@ -45,7 +45,11 @@
             <div class="nav-header lnav">BuPers (5SL)</div>
             <div class="rnav">
                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) === true)<a href="{{ route('user.index') }}">List
-                    Members</a><br/>@endif
+                    Members</a><br/>
+                <a href="{{route('user.dups', 'CO')}}">Show COs</a><br/>
+                <a href="{{route('user.dups', 'XO')}}">Show XOs</a><br/>
+                <a href="{{route('user.dups', 'BOSUN')}}">Show Bosuns</a><br/>
+                @endif
                 @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) === true)<a href="{{ route('user.review') }}">Approve
                     Applications</a><br/>@endif
                 @if($permsObj->hasPermissions(['ADD_MEMBER']) === true)<a href="{{ route('user.create') }}">Add

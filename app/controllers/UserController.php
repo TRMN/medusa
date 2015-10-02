@@ -20,7 +20,6 @@ class UserController extends \BaseController
             $users = User::where('active', '=', 1)
                          ->where('registration_status', '=', 'Active')
                          ->where('branch', '=', $branch)
-                         ->remember(30)
                          ->get();
 
             $usersByBranch[$branch] = $users;
@@ -36,6 +35,34 @@ class UserController extends \BaseController
             'user.index',
             ['users' => $usersByBranch, 'title' => 'Membership List', 'otherThanActive' => $usersOtherThanActive]
         );
+    }
+
+    public function findDuplicateAssignment($billet)
+    {
+        if (( $redirect = $this->checkPermissions('VIEW_MEMBERS') ) !== true) {
+            return $redirect;
+        }
+
+        switch ($billet) {
+            case 'CO':
+                $billet = 'Commanding Officer';
+                break;
+            case 'XO':
+                $billet = 'Executive Officer';
+                break;
+            case 'BOSUN':
+                $billet = 'Bosun';
+                break;
+        }
+
+        $users =
+            User::where('active', '=', 1)->where('registration_status', '=', 'Active')->where(
+                'assignment.billet',
+                '=',
+                $billet
+            )->get();
+
+        return View::make('user.duplicates', ['users' => $users, 'title' => 'Show ' . $billet]);
     }
 
     public function getReset(User $user)

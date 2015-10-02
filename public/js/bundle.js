@@ -2249,7 +2249,7 @@ jQuery(document).ready(function ($) {
         "order": [[0, 'asc']],
         "jQueryUI": true
     });
-    
+
     jQuery('#changeRequests').DataTable({
         "autoWidth": true,
         "pageLength": 50,
@@ -2289,6 +2289,25 @@ jQuery(document).ready(function ($) {
     $('#copyExams').on('click', function () {
         $('#courses').val($('#courses').val() + $('#results').val());
         $('#examList').foundation('reveal', 'close');
+    });
+
+
+    jQuery('#duplicates').DataTable({
+        "autoWidth": true,
+        "pageLength": 50,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            {"orderable": false}
+        ],
+        "language": {
+            "emptyTable": "No members for this branch"
+        },
+        "order": [[2, 'asc']],
+        "jQueryUI": true
     });
 });
 
