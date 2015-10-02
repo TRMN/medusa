@@ -2,8 +2,9 @@
 <?php
 $chapterType = Chapter::getChapterType($detail->_id);
 
-if (( in_array($chapterType,['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true ) &&
-        isset( $detail->hull_number ) === true) {
+if (( in_array($chapterType, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true ) &&
+        isset( $detail->hull_number ) === true
+) {
     $hull_number = ' (' . $detail->hull_number . ')';
 } else {
     $hull_number = '';
@@ -123,6 +124,12 @@ switch ($detail->chapter_type) {
             <div class="small-10 columns Incised901Light">
                 <div style="padding-bottom: 2px">
                     @if($detail->chapter_type == 'fleet')Fleet Commander:
+                    @elseif($detail->chapter_type == 'bureau')
+                        <?php
+                        $spaceLord = new NumberFormatter('en_US', NumberFormatter::SPELLOUT);
+                        $spaceLord->setTextAttribute(NumberFormatter::DEFAULT_RULESET, "%spellout-ordinal");
+                        ?>
+                        {{ucfirst($spaceLord->format($detail->hull_number))}} Space Lord:
                     @else
                         Commanding Officer:
                     @endif
@@ -136,6 +143,8 @@ switch ($detail->chapter_type) {
                 @if(Auth::user()->getPrimaryAssignmentId() == $detail->id || Auth::user()->getSecondaryAssignmentId() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS'] || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true))
                     <div style="padding-bottom: 2px;">
                         @if($detail->chapter_type == 'fleet')Deputy Fleet Commander:
+                        @elseif($detail->chapter_type == 'bureau')
+                            Deputy {{ucfirst($spaceLord->format($detail->hull_number))}} Space Lord:
                         @else
                             Executive Officer:
                         @endif
@@ -146,17 +155,19 @@ switch ($detail->chapter_type) {
                             N/A
                         @endif
                     </div>
-                    <div style="padding-bottom: 2px;">
-                        @if($detail->chapter_type == 'fleet')Fleet
-                        @endif
-                        Bosun:
-                        @if( isset( $command['BOSUN'] ) )
-                            <a href="{{ route('user.show' , [(string)$command['BOSUN']->id]) }}">{{ $command['BOSUN']->getGreeting() }} {{ $command['BOSUN']->first_name }}{{ isset($command['BOSUN']->middle_name) ? ' ' . $command['BOSUN']->middle_name : '' }} {{ $command['BOSUN']->last_name }}{{ !empty($command['BOSUN']->suffix) ? ' ' . $command['BOSUN']->suffix : '' }}
-                                , {{$command['BOSUN']->branch}}</a>
-                        @else
-                            N/A
-                        @endif
-                    </div>
+                    @if($detail->chapter_type != 'bureau')
+                        <div style="padding-bottom: 2px;">
+                            @if($detail->chapter_type == 'fleet')Fleet
+                            @endif
+                            Bosun:
+                            @if( isset( $command['BOSUN'] ) )
+                                <a href="{{ route('user.show' , [(string)$command['BOSUN']->id]) }}">{{ $command['BOSUN']->getGreeting() }} {{ $command['BOSUN']->first_name }}{{ isset($command['BOSUN']->middle_name) ? ' ' . $command['BOSUN']->middle_name : '' }} {{ $command['BOSUN']->last_name }}{{ !empty($command['BOSUN']->suffix) ? ' ' . $command['BOSUN']->suffix : '' }}
+                                    , {{$command['BOSUN']->branch}}</a>
+                            @else
+                                N/A
+                            @endif
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>

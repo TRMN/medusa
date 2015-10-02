@@ -154,7 +154,9 @@ class Chapter extends Eloquent
                             'Bosun',
                             'Fleet Commander',
                             'Deputy Fleet Commander',
-                            'Fleet Bosun'
+                            'Fleet Bosun',
+                            'Space Lord',
+                            'Deputy Space Lord',
                         ]
                     ) === true
                 ) {
@@ -226,7 +228,7 @@ class Chapter extends Eloquent
         $users =
             User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
                 'assignment.billet',
-                ['Commanding Officer', 'Fleet Commander']
+                ['Commanding Officer', 'Fleet Commander', 'Space Lord']
             )->get();
 
         if (empty( $users ) === true) {
@@ -239,7 +241,7 @@ class Chapter extends Eloquent
             foreach ($user->assignment as $assignment) {
                 if ($assignment['chapter_id'] === (string)$this->_id && in_array(
                         $assignment['billet'],
-                        ['Commanding Officer', 'Fleet Commander']
+                        ['Commanding Officer', 'Fleet Commander', 'Space Lord']
                     )
                 ) {
                     return $user;
@@ -254,7 +256,7 @@ class Chapter extends Eloquent
     {
         $users = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
             'assignment.billet',
-            ['Executive Officer', 'Deputy Fleet Commander']
+            ['Executive Officer', 'Deputy Fleet Commander', 'Deputy Space Lord']
         )->get();
         if (empty( $users ) === true) {
             return [];
@@ -264,7 +266,7 @@ class Chapter extends Eloquent
             foreach ($user->assignment as $assignment) {
                 if ($assignment['chapter_id'] === (string)$this->_id && in_array(
                         $assignment['billet'],
-                        ['Executive Officer', 'Deputy Fleet Commander']
+                        ['Executive Officer', 'Deputy Fleet Commander', 'Deputy Space Lord']
                     )
                 ) {
                     return $user;
