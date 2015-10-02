@@ -2333,14 +2333,19 @@ jQuery(document).ready(function ($) {
     });
 
     $('#coPerms').on('click', function () {
+
         $('#DUTY_ROSTER').prop('checked', true);
+
+        buildDutyRosterSelection();
+
         $('#EXPORT_ROSTER').prop('checked', true);
         $('#EDIT_WEBSITE').prop('checked', true);
         $('#ASSIGN_NONCOMMAND_BILLET').prop('checked', true);
         $('#PROMOTE_E6O1').prop('checked', true);
         $('#REQUEST_PROMOTION').prop('checked', true);
         $('#CHAPTER_REPORT').prop('checked', true);
-        
+
+
         $('#chooseShip').foundation('reveal', 'open');
         return false;
     });

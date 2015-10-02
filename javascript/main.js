@@ -421,7 +421,11 @@ jQuery(document).ready(function ($) {
     });
 
     $('#coPerms').on('click', function () {
+
         $('#DUTY_ROSTER').prop('checked', true);
+
+        buildDutyRosterSelection();
+
         $('#EXPORT_ROSTER').prop('checked', true);
         $('#EDIT_WEBSITE').prop('checked', true);
         $('#ASSIGN_NONCOMMAND_BILLET').prop('checked', true);
@@ -429,7 +433,7 @@ jQuery(document).ready(function ($) {
         $('#REQUEST_PROMOTION').prop('checked', true);
         $('#CHAPTER_REPORT').prop('checked', true);
 
-        buildDutyRosterSelection();
+
         $('#chooseShip').foundation('reveal', 'open');
         return false;
     });
