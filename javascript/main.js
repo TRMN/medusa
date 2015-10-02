@@ -429,6 +429,7 @@ jQuery(document).ready(function ($) {
         $('#REQUEST_PROMOTION').prop('checked', true);
         $('#CHAPTER_REPORT').prop('checked', true);
 
+        buildDutyRosterSelection();
         $('#chooseShip').foundation('reveal', 'open');
         return false;
     });
