@@ -55,7 +55,9 @@
                 @if($permsObj->hasPermissions(['ADD_MEMBER']) === true)<a href="{{ route('user.create') }}">Add
                     Member</a><br/>@endif
                 @if($permsObj->hasPermissions(['PROC_XFERS']) === true)<a href="{{ route('user.change.review') }}">Review
-                    Change Requests</a>@endif
+                    Change Requests</a><br />@endif
+                @if($permsObj->hasPermissions(['ADD_BILLET']) === true) <a href="{{ route('billet.create') }}">Add Billet</a><br /> @endif
+                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true) <a href="{{ route('billet.index') }}">Billet List</a><br /> @endif
             </div>
         @endif
 
