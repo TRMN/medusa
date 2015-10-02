@@ -10,7 +10,7 @@ class BilletController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		return View::make('billets.index');
 	}
 
 	/**
@@ -21,7 +21,11 @@ class BilletController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+        if (($redirect = $this->checkPermissions('ADD_BILLET')) !== true) {
+            return $redirect;
+        }
+        
+		return View::make("billet.create");
 	}
 
 	/**
@@ -32,7 +36,28 @@ class BilletController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		if (($redirect = $this->checkPermissions('ADD_BILLET')) !== true) {
+            return $redirect;
+        }
+        
+        $validator = Validator::make($data = Input::all(), Billet::$rules);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+        
+        $this->writeAuditTrail(
+             Auth::user()->id,
+            'create',
+            'billet',
+            null,
+            json_encode($data),
+            'BilletController@store'
+        );
+        
+        Billet::create($data);
+        
+        return Redirect::route('billet.index');
 	}
 
 	/**

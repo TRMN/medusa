@@ -356,6 +356,17 @@ jQuery(document).ready(function ($) {
         "jQueryUI": true
     });
 
+        jQuery('#billetList').DataTable({
+        "autoWidth": true,
+        "pageLength": 25,
+        "columns": [
+            null
+        ],
+        "language": {
+            "emptyTable": "No billets found"
+        },
+        "jQueryUI": true
+    });
     jQuery('#members').tabs();
 
     $('#DUTY_ROSTER').on('click', function () {

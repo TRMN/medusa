@@ -99,3 +99,5 @@ Route::get('/api/squadron', 'ApiController@getSquadrons');
 Route::get('/api/division', 'ApiController@getDivisions');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
+
+Route::resource('billet', 'BilletController', ['before' => 'auth']);

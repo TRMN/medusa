@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class Billet extends Eloquent {
 	protected $fillable = ['billet_name'];
 
+    public static $rules = ['billet_name' => 'required|unique:billets'];
+    
 	static function getBillets()
 	{
 		$results = self::all();

@@ -11,7 +11,7 @@ Create a Billet
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
     {{ Form::label('billet_name', 'Billet Name') }} {{ Form::text('billet_name') }}
-        </div>
+    </div>
 </div>
 
 
