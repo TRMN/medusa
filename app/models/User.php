@@ -449,6 +449,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $exams = $this->getExamList('RMN');
         }
 
+        if (count($exams) < 1) {
+            return 'None found';
+        }
+
         end($exams);
 
         while (true) {
