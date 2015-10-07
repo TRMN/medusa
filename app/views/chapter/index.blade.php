@@ -38,8 +38,10 @@
                                 {{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}
                             @endif
                         </a> @if(empty($chapter->decommission_date) === false)
-                            <i class='fi-anchor' title='Reserve Fleet / Decomissioned'
+                            @if($chapter->decommission_date > $chapter->commission_date)
+                                <i class='fi-anchor' title='Reserve Fleet / Decomissioned'
                                alt="Reserve Fleet / Decommissioned" title="Reserve Fleet / Decommissioned"></i>
+                            @endif
                         @endif</td>
                     <td>{{ ucwords($type) }}</td>
                     <td width="12%">
