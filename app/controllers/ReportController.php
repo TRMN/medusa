@@ -395,14 +395,16 @@ class ReportController extends \BaseController
 
         foreach ($chapter->getChapterIdWithParents() as $chapterId) {
             $tmpChapter = Chapter::find($chapterId);
-
+            
             if (in_array(
                     $tmpChapter->chapter_type,
                     ['ship', 'division', 'squadron', 'task_group', 'task_force', 'fleet', 'station']
                 ) === true
             ) {
                 if ($chapter->id != $tmpChapter->id) {
+                    if (empty($tmpChapter->getCO()) === false) {
                     $echelonEmails[] = $tmpChapter->getCO()->email_address;
+                    }   
                 }
             }
         }
