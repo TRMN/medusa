@@ -194,7 +194,7 @@ class UserChangeRequestController extends \BaseController
                 $newValue = Chapter::find($request->new_value)->chapter_name;
 
                 // New CO's email
-                $cc[] = $newValue->getCO()->email_address;
+                $cc[] = Chapter::find($newValue)->getCO()->email_address;
 
                 break;
         }
