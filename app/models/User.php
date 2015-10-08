@@ -182,6 +182,31 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return false;
     }
 
+    /**
+    * Get the chapter ID of the ship to which a member is assigned, regardless of 
+    * whether that's the primary, secondary, or some tertiary assignment.
+    * 
+    */
+    public function getAssignedShip()
+    {
+        $results = '';
+        
+        if (isset( $this->assignment ) == true ) 
+        {
+            foreach ( $this->assignment as $assignment ) 
+            {
+                if (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'ship')
+                {
+                    return $assignment['chapter_id'];
+                } elseif (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'bivouac')
+                {
+                    return $assignment['chapter_id'];
+                }
+            }
+        } 
+        return false;
+    }
+    
     public function getAssignmentId($position)
     {
         if (isset( $this->assignment ) == true) {

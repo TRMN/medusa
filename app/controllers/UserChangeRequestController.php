@@ -160,7 +160,7 @@ class UserChangeRequestController extends \BaseController
                 $subject = 'Your branch transfer request has been approved';
 
                 // CO's email
-                $co = Chapter::find($user->getPrimaryAssignmentId())->getCO();
+                $co = Chapter::find($user->getAssignedShip())->getCO();
 
                 if (empty( $co ) === false) {
                     $cc = [$co->email_address];
@@ -176,7 +176,7 @@ class UserChangeRequestController extends \BaseController
                 $assignments = $user->assignment;
 
                 // Old CO's email
-                $cc = [Chapter::find($user->getPrimaryAssignmentId())->getCO()->email_address];
+                $cc = [Chapter::find($user->getAssignedShip())->getCO()->email_address];
 
                 foreach ($assignments as $key => $assignment) {
                     if ($assignment['chapter_id'] == $request->old_value) {
@@ -194,7 +194,7 @@ class UserChangeRequestController extends \BaseController
                 $newValue = Chapter::find($request->new_value)->chapter_name;
 
                 // New CO's email
-                $cc[] = $newValue->getCO()->email_address;
+                $cc[] = Chapter::find($request->new_value)->getCO()->email_address;
 
                 break;
         }
