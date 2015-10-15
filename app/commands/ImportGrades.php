@@ -121,7 +121,45 @@ class ImportGrades extends Command
         }
 
         // RMMC Exam Grading Sheet
+        $rmmcMainLine =
+            Excel::selectSheets('RMMC Exam Grading Sheet')->load(
+                app_path() . '/database/TRMN Exam grading spreadsheet.xlsx'
+            )
+                 ->formatDates(true, 'Y-m-d')
+                 ->toArray();
 
+        foreach ($rmmcMainLine as $userRecord) {
+
+            if (empty( $userRecord['last_name'] ) === true) {
+                continue;
+            }
+
+            $examRecord = []; // start with a clean array
+
+            $examRecord['member_id'] = $userRecord['member_number'];
+
+            if ($this->validateMemberId($examRecord['member_id']) === false) {
+                // Not a valid member id, attempt to find it by first and last name
+                $users =
+                    User::where('last_name', '=', $userRecord['last_name'])
+                        ->where('first_name', '=', $userRecord['first_name'])
+                        ->get();
+
+                if (isset( $users[0] ) === true) {
+                    $examRecord['member_id'] = $users[0]['member_id'];
+                } else {
+                    $this->error(
+                        'Invalid MemberID for ' . $userRecord['first_name'] . ' ' . $userRecord['last_name'] . ' and I was unable to find a match in the User database.'
+                    );
+                    continue;
+                }
+            }
+
+            $examRecord['exams'] = $this->importRmmcMainLineExams($userRecord);
+
+            $this->updateExamGrades($examRecord);
+        }
+        
         $rmaMainLine = Excel::selectSheets('RMA Exam Grading Sheet')->load(
             app_path() . '/database/TRMN Exam grading spreadsheet.xlsx'
         )
@@ -344,23 +382,35 @@ class ImportGrades extends Command
             'o_1_exam' => 'SIA-RMMC-0101',
             'o_2_exam' => 'SIA-RMMC-0102',
             'o_3_exam' => 'SIA-RMMC-0103',
+            'sia_rmn_0113'  => 'SIA-RMN-0113',
             'o_4_exam' => 'SIA-RMMC-0104',
             'o_5_exam' => 'SIA-RMMC-0105',
+            'sia_rmn-0115' => 'SIA-RMN-0115',
             'o_6_a_exam' => 'SIA-RMMC-0106',
-            'o_6_b_exam' => 'SIA-RMMC-',
-            'f_2_exam' => 'SIA-RMMC-',
-            'f_3_exam' => 'SIA-RMMC-',
-            'f_4_exam' => 'SIA-RMMC-',
-            's_a_exam' => 'SIA-RMMC-',
-            's_b_exam' => 'SIA-RMMC-',
-            's_c_exam' => 'SIA-RMMC-',
-            'g_a_exam' => 'SIA-RMMC-',
-            'g_b_exam' => 'SIA-RMMC-',
-            'g_c_exam' => 'SIA-RMMC-',
-            'j_a_exam' => 'SIA-RMMC-',
-            'j_b_exam' => 'SIA-RMMC-',
-            'j_c_exam' => 'SIA-RMMC-',
+            'o_6_b_exam' => 'SIA-RMMC-1001',
+            'f_2_exam' => 'SIA-RMMC-1002',
+            'f_3_exam' => 'SIA-RMMC-1003',
+            'f_4_exam' => 'SIA-RMMC-1004',
+            's_a_exam' => 'SIA-RMMC-S-A',
+            's_b_exam' => 'SIA-RMMC-S-B',
+            's_c_exam' => 'SIA-RMMC-S-C',
+            'g_a_exam' => 'SIA-RMMC-G-A',
+            'g_b_exam' => 'SIA-RMMC-G-B',
+            'g_c_exam' => 'SIA-RMMC-G-C',
+            'j_a_exam' => 'SIA-RMMC-J-A',
+            'j_b_exam' => 'SIA-RMMC-J-B',
+            'j_c_exam' => 'SIA-RMMC-J-C',
         ];
+        
+        $exam = [];
+
+        foreach ($mainLineExams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+            }
+        }
+
+        return $exam;
     }
 
     protected function updateExamGrades(array $record)
