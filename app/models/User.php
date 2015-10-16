@@ -24,6 +24,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'email_address'  => 'required|email|unique:users',
         'password'       => 'confirmed',
         'branch'         => 'required',
+        'primary_assignment' => 'required',
     ];
 
     public static $updateRules = [
@@ -49,6 +50,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'date_format'             => 'Please enter a date in the format YYYY-MM-DD',
         'branch.required'         => "Please select the members branch",
         'email_address.unique'    => 'That email address is already in use',
+        'primary_assignment.required' => 'Please select a chapter'
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -201,6 +203,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 } elseif (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'bivouac')
                 {
                     return $assignment['chapter_id'];
+                } elseif (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'headquarters')
+                {
+                    return $assignment['chapter_id'];
+                } elseif (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'company')
+                {
+                    return $assignment['$chapter_id'];
                 }
             }
         } 
