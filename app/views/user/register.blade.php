@@ -11,14 +11,6 @@ registerform
 @section( 'content' )
 <h1>Membership Application</h1>
 
-@if( $errors->any() )
-    <ul class="errors">
-        @foreach( $errors->all() as $error )
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
-
 {{ Form::model( $user, [ 'route' => [ 'user.apply' ], 'id' => 'register' ] ) }}
 
 <h2>The Basics</h2>
