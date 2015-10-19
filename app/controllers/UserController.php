@@ -426,7 +426,7 @@ class UserController extends \BaseController
             'password'           => 'required|confirmed',
             'dob'                => 'required|date|date_format:Y-m-d',
             'branch'             => 'required',
-            'primary_assignment' => 'required',
+            'primary_assignment' => 'required|min:2',
             'tos'                => 'required',
         ];
 
@@ -449,6 +449,7 @@ class UserController extends \BaseController
             'dob.date_format'             => 'Please enter your date of birth in the YYYY-MM-DD format',
             'dob.date'                    => 'Please enter a valid date of birth',
             'primary_assignment.required' => "Please select a chapter",
+            'primary_assignment.min'      => "Please select a chapter",
             'branch.required'             => "Please select the members branch",
             'email_address.unique'        => 'That email address is already in use',
             'email_address.required'      => 'Please enter your email address',
@@ -869,8 +870,8 @@ class UserController extends \BaseController
             'user'      => new User,
             'countries' => $countries,
             'branches'  => $branches,
-            'chapters'  => ['0' => 'Select a Chapter'],
-            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+            'chapters'  => ['' => 'Select a Chapter'],
+            'locations' => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
             'register'  => true,
         ];
 
