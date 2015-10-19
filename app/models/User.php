@@ -185,36 +185,38 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     }
 
     /**
-    * Get the chapter ID of the ship to which a member is assigned, regardless of 
+    * Get the chapter ID of the ship to which a member is assigned, regardless of
     * whether that's the primary, secondary, or some tertiary assignment.
-    * 
+    *
     */
     public function getAssignedShip()
     {
-        $results = '';
-        
-        if (isset( $this->assignment ) == true ) 
+        if (isset( $this->assignment ) == true )
         {
-            foreach ( $this->assignment as $assignment ) 
+            foreach ( $this->assignment as $assignment )
             {
-                if (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'ship')
-                {
-                    return $assignment['chapter_id'];
-                } elseif (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'bivouac')
-                {
-                    return $assignment['chapter_id'];
-                } elseif (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'headquarters')
-                {
-                    return $assignment['chapter_id'];
-                } elseif (Chapter::find($assignment['chapter_id'])['chapter_type'] == 'company')
-                {
-                    return $assignment['$chapter_id'];
+                switch (Chapter::find($assignment['chapter_id'])['chapter_type']) {
+                    case 'ship':
+                    case 'bivouac':
+                    case 'headquarters':
+                    case 'company':
+                    case 'station':
+                    case 'shuttle':
+                    case 'section':
+                    case 'squad':
+                    case 'platoon':
+                    case 'battalion':
+                    case 'barracks':
+                    case 'outpost':
+                    case 'fort':
+                        return $assignment['chapter_id'];
+                        break;
                 }
             }
-        } 
+        }
         return false;
     }
-    
+
     public function getAssignmentId($position)
     {
         if (isset( $this->assignment ) == true) {

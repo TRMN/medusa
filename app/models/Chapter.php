@@ -29,7 +29,7 @@ class Chapter extends Eloquent
 
     static function getHoldingChapters()
     {
-        $results = Chapter::where('joinable', '!=', false)->whereIn('hull_number', ['SS-001', 'SS-002', 'LP', 'HC'])
+        $results = Chapter::where('joinable', '!=', false)->whereIn('hull_number', ['SS-001', 'SS-002', 'RMOP-01', 'HC'])
                           ->orderBy('chapter_name')->get();
 
         $chapters = [];
@@ -73,7 +73,7 @@ class Chapter extends Eloquent
 
     static function getChapters($branch = '', $location = 0, $joinableOnly = true)
     {
-        $holdingChapters = ['SS-001', 'SS-002', 'LP', 'HC'];
+        $holdingChapters = ['SS-001', 'SS-002', 'RMOP-01', 'HC'];
 
         if (empty( $branch ) === false) {
             $results =
