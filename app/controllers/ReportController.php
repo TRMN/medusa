@@ -17,7 +17,7 @@ class ReportController extends \BaseController
         return Response::view(
             'report.index',
             [
-                'reports' => Report::where('chapter_id', '=', Auth::user()->getPrimaryAssignmentId())->orderBy(
+                'reports' => Report::where('chapter_id', '=', Auth::user()->getAssignedShip())->orderBy(
                     'report_date'
                 )->get()
             ]
@@ -36,7 +36,7 @@ class ReportController extends \BaseController
         }
 
         foreach (['primary', 'secondary', 'additional'] as $assignment) {
-            $chapter = Chapter::findOrFail(Auth::user()->getAssignmentId($assignment));
+            $chapter = Chapter::find(Auth::user()->getAssignmentId($assignment));
 
             if ($chapter->chapter_type == 'ship') {
                 break;
@@ -395,7 +395,7 @@ class ReportController extends \BaseController
 
         foreach ($chapter->getChapterIdWithParents() as $chapterId) {
             $tmpChapter = Chapter::find($chapterId);
-            
+
             if (in_array(
                     $tmpChapter->chapter_type,
                     ['ship', 'division', 'squadron', 'task_group', 'task_force', 'fleet', 'station']
@@ -404,7 +404,7 @@ class ReportController extends \BaseController
                 if ($chapter->id != $tmpChapter->id) {
                     if (empty($tmpChapter->getCO()) === false) {
                     $echelonEmails[] = $tmpChapter->getCO()->email_address;
-                    }   
+                    }
                 }
             }
         }
