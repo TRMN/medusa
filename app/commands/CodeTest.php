@@ -39,7 +39,9 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        var_dump(file_exists(public_path() . '/crests/' . $hull_number . '.svg'));
+        $user = User::where('member_id', '=', 'RMN-2439-14')->first();
+
+        print $user->getTimeInGrade(true) . "\n";
     }
 
     /**

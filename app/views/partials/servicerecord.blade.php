@@ -56,7 +56,8 @@
             $count = 0;
             foreach (['secondary', 'additional'] as $position) {
                 if (empty( $user->getAssignmentName($position) ) === false) {
-                    echo $user->getAssignmentName($position);
+                    echo '<a href="' . route('chapter.show',$user->getAssignmentId($position)) . '">' .
+                    $user->getAssignmentName($position) . '</a>';
                     $count++;
                 }
 

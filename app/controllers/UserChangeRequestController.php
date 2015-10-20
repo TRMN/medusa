@@ -178,6 +178,18 @@ class UserChangeRequestController extends \BaseController
                 // Old CO's email
                 $cc = [Chapter::find($user->getAssignedShip())->getCO()->email_address];
 
+                // Is this a MARDET?
+                switch(Chapter::find($user->getAssignedShip())->chapter_type) {
+                    case 'shuttle':
+                    case 'section':
+                    case 'squad':
+                    case 'platoon':
+                    case 'battalion':
+                        // We have a MARDET, get the parent chapter CO's email address.
+                        $cc[] = Chapter::find($user->getAssignedShip()->assigned_to)->getCO()->email_address;
+                        break;
+                }
+
                 foreach ($assignments as $key => $assignment) {
                     if ($assignment['chapter_id'] == $request->old_value) {
                         $assignments[$key]['chapter_id'] = $request->new_value;
@@ -195,6 +207,18 @@ class UserChangeRequestController extends \BaseController
 
                 // New CO's email
                 $cc[] = Chapter::find($request->new_value)->getCO()->email_address;
+
+                // Is this a MARDET?
+                switch(Chapter::find($request->new_value)->chapter_type) {
+                    case 'shuttle':
+                    case 'section':
+                    case 'squad':
+                    case 'platoon':
+                    case 'battalion':
+                        // We have a MARDET, get the parent chapter CO's email address.
+                        $cc[] = Chapter::find(Chapter::find($request->new_value)->assigned_to)->getCO()->email_address;
+                        break;
+                }
 
                 break;
         }
