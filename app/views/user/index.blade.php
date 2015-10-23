@@ -54,9 +54,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -105,12 +109,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -160,13 +165,13 @@
                                 </td>
                                 <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                                 <td width="9%">
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                       title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24"
-                                       href="{{ route('user.edit', [ $user->_id ]) }}"
-                                       title="Edit User"></a>
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                       title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -215,13 +220,13 @@
                                 </td>
                                 <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                                 <td width="9%">
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                       title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24"
-                                       href="{{ route('user.edit', [ $user->_id ]) }}"
-                                       title="Edit User"></a>
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                       title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -271,12 +276,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -325,12 +331,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -378,12 +385,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -431,12 +439,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -484,12 +493,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -537,12 +547,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -590,12 +601,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -643,12 +655,13 @@
                             </td>
                             <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
-                                   title="View User"></a>
-                                <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
-                                   title="Edit User"></a>
-                                <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
-                                   title="Delete User"></a>
+                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

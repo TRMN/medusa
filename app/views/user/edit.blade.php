@@ -321,7 +321,7 @@
 
         </div>
         <div class="row">
-            <button class="button" onclick="$('#chooseShip').foundation('reveal', 'close');">OK</button>
+            <button class="button" onclick="$('#dutyroster').val($('.dr:checked').val());$('#chooseShip').foundation('reveal', 'close');">OK</button>
         </div>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     </div>
