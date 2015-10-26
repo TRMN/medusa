@@ -36,7 +36,7 @@
         <fieldset>
             <legend>Chapter Change Request</legend>
             <p>Only use this option if you are requesting a chapter change.  If you are only requesting a branch change, you do not need to select a chapter.</p>
-            <p>Change Chapter From {{$chapters[$user->getPrimaryAssignmentId()]}} to</p>
+            <p>Change Chapter From {{$chapters[$user->getAssignedShip()]}} to</p>
             <div class="row">
                 <div class="end small-6 columns ninety Incised901Light">
                     {{ Form::label( 'plocation', 'Filter Chapters by Location', ['class' => 'my']) }} {{ Form::select('plocation', $locations) }}
@@ -45,7 +45,7 @@
             <div class="row">
                 <div class="end small-6 columns ninety Incised901Light">
                     {{ Form::label('primary_assignment', "Chapter", ['class' => 'my']) }} {{ Form::select('primary_assignment', $chapters) }}
-                    {{ Form::hidden('old_assignment', $user->getPrimaryAssignmentId()) }}
+                    {{ Form::hidden('old_assignment', $user->getAssignedShip()) }}
                 </div>
             </div>
         </fieldset>

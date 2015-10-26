@@ -99,7 +99,11 @@ class Chapter extends Eloquent
                 $chapter->hull_number = null;
             }
             if (in_array($chapter->hull_number, $holdingChapters) === true) {
-                continue;
+                if ($joinableOnly === false) {
+                    $chapters[$chapter->_id] = $chapter->chapter_name;
+                } else {
+                    continue;
+                }
             } else {
                 $co = Chapter::find($chapter->_id)->getCO();
 
