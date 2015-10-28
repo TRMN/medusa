@@ -33,7 +33,15 @@ class UserController extends \BaseController
 
         return View::make(
             'user.index',
-            ['users' => $usersByBranch, 'title' => 'Membership List', 'otherThanActive' => $usersOtherThanActive]
+            ['users' => $usersByBranch,
+             'title' => 'Membership List',
+             'otherThanActive' => $usersOtherThanActive,
+             'totalMembers' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->count(),
+             'totalEnlisted' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where('rank.grade', 'like', 'E%')->count(),
+             'totalOfficer' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where('rank.grade', 'like', 'O%')->count(),
+             'totalFlagOfficer' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where('rank.grade', 'like', 'F%')->count(),
+             'totalCivilian' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where('rank.grade', 'like', 'C%')->count()
+            ]
         );
     }
 
