@@ -182,23 +182,23 @@ switch ($detail->chapter_type) {
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th style="white-space: nowrap; width: auto">ID #</th>
+                        <th>ID #</th>
                         <th>Rank</th>
-                        <th style="width: 8%; text-align: center">Time in Grade</th>
+                        <th style="text-align: center">Time in Grade</th>
                         <th>Billet</th>
-                        <th width="5%">Branch</th>
+                        <th>Branch</th>
                         <th>City</th>
-                        <th style="width: 12%">State/Province</th>
+                        <th>State/Province</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($crew as $member)
                         <tr>
-                            <td style="white-space: nowrap">
+                            <td>
                                 <a href="{{ route('user.show', [$member->_id]) }}">{{ $member->last_name }}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
                                     , {{ $member->first_name }}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}</a>
                             </td>
-                            <td style="white-space: nowrap">{{$member->member_id}}</td>
+                            <td>{{$member->member_id}}</td>
                             <td>{{ $member->getGreeting() }} ({{$member->rank['grade']}})</td>
                             <td>{{is_null($tig = $member->getTimeInGrade(true))?'N/A':$tig}}</td>
                             <td>{{ $member->getBilletForChapter($detail->id) }}</td>
@@ -211,13 +211,13 @@ switch ($detail->chapter_type) {
                     <tfoot>
                     <tr>
                         <th>Name</th>
-                        <th style="white-space: nowrap; width: auto">ID #</th>
+                        <th>ID #</th>
                         <th>Rank</th>
-                        <th style="width: 8%; text-align: center">Time in Grade</th>
+                        <th style="text-align: center">Time in Grade</th>
                         <th>Billet</th>
-                        <th width="5%">Branch</th>
+                        <th>Branch</th>
                         <th>City</th>
-                        <th style="width: 12%">State/Province</th>
+                        <th>State/Province</th>
                     </tr>
                     </tfoot>
                 </table>
