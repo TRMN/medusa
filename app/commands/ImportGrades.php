@@ -39,6 +39,8 @@ class ImportGrades extends Command
      */
     public function fire()
     {
+        $examRecord = []; // start with a clean array
+        
         $mainLine =
             Excel::selectSheets('RMN Exam Grading Sheet')->load(
                 app_path() . '/database/TRMN Exam grading spreadsheet.xlsx'
@@ -52,32 +54,17 @@ class ImportGrades extends Command
                 continue;
             }
 
-            $examRecord = []; // start with a clean array
-
-            $examRecord['member_id'] = $userRecord['member_number'];
-
-            if ($this->validateMemberId($examRecord['member_id']) === false) {
-                // Not a valid member id, attempt to find it by first and last name
-                $users =
-                    User::where('last_name', '=', $userRecord['last_name'])
-                        ->where('first_name', '=', $userRecord['first_name'])
-                        ->get();
-
-                if (isset( $users[0] ) === true) {
-                    $examRecord['member_id'] = $users[0]['member_id'];
-                } else {
-                    $this->error('Invalid MemberID for ' . $userRecord['first_name'] . ' ' . $userRecord['last_name'] . ' and I was unable to find a match in the User database.');
-                    continue;
-                }
+            $validatedUserRecord = validateMemberId($userRecord);
+            
+            //if validatedUserRecord is null, continue to the next record
+            if (is_null ($validatedUserRecord)){
+                continue;
             }
+            
+            //if validatedUserRecord is not null, process this one
+            $examRecord['member_id'] = $validatedUserRecord['member_number'];
 
-            $examRecord['exams'] = $this->importMainLineExams($userRecord);
-            try {
-                $this->updateExamGrades($examRecord);
-            } catch (Exception $e) {
-                $this->error('Error updating ' . $userRecord['member_number'] . ' ' . $userRecord['first_name'] . ' ' . $userRecord['last_name']);
-                die();
-            }
+            $examRecord['exams'] = array_merge($examRecord['exams'],$this->importMainLineExams($userRecord));
 
         }
 
@@ -90,34 +77,22 @@ class ImportGrades extends Command
 
         foreach ($gsnMainLine as $userRecord) {
 
-            if (empty( $userRecord['last_name'] ) === true) {
+            if (empty($userRecord['last_name'])===true) {
                 continue;
             }
 
-            $examRecord = []; // start with a clean array
-
-            $examRecord['member_id'] = $userRecord['member_number'];
-
-            if ($this->validateMemberId($examRecord['member_id']) === false) {
-                // Not a valid member id, attempt to find it by first and last name
-                $users =
-                    User::where('last_name', '=', $userRecord['last_name'])
-                        ->where('first_name', '=', $userRecord['first_name'])
-                        ->get();
-
-                if (isset( $users[0] ) === true) {
-                    $examRecord['member_id'] = $users[0]['member_id'];
-                } else {
-                    $this->error(
-                        'Invalid MemberID for ' . $userRecord['first_name'] . ' ' . $userRecord['last_name'] . ' and I was unable to find a match in the User database.'
-                    );
-                    continue;
-                }
+            $validatedUserRecord = validateMemberId($userRecord);
+            
+            //if validatedUserRecord is null, continue to the next record
+            if (is_null ($validatedUserRecord)){
+                continue;
             }
+            
+            //if validatedUserRecord is not null, process this one
+            $examRecord['member_id'] = $validatedUserRecord['member_number'];
 
-            $examRecord['exams'] = $this->importGsnMainLineExams($userRecord);
-
-            $this->updateExamGrades($examRecord);
+            $examRecord['exams'] = array_merge($examRecord['exams'],$this->importGsnMainLineExams($userRecord));
+        
         }
 
         // RMMC Exam Grading Sheet
@@ -130,72 +105,53 @@ class ImportGrades extends Command
 
         foreach ($rmmcMainLine as $userRecord) {
 
-            if (empty( $userRecord['last_name'] ) === true) {
+                        if (empty($userRecord['last_name'])===true) {
                 continue;
             }
 
-            $examRecord = []; // start with a clean array
-
-            $examRecord['member_id'] = $userRecord['member_number'];
-
-            if ($this->validateMemberId($examRecord['member_id']) === false) {
-                // Not a valid member id, attempt to find it by first and last name
-                $users =
-                    User::where('last_name', '=', $userRecord['last_name'])
-                        ->where('first_name', '=', $userRecord['first_name'])
-                        ->get();
-
-                if (isset( $users[0] ) === true) {
-                    $examRecord['member_id'] = $users[0]['member_id'];
-                } else {
-                    $this->error(
-                        'Invalid MemberID for ' . $userRecord['first_name'] . ' ' . $userRecord['last_name'] . ' and I was unable to find a match in the User database.'
-                    );
-                    continue;
-                }
+            $validatedUserRecord = validateMemberId($userRecord);
+            
+            //if validatedUserRecord is null, continue to the next record
+            if (is_null ($validatedUserRecord)){
+                continue;
             }
+            
+            //if validatedUserRecord is not null, process this one
+            $examRecord['member_id'] = $validatedUserRecord['member_number'];
 
-            $examRecord['exams'] = $this->importRmmcMainLineExams($userRecord);
-
-            $this->updateExamGrades($examRecord);
+            $examRecord['exams'] = array_merge($examRecord['exams'],$this->importRmmcMainLineExams($userRecord));
         }
         
         $rmaMainLine = Excel::selectSheets('RMA Exam Grading Sheet')->load(
             app_path() . '/database/TRMN Exam grading spreadsheet.xlsx'
         )
-                             ->formatDates(true, 'Y-m-d')
-                             ->toArray();
+            ->formatDates(true, 'Y-m-d')
+            ->toArray();
 
         foreach ($rmaMainLine as $userRecord) {
 
-            if (empty( $userRecord['last_name'] ) === true) {
+            if (empty($userRecord['last_name'])===true) {
                 continue;
             }
 
-            $examRecord = []; // start with a clean array
-
-            $examRecord['member_id'] = $userRecord['member_number'];
-
-            if ($this->validateMemberId($examRecord['member_id']) === false) {
-                // Not a valid member id, attempt to find it by first and last name
-                $users =
-                    User::where('last_name', '=', $userRecord['last_name'])
-                        ->where('first_name', '=', $userRecord['first_name'])
-                        ->get();
-
-                if (isset( $users[0] ) === true) {
-                    $examRecord['member_id'] = $users[0]['member_id'];
-                } else {
-                    $this->error(
-                        'Invalid MemberID for ' . $userRecord['first_name'] . ' ' . $userRecord['last_name'] . ' and I was unable to find a match in the User database.'
-                    );
-                    continue;
-                }
+            $validatedUserRecord = validateMemberId($userRecord);
+            
+            //if validatedUserRecord is null, continue to the next record
+            if (is_null ($validatedUserRecord)){
+                continue;
             }
+            
+            //if validatedUserRecord is not null, process this one
+            $examRecord['member_id'] = $validatedUserRecord['member_number'];
 
-            $examRecord['exams'] = $this->importRmaMainLineExams($userRecord);
-
+            $examRecord['exams'] = array_merge($examRecord['exams'],$this->importRmaMainLineExams($userRecord));
+        }
+        
+        try {
             $this->updateExamGrades($examRecord);
+        } catch (Exception $e) {
+            $this->error('Error updating ' . $userRecord['member_number'] . ' ' . $userRecord['first_name'] . ' ' . $userRecord['last_name']);
+            die();
         }
     }
 
@@ -457,12 +413,47 @@ class ImportGrades extends Command
         return true;
     }
 
-    protected function validateMemberId($memberId)
+    protected function validateMemberId(array $memberExamRecord)
     {
-        if (preg_match('/^RMN\-\d{4}.*/', $memberId) === 1) {
-            return true; // We have at least RMN-XXXX
-        } else {
-            return false;
+        
+        if (preg_match('/^RMN\-\d{4}.*/', $memberExamRecord['member_id']) === 1) {
+            
+            
+            $user =
+                User::where('member_id', '=', $memberExamRecord['member_id'])
+                    ->first();
+
+            if ( is_null( $user ) === false) {
+                if ($memberExamRecord['first_name'] == $user['first_name'] && $memberExamRecord['last_name'] == $user['last_name']) {
+                    return $memberExamRecord;
+                } 
+            }
         }
+        
+        $users =
+            User::where('last_name', '=', $memberExamRecordRecord['last_name'])
+                ->where('first_name', '=', $memberExamRecordRecord['first_name'])
+                ->get();
+        
+        if ( count($users) != 1 ) {
+            // logError with error details
+            
+            $details = ['severity' => 'warning','msg' => 'Invalid MemberID for ' . $userRecord['first_name'] . ' ' . $userRecord['last_name'] . ' and I was unable to find a definitive match in the User database.'];
+            
+            logError ( $details );
+            
+            return null;
+        } else {
+            $memberExamRecord['member_id'] = $users[0]['member_id'];
+            return $memberExamRecord;
+        }
+    }
+    
+    protected function logError (array $errorDetails) {
+        // do stuff to report the error
+        
+        
+        
+        $this->error($errorDetails['msg']);
     }
 }
