@@ -48,48 +48,50 @@
         <div class="Incised901Black ninety">
             Time In Service: {{$user->getTimeInService()}}
         </div>
-        <div class="Incised901Black ninety">
-            Additional Assignments:
-        </div>
-        <div class="Incised901Light">
-            <?php
-            $count = 0;
-            foreach (['secondary', 'additional'] as $position) {
-                if (empty( $user->getAssignmentName($position) ) === false) {
-                    echo '<a href="' . route('chapter.show',$user->getAssignmentId($position)) . '">' .
-                    $user->getAssignmentName($position) . '</a>';
-                    $count++;
+        <div id="sbAccordian">
+            <h5 class="Incised901Black ninety">
+                Additional Assignments:
+            </h5>
+
+            <div class="Incised901Light whitesmoke">
+                <?php
+                $count = 0;
+                foreach (['secondary', 'additional'] as $position) {
+                    if (empty( $user->getAssignmentName($position) ) === false) {
+                        echo '<a href="' . route('chapter.show', $user->getAssignmentId($position)) . '">' .
+                                $user->getAssignmentName($position) . '</a>';
+                        $count++;
+                    }
+
+                    if (empty( $user->getBillet($position) ) === false) {
+                        echo ', ' . $user->getBillet($position) . '<br>';
+                    }
                 }
 
-                if (empty( $user->getBillet($position) ) === false) {
-                    echo ', ' . $user->getBillet($position) . '<br>';
+                if ($count === 0) {
+                    echo "None<br>";
                 }
-            }
 
-            if ($count === 0) {
-                echo "None<br>";
-            }
+                ?>
+            </div>
 
-            ?>
-        </div>
-        <div class="Incised901Black ninety">
-            Awards:
-        </div>
-
-        <div class="Incised901Black ninety">
-            Academy Coursework:
-            @if($user->getExamLastUpdated() !== false)
-                <h5 class="Incised901Light ninety">Last
-                    Updated: {{ date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) }}</h5>
-            @endif
-            @foreach($user->getExamList() as $exam => $gradeInfo)
-                <div class="row">
-                    <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
-                    <div class="small-2 columns Incised901Light ninety textLeft">{{$exam}}</div>
-                    <div class="small-2 columns Incised901Light ninety textRight">{{$gradeInfo['score']}}</div>
-                    <div class="small-2 columns Incised901Light ninety end textRight">{{$gradeInfo['date']}}</div>
-                </div>
-            @endforeach
+            <h5 class="Incised901Black ninety">
+                Academy Coursework:
+            </h5>
+            <div class="whitesmoke">
+                @if($user->getExamLastUpdated() !== false)
+                    <span class="Incised901Light ninety">Last
+                        Updated: {{ date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) }}</span>
+                @endif
+                @foreach($user->getExamList() as $exam => $gradeInfo)
+                    <div class="row">
+                        <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
+                        <div class="small-2 columns Incised901Light ninety textLeft">{{$exam}}</div>
+                        <div class="small-2 columns Incised901Light ninety textRight">{{$gradeInfo['score']}}</div>
+                        <div class="small-2 columns Incised901Light ninety end textRight">{{$gradeInfo['date']}}</div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     @endif
     <div class="Incised901Black ninety">

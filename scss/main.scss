@@ -19,6 +19,10 @@ $medusa-yellow: #ffee00;
   font-family: "Incised 901 W01 Bold Cd";
 }
 
+.whitesmoke {
+  color: WhiteSmoke;
+}
+
 .button:hover {
   text-decoration: none;
   background: $medusa-yellow;
@@ -413,6 +417,32 @@ footer {
 .ui-widget-content a {
   color: $medusa-yellow;
 }
+
+.ui-accordion-content, .ui-accordion, .ui-accordion-header {
+  padding: 0px !important;
+  font-size: 90% !important;
+  border: none !important;
+  background: none !important;
+  color: WhiteSmoke !important;
+  padding-left: .5em !important;
+}
+
+.ui-accordion-content {
+  overflow: hidden !important;
+}
+
+.ui-accordion-header-icon {
+  left: -0.75em !important;
+}
+
+.ui-state-default .ui-icon, .ui-state-default .ui-icon {
+  background-image: url("images/ui-icons_ffffff_256x240.png") !important;
+}
+
+.ui-state-hover .ui-icon {
+  background-image: url("images/ui-icons_ffee00_256x240.png") !important;
+}
+
 
 .ui-widget-header {
   border: none;

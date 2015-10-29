@@ -7,7 +7,6 @@
         <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/normalize.min.css">
         <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/foundation.min.css">
         <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/jquery.ui.datepicker.min.css">
-        <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/jquery.dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/dataTables.foundation.css">
         <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/dataTables.jqueryui.css">
@@ -19,12 +18,10 @@
               href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/css/foundation.min.css">
         <link rel="stylesheet" type="text/css"
               href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/css/jquery.ui.datepicker.min.css">
-        <link rel="stylesheet" type="text/css"
-              href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
         <link rel="stylesheet" type="text/css"
               href="//cdn.datatables.net/plug-ins/1.10.7/integration/foundation/dataTables.foundation.css">
-        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"
+        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"
         <link rel="stylesheet" type="text/css"
               href="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.css">
 

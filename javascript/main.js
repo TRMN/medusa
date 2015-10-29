@@ -356,7 +356,7 @@ jQuery(document).ready(function ($) {
         "jQueryUI": true
     });
 
-        jQuery('#billetList').DataTable({
+    jQuery('#billetList').DataTable({
         "autoWidth": true,
         "pageLength": 25,
         "columns": [
@@ -487,7 +487,19 @@ jQuery(document).ready(function ($) {
         "jQueryUI": true
     });
 
-    $('#uploadGrades').on('click', function() {
-       $('.wait').show();
+    $('#uploadGrades').on('click', function () {
+        $('.wait').show();
     });
+
+    $(function () {
+        $('#sbAccordian').accordion({
+            active: false,
+            collapsible: true,
+            header: "h5",
+            heightStyle: "content",
+            icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" }
+
+        });
+    });
+
 });
