@@ -222,8 +222,11 @@ class Chapter extends Eloquent
      *
      * @return mixed
      */
-    public function getAllCrew($chapterId)
+    public function getAllCrew($chapterId = null)
     {
+        if (empty($chapterId) === true) {
+            $chapterId = $this->id;
+        }
         return User::where('assignment.chapter_id', '=', $chapterId)->where('active', '=', 1)->where('registration_status','=','Active')->orderBy('last_name', 'asc')->get();
     }
 

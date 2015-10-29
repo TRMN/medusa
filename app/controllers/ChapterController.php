@@ -22,7 +22,7 @@ class ChapterController extends BaseController
 
         $commandCrew = $chapter->getCommandCrew();
 
-        $crew = $chapter->getCrew();
+        $crew = $chapter->getAllCrew();
 
         return View::make( 'chapter.show', [ 'detail' => $chapter, 'higher' => $parentChapter, 'includes' => $includes, 'command' => $commandCrew, 'crew' => $crew ] );
     }
