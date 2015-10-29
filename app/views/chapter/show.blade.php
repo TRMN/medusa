@@ -188,7 +188,7 @@ switch ($detail->chapter_type) {
                         <th>Billet</th>
                         <th>Branch</th>
                         <th>City</th>
-                        <th>State/Province</th>
+                        <th>State / Province</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -217,7 +217,7 @@ switch ($detail->chapter_type) {
                         <th>Billet</th>
                         <th>Branch</th>
                         <th>City</th>
-                        <th>State/Province</th>
+                        <th>State / Province</th>
                     </tr>
                     </tfoot>
                 </table>
