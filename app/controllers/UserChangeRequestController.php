@@ -206,7 +206,12 @@ class UserChangeRequestController extends \BaseController
                 $newValue = Chapter::find($request->new_value)->chapter_name;
 
                 // New CO's email
-                $cc[] = Chapter::find($request->new_value)->getCO()->email_address;
+                $newChapterCO = Chapter::find($request->new_value)->getCO();
+
+                if (empty($newChapterCO) === false) {
+                    $cc[] = $newChapterCO->email_address;
+                }
+
 
                 // Is this a MARDET?
                 switch(Chapter::find($request->new_value)->chapter_type) {
