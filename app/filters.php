@@ -13,7 +13,18 @@
 
 App::before(function($request)
 {
-	//
+
+    $uri = $request->getRequestUri();
+
+    if ($uri === '/login' || $uri = '/' || $uri = '/register') {
+        return;
+    } elseif (Auth::check() === false) {
+        if (Request::ajax()) {
+            return Response::make('Unauthorized', 401);
+        } else {
+            return Redirect::guest('login');
+        }
+    }
 });
 
 
@@ -35,7 +46,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest())
+    if (Auth::check() === false)
 	{
 		if (Request::ajax())
 		{

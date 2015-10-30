@@ -1,0 +1,6 @@
+---
+ - name: Install MongoDB
+   apt: pkg=mongodb state=installed
+
+ - name: MongoDB | Ensure deamon is running correctly
+   service: name=mongodb state=started enabled=true

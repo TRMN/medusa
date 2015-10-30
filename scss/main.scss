@@ -1,0 +1,477 @@
+@import "settings";
+@import "trmn-fonts.css";
+@import "datatables";
+@import "foundation-icons.css";
+
+$backdrop-color: #222;
+$text-primary: WhiteSmoke;
+$body-width: 1000px;
+$manticore-red: #ee3300;
+$medusa-yellow: #ffee00;
+
+.button {
+  color: $medusa-yellow;
+  font-size: 1.5rem;
+  background: $manticore-red;
+  padding: 10px 20px 10px 20px;
+  border: solid $medusa-yellow 4px;
+  text-decoration: none;
+  font-family: "Incised 901 W01 Bold Cd";
+}
+
+.button:hover {
+  text-decoration: none;
+  background: $medusa-yellow;
+  color: $manticore-red;
+  border: solid $manticore-red 4px;
+}
+
+.green {
+  color: green !important;
+}
+
+.red {
+  color: $manticore-red !important;
+}
+
+.blue {
+  color: mediumblue !important;
+}
+
+.nav-header {
+  color: $medusa-yellow;
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-family: "Incised 901 W01 Bold Cd";
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.nav-header:hover {
+  color: $manticore-red;
+}
+
+.yellow-border {
+  border: solid $medusa-yellow 1px;
+  padding: 5px;
+  width: auto;
+}
+
+.padding-5 {
+  padding: 2px;
+}
+
+.margin-5 {
+  margin: 5px;
+}
+
+.inline {
+  display: inline;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+div.filePhoto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  text-align: center;
+}
+
+#photoPreview {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+}
+
+.filePhotoBox {
+  width: 150px;
+  height: 200px;
+  background-color: #4D4D4D;
+  border: solid 1px #CCCCCC;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.reportHeader {
+  background-color: #4D4D4D;
+}
+
+.reportSubHeader {
+  background-color: #cccccc;
+}
+
+.filePhotoBox img {
+  width: 150px;
+  height: 200px;
+}
+
+.photoUpload {
+  background-color: #4D4D4D;
+  border: solid 1px #CCCCCC;
+  margin: auto;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  width: 150px;
+}
+
+.editButton {
+  background-color: #4D4D4D;
+  border: solid 1px #CCCCCC;
+  margin: auto;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.editButton:hover {
+  color: $manticore-red;
+}
+
+.ofpt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  margin: -12.5% 0 0 -50%;
+}
+
+.container {
+  background: transparent;
+
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+}
+
+th.actions {
+  width: 175px;
+}
+
+th.memberid {
+  width: 110px;
+}
+
+th.email {
+  width: 280px;
+}
+
+th.branch {
+  width: 80px;
+}
+
+body, html {
+  background: url("/images/trmn-subdued.png");
+  color: $text-primary;
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  font-family: "Incised 901 W01 Light";
+  line-height: 100%;
+}
+
+#tos, #chooseShip, #examList {
+  color: $text-primary;
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+
+#photoModal {
+  color: $text-primary;
+  background-color: #000000;
+  font-family: "Incised 901 W01 Light";
+  line-height: 100%;
+}
+
+.ui-tooltip {
+  padding: 10px 20px;
+  color: white;
+  border-radius: 20px;
+  background-color: black !important;
+}
+
+p {
+  font-family: "Incised 901 W01 Light";
+}
+
+a {
+  color: $medusa-yellow;
+}
+
+h1 {
+  color: $medusa-yellow;
+  font-family: "Incised 901 W01 Light";
+}
+
+.trmn {
+  font-family: "Incised 901 W01 Nord";
+}
+
+.Incised901Light {
+  font-family: "Incised 901 W01 Light";
+}
+
+h1.trmn {
+  text-transform: uppercase;
+  color: white
+}
+
+.NordItalic {
+  font-family: "Incised901W01-NordItali";
+}
+
+.Incised901Bold {
+  font-family: "Incised 901 W01 Bold";
+}
+
+.Incised901Black {
+  font-family: "Incised 901 W01 Black";
+}
+
+.seventy-five {
+  font-size: 75%;
+}
+
+.ninety {
+  font-size: 90%;
+}
+
+h4.NordItalic {
+  color: $medusa-yellow;
+}
+
+h3.trmn {
+  color: $medusa-yellow;
+}
+
+.my {
+  color: $medusa-yellow;
+}
+
+h2, h3, h4, h5 {
+  color: $text-primary;
+  font-family: "Incised 901 W01 Light";
+}
+
+label {
+  color: $text-primary;
+  font-family: "Incised 901 W01 Light";
+}
+
+nav {
+  background: none;
+  height: 30px;
+  width: 500px;
+  margin: 0 auto;
+  .topbar {
+    background: none;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    li {
+      list-style: none;
+      display: block;
+      height: 35px;
+      float: left;
+      margin-right: 1em;
+      a {
+        line-height: 35px;
+      }
+    }
+  }
+}
+
+table {
+  a {
+    color: $medusa-yellow;
+    background: none;
+  }
+}
+
+#left-nav {
+  width: 175px;
+}
+
+div.rnav {
+  clear: both;
+  float: left;
+  display: block;
+  text-align: right;
+  width: 175px;
+  color: white;
+  font-family: "Incised 901 W01 Bold Cd";
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+div.rnav a {
+  color: white;
+}
+
+div.lnav {
+  clear: both;
+  float: left;
+  display: inline;
+  text-align: left;
+  width: 175px;
+}
+
+td.right {
+  text-align: right;
+}
+
+footer {
+  background: transparent;
+  text-align: center;
+  height: 152px;
+  width: 100%;
+  p {
+    padding-top: 2em;
+    color: $text-primary;
+    font-size: 0.5rem;
+    font-family: "Incised 901 W01 Light";
+  }
+}
+
+.left-nav {
+  height: 100%;
+  display: block;
+  float: left;
+}
+
+.reg-button {
+  width: 150px;
+}
+
+.trmn-width {
+  max-width: none;
+}
+
+.content {
+  padding-left: 2.5rem;
+  width: 80%;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+#user fieldset, #register fieldset, #changeRequest fieldset {
+  width: auto;
+}
+
+#user legend, #register legend, #changeRequest legend {
+  background: none;
+}
+
+#chapterList {
+  width: 75%;
+}
+
+.actionButtons {
+  column-width: 50px;
+}
+
+.ui-toolbar {
+  width: 75%;
+}
+
+#members .ui-toolbar {
+  width: 100%;
+}
+
+#announcementList_wrapper .ui-toolbar {
+  width: 100%;
+}
+
+.ui-widget-content {
+  border: 0px;
+  background: none;
+  color: $medusa-yellow;
+}
+
+.ui-widget {
+  font-family: "Incised 901 W01 Light";
+  font-size: .9rem;
+}
+
+.ui-widget-content a {
+  color: $medusa-yellow;
+}
+
+.ui-widget-header {
+  border: none;
+}
+
+#user fieldset {
+  width: 75%;
+}
+
+.size-12 {
+  font-size: 12px;
+}
+
+.size-14 {
+  font-size: 14px;
+}
+
+.size-16 {
+  font-size: 16px;
+}
+
+.size-18 {
+  font-size: 18px;
+}
+
+.size-21 {
+  font-size: 21px;
+}
+
+.size-24 {
+  font-size: 24px;
+}
+
+.size-36 {
+  font-size: 36px;
+}
+
+.size-48 {
+  font-size: 48px;
+}
+
+.size-60 {
+  font-size: 60px;
+}
+
+.size-72 {
+  font-size: 72px;
+}
+
+.wait {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 )
+                url('/images/ajax-loader.gif')
+                50% 50%
+                no-repeat;
+}
