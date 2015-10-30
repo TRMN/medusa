@@ -15,5 +15,14 @@
         {{Form::submit('Upload Grades', ['class' => 'button round', 'id' => 'uploadGrades'])}}
         {{ Form::close() }}
     </div>
+    @if(count($messages) > 0)
+        @foreach($messages as $line)
+            <div class="row">
+                <div class="columns small-12 @if($line->severity == 'info') green @else red @endif">
+                    {{$line->msg}}
+                </div>
+            </div>
+        @endforeach
+    @endif
     <div class="wait"></div>
 @stop
