@@ -1,13 +1,9 @@
 @extends('layout')
 
 @section('pageTitle')
-User {{{ $user->member_id }}}
+{{  $user->getGreeting() }} {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {{ $user->last_name }}{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}
 @stop
 
 @section('content')
-<h2>User {{{ $user->member_id }}}</h2>
-<ul>
-    <li>{{{ $user->first_name }}} {{{ $user->last_name }}}</li>
-    <li>{{{ $user->email }}}</li>
-</ul>
+    @include('partials.servicerecord', array('user' => $user))
 @stop
