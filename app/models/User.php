@@ -528,10 +528,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getExamLastUpdated()
     {
-        $exams = Exam::where('member_id', '=', $this->member_id)->get();
+        $exams = Exam::where('member_id', '=', $this->member_id)->first();
 
-        if (isset( $exams[0] ) === true) {
-            return $exams[0]['updated_at'];
+        if (isset( $exams ) === true) {
+            return $exams['updated_at'];
         } else {
             return false;
         }

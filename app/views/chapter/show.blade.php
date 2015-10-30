@@ -133,14 +133,20 @@ switch ($detail->chapter_type) {
                     @else
                         Commanding Officer:
                     @endif
-                    @if( isset( $command['CO'] ) )
-                        <a href="{{ route('user.show' , [(string)$command['CO']->_id]) }}">{{ $command['CO']->getGreeting() }} {{ $command['CO']->first_name }}{{ isset($command['CO']->middle_name) ? ' ' . $command['CO']->middle_name : '' }} {{ $command['CO']->last_name }}{{ !empty($command['CO']->suffix) ? ' ' . $command['CO']->suffix : '' }}
-                            , {{$command['CO']->branch}}</a>
+                    @if(isset($command['CO']))
+                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                            <a href="{{ route('user.show' , [(string)$command['CO']->_id]) }}">
+                                @endif
+                                {{ $command['CO']->getGreeting() }} {{ $command['CO']->first_name }}{{ isset($command['CO']->middle_name) ? ' ' . $command['CO']->middle_name : '' }} {{ $command['CO']->last_name }}{{ !empty($command['CO']->suffix) ? ' ' . $command['CO']->suffix : '' }}
+                                , {{$command['CO']->branch}}
+                                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                            </a>
+                        @endif
                     @else
                         N/A
                     @endif
                 </div>
-                @if(Auth::user()->getPrimaryAssignmentId() == $detail->id || Auth::user()->getSecondaryAssignmentId() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS'] || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true))
+                @if(Auth::user()->getAssignedShip() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS'] || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true))
                     <div style="padding-bottom: 2px;">
                         @if($detail->chapter_type == 'fleet')Deputy Fleet Commander:
                         @elseif($detail->chapter_type == 'bureau')
@@ -149,20 +155,45 @@ switch ($detail->chapter_type) {
                             Executive Officer:
                         @endif
                         @if( isset( $command['XO'] ) )
-                            <a href="{{ route('user.show' , [(string)$command['XO']->id]) }}">{{ $command['XO']->getGreeting() }} {{ $command['XO']->first_name }}{{ isset($command['XO']->middle_name) ? ' ' . $command['XO']->middle_name : '' }} {{ $command['XO']->last_name }}{{ !empty($command['XO']->suffix) ? ' ' . $command['XO']->suffix : '' }}
-                                , {{$command['XO']->branch}}</a>
+                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                                <a href="{{ route('user.show' , [(string)$command['XO']->id]) }}">
+                                    @endif
+                                    {{ $command['XO']->getGreeting() }} {{ $command['XO']->first_name }}{{ isset($command['XO']->middle_name) ? ' ' . $command['XO']->middle_name : '' }} {{ $command['XO']->last_name }}{{ !empty($command['XO']->suffix) ? ' ' . $command['XO']->suffix : '' }}
+                                    , {{$command['XO']->branch}}
+                                    @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                                </a>
+                            @endif
                         @else
                             N/A
                         @endif
                     </div>
                     @if($detail->chapter_type != 'bureau')
                         <div style="padding-bottom: 2px;">
-                            @if($detail->chapter_type == 'fleet')Fleet
-                            @endif
-                            Bosun:
+                            <?php
+                            switch ($detail->chapter_type) {
+                                case 'shuttle':
+                                case 'section':
+                                case 'squad':
+                                case 'platoon':
+                                case 'battalion':
+                                    echo "Gunny: ";
+                                    break;
+                                case 'fleet':
+                                    echo "Fleet Bosun: ";
+                                    break;
+                                default:
+                                    echo "Bosun: ";
+                            }
+                            ?>
                             @if( isset( $command['BOSUN'] ) )
-                                <a href="{{ route('user.show' , [(string)$command['BOSUN']->id]) }}">{{ $command['BOSUN']->getGreeting() }} {{ $command['BOSUN']->first_name }}{{ isset($command['BOSUN']->middle_name) ? ' ' . $command['BOSUN']->middle_name : '' }} {{ $command['BOSUN']->last_name }}{{ !empty($command['BOSUN']->suffix) ? ' ' . $command['BOSUN']->suffix : '' }}
-                                    , {{$command['BOSUN']->branch}}</a>
+                                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                                    <a href="{{ route('user.show' , [(string)$command['BOSUN']->id]) }}">
+                                        @endif
+                                        {{ $command['BOSUN']->getGreeting() }} {{ $command['BOSUN']->first_name }}{{ isset($command['BOSUN']->middle_name) ? ' ' . $command['BOSUN']->middle_name : '' }} {{ $command['BOSUN']->last_name }}{{ !empty($command['BOSUN']->suffix) ? ' ' . $command['BOSUN']->suffix : '' }}
+                                        , {{$command['BOSUN']->branch}}
+                                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                                    </a>
+                                @endif
                             @else
                                 N/A
                             @endif
@@ -172,7 +203,7 @@ switch ($detail->chapter_type) {
             </div>
         </div>
     @endif
-    @if (count($crew) > 0 && (Auth::user()->getPrimaryAssignmentId() == $detail->id || Auth::user()->getSecondaryAssignmentId() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true))
+    @if (count($crew) > 0 && (Auth::user()->getAssignedShip() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true))
         <div class="row padding-5">
             <div class="small-2 columns Incised901Light">
                 Crew Roster:
@@ -182,42 +213,60 @@ switch ($detail->chapter_type) {
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>ID #</th>
+                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                            <th>ID #</th>
+                        @endif
                         <th>Rank</th>
                         <th style="text-align: center">Time in Grade</th>
                         <th>Billet</th>
                         <th>Branch</th>
-                        <th>City</th>
-                        <th>State / Province</th>
+                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                            <th>City</th>
+                            <th>State / Province</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($crew as $member)
                         <tr>
                             <td>
-                                <a href="{{ route('user.show', [$member->_id]) }}">{{ $member->last_name }}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
-                                    , {{ $member->first_name }}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}</a>
+                                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                                    <a href="{{ route('user.show', [$member->_id]) }}">
+                                        @endif
+                                        {{ $member->last_name }}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
+                                        , {{ $member->first_name }}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}
+                                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                                    </a>
+                                @endif
                             </td>
-                            <td>{{$member->member_id}}</td>
+                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                                <td>{{$member->member_id}}</td>
+                            @endif
                             <td>{{ $member->getGreeting() }} ({{$member->rank['grade']}})</td>
                             <td>{{is_null($tig = $member->getTimeInGrade(true))?'N/A':$tig}}</td>
                             <td>{{ $member->getBilletForChapter($detail->id) }}</td>
                             <td>{{$member->branch}}</td>
-                            <td>{{$member->city}}</td>
-                            <td>{{$member->state_province}}</td>
+                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                                <td>{{$member->city}}</td>
+                                <td>{{$member->state_province}}</td>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>
                     <tfoot>
                     <tr>
                         <th>Name</th>
-                        <th>ID #</th>
+                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                            <th>ID #</th>
+                        @endif
                         <th>Rank</th>
                         <th style="text-align: center">Time in Grade</th>
                         <th>Billet</th>
                         <th>Branch</th>
-                        <th>City</th>
-                        <th>State / Province</th>
+                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
+                            <th>City</th>
+                            <th>State / Province</th>
+                        @endif
                     </tr>
                     </tfoot>
                 </table>
