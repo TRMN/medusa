@@ -2404,13 +2404,12 @@ jQuery(document).ready(function ($) {
     });
 
     $(function () {
-        $('#sbAccordian').accordion({
+        $('.sbAccordian').accordion({
             active: false,
             collapsible: true,
             header: "h5",
             heightStyle: "content",
-            icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" }
-
+            icons: {"header": "ui-icon-plus", "activeHeader": "ui-icon-minus"}
         });
     });
 
