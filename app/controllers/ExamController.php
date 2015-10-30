@@ -15,7 +15,7 @@ class ExamController extends \BaseController
             return $redirect;
         }
 
-        return View::make('exams.index');
+        return View::make('exams.index', ['messages' => Message::where('source', '=', 'import_grades')->orderBy('created_at','asc')->get()]);
     }
 
     public function upload()
@@ -25,6 +25,9 @@ class ExamController extends \BaseController
         }
 
         if (Input::file('file')->isValid() === true) {
+
+            // Delete any records in the messages collection, this is a fresh run
+            Message::where('source', '=', 'import_grades')->delete();
 
             $ext = Input::file('file')->getClientOriginalExtension();
 
