@@ -2380,6 +2380,17 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
+    $('#defaultPerms').on('click', function () {
+        $('.permissions').prop('checked', false);
+        $('#LOGOUT').prop('checked', true);
+        $('#CHANGE_PWD').prop('checked', true);
+        $('#EDIT_SELF').prop('checked', true);
+        $('#ROSTER').prop('checked', true);
+        $('#TRANSFER').prop('checked', true);
+        $('#dutyroster').val('');
+        return false;
+    });
+
 
     jQuery('#duplicates').DataTable({
         "autoWidth": true,

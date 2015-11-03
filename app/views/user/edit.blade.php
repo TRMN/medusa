@@ -298,12 +298,13 @@
                         <button class="tiny secondary" id="slPerms">Space Lord</button>
                         <button class="tiny secondary" id="rmaPerms">RMA</button>
                         <button class="tiny secondary" id="rmmcPerms">RMMC</button>
+                        <button class="tiny secondary" id="defaultPerms">Default</button>
 
                 </div>
             </div>
             <ul class="small-block-grid-3">
                 @foreach(DB::table('permissions')->orderBy('name', 'asc')->get() as $permission)
-                    <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name']]) }}
+                    <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions']) }}
                         <span title="{{$permission['description']}}">{{$permission['name']}}</span></li>
                 @endforeach
             </ul>
