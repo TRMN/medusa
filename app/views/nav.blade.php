@@ -67,6 +67,17 @@
                 <a href="{{route('exam.index')}}">Upload Exams</a>
             </div>
         @endif
+
+        @if($permsObj->hasPermissions(['ADD_MARDET','EDIT_MARDET','DELETE_MARDET']) === true)
+            <div class="nav-header lnav">RMMC</div>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['ADD_MARDET']) === true)<a
+                        href="{{ route('mardet.create') }}">Stand-up MARDET</a>
+                @endif
+            </div>
+        @endif
+
+
         @if($permsObj->hasPermissions(['ADD_UNIT','EDIT_UNIT','DELETE_UNIT']) === true)
             <div class="nav-header lnav">RMA</div>
             <div class="rnav">

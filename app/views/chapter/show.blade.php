@@ -28,11 +28,18 @@ switch ($detail->chapter_type) {
 
 @section('content')
     <div class="row">
-        @if(file_exists(public_path() . '/crests/' . $detail->hull_number . '.svg') === true)
+        <?php
+        if ($detail->chapter_type == 'fleet') {
+            $path = '/crests/fleet/';
+        } else {
+            $path = '/crests/';
+        }
+        ?>
+        @if(file_exists(public_path() . $path . $detail->hull_number . '.svg') === true)
             <div class="columns small-2">
-                <img class='crest' src="{{asset('/crests/' . $detail->hull_number . '.svg')}}"
+                <img class='crest' src="{{asset($path . $detail->hull_number . '.svg')}}"
                      alt="{{$detail->chapter_name}} Crest"
-                     height="100px" width="100px" data-src="{{asset('/crests/' . $detail->hull_number . '.svg')}}">
+                     width="100px" data-src="{{asset($path . $detail->hull_number . '.svg')}}">
             </div>
         @endif
         <div class="columns small-10 end">

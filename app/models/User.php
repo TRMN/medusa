@@ -81,6 +81,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'application_date',
         'registration_date',
         'active',
+        'dob',
     ];
 
     public function announcements()

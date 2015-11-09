@@ -75,6 +75,7 @@ Route::get(
     ['as' => 'unit.deactivate', 'uses' => 'UnitController@deactivate', 'before' => 'auth']
 );
 Route::resource('unit', 'UnitController', ['before' => 'auth']);
+Route::resource('mardet', 'MardetController', ['before' => 'auth']);
 
 Route::controller('password', 'RemindersController');
 
