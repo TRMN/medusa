@@ -6,7 +6,8 @@ class MardetController extends \BaseController {
     private $permissions = ['ADD' => 'ADD_MARDET', 'EDIT' => 'EDIT_MARDET', 'DELETE' => 'DELETE_MARDET'];
     private $auditName = 'MardetController';
     private $select = 'Select a MARDET Type';
-    private $title = 'MARDET';
+    private $title = 'a MARDET';
+    private $branch = 'RMMC';
 
     use Medusa\Echelons\MedusaEchelons;
 

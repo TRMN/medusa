@@ -7,7 +7,8 @@ class UnitController extends \BaseController
     private $permissions = ['ADD' => 'ADD_UNIT', 'EDIT' => 'EDIT_UNIT', 'DELETE' => 'DELETE_UNIT'];
     private $auditName = 'UnitController';
     private $select = 'Select a Command/Unit Type';
-    private $title = 'Command or Unit';
+    private $title = 'a Command or Unit';
+    private $branch = 'RMA';
 
     use Medusa\Echelons\MedusaEchelons;
 

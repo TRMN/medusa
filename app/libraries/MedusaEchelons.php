@@ -78,6 +78,8 @@ trait MedusaEchelons {
             }
         }
 
+        $data['branch'] = $this->branch;
+
         $this->writeAuditTrail(
             (string)\Auth::user()->_id,
             'create',
@@ -213,6 +215,8 @@ trait MedusaEchelons {
                 $chapter->$k = $v;
             }
         }
+
+        $data['branch'] = $this->branch;
 
         $this->writeAuditTrail(
             (string)\Auth::user()->_id,

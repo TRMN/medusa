@@ -1,11 +1,11 @@
 @extends('layout')
 
 @section('pageTitle')
-    Stand-up a {{$title}}
+    Stand-up {{$title}}
 @stop
 
 @section('content')
-<h2>Stand-up a {{$title}}</h2>
+<h2>Stand-up {{$title}}</h2>
 
 {{ Form::model( $chapter, [ 'route' => [ 'unit.store' ] ] ) }}
 <div class="row">
