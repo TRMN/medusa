@@ -5,6 +5,13 @@
  */
 class EchelonController extends \BaseController {
 
+    private $chapterTypes = ['district', 'fleet', 'task_force', 'task_group', 'squadron', 'division'];
+    private $permissions = ['ADD' => 'CREATE_ECHELON', 'EDIT' => 'CREATE_ECHELON', 'DELETE' => 'DEL_ECHELON'];
+    private $auditName = 'EchelonController';
+    private $select = 'Select an Echelon Type';
+    private $title = 'an Echelon';
+    private $branch = 'RMN';
+
 	/**
 	 * Display a listing of the resource.
 	 * GET /echelon

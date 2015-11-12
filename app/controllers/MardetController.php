@@ -8,6 +8,7 @@ class MardetController extends \BaseController {
     private $select = 'Select a MARDET Type';
     private $title = 'a MARDET';
     private $branch = 'RMMC';
+    private $routePrefix = 'mardet';
 
     use Medusa\Echelons\MedusaEchelons;
 

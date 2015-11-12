@@ -50,6 +50,7 @@ trait MedusaEchelons {
                 'chapter'      => new \Chapter,
                 'commands'       => ['0' => 'Select a Command/Unit'] + $this->getCommands(),
                 'title' => $this->title,
+                'route' => $this->routePrefix,
             ]
         );
     }
@@ -168,6 +169,7 @@ trait MedusaEchelons {
                 'chapterList'  => ['0' => 'Select a Command/Unit'] + $this->getCommands(),
                 'numCrew'      => count($crew) + count($childUnits),
                 'title'        => $this->title,
+                'route'        => $this->routePrefix,
             ]
         );
     }

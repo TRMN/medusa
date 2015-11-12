@@ -8,7 +8,7 @@
     <h1>
         Editing {{ $chapter->chapter_name }}{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}</h1>
 
-    {{ Form::model( $chapter, [ 'route' => [ 'echelon.update', $chapter->_id ], 'method' => 'put' ] ) }}
+    {{ Form::model( $chapter, [ 'route' => [ $route . '.update', $chapter->_id ], 'method' => 'put' ] ) }}
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
             {{ Form::label('chapter_name', 'Command or Unit Name') }} {{ Form::text('chapter_name') }}

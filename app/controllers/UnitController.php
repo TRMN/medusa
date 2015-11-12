@@ -9,6 +9,7 @@ class UnitController extends \BaseController
     private $select = 'Select a Command/Unit Type';
     private $title = 'a Command or Unit';
     private $branch = 'RMA';
+    private $routePrefix = 'unit';
 
     use Medusa\Echelons\MedusaEchelons;
 

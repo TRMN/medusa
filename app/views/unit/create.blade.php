@@ -7,7 +7,7 @@
 @section('content')
 <h2>Stand-up {{$title}}</h2>
 
-{{ Form::model( $chapter, [ 'route' => [ 'unit.store' ] ] ) }}
+{{ Form::model( $chapter, [ 'route' => [ $route . '.store' ] ] ) }}
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
     {{ Form::label('chapter_name', 'Command or Unit Name') }} {{ Form::text('chapter_name') }}
