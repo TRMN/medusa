@@ -51,6 +51,7 @@ trait MedusaEchelons {
                 'commands'       => ['0' => 'Select a Command/Unit'] + $this->getCommands(),
                 'title' => $this->title,
                 'route' => $this->routePrefix,
+                'branches' => $this->getBranches(),
             ]
         );
     }
@@ -78,8 +79,6 @@ trait MedusaEchelons {
                 unset( $data[$k] );
             }
         }
-
-        $data['branch'] = $this->branch;
 
         $this->writeAuditTrail(
             (string)\Auth::user()->_id,
@@ -170,6 +169,7 @@ trait MedusaEchelons {
                 'numCrew'      => count($crew) + count($childUnits),
                 'title'        => $this->title,
                 'route'        => $this->routePrefix,
+                'branches' => $this->getBranches(),
             ]
         );
     }
@@ -217,8 +217,6 @@ trait MedusaEchelons {
                 $chapter->$k = $v;
             }
         }
-
-        $data['branch'] = $this->branch;
 
         $this->writeAuditTrail(
             (string)\Auth::user()->_id,

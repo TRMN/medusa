@@ -22,6 +22,7 @@ Route::post( '/signin', [ 'as' => 'signin', 'uses' => 'AuthController@signin' ] 
 Route::get( '/register', [ 'as' => 'register', 'uses' => 'UserController@register' ] );
 Route::post( '/apply', [ 'as' => 'user.apply', 'uses' => 'UserController@apply' ] );
 
+
 // Users
 
 Route::model( 'user', 'User');
@@ -49,6 +50,10 @@ Route::get('/user_request/deny/{request}', ['as' => 'user.change.deny', 'uses' =
 // Other Routes
 Route::model('chapter', 'Chapter');
 Route::model('echelon', 'Chapter');
+Route::model('mardet', 'Chapter');
+Route::model('unit', 'Chapter');
+Route::model('anyunit', 'Chapter');
+
 Route::get( '/home', [ 'as' => 'home', 'uses' => 'HomeController@index'] );
 Route::get( '/', [ 'as' => 'root', 'uses' => 'HomeController@index' ] );
 Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
@@ -74,8 +79,20 @@ Route::get(
     '/unit/{unit}/deactivate',
     ['as' => 'unit.deactivate', 'uses' => 'UnitController@deactivate', 'before' => 'auth']
 );
+
 Route::resource('unit', 'UnitController', ['before' => 'auth']);
 Route::resource('mardet', 'MardetController', ['before' => 'auth']);
+Route::get(
+    '/mardet/{unit}/deactivate',
+    ['as' => 'mardet.deactivate', 'uses' => 'MardetController@deactivate', 'before' => 'auth']
+);
+Route::resource('anyunit', 'AnyUnitController', ['before' => 'auth']);
+Route::get(
+    '/anyunit/{unit}/deactivate',
+    ['as' => 'anyunit.deactivate', 'uses' => 'AnyUnitController@deactivate', 'before' => 'auth']
+);
+
+Route::resource('type', 'TypeController', ['before' => 'auth']);
 
 Route::controller('password', 'RemindersController');
 
@@ -99,6 +116,9 @@ Route::get( '/api/tf', 'ApiController@getTaskForces');
 Route::get('/api/tg', 'ApiController@getTaskGroups');
 Route::get('/api/squadron', 'ApiController@getSquadrons');
 Route::get('/api/division', 'ApiController@getDivisions');
+Route::get('/api/office', 'ApiController@getOffices');
+Route::get('/api/academy', 'ApiController@getAcademies');
+Route::get('/api/school', 'ApiController@getSchools');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 

@@ -55,9 +55,11 @@
                 @if($permsObj->hasPermissions(['ADD_MEMBER']) === true)<a href="{{ route('user.create') }}">Add
                     Member</a><br/>@endif
                 @if($permsObj->hasPermissions(['PROC_XFERS']) === true)<a href="{{ route('user.change.review') }}">Review
-                    Change Requests</a><br />@endif
-                @if($permsObj->hasPermissions(['ADD_BILLET']) === true) <a href="{{ route('billet.create') }}">Add Billet</a><br /> @endif
-                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true) <a href="{{ route('billet.index') }}">Billet List</a><br /> @endif
+                    Change Requests</a><br/>@endif
+                @if($permsObj->hasPermissions(['ADD_BILLET']) === true) <a href="{{ route('billet.create') }}">Add
+                    Billet</a><br/> @endif
+                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true) <a
+                        href="{{ route('billet.index') }}">Billet List</a><br/> @endif
             </div>
         @endif
 
@@ -84,6 +86,16 @@
                 @if($permsObj->hasPermissions(['ADD_UNIT']) === true)<a
                         href="{{ route('unit.create') }}">Stand-up Command/Unit</a>
                 @endif
+            </div>
+        @endif
+
+
+        @if($permsObj->hasPermissions(['ALL_PERMS']) === true)
+            <div class="nav-header lnav">System</div>
+            <div class="rnav">
+                <a href="{{ route('anyunit.create') }}">Create Unit/Echelon</a><br />
+                <a href="{{ route('type.index') }}">List Chapter Types</a><br />
+                <a href="{{ route('type.create') }}">Add Chapter Type</a>
             </div>
         @endif
     @endif

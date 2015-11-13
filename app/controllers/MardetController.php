@@ -1,6 +1,7 @@
 <?php
 
-class MardetController extends \BaseController {
+class MardetController extends \BaseController
+{
 
     private $chapterTypes = ['shuttle', 'section', 'squad', 'platoon', 'company', 'battalion'];
     private $permissions = ['ADD' => 'ADD_MARDET', 'EDIT' => 'EDIT_MARDET', 'DELETE' => 'DELETE_MARDET'];
@@ -19,6 +20,11 @@ class MardetController extends \BaseController {
         asort($chapters);
 
         return $chapters;
+    }
+
+    private function getBranches()
+    {
+        return Form::hidden('branch', $this->branch);
     }
 
 }

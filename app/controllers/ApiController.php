@@ -13,7 +13,7 @@ class ApiController extends BaseController
         $results = Countries::getList();
         $countries = array();
 
-        foreach($results as $country) {
+        foreach ($results as $country) {
             $countries[$country['iso_3166_3']] = $country['name'];
         }
 
@@ -34,8 +34,9 @@ class ApiController extends BaseController
         return Response::json(Chapter::getChapters());
     }
 
-    public function getChaptersByBranch($branchID, $location) {
-        return Response::json( Chapter::getChapters( $branchID, $location ) );
+    public function getChaptersByBranch($branchID, $location)
+    {
+        return Response::json(Chapter::getChapters($branchID, $location));
     }
 
     public function getRatingsForBranch($branchID)
@@ -93,9 +94,25 @@ class ApiController extends BaseController
         return Response::json(Chapter::getChaptersByType('division'));
     }
 
-    public function savePhoto() {
+    public function getOffices()
+    {
+        return Response::json(Chapter::getChaptersByType('office'));
+    }
+
+    public function getAcademies()
+    {
+        return Response::json(Chapter::getChaptersByType('academy'));
+    }
+
+    public function getSchools()
+    {
+        return Response::json(Chapter::getChaptersByType('school'));
+    }
+
+    public function savePhoto()
+    {
         if (Input::file('file')->isValid() === true) {
-            $res = User::where('member_id','=', Input::get('member_id'))->get();
+            $res = User::where('member_id', '=', Input::get('member_id'))->get();
 
             if (count($res) === 1 && $res[0]->member_id == Input::get('member_id')) {
 

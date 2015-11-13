@@ -90,29 +90,38 @@ module.exports = function() {
     };
 };
 },{}],4:[function(require,module,exports){
-module.exports = function() {
+module.exports = function () {
     this.initMemberForm = function () {
 
-        jQuery( '#user #branch' ).change( function () {
-            var branch = jQuery( '#branch' ).val();
-            jQuery.getJSON( '/api/branch/' + branch + '/grade', function ( result ) {
-                jQuery( '#user #display_rank' ).empty();
-                jQuery.each( result, function ( key, value ) {
-                    jQuery( '#user #display_rank' ).append(
-                        '<option value="' + key + '">' + value + '</option>'
-                    );
-                } );
-            } );
-            jQuery.getJSON( '/api/branch/' + branch + '/rate', function ( result ) {
-                jQuery( '#user #rating' ).empty();
-                jQuery.each( result, function ( key, value ) {
-                    jQuery( '#user #rating' ).append(
-                        '<option value="' + key + '">' + value + '</option>'
-                    );
-                } );
-            } );
+        jQuery('#user #branch').change(function () {
+            var branch = jQuery('#branch').val();
+            jQuery.getJSON('/api/branch/' + branch + '/grade', function (result) {
+                var grade = jQuery('#user #display_rank').val();
+                var options = '';
 
-        } );
+                jQuery('#user #display_rank').empty();
+                jQuery.each(result, function (key, value) {
+
+                    var option = '';
+                    option = '<option value="' + key + '"';
+                    if (grade == key) {
+                        option += ' selected';
+                    }
+                    options += option + '>' + value + '</option>';
+
+                });
+                jQuery('#user #display_rank').append(options);
+            });
+            jQuery.getJSON('/api/branch/' + branch + '/rate', function (result) {
+                jQuery('#user #rating').empty();
+                jQuery.each(result, function (key, value) {
+                    jQuery('#user #rating').append(
+                        '<option value="' + key + '">' + value + '</option>'
+                    );
+                });
+            });
+
+        });
 
         jQuery('#plocation').change({assignment: 'primary'}, getChapterList);
         jQuery('#slocation').change({assignment: 'secondary'}, getChapterList);
@@ -134,6 +143,9 @@ module.exports = function() {
             if (jQuery('#showUnjoinable').val() == 'true') {
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Headquarters">' + getURI('hq', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Bureaus">' + getURI('bureau', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Offices">' + getURI('office', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Academy">' + getURI('academy', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Schools">' + getURI('school', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Fleets">' + getURI('fleet', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Forces">' + getURI('tf', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Groups">' + getURI('tg', assignment.charAt(0) + 'assignment') + '</optgroup>');
@@ -161,7 +173,7 @@ module.exports = function() {
                 success: function (result) {
                     jQuery.each(result, function (key, value) {
                         var option = '';
-                        option = '<option value="' + key +'"';
+                        option = '<option value="' + key + '"';
                         if (jQuery('#' + sel).val() == key) {
                             option += ' selected';
                         }

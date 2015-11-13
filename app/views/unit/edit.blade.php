@@ -1,12 +1,12 @@
 @extends('layout')
 
 @section('pageTitle')
- Edit {{ $chapter->chapter_name }}{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}
+ Edit {{ $chapter->chapter_name }} @if (empty($chapter->hull_number) === false) ({{ $chapter->hull_number }}) @endif
 @stop
 
 @section('content')
     <h1>
-        Editing {{ $chapter->chapter_name }}{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}</h1>
+        Editing {{ $chapter->chapter_name }} @if (empty($chapter->hull_number) === false) ({{ $chapter->hull_number }}) @endif</h1>
 
     {{ Form::model( $chapter, [ 'route' => [ $route . '.update', $chapter->_id ], 'method' => 'put' ] ) }}
     <div class="row">
@@ -14,6 +14,7 @@
             {{ Form::label('chapter_name', 'Command or Unit Name') }} {{ Form::text('chapter_name') }}
         </div>
     </div>
+    {{ $branches }}
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
             {{ Form::label('Chapter Type', 'Command/Unit Type') }} {{ Form::select('chapter_type', $chapterTypes, $chapter->chapter_type) }}

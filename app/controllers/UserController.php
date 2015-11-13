@@ -879,7 +879,7 @@ class UserController extends \BaseController
             'countries' => $countries,
             'branches'  => $branches,
             'chapters'  => ['' => 'Select a Chapter'],
-            'locations' => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
+            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
             'register'  => true,
         ];
 

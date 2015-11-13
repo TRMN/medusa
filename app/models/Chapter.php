@@ -73,6 +73,8 @@ class Chapter extends Eloquent
 
     static function getChapters($branch = '', $location = 0, $joinableOnly = true)
     {
+        $nf = new NumberFormatter('en_US', NumberFormatter::ORDINAL);
+
         $holdingChapters = ['SS-001', 'SS-002', 'RMOP-01', 'HC'];
 
         if (empty( $branch ) === false) {
@@ -118,7 +120,11 @@ class Chapter extends Eloquent
                     $append = ' (' . $co['city'] . ', ' . $co['state_province'] . ')';
                 }
 
-                if (is_numeric($location) === true || $co['state_province'] == $location) {
+                if ($chapter->chapter_type == 'fleet') {
+                    $append = ' (' . $nf->format($chapter->hull_number) . ' Fleet)';
+                }
+
+                if ($location == 0 || $co['state_province'] == $location) {
                     $chapters[$chapter->_id] = $chapter->chapter_name . $append;
                 }
             }
