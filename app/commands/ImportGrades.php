@@ -39,19 +39,36 @@ class ImportGrades extends Command
      */
     public function fire()
     {
+        // Get the current setting
+
+        $timeLimit = ini_get('max_execution_time');
+
+        // Allow for enough time
+
+        set_time_limit(60);
+
         $examRecords = []; // start with a clean array
 
         foreach ([
-                     'RMN Exam Grading Sheet'  => 'importMainLineExams',
-                     'IMNA Exam Grades'        => 'importGsnMainLineExams',
-                     'RMMC Exam Grading Sheet' => 'importRmmcMainLineExams',
-                     'RMA Exam Grading Sheet'  => 'importRmaMainLineExams'
+                     'RMN Exam Grading Sheet'     => 'importMainLineExams',
+                     'RMN Specialist Exam Grades' => 'importRmnSpecialityExams',
+                     'IMNA Exam Grades'           => 'importGsnMainLineExams',
+                     'RMMC Exam Grading Sheet'    => 'importRmmcMainLineExams',
+                     'RMA Exam Grading Sheet'     => 'importRmaMainLineExams'
                  ] as $sheet => $importRoutine) {
 
             $examRecords = $this->processExams($examRecords, $sheet, $importRoutine);
         }
 
         $this->updateExamGrades($examRecords);
+
+        // Set it back to what it was
+
+        if (empty( $timeLimit ) === true) {
+            set_time_limit(30);
+        } else {
+            set_time_limit($timeLimit);
+        }
     }
 
     protected function updateExamGrades(array $records)
@@ -182,32 +199,79 @@ class ImportGrades extends Command
         return [];
     }
 
-    protected function parseScoreAndDate($value)
+    protected function parseScoreAndDate($value, $debug=false)
     {
         $value = strtoupper($value);
 
-        $_date = strtoupper(date('d M Y', strtotime($value)));
-
-        if (strpos($value, '%') === false &&
-            strpos($value, 'BETA') === false &&
-            strpos($value, 'CREA') === false &&
-            strpos($value, 'PASS') === false &&
-            $_date !== '01 JAN 1970'
-        ) {
-            // Valid date and no score
-            return ['score' => '100%', 'date' => $_date];
+        if (preg_match('/^(\w+)$/', $value) === 1) {
+            return ['score' => $value, 'date' => 'UNKNOWN'];
         }
 
-        $scoreAndDate = preg_split('/[ -]+/', $value, 2);
+        if (substr_count($value, '/') === 1) {
+            // One and only 1 slash, let's make it parseable
+            $value = str_replace('/', '-', $value);
+        }
 
+        // Grrrr!!!! Some instructor keeps using $ instead of %
+
+        $value = str_replace('$', '%', $value);
+
+        // SIGH!  Virtually every other instructor is doing DDMONYY but noooo, you have to be special and do DD MON YY
+        if (substr_count($value, ' ') >= 3) {
+            $scoreAndDate = preg_split('/[-]+/', $value, 2);
+        } else {
+            $scoreAndDate = preg_split('/[ -]+/', $value, 2);
+        }
+
+        if (count($scoreAndDate) == 1) {
+            // No spaces or dashes to split on, so we have yet another format!
+            $scoreAndDate = preg_split('/[%]+/', $value, 2);
+        }
+if ($debug) { $this->info(print_r($scoreAndDate, true));}
         if (isset( $scoreAndDate[1] ) === true) {
-            $date = strtoupper(date('d M Y', strtotime($scoreAndDate[1])));
+            $scoreAndDate[0] = trim($scoreAndDate[0]);
+            $scoreAndDate[1] = trim($scoreAndDate[1]);
+
+            if (substr($scoreAndDate[1], -1) == '%' || substr($scoreAndDate[1], 0, 4) == 'PASS') {
+                // This is a score
+                $score = $scoreAndDate[1];
+                $date = strtoupper(date('d M Y', strtotime($scoreAndDate[0])));
+            } else {
+                // This is a date
+if ($debug) { $this->info('2nd Element is a date');}
+                if (preg_match('/^(\d+)$/', $scoreAndDate[1]) === 1) {
+                    if ($debug) { $this->info('Hit all digits');}
+                    // The date is all numbers, it's probably not in a valid format.  Assume MMDDYY or MMDDYYYY
+                    $date =
+                        strtoupper(
+                            date(
+                                'd M Y',
+                                strtotime(
+                                    substr($scoreAndDate[1], 0, 2) . '/' .
+                                    substr($scoreAndDate[1], 2, 2) . '/' .
+                                    substr($scoreAndDate[1], 4)
+                                )
+                            )
+                        );
+                } else {
+                    $date = strtoupper(date('d M Y', strtotime(trim($scoreAndDate[1]))));
+if ($debug) { $this->info(var_dump($scoreAndDate[1])); $this->info($date);}
+                }
+
+                $score = $scoreAndDate[0];
+if ($debug) { $this->info($score);}
+            }
         } else {
             $date = "UNKNOWN";
+            $score = $scoreAndDate[0];
         }
 
-        if (isset( $scoreAndDate[0] ) === true) {
-            return ['score' => $scoreAndDate[0], 'date' => $date];
+        if (isset( $scoreAndDate[1] ) === true) {
+            // Make sure we have a % at the end of the score
+            if (substr($score, -1) != '%' && $score != 'PASS' && $score != 'BETA' ) {
+                $score .= '%';
+            }
+            return ['score' => $score, 'date' => $date];
         } else {
             return ['score' => '', 'date' => ''];
         }
@@ -370,7 +434,37 @@ class ImportGrades extends Command
 
         foreach ($mainLineExams as $field => $examId) {
             if (empty( $record[$field] ) === false) {
-                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+                $debug=false;
+                if ($record['member_number'] == 'RMN-0011-08' && $examId == 'SIA-RMMC-0103') { $this->info($record[$field]); $debug = true;}
+                $exam[$examId] = $this->parseScoreAndDate($record[$field], $debug);
+                if ($record['member_number'] == 'RMN-0011-08' && $examId == 'SIA-RMMC-0103') { $this->info(print_r($exam[$examId], true));}
+            }
+        }
+
+        return $exam;
+    }
+
+    protected function importRmnSpecialityExams(array $record)
+    {
+        // Build the array of field name to exam number translation
+        $rmnSpecialityExams = [];
+
+        for ($exam = 1; $exam < 33; $exam++) {
+            $examNumber = str_pad($exam, 2, '0', STR_PAD_LEFT);
+
+            foreach (['A', 'C', 'W', 'D'] as $examLevel) {
+                $rmnSpecialityExams['srn_' . $examNumber . strtolower($examLevel)] =
+                    'SIA-SRN-' . $examNumber . $examLevel;
+            }
+        }
+
+        $exam = [];
+
+        foreach ($rmnSpecialityExams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                if (strtoupper($record[$field]) !== 'SKIPPED') {
+                    $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+                }
             }
         }
 
