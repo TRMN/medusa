@@ -294,7 +294,7 @@
                 <div class="columns small-12 text-center">
                     Common Permission Sets<br />
 
-                        <button class="tiny secondary" id="coPerms">Commanding Officer</button>
+                        <button class="tiny secondary" id="coPerms">Command Triad</button>
                         <button class="tiny secondary" id="slPerms">Space Lord</button>
                         <button class="tiny secondary" id="rmaPerms">RMA</button>
                         <button class="tiny secondary" id="rmmcPerms">RMMC</button>
