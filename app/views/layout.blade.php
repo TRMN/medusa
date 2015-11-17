@@ -45,7 +45,7 @@
     </header>
 
     <div class="row trmn-width">
-        @if(empty($user->tos) === false && empty($user->osa) === false)
+        @if(empty(Auth::user()->tos) === false && empty(Auth::user()->osa) === false)
         <div class="small-2 columns trmn-width">
             @include( 'nav', ['permsObj' => $permsObj] )
         </div>
