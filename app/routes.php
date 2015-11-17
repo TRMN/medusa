@@ -36,6 +36,7 @@ Route::get(
 Route::get('/user/{user}/reset', ['as' => 'user.getReset', 'uses' => 'UserController@getReset', 'before' => 'auth']);
 Route::post('/user/{user}/reset', ['as' => 'user.postReset', 'uses' => 'UserController@postReset', 'before' => 'auth']);
 Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
+Route::post('/user/osa', ['as' => 'osa', 'uses' => 'UserController@osa', 'before' => 'auth']);
 Route::get('/user/find/{billet}', ['as' => 'user.dups', 'uses' => 'UserController@findDuplicateAssignment']);
 
 // Assignment Change Requests
