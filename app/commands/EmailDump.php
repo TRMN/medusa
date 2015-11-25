@@ -38,17 +38,20 @@ class EmailDump extends Command {
 	public function fire()
 	{
 		foreach(User::where('active','=', 1)->where('registration_status','=','Active')->get() as $user) { 
-            $today = strtotime(date('Y') . '-' . date('m') . date('d');
-            $bDate = $user->dob;
+            $today = strtotime(date('Y') . '-' . date('m') . '-' . date('d'));
+            $bDate = strtotime($user->dob);
             $adultToday = strtotime('-18 year', $today );
             
-            if ( isnull($bDate) ) {
-                echo $user->email_address . "*\n";
-            } else if ( $bdate == $adultToday ) {
-                echo $user->email_address ;
+//            echo $bDate . " " . $adultToday;
+            
+            if ( is_null($bDate) ) {
+                echo $user->email_address . " *\n";
+            } else if ( $bDate <= $adultToday ) {
+                echo $user->email_address . "\n";
             } else {
                 continue;
             }
+            continue;
         }
 	}
 
@@ -59,9 +62,7 @@ class EmailDump extends Command {
 	 */
 	protected function getArguments()
 	{
-		return array(
-			array('example', InputArgument::REQUIRED, 'An example argument.'),
-		);
+		return [];
 	}
 
 	/**
@@ -71,9 +72,7 @@ class EmailDump extends Command {
 	 */
 	protected function getOptions()
 	{
-		return array(
-			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
-		);
+		return [];
 	}
 
 }
