@@ -4,35 +4,33 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class CodeTest extends Command
-{
-    use \Medusa\Permissions\MedusaPermissions;
+class MemberExport extends Command {
 
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'code:test';
+	/**
+	 * The console command name.
+	 *
+	 * @var string
+	 */
+	protected $name = 'member:export';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Test random parts of the code base';
+	/**
+	 * The console command description.
+	 *
+	 * @var string
+	 */
+	protected $description = 'Export selected fields from the member database collection';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+	/**
+	 * Create a new command instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+	}
 
-    /**
+   /**
      * Execute the console command.
      *
      * @return mixed
@@ -109,5 +107,4 @@ class CodeTest extends Command
             ['noDoB', null, InputOption::VALUE_NONE, 'Limit export to members who do not have a date of birth on record'],
         ];
     }
-
 }
