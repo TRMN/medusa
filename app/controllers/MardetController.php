@@ -3,7 +3,7 @@
 class MardetController extends \BaseController
 {
 
-    private $chapterTypes = ['shuttle', 'section', 'squad', 'platoon', 'company', 'battalion'];
+    private $chapterTypes = ['shuttle', 'section', 'squad', 'platoon', 'company', 'battalion', 'corps', 'exp_force', 'regiment'];
     private $permissions = ['ADD' => 'ADD_MARDET', 'EDIT' => 'EDIT_MARDET', 'DELETE' => 'DELETE_MARDET'];
     private $auditName = 'MardetController';
     private $select = 'Select a MARDET Type';
@@ -15,7 +15,15 @@ class MardetController extends \BaseController
 
     private function getCommands()
     {
-        $chapters = Chapter::getChaptersByType('ship');
+        $types = ['ship', 'corps', 'exp_force', 'regiment'];
+
+        foreach ($types as $type) {
+            if (empty($chapters) == true) {
+                $chapters = Chapter::getChaptersByType($type);
+            } else {
+                $chapters = array_merge($chapters, Chapter::getChaptersByType($type));
+            }
+        }
 
         asort($chapters);
 

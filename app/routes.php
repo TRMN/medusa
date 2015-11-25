@@ -92,6 +92,7 @@ Route::get(
     ['as' => 'anyunit.deactivate', 'uses' => 'AnyUnitController@deactivate', 'before' => 'auth']
 );
 
+Route::model('type', 'Type');
 Route::resource('type', 'TypeController', ['before' => 'auth']);
 
 Route::controller('password', 'RemindersController');

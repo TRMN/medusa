@@ -26,7 +26,7 @@
         </ul>
 
         <div id="members-1">
-            <table id="memberList-1" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -81,7 +81,7 @@
         </div>
 
         <div id="inactive">
-            <table id="inactiveList" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -137,7 +137,7 @@
 
         @if($permsObj->hasPermissions('ALL_PERMS') === true)
             <div id="suspended">
-                <table id="suspendedList" class="compact row-border">
+                <table class="trmnTableWithActions compact row-border">
                     <thead>
                     <tr>
                         <th width="30%">Name</th>
@@ -192,7 +192,7 @@
             </div>
 
             <div id="expelled">
-                <table id="expelledList" class="compact row-border">
+                <table class="trmnTableWithActions compact row-border">
                     <thead>
                     <tr>
                         <th width="30%">Name</th>
@@ -249,7 +249,7 @@
 
         <div id="members-9">
 
-            <table id="memberList-9" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -304,7 +304,7 @@
         </div>
         <div id="members-8">
 
-            <table id="memberList-8" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -358,7 +358,7 @@
 
         </div>
         <div id="members-7">
-            <table id="memberList-7" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -412,7 +412,7 @@
 
         </div>
         <div id="members-6">
-            <table id="memberList-6" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -466,7 +466,7 @@
 
         </div>
         <div id="members-5">
-            <table id="memberList-5" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -520,7 +520,7 @@
 
         </div>
         <div id="members-4">
-            <table id="memberList-4" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -574,7 +574,7 @@
 
         </div>
         <div id="members-3">
-            <table id="memberList-3" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
@@ -628,7 +628,7 @@
 
         </div>
         <div id="members-2">
-            <table id="memberList-2" class="compact row-border">
+            <table class="trmnTableWithActions compact row-border">
                 <thead>
                 <tr>
                     <th width="30%">Name</th>

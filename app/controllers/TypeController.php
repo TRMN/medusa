@@ -59,7 +59,7 @@ class TypeController extends \BaseController
         Type::create($data);
 
         return Redirect::route('type.index');
-	}
+    }
 
     /**
      * Display the specified resource.
@@ -82,9 +82,13 @@ class TypeController extends \BaseController
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit(Type $type)
     {
-        //
+        if (( $redirect = $this->checkPermissions('ALL_PERMS') ) !== true) {
+            return $redirect;
+        }
+
+        return View::make('type.edit', ['type' => $type]);
     }
 
     /**
@@ -95,9 +99,36 @@ class TypeController extends \BaseController
      *
      * @return Response
      */
-    public function update($id)
+    public function update(Type $type)
     {
-        //
+        if (( $redirect = $this->checkPermissions('ALL_PERMS') ) !== true) {
+            return $redirect;
+        }
+
+        $data = Input::all();
+
+        if ($data['chapter_type'] !== $type->chapter_type) {
+            $changedValues['chapter_type'] = $type->chapter_type;
+        }
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'types',
+            (string)$type->_id,
+            json_encode($data),
+            'TypeController@update'
+        );
+
+        $type->update($data);
+
+        foreach($changedValues as $field => $oldValue) {
+            Chapter::where('chapter_type', '=', $oldValue)->update(['chapter_type' => $type->chapter_type]);
+        }
+
+        Cache::flush();
+
+        return Redirect::route('type.index');
     }
 
     /**
