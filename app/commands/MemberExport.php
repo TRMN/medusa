@@ -103,7 +103,7 @@ class MemberExport extends Command {
 		return [
             ['over18', null, InputOption::VALUE_NONE, 'Limit export to members over 18 or with no listed date of birth'],
             ['under18', null, InputOption::VALUE_NONE, 'Limit export to members under 18'],
-            ['fields', null, InputOption::VALUE_OPTIONAL, 'Comma separated list of field names to include in the export'],
+            ['fields', null, InputOption::VALUE_REQUIRED, 'Comma separated list of field names to include in the export','email_address'],
             ['noDoB', null, InputOption::VALUE_NONE, 'Limit export to members who do not have a date of birth on record'],
         ];
     }
