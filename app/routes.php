@@ -123,4 +123,5 @@ Route::get('/api/school', 'ApiController@getSchools');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 
+Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);

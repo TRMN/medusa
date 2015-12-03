@@ -13,7 +13,7 @@ class BilletController extends \BaseController {
         if (($redirect = $this->checkPermissions('EDIT_BILLET','DEL_BILLET')) !== true) {
             return $redirect;
         }
-        
+
 		return View::make('billet.index');
 	}
 
@@ -28,7 +28,7 @@ class BilletController extends \BaseController {
         if (($redirect = $this->checkPermissions('ADD_BILLET')) !== true) {
             return $redirect;
         }
-        
+
 		return View::make("billet.create");
 	}
 
@@ -43,13 +43,13 @@ class BilletController extends \BaseController {
 		if (($redirect = $this->checkPermissions('ADD_BILLET')) !== true) {
             return $redirect;
         }
-        
+
         $validator = Validator::make($data = Input::all(), Billet::$rules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
-        
+
         $this->writeAuditTrail(
              Auth::user()->id,
             'create',
@@ -58,9 +58,9 @@ class BilletController extends \BaseController {
             json_encode($data),
             'BilletController@store'
         );
-        
+
         Billet::create($data);
-        
+
         return Redirect::route('billet.index');
 	}
 
@@ -83,9 +83,13 @@ class BilletController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit(Billet $billet)
 	{
-		//
+        if (($redirect = $this->checkPermissions('EDIT_BILLET')) !== true) {
+            return $redirect;
+        }
+
+		return View::make("billet.edit", ['billet' => $billet]);
 	}
 
 	/**
