@@ -37,9 +37,18 @@ class ExamController extends \BaseController
 
             Input::file('file')->move(app_path() . '/database', 'TRMN Exam grading spreadsheet.xlsx');
 
+            $max_execution_time = ini_get('max_execution_time');
+            set_time_limit(0);
+
             Artisan::call('import:grades');
 
             Cache::flush();
+
+            if (is_null($max_execution_time) === false) {
+                set_time_limit($max_execution_time);
+            } else {
+                set_time_limit(30);
+            }
 
             return Redirect::route('exam.index')->with('message', 'Exam grades uploaded');
         }
