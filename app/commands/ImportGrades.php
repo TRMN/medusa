@@ -45,7 +45,7 @@ class ImportGrades extends Command
 
         // Allow for enough time
 
-        set_time_limit(60);
+        set_time_limit(0);
 
         $examRecords = []; // start with a clean array
 
@@ -199,7 +199,7 @@ class ImportGrades extends Command
         return [];
     }
 
-    protected function parseScoreAndDate($value, $debug=false)
+    protected function parseScoreAndDate($value, $debug = false)
     {
         $value = strtoupper($value);
 
@@ -227,7 +227,9 @@ class ImportGrades extends Command
             // No spaces or dashes to split on, so we have yet another format!
             $scoreAndDate = preg_split('/[%]+/', $value, 2);
         }
-if ($debug) { $this->info(print_r($scoreAndDate, true));}
+        if ($debug) {
+            $this->info(print_r($scoreAndDate, true));
+        }
         if (isset( $scoreAndDate[1] ) === true) {
             $scoreAndDate[0] = trim($scoreAndDate[0]);
             $scoreAndDate[1] = trim($scoreAndDate[1]);
@@ -238,9 +240,13 @@ if ($debug) { $this->info(print_r($scoreAndDate, true));}
                 $date = strtoupper(date('d M Y', strtotime($scoreAndDate[0])));
             } else {
                 // This is a date
-if ($debug) { $this->info('2nd Element is a date');}
+                if ($debug) {
+                    $this->info('2nd Element is a date');
+                }
                 if (preg_match('/^(\d+)$/', $scoreAndDate[1]) === 1) {
-                    if ($debug) { $this->info('Hit all digits');}
+                    if ($debug) {
+                        $this->info('Hit all digits');
+                    }
                     // The date is all numbers, it's probably not in a valid format.  Assume MMDDYY or MMDDYYYY
                     $date =
                         strtoupper(
@@ -255,11 +261,16 @@ if ($debug) { $this->info('2nd Element is a date');}
                         );
                 } else {
                     $date = strtoupper(date('d M Y', strtotime(trim($scoreAndDate[1]))));
-if ($debug) { $this->info(var_dump($scoreAndDate[1])); $this->info($date);}
+                    if ($debug) {
+                        $this->info(var_dump($scoreAndDate[1]));
+                        $this->info($date);
+                    }
                 }
 
                 $score = $scoreAndDate[0];
-if ($debug) { $this->info($score);}
+                if ($debug) {
+                    $this->info($score);
+                }
             }
         } else {
             $date = "UNKNOWN";
@@ -268,7 +279,7 @@ if ($debug) { $this->info($score);}
 
         if (isset( $scoreAndDate[1] ) === true) {
             // Make sure we have a % at the end of the score
-            if (substr($score, -1) != '%' && $score != 'PASS' && $score != 'BETA' ) {
+            if (substr($score, -1) != '%' && $score != 'PASS' && $score != 'BETA') {
                 $score .= '%';
             }
             return ['score' => $score, 'date' => $date];
@@ -434,10 +445,15 @@ if ($debug) { $this->info($score);}
 
         foreach ($mainLineExams as $field => $examId) {
             if (empty( $record[$field] ) === false) {
-                $debug=false;
-                if ($record['member_number'] == 'RMN-0011-08' && $examId == 'SIA-RMMC-0103') { $this->info($record[$field]); $debug = true;}
+                $debug = false;
+                if ($record['member_number'] == 'RMN-0011-08' && $examId == 'SIA-RMMC-0103') {
+                    $this->info($record[$field]);
+                    $debug = true;
+                }
                 $exam[$examId] = $this->parseScoreAndDate($record[$field], $debug);
-                if ($record['member_number'] == 'RMN-0011-08' && $examId == 'SIA-RMMC-0103') { $this->info(print_r($exam[$examId], true));}
+                if ($record['member_number'] == 'RMN-0011-08' && $examId == 'SIA-RMMC-0103') {
+                    $this->info(print_r($exam[$examId], true));
+                }
             }
         }
 
