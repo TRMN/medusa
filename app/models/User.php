@@ -430,6 +430,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 } else {
                     $after = strtotime($options['after']);
                 }
+                
+                if (empty($options['class'] ) === true) {
+                    $class = null;
+                } else {
+                    $class = $options['class'];
+                }
             }
         } else {
             $branch = null;
@@ -446,7 +452,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                     $exams->exams,
                     function ($key, $value) use ($branch) {
                         if (strpos($key, strtoupper($branch)) > 0) {
-                            return $value;
+                            return true;
                         }
                     }
                 );
@@ -462,11 +468,70 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                                 $after
                             )
                         ) {
-                            return $value;
+                            return true;
                         }
                     }
                 );
             }
+            
+            if (empty( $class ) === false) {
+                //filter by class of exams
+                switch ($class) {
+                    case enlisted:
+                        //handle enlisted exams
+                        $list = array_where(
+                            $exams->exams,
+                            function ($key, $value) {
+                                if (preg_match ( '/^.*-.*-000?/', $key) === 1 )
+                                {
+                                    return true;
+                                }
+                            }
+                            );
+                            
+                        break;
+                    case warrant:
+                        //handle warrant exams
+                        $list = array_where(
+                            $exams->exams,
+                            function ($key, $value) {
+                                if (preg_match ( '/^.*-.*-001?/', $key) === 1 )
+                                {
+                                    return true;
+                                }
+                            }
+                        );
+                        break;
+
+                    case officer:
+                        //handle officer exams
+                        $list = array_where(
+                            $exams->exams,
+                            function ($key, $value) {
+                                if (preg_match ( '/^.*-.*-01??/', $key) === 1 )
+                                {
+                                    return true;
+                                }
+                            }
+                        );
+                        break;
+                        
+                    case flag:
+                        //handle flag exams
+                        $list = array_where(
+                            $exams->exams,
+                            function ($key, $value) {
+                                if (preg_match ( '/^.*-.*-100?/', $key) === 1 )
+                                {
+                                    return true;
+                                }
+                            }
+                        );
+                        break;
+                }
+                
+            }
+            
             ksort($list);
             return $list;
         } else {
@@ -510,6 +575,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
+    /**
+    * Retrieve the highest level Enlisted exam a user has taken
+    * 
+    * @param User $user
+    *
+    * @return String $exam
+    */
+    public function getHighestEnlistedExam()
+    {
+        $exams = $this->getExamList(array('class' => 'enlisted'));
+
+        
+    }
+    
     public function getCompletedExams($after)
     {
         $exams = $this->getExamList(['after' => $after]);
