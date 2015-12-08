@@ -1,5 +1,5 @@
 <h4>Terms and Conditions (“Terms”)</h4>
-<h3>Last Updated: 9/2/2015</h3>
+<h3>Last Updated: September 2, 2015</h3>
 
 <p>These are the Terms and Conditions for use of the website between The Royal Manticoran Navy: The Official Honor Harrington Fan Association, Inc. (“TRMN”, “we”, “our”) and the user (“user”, “you”).</p>
 
