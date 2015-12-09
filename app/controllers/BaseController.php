@@ -8,6 +8,7 @@ class BaseController extends Controller
     public function __construct()
     {
         View::share('permsObj', $this);
+        View::share('user', Auth::user());
     }
 
     /**
