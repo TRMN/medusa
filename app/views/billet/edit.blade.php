@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    <h2>Create a Billet</h2>
+    <h2>Edit a Billet</h2>
 
     {{ Form::model( $billet, [ 'route' => [ 'billet.update', $billet->_id ], 'method' => 'put' ] ) }}
     <div class="row">
