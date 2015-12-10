@@ -205,6 +205,6 @@ return [
         'SimpleCaptcha' => 'Iorme\SimpleCaptcha\Facades\SimpleCaptcha',
     ],
 
-    'version' => "King Roger III (Medusa DB v1.1.7)",
+    'version' => "King Roger III (Medusa DB v1.1.8)",
 
 ];

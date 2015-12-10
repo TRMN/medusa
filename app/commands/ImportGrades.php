@@ -284,7 +284,7 @@ class ImportGrades extends Command
 
         if (isset( $scoreAndDate[1] ) === true) {
             // Make sure we have a % at the end of the score
-            if (substr($score, -1) != '%' && $score != 'PASS' && $score != 'BETA') {
+            if (substr($score, -1) != '%' && $score != 'PASS' && $score != 'BETA' && substr($score, 0, 4) != 'CREA') {
                 $score .= '%';
             }
             return ['score' => $score, 'date' => $date];
