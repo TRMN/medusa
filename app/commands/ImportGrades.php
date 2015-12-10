@@ -143,7 +143,7 @@ class ImportGrades extends Command
         $this->logMsg($details);
 
         $mainlineExams = Excel::selectSheets($sheet)->load(
-            app_path() . '/database/TRMN Exam grading spreadsheet.xlsx'
+            app_path() . '/database/TRMN Exam grading spreadsheet.xlsx', 'UTF-8'
         )
                               ->formatDates(true, 'Y-m-d')
                               ->toArray();
@@ -203,6 +203,9 @@ class ImportGrades extends Command
     {
         $value = strtoupper($value);
 
+        // Somebody is using a UTF8 non-breaking space \xC2\xA0
+        $value = str_replace("\xc2\xa0", " ", $value);
+
         if (preg_match('/^(\w+)$/', $value) === 1) {
             return ['score' => $value, 'date' => 'UNKNOWN'];
         }
@@ -213,8 +216,9 @@ class ImportGrades extends Command
         }
 
         // Grrrr!!!! Some instructor keeps using $ instead of %
-
         $value = str_replace('$', '%', $value);
+
+
 
         // SIGH!  Virtually every other instructor is doing DDMONYY but noooo, you have to be special and do DD MON YY
         if (substr_count($value, ' ') >= 3) {
@@ -262,7 +266,8 @@ class ImportGrades extends Command
                 } else {
                     $date = strtoupper(date('d M Y', strtotime(trim($scoreAndDate[1]))));
                     if ($debug) {
-                        $this->info(var_dump($scoreAndDate[1]));
+                        $this->info(var_dump(trim($scoreAndDate[1])));
+                        $this->info(var_dump(strtotime(trim($scoreAndDate[1]))));
                         $this->info($date);
                     }
                 }
@@ -421,10 +426,10 @@ class ImportGrades extends Command
             'o_1_exam'   => 'SIA-RMMC-0101',
             'o_2_exam'   => 'SIA-RMMC-0102',
             'o_3_exam'   => 'SIA-RMMC-0103',
-            'sia_rmn_0113'  => 'SIA-RMN-0113',
+            'sia_rmmc_0113'  => 'SIA-RMMC-0113',
             'o_4_exam'   => 'SIA-RMMC-0104',
             'o_5_exam'   => 'SIA-RMMC-0105',
-            'sia_rmn_0115' => 'SIA-RMN-0115',
+            'sia_rmmc_0115' => 'SIA-RMMC-0115',
             'o_6_a_exam' => 'SIA-RMMC-0106',
             'o_6_b_exam' => 'SIA-RMMC-1001',
             'f_2_exam'   => 'SIA-RMMC-1002',
@@ -445,15 +450,7 @@ class ImportGrades extends Command
 
         foreach ($mainLineExams as $field => $examId) {
             if (empty( $record[$field] ) === false) {
-                $debug = false;
-                if ($record['member_number'] == 'RMN-0011-08' && $examId == 'SIA-RMMC-0103') {
-                    $this->info($record[$field]);
-                    $debug = true;
-                }
-                $exam[$examId] = $this->parseScoreAndDate($record[$field], $debug);
-                if ($record['member_number'] == 'RMN-0011-08' && $examId == 'SIA-RMMC-0103') {
-                    $this->info(print_r($exam[$examId], true));
-                }
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
             }
         }
 
