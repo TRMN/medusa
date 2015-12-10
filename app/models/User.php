@@ -515,6 +515,36 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
+    
+    private function getHighestExamFromList ( array $list )
+    {
+        if (count($list) < 1) {
+            return 'None found';
+        }
+
+        end($list);
+
+        while (true) {
+            $examName = key($list);
+            $exam = array_pop($list);
+
+            if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
+                break;
+            }
+
+            end($list);
+        }
+
+        // Sanity check
+
+        if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
+            return $examName;
+        } else {
+            return 'None found';
+        }
+                
+    }        
+    
     /**
     * Function filterExams
     *
@@ -548,67 +578,50 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $exams = $this->getExamList('RMN');
         }
 
-        if (count($exams) < 1) {
-            return 'None found';
-        }
-
-        end($exams);
-
-        while (true) {
-            $examName = key($exams);
-            $exam = array_pop($exams);
-
-            if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
-                break;
-            }
-
-            end($exams);
-        }
-
-        // Sanity check
-
-        if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
-            return $examName;
-        } else {
-            return 'None found';
-        }
+        $results = getHighestExamFromList($exams);
+        
+        return $results;
     }
 
     /**
     * Retrieve the highest level Enlisted exam a user has taken
-    * 
-    * @param User $user
     *
     * @return String $exam
     */
     public function getHighestEnlistedExam()
     {
         $exams = $this->getExamList(array('class' => 'enlisted'));
+        
+        $results = getHighestExamFromList($exams);
 
-        if (count($exams) < 1) {
-            return 'None found';
-        }
+        return $results;
+    }
+    
+    public function getHighestWarrantExam()
+    {
+        $exams = $this->getExamList(array('class' => 'warrant'));
+        
+        $results = getHighestExamFromList($exams);
 
-        end($exams);
+        return $results;
+    }
+    
+    public function getHighestOfficerExam()
+    {
+        $exams = $this->getExamList(array('class' => 'officer'));
+        
+        $results = getHighestExamFromList($exams);
 
-        while (true) {
-            $examName = key($exams);
-            $exam = array_pop($exams);
+        return $results;
+    }
+    
+        public function getHighestFlagExam()
+    {
+        $exams = $this->getExamList(array('class' => 'flag'));
+        
+        $results = getHighestExamFromList($exams);
 
-            if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
-                break;
-            }
-
-            end($exams);
-        }
-
-        // Sanity check
-
-        if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
-            return $examName;
-        } else {
-            return 'None found';
-        }
+        return $results;
     }
     
     public function getCompletedExams($after)
