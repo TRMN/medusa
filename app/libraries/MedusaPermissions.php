@@ -96,7 +96,9 @@ trait MedusaPermissions
 
         $echelonIdsToCheck = [];
         foreach ($chapterIds as $chapterId) {
-            $echelonIdsToCheck = array_merge($echelonIdsToCheck, \Chapter::find($chapterId)->getChapterIdWithParents());
+            if ($chapterId !== false) {
+                $echelonIdsToCheck = array_merge($echelonIdsToCheck, \Chapter::find($chapterId)->getChapterIdWithParents());
+            }
         }
 
         // Check if the logged in user has the correct permissions and is in the specified users Chain of Command
