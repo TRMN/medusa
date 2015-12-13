@@ -85,19 +85,20 @@ trait MedusaPermissions
     public function isInChainOfCommand(\User $user)
     {
         // Get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
-        $primaryChapterId = $user->getPrimaryAssignmentId();
-        $secondaryChapterId = $user->getSecondaryAssignmentId();
-
-        if ($primaryChapterId === false) {
-            return false;
-        } else {
-            $echelonIdsToCheck = \Chapter::find($primaryChapterId)->getChapterIdWithParents();
+        $chapterIds = [];
+        foreach (['primary', 'secondary', 'additional'] as $position) {
+            $chapterIds[] = $user->getAssignmentId($position);
         }
 
-        if ($secondaryChapterId !== false) {
-            $secondaryEchelonIds = \Chapter::find($secondaryChapterId)->getChapterIdWithParents();
+        if (count($chapterIds) < 1) {
+            return false;
+        }
 
-            $echelonIdsToCheck = array_merge($echelonIdsToCheck, $secondaryEchelonIds);
+        $echelonIdsToCheck = [];
+        foreach ($chapterIds as $chapterId) {
+            if ($chapterId !== false) {
+                $echelonIdsToCheck = array_merge($echelonIdsToCheck, \Chapter::find($chapterId)->getChapterIdWithParents());
+            }
         }
 
         // Check if the logged in user has the correct permissions and is in the specified users Chain of Command

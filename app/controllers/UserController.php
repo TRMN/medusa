@@ -755,7 +755,12 @@ class UserController extends \BaseController
 
         $currentPermissions = $user->permissions;
         $newPermissions = $data['permissions'];
-        sort($currentPermissions);
+        if (empty($currentPermissions) === false) {
+            sort($currentPermissions);
+        } else {
+            $currentPermissions = [];
+        }
+
         sort($newPermissions);
 
         if ($currentPermissions !== $newPermissions) {
