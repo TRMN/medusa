@@ -29,7 +29,8 @@
             <div class="rnav">
 
                 @if($permsObj->hasPermissions(['CREATE_ECHELON']) === true)<a
-                        href="{{ route('echelon.create') }}">Activate Echelon</a>
+                        href="{{ route('echelon.create') }}">Activate Echelon</a><br />
+                        <a href="">Command Triad Report</a><br />
                 @endif
             </div>
         @endif

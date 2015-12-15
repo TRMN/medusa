@@ -477,32 +477,32 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             if (empty( $class ) === false) {
                 //filter by class of exams
                 switch ($class) {
-                    case enlisted:
+                    case "enlisted":
                         //handle enlisted exams
                         $examMatch = '/^.*-.*-000?/';
                         
-                        $list = filterExams($exams, $examMatch);
+                        $list = $this->filterExams($exams, $examMatch);
                         break;
                         
-                    case warrant:
+                    case "warrant":
                         //handle warrant exams
                         $examMatch = '/^.*-.*-001?/';
                         
-                        $list = filterExams($exams, $examMatch);
+                        $list = $this->filterExams($exams, $examMatch);
                         break;
 
-                    case officer:
+                    case "officer":
                         //handle officer exams
                         $examMatch = '/^.*-.*-01??/';
                         
-                        $list = filterExams($exams,$examMatch);
+                        $list = $this->filterExams($exams,$examMatch);
                         break;
                         
-                    case flag:
+                    case "flag":
                         //handle flag exams
                         $examMatch = '/^.*-.*-100?/';
                         
-                        $list = filterExams($exams, $examMatch);
+                        $list = $this->filterExams($exams, $examMatch);
                         break;
                 }
                 
@@ -554,7 +554,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     * @return array $list
     */
         
-    private function filterExams ( array $exams, string $search ) {
+    private function filterExams ( array $exams, $search ) {
         $list = array_where(
             $exams->exams,
             function ($key, $value) use ( $search ){
@@ -578,7 +578,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $exams = $this->getExamList('RMN');
         }
 
-        $results = getHighestExamFromList($exams);
+        $results = $this->getHighestExamFromList($exams);
         
         return $results;
     }
@@ -592,7 +592,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $exams = $this->getExamList(array('class' => 'enlisted'));
         
-        $results = getHighestExamFromList($exams);
+        $results = $this->getHighestExamFromList($exams);
 
         return $results;
     }
@@ -601,7 +601,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $exams = $this->getExamList(array('class' => 'warrant'));
         
-        $results = getHighestExamFromList($exams);
+        $results = $this->getHighestExamFromList($exams);
 
         return $results;
     }
@@ -610,7 +610,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $exams = $this->getExamList(array('class' => 'officer'));
         
-        $results = getHighestExamFromList($exams);
+        $results = $this->getHighestExamFromList($exams);
 
         return $results;
     }
@@ -619,7 +619,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $exams = $this->getExamList(array('class' => 'flag'));
         
-        $results = getHighestExamFromList($exams);
+        $results = $this->getHighestExamFromList($exams);
 
         return $results;
     }
