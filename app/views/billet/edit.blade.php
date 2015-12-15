@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('pageTitle')
-    Create a Billet
+    Edit a Billet
 @stop
 
 @section('content')
