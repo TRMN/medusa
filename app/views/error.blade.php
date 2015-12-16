@@ -9,7 +9,7 @@
     <div class="columns small-12">
         <h2>Paging Sir Horace! We've encountered a bug in the Medusa-class database. Say again, we've encountered a bug in the Medusa-class database.</h2>
 
-        <p>Please report this error via email (<a href="mailto:bolthole@trmn.org">bolthole@trm.org</a>) or the <a href="https://bolthole.trmn.org">Web Portal</a>.
+        <p>Please report this error via email (<a href="mailto:bolthole@trmn.org">bolthole@trmn.org</a>) or the <a href="https://bolthole.trmn.org">Web Portal</a>.
             Be sure to report exactly what you were doing when the error occurred or the exact steps required to duplicate the error and the error text below.</p>
 
         <p>Thank You,<br /><br />

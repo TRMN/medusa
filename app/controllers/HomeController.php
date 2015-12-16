@@ -14,7 +14,9 @@ class HomeController extends BaseController
                 'chapter'  => Chapter::find($user->getPrimaryAssignmentId()),
             ];
 
-            if ($user->tos === true) {
+            if (empty( $user->osa ) === true) {
+                return View::make('osa', $viewData);
+            } elseif ($user->tos === true) {
                 return View::make('home', $viewData);
             }
             return View::make('terms', $viewData);

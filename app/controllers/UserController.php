@@ -748,9 +748,18 @@ class UserController extends \BaseController
 
         unset( $data['_method'], $data['_token'], $data['password_confirmation'] );
 
-        // Normal user edits don't set permissions as an array but as seralized data.  Need to deal with that
+        // Normal user edits don't set permissions as an array but as serialized data.  Need to deal with that
         if (is_array($data['permissions']) === false) {
             $data['permissions'] = unserialize($data['permissions']);
+        }
+
+        $currentPermissions = $user->permissions;
+        $newPermissions = $data['permissions'];
+        sort($currentPermissions);
+        sort($newPermissions);
+
+        if ($currentPermissions !== $newPermissions) {
+            $data['osa'] = false;
         }
 
         $data['email_address'] = strtolower($data['email_address']);
@@ -796,19 +805,38 @@ class UserController extends \BaseController
 
             $user->save();
 
-            $viewData = [
-                'greeting' => $user->getGreetingArray(),
-                'user'     => $user,
-                'chapter'  => Chapter::find($user->getPrimaryAssignmentId()),
-
-            ];
-
-            return View::make('home', $viewData);
+            return Redirect::to('home');
         }
 
         return Redirect::to('signout');
     }
 
+        public function osa()
+    {
+        $this->loginValid();
+
+        $data = Input::all();
+
+        if (empty( $data['osa'] ) === false) {
+            $user = User::find($data['id']);
+            $user->osa = date('Y-m-d');
+
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                $user->toJson(),
+                'UserController@osa'
+            );
+
+            $user->save();
+
+            return Redirect::to('home');
+        }
+
+        return Redirect::to('signout');
+    }
     /**
      * Confirm that the user should be deleted.
      *

@@ -39,9 +39,7 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        $user = User::where('member_id', '=', 'RMN-2439-14')->first();
 
-        print $user->getTimeInGrade(true) . "\n";
     }
 
     /**
@@ -61,7 +59,7 @@ class CodeTest extends Command
      */
     protected function getOptions()
     {
-        return [];
+		return [];
     }
 
 }

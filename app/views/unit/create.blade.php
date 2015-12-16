@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('pageTitle')
-    Stand-up a Command or Unit
+    Stand-up {{$title}}
 @stop
 
 @section('content')
-<h2>Stand-up a Command or Unit</h2>
+<h2>Stand-up {{$title}}</h2>
 
-{{ Form::model( $chapter, [ 'route' => [ 'unit.store' ] ] ) }}
+{{ Form::model( $chapter, [ 'route' => [ $route . '.store' ] ] ) }}
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
     {{ Form::label('chapter_name', 'Command or Unit Name') }} {{ Form::text('chapter_name') }}
@@ -33,12 +33,6 @@
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
         {{ Form::label('commission_date', 'Stand-up Date (if appropriate') }}  {{Form::date('commission_date')}}
-    </div>
-</div>
-
-<div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
-        {{ Form::label('decommision_date', 'Stand-down Date (if appropriate') }}  {{Form::date('decomission_date')}}
     </div>
 </div>
 
