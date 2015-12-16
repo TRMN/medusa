@@ -241,7 +241,7 @@ class ImportGrades extends Command
             if (substr($scoreAndDate[1], -1) == '%' || substr($scoreAndDate[1], 0, 4) == 'PASS') {
                 // This is a score
                 $score = $scoreAndDate[1];
-                $date = strtoupper(date('d M Y', strtotime($scoreAndDate[0])));
+                $date = strtoupper(date('Y-m-d', strtotime($scoreAndDate[0])));
             } else {
                 // This is a date
                 if ($debug) {
@@ -255,7 +255,7 @@ class ImportGrades extends Command
                     $date =
                         strtoupper(
                             date(
-                                'd M Y',
+                                'y-m-d',
                                 strtotime(
                                     substr($scoreAndDate[1], 0, 2) . '/' .
                                     substr($scoreAndDate[1], 2, 2) . '/' .
@@ -264,7 +264,7 @@ class ImportGrades extends Command
                             )
                         );
                 } else {
-                    $date = strtoupper(date('d M Y', strtotime(trim($scoreAndDate[1]))));
+                    $date = strtoupper(date('Y-m-d', strtotime(trim($scoreAndDate[1]))));
                     if ($debug) {
                         $this->info(var_dump(trim($scoreAndDate[1])));
                         $this->info(var_dump(strtotime(trim($scoreAndDate[1]))));
