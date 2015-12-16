@@ -96,7 +96,7 @@
                                 <div class="row">
                                     <div class="small-3 columns Incised901Light ninety textLeft">{{$exam}}</div>
                                     <div class="small-1 columns Incised901Light ninety textRight">{{$gradeInfo['score']}}</div>
-                                    <div class="small-2 columns Incised901Light ninety end textRight">{{$gradeInfo['date']}}</div>
+                                    <div class="small-2 columns Incised901Light ninety end textRight">{{date('d M Y', strtotime($gradeInfo['date']))}}</div>
                                 </div>
                             @endforeach
                         </div>
