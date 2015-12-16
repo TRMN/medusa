@@ -221,4 +221,82 @@ class ChapterController extends BaseController
         return Redirect::route('chapter.index');
 
     }
+    
+    public function commandTriadReport ()
+    {
+        //get list of ships and stations
+        $results  = Chapter::where('chapter_type','=','ship')->orWhere('chapter_type','=', 'station')->get();
+        
+        $tmp = [];
+        
+        $output[] = 'Ship Name,Hull Number,CO Name, CO Rank, CO DoR, CO Assignment Date,CO Highest Exam,XO Name,XO Rank,XO DOR,XO Assignment Date,XO Highest Exam,BOS Name,BOS Rank,BOS DoR,BOS Assignment Date,DOS Highest Exam';
+        
+        foreach ( $results as $chapter)
+        {
+            $commandTriad = $chapter->getCommandCrew;
+            
+            
+            $coName = '';
+            $coRank = '';
+            $coDOR = '';
+            $coAssign = '';
+            $coExam = '';
+            xoName = '';
+            xoRank = '';
+            xoDOR = '';
+            xoAssign = '';
+            xoExam = '';
+            bosunName = '';
+            bosunRank = '';
+            bosunDOR = '';
+            bosunAssign = '';
+            bosunExam = '';
+            
+            if ( isempty ($commandTriad['CO']) === false)
+            {
+                //$coName = $commandTriad['CO']->
+                
+                $coRank = $commandTriad['CO']->rank[grade];
+                $coDOR = $commandTriad['CO']->rank[date_of_rank];
+                
+                //$coAssign = 
+                
+                //$coExam = 
+            }
+            
+            
+            
+            
+            $tmp = 'chapter->chapter_name, chapter->hull_number, $coName, $coRank, $coDOR, $COAssign, $coExam, $xoName, $xoRank, $xoDOR, $xoAssign, $xoExam, $bosunName, $bosunRank, $bosunDOR, $bosunAssign, $bosunExam';
+        }
+            
+        /**
+        * 1) Get list of Ship and Stations
+        * 2) Add column headers as first entry in $output array
+        * 3) iterate through list of ships and stations
+        * 4) Get Command Triad for ship/station
+        * 5) $tmp = '{$chapter->chapter_name},{$chapter->hull_number},';
+        */
+
+        //get Command triads for each ship/station
+        
+        //get exams for each member of each command triads
+        
+        /*
+        if(ini_get('zlib.output_compression')) { ini_set('zlib.output_compression', 'Off'); }
+header('Pragma: public');   // required
+header('Expires: 0');       // no cache
+header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+header('Last-Modified: '.gmdate ('D, d M Y H:i:s');
+header('Cache-Control: private',false);
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment; filename="triad_report.csv"');
+header('Content-Transfer-Encoding: base64');
+header('Connection: close');
+// Generate csv here
+exit();
+*/
+
+       return $output; 
+    }
 }

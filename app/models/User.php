@@ -617,7 +617,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $results;
     }
     
-        public function getHighestFlagExam()
+    public function getHighestFlagExam()
     {
         $exams = $this->getExamList(array('class' => 'flag'));
         
