@@ -50,11 +50,12 @@ class ImportGrades extends Command
         $examRecords = []; // start with a clean array
 
         foreach ([
-                     'RMN Exam Grading Sheet'     => 'importMainLineExams',
-                     'RMN Specialist Exam Grades' => 'importRmnSpecialityExams',
-                     'IMNA Exam Grades'           => 'importGsnMainLineExams',
-                     'RMMC Exam Grading Sheet'    => 'importRmmcMainLineExams',
-                     'RMA Exam Grading Sheet'     => 'importRmaMainLineExams'
+                     'RMN Exam Grading Sheet'      => 'importMainLineExams',
+                     'RMN Specialist Exam Grades'  => 'importRmnSpecialityExams',
+                     'IMNA Exam Grades'            => 'importGsnMainLineExams',
+                     'RMMC Exam Grading Sheet'     => 'importRmmcMainLineExams',
+                     'RMMC Specialist Exam Grades' => 'importRmmcSpecialityExams',
+                     'RMA Exam Grading Sheet'      => 'importRmaMainLineExams'
                  ] as $sheet => $importRoutine) {
 
             $examRecords = $this->processExams($examRecords, $sheet, $importRoutine);
@@ -474,6 +475,32 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($rmnSpecialityExams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                if (strtoupper($record[$field]) !== 'SKIPPED') {
+                    $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+                }
+            }
+        }
+
+        return $exam;
+    }
+
+    protected function importRmmcSpecialityExams(array $record)
+    {
+        // Build the array of field name to exam number translation
+        $rmmcSpecialityExams = [];
+        for ($exam = 1; $exam < 11; $exam++) {
+            $examNumber = str_pad($exam, 2, '0', STR_PAD_LEFT);
+
+            foreach (['A', 'C', 'W', 'D'] as $examLevel) {
+                $rmmcSpecialityExams['srmc_' . $examNumber . strtolower($examLevel)] =
+                    'SIA-SRMC-' . $examNumber . $examLevel;
+            }
+        }
+
+        $exam = [];
+
+        foreach ($rmmcSpecialityExams as $field => $examId) {
             if (empty( $record[$field] ) === false) {
                 if (strtoupper($record[$field]) !== 'SKIPPED') {
                     $exam[$examId] = $this->parseScoreAndDate($record[$field]);

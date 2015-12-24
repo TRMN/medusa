@@ -84,10 +84,12 @@
                         Updated: {{ date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) }}</span>
             @endif
             <div class="sbAccordian">
-                @foreach(['RMN', 'SRN', 'GSN', 'RMMC', 'RMA'] as $branch)
+                @foreach(['RMN', 'SRN', 'GSN', 'RMMC', 'RMC', 'RMA'] as $branch)
                     @if(count($user->getExamList(['branch' => $branch])) > 0)
                         @if($branch == 'SRN')
                            <h5 class="Incised901Light ninety">RMN Speciality</h5>
+                        @elseif($branch == 'RMC')
+                            <h5 class="Incised901Light ninety">RMMC Speciality</h5>
                         @else
                             <h5 class="Incised901Light ninety">{{$branch}}</h5>
                         @endif
@@ -96,7 +98,10 @@
                                 <div class="row">
                                     <div class="small-3 columns Incised901Light ninety textLeft">{{$exam}}</div>
                                     <div class="small-1 columns Incised901Light ninety textRight">{{$gradeInfo['score']}}</div>
-                                    <div class="small-2 columns Incised901Light ninety end textRight">{{date('d M Y', strtotime($gradeInfo['date']))}}</div>
+                                    <div class="small-2 columns Incised901Light ninety end textRight">@if($gradeInfo['date'] != 'UNKNOWN')
+                                            {{date('d M Y', strtotime($gradeInfo['date']))}}
+                                        @endif
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
