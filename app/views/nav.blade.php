@@ -28,10 +28,13 @@
             <div class="nav-header lnav">First Space Lord</div>
             <div class="rnav">
 
-                @if($permsObj->hasPermissions(['CREATE_ECHELON']) === true)<a
-                        href="{{ route('echelon.create') }}">Activate Echelon</a><br />
-                        <a href="">Command Triad Report</a><br />
+                @if($permsObj->hasPermissions(['CREATE_ECHELON']) === true)
+                    <a href="{{ route('echelon.create') }}">Activate Echelon</a><br/>
                 @endif
+                @if($permsObj->hasPermissions(['ALL_PERMS']) == true)
+                    <a href="{{route('chapter.triadreport')}}">Command Triad Report</a><br/>
+                @endif
+
             </div>
         @endif
         @if($permsObj->hasPermissions(['COMMISSION_SHIP', 'DECOMISSION_SHIP', 'EDIT_SHIP', 'VIEW_DSHIPS']) === true)
@@ -56,9 +59,11 @@
                 @if($permsObj->hasPermissions(['ADD_MEMBER']) === true)<a href="{{ route('user.create') }}">Add
                     Member</a><br/>@endif
                 @if($permsObj->hasPermissions(['PROC_XFERS']) === true)<a href="{{ route('user.change.review') }}">Review
-                    Change Requests</a><br />@endif
-                @if($permsObj->hasPermissions(['ADD_BILLET']) === true) <a href="{{ route('billet.create') }}">Add Billet</a><br /> @endif
-                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true) <a href="{{ route('billet.index') }}">Billet List</a><br /> @endif
+                    Change Requests</a><br/>@endif
+                @if($permsObj->hasPermissions(['ADD_BILLET']) === true) <a href="{{ route('billet.create') }}">Add
+                    Billet</a><br/> @endif
+                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true) <a
+                        href="{{ route('billet.index') }}">Billet List</a><br/> @endif
             </div>
         @endif
 

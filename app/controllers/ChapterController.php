@@ -5,26 +5,40 @@ class ChapterController extends BaseController
 
     public function index()
     {
-        $chapters = Chapter::orderBy( 'chapter_type' )->orderBy( 'chapter_name' )->get();
+        $chapters = Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get();
 
-        return View::make( 'chapter.index', [ 'chapters' => $chapters ] );
+        return View::make('chapter.index', ['chapters' => $chapters]);
     }
 
-    public function show( $chapter )
+    public function show($chapter)
     {
-        if ( isset( $chapter->assigned_to ) ) {
-            $parentChapter = Chapter::find( $chapter->assigned_to );
+        if (isset( $chapter->assigned_to )) {
+            $parentChapter = Chapter::find($chapter->assigned_to);
         } else {
             $parentChapter = false;
         }
 
-        $includes = Chapter::where( 'assigned_to', '=', $chapter->_id )->whereNull('decommission_date')->orderBy('chapter_name')->get()->toArray();
+        $includes =
+            Chapter::where('assigned_to', '=', $chapter->_id)
+                   ->whereNull('decommission_date')
+                   ->orderBy('chapter_name')
+                   ->get()
+                   ->toArray();
 
         $commandCrew = $chapter->getCommandCrew();
 
         $crew = $chapter->getAllCrew();
 
-        return View::make( 'chapter.show', [ 'detail' => $chapter, 'higher' => $parentChapter, 'includes' => $includes, 'command' => $commandCrew, 'crew' => $crew ] );
+        return View::make(
+            'chapter.show',
+            [
+                'detail'   => $chapter,
+                'higher'   => $parentChapter,
+                'includes' => $includes,
+                'command'  => $commandCrew,
+                'crew'     => $crew
+            ]
+        );
     }
 
     /**
@@ -34,35 +48,7 @@ class ChapterController extends BaseController
      */
     public function create()
     {
-        if (($redirect = $this->checkPermissions('COMMISSION_SHIP')) !== true) {
-            return $redirect;
-        }
-
-        $types = Type::whereIn('chapter_type', ['ship', 'station'])->orderBy('chapter_description')->get(['chapter_type', 'chapter_description']);
-        $chapterTypes = [ ];
-
-        foreach ( $types as $chapterType ) {
-            $chapterTypes[ $chapterType->chapter_type ] = $chapterType->chapter_description;
-        }
-
-        $chapterTypes = ['' => 'Select a Ship Type'] + $chapterTypes;
-
-        $chapters = Chapter::getChaptersByType('fleet');
-
-        asort($chapters);
-
-        return View::make('chapter.create', [
-            'chapterTypes' => $chapterTypes,
-            'chapter' => new Chapter,
-            'branches' => Branch::getNavalBranchList(),
-            'fleets' => ['' => 'Select a Fleet'] + $chapters,]
-        );
-    }
-
-    public function edit(Chapter $chapter )
-    {
-
-        if (($redirect = $this->checkPermissions('EDIT_SHIP')) !== true) {
+        if (( $redirect = $this->checkPermissions('COMMISSION_SHIP') ) !== true) {
             return $redirect;
         }
 
@@ -78,53 +64,96 @@ class ChapterController extends BaseController
 
         $chapterTypes = ['' => 'Select a Ship Type'] + $chapterTypes;
 
-        $chapters = array_merge(Chapter::getChaptersByType('fleet'),
+        $chapters = Chapter::getChaptersByType('fleet');
+
+        asort($chapters);
+
+        return View::make(
+            'chapter.create',
+            [
+                'chapterTypes' => $chapterTypes,
+                'chapter'      => new Chapter,
+                'branches'     => Branch::getNavalBranchList(),
+                'fleets'       => ['' => 'Select a Fleet'] + $chapters,
+            ]
+        );
+    }
+
+    public function edit(Chapter $chapter)
+    {
+
+        if (( $redirect = $this->checkPermissions('EDIT_SHIP') ) !== true) {
+            return $redirect;
+        }
+
+        $types =
+            Type::whereIn('chapter_type', ['ship', 'station'])->orderBy('chapter_description')->get(
+                ['chapter_type', 'chapter_description']
+            );
+        $chapterTypes = [];
+
+        foreach ($types as $chapterType) {
+            $chapterTypes[$chapterType->chapter_type] = $chapterType->chapter_description;
+        }
+
+        $chapterTypes = ['' => 'Select a Ship Type'] + $chapterTypes;
+
+        $chapters = array_merge(
+            Chapter::getChaptersByType('fleet'),
             Chapter::getChaptersByType('task_force'),
             Chapter::getChaptersByType('task_group'),
             Chapter::getChaptersByType('squadron'),
             Chapter::getChaptersByType('division')
-            );
+        );
 
         asort($chapters);
 
         $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
 
-        return View::make( 'chapter.edit', [ 'chapterTypes' => $chapterTypes, 'chapter' => $chapter, 'chapterList' => $chapters,
-                                             'branches' => Branch::getNavalBranchList(), 'numCrew' => count($crew),
-        ]);
+        return View::make(
+            'chapter.edit',
+            [
+                'chapterTypes' => $chapterTypes,
+                'chapter'      => $chapter,
+                'chapterList'  => $chapters,
+                'branches'     => Branch::getNavalBranchList(),
+                'numCrew'      => count($crew),
+            ]
+        );
     }
 
-    public function update(Chapter $chapter )
+    public function update(Chapter $chapter)
     {
-        if (($redirect = $this->checkPermissions('EDIT_SHIP')) !== true) {
+        if (( $redirect = $this->checkPermissions('EDIT_SHIP') ) !== true) {
             return $redirect;
         }
 
-        $validator = Validator::make( $data = Input::all(), Chapter::$updateRules );
+        $validator = Validator::make($data = Input::all(), Chapter::$updateRules);
 
-        if ( $validator->fails() ) {
-            return Redirect::back()->withErrors( $validator )->withInput();
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        unset( $data[ '_method' ], $data[ '_token' ] );
+        unset( $data['_method'], $data['_token'] );
 
-        if (empty($data['decommission_date']) === false &&
-            empty($data['commission_date'])=== false) {
+        if (empty( $data['decommission_date'] ) === false &&
+            empty( $data['commission_date'] ) === false
+        ) {
             // Figure out if the ship is in commission or not
 
             if (strtotime($data['commission_date']) > strtotime($data['decommission_date'])) {
                 // Commission date is newer than decommission date
-                unset($data['decommission_date']);
+                unset( $data['decommission_date'] );
                 $chapter->decommission_date = '';
             } else {
                 // Decommission date is newer
-                unset($data['commission_date']);
+                unset( $data['commission_date'] );
                 $chapter->commission_date = '';
             }
         }
 
-        foreach ( $data as $k => $v ) {
-            if ( empty( $data[ $k ] ) === false ) {
+        foreach ($data as $k => $v) {
+            if (empty( $data[$k] ) === false) {
                 $chapter->$k = $v;
             }
         }
@@ -142,7 +171,7 @@ class ChapterController extends BaseController
 
         Cache::flush();
 
-        return Redirect::route( 'chapter.index' );
+        return Redirect::route('chapter.index');
     }
 
     /**
@@ -152,19 +181,19 @@ class ChapterController extends BaseController
      */
     public function store()
     {
-        if (($redirect = $this->checkPermissions('COMMISSION_SHIP')) !== true) {
+        if (( $redirect = $this->checkPermissions('COMMISSION_SHIP') ) !== true) {
             return $redirect;
         }
 
-        $validator = Validator::make( $data = Input::all(), Chapter::$rules );
+        $validator = Validator::make($data = Input::all(), Chapter::$rules);
 
-        if ( $validator->fails() ) {
-            return Redirect::back()->withErrors( $validator )->withInput();
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        foreach ( $data as $k => $v ) {
-            if ( empty( $data[ $k ] ) === true ) {
-                unset( $data[ $k ] );
+        foreach ($data as $k => $v) {
+            if (empty( $data[$k] ) === true) {
+                unset( $data[$k] );
             }
         }
 
@@ -177,14 +206,14 @@ class ChapterController extends BaseController
             'ChapterController@store'
         );
 
-        Chapter::create( $data );
+        Chapter::create($data);
 
-        return Redirect::route( 'chapter.index' );
+        return Redirect::route('chapter.index');
     }
 
     public function decommission(Chapter $chapter)
     {
-        if (($redirect = $this->checkPermissions('DECOMMISSION_SHIP')) !== true) {
+        if (( $redirect = $this->checkPermissions('DECOMMISSION_SHIP') ) !== true) {
             return $redirect;
         }
 
@@ -192,15 +221,17 @@ class ChapterController extends BaseController
 
         return View::make('chapter.confirm-decommission', ['chapter' => $chapter, 'numCrew' => count($crew),]);
     }
+
     /**
      * Remove the specified Chapter.
      *
      * @param  $chapterID
+     *
      * @return Response
      */
-    public function destroy(Chapter $chapter )
+    public function destroy(Chapter $chapter)
     {
-        if (($redirect = $this->checkPermissions('DECOMMISSION_SHIP')) !== true) {
+        if (( $redirect = $this->checkPermissions('DECOMMISSION_SHIP') ) !== true) {
             return $redirect;
         }
 
@@ -219,84 +250,74 @@ class ChapterController extends BaseController
         $chapter->save();
 
         return Redirect::route('chapter.index');
-
     }
-    
-    public function commandTriadReport ()
+
+    public function commandTriadReport()
     {
         //get list of ships and stations
-        $results  = Chapter::where('chapter_type','=','ship')->orWhere('chapter_type','=', 'station')->get();
-        
-        $tmp = [];
-        
-        $output[] = 'Ship Name,Hull Number,CO Name, CO Rank, CO DoR, CO Assignment Date,CO Highest Exam,XO Name,XO Rank,XO DOR,XO Assignment Date,XO Highest Exam,BOS Name,BOS Rank,BOS DoR,BOS Assignment Date,DOS Highest Exam';
-        
-        foreach ( $results as $chapter)
-        {
-            $commandTriad = $chapter->getCommandCrew;
-            
-            
-            $coName = '';
-            $coRank = '';
-            $coDOR = '';
-            $coAssign = '';
-            $coExam = '';
-            xoName = '';
-            xoRank = '';
-            xoDOR = '';
-            xoAssign = '';
-            xoExam = '';
-            bosunName = '';
-            bosunRank = '';
-            bosunDOR = '';
-            bosunAssign = '';
-            bosunExam = '';
-            
-            if ( isempty ($commandTriad['CO']) === false)
-            {
-                //$coName = $commandTriad['CO']->
-                
-                $coRank = $commandTriad['CO']->rank[grade];
-                $coDOR = $commandTriad['CO']->rank[date_of_rank];
-                
-                //$coAssign = 
-                
-                //$coExam = 
+        $results = Chapter::where('chapter_type', '=', 'ship')->orWhere('chapter_type', '=', 'station')->get();
+
+        $output[] = "'Member Number','Fleet','Name','Rank','Date of Rank','Billet','Ship','Highest Exam','Exam Date'\n";
+        foreach ($results as $chapter) {
+            $commandTriad = $chapter->getCommandCrew();
+
+            foreach ($commandTriad as $billet => $user) {
+                if (is_object($user) && get_class($user) == 'User') {
+                    switch (substr($user->rank['grade'], 0, 1)) {
+                        case 'E':
+                            $exam = $user->getHighestEnlistedExam();
+                            break;
+                        case 'W':
+                            $exam = $user->getHighestWarrantExam();
+                            break;
+                        case 'O':
+                        case 'F':
+                            $exam = $user->getHighestOfficerExam();
+                            break;
+                        default:
+                            $exam = [];
+                    }
+
+                    if (count($exam) > 0) {
+                        $examID = key($exam);
+                        $examInfo = "$examID,{$exam[$examID]['date']}";
+                    } else {
+                        $examInfo = ",";
+                    }
+
+                    $output[] =
+                        "{$user->member_id},{$chapter->getAssignedFleet()},{$user->getFullName()},{$user->rank['grade']},{$user->rank['date_of_rank']},$billet,$chapter->chapter_name,$examInfo\n";
+                }
             }
-            
-            
-            
-            
-            $tmp = 'chapter->chapter_name, chapter->hull_number, $coName, $coRank, $coDOR, $COAssign, $coExam, $xoName, $xoRank, $xoDOR, $xoAssign, $xoExam, $bosunName, $bosunRank, $bosunDOR, $bosunAssign, $bosunExam';
         }
-            
+
         /**
-        * 1) Get list of Ship and Stations
-        * 2) Add column headers as first entry in $output array
-        * 3) iterate through list of ships and stations
-        * 4) Get Command Triad for ship/station
-        * 5) $tmp = '{$chapter->chapter_name},{$chapter->hull_number},';
-        */
+         * 1) Get list of Ship and Stations
+         * 2) Add column headers as first entry in $output array
+         * 3) iterate through list of ships and stations
+         * 4) Get Command Triad for ship/station
+         * 5) $tmp = '{$chapter->chapter_name},{$chapter->hull_number},';
+         */
 
         //get Command triads for each ship/station
-        
-        //get exams for each member of each command triads
-        
-        /*
-        if(ini_get('zlib.output_compression')) { ini_set('zlib.output_compression', 'Off'); }
-header('Pragma: public');   // required
-header('Expires: 0');       // no cache
-header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-header('Last-Modified: '.gmdate ('D, d M Y H:i:s');
-header('Cache-Control: private',false);
-header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename="triad_report.csv"');
-header('Content-Transfer-Encoding: base64');
-header('Connection: close');
-// Generate csv here
-exit();
-*/
 
-       return $output; 
+        //get exams for each member of each command triads
+
+        if (ini_get('zlib.output_compression')) {
+            ini_set('zlib.output_compression', 'Off');
+        }
+        header('Pragma: public');   // required
+        header('Expires: 0');       // no cache
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s'));
+        header('Cache-Control: private', false);
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="triad_report.csv"');
+        header('Content-Transfer-Encoding: base64');
+        header('Connection: close');
+        foreach ($output as $line) {
+            print $line;
+        }
+        exit();
     }
 }

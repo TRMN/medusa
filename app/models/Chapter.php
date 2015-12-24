@@ -29,8 +29,9 @@ class Chapter extends Eloquent
 
     static function getHoldingChapters()
     {
-        $results = Chapter::where('joinable', '!=', false)->whereIn('hull_number', ['SS-001', 'SS-002', 'RMOP-01', 'HC'])
-                          ->orderBy('chapter_name')->get();
+        $results =
+            Chapter::where('joinable', '!=', false)->whereIn('hull_number', ['SS-001', 'SS-002', 'RMOP-01', 'HC'])
+                   ->orderBy('chapter_name')->get();
 
         $chapters = [];
 
@@ -224,10 +225,14 @@ class Chapter extends Eloquent
      */
     public function getAllCrew($chapterId = null)
     {
-        if (empty($chapterId) === true) {
+        if (empty( $chapterId ) === true) {
             $chapterId = $this->id;
         }
-        return User::where('assignment.chapter_id', '=', $chapterId)->where('active', '=', 1)->where('registration_status','=','Active')->orderBy('last_name', 'asc')->get();
+        return User::where('assignment.chapter_id', '=', $chapterId)->where('active', '=', 1)->where(
+            'registration_status',
+            '=',
+            'Active'
+        )->orderBy('last_name', 'asc')->get();
     }
 
     public function getCO()
@@ -337,6 +342,18 @@ class Chapter extends Eloquent
             return array_merge([$this->id], Chapter::find($this->assigned_to)->getChapterIdWithParents());
         } else {
             return [$this->id];
+        }
+    }
+
+    public function getAssignedFleet()
+    {
+        foreach ($this->getChapterIdWithParents() as $chapterId) {
+            $fleet = self::find($chapterId);
+            if ($fleet->chapter_type == 'fleet') {
+                $nf = new NumberFormatter('en_US', NumberFormatter::SPELLOUT);
+                $nf->setTextAttribute(NumberFormatter::DEFAULT_RULESET, "%spellout-ordinal");
+                return ucfirst($nf->format($fleet->hull_number)) . ' Fleet';
+            }
         }
     }
 
