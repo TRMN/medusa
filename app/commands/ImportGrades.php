@@ -241,7 +241,7 @@ class ImportGrades extends Command
             if (substr($scoreAndDate[1], -1) == '%' || substr($scoreAndDate[1], 0, 4) == 'PASS') {
                 // This is a score
                 $score = $scoreAndDate[1];
-                $date = strtoupper(date('d M Y', strtotime($scoreAndDate[0])));
+                $date = strtoupper(date('Y-m-d', strtotime($scoreAndDate[0])));
             } else {
                 // This is a date
                 if ($debug) {
@@ -255,7 +255,7 @@ class ImportGrades extends Command
                     $date =
                         strtoupper(
                             date(
-                                'd M Y',
+                                'y-m-d',
                                 strtotime(
                                     substr($scoreAndDate[1], 0, 2) . '/' .
                                     substr($scoreAndDate[1], 2, 2) . '/' .
@@ -264,7 +264,7 @@ class ImportGrades extends Command
                             )
                         );
                 } else {
-                    $date = strtoupper(date('d M Y', strtotime(trim($scoreAndDate[1]))));
+                    $date = strtoupper(date('Y-m-d', strtotime(trim($scoreAndDate[1]))));
                     if ($debug) {
                         $this->info(var_dump(trim($scoreAndDate[1])));
                         $this->info(var_dump(strtotime(trim($scoreAndDate[1]))));
@@ -414,36 +414,36 @@ class ImportGrades extends Command
     protected function importRmmcMainLineExams(array $record)
     {
         $mainLineExams = [
-            'e_1_exam'   => 'SIA-RMMC-0001',
-            'e_4_exam'   => 'SIA-RMMC-0002',
-            'e_6_exam'   => 'SIA-RMMC-0003',
-            'e_8_exam'   => 'SIA-RMMC-0004',
-            'e_9_exam'   => 'SIA-RMMC-0005',
-            'e_10_exam'  => 'SIA-RMMC-0006',
-            'wo_1_exam'  => 'SIA-RMMC-0011',
-            'cwo_exam'   => 'SIA-RMMC-0012',
-            'mcwo_exam'  => 'SIA-RMMC-0013',
-            'o_1_exam'   => 'SIA-RMMC-0101',
-            'o_2_exam'   => 'SIA-RMMC-0102',
-            'o_3_exam'   => 'SIA-RMMC-0103',
-            'sia_rmmc_0113'  => 'SIA-RMMC-0113',
-            'o_4_exam'   => 'SIA-RMMC-0104',
-            'o_5_exam'   => 'SIA-RMMC-0105',
-            'sia_rmmc_0115' => 'SIA-RMMC-0115',
-            'o_6_a_exam' => 'SIA-RMMC-0106',
-            'o_6_b_exam' => 'SIA-RMMC-1001',
-            'f_2_exam'   => 'SIA-RMMC-1002',
-            'f_3_exam'   => 'SIA-RMMC-1003',
-            'f_4_exam'   => 'SIA-RMMC-1004',
-            's_a_exam'   => 'SIA-RMMC-S-A',
-            's_b_exam'   => 'SIA-RMMC-S-B',
-            's_c_exam'   => 'SIA-RMMC-S-C',
-            'g_a_exam'   => 'SIA-RMMC-G-A',
-            'g_b_exam'   => 'SIA-RMMC-G-B',
-            'g_c_exam'   => 'SIA-RMMC-G-C',
-            'j_a_exam'   => 'SIA-RMMC-J-A',
-            'j_b_exam'   => 'SIA-RMMC-J-B',
-            'j_c_exam'   => 'SIA-RMMC-J-C',
+            'rmmc_0001'  => 'SIA-RMMC-0001',
+            'rmmc_0002'  => 'SIA-RMMC-0002',
+            'rmmc_0003'  => 'SIA-RMMC-0003',
+            'rmmc_0004'  => 'SIA-RMMC-0004',
+            'rmmc_0005'  => 'SIA-RMMC-0005',
+            'rmmc_0006'  => 'SIA-RMMC-0006',
+            'rmmc_0011'  => 'SIA-RMMC-0011',
+            'rmmc_0012'  => 'SIA-RMMC-0012',
+            'rmmc_0013'  => 'SIA-RMMC-0013',
+            'rmmc_0101'  => 'SIA-RMMC-0101',
+            'rmmc_0102'  => 'SIA-RMMC-0102',
+            'rmmc_0103'  => 'SIA-RMMC-0103',
+            'rmmc_0113'  => 'SIA-RMMC-0113',
+            'rmmc_0104'  => 'SIA-RMMC-0104',
+            'rmmc_0105'  => 'SIA-RMMC-0105',
+            'rmmc_0115'  => 'SIA-RMMC-0115',
+            'rmmc_0106'  => 'SIA-RMMC-0106',
+            'rmmc_1001'  => 'SIA-RMMC-1001',
+            'rmmc_1002'  => 'SIA-RMMC-1002',
+            'rmmc_1003'  => 'SIA-RMMC-1003',
+            'rmmc_1004'  => 'SIA-RMMC-1004',
+            'rmmc_s_a'   => 'SIA-RMMC-S-A',
+            'rmmc_s_b'   => 'SIA-RMMC-S-B',
+            'rmmc_s_c'   => 'SIA-RMMC-S-C',
+            'rmmc_g_a'   => 'SIA-RMMC-G-A',
+            'rmmc_g_b'   => 'SIA-RMMC-G-B',
+            'rmmc_g_c'   => 'SIA-RMMC-G-C',
+            'rmmc_jtf_a' => 'SIA-RMMC-JTF-A',
+            'rmmc_jtf_b' => 'SIA-RMMC-JTF-B',
+            'rmmc_jtf_c' => 'SIA-RMMC-JTF-C',
         ];
 
         $exam = [];
