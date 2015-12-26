@@ -84,12 +84,14 @@
                         Updated: {{ date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) }}</span>
             @endif
             <div class="sbAccordian">
-                @foreach(['RMN', 'SRN', 'GSN', 'RMMC', 'RMC', 'RMA'] as $branch)
+                @foreach(['RMN', 'SRN', 'GSN', 'RMMC', 'RMC', 'RMA', 'RMAT'] as $branch)
                     @if(count($user->getExamList(['branch' => $branch])) > 0)
                         @if($branch == 'SRN')
                            <h5 class="Incised901Light ninety">RMN Speciality</h5>
                         @elseif($branch == 'RMC')
                             <h5 class="Incised901Light ninety">RMMC Speciality</h5>
+                        @elseif($branch == 'RMAT')
+                            <h5 class="Incised901Light ninety">RMA Speciality</h5>
                         @else
                             <h5 class="Incised901Light ninety">{{$branch}}</h5>
                         @endif
