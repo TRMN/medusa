@@ -39,6 +39,9 @@ class CodeTest extends Command
      */
     public function fire()
     {
+        //$user = User::find('55fa184fe4bed834078b458a');
+
+        print_r(Chapter::commandTriadReport());
 
     }
 
