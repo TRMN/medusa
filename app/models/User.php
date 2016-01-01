@@ -459,7 +459,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 $list = array_where(
                     $exams->exams,
                     function ($key, $value) use ($branch) {
-                        if (strpos($key, strtoupper($branch)) > 0) {
+                        if (preg_match('/^.*-(' . $branch . ')-.*$/', $key) === 1) {
                             return true;
                         }
                     }

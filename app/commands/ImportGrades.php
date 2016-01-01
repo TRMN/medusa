@@ -57,6 +57,10 @@ class ImportGrades extends Command
                      'RMMC Specialist Exam Grades' => 'importRmmcSpecialityExams',
                      'RMA Exam Grading Sheet'      => 'importRmaMainLineExams',
                      'RMA Specialist Exam Grades'  => 'importRmaSpecialityExams',
+                     'Landing U Core'              => 'importLandingUExams',
+                     'Landing King\'s '            => 'importLandingUExams',
+                     'Landing Queen\'s'            => 'importLandingUExams',
+                     'IMNA Specialist Exam Grades' => 'importGsnSpecialityExams',
                  ] as $sheet => $importRoutine) {
 
             $examRecords = $this->processExams($examRecords, $sheet, $importRoutine);
@@ -205,11 +209,11 @@ class ImportGrades extends Command
     protected function parseScoreAndDate($value, $debug = false)
     {
         $value = strtoupper($value);
-
+        $debug === true && $this->info($value);
         // Somebody is using a UTF8 non-breaking space \xC2\xA0
         $value = str_replace("\xc2\xa0", " ", $value);
 
-        if (preg_match('/^(\w+)$/', $value) === 1) {
+        if (preg_match('/^(\w+%*)$/', $value) === 1) {
             return ['score' => $value, 'date' => 'UNKNOWN'];
         }
 
@@ -591,6 +595,45 @@ class ImportGrades extends Command
 
         foreach ($mainLineExams as $field => $examId) {
             if (empty( $record[$field] ) === false) {
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+            }
+        }
+
+        return $exam;
+    }
+
+    protected function importLandingUExams(array $record)
+    {
+        $landingUExams = array_where($record, function ($key, $value)
+        {
+            return strtoupper(substr($key, 0, 2)) == 'LU';
+        });
+
+        $exam = [];
+
+        foreach ($landingUExams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                $examId = str_replace('_', '-', strtoupper($field));
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+            }
+        }
+
+        return $exam;
+    }
+
+    protected function importGsnSpecialityExams(array $record)
+    {
+        $exams = array_where($record, function ($key, $value)
+        {
+            return preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/',strtoupper($key));
+        });
+
+        $exam = [];
+
+        foreach ($exams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/', strtoupper($field), $matches);
+                $examId = str_replace('_', '-', $matches[0]);
                 $exam[$examId] = $this->parseScoreAndDate($record[$field]);
             }
         }
