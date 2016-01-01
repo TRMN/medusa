@@ -50,11 +50,17 @@ class ImportGrades extends Command
         $examRecords = []; // start with a clean array
 
         foreach ([
-                     'RMN Exam Grading Sheet'     => 'importMainLineExams',
-                     'RMN Specialist Exam Grades' => 'importRmnSpecialityExams',
-                     'IMNA Exam Grades'           => 'importGsnMainLineExams',
-                     'RMMC Exam Grading Sheet'    => 'importRmmcMainLineExams',
-                     'RMA Exam Grading Sheet'     => 'importRmaMainLineExams'
+                     'RMN Exam Grading Sheet'      => 'importMainLineExams',
+                     'RMN Specialist Exam Grades'  => 'importRmnSpecialityExams',
+                     'IMNA Exam Grades'            => 'importGsnMainLineExams',
+                     'RMMC Exam Grading Sheet'     => 'importRmmcMainLineExams',
+                     'RMMC Specialist Exam Grades' => 'importRmmcSpecialityExams',
+                     'RMA Exam Grading Sheet'      => 'importRmaMainLineExams',
+                     'RMA Specialist Exam Grades'  => 'importRmaSpecialityExams',
+                     'Landing U Core'              => 'importLandingUExams',
+                     'Landing King\'s '            => 'importLandingUExams',
+                     'Landing Queen\'s'            => 'importLandingUExams',
+                     'IMNA Specialist Exam Grades' => 'importGsnSpecialityExams',
                  ] as $sheet => $importRoutine) {
 
             $examRecords = $this->processExams($examRecords, $sheet, $importRoutine);
@@ -142,13 +148,14 @@ class ImportGrades extends Command
 
         $this->logMsg($details);
 
-        $mainlineExams = Excel::selectSheets($sheet)->load(
-            app_path() . '/database/TRMN Exam grading spreadsheet.xlsx', 'UTF-8'
+        $exams = Excel::selectSheets($sheet)->load(
+            app_path() . '/database/TRMN Exam grading spreadsheet.xlsx',
+            'UTF-8'
         )
-                              ->formatDates(true, 'Y-m-d')
-                              ->toArray();
+                      ->formatDates(true, 'Y-m-d')
+                      ->toArray();
 
-        foreach ($mainlineExams as $userRecord) {
+        foreach ($exams as $userRecord) {
 
             if (empty( $userRecord['last_name'] ) === true) {
                 continue;
@@ -202,11 +209,11 @@ class ImportGrades extends Command
     protected function parseScoreAndDate($value, $debug = false)
     {
         $value = strtoupper($value);
-
+        $debug === true && $this->info($value);
         // Somebody is using a UTF8 non-breaking space \xC2\xA0
         $value = str_replace("\xc2\xa0", " ", $value);
 
-        if (preg_match('/^(\w+)$/', $value) === 1) {
+        if (preg_match('/^(\w+%*)$/', $value) === 1) {
             return ['score' => $value, 'date' => 'UNKNOWN'];
         }
 
@@ -217,8 +224,6 @@ class ImportGrades extends Command
 
         // Grrrr!!!! Some instructor keeps using $ instead of %
         $value = str_replace('$', '%', $value);
-
-
 
         // SIGH!  Virtually every other instructor is doing DDMONYY but noooo, you have to be special and do DD MON YY
         if (substr_count($value, ' ') >= 3) {
@@ -375,6 +380,146 @@ class ImportGrades extends Command
         return $exam;
     }
 
+    protected function importRmaSpecialityExams(array $record)
+    {
+        $fieldNames = [
+            'rmat_01a',
+            'rmat_01b',
+            'rmat_02a',
+            'rmat_02b',
+            'rmat_03a',
+            'rmat_03b',
+            'rmat_04a',
+            'rmat_04b',
+            'rmat_05a',
+            'rmat_05b',
+            'rmat_06a',
+            'rmat_06b',
+            'rmat_07a',
+            'rmat_07b',
+            'rmat_08a',
+            'rmat_08b',
+            'rmat_09a',
+            'rmat_09b',
+            'rmat_10a',
+            'rmat_10b',
+            'rmat_11a',
+            'rmat_11b',
+            'rmat_12a',
+            'rmat_12b',
+            'rmat_13a',
+            'rmat_13b',
+            'rmat_14a',
+            'rmat_14b',
+            'rmat_15a',
+            'rmat_15b',
+            'rmat_16a',
+            'rmat_16b',
+            'rmat_16c',
+            'rmat_16d',
+            'rmat_17a',
+            'rmat_17b',
+            'rmat_18a',
+            'rmat_18b',
+            'rmat_19a',
+            'rmat_19b',
+            'rmat_19c',
+            'rmat_20',
+            'rmat_21',
+            'rmat_22',
+            'rmat_23a',
+            'rmat_23b',
+            'rmat_24',
+            'rmat_25',
+            'rmat_26',
+            'rmat_27a',
+            'rmat_27b',
+            'rmat_27c',
+            'rmat_27d',
+            'rmat_27e',
+            'rmat_27f',
+            'rmat_27g',
+            'rmat_27h',
+            'rmat_27i',
+            'rmat_27j',
+            'rmat_27k',
+            'rmat_28a',
+            'rmat_28b',
+            'rmat_28c',
+            'rmat_28d',
+            'rmat_28e',
+            'rmat_28f',
+            'rmat_28g',
+            'rmat_28h',
+            'rmat_28i',
+            'rmat_28j',
+            'rmat_28n',
+            'rmat_29a',
+            'rmat_29b',
+            'rmat_30',
+            'rmat_30_a1',
+            'rmat_30_a2',
+            'rmat_31',
+            'rmat_32',
+            'rmat_33a',
+            'rmat_33b',
+            'rmat_34a',
+            'rmat_34b',
+            'rmat_35_a1',
+            'rmat_35_a2',
+            'rmat_36a',
+            'rmat_36b',
+            'rmat_37_a1',
+            'rmat_37_b1',
+            'rmat_38a',
+            'rmat_38b',
+            'rmat_39a',
+            'rmat_39b',
+            'rmat_40a',
+            'rmat_40b',
+            'rmat_41a',
+            'rmat_41b',
+            'rmat_42a',
+            'rmat_42b',
+            'rmat_43a',
+            'rmat_43b',
+            'rmat_44',
+            'rmat_45a',
+            'rmat_45b',
+            'rmat_46a',
+            'rmat_46b',
+            'rmat_47a',
+            'rmat_47b',
+            'rmat_48a',
+            'rmat_48b',
+            'rmat_49a',
+            'rmat_49b',
+            'rmat_50a',
+            'rmat_50b',
+            'rmat_51a',
+            'rmat_51b',
+            'rmat_52a',
+            'rmat_52b',
+        ];
+
+        $exams = [];
+
+        foreach($fieldNames as $fieldName) {
+            $exams[$fieldName] = 'KR1MA-' . strtoupper($fieldName);
+        }
+
+
+        $exam = [];
+
+        foreach ($exams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+            }
+        }
+
+        return $exam;
+    }
+
     protected function importGsnMainLineExams(array $record)
     {
         $mainLineExams = [
@@ -457,6 +602,45 @@ class ImportGrades extends Command
         return $exam;
     }
 
+    protected function importLandingUExams(array $record)
+    {
+        $landingUExams = array_where($record, function ($key, $value)
+        {
+            return strtoupper(substr($key, 0, 2)) == 'LU';
+        });
+
+        $exam = [];
+
+        foreach ($landingUExams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                $examId = str_replace('_', '-', strtoupper($field));
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+            }
+        }
+
+        return $exam;
+    }
+
+    protected function importGsnSpecialityExams(array $record)
+    {
+        $exams = array_where($record, function ($key, $value)
+        {
+            return preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/',strtoupper($key));
+        });
+
+        $exam = [];
+
+        foreach ($exams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/', strtoupper($field), $matches);
+                $examId = str_replace('_', '-', $matches[0]);
+                $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+            }
+        }
+
+        return $exam;
+    }
+
     protected function importRmnSpecialityExams(array $record)
     {
         // Build the array of field name to exam number translation
@@ -474,6 +658,32 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($rmnSpecialityExams as $field => $examId) {
+            if (empty( $record[$field] ) === false) {
+                if (strtoupper($record[$field]) !== 'SKIPPED') {
+                    $exam[$examId] = $this->parseScoreAndDate($record[$field]);
+                }
+            }
+        }
+
+        return $exam;
+    }
+
+    protected function importRmmcSpecialityExams(array $record)
+    {
+        // Build the array of field name to exam number translation
+        $rmmcSpecialityExams = [];
+        for ($exam = 1; $exam < 11; $exam++) {
+            $examNumber = str_pad($exam, 2, '0', STR_PAD_LEFT);
+
+            foreach (['A', 'C', 'W', 'D'] as $examLevel) {
+                $rmmcSpecialityExams['srmc_' . $examNumber . strtolower($examLevel)] =
+                    'SIA-SRMC-' . $examNumber . $examLevel;
+            }
+        }
+
+        $exam = [];
+
+        foreach ($rmmcSpecialityExams as $field => $examId) {
             if (empty( $record[$field] ) === false) {
                 if (strtoupper($record[$field]) !== 'SKIPPED') {
                     $exam[$examId] = $this->parseScoreAndDate($record[$field]);

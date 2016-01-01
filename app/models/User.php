@@ -14,16 +14,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     use \Medusa\Audit\MedusaAudit;
 
     public static $rules = [
-        'first_name'     => 'required|min:2',
-        'last_name'      => 'required|min:2',
-        'address1'       => 'required|min:4',
-        'city'           => 'required|min:2',
-        'state_province' => 'required|min:2',
-        'postal_code'    => 'required|min:2',
-        'country'        => 'required',
-        'email_address'  => 'required|email|unique:users',
-        'password'       => 'confirmed',
-        'branch'         => 'required',
+        'first_name'         => 'required|min:2',
+        'last_name'          => 'required|min:2',
+        'address1'           => 'required|min:4',
+        'city'               => 'required|min:2',
+        'state_province'     => 'required|min:2',
+        'postal_code'        => 'required|min:2',
+        'country'            => 'required',
+        'email_address'      => 'required|email|unique:users',
+        'password'           => 'confirmed',
+        'branch'             => 'required',
         'primary_assignment' => 'required',
     ];
 
@@ -41,15 +41,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     ];
 
     public static $error_message = [
-        'min'                     => 'The members :attribute must be at least :min characters long',
-        'address1.required'       => 'Please enter the members street address',
-        'address1.min'            => 'The street address must be at least :size characters long',
-        'required'                => 'Please enter the members :attribute',
-        'state_province.required' => 'Please enter the members state or province',
-        'state_province.min'      => 'The members state or province must be at least :size character long',
-        'date_format'             => 'Please enter a date in the format YYYY-MM-DD',
-        'branch.required'         => "Please select the members branch",
-        'email_address.unique'    => 'That email address is already in use',
+        'min'                         => 'The members :attribute must be at least :min characters long',
+        'address1.required'           => 'Please enter the members street address',
+        'address1.min'                => 'The street address must be at least :size characters long',
+        'required'                    => 'Please enter the members :attribute',
+        'state_province.required'     => 'Please enter the members state or province',
+        'state_province.min'          => 'The members state or province must be at least :size character long',
+        'date_format'                 => 'Please enter a date in the format YYYY-MM-DD',
+        'branch.required'             => "Please select the members branch",
+        'email_address.unique'        => 'That email address is already in use',
         'primary_assignment.required' => 'Please select a chapter'
     ];
 
@@ -88,6 +88,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function announcements()
     {
         return $this->hasMany('Announcement');
+    }
+
+    public function getFullName()
+    {
+        return $this->first_name . ' ' .
+            ( empty( $this->middle_name ) ? '' : $this->middle_name . ' ' ) .
+            $this->last_name . ' ' .
+            $this->suffix;
     }
 
     /**
@@ -187,16 +195,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     }
 
     /**
-    * Get the chapter ID of the ship to which a member is assigned, regardless of
-    * whether that's the primary, secondary, or some tertiary assignment.
-    *
-    */
+     * Get the chapter ID of the ship to which a member is assigned, regardless of
+     * whether that's the primary, secondary, or some tertiary assignment.
+     *
+     */
     public function getAssignedShip()
     {
-        if (isset( $this->assignment ) == true )
-        {
-            foreach ( $this->assignment as $assignment )
-            {
+        if (isset( $this->assignment ) == true) {
+            foreach ($this->assignment as $assignment) {
                 switch (Chapter::find($assignment['chapter_id'])['chapter_type']) {
                     case 'ship':
                     case 'bivouac':
@@ -223,7 +229,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if (empty($assignment[$position]) === false) {
+                if (empty( $assignment[$position] ) === false) {
                     if (empty( $assignment['chapter_id'] )) {
                         return false;
                     }
@@ -310,7 +316,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if (empty($assignment[$position]) === false) {
+                if (empty( $assignment[$position] ) === false) {
                     return $assignment['billet'];
                 }
             }
@@ -340,7 +346,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (isset( $this->assignment ) == true) {
             foreach ($this->assignment as $assignment) {
-                if (empty($assignment[$position]) === false) {
+                if (empty( $assignment[$position] ) === false) {
                     if (isset( $assignment['date_assigned'] ) === true) {
                         return $assignment['date_assigned'];
                     } else {
@@ -384,14 +390,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
-    public function getTimeInGrade($short=false)
+    public function getTimeInGrade($short = false)
     {
         if (empty( $this->rank['date_of_rank'] ) === false) {
             $dorObj = new DateTime(date('Y-m-d', strtotime($this->rank['date_of_rank'])));
             $timeInGrade = $dorObj->diff(new DateTime("now"));
 
             if ($short === true) {
-                $tig = ($timeInGrade->format('%y') * 12) + $timeInGrade->format('%m');
+                $tig = ( $timeInGrade->format('%y') * 12 ) + $timeInGrade->format('%m');
                 if ($timeInGrade->format('%d') > 25) {
                     $tig += 1;
                 }
@@ -432,6 +438,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 } else {
                     $after = strtotime($options['after']);
                 }
+
+                if (empty( $options['class'] ) === true) {
+                    $class = null;
+                } else {
+                    $class = $options['class'];
+                }
             }
         } else {
             $branch = null;
@@ -447,8 +459,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 $list = array_where(
                     $exams->exams,
                     function ($key, $value) use ($branch) {
-                        if (strpos($key, strtoupper($branch)) > 0) {
-                            return $value;
+                        if (preg_match('/^.*-(' . $branch . ')-.*$/', $key) === 1) {
+                            return true;
                         }
                     }
                 );
@@ -457,23 +469,104 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             if (empty( $after ) === false) {
                 // filter by date
                 $list = array_where(
-                    $exams->exams,
+                    $list,
                     function ($key, $value) use ($after) {
                         if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime(
                                 '+2 month',
                                 $after
                             )
                         ) {
-                            return $value;
+                            return true;
                         }
                     }
                 );
             }
+
+            if (empty( $class ) === false) {
+                //filter by class of exams
+                switch ($class) {
+                    case "enlisted":
+                        //handle enlisted exams
+                        $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-000[1-9]$/';
+
+                        $list = $this->filterExams($list, $examMatch);
+                        break;
+
+                    case "warrant":
+                        //handle warrant exams
+                        $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-001[1-9]$/';
+
+                        $list = $this->filterExams($list, $examMatch);
+                        break;
+
+                    case "officer":
+                        //handle officer exams
+                        $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-01[0-9][1-9]$/';
+
+                        $list = $this->filterExams($list, $examMatch);
+                        break;
+
+                    case "flag":
+                        //handle flag exams
+                        $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-100[1-9]$/';
+
+                        $list = $this->filterExams($list, $examMatch);
+                        break;
+
+                    case "officer+flag":
+                        $list =
+                            array_merge(
+                                $this->getExamList(['class' => 'officer']),
+                                $this->getExamList(['class' => 'flag'])
+                            );
+                        break;
+                }
+            }
+
             ksort($list);
             return $list;
         } else {
             return [];
         }
+    }
+
+    private function getHighestExamFromList(array $list)
+    {
+        if (count($list) < 1) {
+            return [];
+        }
+
+        $list = array_sort(
+            $list,
+            function ($value) {
+                return $value['date'];
+            }
+        );
+
+        end($list);
+        return [key($list) => last($list)];
+    }
+
+    /**
+     * Function filterExams
+     *
+     * @param array  $exams
+     * @param string $search
+     *
+     * @return array $list
+     */
+
+    private function filterExams(array $exams, $search)
+    {
+        $list = array_where(
+            $exams,
+            function ($key, $value) use ($search) {
+                if (preg_match($search, $key) === 1) {
+                    return true;
+                }
+            }
+        );
+        return $list;
     }
 
     public function getHighestMainLineExamForBranch()
@@ -486,30 +579,50 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $exams = $this->getExamList('RMN');
         }
 
-        if (count($exams) < 1) {
-            return 'None found';
-        }
+        $results = $this->getHighestExamFromList($exams);
 
-        end($exams);
+        return $results;
+    }
 
-        while (true) {
-            $examName = key($exams);
-            $exam = array_pop($exams);
+    /**
+     * Retrieve the highest level Enlisted exam a user has taken
+     *
+     * @return String $exam
+     */
+    public function getHighestEnlistedExam()
+    {
+        $exams = $this->getExamList(array('class' => 'enlisted'));
 
-            if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
-                break;
-            }
+        $results = $this->getHighestExamFromList($exams);
 
-            end($exams);
-        }
+        return $results;
+    }
 
-        // Sanity check
+    public function getHighestWarrantExam()
+    {
+        $exams = $this->getExamList(array('class' => 'warrant'));
 
-        if (intval($exam['score']) > 70 || in_array(substr(strtoupper($exam['score']), 0, 4), ['PASS', 'BETA', 'CREA']) === true) {
-            return $examName;
-        } else {
-            return 'None found';
-        }
+        $results = $this->getHighestExamFromList($exams);
+
+        return $results;
+    }
+
+    public function getHighestOfficerExam()
+    {
+        $exams = $this->getExamList(array('class' => 'officer+flag'));
+
+        $results = $this->getHighestExamFromList($exams);
+
+        return $results;
+    }
+
+    public function getHighestFlagExam()
+    {
+        $exams = $this->getExamList(array('class' => 'flag'));
+
+        $results = $this->getHighestExamFromList($exams);
+
+        return $results;
     }
 
     public function getCompletedExams($after)
