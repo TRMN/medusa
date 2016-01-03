@@ -55,7 +55,7 @@
             Last Course Completed:
         </div>
         <div class="columns small-3">
-            {{$command['CO']->getHighestMainLineExamForBranch()}}
+            {{$command['CO']->getHighestMainLineExamForBranch('officer+flag')}}
         </div>
         <div class="columns small-2 my">
             Date of Birth:
@@ -123,7 +123,7 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$command['XO']->getHighestMainLineExamForBranch()}}
+                {{$command['XO']->getHighestMainLineExamForBranch('officer+flag')}}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
@@ -198,7 +198,7 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$command['BOSUN']->getHighestMainLineExamForBranch()}}
+                {{$command['BOSUN']->getHighestMainLineExamForBranch('enlisted')}}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
@@ -252,7 +252,7 @@
                 </row>
                 <div class="columns small-4">
                     {{ $user['first_name'] }}{{ isset($user['middle_name']) ? ' ' . $user['middle_name'] : '' }} {{ $user['last_name'] }}{{ !empty($user['suffix']) ? ' ' . $user['suffix'] : '' }}
-                    , {{$user['branch']}}
+                    {{!empty($user['branch']) ? ', ' . $user['branch'] : ''}}
                 </div>
                 <div class="columns small-3 end">
                     {{$user['member_id']}}

@@ -569,19 +569,27 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $list;
     }
 
-    public function getHighestMainLineExamForBranch()
+    public function getHighestMainLineExamForBranch($class = null)
     {
-        $exams = $this->getExamList($this->branch);
+        $options['branch'] = $this->branch;
+        if (empty($class) === false) {
+            $options['class'] = $class;
+        }
+
+
+
+        $exams = $this->getExamList($options);
 
         if (count($exams) < 1) {
             // No exams found for branch, check RMN
+            $options['branch'] = 'RMN';
 
-            $exams = $this->getExamList('RMN');
+            $exams = $this->getExamList($options);
         }
 
         $results = $this->getHighestExamFromList($exams);
 
-        return $results;
+        return key($results);
     }
 
     /**

@@ -38,12 +38,12 @@ class ReportController extends \BaseController
         foreach (['primary', 'secondary', 'additional'] as $assignment) {
             $chapter = Chapter::find(Auth::user()->getAssignmentId($assignment));
 
-            if ($chapter->chapter_type == 'ship') {
+            if (empty($chapter->chapter_type) === false && ($chapter->chapter_type == 'ship' || $chapter->chapter_type == 'station')) {
                 break;
             }
         }
 
-        if ($chapter->chapter_type != 'ship') {
+        if (in_array($chapter->chapter_type, ['ship', 'station']) === false) {
             return \Redirect::to(\URL::previous())->with(
                 'message',
                 'I was unable to find an appropriate command for this report.'
