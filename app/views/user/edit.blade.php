@@ -225,7 +225,7 @@
             <div class="row">
                 <div class="end small-6 columns ninety Incised901Light">
                     {{ Form::label('additional_assignment', "Chapter", ['class' => 'my']) }}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::select('additional_assignment', $chapters) }}
-                    {{ Form::hidden('aassignment', $user->additional_assignment, ['id' => 'sassignment']) }}
+                    {{ Form::hidden('aassignment', $user->additional_assignment, ['id' => 'aassignment']) }}
                     @else
                         {{Form::hidden('additional_assignment', $user->additional_assignment)}} {{$chapters[$user->additional_assignment]}}
                         <br/><br/>
