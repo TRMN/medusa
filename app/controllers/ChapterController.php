@@ -254,6 +254,10 @@ class ChapterController extends BaseController
 
     public function commandTriadReport()
     {
+        if (( $redirect = $this->checkPermissions('TRIAD_REPORT') ) !== true) {
+            return $redirect;
+        }
+
         //get list of ships and stations
         $results = Chapter::where('chapter_type', '=', 'ship')->orWhere('chapter_type', '=', 'station')->get();
 

@@ -24,14 +24,14 @@
             'EDIT_ECHELON',
             'DEL_ECHELON',
             'ASSIGN_SHIP',
-            'CHANGE_ASSIGNMENT',]) === true)
+            'CHANGE_ASSIGNMENT','TRIAD_REPORT']) === true)
             <div class="nav-header lnav">First Space Lord</div>
             <div class="rnav">
 
                 @if($permsObj->hasPermissions(['CREATE_ECHELON']) === true)
                     <a href="{{ route('echelon.create') }}">Activate Echelon</a><br/>
                 @endif
-                @if($permsObj->hasPermissions(['ALL_PERMS']) == true)
+                @if($permsObj->hasPermissions(['TRIAD_REPORT']) == true)
                     <a href="{{route('chapter.triadreport')}}">Command Triad Report</a><br/>
                 @endif
 
