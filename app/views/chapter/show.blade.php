@@ -183,6 +183,7 @@ switch ($detail->chapter_type) {
                                 case 'squad':
                                 case 'platoon':
                                 case 'battalion':
+                                case 'company':
                                     echo "Gunny: ";
                                     break;
                                 case 'fleet':

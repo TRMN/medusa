@@ -63,6 +63,7 @@ Route::get(
     ['as' => 'chapter.decommission', 'uses' => 'ChapterController@decommission', 'before' => 'auth']
 );
 Route::resource( 'chapter', 'ChapterController', ['before' => 'auth'] );
+Route::get('/triadreport', ['as' => 'chapter.triadreport', 'uses' => 'ChapterController@commandTriadReport', 'before' => 'auth']);
 Route::resource( 'announcement', 'AnnouncementController', ['before' => 'auth'] );
 Route::resource( 'report', 'ReportController', ['before' => 'auth'] );
 

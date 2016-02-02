@@ -149,9 +149,13 @@ class UserChangeRequestController extends \BaseController
         }
 
         $user = User::find($request->user);
+        $checkRank = false;
+        $message = '';
 
         switch ($request->req_type) {
             case 'branch':
+                $greeting = $user->getGreeting();
+
                 if ($user->branch == $request->old_value) {
                     $user->branch = $request->new_value;
                 }
@@ -171,6 +175,8 @@ class UserChangeRequestController extends \BaseController
                 $oldValue = $request->old_value;
                 $newValue = $request->new_value;
 
+                $checkRank = true;
+
                 break;
             case 'assignment.chapter':
                 $assignments = $user->assignment;
@@ -186,7 +192,7 @@ class UserChangeRequestController extends \BaseController
                     case 'platoon':
                     case 'battalion':
                         // We have a MARDET, get the parent chapter CO's email address.
-                        $cc[] = Chapter::find($user->getAssignedShip()->assigned_to)->getCO()->email_address;
+                        $cc[] = Chapter::find(Chapter::find($user->getAssignedShip())->assigned_to)->getCO()->email_address;
                         break;
                 }
 
@@ -228,6 +234,59 @@ class UserChangeRequestController extends \BaseController
                 break;
         }
 
+        if ($checkRank === true) {
+            // Get Branch info for the original branch
+            $branchInfo = Branch::where('branch', '=', $oldValue)->first();
+
+            // Check for situations that require a members record to be checked
+
+            if ($oldValue == 'RMN' && in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true) {
+                $message = '<li>This was a transfer from the RMN to another military branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+            }
+
+            if ($newValue == 'RMN' && in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true) {
+                $message = '<li>This was a transfer from another military branch to the RMN.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+            }
+
+            if (in_array($oldValue,['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($newValue, ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
+                $message = '<li>This was a transfer from a military branch to a civilian branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+            }
+
+            if (in_array($newValue,['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($oldValue, ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
+                $message = '<li>This was a transfer from a civilian branch to a military branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+            }
+
+            // SFS notice
+
+            if ($newValue == 'SFS') {
+                $message .= '<li>This was a transfer to the Sphinx Forestry Service.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s age to ensure that their new rank is appropriate for their age.</li>";
+            }
+
+            // Look up the equivalent rank
+
+            $newRank = $branchInfo->equivalent[$newValue][$user->rank['grade']];
+
+            // Now check for instances where the equiv rank is E-1/C-1 and the original rank is not E-1/C-1
+
+            switch ($newRank) {
+                case "C-1":
+                case "E-1":
+                    if (in_array($user->rank['grade'], ['E-1', 'C-1']) === false) {
+                        $message .= '<li>There was no direct equivalent rank found. Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+                    }
+                    break;
+                default:
+            }
+
+            $rank = $user->rank;
+            $rank['grade'] = $newRank;
+            $user->rank = $rank;
+
+        }
+
+        if (empty($message) === false) {
+            $message = '<ul>' . $message . '</ul>';
+        }
         // Update the user
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
@@ -258,23 +317,23 @@ class UserChangeRequestController extends \BaseController
         }
 
         // Send approved email
-        Mail::send(
-            $email,
-            ['user' => $user, 'fromValue' => $oldValue, 'toValue' => $newValue],
-            function ($message) use ($user, $cc, $subject) {
-                $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
+//        Mail::send(
+//            $email,
+//            ['user' => $user, 'fromValue' => $oldValue, 'toValue' => $newValue],
+//            function ($message) use ($user, $cc, $subject) {
+//                $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
+//
+//                $message->to($user->email_address);
+//
+//                foreach ($cc as $address) {
+//                    $message->cc($address);
+//                }
+//
+//                $message->subject($subject);
+//            }
+//        );
 
-                $message->to($user->email_address);
-
-                foreach ($cc as $address) {
-                    $message->cc($address);
-                }
-
-                $message->subject($subject);
-            }
-        );
-
-        return Redirect::route('user.change.review');
+        return Redirect::route('user.change.review')->with('message', $message);
     }
 
     public function deny(ChangeRequest $request)

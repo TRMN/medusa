@@ -21,6 +21,10 @@ class UnitController extends \BaseController
             $chapters = array_merge($chapters, \Chapter::getChaptersByType($type));
         }
 
+        $hq = \Chapter::where('chapter_name', '=', "King William's Tower")->first();
+
+        $chapters[$hq->id] = $hq->chapter_name . ' (' . $hq->branch . ')';
+
         asort($chapters);
 
         return $chapters;

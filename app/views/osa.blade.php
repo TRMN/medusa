@@ -40,7 +40,7 @@
     {{ Form::open(['route' => 'osa', 'method' => 'post']) }}
     {{ Form::hidden('id', Auth::user()->id) }}
     <div>
-        {{ Form::checkbox('osa',1) }} I have read and agree to this policy
+        {{ Form::checkbox('osa',1, false, ['class' => 'switcher']) }} I have read and agree to this policy
     </div>
     <div>
         <p><em>If you click "I do not agree", you will be logged out and will be unable to use Medusa until you agree.  For more information on why you must agree to this policy, contact <a href="mailto:bupers@trmn.org">The Fifth Space Lord</a> (BuPers)</em> </p>
@@ -51,4 +51,20 @@
     </div>
     {{ Form::close() }}
 @stop
+@section ('scriptFooter')
+<script type="application/javascript">
+    $('.switcher').rcSwitcher({
 
+    // reverse: true,
+    inputs: false,
+    // width: 70,
+    // height: 24,
+    // blobOffset: 2,
+    onText: 'Yes',
+    offText: 'No',
+    theme: 'stoplight',
+    // autoFontSize: true,
+
+    });
+</script>
+@stop

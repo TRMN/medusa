@@ -31,7 +31,7 @@ class ExamController extends \BaseController
 
             $ext = Input::file('file')->getClientOriginalExtension();
 
-            if ($ext != 'xlsx') {
+            if ($ext != 'xlsx' && $ext != 'ods') {
                 return Redirect::route('exam.index')->with('message', 'Only .xlsx files will be accepted');
             }
 
