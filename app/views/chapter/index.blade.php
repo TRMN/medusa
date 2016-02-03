@@ -45,7 +45,7 @@
                     <td width="12%">
                         @if(in_array($chapter->chapter_type, ['ship', 'station']) === true)
                             @if($permsObj->hasPermissions(['EDIT_SHIP']) === true)
-                                <a href="{{route('chapter.edit', [$chapter->id])}}" class="fi-list green"
+                                <a href="{{route('chapter.edit', [$chapter->id])}}" class="fi-pencil green"
                                    title="Edit Ship"></a>
                             @endif
                             @if($permsObj->hasPermissions(['DECOMMISSION_SHIP']) === true)
@@ -57,7 +57,7 @@
 
                         @elseif(in_array($chapter->chapter_type, ['district', 'fleet', 'task_force', 'task_group', 'squadron', 'division']) === true)
                             @if($permsObj->hasPermissions(['EDIT_ECHELON']) === true)
-                                <a href="{{route('echelon.edit', [$chapter->id])}}" class="fi-list green"
+                                <a href="{{route('echelon.edit', [$chapter->id])}}" class="fi-pencil green"
                                    title="Edit Echelon"></a>
                             @endif
                             @if($permsObj->hasPermissions(['DEL_ECHELON']) === true)
@@ -68,7 +68,7 @@
 
                         @elseif(in_array($chapter->chapter_type, ['shuttle', 'section', 'squad', 'platoon', 'company', 'battalion', 'corps', 'exp_force', 'regiment']) === true)
                             @if($permsObj->hasPermissions(['EDIT_MARDET']) === true)
-                                <a href="{{route('mardet.edit', [$chapter->id])}}" class="fi-list green"
+                                <a href="{{route('mardet.edit', [$chapter->id])}}" class="fi-pencil green"
                                    title="Edit MARDET"></a>
                             @endif
                             @if($permsObj->hasPermissions(['DELETE_MARDET']) === true)
@@ -79,7 +79,7 @@
 
                         @elseif(in_array($chapter->chapter_type, ['bivouac', 'barracks', 'outpost', 'fort', 'planetary', 'theater']) === true)
                             @if($permsObj->hasPermissions(['EDIT_UNIT']) === true)
-                                <a href="{{route('unit.edit', [$chapter->id])}}" class="fi-list green"
+                                <a href="{{route('unit.edit', [$chapter->id])}}" class="fi-pencil green"
                                    title="Edit Command/Unit"></a>
                             @endif
                             @if($permsObj->hasPermissions(['DELETE_UNIT']) === true)
@@ -89,7 +89,7 @@
                             @endif
                         @else
                             @if($permsObj->hasPermissions(['ALL_PERMS']) === true)
-                                <a href="{{route('anyunit.edit', [$chapter->id])}}" class="fi-list green"
+                                <a href="{{route('anyunit.edit', [$chapter->id])}}" class="fi-pencil green"
                                    title="Edit Command/Unit"></a>
                             @endif
                             @if($permsObj->hasPermissions(['ALL_PERMS']) === true)
