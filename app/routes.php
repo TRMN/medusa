@@ -26,8 +26,12 @@ Route::post( '/apply', [ 'as' => 'user.apply', 'uses' => 'UserController@apply' 
 // Users
 
 Route::model( 'user', 'User');
-Route::get( '/user/{user}/confirmdelete', [ 'as' => 'user.confirmdelete', 'uses' => 'UserController@confirmDelete', 'before' => 'auth' ] );
+Route::get('/user/find/{billet2check}', ['as' => 'user.dups', 'uses' => 'UserController@findDuplicateAssignment']);
 Route::get('/user/review', ['as' => 'user.review', 'uses' => 'UserController@reviewApplications', 'before' => 'auth']);
+Route::get( '/user/{user}/confirmdelete', [ 'as' => 'user.confirmdelete', 'uses' => 'UserController@confirmDelete', 'before' => 'auth' ] );
+Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
+Route::post('/user/osa', ['as' => 'osa', 'uses' => 'UserController@osa', 'before' => 'auth']);
+
 Route::resource( 'user', 'UserController', ['before' => 'auth'] );
 Route::get('/user/{user}/approve', ['as' => 'user.approve', 'uses' => 'UserController@approveApplication', 'before' => 'auth']);
 Route::get(
@@ -36,9 +40,7 @@ Route::get(
 );
 Route::get('/user/{user}/reset', ['as' => 'user.getReset', 'uses' => 'UserController@getReset', 'before' => 'auth']);
 Route::post('/user/{user}/reset', ['as' => 'user.postReset', 'uses' => 'UserController@postReset', 'before' => 'auth']);
-Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
-Route::post('/user/osa', ['as' => 'osa', 'uses' => 'UserController@osa', 'before' => 'auth']);
-Route::get('/user/find/{billet}', ['as' => 'user.dups', 'uses' => 'UserController@findDuplicateAssignment']);
+
 
 // Assignment Change Requests
 Route::model('request', 'ChangeRequest');
@@ -102,6 +104,9 @@ Route::controller('password', 'RemindersController');
 Route::get('/exam', ['as' => 'exam.index', 'uses' => 'ExamController@index', 'before' => 'auth']);
 Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@upload', 'before' => 'auth']);
 
+Route::model('billet', 'Billet');
+Route::resource('billet', 'BilletController', ['before' => 'auth']);
+
 // API calls
 
 Route::get( '/api/branch', 'ApiController@getBranchList'); // Get a list of all the tRMN branches
@@ -125,5 +130,4 @@ Route::get('/api/school', 'ApiController@getSchools');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 
-Route::model('billet', 'Billet');
-Route::resource('billet', 'BilletController', ['before' => 'auth']);
+
