@@ -162,9 +162,14 @@ class BilletController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy(Billet $billet)
 	{
-		//
+		try {
+            $billet->delete();
+            return 1;
+        } catch(Exception $e) {
+            return 0;
+        }
 	}
 
 }

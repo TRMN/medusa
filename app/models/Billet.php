@@ -7,7 +7,7 @@ class Billet extends Eloquent {
 	protected $fillable = ['billet_name'];
 
     public static $rules = ['billet_name' => 'required|unique:billets'];
-    
+
 	static function getBillets()
 	{
 		$results = self::all();
@@ -20,8 +20,10 @@ class Billet extends Eloquent {
         asort($billets, SORT_NATURAL);
 		return $billets;
 	}
-    
-    public function getName() {
-        return $billet_name;
+
+
+    public function getAssignedCount()
+    {
+        return User::where('assignment.billet', '=', $this->billet_name)->count();
     }
 }
