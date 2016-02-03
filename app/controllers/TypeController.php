@@ -105,10 +105,12 @@ class TypeController extends \BaseController
             return $redirect;
         }
 
+        $oldValue = null;
+
         $data = Input::all();
 
         if ($data['chapter_type'] !== $type->chapter_type) {
-            $changedValues['chapter_type'] = $type->chapter_type;
+            $oldValue = $type->chapter_type;
         }
 
         $this->writeAuditTrail(
@@ -122,8 +124,8 @@ class TypeController extends \BaseController
 
         $type->update($data);
 
-        foreach($changedValues as $field => $oldValue) {
-            Chapter::where('chapter_type', '=', $oldValue)->update(['chapter_type' => $type->chapter_type]);
+        if(empty($oldValue) === false) {
+            Chapter::where('chapter_type', '=', $oldValue)->update(['chapter_type' => $data['chapter_type']]);
         }
 
         Cache::flush();

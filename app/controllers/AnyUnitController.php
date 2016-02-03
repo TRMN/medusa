@@ -31,7 +31,11 @@ class AnyUnitController extends \BaseController
         'squad',
         'platoon',
         'company',
-        'battalion'
+        'battalion',
+        'college',
+        'institute',
+        'center',
+        'university',
     ];
     private $permissions = ['ADD' => 'ALL_PERMS', 'EDIT' => 'ALL_PERMS', 'DELETE' => 'ALL_PERMS'];
     private $auditName = 'AnyUnitController';
