@@ -143,6 +143,7 @@
 <script>
     jQuery(document).foundation();
 </script>
+<script src="{{ $serverUrl }}/js/rcswitcher.js"></script>
 <script src="{{ $serverUrl }}/js/bundle.js"></script>
 @yield( 'scriptFooter' )
 </body>

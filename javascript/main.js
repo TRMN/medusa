@@ -85,222 +85,6 @@ jQuery(document).ready(function ($) {
         ]
     });
 
-    jQuery('#memberList-1').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    jQuery('#memberList-2').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    jQuery('#memberList-3').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    jQuery('#memberList-4').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    jQuery('#memberList-5').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    jQuery('#memberList-6').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    jQuery('#memberList-7').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    jQuery('#memberList-8').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    jQuery('#memberList-9').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No members for this branch"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    $('#inactiveList').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No inactive members found"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    $('#suspendedList').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No inactive members found"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
-    $('#expelledList').DataTable({
-        "autoWidth": true,
-        "pageLength": 50,
-        "columns": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            {"orderable": false}
-        ],
-        "language": {
-            "emptyTable": "No inactive members found"
-        },
-        "order": [[0, 'asc']],
-        "jQueryUI": true
-    });
-
     jQuery('#reviewApplications').DataTable({
         "autoWidth": true,
         "pageLength": 50,
@@ -359,14 +143,33 @@ jQuery(document).ready(function ($) {
     jQuery('#billetList').DataTable({
         "autoWidth": true,
         "pageLength": 25,
-        "columns": [
-            null
-        ],
+
         "language": {
             "emptyTable": "No billets found"
         },
         "jQueryUI": true
     });
+
+    jQuery('.trmnTable').DataTable({
+        "autoWidth": true,
+        "pageLength": 25,
+        "columnDefs" : [{"orderable": false, "targets": -1}],
+        "language": {
+            "emptyTable": "No records found"
+        },
+        "jQueryUI": true
+    });
+
+    jQuery('.trmnTableWithActions').DataTable({
+        "autoWidth": false,
+        "pageLength": 25,
+        "columnDefs" : [{"orderable": false, "targets": -1}],
+        "language": {
+            "emptyTable": "No records found"
+        },
+        "jQueryUI": true
+    });
+
     jQuery('#members').tabs();
 
     $('#DUTY_ROSTER').on('click', function () {

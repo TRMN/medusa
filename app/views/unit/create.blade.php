@@ -13,7 +13,7 @@
     {{ Form::label('chapter_name', 'Command or Unit Name') }} {{ Form::text('chapter_name') }}
         </div>
 </div>
-
+{{ $branches }}
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
     {{ Form::label('chapter_type', 'Command/Unit Type') }} {{ Form::select('chapter_type', $chapterTypes) }}

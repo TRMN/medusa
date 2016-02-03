@@ -3,6 +3,7 @@
  * Table styles
  */
 @import url(foundation-icons.css);
+@import url(rcswitcher.css);
 table.dataTable {
   width: 100%;
   margin: 0 auto;

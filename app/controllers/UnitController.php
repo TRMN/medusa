@@ -30,4 +30,9 @@ class UnitController extends \BaseController
         return $chapters;
     }
 
+    private function getBranches()
+    {
+        return Form::hidden('branch', $this->branch);
+    }
+
 }

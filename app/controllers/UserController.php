@@ -33,14 +33,32 @@ class UserController extends \BaseController
 
         return View::make(
             'user.index',
-            ['users' => $usersByBranch,
-             'title' => 'Membership List',
-             'otherThanActive' => $usersOtherThanActive,
-             'totalMembers' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->count(),
-             'totalEnlisted' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where('rank.grade', 'like', 'E%')->count(),
-             'totalOfficer' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where('rank.grade', 'like', 'O%')->count(),
-             'totalFlagOfficer' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where('rank.grade', 'like', 'F%')->count(),
-             'totalCivilian' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where('rank.grade', 'like', 'C%')->count()
+            [
+                'users'            => $usersByBranch,
+                'title'            => 'Membership List',
+                'otherThanActive'  => $usersOtherThanActive,
+                'totalMembers'     => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->count(
+                ),
+                'totalEnlisted'    => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where(
+                    'rank.grade',
+                    'like',
+                    'E%'
+                )->count(),
+                'totalOfficer'     => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where(
+                    'rank.grade',
+                    'like',
+                    'O%'
+                )->count(),
+                'totalFlagOfficer' => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where(
+                    'rank.grade',
+                    'like',
+                    'F%'
+                )->count(),
+                'totalCivilian'    => User::where('registration_status', '=', 'Active')->where('active', '=', 1)->where(
+                    'rank.grade',
+                    'like',
+                    'C%'
+                )->count()
             ]
         );
     }
@@ -181,6 +199,24 @@ class UserController extends \BaseController
             case 'RMA':
                 $assignment = $user->assignment;
                 $assignment[0]['billet'] = 'Soldier';
+                $user->assignment = $assignment;
+
+                break;
+            case 'RMMM':
+                $assignment = $user->assignment;
+                $assignment[0]['billet'] = 'Crewman';
+                $user->assignment = $assignment;
+
+                break;
+            case 'RMACS':
+                $assignment = $user->assignment;
+                $assignment[0]['billet'] = 'Trainee';
+                $user->assignment = $assignment;
+
+                break;
+            case 'SFS':
+                $assignment = $user->assignment;
+                $assignment[0]['billet'] = 'Cadet Ranger';
                 $user->assignment = $assignment;
 
                 break;
@@ -482,13 +518,27 @@ class UserController extends \BaseController
         switch ($data['rank']) {
             case "CIVIL":
             case "INTEL":
-            case "SFS":
                 $data['rank']['grade'] = 'C-1';
                 $billet = "Civilian One";
+                break;
+            case "SFS":
+                $data['rank']['grade'] = 'C-1';
+                $billet = "Cadet Ranger One";
+                break;
+            case "RMMM":
+                $data['rank']['grade'] = 'C-1';
+                $billet = "Apprentice Merchant Spacer";
+                break;
+            case "RMACS":
+                $data['rank']['grade'] = 'C-1';
+                $billet = "Trainee";
+                break;
             case "RMMC":
                 $billet = "Marine";
+                break;
             case "RMA":
                 $billet = "Soldier";
+                break;
             default:
                 $billet = "Crewman";
         }
@@ -755,7 +805,7 @@ class UserController extends \BaseController
 
         $currentPermissions = $user->permissions;
         $newPermissions = $data['permissions'];
-        if (empty($currentPermissions) === false) {
+        if (empty( $currentPermissions ) === false) {
             sort($currentPermissions);
         } else {
             $currentPermissions = [];
@@ -816,7 +866,7 @@ class UserController extends \BaseController
         return Redirect::to('signout');
     }
 
-        public function osa()
+    public function osa()
     {
         $this->loginValid();
 
@@ -842,6 +892,7 @@ class UserController extends \BaseController
 
         return Redirect::to('signout');
     }
+
     /**
      * Confirm that the user should be deleted.
      *
@@ -912,7 +963,7 @@ class UserController extends \BaseController
             'countries' => $countries,
             'branches'  => $branches,
             'chapters'  => ['' => 'Select a Chapter'],
-            'locations' => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
+            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
             'register'  => true,
         ];
 
