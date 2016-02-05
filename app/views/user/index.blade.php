@@ -53,7 +53,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -108,7 +108,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -164,7 +164,7 @@
                                         No assignment
                                     @endif
                                 </td>
-                                <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                                <td width="10%">{{ $user->registration_date }}</td>
                                 <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -219,7 +219,7 @@
                                         No assignment
                                     @endif
                                 </td>
-                                <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                                <td width="10%">{{ $user->registration_date }}</td>
                                 <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -275,7 +275,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -330,7 +330,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -384,7 +384,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -438,7 +438,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -492,7 +492,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -546,7 +546,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -600,7 +600,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
@@ -654,7 +654,7 @@
                                     No assignment
                                 @endif
                             </td>
-                            <td width="10%">{{ date('Y-m-d', strtotime($user->registration_date)) }}</td>
+                            <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                                     <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>

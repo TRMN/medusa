@@ -93,9 +93,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getFullName()
     {
         return $this->first_name . ' ' .
-            ( empty( $this->middle_name ) ? '' : $this->middle_name . ' ' ) .
-            $this->last_name . ' ' .
-            $this->suffix;
+        ( empty( $this->middle_name ) ? '' : $this->middle_name . ' ' ) .
+        $this->last_name . ' ' .
+        $this->suffix;
     }
 
     /**
@@ -393,7 +393,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getTimeInGrade($short = false)
     {
         if (empty( $this->rank['date_of_rank'] ) === false) {
-            $dorObj = new DateTime(date('Y-m-d', strtotime($this->rank['date_of_rank'])));
+            $dorObj = new DateTime();
+            list( $year, $month, $day ) = explode('-', $this->rank['date_of_rank']);
+            $dorObj->setDate($year, $month, $day);
+
             $timeInGrade = $dorObj->diff(new DateTime("now"));
 
             if ($short === true) {
@@ -413,7 +416,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getTimeInService()
     {
         if (empty( $this->registration_date ) === false) {
-            $regDateObj = new DateTime(date('Y-m-d', strtotime($this->registration_date)));
+            $regDateObj = new DateTime();
+            list( $year, $month, $day ) = explode('-', $this->registration_date);
+            $regDateObj->setDate($year, $month, $day);
+
             $timeInService = $regDateObj->diff(new DateTime("now"));
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
@@ -572,11 +578,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getHighestMainLineExamForBranch($class = null)
     {
         $options['branch'] = $this->branch;
-        if (empty($class) === false) {
+        if (empty( $class ) === false) {
             $options['class'] = $class;
         }
-
-
 
         $exams = $this->getExamList($options);
 
