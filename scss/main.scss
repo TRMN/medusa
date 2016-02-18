@@ -43,6 +43,10 @@ $medusa-yellow: #ffee00;
   color: mediumblue !important;
 }
 
+.hide {
+  display: none !important;
+}
+
 .nav-header {
   color: $medusa-yellow;
   font-size: 1.5rem;
@@ -62,6 +66,9 @@ $medusa-yellow: #ffee00;
   width: auto;
 }
 
+.vertical-center-50px {
+  line-height: 50px;
+}
 .padding-5 {
   padding: 2px;
 }
@@ -444,7 +451,6 @@ footer {
   background-image: url("images/ui-icons_ffee00_256x240.png") !important;
 }
 
-
 .ui-widget-header {
   border: none;
 }
@@ -494,15 +500,12 @@ footer {
 }
 
 .wait {
-    display:    none;
-    position:   fixed;
-    z-index:    1000;
-    top:        0;
-    left:       0;
-    height:     100%;
-    width:      100%;
-    background: rgba( 255, 255, 255, .8 )
-                url('/images/ajax-loader.gif')
-                50% 50%
-                no-repeat;
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, .8) url('/images/ajax-loader.gif') 50% 50% no-repeat;
 }

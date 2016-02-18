@@ -4,7 +4,7 @@ var ManticoreChapter = require('./ManticoreChapter.js');
 var ManticoreRegister = require('./ManticoreRegister.js');
 var Dropzone = require('./dropzone.js');
 
-jQuery(document).ready(function ($) {
+$(document).ready(function ($) {
 
     var authController = new ManticoreAuth();
     var userController = new ManticoreUser();
@@ -40,24 +40,24 @@ jQuery(document).ready(function ($) {
         dictInvalidFileType: 'Only .png, .gif and .jpg images will be accepted',
         init: function () {
             this.on("success", function (file) {
-                jQuery('#reload-form').val('yes');
-                jQuery('#user').submit();
+                $('#reload-form').val('yes');
+                $('#user').submit();
             });
             this.on('error', function (file, errorMessage) {
                 if (errorMessage.indexOf('<html>') >= 0 || errorMessage.indexOf('<HTML>') >= 0) {
                     matches = errorMessage.match(/\<title.*?\>(.*)\<\/title\>/);
                     errorMessage = matches[1].substring(4);
                 }
-                jQuery('#photoModal p').html(errorMessage);
-                jQuery('#photoModal').foundation('reveal', 'open');
+                $('#photoModal p').html(errorMessage);
+                $('#photoModal').foundation('reveal', 'open');
             });
         }
     };
 
-    jQuery(document).tooltip({
+    $(document).tooltip({
         items: "[data-src], [title]",
         content: function () {
-            var element = jQuery(this);
+            var element = $(this);
             if (element.is("[data-src")) {
                 var source = element.attr("data-src");
                 return "<img src='" + source + "'>";
@@ -68,14 +68,14 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    jQuery(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
-        imageHeight = jQuery('#pm1').height();
-        textHeight = jQuery('#pm2 p').height();
+    $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+        imageHeight = $('#pm1').height();
+        textHeight = $('#pm2 p').height();
         vMargin = ((imageHeight - textHeight) / 2) + 'px';
-        jQuery('#pm2').css('margin-top', vMargin);
+        $('#pm2').css('margin-top', vMargin);
     });
 
-    jQuery('#chapterList').DataTable({
+    $('#chapterList').DataTable({
         "autoWidth": true,
         "pageLength": 50,
         "columns": [
@@ -85,26 +85,26 @@ jQuery(document).ready(function ($) {
         ]
     });
 
-    jQuery('#reviewApplications').DataTable({
+    $('#reviewApplications').DataTable({
         "autoWidth": true,
         "pageLength": 50,
         "language": {
             "emptyTable": "No applications to review"
         },
         "order": [[0, 'asc']],
-        "jQueryUI": true
+        "$UI": true
     });
 
-    jQuery('#crewRoster').DataTable({
+    $('#crewRoster').DataTable({
         "autoWidth": true,
         "pageLength": 25,
         "language": {
             "emptyTable": "No crew members found"
         },
-        "jQueryUI": true
+        "$UI": true
     });
 
-    jQuery('#subCrewRoster').DataTable({
+    $('#subCrewRoster').DataTable({
         "autoWidth": true,
         "pageLength": 25,
         "columns": [
@@ -119,10 +119,10 @@ jQuery(document).ready(function ($) {
             "emptyTable": "No crew members found"
         },
         "order": [[0, 'asc']],
-        "jQueryUI": true
+        "$UI": true
     });
 
-    jQuery('#changeRequests').DataTable({
+    $('#changeRequests').DataTable({
         "autoWidth": true,
         "pageLength": 50,
         "columns": [
@@ -137,40 +137,40 @@ jQuery(document).ready(function ($) {
             "emptyTable": "No change requests to review"
         },
         "order": [[0, 'asc']],
-        "jQueryUI": true
+        "$UI": true
     });
 
-    jQuery('#billetList').DataTable({
+    $('#billetList').DataTable({
         "autoWidth": true,
         "pageLength": 25,
 
         "language": {
             "emptyTable": "No billets found"
         },
-        "jQueryUI": true
+        "$UI": true
     });
 
-    jQuery('.trmnTable').DataTable({
+    $('.trmnTable').DataTable({
         "autoWidth": true,
         "pageLength": 25,
-        "columnDefs" : [{"orderable": false, "targets": -1}],
+        "columnDefs": [{"orderable": false, "targets": -1}],
         "language": {
             "emptyTable": "No records found"
         },
-        "jQueryUI": true
+        "$UI": true
     });
 
-    jQuery('.trmnTableWithActions').DataTable({
+    $('.trmnTableWithActions').DataTable({
         "autoWidth": false,
         "pageLength": 25,
-        "columnDefs" : [{"orderable": false, "targets": -1}],
+        "columnDefs": [{"orderable": false, "targets": -1}],
         "language": {
             "emptyTable": "No records found"
         },
-        "jQueryUI": true
+        "$UI": true
     });
 
-    jQuery('#members').tabs();
+    $('#members').tabs();
 
     $('#DUTY_ROSTER').on('click', function () {
         if ($("#DUTY_ROSTER").is(':checked')) {
@@ -283,7 +283,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    jQuery('#duplicates').DataTable({
+    $('#duplicates').DataTable({
         "autoWidth": true,
         "pageLength": 50,
         "columns": [
@@ -298,7 +298,7 @@ jQuery(document).ready(function ($) {
             "emptyTable": "No members for this branch"
         },
         "order": [[2, 'asc']],
-        "jQueryUI": true
+        "$UI": true
     });
 
     $('#uploadGrades').on('click', function () {
@@ -313,6 +313,207 @@ jQuery(document).ready(function ($) {
             heightStyle: "content",
             icons: {"header": "ui-icon-plus", "activeHeader": "ui-icon-minus"}
         });
+    });
+
+    $('#order').hide();
+    $('#class').hide();
+    $('#generation').hide();
+    $('#lands').hide();
+    $('#save_peerage').hide();
+    $('#arms').hide();
+    $('#arms-label').hide();
+    $('#cancel').hide();
+
+    $('#ptitle').on('change', function () {
+        if ($('#ptitle').val() == "Knight" || $('#ptitle').val() == "Dame") {
+            $('#order').show();
+            $('#generation').hide();
+            $('#lands').hide();
+            $('#arms').hide();
+            $('#arms-label').hide();
+            $('#save_peerage').hide();
+            $('#cancel').hide();
+        } else {
+            $('#order').hide();
+            $('#class').hide();
+            $('#generation').show();
+            $('#save_peerage').hide();
+            $('#cancel').hide();
+        }
+
+    });
+
+    $('#cancel').on('click', function () {
+        $('#order').hide();
+        $('#class').hide();
+        $('#generation').hide();
+        $('#lands').hide();
+        $('#arms').hide();
+        $('#arms-label').hide();
+        $('#save_peerage').hide();
+        $('#cancel').hide();
+        $('#peerage-container').trigger('click');
+        return false;
+    });
+
+    $('#generation').on('change', function () {
+        $('#lands').show();
+        $('#arms').show();
+        $('#arms-label').show();
+        $('#save_peerage').show();
+        $('#cancel').show();
+    });
+
+    $('#order').on('change', function () {
+        $.getJSON('/api/korder/' + $('#order').val(), function (result) {
+            $('#class').empty();
+            $('#class').append(
+                '<option value="">Select Class</option>'
+            );
+            $.each(result, function (key, value) {
+                $('#class').append(
+                    '<option value="' + key + '">' + value + '</option>'
+                );
+            });
+        });
+        $('#class').show();
+        $('#save_peerage').show();
+        $('#cancel').show();
+    });
+
+    $('#peerage_form').on('submit', function () {
+        var error_msg = [];
+        // Check that a peerage was selected
+        if ($('#ptitle').val() == '') {
+            error_msg.push('You must select a Peerage title');
+        }
+        // Contional error checking based on peerate title
+
+        if ($("#ptitle").val() == "Knight" || $("#ptitle").val() == "Dame") {
+            if ($("#order").val() == '') {
+                error_msg.push('You must select an Order');
+            }
+
+            if ($("#class").val() == '') {
+                error_msg.push('You must select a class of Knighthood');
+            }
+        } else {
+            if ($("#generation").val() == '') {
+                error_msg.push('You must select a generation');
+            }
+
+            if ($('#lands').val().length == 0) {
+                error_msg.push('You must provide the name of the Peerage lands');
+            }
+
+            if ($('#arms').val().length > 0) {
+                // Check the file extension, we only accept .svg files
+                // get the file name, possibly with path (depends on browser)
+                var filename = $("#arms").val();
+
+                // Use a regular expression to trim everything before final dot
+                var extension = filename.replace(/^.*\./, '');
+
+                // Iff there is no dot anywhere in filename, we would have extension == filename,
+                // so we account for this possibility now
+                if (extension == filename) {
+                    extension = '';
+                } else {
+                    // if there is an extension, we convert to lower case
+                    // (N.B. this conversion will not effect the value of the extension
+                    // on the file upload.)
+                    extension = extension.toLowerCase();
+                }
+
+                if (extension != 'svg') {
+                    error_msg.push('Only .svg files may be used for Peerage arms');
+                }
+            }
+        }
+
+        if (error_msg.length > 0) {
+            var text = '';
+
+            for (var i in error_msg) {
+                text += error_msg[i];
+                text += "\n";
+            }
+
+            alert(text);
+            return false;
+        }
+
+        return true;
+    });
+
+    $('.delete_peerage').on('click', function () {
+        var element = $(this);
+
+        if (confirm('Delete ' + element.attr('data-peerage-text') + '?')) {
+            location.href = "/user/" + element.attr('data-user-id') + "/peerage/" + element.attr('data-peerage-id');
+        }
+    });
+
+    $('.edit_peerage').on('click', function () {
+        var element = $(this);
+
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'peerage_id',
+            value: element.attr('data-peerage-id')
+        }).appendTo('#peerage_form');
+
+        if (element.attr('data-peerage-filename').length > 0) {
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'filename',
+                value: element.attr('data-peerage-filename')
+            }).appendTo('#peerage_form');
+        }
+
+        var title = element.attr('data-peerage-title');
+
+        $("#ptitle option[value='" + title + "']").prop('selected', true);
+
+        if (title == "Knight" || title == "Dame") {
+            $("#order option[value='" + element.attr('data-peerage-order') + "']").prop('selected', true);
+            $("#order").trigger('change');
+
+            // Make sure that we populate the class drop down
+            $.getJSON('/api/korder/' + $('#order').val(), function (result) {
+                var pclass = element.attr('data-peerage-class');
+
+                $('#class').empty();
+                $('#class').append(
+                    '<option value="">Select Class</option>'
+                );
+                $.each(result, function (key, value) {
+                    var extra = '';
+                    if (key == pclass) {
+                        extra = ' selected';
+                    }
+                    $('#class').append(
+                        '<option value="' + key + '"' + extra + '>' + value + '</option>'
+                    );
+                });
+            });
+        } else {
+            $("#generation option[value='" + element.attr('data-peerage-generation') + "']").prop('selected', true);
+            $("#lands").val(element.attr('data-peerage-lands'));
+
+            $('#generation').trigger('change');
+        }
+
+        if (element.attr('data-peerage-courtesy') == 1) {
+            $('#courtesy').prop('checked', true);
+        } else {
+            $('#courtesy').prop('checked', false);
+        }
+
+        $('#ptitle').trigger('change');
+        $('#save_peerage').show();
+        $('#cancel').show();
+        $('#peerage-container').trigger('click');
     });
 
 });

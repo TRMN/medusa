@@ -72,7 +72,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'rating',
         'rank',
         'assignment',
-        'peerage_record',
+        'peerages',
         'awards',
         'password',
         'permissions',
@@ -192,6 +192,50 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
 
         return false;
+    }
+
+    public function getPostnominals()
+    {
+        $postnominals = [];
+
+        // At the moment, the only postnominals we know about are for knighthoods stored in the peerage record
+
+        foreach ($this->peerages as $peerage) {
+            if ($peerage['code'] == 'K' && empty( $peerage['courtesy'] ) === true) {
+                $postnominals[$peerage['precedence']] = $peerage['postnominal']; // Order them by precedence
+            }
+        }
+
+        if (count($postnominals) > 0) {
+            ksort($postnominals);
+
+            return ', ' . implode(', ', $postnominals);
+        }
+
+        return null;
+    }
+
+    public function getPeerages()
+    {
+        $landed = [];
+        $knighthoods = [];
+
+        if (empty( $this->peerages ) === false) {
+            foreach ($this->peerages as $peerage) {
+                if ($peerage['code'] == 'K') {
+                    $knighthoods[$peerage['precedence']] = $peerage;
+                } else {
+                    $landed[$peerage['precedence']] = $peerage;
+                }
+            }
+
+            ksort($landed);
+            ksort($knighthoods);
+
+            return array_merge($landed, $knighthoods);
+        }
+
+        return [];
     }
 
     /**
@@ -750,6 +794,35 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         );
 
         $this->save();
+
+        return true;
+    }
+
+    public function deletePeerage($peerageId)
+    {
+        $peerages = array_where(
+            $this->peerages,
+            function ($key, $value) use ($peerageId) {
+                if ($value['peerage_id'] != $peerageId) {
+                    return true;
+                }
+
+                return false;
+            }
+        );
+
+        $this->peerages = $peerages;
+
+        $this->save();
+
+        $this->writeAuditTrail(
+            Auth::user()->id,
+            'update',
+            'users',
+            $this->id,
+            $this->toJson(),
+            'User@deletePeerage'
+        );
 
         return true;
     }

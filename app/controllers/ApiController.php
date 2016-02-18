@@ -138,4 +138,17 @@ class ApiController extends BaseController
             }
         }
     }
+
+    public function getKnightClasses($orderId)
+    {
+        $classes = [];
+
+        if(empty($order = Korders::find($orderId)) === false) {
+            foreach ($order->classes as $class) {
+                $classes[$class['postnominal']] = $class['class'];
+            }
+        }
+
+        return Response::json($classes);
+    }
 }
