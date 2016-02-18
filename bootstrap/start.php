@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(function ()
 {
-    if ($_SERVER['HTTP_HOST'] === 'medusa-dev.trmn.org')
+    if (!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'medusa-dev.trmn.org')
     {
         return 'local';
     }
