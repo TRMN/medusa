@@ -250,7 +250,7 @@ switch ($detail->chapter_type) {
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
                                 <td>{{$member->member_id}}</td>
                             @endif
-                            <td>{{$member->rank['grade']}} ({{ $member->getGreeting() }}) </td>
+                            <td>{{$member->rank['grade']}} <br />{{ $member->getGreeting() }} </td>
                             <td>{{is_null($tig = $member->getTimeInGrade(true))?'N/A':$tig}}</td>
                             <td>{{ $member->getBilletForChapter($detail->id) }}</td>
                             <td>{{$member->branch}}</td>
