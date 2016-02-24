@@ -24,7 +24,7 @@
             @endif
         </a>
     </div>
-    @if($user->registration_status == "Pending" && $permsObj->hasPermissions(['PROC_APPLICATIONS']))
+    @if($permsObj->hasPermissions(['PROC_APPLICATIONS']))
     <div class="Incised901Light ninety">
         DoB: {{$user->dob}}
     </div>
