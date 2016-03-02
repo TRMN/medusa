@@ -24,7 +24,7 @@
             @endif
         </a>
     </div>
-    @if($permsObj->hasPermissions(['PROC_APPLICATIONS']))
+    @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) || Auth::user()->id == $user->id)
     <div class="Incised901Light ninety">
         DoB: {{$user->dob}}
     </div>
