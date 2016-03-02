@@ -24,6 +24,11 @@
             @endif
         </a>
     </div>
+    @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) || Auth::user()->id == $user->id)
+    <div class="Incised901Light ninety">
+        DoB: {{$user->dob}}
+    </div>
+    @endif
     @if($user->registration_status != "Pending")
         <div class="Incised901Light filePhoto">
             {{$user->member_id}}
