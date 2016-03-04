@@ -26,7 +26,7 @@
     </div>
     @if($user->registration_status != "Pending")
         <div class="Incised901Light filePhoto">
-            {{$user->member_id}}
+            {{$user->member_id}} <img src="data::image/png;base64, {{{ base64_encode(QrCode::format('png')->margin(1)->size(10)->generate($user->member_id)) }}}">
             <div class="filePhotoBox">
 
                 @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)

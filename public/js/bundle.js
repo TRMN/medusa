@@ -2246,6 +2246,7 @@ $(document).ready(function ($) {
     $('#save_peerage').hide();
     $('#arms').hide();
     $('#arms-label').hide();
+    $('#cancel').hide();
 
     $('#ptitle').on('change', function () {
         if ($('#ptitle').val() == "Knight" || $('#ptitle').val() == "Dame") {
@@ -2260,8 +2261,11 @@ $(document).ready(function ($) {
             $('#order').hide();
             $('#class').hide();
             $('#generation').show();
-            $('#save_peerage').hide();
-            $('#cancel').hide();
+            if ($("#lands").val().length == 0) {
+                $('#save_peerage').hide();
+                $('#cancel').hide();
+            }
+
         }
 
     });

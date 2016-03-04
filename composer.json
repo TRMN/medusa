@@ -51,7 +51,8 @@
     "mnshankar/CSV": "dev-master",
     "maatwebsite/excel": "~1.3.0",
     "smalldogs/html5inputs": "2.*",
-    "iorme/simplecaptcha": "dev-master"
+    "iorme/simplecaptcha": "dev-master",
+    "simplesoftwareio/simple-qrcode": "~1"
   },
   "require-dev": {
     "way/generators": "~2.0"
