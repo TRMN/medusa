@@ -104,9 +104,14 @@ class ApiController extends BaseController
         return Response::json(Chapter::getChaptersByType('academy'));
     }
 
-    public function getSchools()
+    public function getCenters()
     {
-        return Response::json(Chapter::getChaptersByType('school'));
+        return Response::json(Chapter::getChaptersByType('center'));
+    }
+
+    public function getColleges()
+    {
+        return Response::json(Chapter::getChaptersByType('college'));
     }
 
     public function savePhoto()

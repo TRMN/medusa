@@ -416,9 +416,8 @@ class ReportController extends \BaseController
             ],
             function ($message) use ($report, $echelonEmails) {
 
-                $message->from(
-                    $report->command_crew['CO']['email_address'],
-                    'CO, ' . $report['chapter_info']['chapter_name']
+                $message->from('bucomm@trmn.org',
+                    'On behalf of CO, ' . $report['chapter_info']['chapter_name']
                 );
 
                 $message->to($report->command_crew['CO']['email_address']);
