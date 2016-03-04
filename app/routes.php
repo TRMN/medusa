@@ -126,7 +126,7 @@ Route::get('/api/squadron', 'ApiController@getSquadrons');
 Route::get('/api/division', 'ApiController@getDivisions');
 Route::get('/api/office', 'ApiController@getOffices');
 Route::get('/api/academy', 'ApiController@getAcademies');
-Route::get('/api/school', 'ApiController@getSchools');
+Route::get('/api/center', 'ApiController@getCenters');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 
