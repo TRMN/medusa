@@ -128,6 +128,7 @@ Route::get('/api/squadron', 'ApiController@getSquadrons');
 Route::get('/api/division', 'ApiController@getDivisions');
 Route::get('/api/office', 'ApiController@getOffices');
 Route::get('/api/academy', 'ApiController@getAcademies');
+Route::get('/api/college', 'ApiController@getColleges');
 Route::get('/api/center', 'ApiController@getCenters');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::get( '/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
