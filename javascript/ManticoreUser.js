@@ -53,6 +53,7 @@ module.exports = function () {
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Bureaus">' + getURI('bureau', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Offices">' + getURI('office', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Academies">' + getURI('academy', assignment.charAt(0) + 'assignment') + '</optgroup>');
+                jQuery('#' + assignment + '_assignment').append('<optgroup label="Institutes">' + getURI('institute', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Colleges">' + getURI('college', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Training Centers">' + getURI('center', assignment.charAt(0) + 'assignment') + '</optgroup>');
                 jQuery('#' + assignment + '_assignment').append('<optgroup label="Fleets">' + getURI('fleet', assignment.charAt(0) + 'assignment') + '</optgroup>');
