@@ -52,7 +52,14 @@ class MemberExport extends Command {
 
         echo "\n";
 
-		foreach(User::where('active','=', 1)->where('registration_status','=','Active')->get() as $user) {
+        $query = User::where('active','=', 1)->where('registration_status','=','Active');
+
+        if (empty($options['chapters']) === false) {
+            $chapters = explode(',', str_replace(' ', '', $options['chapters']));
+            $query = $query->whereIn('assignment.chapter_id', $chapters);
+        }
+
+		foreach($query->get() as $user) {
 
             if ($options['over18'] === true || $options['under18'] === true) {
                 // Do age check
@@ -105,6 +112,7 @@ class MemberExport extends Command {
             ['under18', null, InputOption::VALUE_NONE, 'Limit export to members under 18'],
             ['fields', null, InputOption::VALUE_REQUIRED, 'Comma separated list of field names to include in the export','email_address'],
             ['noDoB', null, InputOption::VALUE_NONE, 'Limit export to members who do not have a date of birth on record'],
+            ['chapters', null, InputOption::VALUE_REQUIRED, 'Comma separated list of chapter id\'s (MongoID) to limit export to']
         ];
     }
 }
