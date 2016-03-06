@@ -109,6 +109,8 @@ Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@up
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);
 
+Route::controller('id', 'IdController', ['before' => 'auth']);
+
 // API calls
 
 Route::get( '/api/branch', 'ApiController@getBranchList'); // Get a list of all the tRMN branches
