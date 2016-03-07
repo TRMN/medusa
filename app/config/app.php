@@ -131,6 +131,7 @@ return [
         'Smalldogs\Html5inputs\Html5InputsServiceProvider',
         'Iorme\SimpleCaptcha\SimpleCaptchaServiceProvider',
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
+        'Intervention\Image\ImageServiceProvider',
 
     ],
 
@@ -205,6 +206,7 @@ return [
         'Image' => 'Intervention\Image\Facades\Image',
         'SimpleCaptcha' => 'Iorme\SimpleCaptcha\Facades\SimpleCaptcha',
         'QrCode' => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
+        'Image' => 'Intervention\Image\Facades\Image',
     ],
 
     'version' => "Elizabeth I (Project MEDUSA v1.2.0)",
