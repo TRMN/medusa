@@ -10,7 +10,7 @@
     {
       "name": "Dave Weiner",
       "email": "david.l.weiner30030@gmail.com",
-      "role": "Architect/Back End Developer"
+      "role": "Architect/Full Stack Developer"
     },
     {
       "name": "Robert Bulkeley",
@@ -26,9 +26,15 @@
       "name": "Dan Brandow",
       "email": "dan.brandow@gmail.com",
       "role": "QA"
+    },
+    {
+      "name": "Bill Knight",
+      "email": "bill.knight@conalscorner.com",
+      "homepage": "http://www.conalscorner.com/trmn",
+      "role": "Award Graphics"
     }
   ],
-  "description": "The web Database for the Royal Manticoran Navy.",
+  "description": "Project MEDUSA (Manticoran Enhanced Data Usability Service Architecture)",
   "keywords": [
     "framework",
     "laravel",
@@ -45,7 +51,9 @@
     "mnshankar/CSV": "dev-master",
     "maatwebsite/excel": "~1.3.0",
     "smalldogs/html5inputs": "2.*",
-    "iorme/simplecaptcha": "dev-master"
+    "iorme/simplecaptcha": "dev-master",
+    "simplesoftwareio/simple-qrcode": "~1",
+    "intervention/image": "^2.3"
   },
   "require-dev": {
     "way/generators": "~2.0"

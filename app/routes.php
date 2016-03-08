@@ -31,6 +31,8 @@ Route::get('/user/review', ['as' => 'user.review', 'uses' => 'UserController@rev
 Route::get( '/user/{user}/confirmdelete', [ 'as' => 'user.confirmdelete', 'uses' => 'UserController@confirmDelete', 'before' => 'auth' ] );
 Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
 Route::post('/user/osa', ['as' => 'osa', 'uses' => 'UserController@osa', 'before' => 'auth']);
+Route::post('/user/{user}/peerage', ['as' => 'addOrEditPeerage', 'uses' => 'UserController@addOrEditPeerage', 'before' => 'auth']);
+Route::get('/user/{user}/peerage/{peerageId}', ['as' => 'delete_peerage', 'uses' => 'UserController@deletePeerage', 'before' => 'auth']);
 
 Route::resource( 'user', 'UserController', ['before' => 'auth'] );
 Route::get('/user/{user}/approve', ['as' => 'user.approve', 'uses' => 'UserController@approveApplication', 'before' => 'auth']);
@@ -107,6 +109,8 @@ Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@up
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);
 
+Route::controller('id', 'IdController', ['before' => 'auth']);
+
 // API calls
 
 Route::get( '/api/branch', 'ApiController@getBranchList'); // Get a list of all the tRMN branches
@@ -130,6 +134,7 @@ Route::get('/api/college', 'ApiController@getColleges');
 Route::get('/api/center', 'ApiController@getCenters');
 Route::get('/api/institute', 'ApiController@getInstitutes');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
+Route::get( '/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 
 

@@ -26,12 +26,12 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(function ()
 {
-    if (!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'medusa-dev.trmn.org')
+    if (file_exists(__DIR__ . '/environment.php'))
     {
-        return 'local';
+        return require __DIR__ . '/environment.php';
     }
 
-    return 'production';
+    return 'local';
 });
 
 /*

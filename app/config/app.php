@@ -130,6 +130,8 @@ return [
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Smalldogs\Html5inputs\Html5InputsServiceProvider',
         'Iorme\SimpleCaptcha\SimpleCaptchaServiceProvider',
+        'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
+        'Intervention\Image\ImageServiceProvider',
 
     ],
 
@@ -203,8 +205,10 @@ return [
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Image' => 'Intervention\Image\Facades\Image',
         'SimpleCaptcha' => 'Iorme\SimpleCaptcha\Facades\SimpleCaptcha',
+        'QrCode' => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
+        'Image' => 'Intervention\Image\Facades\Image',
     ],
 
-    'version' => "King Roger III (Project MEDUSA v1.1.30)",
+    'version' => "Elizabeth I (Project MEDUSA v1.2.0)",
 
 ];

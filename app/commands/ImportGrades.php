@@ -699,14 +699,14 @@ class ImportGrades extends Command
         $firstName = explode(' ', preg_replace('/\W+/', ' ', $memberExamRecord['first_name']));
         $lastName = explode(' ', preg_replace('/\W+/', ' ', $memberExamRecord['last_name']));
 
-        if (preg_match('/^RMN\-\d{4}.*/', $memberExamRecord['member_number']) === 1) {
+        if (preg_match('/^RMN\-\d{4}.*/', trim($memberExamRecord['member_number'])) === 1) {
 
             $user =
-                User::where('member_id', '=', $memberExamRecord['member_number'])
+                User::where('member_id', '=', trim($memberExamRecord['member_number']))
                     ->first();
 
             if (is_null($user) === false) {
-                if (stripos(trim($user['first_name']), trim($firstName[0])) === 0 && stripos(
+                if (stripos(trim($user['first_name']), substr(trim($firstName[0]),0,2)) === 0 && stripos(
                         trim($user['last_name']),
                         trim($lastName[0])
                     ) === 0
@@ -717,7 +717,7 @@ class ImportGrades extends Command
         }
 
         $users =
-            User::where('first_name', '=', trim($firstName[0]))
+            User::where('first_name', 'like', substr(trim($firstName[0]),0,2) . '%')
                 ->where('last_name', '=', trim($memberExamRecord['last_name']))
                 ->get();
 
