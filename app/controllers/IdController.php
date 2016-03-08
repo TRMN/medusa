@@ -91,7 +91,6 @@ class IdController extends \BaseController
         });
         }
 
-
         $idCard->text($user->branch, 628, 638, function($font) {
             $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
             $font->align('center');
