@@ -616,13 +616,26 @@ class UserController extends \BaseController
             return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
+        $titles[''] = 'Select Peerage Title';
+
+        foreach (Ptitles::orderBy('precedence')->get() as $title) {
+            $titles[$title->title] = $title->title;
+        }
+
+        $orders[''] = 'Select Order';
+
+        foreach (Korders::all() as $order) {
+            $orders[$order->id] = $order->order;
+        }
+
         return View::make(
             'user.show',
             [
                 'user'      => $user,
                 'countries' => $this->_getCountries(),
                 'branches'  => Branch::getBranchList(),
-
+                'ptitles'   => $titles,
+                'korders'   => $orders,
             ]
         );
     }
@@ -982,6 +995,91 @@ class UserController extends \BaseController
         asort($countries);
 
         return $countries;
+    }
+
+    private function _buildPeerageRecord($data)
+    {
+        $peerage['title'] = $data['ptitle'];
+
+        $pTitleInfo = Ptitles::where('title', '=', $data['ptitle'])->first();
+
+        $peerage['code'] = $pTitleInfo->code;
+
+        if ($data['ptitle'] == 'Knight' || $data['ptitle'] == 'Dame') {
+            // Use the precedence from the Knight Orders table
+            $peerage['precedence'] =
+                Korders::where('classes.postnominal', '=', $data['class'])->first()->getPrecedence(
+                    ['type' => 'postnominal', 'value' => $data['class']]
+                );
+            $peerage['postnominal'] = $data['class'];
+        } else {
+            $peerage['precedence'] = $pTitleInfo->precedence;
+            $peerage['generation'] = $data['generation'];
+            $peerage['lands'] = $data['lands'];
+            if (Input::hasFile('arms') === true && Input::file('arms')->isValid() === true) {
+                Input::file('arms')->move(public_path() . '/arms/peerage', Input::file('arms')->getClientOriginalName());
+                $peerage['filename'] = Input::file('arms')->getClientOriginalName();
+            }
+        }
+
+        if (empty( $data['courtesy'] ) === false) {
+            $peerage['courtesy'] = true;
+        }
+
+        if (empty( $data['peerage_id'] ) === true) {
+            // Give each entry a unique ID so we can edit or delete them later with ease
+
+            $peerage['peerage_id'] = uniqid(null, true);
+        } else {
+            $peerage['peerage_id'] = $data['peerage_id'];
+        }
+
+        return $peerage;
+    }
+
+    public function addOrEditPeerage(User $user)
+    {
+        $data = Input::all();
+
+        $msg = "Peerage added";
+
+        if (empty( $data['peerage_id'] ) === false) {
+            // This is an edit
+            $user->deletePeerage($data['peerage_id']);
+            $msg = "Peerage updated";
+        }
+
+        $peerage = $this->_buildPeerageRecord($data);
+
+        if (empty( $data['filename'] ) === false && empty( $peerage['filename'] ) === true) {
+            // Peerage entry had a file name set.  No new image uploaded
+            $peerage['filename'] = $data['filename'];
+        }
+
+        $currentPeerages = $user->peerages;
+        $currentPeerages[] = $peerage;
+
+        $user->peerages = $currentPeerages;
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@addOrEditPeerage'
+        );
+
+        $user->save();
+
+        return Redirect::route('home')->with('message', $msg);
+    }
+
+    public function deletePeerage(User $user, $peerageId)
+    {
+        $user->deletePeerage($peerageId);
+
+        return Redirect::route('home')->with('message', 'Peerage deleted');
     }
 
 }

@@ -455,6 +455,9 @@ table.dataTable.display tbody tr:first-child td {
 .blue {
   color: mediumblue !important; }
 
+.hide {
+  display: none !important; }
+
 .nav-header {
   color: #ffee00;
   font-size: 1.5rem;
@@ -470,6 +473,9 @@ table.dataTable.display tbody tr:first-child td {
   border: solid #ffee00 1px;
   padding: 5px;
   width: auto; }
+
+.vertical-center-50px {
+  line-height: 50px; }
 
 .padding-5 {
   padding: 2px; }
