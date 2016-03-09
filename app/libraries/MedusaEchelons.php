@@ -2,9 +2,10 @@
 
 namespace Medusa\Echelons;
 
-trait MedusaEchelons {
+trait MedusaEchelons
+{
 
-/**
+    /**
      * Display a listing of the resource.
      * GET /echelon
      *
@@ -31,10 +32,10 @@ trait MedusaEchelons {
 
         $types =
             \Type::whereIn('chapter_type', $this->chapterTypes)
-                ->orderBy('chapter_description')
-                ->get(
-                    ['chapter_type', 'chapter_description']
-                );
+                 ->orderBy('chapter_description')
+                 ->get(
+                     ['chapter_type', 'chapter_description']
+                 );
         $chapterTypes = [];
 
         foreach ($types as $chapterType) {
@@ -48,10 +49,10 @@ trait MedusaEchelons {
             [
                 'chapterTypes' => $chapterTypes,
                 'chapter'      => new \Chapter,
-                'commands'       => ['0' => 'Select a Command/Unit'] + $this->getCommands(),
-                'title' => $this->title,
-                'route' => $this->routePrefix,
-                'branches' => $this->getBranches(),
+                'commands'     => ['0' => 'Select a Command/Unit'] + $this->getCommands(),
+                'title'        => $this->title,
+                'route'        => $this->routePrefix,
+                'branches'     => $this->getBranches(),
             ]
         );
     }
@@ -78,6 +79,10 @@ trait MedusaEchelons {
             if (empty( $data[$k] ) === true) {
                 unset( $data[$k] );
             }
+        }
+
+        if (empty( $data['joinable'] ) === true) {
+            $data['joinable'] = false;
         }
 
         $this->writeAuditTrail(
@@ -119,11 +124,11 @@ trait MedusaEchelons {
         return \View::make(
             'chapter.show',
             [
-                'detail' => $chapter,
-                'higher' => $parentChapter,
+                'detail'   => $chapter,
+                'higher'   => $parentChapter,
                 'includes' => $includes,
-                'command' => $commandCrew,
-                'crew' => $crew
+                'command'  => $commandCrew,
+                'crew'     => $crew
             ]
         );
     }
@@ -144,10 +149,10 @@ trait MedusaEchelons {
 
         $types =
             \Type::whereIn('chapter_type', $this->chapterTypes)
-                ->orderBy('chapter_description')
-                ->get(
-                    ['chapter_type', 'chapter_description']
-                );
+                 ->orderBy('chapter_description')
+                 ->get(
+                     ['chapter_type', 'chapter_description']
+                 );
         $chapterTypes = [];
 
         foreach ($types as $chapterType) {
@@ -169,7 +174,7 @@ trait MedusaEchelons {
                 'numCrew'      => count($crew) + count($childUnits),
                 'title'        => $this->title,
                 'route'        => $this->routePrefix,
-                'branches' => $this->getBranches(),
+                'branches'     => $this->getBranches(),
             ]
         );
     }
@@ -216,6 +221,10 @@ trait MedusaEchelons {
             if (empty( $data[$k] ) === false) {
                 $chapter->$k = $v;
             }
+        }
+
+        if (empty( $data['joinable'] ) === true) {
+            $chapter->joinable = false;
         }
 
         $this->writeAuditTrail(

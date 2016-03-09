@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('pageTitle')
- Edit {{ $chapter->chapter_name }}{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}
+    Edit {{ $chapter->chapter_name }}{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}
 @stop
 
 @section('content')
@@ -40,11 +40,18 @@
         <div class="small-6 columns ninety Incised901Light end">
             {{ Form::label('decommission_date', 'Deactivation Date') }}
             @if($numCrew > 0)
-                <p>Unable to set the deactivation date as there are members or other echelons still assigned to {{$chapter->chapter_name}}</p>
+                <p>Unable to set the deactivation date as there are members or other echelons still assigned
+                    to {{$chapter->chapter_name}}</p>
             @else
                 {{Form::date('decommission_date')}}
             @endif
 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-6 columns ninety Incised901Light end">
+            {{Form::checkbox('joinable', true) }} New members and transfers may select this unit
         </div>
     </div>
 

@@ -14,7 +14,8 @@ class Chapter extends Eloquent
         'ship_class',
         'commission_date',
         'decommission_date',
-        'branch'
+        'branch',
+        'joinable',
     ];
 
     public static $rules = [
@@ -80,14 +81,14 @@ class Chapter extends Eloquent
 
         if (empty( $branch ) === false) {
             $results =
-                Chapter::where('branch', '=', strtoupper($branch))->where('joinable', '!=', false)->orderBy(
+                Chapter::where('branch', '=', strtoupper($branch))->where('joinable', '!=', false)->whereNull('decommission_date')->orderBy(
                     'chapter_name',
                     'asc'
                 )->get();
         } elseif ($joinableOnly === false) {
-            $results = Chapter::orderBy('chapter_name', 'asc')->get();
+            $results = Chapter::orderBy('chapter_name', 'asc')->whereNull('decommission_date')->get();
         } else {
-            $results = Chapter::where('joinable', '!=', false)->orderBy('chapter_name', 'asc')->get();
+            $results = Chapter::where('joinable', '!=', false)->whereNull('decommission_date')->orderBy('chapter_name', 'asc')->get();
         }
 
         if (count($results) === 0) {
