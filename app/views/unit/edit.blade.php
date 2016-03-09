@@ -1,12 +1,13 @@
 @extends('layout')
 
 @section('pageTitle')
- Edit {{ $chapter->chapter_name }} @if (empty($chapter->hull_number) === false) ({{ $chapter->hull_number }}) @endif
+    Edit {{ $chapter->chapter_name }} @if (empty($chapter->hull_number) === false) ({{ $chapter->hull_number }}) @endif
 @stop
 
 @section('content')
     <h1>
-        Editing {{ $chapter->chapter_name }} @if (empty($chapter->hull_number) === false) ({{ $chapter->hull_number }}) @endif</h1>
+        Editing {{ $chapter->chapter_name }} @if (empty($chapter->hull_number) === false) ({{ $chapter->hull_number }}
+        ) @endif</h1>
 
     {{ Form::model( $chapter, [ 'route' => [ $route . '.update', $chapter->_id ], 'method' => 'put' ] ) }}
     <div class="row">
@@ -41,11 +42,18 @@
         <div class="small-6 columns ninety Incised901Light end">
             {{ Form::label('decommission_date', 'Stand-down Date') }}
             @if($numCrew > 0)
-                <p>Unable to set the stand-down date as there are members, other commands or units still assigned to {{$chapter->chapter_name}}</p>
+                <p>Unable to set the stand-down date as there are members, other commands or units still assigned
+                    to {{$chapter->chapter_name}}</p>
             @else
                 {{Form::date('decommission_date')}}
             @endif
 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-6 columns ninety Incised901Light end">
+            {{Form::checkbox('joinable', true) }} New members and transfers may select this unit
         </div>
     </div>
 
