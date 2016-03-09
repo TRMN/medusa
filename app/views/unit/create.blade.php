@@ -36,6 +36,12 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="small-6 columns ninety Incised901Light end">
+        {{Form::checkbox('joinable', true) }} New members and transfers may select this unit
+    </div>
+</div>
+
 {{ Form::submit( 'Save', [ 'class' => 'button round'] ) }}
 {{ Form::close() }}
 @stop
