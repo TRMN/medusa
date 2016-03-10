@@ -126,7 +126,7 @@ class Chapter extends Eloquent
                     $append = ' (' . $nf->format($chapter->hull_number) . ' Fleet)';
                 }
 
-                if ($location == 0 || $co['state_province'] == $location) {
+                if ($location === 0 || $co['state_province'] == $location) {
                     $chapters[$chapter->_id] = $chapter->chapter_name . $append;
                 }
             }

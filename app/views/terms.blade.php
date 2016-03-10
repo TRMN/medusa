@@ -8,29 +8,11 @@
     @include('partials.tos')
     {{ Form::open(['route' => 'tos', 'method' => 'post']) }}
     {{ Form::hidden('id', $user->id) }}
-    <div>
-    {{ Form::checkbox('tos',1, false, ['class' => 'switcher']) }} I have read and agree to the Terms of Service
-    </div>
+    {{ Form::hidden('tos',1) }}
+    <div>By clicking "I Agree", you agree that you have read and understand the Terms of Service</div>
     <div>
     <a class="button"
-       href="{{ route('signout') }}">Cancel</a> {{ Form::submit('Save', [ 'class' => 'button' ] ) }}
+       href="{{ route('signout') }}">I do not agree</a> {{ Form::submit('I Agree', [ 'class' => 'button' ] ) }}
     </div>
     {{ Form::close() }}
-@stop
-@section ('scriptFooter')
-<script type="application/javascript">
-    $('.switcher').rcSwitcher({
-
-    // reverse: true,
-    inputs: false,
-    // width: 70,
-    // height: 24,
-    // blobOffset: 2,
-    onText: 'Yes',
-    offText: 'No',
-    theme: 'stoplight',
-    // autoFontSize: true,
-
-    });
-</script>
 @stop
