@@ -53,7 +53,8 @@
     "smalldogs/html5inputs": "2.*",
     "iorme/simplecaptcha": "dev-master",
     "simplesoftwareio/simple-qrcode": "~1",
-    "intervention/image": "^2.3"
+    "intervention/image": "^2.3",
+    "google/recaptcha": "~1.1"
   },
   "require-dev": {
     "way/generators": "~2.0"
