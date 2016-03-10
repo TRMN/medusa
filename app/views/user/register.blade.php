@@ -1,5 +1,9 @@
 @extends( 'layout' )
 
+@section('dochead')
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+@stop
+
 @section( 'pageTitle' )
     Membership Application
 @stop
@@ -130,9 +134,7 @@
         <legend>Please prove that you're a sentient being</legend>
         <div class="row">
             <div class="small-4 columns end">
-                {{ HTML::image(URL::to('simplecaptcha'),'Captcha', ['id' => 'captcha']) }} {{ Form::label('captcha', 'Enter the text from the image above') }} {{ Form::text('captcha') }}
-                <a onclick="jQuery('#captcha').removeAttr('src').attr('src', '{{URL::to('simplecaptcha')}}');">Request a
-                    new image</a>
+                <div class="g-recaptcha" data-sitekey="6LdcghoTAAAAAKKj3XEL4KMPcUJMUjigT-qwcRvQ"></div>
             </div>
         </div>
     </fieldset>

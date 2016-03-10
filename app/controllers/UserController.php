@@ -507,10 +507,19 @@ class UserController extends \BaseController
         }
 
         // Check Captcha
-        if (\Iorme\SimpleCaptcha\SimpleCaptcha::check(Input::get('captcha')) === false) {
-            return Redirect::to('register')
-                           ->withErrors(['message' => 'The code you entered was not correct'])
-                           ->withInput();
+        if ($captcha = Input::get('g-recaptcha-response')) {
+            $response =
+                json_decode(
+                    file_get_contents(
+                        "https://www.google.com/recaptcha/api/siteverify?secret=6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq&response=" . $captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']
+                    ),
+                    true
+                );
+            if ($response['success'] === false) {
+                return Redirect::to('register')
+                               ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
+                               ->withInput();
+            }
         }
 
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
@@ -1017,7 +1026,10 @@ class UserController extends \BaseController
             $peerage['generation'] = $data['generation'];
             $peerage['lands'] = $data['lands'];
             if (Input::hasFile('arms') === true && Input::file('arms')->isValid() === true) {
-                Input::file('arms')->move(public_path() . '/arms/peerage', Input::file('arms')->getClientOriginalName());
+                Input::file('arms')->move(
+                    public_path() . '/arms/peerage',
+                    Input::file('arms')->getClientOriginalName()
+                );
                 $peerage['filename'] = Input::file('arms')->getClientOriginalName();
             }
         }
