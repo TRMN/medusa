@@ -28,7 +28,7 @@
     @endif
     <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/main.css">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-
+@yield('dochead')
 </head>
 <body class="@yield('bodyclasses')">
 <div class="container">

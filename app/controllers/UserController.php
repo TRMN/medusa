@@ -507,9 +507,22 @@ class UserController extends \BaseController
         }
 
         // Check Captcha
-        if (\Iorme\SimpleCaptcha\SimpleCaptcha::check(Input::get('captcha')) === false) {
+        $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
+        $captcha = Input::get('g-recaptcha-response', null);
+
+        if (empty( $captcha ) === false) {
+            $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+
+            $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
+
+            if ($resp->isSuccess() === false) {
+                return Redirect::to('register')
+                               ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
+                               ->withInput();
+            }
+        } else {
             return Redirect::to('register')
-                           ->withErrors(['message' => 'The code you entered was not correct'])
+                           ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
                            ->withInput();
         }
 
@@ -1017,7 +1030,10 @@ class UserController extends \BaseController
             $peerage['generation'] = $data['generation'];
             $peerage['lands'] = $data['lands'];
             if (Input::hasFile('arms') === true && Input::file('arms')->isValid() === true) {
-                Input::file('arms')->move(public_path() . '/arms/peerage', Input::file('arms')->getClientOriginalName());
+                Input::file('arms')->move(
+                    public_path() . '/arms/peerage',
+                    Input::file('arms')->getClientOriginalName()
+                );
                 $peerage['filename'] = Input::file('arms')->getClientOriginalName();
             }
         }
