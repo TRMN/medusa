@@ -521,7 +521,7 @@ class UserController extends \BaseController
                                ->withInput();
             }
         }
-
+die($captcha);
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
 
         switch ($data['rank']) {
