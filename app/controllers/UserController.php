@@ -513,7 +513,7 @@ class UserController extends \BaseController
 
         $captcha = Input::get('g-recaptcha-response', null);
 
-        if (empty($captcha) === false) {
+        if (empty( $captcha ) === false) {
             $recaptcha = new \ReCaptcha\ReCaptcha($secret);
 
             $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
@@ -523,8 +523,12 @@ class UserController extends \BaseController
                                ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
                                ->withInput();
             }
+        } else {
+            return Redirect::to('register')
+                           ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
+                           ->withInput();
         }
-die($captcha);
+        die( $captcha );
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
 
         switch ($data['rank']) {
