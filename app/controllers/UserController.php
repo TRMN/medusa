@@ -506,16 +506,19 @@ class UserController extends \BaseController
             return Redirect::to('register')->withErrors($validator)->withInput();
         }
 
+        $siteKey = '6LdcghoTAAAAAKKj3XEL4KMPcUJMUjigT-qwcRvQ';
+        $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
+
         // Check Captcha
-        if ($captcha = Input::get('g-recaptcha-response')) {
-            $response =
-                json_decode(
-                    file_get_contents(
-                        "https://www.google.com/recaptcha/api/siteverify?secret=6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq&response=" . $captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']
-                    ),
-                    true
-                );
-            if ($response['success'] === false) {
+
+        $captcha = Input::get('g-recaptcha-response', null);
+
+        if (empty($captcha) === false) {
+            $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+
+            $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
+
+            if ($resp->isSuccess() === false) {
                 return Redirect::to('register')
                                ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
                                ->withInput();
