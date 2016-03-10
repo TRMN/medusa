@@ -506,11 +506,8 @@ class UserController extends \BaseController
             return Redirect::to('register')->withErrors($validator)->withInput();
         }
 
-        $siteKey = '6LdcghoTAAAAAKKj3XEL4KMPcUJMUjigT-qwcRvQ';
-        $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
-
         // Check Captcha
-
+        $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
         $captcha = Input::get('g-recaptcha-response', null);
 
         if (empty( $captcha ) === false) {
@@ -528,7 +525,7 @@ class UserController extends \BaseController
                            ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
                            ->withInput();
         }
-        die( $captcha );
+
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
 
         switch ($data['rank']) {
