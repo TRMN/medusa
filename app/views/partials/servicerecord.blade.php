@@ -74,6 +74,29 @@
             ?>
         </div>
         <br/>
+        
+        @if($permsObj->hasPermissions(['VIEW_NOTES']))
+            <div class="sbAccordian">
+                @if (!empty($user->note))
+                <h5 class='red'>View Note</h5>
+                @elseif ($permsObj->hasPermissions(['EDIT_NOTES']))
+                <h5>Add Note</h5>
+                @endif
+                
+                <div class='content'>
+                    {{ Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) }}
+                    <div class="row">
+                        
+                    </div>
+                    {{ Form::close() }}
+                </div>
+                
+            
+            </div>
+        @endif
+        
+        <br />
+        
         @if(count($user->getPeerages()))
             <h5 class="Incised901Black ninety">
                 @if(count($user->getPeerages())>1)
@@ -243,6 +266,9 @@
                 {{ isset($user->phone_number) ? $user->phone_number . '<br />' : '' }}
             </div>
         </div>
+
+        
+    
         <div class="row">
             <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
             <div class="small-10 columns Incised901Light ninety textLeft end">
