@@ -1104,6 +1104,8 @@ class UserController extends \BaseController
         
         $msg = "Note added";
         
+        $user->note = $data['note'];
+        
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'update',
