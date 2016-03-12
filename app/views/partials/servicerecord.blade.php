@@ -75,19 +75,38 @@
         </div>
         <br/>
         
-        @if($permsObj->hasPermissions(['VIEW_NOTES']))
+        @if($permsObj->hasPermissions(['VIEW_NOTE']))
             <div class="sbAccordian">
+                
+                <?php
+                    
+                    $currentNote="";
+                    $options = ["readonly"=>true, 'id'=>'note'];
+                
+                    ?>
                 @if (!empty($user->note))
                 <h5 class='red'>View Note</h5>
-                @elseif ($permsObj->hasPermissions(['EDIT_NOTES']))
+                <?php
+                    $currentNote = $user->note;
+                ?>
+                
+                @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
                 <h5>Add Note</h5>
+                <?php
+                    $options=['id'=>'note'];
+                ?>
                 @endif
                 
                 <div class='content'>
                     {{ Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) }}
                     <div class="row">
-                        
+                        {{ Form::textarea('note_text', $currentNote, $options) }}
                     </div>
+                    @if ($permsObj->hasPermissions(['EDIT_NOTE']))
+                    <div class="small-3 columns Incised901Light ninety text-left end">
+                        <button class="button round" id="cancel">Cancel</button> {{Form::submit('Save Note', ['id' => 'save_note', 'class' => 'button round'])}}
+                    </div>
+                    @endif
                     {{ Form::close() }}
                 </div>
                 
