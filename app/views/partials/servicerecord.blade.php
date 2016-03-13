@@ -81,7 +81,7 @@
                 <?php
                     
                     $currentNote="";
-                    $options = ["readonly"=>true, 'id'=>'note'];
+                    $options = ["readonly"=>true];
                 
                     ?>
                 @if (!empty($user->note))
@@ -89,22 +89,24 @@
                 <?php
                     $currentNote = $user->note;
                 ?>
-                
                 @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
                 <h5>Add Note</h5>
+                @endif
+                
+                @if ($permsObj->hasPermissions(['EDIT_NOTE']))
                 <?php
-                    $options=['id'=>'note'];
+                    $options=[];
                 ?>
                 @endif
                 
                 <div class='content'>
                     {{ Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) }}
-                    <div class="row">
+                    <div>
                         {{ Form::textarea('note_text', $currentNote, $options) }}
                     </div>
                     @if ($permsObj->hasPermissions(['EDIT_NOTE']))
-                    <div class="small-3 columns Incised901Light ninety text-left end">
-                        <button class="button round" id="cancel">Cancel</button> {{Form::submit('Save Note', ['id' => 'save_note', 'class' => 'button round'])}}
+                    <div>
+                        <button class="button round" id="note_clear">Delete</button> <button class="button round" id="note_cancel">Cancel</button> {{Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])}}
                     </div>
                     @endif
                     {{ Form::close() }}
