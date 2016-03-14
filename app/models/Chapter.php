@@ -300,7 +300,7 @@ class Chapter extends Eloquent
     {
         $users = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
             'assignment.billet',
-            ['Bosun', 'Fleet Bosun']
+            ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC']
         )->get();
         if (empty( $users ) === true) {
             return [];
@@ -310,7 +310,7 @@ class Chapter extends Eloquent
             foreach ($user->assignment as $assignment) {
                 if ($assignment['chapter_id'] === (string)$this->_id && in_array(
                         $assignment['billet'],
-                        ['Bosun', 'Fleet Bosun']
+                        ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC']
                     )
                 ) {
                     return $user;

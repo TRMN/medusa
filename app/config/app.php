@@ -209,6 +209,6 @@ return [
         'Image' => 'Intervention\Image\Facades\Image',
     ],
 
-    'version' => "Elizabeth I (Project MEDUSA v1.2.4)",
+    'version' => "Elizabeth I (Project MEDUSA v1.2.5)",
 
 ];
