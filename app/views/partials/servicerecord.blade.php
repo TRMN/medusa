@@ -81,7 +81,7 @@
                 <?php
                     
                     $currentNote="";
-                    $options = ["readonly"=>true];
+                    $options = ["readonly"=>true, "size"=> "20x5"];
                 
                     ?>
                 @if (!empty($user->note))
@@ -95,7 +95,7 @@
                 
                 @if ($permsObj->hasPermissions(['EDIT_NOTE']))
                 <?php
-                    $options=[];
+                    $options=["id"=>"note_text","size"=>"20x5"];
                 ?>
                 @endif
                 
