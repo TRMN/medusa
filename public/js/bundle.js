@@ -2445,6 +2445,16 @@ $(document).ready(function ($) {
         $('#peerage-container').trigger('click');
     });
 
+    $('#note_delete').on('click', function() {
+        $('#note_text').val('');
+        $('#note_form').submit();
+    });
+    
+    $('#note_cancel').on('click', function () {
+        $('#note_container').trigger('click');
+        return false;
+    });
+    
 });
 
 },{"./ManticoreAuth.js":1,"./ManticoreChapter.js":2,"./ManticoreRegister.js":3,"./ManticoreUser.js":4,"./dropzone.js":5}]},{},[6]);
