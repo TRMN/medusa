@@ -700,6 +700,10 @@ class UserController extends \BaseController
             $user->additional_billet = $user->getBillet('additional');
             $user->additional_date_assigned = $user->getDateAssigned('additional');
 
+            $user->extra_assignment = $user->getAssignmentId('extra');
+            $user->extra_billet = $user->getBillet('extra');
+            $user->extra_date_assigned = $user->getDateAssigned('extra');
+
             if (empty( $user->permissions ) === true) {
                 $user->permissions = [
                     'LOGOUT',
@@ -804,7 +808,21 @@ class UserController extends \BaseController
                 'additional'    => true
             ];
 
-            unset( $data['secondary_assignment'], $data['secondary_date_assigned'], $data['secondary_billet'] );
+            unset( $data['additional_assignment'], $data['additional_date_assigned'], $data['additional_billet'] );
+        }
+
+        if (isset( $data['extra_assignment'] ) === true && empty( $data['extra_assignment'] ) === false) {
+            $chapterName = Chapter::find($data['extra_assignment'])->chapter_name;
+
+            $assignment[] = [
+                'chapter_id'    => $data['extra_assignment'],
+                'chapter_name'  => $chapterName,
+                'date_assigned' => date('Y-m-d', strtotime($data['extra_date_assigned'])),
+                'billet'        => $data['extra_billet'],
+                'extra'         => true
+            ];
+
+            unset( $data['extra_assignment'], $data['extra_date_assigned'], $data['extra_billet'] );
         }
 
         $data['assignment'] = $assignment;
@@ -818,6 +836,7 @@ class UserController extends \BaseController
         }
 
         // Normalize State and Province
+        $data['state_province'] = User::normalizeStateProvince($data['state_province']);
         $data['state_province'] = User::normalizeStateProvince($data['state_province']);
 
         $data['awards'] = [];
@@ -1088,7 +1107,7 @@ class UserController extends \BaseController
 
         $user->save();
 
-        return Redirect::route('home')->with('message', $msg);
+        return Redirect::to(URL::previous())->with('message', $msg);
     }
 
     public function deletePeerage(User $user, $peerageId)
