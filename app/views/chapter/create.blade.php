@@ -53,7 +53,7 @@ Commission a Ship
 
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
-        {{Form::checkbox('joinable', true) }} New members and transfers may select this unit
+        {{Form::checkbox('joinable', true, true) }} New members and transfers may select this unit
     </div>
 </div>
 

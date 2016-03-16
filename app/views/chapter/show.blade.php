@@ -189,6 +189,14 @@ switch ($detail->chapter_type) {
                                 case 'fleet':
                                     echo "Fleet Bosun: ";
                                     break;
+                                case 'barracks':
+                                case 'bivouac':
+                                case 'fort':
+                                case 'outpost':
+                                case 'planetary':
+                                case 'theater':
+                                    echo 'NCOIC: ';
+                                    break;
                                 default:
                                     echo "Bosun: ";
                             }

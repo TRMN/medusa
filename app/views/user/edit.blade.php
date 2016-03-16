@@ -258,6 +258,51 @@
     </fieldset>
 
     <fieldset>
+        <legend>Supplemental Assignment Information</legend>
+        @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label( 'elocation', 'Filter Chapter List by Location', ['class' => 'my']) }} {{ Form::select('elocation', $locations) }}
+                </div>
+            </div>
+        @endif
+        @if(empty($user->extra_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('extra_assignment', "Chapter", ['class' => 'my']) }}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::select('extra_assignment', $chapters) }}
+                    {{ Form::hidden('eassignment', $user->extra_assignment, ['id' => 'eassignment']) }}
+                    @else
+                        {{Form::hidden('extra_assignment', $user->extra_assignment)}} {{$chapters[$user->extra_assignment]}}
+                        <br/><br/>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('extra_billet', 'Billet', ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::select('extra_billet', $billets) }}
+                    @else
+                        {{Form::hidden('extra_billet', $user->extra_billet)}} {{$user->extra_billet}}<br/>
+                        <br/>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('extra_date_assigned', "Date Assigned", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::date('extra_date_assigned', $user->extra_date_assigned) }}
+                    @else
+                        {{Form::hidden('extra_date_assigned', $user->extra_date_assigned)}} {{$user->extra_date_assigned}}
+                        <br/><br/>
+                    @endif
+                </div>
+            </div>
+        @else
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">None</div>
+            </div>
+        @endif
+    </fieldset>
+
+    <fieldset>
         <legend>Rank and Rating</legend>
 
         <div class="row">
