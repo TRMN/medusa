@@ -85,12 +85,12 @@
                 
                     ?>
                 @if (!empty($user->note))
-                <h5 class='red'>View Note</h5>
+                <h5 class='red' id="note_container">View Note</h5>
                 <?php
                     $currentNote = $user->note;
                 ?>
                 @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
-                <h5>Add Note</h5>
+                <h5 id="note_container">Add Note</h5>
                 @endif
                 
                 @if ($permsObj->hasPermissions(['EDIT_NOTE']))
