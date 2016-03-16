@@ -519,14 +519,16 @@ $(document).ready(function ($) {
         $('#peerage-container').trigger('click');
     });
 
-    $('#note_delete').on('click', function() {
+    $('#note_clear').on('click', function() {
         $('#note_text').val('');
         $('#note_form').submit();
     });
     
     $('#note_cancel').on('click', function () {
         $('#note_container').trigger('click');
+        location.reload();
         return false;
+        
     });
     
 });

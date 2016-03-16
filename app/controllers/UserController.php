@@ -1117,6 +1117,6 @@ class UserController extends \BaseController
         
         $user->save();
         
-        return Redirect::route('home')->with('message', $msg);
+        return Redirect::to(URL::previous())->with('message', $msg);
     }
 }
