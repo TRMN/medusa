@@ -34,10 +34,12 @@ module.exports = function () {
         jQuery('#plocation').change({assignment: 'primary'}, getChapterList);
         jQuery('#slocation').change({assignment: 'secondary'}, getChapterList);
         jQuery('#alocation').change({assignment: 'additional'}, getChapterList);
+        jQuery('#elocation').change({assignment: 'extra'}, getChapterList);
 
         buildChapterList('primary');
         buildChapterList('secondary');
         buildChapterList('additional');
+        buildChapterList('extra');
 
         function getChapterList(event) {
             var assignemnt = event.data.assignment;

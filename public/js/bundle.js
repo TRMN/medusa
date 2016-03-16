@@ -126,10 +126,12 @@ module.exports = function () {
         jQuery('#plocation').change({assignment: 'primary'}, getChapterList);
         jQuery('#slocation').change({assignment: 'secondary'}, getChapterList);
         jQuery('#alocation').change({assignment: 'additional'}, getChapterList);
+        jQuery('#elocation').change({assignment: 'extra'}, getChapterList);
 
         buildChapterList('primary');
         buildChapterList('secondary');
         buildChapterList('additional');
+        buildChapterList('extra');
 
         function getChapterList(event) {
             var assignemnt = event.data.assignment;
@@ -2259,10 +2261,19 @@ $(document).ready(function ($) {
             $('#arms-label').hide();
             $('#save_peerage').hide();
             $('#cancel').hide();
+            $('#courtesy').hide();
+            $('#courtesy_label').hide();
+            if ($('#order').val() != 'Select Order') {
+                $('#class').show();
+                $('#save_peerage').show();
+                $('#cancel').show();
+            }
         } else {
             $('#order').hide();
             $('#class').hide();
             $('#generation').show();
+            $('#courtesy').show();
+            $('#courtesy_label').show();
             if ($("#lands").val().length == 0) {
                 $('#save_peerage').hide();
                 $('#cancel').hide();
