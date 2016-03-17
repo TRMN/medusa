@@ -311,7 +311,7 @@ $(document).ready(function ($) {
             collapsible: true,
             header: "h5",
             heightStyle: "content",
-            icons: {"header": "ui-icon-plus", "activeHeader": "ui-icon-minus"}
+            icons: {"header": "ui-icon-triangle-1-e", "activeHeader": "ui-icon-triangle-1-s"}
         });
     });
 
@@ -523,12 +523,12 @@ $(document).ready(function ($) {
         $('#note_text').val('');
         $('#note_form').submit();
     });
-    
+
     $('#note_cancel').on('click', function () {
         $('#note_container').trigger('click');
         location.reload();
         return false;
-        
+
     });
-    
+
 });
