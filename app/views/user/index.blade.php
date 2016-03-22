@@ -62,6 +62,10 @@
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
                                 @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                @endif
+
                             </td>
                         </tr>
                     @endforeach
@@ -116,6 +120,9 @@
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -173,6 +180,9 @@
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
                                 @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -227,6 +237,9 @@
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
                                 @endif
                                 </td>
                             </tr>
@@ -284,6 +297,9 @@
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
                                 @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -339,6 +355,9 @@
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
                                 @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -392,6 +411,9 @@
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -447,6 +469,9 @@
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
                                 @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -500,6 +525,9 @@
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -555,6 +583,9 @@
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
                                 @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -609,6 +640,9 @@
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
                                 @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -662,6 +696,9 @@
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                @endif
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>

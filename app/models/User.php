@@ -83,6 +83,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'active',
         'dob',
         'osa',
+        'idcard_printed',
     ];
 
     public function announcements()
@@ -92,9 +93,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getFullName()
     {
-        return $this->first_name . ' ' .
-        ( empty( $this->middle_name ) ? '' : $this->middle_name . ' ' ) .
-        $this->last_name . ' ' .
+        return ucfirst($this->first_name) . ' ' .
+        ( empty( $this->middle_name ) ? '' : ucfirst($this->middle_name) . ' ' ) .
+        ucfirst($this->last_name) . ' ' .
         $this->suffix;
     }
 
@@ -825,6 +826,120 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         );
 
         return true;
+    }
+
+    public function buildIdCard()
+    {
+        $idCard = Image::make(public_path() . '/images/TRMN-membership-card.png');
+
+        $idCard->text($this->getFullName(), 382, 317, function($font) {
+            $font->file(public_path() . "/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf");
+            $font->size(48);
+            $font->align('center');
+        });
+
+        $idCard->text($this->getAssignmentName('primary'), 382, 432, function($font) {
+            $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+            $font->align('center');
+            $font->size(40);
+        });
+
+        $idCard->text($this->getBillet('primary'), 382, 527, function($font) {
+            $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+            $font->align('center');
+            $font->size(40);
+        });
+
+        $rankCode = substr($this->rank['grade'], 0, 1);
+
+        switch($rankCode) {
+            case 'C':
+                switch($this->branch) {
+                    case 'RMACS':
+                        $rankCode .= '-AC';
+                        break;
+                    case 'RMMM':
+                        $rankCode .= '-MM';
+                        break;
+                    case 'SFS':
+                        $rankCode .= '-SFC';
+                        break;
+                    case 'INTEL':
+                        $rankCode .= '-IS';
+                        break;
+                    case 'CIVIL':
+                        $rankCode .= '-CD';
+                }
+                break;
+            default;
+                break;
+        }
+
+        switch($this->branch) {
+            case 'RMACS':
+            case 'RMMM':
+            case 'SFS':
+            case 'CIVIL':
+                $seal = 'CIV.png';
+                break;
+            case 'INTEL':
+                $seal = 'INTEL.png';
+                break;
+            case 'IAN':
+                $seal = 'IAN.png';
+                break;
+            case 'RHN':
+                $seal = 'RHN.png';
+                break;
+            case 'GSN':
+                $seal = 'GSN.png';
+                break;
+            case 'RMMC':
+                $seal = 'RMMC.png';
+                break;
+            case 'RMA':
+                $seal = 'RMA.png';
+                break;
+            default:
+                $seal = 'RMN.png';
+        }
+
+        $idCard->text($rankCode, 153, 628, function($font) {
+            $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+            $font->align('center');
+            $font->size(40);
+            $font->color('#BE1E2D');
+        });
+
+        $peerages = $this->getPeerages();
+
+        if (empty($peerages) === false) {
+            $idCard->text($peerages[0]['code'], 392, 628, function($font) {
+                $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                $font->align('center');
+                $font->size(40);
+                $font->color('#BE1E2D');
+        });
+        }
+
+        $idCard->text($this->branch, 628, 628, function($font) {
+            $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+            $font->align('center');
+            $font->size(40);
+            $font->color('#BE1E2D');
+        });
+
+        $idCard->text($this->member_id, 855, 250, function($font) {
+            $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+            $font->align('center');
+            $font->size(20);
+        });
+
+        $idCard->insert(base64_encode(QrCode::format('png')->margin(1)->size(150)->errorCorrection('H')->generate($this->member_id)), 'top-left', 780, 252);
+
+        $idCard->insert(public_path() . '/seals/' . $seal, 'top-left', 747, 400);
+
+        return $idCard;
     }
 
     static function normalizeStateProvince($state)
