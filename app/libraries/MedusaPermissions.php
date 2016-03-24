@@ -86,7 +86,7 @@ trait MedusaPermissions
     {
         // Get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
         $chapterIds = [];
-        foreach (['primary', 'secondary', 'additional'] as $position) {
+        foreach (['primary', 'secondary', 'additional', 'supplemental'] as $position) {
             $chapterIds[] = $user->getAssignmentId($position);
         }
 
@@ -103,8 +103,16 @@ trait MedusaPermissions
 
         // Check if the logged in user has the correct permissions and is in the specified users Chain of Command
 
-        if ($this->hasPermissions(['DUTY_ROSTER']) === true && in_array(\Auth::user()->duty_roster, $echelonIdsToCheck) === true) {
-            return true;
+        if ($this->hasPermissions(['DUTY_ROSTER']) === true) { //} && in_array(\Auth::user()->duty_roster, $echelonIdsToCheck) === true) {
+            $rosters = \Auth::user()->duty_roster;
+            if (is_array($rosters) === false) {
+                $rosters = [$rosters];
+            }
+            foreach ($rosters as $roster) {
+                if (in_array($roster, $echelonIdsToCheck) === true) {
+                    return true;
+                }
+            }
         }
 
         return false;

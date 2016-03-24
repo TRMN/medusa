@@ -186,26 +186,28 @@ $(document).ready(function ($) {
         var secondary_text = $('#secondary_assignment option:selected').text();
         var additional = $('#additional_assignment option:selected').val();
         var additional_text = $('#additional_assignment option:selected').text();
+        var suplemental = $('#suplemental option:selected').val();
+        var suplemental_text = $('#suplemental option:selected').text();
         var duty_roster = $('#dutyroster').val();
 
         $('#selectDR').empty();
 
         if (primary != 0) {
             var select = '<input class="dr"';
-            if (primary == duty_roster) {
+            if (duty_roster.indexOf(primary) != -1) {
                 select += ' checked="checked"';
             }
-            select += ' name="dr_radio" type="radio" value="' + primary + '">' + primary_text + '</option>';
+            select += ' name="dr_check[]" type="checkbox" value="' + primary + '">' + primary_text + '</option>';
 
             $('#selectDR').append(select);
         }
 
         if (secondary != 0) {
             var select = '<br /><input class="dr"';
-            if (secondary == duty_roster) {
+            if (duty_roster.indexOf(secondary) != -1) {
                 select += ' checked="checked"';
             }
-            select += ' name="dr_radio" type="radio" value="' + secondary + '">' + secondary_text + '</option>';
+            select += ' name="dr_check[]" type="checkbox" value="' + secondary + '">' + secondary_text + '</option>';
             $('#selectDR').append(select);
         }
 
@@ -214,7 +216,16 @@ $(document).ready(function ($) {
             if (additional == duty_roster) {
                 select += ' checked="checked"';
             }
-            select += ' name="dr_radio" type="radio" value="' + additional + '">' + additional_text + '</option>';
+            select += ' name="dr_check[]" type="checkbox" value="' + additional + '">' + additional_text + '</option>';
+            $('#selectDR').append(select);
+        }
+
+        if (suplemental != 0) {
+            var select = '<br /><input class="dr"';
+            if (suplemental == duty_roster) {
+                select += ' checked="checked"';
+            }
+            select += ' name="dr_check[]" type="checkbox" value="' + suplemental + '">' + suplemental_text + '</option>';
             $('#selectDR').append(select);
         }
     }
