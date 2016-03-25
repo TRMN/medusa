@@ -85,42 +85,43 @@
 
                 ?>
                 @if (!empty($user->note))
-                    <div class="red-border">
-                        <h5 id="note_container">View Note</h5>
-                        <?php
-                        $currentNote = $user->note;
-                        ?>
-                        @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
-                            <h5 id="note_container">Add Note</h5>
-                        @endif
 
-                        @if ($permsObj->hasPermissions(['EDIT_NOTE']))
-                            <?php
-                            $options = ["id" => "note_text"];
-                            ?>
-                        @endif
+                    <?php
+                            $currentNote = $user->note;
+                            $title = '** VIEW';
 
-                        <div class='content'>
-                            {{ Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) }}
-                            <div class="row">
-                                <div class="columns small-4 end Incised901Light end">
-                                    {{ Form::textarea('note_text', $currentNote, $options) }}
-                                </div>
-                            </div>
-                            @if ($permsObj->hasPermissions(['EDIT_NOTE']))
-                                <div class="row">
-                                    <div class="columns small-4 end Incised901Light end">
-                                        <button class="button round" id="note_clear">Delete</button>
-                                        <button class="button round" id="note_cancel">Cancel
-                                        </button> {{Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])}}
-                                    </div>
-                                </div>
-                            @endif
-                            {{ Form::close() }}
+                            if ($permsObj->hasPermissions(['EDIT_NOTE'])) {
+                                $title .= '/EDIT';
+                            }
+
+                            $title .= ' NOTE **';
+                    ?>
+                    <h5 id="note_container">{{$title}}</h5>
+                @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
+                    <h5 id="note_container">Add Note</h5>
+                    <?php
+                    $options = ["id" => "note_text"];
+                    ?>
+                @endif
+
+                <div class='content'>
+                    {{ Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) }}
+                    <div class="row">
+                        <div class="columns small-4 end Incised901Light end">
+                            {{ Form::textarea('note_text', $currentNote, $options) }}
                         </div>
-                     @if (!empty($user->note))
                     </div>
+                    @if ($permsObj->hasPermissions(['EDIT_NOTE']))
+                        <div class="row">
+                            <div class="columns small-4 end Incised901Light end">
+                                <button class="button round" id="note_clear">Delete</button>
+                                <button class="button round" id="note_cancel">Cancel
+                                </button> {{Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])}}
+                            </div>
+                        </div>
                     @endif
+                    {{ Form::close() }}
+                </div>
             </div>
         @endif
 
