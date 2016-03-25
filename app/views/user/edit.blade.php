@@ -367,7 +367,7 @@
 
         </div>
         <div class="row">
-            <button class="button" onclick="$('#dutyroster').val(''); $('.dr').each(function(i) {$('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());}); $('#chooseShip').foundation('reveal', 'close');">OK
+            <button class="button" onclick="$('#dutyroster').val(''); $('.dr:checked').each(function(i) {$('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());}); $('#chooseShip').foundation('reveal', 'close');">OK
             </button>
         </div>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
