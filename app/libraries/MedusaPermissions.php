@@ -80,33 +80,52 @@ trait MedusaPermissions
      * Determine if the logged in user is in the chain of command provided user
      *
      * @param User $user
+     *
      * @returns bool
      */
-    public function isInChainOfCommand(\User $user)
+    public function isInChainOfCommand($param)
     {
-        // Get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
-        $chapterIds = [];
-        foreach (['primary', 'secondary', 'additional'] as $position) {
-            $chapterIds[] = $user->getAssignmentId($position);
-        }
 
-        if (count($chapterIds) < 1) {
+        if ($param instanceof \User) {
+            //called with a user object, get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
+            $chapterIds = [];
+            foreach (['primary', 'secondary', 'additional', 'supplemental'] as $position) {
+                $chapterIds[] = $param->getAssignmentId($position);
+            }
+
+            if (count($chapterIds) < 1) {
+                return false;
+            }
+
+            $echelonIdsToCheck = [];
+            foreach ($chapterIds as $chapterId) {
+                if ($chapterId !== false) {
+                    $echelonIdsToCheck =
+                        array_merge($echelonIdsToCheck, \Chapter::find($chapterId)->getChapterIdWithParents());
+                }
+            }
+        } elseif (is_array($param)) {
+            $echelonIdsToCheck = $param;
+        } else {
             return false;
         }
 
-        $echelonIdsToCheck = [];
-        foreach ($chapterIds as $chapterId) {
-            if ($chapterId !== false) {
-                $echelonIdsToCheck = array_merge($echelonIdsToCheck, \Chapter::find($chapterId)->getChapterIdWithParents());
+        // Check if the logged in user has the correct permissions and is in the specified users Chain of Command or in
+        // the array of chapter ids passed in
+
+        if ($this->hasPermissions(['DUTY_ROSTER']) === true) {
+            $rosters = ( \Auth::user()->duty_roster );
+            if (is_array($rosters) === false) {
+                $rosters = explode(',', trim($rosters, ','));
             }
-        }
-
-        // Check if the logged in user has the correct permissions and is in the specified users Chain of Command
-
-        if ($this->hasPermissions(['DUTY_ROSTER']) === true && in_array(\Auth::user()->duty_roster, $echelonIdsToCheck) === true) {
-            return true;
+            foreach ($rosters as $roster) {
+                if (in_array($roster, $echelonIdsToCheck) === true) {
+                    return true;
+                }
+            }
         }
 
         return false;
     }
+
 }
