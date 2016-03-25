@@ -864,6 +864,8 @@ class UserController extends \BaseController
 
         $data['email_address'] = strtolower($data['email_address']);
 
+        $data['duty_roster'] = trim($data['duty_roster'], ',');
+
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'update',
