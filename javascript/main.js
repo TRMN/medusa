@@ -186,8 +186,8 @@ $(document).ready(function ($) {
         var secondary_text = $('#secondary_assignment option:selected').text();
         var additional = $('#additional_assignment option:selected').val();
         var additional_text = $('#additional_assignment option:selected').text();
-        var suplemental = $('#suplemental option:selected').val();
-        var suplemental_text = $('#suplemental option:selected').text();
+        var suplemental = $('#extra_assignment option:selected').val();
+        var suplemental_text = $('#extra_assignment option:selected').text();
         var duty_roster = $('#dutyroster').val();
 
         $('#selectDR').empty();
@@ -213,7 +213,7 @@ $(document).ready(function ($) {
 
         if (additional != 0) {
             var select = '<br /><input class="dr"';
-            if (additional == duty_roster) {
+            if (duty_roster.indexOf(additional) != -1) {
                 select += ' checked="checked"';
             }
             select += ' name="dr_check[]" type="checkbox" value="' + additional + '">' + additional_text + '</option>';
@@ -222,7 +222,7 @@ $(document).ready(function ($) {
 
         if (suplemental != 0) {
             var select = '<br /><input class="dr"';
-            if (suplemental == duty_roster) {
+            if (duty_roster.indexOf(suplemental) != -1) {
                 select += ' checked="checked"';
             }
             select += ' name="dr_check[]" type="checkbox" value="' + suplemental + '">' + suplemental_text + '</option>';
@@ -231,7 +231,11 @@ $(document).ready(function ($) {
     }
 
     $('.dr').on('click', function () {
-        $('#dutyroster').val($('.dr:checked').val());
+        if($('#dutyroster').val().length == 0) {
+            $('#dutyroster').val($(this).val());
+        } else {
+            $('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());
+        }
     });
 
     $('#refreshExamList').on('click', function () {
