@@ -186,41 +186,56 @@ $(document).ready(function ($) {
         var secondary_text = $('#secondary_assignment option:selected').text();
         var additional = $('#additional_assignment option:selected').val();
         var additional_text = $('#additional_assignment option:selected').text();
+        var suplemental = $('#extra_assignment option:selected').val();
+        var suplemental_text = $('#extra_assignment option:selected').text();
         var duty_roster = $('#dutyroster').val();
 
         $('#selectDR').empty();
 
         if (primary != 0) {
             var select = '<input class="dr"';
-            if (primary == duty_roster) {
+            if (duty_roster.indexOf(primary) != -1) {
                 select += ' checked="checked"';
             }
-            select += ' name="dr_radio" type="radio" value="' + primary + '">' + primary_text + '</option>';
+            select += ' name="dr_check[]" type="checkbox" value="' + primary + '">' + primary_text + '</option>';
 
             $('#selectDR').append(select);
         }
 
         if (secondary != 0) {
             var select = '<br /><input class="dr"';
-            if (secondary == duty_roster) {
+            if (duty_roster.indexOf(secondary) != -1) {
                 select += ' checked="checked"';
             }
-            select += ' name="dr_radio" type="radio" value="' + secondary + '">' + secondary_text + '</option>';
+            select += ' name="dr_check[]" type="checkbox" value="' + secondary + '">' + secondary_text + '</option>';
             $('#selectDR').append(select);
         }
 
         if (additional != 0) {
             var select = '<br /><input class="dr"';
-            if (additional == duty_roster) {
+            if (duty_roster.indexOf(additional) != -1) {
                 select += ' checked="checked"';
             }
-            select += ' name="dr_radio" type="radio" value="' + additional + '">' + additional_text + '</option>';
+            select += ' name="dr_check[]" type="checkbox" value="' + additional + '">' + additional_text + '</option>';
+            $('#selectDR').append(select);
+        }
+
+        if (suplemental != 0) {
+            var select = '<br /><input class="dr"';
+            if (duty_roster.indexOf(suplemental) != -1) {
+                select += ' checked="checked"';
+            }
+            select += ' name="dr_check[]" type="checkbox" value="' + suplemental + '">' + suplemental_text + '</option>';
             $('#selectDR').append(select);
         }
     }
 
     $('.dr').on('click', function () {
-        $('#dutyroster').val($('.dr:checked').val());
+        if($('#dutyroster').val().length == 0) {
+            $('#dutyroster').val($(this).val());
+        } else {
+            $('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());
+        }
     });
 
     $('#refreshExamList').on('click', function () {
@@ -333,10 +348,19 @@ $(document).ready(function ($) {
             $('#arms-label').hide();
             $('#save_peerage').hide();
             $('#cancel').hide();
+            $('#courtesy').hide();
+            $('#courtesy_label').hide();
+            if ($('#order').val() != 'Select Order') {
+                $('#class').show();
+                $('#save_peerage').show();
+                $('#cancel').show();
+            }
         } else {
             $('#order').hide();
             $('#class').hide();
             $('#generation').show();
+            $('#courtesy').show();
+            $('#courtesy_label').show();
             if ($("#lands").val().length == 0) {
                 $('#save_peerage').hide();
                 $('#cancel').hide();

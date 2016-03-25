@@ -9,7 +9,7 @@
 @stop
 
 @section('content')
-        <h4 class="my NordItalic ninety">
+    <h4 class="my NordItalic ninety">
         Editing {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
         {{ $user->last_name }}{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}</h4>
 
@@ -124,7 +124,6 @@
         @endif
 
 
-
     </fieldset>
 
     <fieldset>
@@ -236,7 +235,8 @@
                 <div class="end small-6 columns ninety Incised901Light">
                     {{ Form::label('additional_billet', 'Billet', ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::select('additional_billet', $billets) }}
                     @else
-                        {{Form::hidden('additional_billet', $user->additional_billet)}} {{$user->additional_billet}}<br/>
+                        {{Form::hidden('additional_billet', $user->additional_billet)}} {{$user->additional_billet}}
+                        <br/>
                         <br/>
                     @endif
                 </div>
@@ -246,6 +246,51 @@
                     {{ Form::label('additional_date_assigned', "Date Assigned", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::date('additional_date_assigned', $user->additional_date_assigned) }}
                     @else
                         {{Form::hidden('additional_date_assigned', $user->additional_date_assigned)}} {{$user->additional_date_assigned}}
+                        <br/><br/>
+                    @endif
+                </div>
+            </div>
+        @else
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">None</div>
+            </div>
+        @endif
+    </fieldset>
+
+    <fieldset>
+        <legend>Supplemental Assignment Information</legend>
+        @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label( 'elocation', 'Filter Chapter List by Location', ['class' => 'my']) }} {{ Form::select('elocation', $locations) }}
+                </div>
+            </div>
+        @endif
+        @if(empty($user->extra_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('extra_assignment', "Chapter", ['class' => 'my']) }}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::select('extra_assignment', $chapters) }}
+                    {{ Form::hidden('eassignment', $user->extra_assignment, ['id' => 'eassignment']) }}
+                    @else
+                        {{Form::hidden('extra_assignment', $user->extra_assignment)}} {{$chapters[$user->extra_assignment]}}
+                        <br/><br/>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('extra_billet', 'Billet', ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::select('extra_billet', $billets) }}
+                    @else
+                        {{Form::hidden('extra_billet', $user->extra_billet)}} {{$user->extra_billet}}<br/>
+                        <br/>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="end small-6 columns ninety Incised901Light">
+                    {{ Form::label('extra_date_assigned', "Date Assigned", ['class' => 'my']) }} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){{ Form::date('extra_date_assigned', $user->extra_date_assigned) }}
+                    @else
+                        {{Form::hidden('extra_date_assigned', $user->extra_date_assigned)}} {{$user->extra_date_assigned}}
                         <br/><br/>
                     @endif
                 </div>
@@ -292,13 +337,13 @@
             <legend>Database Permissions</legend>
             <div class="row">
                 <div class="columns small-12 text-center">
-                    Common Permission Sets<br />
+                    Common Permission Sets<br/>
 
-                        <button class="tiny secondary" id="coPerms">Command Triad</button>
-                        <button class="tiny secondary" id="slPerms">Space Lord</button>
-                        <button class="tiny secondary" id="rmaPerms">RMA</button>
-                        <button class="tiny secondary" id="rmmcPerms">RMMC</button>
-                        <button class="tiny secondary" id="defaultPerms">Default</button>
+                    <button class="tiny secondary" id="coPerms">Command Triad</button>
+                    <button class="tiny secondary" id="slPerms">Space Lord</button>
+                    <button class="tiny secondary" id="rmaPerms">RMA</button>
+                    <button class="tiny secondary" id="rmmcPerms">RMMC</button>
+                    <button class="tiny secondary" id="defaultPerms">Default</button>
 
                 </div>
             </div>
@@ -316,13 +361,14 @@
 
     <div id="chooseShip" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
         <div class="row">
-            Which Chapter does the DUTY_ROSTER permission apply to?<br /><br />
+            Which Chapter does the DUTY_ROSTER permission apply to?<br/><br/>
         </div>
         <div class="row" id="selectDR">
 
         </div>
         <div class="row">
-            <button class="button" onclick="$('#dutyroster').val($('.dr:checked').val());$('#chooseShip').foundation('reveal', 'close');">OK</button>
+            <button class="button" onclick="$('#dutyroster').val(''); $('.dr:checked').each(function(i) {$('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());}); $('#chooseShip').foundation('reveal', 'close');">OK
+            </button>
         </div>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     </div>

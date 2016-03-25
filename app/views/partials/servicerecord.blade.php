@@ -55,7 +55,7 @@
         <div class="Incised901Light whitesmoke">
             <?php
             $count = 0;
-            foreach (['secondary', 'additional'] as $position) {
+            foreach (['secondary', 'additional', 'extra'] as $position) {
                 if (empty( $user->getAssignmentName($position) ) === false) {
                     echo '<a href="' . route('chapter.show', $user->getAssignmentId($position)) . '">' .
                             $user->getAssignmentName($position) . '</a>';
@@ -198,14 +198,14 @@
                 </div>
             @endforeach
         @endif
-        @if($permsObj->hasPermissions(['ADD_PEERAGE', 'EDIT_PEERAGE', 'DEL_PEERAGE']))
+        @if($permsObj->hasPermissions(['ADD_PEERAGE']))
             <div class="sbAccordian">
                 <h5 id="peerage-container">Add Peerage</h5>
                 <div class="content">
                     {{ Form::open(['route' => ['addOrEditPeerage', $user->id], 'method' => 'post', 'files' => true, 'id'=>'peerage_form']) }}
                     <div class="row">
                         <div class="small-3 columns Incised901Light ninety text-left">{{Form::select('ptitle', $ptitles, '', ['id' => 'ptitle'])}}{{Form::checkbox('courtesy', 1, null, ['id' => 'courtesy'])}}
-                            <label for="courtesy">Courtesy Title</label></div>
+                            <label for="courtesy" id="courtesy_label">Courtesy Title</label></div>
                         <div class="small-3 columns Incised901Light ninety text-left">
                             {{Form::select('generation',
                             ['' => 'Select Peerage Generation', 'First' => 'First', 'Second' => 'Second', 'Third' => 'Third', 'Fourth' => 'Fourth', 'Fifth'=> 'Fifth'], '',

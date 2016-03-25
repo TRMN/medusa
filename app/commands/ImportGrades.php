@@ -505,7 +505,7 @@ class ImportGrades extends Command
         $exams = [];
 
         foreach($fieldNames as $fieldName) {
-            $exams[$fieldName] = 'KR1MA-' . strtoupper($fieldName);
+            $exams[$fieldName] = 'KR1MA-' . str_replace('_', '-', strtoupper($fieldName));
         }
 
 
