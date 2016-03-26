@@ -164,7 +164,11 @@ class ApiController extends BaseController
 
     public function findMember()
     {
-        $query = Input::get('query');
+        $query = Input::get('query', null);
+
+        if (is_null($query) === true) {
+            return Response::json(['suggestions' => []]);
+        }
 
         $results =
             User::where('member_id', 'like', '%' . $query . '%')
