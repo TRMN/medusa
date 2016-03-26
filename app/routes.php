@@ -136,5 +136,6 @@ Route::get('/api/institute', 'ApiController@getInstitutes');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::get( '/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
+Route::get(' /api/find', 'ApiController@findMember', ['before' => 'auth']); // search for a member
 
 

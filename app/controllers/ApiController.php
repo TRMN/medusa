@@ -153,12 +153,37 @@ class ApiController extends BaseController
     {
         $classes = [];
 
-        if(empty($order = Korders::find($orderId)) === false) {
+        if (empty( $order = Korders::find($orderId) ) === false) {
             foreach ($order->classes as $class) {
                 $classes[$class['postnominal']] = $class['class'];
             }
         }
 
         return Response::json($classes);
+    }
+
+    public function findMember()
+    {
+        $query = Input::get('query');
+
+        $results =
+            User::where('member_id', 'like', '%' . $query . '%')
+                ->orWhere('first_name', 'like', '%' . $query . '%')
+                ->orWhere('last_name', 'like', '%' . $query . '%')
+                ->get();
+
+        $suggestions = [];
+
+        foreach ($results as $member) {
+            $suggestions[] =
+                [
+                    'value' => $member->member_id . ' ' . $member->first_name . ' ' . $member->last_name . ' (' . $member->getAssignmentName(
+                            'primary'
+                        ) . ')',
+                    'data'  => $member->id
+                ];
+        }
+
+        return Response::json(['suggestions' => $suggestions]);
     }
 }

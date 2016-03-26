@@ -1,13 +1,13 @@
-<div id="left-nav">
+<div id="left-nav" class="sbAccordian">
     @if(Auth::check())
         <div class="nav-header lnav">MEMBER</div>
         <div class="rnav">
 
             <a href="/home">Service Record</a><br/>
-            <a href="/id/card/{{Auth::user()->id}}">ID Card</a><br />
+            <a href="/id/card/{{Auth::user()->id}}">ID Card</a><br/>
             <a href="{{route('user.change.request', [Auth::user()->id])}}">Branch/Chapter Change</a><br/>
             <a href="{{ route('chapter.index') }}">Ship/Unit List</a><br/>
-            <a href="{{route('user.getReset', [Auth::user()->id])}}">Change Password</a><br><br>
+            <a href="{{route('user.getReset', [Auth::user()->id])}}">Change Password</a><br/><br/>
             <a href="/signout">Logout</a>
 
         </div>
@@ -16,9 +16,7 @@
             <div class="rnav">
                 @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true)
                     <a href="{{route('report.index')}}">Chapter Reports</a><br/>
-                    @endif
-                            <!-- <a href="">View Combined Roster</a><br /> -->
-
+                @endif
             </div>
         @endif
         @if($permsObj->hasPermissions(['CREATE_ECHELON',
@@ -68,10 +66,15 @@
             </div>
         @endif
 
-        @if($permsObj->hasPermissions(['UPLOAD_EXAMS']) === true)
+        @if($permsObj->hasPermissions(['UPLOAD_EXAMS','ADD_GRADE', 'EDIT_GRADE']) === true)
             <div class="nav-header lnav">BuTrain (6SL)</div>
             <div class="rnav">
-                <a href="{{route('exam.index')}}">Upload Exams</a>
+                @if($permsObj->hasPermissions(['UPLOAD_EXAMS']) === true)
+                    <a href="{{route('exam.index')}}">Upload Exams</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['ADD_GRADE', 'EDIT_GRADE']) === true)
+                    Mange/Enter Grades
+                @endif
             </div>
         @endif
 
@@ -98,8 +101,8 @@
         @if($permsObj->hasPermissions(['ALL_PERMS']) === true)
             <div class="nav-header lnav">System</div>
             <div class="rnav">
-                <a href="{{ route('anyunit.create') }}">Create Unit/Echelon</a><br />
-                <a href="{{ route('type.index') }}">List Chapter Types</a><br />
+                <a href="{{ route('anyunit.create') }}">Create Unit/Echelon</a><br/>
+                <a href="{{ route('type.index') }}">List Chapter Types</a><br/>
                 <a href="{{ route('type.create') }}">Add Chapter Type</a>
             </div>
         @endif
