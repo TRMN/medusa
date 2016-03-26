@@ -1040,12 +1040,17 @@ class UserController extends \BaseController
         $peerage['code'] = $pTitleInfo->code;
 
         if ($data['ptitle'] == 'Knight' || $data['ptitle'] == 'Dame') {
+
+            $kOrder = Korders::where('classes.postnominal', '=', $data['class'])->first();
+
             // Use the precedence from the Knight Orders table
-            $peerage['precedence'] =
-                Korders::where('classes.postnominal', '=', $data['class'])->first()->getPrecedence(
-                    ['type' => 'postnominal', 'value' => $data['class']]
-                );
+            $peerage['precedence'] = $kOrder->getPrecedence(['type' => 'postnominal', 'value' => $data['class']]);
             $peerage['postnominal'] = $data['class'];
+
+            if (substr($kOrder->getClassName($data['class']), 0, 6) != 'Knight') {
+                $peerage['code'] = '';
+            }
+
         } else {
             $peerage['precedence'] = $pTitleInfo->precedence;
             $peerage['generation'] = $data['generation'];
