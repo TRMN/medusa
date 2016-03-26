@@ -18,6 +18,15 @@ class ExamController extends \BaseController
         return View::make('exams.index', ['messages' => Message::where('source', '=', 'import_grades')->orderBy('created_at','asc')->get()]);
     }
 
+    public function find()
+    {
+        if (( $redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        return View::make('exams.find');
+    }
+
     public function upload()
     {
         if (( $redirect = $this->checkPermissions('UPLOAD_EXAMS') ) !== true) {

@@ -105,6 +105,7 @@ Route::controller('password', 'RemindersController');
 
 Route::get('/exam', ['as' => 'exam.index', 'uses' => 'ExamController@index', 'before' => 'auth']);
 Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@upload', 'before' => 'auth']);
+Route::get('/exam/find', ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']);
 
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);

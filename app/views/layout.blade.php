@@ -123,6 +123,7 @@
     <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="{{ $serverUrl }}/js/dataTables.foundation.js"></script>
     <script type="text/javascript" src="{{ $serverUrl }}/js/dataTables.jqueryui.js"></script>
+    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.autocomplete.js"></script>
 @else
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript"
@@ -139,6 +140,7 @@
             src="//cdn.datatables.net/plug-ins/1.10.7/integration/foundation/dataTables.foundation.js"></script>
     <script type="text/javascript"
             src="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.js"></script>
+    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.autocomplete.min.js"></script>
 @endif
 <script>
     jQuery(document).foundation();

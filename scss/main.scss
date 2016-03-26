@@ -69,6 +69,7 @@ $medusa-yellow: #ffee00;
 .vertical-center-50px {
   line-height: 50px;
 }
+
 .padding-5 {
   padding: 2px;
 }
@@ -508,4 +509,35 @@ footer {
   height: 100%;
   width: 100%;
   background: rgba(255, 255, 255, .8) url('/images/ajax-loader.gif') 50% 50% no-repeat;
+}
+
+.autocomplete-suggestions {
+  border: 1px solid #999;
+  background: #FFF;
+  overflow: auto;
+  color: black;
+}
+
+.autocomplete-suggestion {
+  padding: 2px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.autocomplete-selected {
+  background: #F0F0F0;
+}
+
+.autocomplete-suggestions strong {
+  font-weight: normal;
+  color: #3399FF;
+}
+
+.autocomplete-group {
+  padding: 2px 5px;
+}
+
+.autocomplete-group strong {
+  display: block;
+  border-bottom: 1px solid #000;
 }
