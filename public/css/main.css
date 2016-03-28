@@ -452,6 +452,11 @@ table.dataTable.display tbody tr:first-child td {
 .red {
   color: #ee3300 !important; }
 
+.red-border {
+  border: solid #ee3300 1px;
+  padding: 5px;
+  width: auto; }
+
 .blue {
   color: mediumblue !important; }
 
