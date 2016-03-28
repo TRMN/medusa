@@ -113,7 +113,7 @@ class IdController extends \BaseController
             }
 
             $idCard->text(
-                $peerages[0]['code'],
+                $pCode,
                 392,
                 638,
                 function ($font) {
