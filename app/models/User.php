@@ -84,6 +84,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'dob',
         'osa',
         'idcard_printed',
+        'note',
     ];
 
     public function announcements()
@@ -913,8 +914,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         $peerages = $this->getPeerages();
 
-        if (empty($peerages) === false) {
-            $idCard->text($peerages[0]['code'], 392, 628, function($font) {
+            $pCode = $peerages[0]['code'];
+
+            if ($pCode == "K" && substr(
+                    Korders::where('classes.postnominal', '=', $peerages[0]['postnominal'])->first()->getClassName(
+                        $peerages[0]['postnominal']),0,6) != 'Knight') {
+                $pCode = '';
+            }
+
+        if (empty($pcode) === false) {
+            $idCard->text($pcode, 392, 628, function($font) {
                 $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
                 $font->align('center');
                 $font->size(40);
