@@ -202,7 +202,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         // At the moment, the only postnominals we know about are for knighthoods stored in the peerage record
 
-        foreach (empty($this->peerages) === false?$this->peerages:[] as $peerage) {
+        foreach (empty( $this->peerages ) === false ? $this->peerages : [] as $peerage) {
             if ($peerage['code'] == 'K' && empty( $peerage['courtesy'] ) === true) {
                 $postnominals[$peerage['precedence']] = $peerage['postnominal']; // Order them by precedence
             }
@@ -833,29 +833,44 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $idCard = Image::make(public_path() . '/images/TRMN-membership-card.png');
 
-        $idCard->text($this->getFullName(), 382, 317, function($font) {
-            $font->file(public_path() . "/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf");
-            $font->size(48);
-            $font->align('center');
-        });
+        $idCard->text(
+            $this->getFullName(),
+            382,
+            317,
+            function ($font) {
+                $font->file(public_path() . "/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf");
+                $font->size(48);
+                $font->align('center');
+            }
+        );
 
-        $idCard->text($this->getAssignmentName('primary'), 382, 432, function($font) {
-            $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
-            $font->align('center');
-            $font->size(40);
-        });
+        $idCard->text(
+            $this->getAssignmentName('primary'),
+            382,
+            432,
+            function ($font) {
+                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->align('center');
+                $font->size(40);
+            }
+        );
 
-        $idCard->text($this->getBillet('primary'), 382, 527, function($font) {
-            $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
-            $font->align('center');
-            $font->size(40);
-        });
+        $idCard->text(
+            $this->getBillet('primary'),
+            382,
+            527,
+            function ($font) {
+                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->align('center');
+                $font->size(40);
+            }
+        );
 
         $rankCode = substr($this->rank['grade'], 0, 1);
 
-        switch($rankCode) {
+        switch ($rankCode) {
             case 'C':
-                switch($this->branch) {
+                switch ($this->branch) {
                     case 'RMACS':
                         $rankCode .= '-AC';
                         break;
@@ -876,7 +891,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 break;
         }
 
-        switch($this->branch) {
+        switch ($this->branch) {
             case 'RMACS':
             case 'RMMM':
             case 'SFS':
@@ -905,46 +920,78 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 $seal = 'RMN.png';
         }
 
-        $idCard->text($rankCode, 153, 628, function($font) {
-            $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
-            $font->align('center');
-            $font->size(40);
-            $font->color('#BE1E2D');
-        });
-
-        $peerages = $this->getPeerages();
-
-            $pCode = $peerages[0]['code'];
-
-            if ($pCode == "K" && substr(
-                    Korders::where('classes.postnominal', '=', $peerages[0]['postnominal'])->first()->getClassName(
-                        $peerages[0]['postnominal']),0,6) != 'Knight') {
-                $pCode = '';
-            }
-
-        if (empty($pcode) === false) {
-            $idCard->text($pcode, 392, 628, function($font) {
+        $idCard->text(
+            $rankCode,
+            153,
+            628,
+            function ($font) {
                 $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
                 $font->align('center');
                 $font->size(40);
                 $font->color('#BE1E2D');
-        });
+            }
+        );
+
+        $peerages = $this->getPeerages();
+
+        $pCode = $peerages[0]['code'];
+
+        if ($pCode == "K" && substr(
+                Korders::where('classes.postnominal', '=', $peerages[0]['postnominal'])->first()->getClassName(
+                    $peerages[0]['postnominal']
+                ),
+                0,
+                6
+            ) != 'Knight'
+        ) {
+            $pCode = '';
         }
 
-        $idCard->text($this->branch, 628, 628, function($font) {
-            $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
-            $font->align('center');
-            $font->size(40);
-            $font->color('#BE1E2D');
-        });
+        if (empty( $pCode ) === false) {
+            $idCard->text(
+                $pCode,
+                392,
+                628,
+                function ($font) {
+                    $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                    $font->align('center');
+                    $font->size(40);
+                    $font->color('#BE1E2D');
+                }
+            );
+        }
 
-        $idCard->text($this->member_id, 855, 250, function($font) {
-            $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
-            $font->align('center');
-            $font->size(20);
-        });
+        $idCard->text(
+            $this->branch,
+            628,
+            628,
+            function ($font) {
+                $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                $font->align('center');
+                $font->size(40);
+                $font->color('#BE1E2D');
+            }
+        );
 
-        $idCard->insert(base64_encode(QrCode::format('png')->margin(1)->size(150)->errorCorrection('H')->generate($this->member_id)), 'top-left', 780, 252);
+        $idCard->text(
+            $this->member_id,
+            855,
+            250,
+            function ($font) {
+                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->align('center');
+                $font->size(20);
+            }
+        );
+
+        $idCard->insert(
+            base64_encode(
+                QrCode::format('png')->margin(1)->size(150)->errorCorrection('H')->generate($this->member_id)
+            ),
+            'top-left',
+            780,
+            252
+        );
 
         $idCard->insert(public_path() . '/seals/' . $seal, 'top-left', 747, 400);
 

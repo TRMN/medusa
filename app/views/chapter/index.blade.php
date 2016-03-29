@@ -44,7 +44,7 @@
                         @if(in_array($chapter->chapter_type, ['ship', 'station']) === true && empty($chapter->idcards_printed) && empty($chapter->decommission_date) && $permsObj->hasPermissions(['ID_CARD']))
                             <a class="fi-credit-card green size-24" href="/id/bulk/{{$chapter->id}}"
                                title="Print ID Cards"></a>
-                            <a class="fi-check green size-24" href="/id/mark/{{$chapter->id}}"
+                            <a class="fi-check green size-24" href="/id/markbulk/{{$chapter->id}}"
                                title="Mark ID Cards as printed"
                                onclick="return confirm('Mark ID cards as printed for this chapter?')"></a>
                         @elseif(in_array($chapter->chapter_type, ['ship', 'station']) === true && !empty($chapter->idcards_printed) && empty($chapter->decommission_date) && $permsObj->hasPermissions(['ID_CARD']))

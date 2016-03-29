@@ -64,13 +64,36 @@ class IdController extends \BaseController
         return View::make('id.bulk', ['chapters' => $chapters]);
     }
 
-    public function getMark($shipID)
+    public function getMarkbulk($shipID)
     {
         if (( $redirect = $this->checkPermissions('ID_CARD') ) !== true) {
             return $redirect;
         }
 
         $chapters = Chapter::find($shipID)->getChapterIdWithChildren();
+
+        foreach ($chapters as $chapterId) {
+            $chapter = Chapter::find($chapterId);
+            foreach ($chapter->getAllCrew() as $member) {
+                if($member->getAssignmentId('primary') == $chapter && empty($member->idcard_printed)) {
+                    $member->idcard_printed = true;
+                    $member->save();
+                }
+            }
+            $chapter->idcards_printed = true;
+            $chapter->save();
+        }
+
+        return Redirect::to(URL::previous());
+    }
+
+    public function getMark($userID)
+    {
+        if (( $redirect = $this->checkPermissions('ID_CARD') ) !== true) {
+            return $redirect;
+        }
+
+        $member = Chapter::find($shipID)->getChapterIdWithChildren();
 
         foreach ($chapters as $chapterId) {
             $chapter = Chapter::find($chapterId);
