@@ -16,6 +16,7 @@ class Chapter extends Eloquent
         'decommission_date',
         'branch',
         'joinable',
+        'idcards_printed',
     ];
 
     public static $rules = [
@@ -300,7 +301,7 @@ class Chapter extends Eloquent
     {
         $users = User::where('assignment.chapter_id', '=', (string)$this->_id)->whereIn(
             'assignment.billet',
-            ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC']
+            ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC', 'Chief of Staff']
         )->get();
         if (empty( $users ) === true) {
             return [];
@@ -310,7 +311,7 @@ class Chapter extends Eloquent
             foreach ($user->assignment as $assignment) {
                 if ($assignment['chapter_id'] === (string)$this->_id && in_array(
                         $assignment['billet'],
-                        ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC']
+                        ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC', 'Chief of Staff']
                     )
                 ) {
                     return $user;
