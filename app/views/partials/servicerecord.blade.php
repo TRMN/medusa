@@ -74,6 +74,60 @@
             ?>
         </div>
         <br/>
+
+        @if($permsObj->hasPermissions(['VIEW_NOTE']))
+            <div class="sbAccordian">
+
+                <?php
+
+                $currentNote = "";
+                $options = ["readonly" => true, "id" => "note_text"];
+
+                ?>
+                @if (!empty($user->note))
+
+                    <?php
+                            $currentNote = $user->note;
+                            $title = '** VIEW';
+
+                            if ($permsObj->hasPermissions(['EDIT_NOTE'])) {
+                                $title .= '/EDIT';
+                            }
+
+                            $title .= ' NOTE **';
+                            $options = ["id" => "note_text"];
+                    ?>
+                    <h5 id="note_container">{{$title}}</h5>
+                @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
+                    <h5 id="note_container">Add Note</h5>
+                    <?php
+                    $options = ["id" => "note_text"];
+                    ?>
+                @endif
+
+                <div class='content'>
+                    {{ Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) }}
+                    <div class="row">
+                        <div class="columns small-6 end Incised901Light end">
+                            {{ Form::textarea('note_text', $currentNote, $options) }}
+                        </div>
+                    </div>
+                    @if ($permsObj->hasPermissions(['EDIT_NOTE']))
+                        <div class="row">
+                            <div class="columns small-4 end Incised901Light end">
+                                <button class="button round" id="note_clear">Delete</button>
+                                <button class="button round" id="note_cancel">Cancel
+                                </button> {{Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])}}
+                            </div>
+                        </div>
+                    @endif
+                    {{ Form::close() }}
+                </div>
+            </div>
+        @endif
+
+        <br/>
+
         @if(count($user->getPeerages()))
             <h5 class="Incised901Black ninety">
                 @if(count($user->getPeerages())>1)
@@ -180,14 +234,14 @@
             </div>
         @endif
         <h5 class="Incised901Black ninety">
-            Academy Coursework:
+            Academy Coursework: @if($user->getExamLastUpdated() !== false)
+                <span class="Incised901Light ninety">( Last
+                        Updated: {{ date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) }} )</span>
+            @endif
         </h5>
 
         <div class="whitesmoke">
-            @if($user->getExamLastUpdated() !== false)
-                <span class="Incised901Light ninety">Last
-                        Updated: {{ date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) }}</span>
-            @endif
+
             <div class="sbAccordian">
                 @foreach(['RMN', 'SRN', 'GSN', 'STC|AFLTC|GTSC', 'RMMC', 'SRMC', 'RMA', 'RMAT', 'CORE|KC|QC'] as $branch)
                     @if(count($user->getExamList(['branch' => $branch])) > 0)
@@ -226,7 +280,7 @@
     <br/>
     @if($permsObj->hasPermissions(['DOB']) || ($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id))
         <div class="Incised901Light ninety">Date of Birth: {{date('d M Y', strtotime($user->dob))}}</div>
-        <br />
+        <br/>
     @endif
 
     <div class="Incised901Black ninety">
@@ -243,6 +297,8 @@
                 {{ isset($user->phone_number) ? $user->phone_number . '<br />' : '' }}
             </div>
         </div>
+
+
         <div class="row">
             <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
             <div class="small-10 columns Incised901Light ninety textLeft end">

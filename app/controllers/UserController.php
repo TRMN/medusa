@@ -1123,5 +1123,26 @@ class UserController extends \BaseController
 
         return Redirect::route('home')->with('message', 'Peerage deleted');
     }
-
+    
+    public function addOrEditNote(User $user)
+    {
+        $data = Input::all();
+        
+        $msg = "Note added";
+        
+        $user->note = $data['note_text'];
+        
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@addOrEditNote'
+        );
+        
+        $user->save();
+        
+        return Redirect::to(URL::previous())->with('message', $msg);
+    }
 }
