@@ -75,9 +75,8 @@ class IdController extends \BaseController
         foreach ($chapters as $chapterId) {
             $chapter = Chapter::find($chapterId);
             foreach ($chapter->getAllCrew() as $member) {
-                if($member->getAssignmentId('primary') == $chapter && empty($member->idcard_printed)) {
-                    $member->idcard_printed = true;
-                    $member->save();
+                if ($member->getAssignmentId('primary') == $chapter && empty( $member->idcard_printed )) {
+                    $this->_markMember($member);
                 }
             }
             $chapter->idcards_printed = true;
@@ -93,21 +92,21 @@ class IdController extends \BaseController
             return $redirect;
         }
 
-        $member = Chapter::find($shipID)->getChapterIdWithChildren();
-
-        foreach ($chapters as $chapterId) {
-            $chapter = Chapter::find($chapterId);
-            foreach ($chapter->getAllCrew() as $member) {
-                if($member->getAssignmentId('primary') == $chapter && empty($member->idcard_printed)) {
-                    $member->idcard_printed = true;
-                    $member->save();
-                }
-            }
-            $chapter->idcards_printed = true;
-            $chapter->save();
-        }
+        $this->_markMember($userID);
 
         return Redirect::to(URL::previous());
+    }
+
+    private function _markMember($member)
+    {
+        if ($member instanceof User === false) {
+            $member = User::find($member);
+        }
+
+        $member->idcard_printed = true;
+        $member->save();
+
+        return;
     }
 
 }

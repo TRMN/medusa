@@ -62,8 +62,10 @@
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
                                     <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
                                 @endif
-                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                @if($permsObj->hasPermissions(['ID_CARD']) === true && empty($user->idcard_printed))
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}" title="Mark ID Card as printed"
+                   onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
 
                             </td>

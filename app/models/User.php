@@ -934,20 +934,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         $peerages = $this->getPeerages();
 
-        $pCode = $peerages[0]['code'];
+        if (empty( $peerages ) === false) {
+            $pCode = $peerages[0]['code'];
 
-        if ($pCode == "K" && substr(
-                Korders::where('classes.postnominal', '=', $peerages[0]['postnominal'])->first()->getClassName(
-                    $peerages[0]['postnominal']
-                ),
-                0,
-                6
-            ) != 'Knight'
-        ) {
-            $pCode = '';
-        }
+            if ($pCode == "K" && substr(
+                    Korders::where('classes.postnominal', '=', $peerages[0]['postnominal'])->first()->getClassName(
+                        $peerages[0]['postnominal']
+                    ),
+                    0,
+                    6
+                ) != 'Knight'
+            ) {
+                $pCode = '';
+            }
 
-        if (empty( $pCode ) === false) {
             $idCard->text(
                 $pCode,
                 392,
