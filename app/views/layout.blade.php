@@ -35,7 +35,7 @@
     <header class="row trmn-width">
 
         <div class="small-2 columns trmn-width">
-            <p></p><a href="{{$serverUrl}}"><img src="{{$serverUrl}}/images/trmn-seal.png" alt="TRMN Seal"></a>
+            <p></p><a href="{{$serverUrl}}"><img src="{{$serverUrl}}/seals/RMN.png" alt="TRMN Seal" width="150px" height="150px"></a>
         </div>
         <div class="small-10 columns trmn-width end">
             <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
