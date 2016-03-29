@@ -95,6 +95,7 @@
                             }
 
                             $title .= ' NOTE **';
+                            $options = ["id" => "note_text"];
                     ?>
                     <h5 id="note_container">{{$title}}</h5>
                 @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
@@ -107,7 +108,7 @@
                 <div class='content'>
                     {{ Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) }}
                     <div class="row">
-                        <div class="columns small-4 end Incised901Light end">
+                        <div class="columns small-6 end Incised901Light end">
                             {{ Form::textarea('note_text', $currentNote, $options) }}
                         </div>
                     </div>
