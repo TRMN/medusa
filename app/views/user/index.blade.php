@@ -6,7 +6,8 @@
 
 @section('content')
     <div><h3 class="trmn">{{ $title }}</h3></div>
-    <div>Active Members: {{$totalMembers}} Enlisted: {{$totalEnlisted}} Officer: {{$totalOfficer}} Flag Officer: {{$totalFlagOfficer}} Civilian: {{$totalCivilian}}</div>
+    <div>Active Members: {{$totalMembers}} Enlisted: {{$totalEnlisted}} Officer: {{$totalOfficer}} Flag
+        Officer: {{$totalFlagOfficer}} Civilian: {{$totalCivilian}}</div>
     <div id="members">
         <ul>
             <li><a href="#members-1">RMN</a></li>
@@ -55,17 +56,22 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
-                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true && empty($user->idcard_printed))
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
-                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}" title="Mark ID Card as printed"
-                   onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
 
                             </td>
@@ -116,15 +122,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -175,16 +185,21 @@
                                 </td>
                                 <td width="10%">{{ $user->registration_date }}</td>
                                 <td width="9%">
-                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
-                                @endif
-                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
-                                @endif
-                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
-                                @endif
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                       title="View User"></a>
+                                    @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                        <a class="tiny fi-pencil green size-24"
+                                           href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    @endif
+                                    @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                        <a class="fi-x red size-24"
+                                           href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                           title="Delete User"></a>
+                                    @endif
+                                    @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                        <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                           title="ID Card"></a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -233,16 +248,21 @@
                                 </td>
                                 <td width="10%">{{ $user->registration_date }}</td>
                                 <td width="9%">
-                                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
-                                @endif
-                                @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
-                                @endif
-                                @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
-                                @endif
+                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                       title="View User"></a>
+                                    @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
+                                        <a class="tiny fi-pencil green size-24"
+                                           href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    @endif
+                                    @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
+                                        <a class="fi-x red size-24"
+                                           href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                           title="Delete User"></a>
+                                    @endif
+                                    @if($permsObj->hasPermissions(['ID_CARD']) === true)
+                                        <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                           title="ID Card"></a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -271,7 +291,7 @@
                     <th width="10%">Member ID</th>
                     <th width="15%">Email</th>
                     <th width="10%">Unit</th>
-                    <th width="10%" class="center">Registration<br />Date</th>
+                    <th width="10%" class="center">Registration<br/>Date</th>
                     <th width="9%">Actions</th>
                 </tr>
                 </thead>
@@ -279,7 +299,8 @@
                 @if(isset($users['INTEL']))
                     @foreach( $users['INTEL'] as $user )
                         <tr>
-                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            <td width="30%">{{ $user->last_name }}
+                                , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
                             <td width="10%">{{ $user->member_id }}</td>
                             <td width="15%">{{ $user->email_address }}</td>
@@ -292,15 +313,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -337,7 +362,8 @@
                 @if(isset($users['CIVIL']))
                     @foreach( $users['CIVIL'] as $user )
                         <tr>
-                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            <td width="30%">{{ $user->last_name }}
+                                , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
                             <td width="10%">{{ $user->member_id }}</td>
                             <td width="15%">{{ $user->email_address }}</td>
@@ -350,15 +376,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -394,7 +424,8 @@
                 @if(isset($users['SFS']))
                     @foreach( $users['SFS'] as $user )
                         <tr>
-                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            <td width="30%">{{ $user->last_name }}
+                                , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
                             <td width="10%">{{ $user->member_id }}</td>
                             <td width="15%">{{ $user->email_address }}</td>
@@ -407,15 +438,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -451,7 +486,8 @@
                 @if(isset($users['IAN']))
                     @foreach( $users['IAN'] as $user )
                         <tr>
-                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            <td width="30%">{{ $user->last_name }}
+                                , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
                             <td width="10%">{{ $user->member_id }}</td>
                             <td width="15%">{{ $user->email_address }}</td>
@@ -464,15 +500,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -508,7 +548,8 @@
                 @if(isset($users['RHN']))
                     @foreach( $users['RHN'] as $user )
                         <tr>
-                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            <td width="30%">{{ $user->last_name }}
+                                , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
                             <td width="10%">{{ $user->member_id }}</td>
                             <td width="15%">{{ $user->email_address }}</td>
@@ -521,15 +562,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -565,7 +610,8 @@
                 @if(isset($users['GSN']))
                     @foreach( $users['GSN'] as $user )
                         <tr>
-                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            <td width="30%">{{ $user->last_name }}
+                                , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
                             <td width="10%">{{ $user->member_id }}</td>
                             <td width="15%">{{ $user->email_address }}</td>
@@ -578,15 +624,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -622,7 +672,8 @@
                 @if(isset($users['RMA']))
                     @foreach( $users['RMA'] as $user )
                         <tr>
-                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            <td width="30%">{{ $user->last_name }}
+                                , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
                             <td width="10%">{{ $user->member_id }}</td>
                             <td width="15%">{{ $user->email_address }}</td>
@@ -635,15 +686,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
@@ -679,7 +734,8 @@
                 @if(isset($users['RMMC']))
                     @foreach( $users['RMMC'] as $user )
                         <tr>
-                            <td width="30%">{{ $user->last_name }}, {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                            <td width="30%">{{ $user->last_name }}
+                                , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
                             </td>
                             <td width="10%">{{ $user->member_id }}</td>
                             <td width="15%">{{ $user->email_address }}</td>
@@ -692,15 +748,19 @@
                             </td>
                             <td width="10%">{{ $user->registration_date }}</td>
                             <td width="9%">
+                                <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                                   title="View User"></a>
                                 @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                                    <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}" title="View User"></a>
-                                    <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
+                                    <a class="tiny fi-pencil green size-24"
+                                       href="{{ route('user.edit', [ $user->_id ]) }}" title="Edit User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_MEMBER']) === true)
-                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}" title="Delete User"></a>
+                                    <a class="fi-x red size-24" href="{{ route('user.confirmdelete', [ $user->_id]) }}"
+                                       title="Delete User"></a>
                                 @endif
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
-                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}" title="ID Card"></a>
+                                    <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
+                                       title="ID Card"></a>
                                 @endif
                             </td>
                         </tr>
