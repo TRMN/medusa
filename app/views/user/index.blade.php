@@ -135,6 +135,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
@@ -199,6 +202,9 @@
                                     @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                         <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                            title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                     @endif
                                 </td>
                             </tr>
@@ -262,6 +268,9 @@
                                     @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                         <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                            title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                     @endif
                                 </td>
                             </tr>
@@ -326,6 +335,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
@@ -389,6 +401,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
@@ -451,6 +466,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
@@ -513,6 +531,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
@@ -575,6 +596,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
@@ -637,6 +661,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
@@ -699,6 +726,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
@@ -761,6 +791,9 @@
                                 @if($permsObj->hasPermissions(['ID_CARD']) === true)
                                     <a class="fi-credit-card green size-24" href="/id/card/{{$user->id}}"
                                        title="ID Card"></a>
+                                    <a class="fi-check green size-24" href="/id/mark/{{$user->id}}"
+                                       title="Mark ID Card as printed"
+                                       onclick="return confirm('Mark ID card as printed for this memberr?')"></a>
                                 @endif
                             </td>
                         </tr>
