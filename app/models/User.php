@@ -203,7 +203,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         // At the moment, the only postnominals we know about are for knighthoods stored in the peerage record
 
         foreach (empty( $this->peerages ) === false ? $this->peerages : [] as $peerage) {
-            if (empty( $peerage['courtesy'] ) === true) {
+            if (empty( $peerage['courtesy'] ) === true && empty($peerage['postnominal']) === false) {
                 $postnominals[$peerage['precedence']] = $peerage['postnominal']; // Order them by precedence
             }
         }
