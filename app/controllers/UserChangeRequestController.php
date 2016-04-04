@@ -132,8 +132,13 @@ class UserChangeRequestController extends \BaseController
             $records[$index]['user'] = User::find($record['user']);
             $records[$index]['requestor'] = User::find($record['requestor']);
             if ($record['req_type'] === 'assignment.chapter') {
-                $records[$index]['old_chapter'] =
+                if (empty($record['old_value']) === true) {
+                    $records[$index]['old_chapter'] = 'Unknown';
+                } else {
+                    $records[$index]['old_chapter'] =
                     Chapter::where('_id', '=', $record['old_value'])->first()->chapter_name;
+                }
+
                 $records[$index]['new_chapter'] =
                     Chapter::where('_id', '=', $record['new_value'])->first()->chapter_name;
             }
