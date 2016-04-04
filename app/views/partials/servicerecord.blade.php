@@ -141,8 +141,8 @@
                     <div class="small-1 columns text-left">
                         <?php
                         $path = '';
-
-                        if ($peerage['code'] != 'K') {
+//die(var_dump($peerage['code']));
+                        if ($peerage['code'] != 'K' && empty($peerage['code']) === false) {
                             $path = null;
                             if (empty( $peerage['filename'] ) === false) {
                                 $path = '/arms/peerage/' . $peerage['filename'];
@@ -246,15 +246,15 @@
                 @foreach(['RMN', 'SRN', 'GSN', 'STC|AFLTC|GTSC', 'RMMC', 'SRMC', 'RMA', 'RMAT', 'CORE|KC|QC'] as $branch)
                     @if(count($user->getExamList(['branch' => $branch])) > 0)
                         @if($branch == 'SRN')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMN Speciality</h5>
+                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMN Specialty</h5>
                         @elseif($branch == 'SRMC')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMMC Speciality</h5>
+                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMMC Specialty</h5>
                         @elseif($branch == 'RMAT')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMA Speciality</h5>
+                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMA Specialty</h5>
                         @elseif($branch == 'CORE|KC|QC')
                             <h5 class="Incised901Light ninety" title="Click to expand/collapse">Landing University</h5>
                         @elseif($branch == 'STC|AFLTC|GTSC')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">GSN Speciality</h5>
+                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">GSN Specialty</h5>
                         @else
                             <h5 class="Incised901Light ninety" title="Click to expand/collapse">{{$branch}}</h5>
                         @endif
