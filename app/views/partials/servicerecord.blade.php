@@ -13,6 +13,7 @@
         {{ $user->getGreeting() }}({{$user->branch}})
         {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {{ $user->last_name }}{{ !empty($user->suffix) ? ' ' . $user->suffix : '' }}{{$user->getPostnominals()}}
     </div>
+
     <div class="NordItalic ninety padding-5">
         <a href="{{route('chapter.show',$user->getPrimaryAssignmentId())}}">
             {{$user->getPrimaryAssignmentName()}}
@@ -141,7 +142,7 @@
                     <div class="small-1 columns text-left">
                         <?php
                         $path = '';
-//die(var_dump($peerage['code']));
+
                         if ($peerage['code'] != 'K' && empty($peerage['code']) === false) {
                             $path = null;
                             if (empty( $peerage['filename'] ) === false) {
