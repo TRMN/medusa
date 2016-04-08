@@ -38,9 +38,18 @@
                                 {{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}
                             @endif
                         </a> @if(empty($chapter->decommission_date) === false)
-                                <i class='fi-anchor' title='Reserve Fleet / Decomissioned'
+                            <i class='fi-anchor' title='Reserve Fleet / Decomissioned'
                                alt="Reserve Fleet / Decommissioned" title="Reserve Fleet / Decommissioned"></i>
-                        @endif</td>
+                        @endif
+                        @if(in_array($chapter->chapter_type, ['ship', 'station']) === true && empty($chapter->idcards_printed) && empty($chapter->decommission_date) && $permsObj->hasPermissions(['ID_CARD']))
+                            <a class="fi-credit-card green size-24" href="/id/bulk/{{$chapter->id}}"
+                               title="Print ID Cards"></a>
+                            <a class="fi-check green size-24" href="/id/markbulk/{{$chapter->id}}"
+                               title="Mark ID Cards as printed"
+                               onclick="return confirm('Mark ID cards as printed for this chapter?')"></a>
+                        @elseif(in_array($chapter->chapter_type, ['ship', 'station']) === true && !empty($chapter->idcards_printed) && empty($chapter->decommission_date) && $permsObj->hasPermissions(['ID_CARD']))
+                            <span class="fi-print size-24" title="ID Cards printed"></span> @endif
+                    </td>
                     <td>{{ ucwords($type) }}</td>
                     <td width="12%">
                         @if(in_array($chapter->chapter_type, ['ship', 'station']) === true)
@@ -97,7 +106,7 @@
                                    class="fi-x red delete-chapter"
                                    title="Deactivate Command/Unit"></a>
                             @endif
-                            @endif
+                        @endif
                     </td>
                 </tr>
             @endif

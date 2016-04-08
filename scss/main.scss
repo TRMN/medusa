@@ -39,6 +39,12 @@ $medusa-yellow: #ffee00;
   color: $manticore-red !important;
 }
 
+.red-border {
+  border: solid $manticore-red 1px;
+  padding: 5px;
+  width: auto;
+}
+
 .blue {
   color: mediumblue !important;
 }

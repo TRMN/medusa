@@ -1040,12 +1040,17 @@ class UserController extends \BaseController
         $peerage['code'] = $pTitleInfo->code;
 
         if ($data['ptitle'] == 'Knight' || $data['ptitle'] == 'Dame') {
+
+            $kOrder = Korders::where('classes.postnominal', '=', $data['class'])->first();
+
             // Use the precedence from the Knight Orders table
-            $peerage['precedence'] =
-                Korders::where('classes.postnominal', '=', $data['class'])->first()->getPrecedence(
-                    ['type' => 'postnominal', 'value' => $data['class']]
-                );
+            $peerage['precedence'] = $kOrder->getPrecedence(['type' => 'postnominal', 'value' => $data['class']]);
             $peerage['postnominal'] = $data['class'];
+
+            if (substr($kOrder->getClassName($data['class']), 0, 6) != 'Knight') {
+                $peerage['code'] = '';
+            }
+
         } else {
             $peerage['precedence'] = $pTitleInfo->precedence;
             $peerage['generation'] = $data['generation'];
@@ -1118,5 +1123,26 @@ class UserController extends \BaseController
 
         return Redirect::route('home')->with('message', 'Peerage deleted');
     }
-
+    
+    public function addOrEditNote(User $user)
+    {
+        $data = Input::all();
+        
+        $msg = "Note added";
+        
+        $user->note = $data['note_text'];
+        
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@addOrEditNote'
+        );
+        
+        $user->save();
+        
+        return Redirect::to(URL::previous())->with('message', $msg);
+    }
 }
