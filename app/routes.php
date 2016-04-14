@@ -106,7 +106,9 @@ Route::controller('password', 'RemindersController');
 
 Route::get('/exam', ['as' => 'exam.index', 'uses' => 'ExamController@index', 'before' => 'auth']);
 Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@upload', 'before' => 'auth']);
-Route::get('/exam/find', ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']);
+Route::post('/exam/update', ['as' => 'exam.update', 'uses' => 'ExamController@update', 'before' => 'auth']);
+Route::get('/exam/find/{user?}', ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']);
+#Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'before' => 'auth']);
 
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);
@@ -139,5 +141,6 @@ Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch');
 Route::get( '/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 Route::get(' /api/find', 'ApiController@findMember', ['before' => 'auth']); // search for a member
+Route::get('/api/exam', 'ApiController@findExam', ['before' => 'auth']); // search for an exam
 
 

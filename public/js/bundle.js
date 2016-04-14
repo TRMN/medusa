@@ -2159,12 +2159,11 @@ $(document).ready(function ($) {
     }
 
     $('.dr').on('click', function () {
-        if($('#dutyroster').val().length == 0) {
+        if ($('#dutyroster').val().length == 0) {
             $('#dutyroster').val($(this).val());
         } else {
             $('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());
         }
-
     });
 
     $('#refreshExamList').on('click', function () {
@@ -2472,7 +2471,7 @@ $(document).ready(function ($) {
         $('#peerage-container').trigger('click');
     });
 
-    $('#note_clear').on('click', function() {
+    $('#note_clear').on('click', function () {
         $('#note_text').val('');
         $('#note_form').submit();
     });
