@@ -292,9 +292,9 @@ class ImportGrades extends Command
             if (substr($score, -1) != '%' && $score != 'PASS' && $score != 'BETA' && substr($score, 0, 4) != 'CREA') {
                 $score .= '%';
             }
-            return ['score' => $score, 'date' => $date];
+            return ['score' => $score, 'date' => $date, 'date_entered' => $date];
         } else {
-            return ['score' => '', 'date' => ''];
+            return ['score' => '', 'date' => '', 'date_entered' => ''];
         }
     }
 

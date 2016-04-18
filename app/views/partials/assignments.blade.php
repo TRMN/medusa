@@ -8,6 +8,11 @@
                 {{$user->getPrimaryAssignmentDesignation()}}
             @endif
         </a>
+        @if(in_array($user->getPrimaryAssignmentId(),explode(',', $user->duty_roster)) && $user->id == Auth::user()->id)
+            @if(Chapter::find(Auth::user()->getPrimaryAssignmentId())->crewHasNewExams() === true)
+                <br /><span class="fi-star red Incised901Light">One or more crew members have had new exams posted since your last login.<br />View your <a href="{{route('chapter.show',$user->getPrimaryAssignmentId())}}">roster</a> for more information</span>
+            @endif
+        @endif
     </div>
     <br />
     <div class="Incised901Black ninety">

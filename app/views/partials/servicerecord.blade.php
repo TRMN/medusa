@@ -5,8 +5,8 @@
         Member Application
     @endif
 </h4>
-<h5 class="Incised901Light ninety">Last
-    Updated: {{ date('d M Y @ g:i A T', strtotime($user->updated_at)) }}</h5>
+
+<h5 class="Incised901Light ninety">Last Login: {{date('d M Y @ g:i A T', strtotime($user->getLastLogin()))}}</h5>
 
 <div id="user-profile">
     @include('partials.greeting', ['user' => $user])
