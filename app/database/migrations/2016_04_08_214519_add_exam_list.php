@@ -556,10 +556,10 @@ class AddExamList extends Migration
                 'create',
                 'exam_list',
                 null,
-                json_encode(["id" => $id, "name" => $name]),
+                json_encode(["exam_id" => $id, "name" => $name]),
                 'add_exam_list'
             );
-            ExamList::create(["id" => $id, "name" => $name]);
+            ExamList::create(["exam_id" => $id, "name" => $name]);
         }
     }
 
