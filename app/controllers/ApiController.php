@@ -209,12 +209,12 @@ class ApiController extends BaseController
         }
 
         $results =
-            ExamList::where('name', 'like', '%' . $query . '%')->orWhere('id', 'like', '%' . $query . '%')->get();
+            ExamList::where('name', 'like', '%' . $query . '%')->orWhere('exam_id', 'like', '%' . $query . '%')->get();
 
         $suggestions = [];
 
         foreach ($results as $exam) {
-            $suggestions[] = ['value' => $exam->name . ' (' . $exam->id . ')', 'data' => $exam->id];
+            $suggestions[] = ['value' => $exam->name . ' (' . $exam->exam_id . ')', 'data' => $exam->exam_id];
         }
 
         return Response::json(['suggestions' => $suggestions]);
