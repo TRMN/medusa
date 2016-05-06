@@ -163,5 +163,30 @@ class ExamController extends \BaseController
             return Redirect::route('exam.index')->with('message', 'Exam grades uploaded');
         }
     }
+    
+    public function store () {
+        if (($redirect = $this->checkPermissions('EDIT_GRADE')) !== true) {
+            return $redirect;
+        }
+        
+        $validator = Validator::make($data = Input::all(), Exam::$rules);
+        
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+        
+        $this->writeAuditTrail(
+             Auth::user()->id,
+            'create',
+            'exam',
+            null,
+            json_encode($data),
+            'ExamController@store'
+        );
+        
+        Exam::create($data);
+
+        return Redirect::route('exam.index');
+	}
 
 }
