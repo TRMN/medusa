@@ -29,8 +29,9 @@
                 <div class="columns small-3 ninety Incised901Light end">{{Form::date('date', '', ['id' => 'date', 'placeholder' => 'Exam Date'])}}</div>
             </div>
             <div class="row">
-                <div class="columns small-3 ninety Incised901Light end"><a class="button"
-                                                                           href="{{ URL::route('exam.find', ['user' => $user->id]) }}">Cancel</a> {{ Form::submit('Save', [ 'class' => 'button' ] ) }}
+                <div class="columns small-3 ninety Incised901Light end">
+                    <a class="button"
+                       href="{{ URL::route('exam.find', ['user' => $user->id]) }}">Cancel</a> {{ Form::submit('Save', [ 'class' => 'button' ] ) }}
                 </div>
                 {{Form::close()}}
             </div>

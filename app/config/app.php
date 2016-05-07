@@ -132,6 +132,7 @@ return [
         'Iorme\SimpleCaptcha\SimpleCaptchaServiceProvider',
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
+        'Medusa\Services\MedusaServiceProvider',
 
     ],
 

@@ -39,7 +39,7 @@ class ExamController extends \BaseController
 
         $rules = [
             'member_id' => 'required|size:11',
-            'exam' => 'required',
+            'exam' => 'required|is_grader',
             'date' => 'required|date|date_format:Y-m-d'
         ];
 
@@ -54,7 +54,7 @@ class ExamController extends \BaseController
         ];
 
         $data = Input::all();
-//die('<pre>' . var_dump($data));
+
         // Do we have a numeric score?
 
         if (preg_match('/^\d{2,3}%?/', $data['score']) === 0) {
@@ -87,8 +87,9 @@ class ExamController extends \BaseController
 
         // This might be an update, so check and see if the exam exists in the exams array
 
-        if (in_array($data['exam'], $record->exams) === true) {
+        if (array_key_exists($data['exam'], $record->exams) === true) {
             // This is an edit, update it
+
             $record[$data['exam']] = [
                 'score' => $data['score'],
                 'date' => $data['date'],
@@ -102,6 +103,7 @@ class ExamController extends \BaseController
                        ' (' . $member->member_id . ')';
 
         } else {
+
             $exams = $record->exams;
 
             // Massage the score, make sure that it's reasonably formated
@@ -163,18 +165,18 @@ class ExamController extends \BaseController
             return Redirect::route('exam.index')->with('message', 'Exam grades uploaded');
         }
     }
-    
+
     public function store () {
         if (($redirect = $this->checkPermissions('EDIT_GRADE')) !== true) {
             return $redirect;
         }
-        
+
         $validator = Validator::make($data = Input::all(), Exam::$rules);
-        
+
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
-        
+
         $this->writeAuditTrail(
              Auth::user()->id,
             'create',
@@ -183,7 +185,7 @@ class ExamController extends \BaseController
             json_encode($data),
             'ExamController@store'
         );
-        
+
         Exam::create($data);
 
         return Redirect::route('exam.index');
