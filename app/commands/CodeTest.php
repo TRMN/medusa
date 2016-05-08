@@ -39,9 +39,9 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        //$user = User::find('55fa184fe4bed834078b458a');
+        $exams = Exam::where('member_id', '=', 'RMN-1094-12')->first()->exams['KR1MA-RMAT-18B']['entered_by'];
 
-        print_r(Chapter::commandTriadReport());
+        print_r($exams);
 
     }
 
