@@ -109,6 +109,7 @@ Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@up
 Route::post('/exam/update', ['as' => 'exam.update', 'uses' => 'ExamController@update', 'before' => 'auth']);
 Route::get('/exam/find/{user?}', ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']);
 #Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'before' => 'auth']);
+Route::post('/exam/store', ['as' => 'exam.store', 'uses' => 'ExamController@store', 'before' => 'auth']);
 
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);

@@ -170,25 +170,30 @@ class ExamController extends \BaseController
         if (($redirect = $this->checkPermissions('EDIT_GRADE')) !== true) {
             return $redirect;
         }
-
-        $validator = Validator::make($data = Input::all(), Exam::$rules);
+        // updated to use the correct model.  Don't forget to actually add the rules
+        $validator = Validator::make($data = Input::all(), ExamList::$rules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
+        // updated with the correct collection name.  make sure the field names in the form match up with the names in
+        // the model
         $this->writeAuditTrail(
              Auth::user()->id,
             'create',
-            'exam',
+            'exam_list',
             null,
             json_encode($data),
             'ExamController@store'
         );
 
-        Exam::create($data);
+        // updated to use the correct model
+        ExamList::create($data);
 
-        return Redirect::route('exam.index');
+        // This should probably change, exam/index.blade.php is for the soon to be deprecated file upload.  Once the final
+        // excel upoad is done, we could probably re-purpose it.  I also updated the directory name from exam to exams.
+        return Redirect::route('exams.index');
 	}
 
 }
