@@ -198,6 +198,16 @@ body, html {
   line-height: 100%;
 }
 
+#down {
+  background: #000000 !important;
+  color: $text-primary;
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  font-family: "Incised 901 W01 Light";
+  line-height: 100%;
+}
+
 #tos, #chooseShip, #examList {
   color: $text-primary;
   background-color: #000000;
