@@ -26,6 +26,17 @@ class ExamController extends \BaseController
 
         return View::make('exams.find', ['user' => $user]);
     }
+    
+    publi function edit()
+    {
+        
+        if (($redirect = $this->checkPermissions(['EDIT_GRADE'])) !== true) {
+            return $redirect;
+        }
+        
+        
+        
+    }
 
     public function update()
     {
