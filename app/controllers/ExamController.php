@@ -11,57 +11,89 @@ class ExamController extends \BaseController
      */
     public function index()
     {
-        if (($redirect = $this->checkPermissions('UPLOAD_EXAMS')) !== true) {
+        if (( $redirect = $this->checkPermissions('UPLOAD_EXAMS') ) !== true) {
             return $redirect;
         }
 
-        return View::make('exams.index', ['messages' => Message::where('source', '=', 'import_grades')->orderBy('created_at', 'asc')->get()]);
+        return View::make(
+            'exams.index',
+            ['messages' => Message::where('source', '=', 'import_grades')->orderBy('created_at', 'asc')->get()]
+        );
+    }
+
+    public function examList()
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        return View::make('exams.list');
     }
 
     public function find($user = null)
     {
-        if (($redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE'])) !== true) {
+        if (( $redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE']) ) !== true) {
             return $redirect;
         }
 
         return View::make('exams.find', ['user' => $user]);
     }
-    
-    publi function edit()
+
+    public function edit(ExamList $exam)
     {
-        
-        if (($redirect = $this->checkPermissions(['EDIT_GRADE'])) !== true) {
+
+        if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
             return $redirect;
         }
-        
-        
-        
+
+        return View::make('exams.edit', ['exam' => $exam]);
+    }
+
+    public function updateExam()
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        $data = Input::all();
+
+        $exam = ExamList::find($data['id']);
+        $exam->name = $data['name'];
+        if (empty( $data['enabled'] ) === true) {
+            $exam->enabled = false;
+        } else {
+            $exam->enabled = true;
+        }
+
+        $exam->save();
+
+        return View::make('exams.list');
     }
 
     public function update()
     {
-        if (($redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE'])) !== true) {
+        if (( $redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE']) ) !== true) {
             return $redirect;
         }
 
-        unset($message);
+        unset( $message );
 
         // Validation rules
 
         $rules = [
             'member_id' => 'required|size:11',
-            'exam' => 'required|is_grader',
-            'date' => 'required|date|date_format:Y-m-d'
+            'exam'      => 'required|is_grader',
+            'date'      => 'required|date|date_format:Y-m-d'
         ];
 
         $errorMessages = [
             'member_id.required' => "The member's RMN number is required",
-            'exam.required' => 'The Exam ID is required',
-            'date.required' => 'You must provide the date the exam was graded',
-            'date_format' => 'Dates must be formated Y-M-D',
-            'score.in' => 'Score must be PASS, BETA or CREATE',
-            'score.min' => 'Score can not be less than 70',
-            'score.max' => 'Score can not be more than 100',
+            'exam.required'      => 'The Exam ID is required',
+            'date.required'      => 'You must provide the date the exam was graded',
+            'date_format'        => 'Dates must be formated Y-M-D',
+            'score.in'           => 'Score must be PASS, BETA or CREATE',
+            'score.min'          => 'Score can not be less than 70',
+            'score.max'          => 'Score can not be more than 100',
         ];
 
         $data = Input::all();
@@ -71,7 +103,7 @@ class ExamController extends \BaseController
         if (preg_match('/^\d{2,3}%?/', $data['score']) === 0) {
             // Not a numeric score, add rule for valid alpha grades and slam the score to upper case just in case
             $rules['score'] = 'required|in:PASS,BETA,CREATE';
-            $data['score']  = strtoupper($data['score']);
+            $data['score'] = strtoupper($data['score']);
         } else {
             $rules['score'] = 'required|integer|min:70|max:100';
         }
@@ -102,17 +134,16 @@ class ExamController extends \BaseController
             // This is an edit, update it
 
             $record[$data['exam']] = [
-                'score' => $data['score'],
-                'date' => $data['date'],
-                'entered_by' => Auth::user()->id,
+                'score'        => $data['score'],
+                'date'         => $data['date'],
+                'entered_by'   => Auth::user()->id,
                 'date_entered' => date('Y-m-d'),
             ];
 
             $message = $data['exam'] . ' updated in academy coursework for ' . $member->first_name . ' ' .
-                       (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name .
-                       (!empty($member->suffix) ? ' ' . $member->suffix : '') .
-                       ' (' . $member->member_id . ')';
-
+                ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
+                ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
+                ' (' . $member->member_id . ')';
         } else {
 
             $exams = $record->exams;
@@ -120,30 +151,28 @@ class ExamController extends \BaseController
             // Massage the score, make sure that it's reasonably formated
 
             $exams[$data['exam']] = [
-                'score' => $data['score'],
-                'date' => $data['date'],
-                'entered_by' => Auth::user()->id,
+                'score'        => $data['score'],
+                'date'         => $data['date'],
+                'entered_by'   => Auth::user()->id,
                 'date_entered' => date('Y-m-d'),
             ];
 
             $record->exams = $exams;
 
             $message = $data['exam'] . ' added to academy coursework for ' . $member->first_name . ' ' .
-                       (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name .
-                       (!empty($member->suffix) ? ' ' . $member->suffix : '') .
-                       ' (' . $member->member_id . ')';
-
+                ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
+                ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
+                ' (' . $member->member_id . ')';
         }
 
         $record->save();
 
         return Redirect::route('exam.find')->with('message', $message);
-
     }
 
     public function upload()
     {
-        if (($redirect = $this->checkPermissions('UPLOAD_EXAMS')) !== true) {
+        if (( $redirect = $this->checkPermissions('UPLOAD_EXAMS') ) !== true) {
             return $redirect;
         }
 
@@ -177,8 +206,9 @@ class ExamController extends \BaseController
         }
     }
 
-    public function store () {
-        if (($redirect = $this->checkPermissions('EDIT_GRADE')) !== true) {
+    public function store()
+    {
+        if (( $redirect = $this->checkPermissions('EDIT_GRADE') ) !== true) {
             return $redirect;
         }
         // updated to use the correct model.  Don't forget to actually add the rules
@@ -191,7 +221,7 @@ class ExamController extends \BaseController
         // updated with the correct collection name.  make sure the field names in the form match up with the names in
         // the model
         $this->writeAuditTrail(
-             Auth::user()->id,
+            Auth::user()->id,
             'create',
             'exam_list',
             null,
@@ -205,6 +235,6 @@ class ExamController extends \BaseController
         // This should probably change, exam/index.blade.php is for the soon to be deprecated file upload.  Once the final
         // excel upoad is done, we could probably re-purpose it.  I also updated the directory name from exam to exams.
         return Redirect::route('exams.index');
-	}
+    }
 
 }

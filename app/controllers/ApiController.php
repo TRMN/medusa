@@ -214,7 +214,9 @@ class ApiController extends BaseController
         $suggestions = [];
 
         foreach ($results as $exam) {
-            $suggestions[] = ['value' => $exam->name . ' (' . $exam->exam_id . ')', 'data' => $exam->exam_id];
+            if ($exam->enabled === true) {
+                $suggestions[] = ['value' => $exam->name . ' (' . $exam->exam_id . ')', 'data' => $exam->exam_id];
+            }
         }
 
         return Response::json(['suggestions' => $suggestions]);
