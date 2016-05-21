@@ -49,13 +49,13 @@ class ExamController extends \BaseController
         return View::make('exams.edit', ['exam' => $exam]);
     }
 
-    public function add()
+    public function create()
     {
         if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
             return $redirect;
         }
 
-        return View::make('exam.create');
+        return View::make('exams.create');
     }
 
     public function updateExam()
@@ -245,11 +245,19 @@ class ExamController extends \BaseController
         if (( $redirect = $this->checkPermissions('EDIT_GRADE') ) !== true) {
             return $redirect;
         }
-        // updated to use the correct model.  Don't forget to actually add the rules
-        $validator = Validator::make($data = Input::all(), ExamList::$rules);
+
+        $rules = [
+            'exam_id' => 'required|unique:exam_list',
+            'name'      => 'required',
+        ];
+
+        $data = Input::all();
+        $data['enabled'] = true;
+
+        $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::to(URL::previous())->withErrors($validator)->withInput();
         }
 
         // updated with the correct collection name.  make sure the field names in the form match up with the names in
@@ -268,7 +276,7 @@ class ExamController extends \BaseController
 
         // This should probably change, exam/index.blade.php is for the soon to be deprecated file upload.  Once the final
         // excel upoad is done, we could probably re-purpose it.  I also updated the directory name from exam to exams.
-        return Redirect::route('exams.index');
+        return Redirect::route('exam.list');
     }
 
 }

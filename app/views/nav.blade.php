@@ -73,7 +73,8 @@
                     <a href="{{route('exam.index')}}">Upload Exams</a><br/>
                 @endif
                 @if($permsObj->hasPermissions(['EDIT_GRADE']) === true)
-                    <a href="{{route('exam.list')}}">Master Exam List</a>
+                    <a href="{{route('exam.list')}}">Master Exam List</a><br />
+                    <a href="{{route('exam.create')}}">Add Exam</a><br />
                 @endif
                 @if($permsObj->hasPermissions(['ADD_GRADE', 'EDIT_GRADE']) === true)
                     <a href="{{route('exam.find')}}">Mange/Enter Grades</a>

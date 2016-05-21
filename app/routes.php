@@ -111,6 +111,7 @@ Route::get('/exam/find/{user?}', ['as' => 'exam.find', 'uses' => 'ExamController
 #Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'before' => 'auth']);
 Route::post('/exam/store', ['as' => 'exam.store', 'uses' => 'ExamController@store', 'before' => 'auth']);
 Route::get('/exam/list', ['as' => 'exam.list', 'uses' => 'ExamController@examList', 'before' => 'auth']);
+Route::get('/exam/create', ['as' => 'exam.create', 'uses' => 'ExamController@create', 'before' => 'auth']);
 
 Route::model('exam', 'ExamList');
 Route::get('/exam/edit/{exam}', ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'before' => 'auth']);
