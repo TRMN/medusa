@@ -130,7 +130,7 @@ class ExamController extends \BaseController
 
         // This might be an update, so check and see if the exam exists in the exams array
 
-        if (array_key_exists($data['exam'], $record->exams) === true) {
+        if (empty( $record->exams ) === false && array_key_exists($data['exam'], $record->exams) === true) {
             // This is an edit, update it
 
             $record[$data['exam']] = [
@@ -146,7 +146,20 @@ class ExamController extends \BaseController
                 ' (' . $member->member_id . ')';
         } else {
 
-            $exams = $record->exams;
+            if (empty( $record->exams ) === false) {
+                $exams = $record->exams;
+            } else {
+                $this->writeAuditTrail(
+                    Auth::user()->id,
+                    'create',
+                    'exam',
+                    null,
+                    json_encode(['member_id' => $data['member_id'], 'exams' => []]),
+                    'ExamController@update'
+                );
+
+                $record = Exam::create(['member_id' => $data['member_id'], 'exams' => []]);
+            }
 
             // Massage the score, make sure that it's reasonably formated
 
@@ -164,6 +177,14 @@ class ExamController extends \BaseController
                 ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')';
         }
+        $this->writeAuditTrail(
+            Auth::user()->id,
+            'update',
+            'exam',
+            null,
+            $record->toJson(),
+            'ExamController@update'
+        );
 
         $record->save();
 

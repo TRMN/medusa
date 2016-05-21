@@ -40,7 +40,7 @@
                                         @endif
                                         </div>
                                     <div class="small-1 columns end">
-                                        @if(!empty($gradeInfo['date_entered']) && strtotime($gradeInfo['date_entered']) > strtotime(Auth::user()->getLastLogin()))
+                                        @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) > strtotime(Auth::user()->getLastLogin())))
                                             <span class="fi-star red">&nbsp;</span>
                                         @endif
                                     </div>

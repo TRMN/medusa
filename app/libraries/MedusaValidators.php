@@ -38,15 +38,14 @@ class MedusaValidators extends Validator
             return true;
         }
 
-        $exams = \Exam::where('member_id', '=', $this->data['member_id'])
-                     ->first()->exams;
+        if ($exams = \Exam::where('member_id', '=', $this->data['member_id'])->first()) {
+            if (empty( $exams->exams[$value] ) === true) {
+                return true; // Exam not present, it's a new entry, allow it
+            }
 
-        if (empty($exams[$value]) === true) {
-            return true; // Exam not present, it's a new entry, allow it
-        }
-
-        if (empty($exams[$value]['entered_by']) === true) {
-            return false; // No entered_by field, only somebody with EDIT_GRADE or ALL_PERMS permissions can edit it
+            if (empty( $exams->exams[$value]['entered_by'] ) === true) {
+                return false; // No entered_by field, only somebody with EDIT_GRADE or ALL_PERMS permissions can edit it
+            }
         }
 
         return ( $exams[$value]['entered_by'] === \Auth::user()->id );

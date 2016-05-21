@@ -105,7 +105,7 @@
                         <?php
                         $path = '';
 
-                        if ($peerage['code'] != 'K') {
+                        if ($peerage['code'] != 'K' && $peerage['title'] != 'Knight' && $peerage['title'] != 'Dame') {
                             $path = null;
                             if (empty( $peerage['filename'] ) === false) {
                                 $path = '/arms/peerage/' . $peerage['filename'];
