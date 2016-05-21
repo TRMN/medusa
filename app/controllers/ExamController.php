@@ -49,6 +49,15 @@ class ExamController extends \BaseController
         return View::make('exams.edit', ['exam' => $exam]);
     }
 
+    public function add()
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        return View::make('exam.create');
+    }
+
     public function updateExam()
     {
         if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
@@ -133,12 +142,16 @@ class ExamController extends \BaseController
         if (empty( $record->exams ) === false && array_key_exists($data['exam'], $record->exams) === true) {
             // This is an edit, update it
 
-            $record[$data['exam']] = [
+            $exams = $record->exams;
+
+            $exams[$data['exam']] = [
                 'score'        => $data['score'],
                 'date'         => $data['date'],
                 'entered_by'   => Auth::user()->id,
                 'date_entered' => date('Y-m-d'),
             ];
+
+            $record->exams = $exams;
 
             $message = $data['exam'] . ' updated in academy coursework for ' . $member->first_name . ' ' .
                 ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
