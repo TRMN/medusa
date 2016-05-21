@@ -1,3 +1,4 @@
+@if(!empty($user->assignment))
     <div class="NordItalic ninety padding-5">
         <a href="{{route('chapter.show',$user->getPrimaryAssignmentId())}}">
             {{$user->getPrimaryAssignmentName()}}
@@ -41,3 +42,4 @@
         ?>
     </div>
     <br />
+@endif
