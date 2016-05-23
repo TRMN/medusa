@@ -96,10 +96,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getFullName()
     {
-        return ucfirst($this->first_name) . ' ' .
+        return trim(ucfirst($this->first_name) . ' ' .
                (empty($this->middle_name) ? '' : ucfirst($this->middle_name) . ' ') .
                ucfirst($this->last_name) . ' ' .
-               $this->suffix;
+            (empty($this->suffix)? '' : $this->suffix));
     }
 
     /**

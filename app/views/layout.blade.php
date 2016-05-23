@@ -62,6 +62,9 @@
             @if(Session::has('message'))
                 <p>{{Session::get('message')}}</p>
             @endif
+            @if(!empty($message))
+                <p>{{$message}}</p>
+            @endif
             @if(Auth::check() ||
                 in_array(\Route::currentRouteName(),[
                     'user.apply',

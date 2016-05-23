@@ -43,6 +43,9 @@
                                         @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) > strtotime(Auth::user()->getLastLogin())))
                                             <span class="fi-star red">&nbsp;</span>
                                         @endif
+                                        @if($permsObj->hasPermissions(['EDIT_GRADE']) === true)
+                                            <a href="javascript:void(0);" class="fi-x red delete-exam" data-fullName="{{$user->getFullName()}}" data-examID="{{$exam}}" data-memberNumber="{{$user->member_id}}" title="Delete exam from members record">&nbsp;</a>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
@@ -51,3 +54,13 @@
                 @endforeach
             </div>
         </div>
+
+    <div id="confirmExamDelete" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <div class="row" id="confirmMessage">
+
+        </div>
+        <div class="row">
+            <br /><button class="button" id="examDeleteYes">Yes</button> <button class="button" onclick="$('#confirmExamDelete').foundation('reveal', 'close');">No</button>
+        </div>
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    </div>

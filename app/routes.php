@@ -60,7 +60,7 @@ Route::model('mardet', 'Chapter');
 Route::model('unit', 'Chapter');
 Route::model('anyunit', 'Chapter');
 
-Route::get( '/home', [ 'as' => 'home', 'uses' => 'HomeController@index'] );
+Route::get( '/home/{message?}', [ 'as' => 'home', 'uses' => 'HomeController@index'] );
 Route::get( '/', [ 'as' => 'root', 'uses' => 'HomeController@index' ] );
 Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
 Route::get(
@@ -107,7 +107,7 @@ Route::controller('password', 'RemindersController');
 Route::get('/exam', ['as' => 'exam.index', 'uses' => 'ExamController@index', 'before' => 'auth']);
 Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@upload', 'before' => 'auth']);
 Route::post('/exam/update', ['as' => 'exam.update', 'uses' => 'ExamController@update', 'before' => 'auth']);
-Route::get('/exam/find/{user?}', ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']);
+Route::get('/exam/find/{user?}/{message?}', ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']);
 #Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'before' => 'auth']);
 Route::post('/exam/store', ['as' => 'exam.store', 'uses' => 'ExamController@store', 'before' => 'auth']);
 Route::get('/exam/list', ['as' => 'exam.list', 'uses' => 'ExamController@examList', 'before' => 'auth']);
@@ -116,6 +116,7 @@ Route::get('/exam/create', ['as' => 'exam.create', 'uses' => 'ExamController@cre
 Route::model('exam', 'ExamList');
 Route::get('/exam/edit/{exam}', ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'before' => 'auth']);
 Route::post('/exam/updateExam', ['as' => 'exam.updateExam', 'uses' => 'ExamController@updateExam', 'before' => 'auth']);
+Route::post('/exam/user/delete', ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']);
 
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);

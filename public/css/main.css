@@ -619,7 +619,7 @@ body, html {
   font-family: "Incised 901 W01 Light";
   line-height: 100%; }
 
-#tos, #chooseShip, #examList {
+#tos, #chooseShip, #examList, #confirmExamDelete {
   color: WhiteSmoke;
   background-color: #000000;
   background-repeat: no-repeat;

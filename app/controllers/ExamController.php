@@ -30,13 +30,13 @@ class ExamController extends \BaseController
         return View::make('exams.list');
     }
 
-    public function find($user = null)
+    public function find($user = null, $message = null)
     {
         if (( $redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE']) ) !== true) {
             return $redirect;
         }
 
-        return View::make('exams.find', ['user' => $user]);
+        return View::make('exams.find', ['user' => $user, 'message' => $message]);
     }
 
     public function edit(ExamList $exam)
@@ -201,7 +201,7 @@ class ExamController extends \BaseController
 
         $record->save();
 
-        return Redirect::route('exam.find')->with('message', $message);
+        return Redirect::route('exam.find', ['user' => $member->id])->with('message', $message);
     }
 
     public function upload()
@@ -248,7 +248,7 @@ class ExamController extends \BaseController
 
         $rules = [
             'exam_id' => 'required|unique:exam_list',
-            'name'      => 'required',
+            'name'    => 'required',
         ];
 
         $data = Input::all();
@@ -277,6 +277,39 @@ class ExamController extends \BaseController
         // This should probably change, exam/index.blade.php is for the soon to be deprecated file upload.  Once the final
         // excel upoad is done, we could probably re-purpose it.  I also updated the directory name from exam to exams.
         return Redirect::route('exam.list');
+    }
+
+    public function delete()
+    {
+        if (( $redirect = $this->checkPermissions('EDIT_GRADE') ) !== true) {
+            return $redirect;
+        }
+
+        $examId = Input::get('examID');
+        $memberNumber = Input::get('memberNumber');
+
+        try {
+            $examRecord = Exam::where('member_id', '=', $memberNumber)->first();
+
+            $exams = array_except((array)$examRecord->exams,(string)$examId);
+
+            $examRecord->exams = $exams;
+
+            $this->writeAuditTrail(
+                Auth::user()->id,
+                'update',
+                'exams',
+                null,
+                $examRecord->toJson(),
+                'ExamController@delete'
+            );
+
+            $examRecord->save();
+
+            return Response::json(['success' => 'true']);
+        } catch ( Exception $e ) {
+            return Response::json(['success' => 'false']);
+        }
     }
 
 }
