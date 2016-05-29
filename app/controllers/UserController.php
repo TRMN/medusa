@@ -607,10 +607,7 @@ class UserController extends \BaseController
 
         Event::fire('user.registered', $user);
 
-        return Redirect::route('login')->with(
-            'message',
-            'Thank you for joining The Royal Manticoran Navy: The Official Honor Harrington Fan Association.  Your application will be reviewed and you should receive an email in 48 to 72 hours once your account has been activated.'
-        );
+        return View::make('thankyou');
     }
 
     /**
@@ -1123,15 +1120,15 @@ class UserController extends \BaseController
 
         return Redirect::route('home')->with('message', 'Peerage deleted');
     }
-    
+
     public function addOrEditNote(User $user)
     {
         $data = Input::all();
-        
+
         $msg = "Note added";
-        
+
         $user->note = $data['note_text'];
-        
+
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'update',
@@ -1140,9 +1137,9 @@ class UserController extends \BaseController
             $user->toJson(),
             'UserController@addOrEditNote'
         );
-        
+
         $user->save();
-        
+
         return Redirect::to(URL::previous())->with('message', $msg);
     }
 }
