@@ -52,9 +52,9 @@
         @endif
         <div class="small-9 columns trmn-width content end">
             @if( $errors->any() )
-                <ul class="errors">
+                <ul class="error">
                     @foreach( $errors->all() as $error )
-                        <li>{{ $error }}</li>
+                        <li class="fi-alert alert">{{ $error }}</li>
                     @endforeach
                 </ul>
             @endif

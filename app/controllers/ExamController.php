@@ -153,10 +153,10 @@ class ExamController extends \BaseController
 
             $record->exams = $exams;
 
-            $message = $data['exam'] . ' updated in academy coursework for ' . $member->first_name . ' ' .
+            $message = '<span class="fi-alert alert">' . $data['exam'] . ' updated in academy coursework for ' . $member->first_name . ' ' .
                 ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
                 ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
-                ' (' . $member->member_id . ')';
+                ' (' . $member->member_id . ')' . "</span>";
         } else {
 
             if (empty( $record->exams ) === false) {
@@ -185,10 +185,10 @@ class ExamController extends \BaseController
 
             $record->exams = $exams;
 
-            $message = $data['exam'] . ' added to academy coursework for ' . $member->first_name . ' ' .
+            $message = '<span class="fi-alert yellow">' . $data['exam'] . ' added to academy coursework for ' . $member->first_name . ' ' .
                 ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
                 ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
-                ' (' . $member->member_id . ')';
+                ' (' . $member->member_id . ')' . "</span>";
         }
         $this->writeAuditTrail(
             Auth::user()->id,

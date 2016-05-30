@@ -48,7 +48,7 @@ class MedusaValidators extends Validator
             }
         }
 
-        return ( $exams[$value]['entered_by'] === \Auth::user()->id );
+        return ( $exams[$value]['entered_by'] == \Auth::user()->id );
     }
 
 }

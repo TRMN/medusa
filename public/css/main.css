@@ -487,11 +487,20 @@ table.dataTable.display tbody tr:first-child td {
 .blue {
   color: mediumblue !important; }
 
+.alert {
+  color: #ff1fdb !important; }
+
 .yellow {
   color: #ffee00 !important; }
 
 .hide {
   display: none !important; }
+
+.error {
+  list-style: none !important;
+  margin-left: 0 !important;
+  padding-left: 1em !important;
+  text-indent: -1em !important; }
 
 .nav-header {
   color: #ffee00;
