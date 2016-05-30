@@ -44,7 +44,8 @@
             serviceUrl: '/api/find',
             onSelect: function (suggestion) {
                 window.location = '/exam/find/' + suggestion.data;
-            }
+            },
+            width: 600
         });
         $('#exam').devbridgeAutocomplete({
             serviceUrl: '/api/exam',
@@ -53,7 +54,8 @@
                 //$('#exam_query').val(suggestion.data);
                 $('#exam').prop('disabled', true);
                 $('#score').focus();
-            }
+            },
+            width: 600
         });
 
         $('#exam_form').on('submit', function () {

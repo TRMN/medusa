@@ -94,16 +94,7 @@ $(document).ready(function ($) {
         "order": [[0, 'asc']],
         "$UI": true
     });
-
-    $('#crewRoster').DataTable({
-        "autoWidth": true,
-        "pageLength": 25,
-        "language": {
-            "emptyTable": "No crew members found"
-        },
-        "$UI": true
-    });
-
+    
     $('#subCrewRoster').DataTable({
         "autoWidth": true,
         "pageLength": 25,

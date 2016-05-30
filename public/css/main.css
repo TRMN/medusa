@@ -487,6 +487,9 @@ table.dataTable.display tbody tr:first-child td {
 .blue {
   color: mediumblue !important; }
 
+.yellow {
+  color: #ffee00 !important; }
+
 .hide {
   display: none !important; }
 
