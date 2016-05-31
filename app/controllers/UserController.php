@@ -1050,7 +1050,6 @@ class UserController extends \BaseController
             if (substr($kOrder->getClassName($data['class']), 0, 6) != 'Knight') {
                 $peerage['code'] = '';
             }
-
         } else {
             $peerage['precedence'] = $pTitleInfo->precedence;
             $peerage['generation'] = $data['generation'];
@@ -1123,15 +1122,15 @@ class UserController extends \BaseController
 
         return Redirect::route('home')->with('message', 'Peerage deleted');
     }
-    
+
     public function addOrEditNote(User $user)
     {
         $data = Input::all();
-        
+
         $msg = "Note added";
-        
+
         $user->note = $data['note_text'];
-        
+
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'update',
@@ -1140,9 +1139,26 @@ class UserController extends \BaseController
             $user->toJson(),
             'UserController@addOrEditNote'
         );
-        
+
         $user->save();
-        
+
         return Redirect::to(URL::previous())->with('message', $msg);
+    }
+
+    public function showBranch($branch)
+    {
+        if (( $redirect = $this->checkPermissions('VIEW_' . $branch) ) !== true) {
+            return $redirect;
+        }
+
+            $users = User::where('active', '=', 1)
+                         ->where('registration_status', '=', 'Active')
+                         ->where('branch', '=', $branch)
+                         ->get();
+
+            $usersByBranch[$branch] = $users;
+
+        return View::make('user.' . strtolower($branch), ['users' => $usersByBranch, 'title' => $branch . " Members"]);
+
     }
 }

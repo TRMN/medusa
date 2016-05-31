@@ -78,8 +78,11 @@
         @if($permsObj->hasPermissions(['ADD_MARDET','EDIT_MARDET','DELETE_MARDET']) === true)
             <div class="nav-header lnav">RMMC</div>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['ADD_MARDET']) === true)<a
-                        href="{{ route('mardet.create') }}">Stand-up MARDET</a>
+                @if($permsObj->hasPermissions(['ADD_MARDET']) === true)
+                    <a href="{{ route('mardet.create') }}">Stand-up MARDET</a><br />
+                @endif
+                @if($permsObj->hasPermissions(['VIEW_RMMC']) === true)
+                    <a href="{{route('showBranch', ['RMMC'])}}">Show RMMC members</a><br />
                 @endif
             </div>
         @endif
