@@ -40,6 +40,9 @@ class MedusaValidators extends Validator
         }
 
         if ($exams = \Exam::where('member_id', '=', $this->data['member_id'])->first()) {
+            if (isset($exams->exams) === false) {
+                return true; // No exams at all, this is a new entry, allow it
+            }
             if (empty( $exams->exams[$value] ) === true) {
                 return true; // Exam not present, it's a new entry, allow it
             }
