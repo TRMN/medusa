@@ -1,6 +1,7 @@
 <?php
 namespace Medusa\Validators;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Validator;
 use Medusa\Permissions\MedusaPermissions;
 
@@ -48,7 +49,7 @@ class MedusaValidators extends Validator
             }
         }
 
-        return ( $exams[$value]['entered_by'] == \Auth::user()->id );
+        return ( $exams->exams[$value]['entered_by'] == \Auth::user()->id );
     }
 
 }
