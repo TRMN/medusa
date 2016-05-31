@@ -40,9 +40,6 @@ class MedusaValidators extends Validator
         }
 
         if ($exams = \Exam::where('member_id', '=', $this->data['member_id'])->first()) {
-            if (isset($exams->exams) === false) {
-                return true; // No exams at all, this is a new entry, allow it
-            }
             if (empty( $exams->exams[$value] ) === true) {
                 return true; // Exam not present, it's a new entry, allow it
             }
@@ -50,6 +47,8 @@ class MedusaValidators extends Validator
             if (empty( $exams->exams[$value]['entered_by'] ) === true) {
                 return false; // No entered_by field, only somebody with EDIT_GRADE or ALL_PERMS permissions can edit it
             }
+        } else {
+            return true; // No exams found, this is a new entry, allow it.
         }
 
         return ( $exams->exams[$value]['entered_by'] == \Auth::user()->id );
