@@ -64,10 +64,7 @@ class MedusaValidators extends Validator
 
     protected function validatePostDated($attribute, $value, $param)
     {
-        $now = Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->toDateString());
-        $examDate = Carbon::createFromFormat('Y-m-d', $value);
-
-        return $examDate->lte($now);
+        return Carbon::createFromFormat('Y-m-d', $value)->lte(Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->toDateString()));
     }
 
 }
