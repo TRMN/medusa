@@ -90,9 +90,9 @@ class ExamController extends \BaseController
         // Validation rules
 
         $rules = [
-            'member_id' => 'required|size:11',
+            'member_id' => 'required|size:11|not_self',
             'exam'      => 'required|is_grader',
-            'date'      => 'required|date|date_format:Y-m-d'
+            'date'      => 'required|date|date_format:Y-m-d|post_dated'
         ];
 
         $errorMessages = [

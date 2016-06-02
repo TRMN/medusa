@@ -1,6 +1,7 @@
 <?php
 namespace Medusa\Validators;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Validator;
 use Medusa\Permissions\MedusaPermissions;
@@ -11,6 +12,8 @@ class MedusaValidators extends Validator
 
     private $_custom_messages = [
         'is_grader' => 'You may only edit exam scores that you have entered',
+        'not_self' => 'You may not enter an exam score for yourself',
+        'post_dated' => 'You may not enter an exam score with a date in the future',
     ];
 
     public function __construct($translator, $data, $rules, $messages = [], $customAttributes = [])
@@ -52,6 +55,19 @@ class MedusaValidators extends Validator
         }
 
         return ( $exams->exams[$value]['entered_by'] == \Auth::user()->id );
+    }
+
+    protected function validateNotSelf($attribute, $value, $param)
+    {
+        return ($value != \Auth::user()->member_id);
+    }
+
+    protected function validatePostDated($attribute, $value, $param)
+    {
+        $now = Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->toDateString());
+        $examDate = Carbon::createFromFormat('Y-m-d', $value);
+
+        return $examDate->lte($now);
     }
 
 }
