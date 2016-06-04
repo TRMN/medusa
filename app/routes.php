@@ -26,7 +26,8 @@ Route::post( '/apply', [ 'as' => 'user.apply', 'uses' => 'UserController@apply' 
 // Users
 
 Route::model( 'user', 'User');
-Route::get('/user/find/{billet2check}', ['as' => 'user.dups', 'uses' => 'UserController@findDuplicateAssignment']);
+Route::get('/user/finddups/{billet2check}', ['as' => 'user.dups', 'uses' => 'UserController@findDuplicateAssignment', 'before' => 'auth']);
+Route::get('/user/find/{user?}', ['as' => 'user.find', 'uses'=> 'UserController@find', 'before' => 'auth']);
 Route::get('/user/review', ['as' => 'user.review', 'uses' => 'UserController@reviewApplications', 'before' => 'auth']);
 Route::get( '/user/{user}/confirmdelete', [ 'as' => 'user.confirmdelete', 'uses' => 'UserController@confirmDelete', 'before' => 'auth' ] );
 Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
@@ -34,6 +35,8 @@ Route::post('/user/osa', ['as' => 'osa', 'uses' => 'UserController@osa', 'before
 Route::post('/user/{user}/peerage', ['as' => 'addOrEditPeerage', 'uses' => 'UserController@addOrEditPeerage', 'before' => 'auth']);
 Route::get('/user/{user}/peerage/{peerageId}', ['as' => 'delete_peerage', 'uses' => 'UserController@deletePeerage', 'before' => 'auth']);
 Route::post('/user/{user}/note', ['as' => 'addOrEditNote', 'uses' => 'UserController@addOrEditNote', 'before' => 'auth']);
+Route::get('/user/{user}/perm/{perm}/add', ['as' => 'user.perm.add', 'uses' => 'UserController@addPerm', 'before' => 'auth']);
+Route::get('/user/{user}/perm/{perm}/delete', ['as' => 'user.perm.del', 'uses' => 'UserController@deletePerm', 'before' => 'auth']);
 
 Route::resource( 'user', 'UserController', ['before' => 'auth'] );
 Route::get('/user/{user}/approve', ['as' => 'user.approve', 'uses' => 'UserController@approveApplication', 'before' => 'auth']);

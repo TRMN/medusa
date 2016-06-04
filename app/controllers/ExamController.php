@@ -39,6 +39,15 @@ class ExamController extends \BaseController
         return View::make('exams.find', ['user' => $user, 'message' => $message]);
     }
 
+    public function manageExamPerms($user = null)
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        return View::make('user.find', ['user' => $user]);
+    }
+
     public function edit(ExamList $exam)
     {
 
@@ -153,7 +162,8 @@ class ExamController extends \BaseController
 
             $record->exams = $exams;
 
-            $message = '<span class="fi-alert alert">' . $data['exam'] . ' updated in academy coursework for ' . $member->first_name . ' ' .
+            $message =
+                '<span class="fi-alert alert">' . $data['exam'] . ' updated in academy coursework for ' . $member->first_name . ' ' .
                 ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
                 ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
@@ -185,7 +195,8 @@ class ExamController extends \BaseController
 
             $record->exams = $exams;
 
-            $message = '<span class="fi-alert yellow">' . $data['exam'] . ' added to academy coursework for ' . $member->first_name . ' ' .
+            $message =
+                '<span class="fi-alert yellow">' . $data['exam'] . ' added to academy coursework for ' . $member->first_name . ' ' .
                 ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
                 ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
@@ -291,7 +302,7 @@ class ExamController extends \BaseController
         try {
             $examRecord = Exam::where('member_id', '=', $memberNumber)->first();
 
-            $exams = array_except((array)$examRecord->exams,(string)$examId);
+            $exams = array_except((array)$examRecord->exams, (string)$examId);
 
             $examRecord->exams = $exams;
 

@@ -12,6 +12,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     use UserTrait, RemindableTrait;
     use \Medusa\Audit\MedusaAudit;
+    use \Medusa\Permissions\MedusaPermissions;
 
     public static $rules = [
         'first_name' => 'required|min:2',
@@ -549,7 +550,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                         return false;
                     }
 
-                    if (strtotime($value['date_entered']) > $since) {
+                    if (strtotime($value['date_entered']) >= $since) {
                         return true;
                     }
                 });
@@ -822,6 +823,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $user = (string)Auth::user()->_id;
         }
 
+        $this->osa = false;
+
         $this->writeAuditTrail(
             $user,
             'update',
@@ -835,6 +838,35 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         return true;
     }
+
+    public function deletePerm($perm)
+    {
+        $this->permissions = array_where($this->permissions, function($key, $value) use ($perm) {
+            return $value != $perm;
+        });
+
+        if (is_null(Auth::user())) {
+            $user = 'system user';
+        } else {
+            $user = (string)Auth::user()->_id;
+        }
+
+        $this->osa = false;
+
+        $this->writeAuditTrail(
+            $user,
+            'update',
+            'users',
+            (string)$this->_id,
+            json_encode($this->permissions),
+            'User@deletePerms'
+        );
+
+        $this->save();
+
+        return true;
+    }
+
 
     public function deletePeerage($peerageId)
     {
@@ -1156,6 +1188,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if (empty($this->previous_login) === true) {
             return date('Y-m-d', strtotime('-2 weeks'));
         }
-        return $this->previous_login;
+        return date('Y-m-d', strtotime($this->previous_login));
     }
 }

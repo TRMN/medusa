@@ -324,7 +324,8 @@ class ImportGrades extends Command
                 'sia_rmn_1003'        => 'SIA-RMN-1003',
                 'sia_rmn_1004'        => 'SIA-RMN-1004',
                 'sia_rmn_1005'        => 'SIA-RMN-1005',
-                'sia_rmn_1005_sits'   => 'SIA-RMN-1005-SITS'
+                'sia_rmn_2001'        => 'SIA-RMN-2001',
+                'sia_rmn_2001s_sits'  => 'SIA-RMN-2001S',
             ];
 
         $exam = [];

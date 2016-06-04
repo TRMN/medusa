@@ -28,13 +28,13 @@ trait MedusaPermissions
         return true;
     }
 
-    public function hasPermissions($permissions)
+    public function hasPermissions($permissions, $skipAll = false)
     {
         if (empty( \Auth::user() ) === true) {
             return false; // Not logged in, don't waste time
         }
 
-        if (in_array('ALL_PERMS', \Auth::user()->permissions) === true) {
+        if (in_array('ALL_PERMS', \Auth::user()->permissions) === true && $skipAll === false) {
             return true; // Don't waste time :)
         }
 
@@ -51,7 +51,7 @@ trait MedusaPermissions
         return false; // Permission not found
     }
 
-    public function hasAllPermissions($permissions)
+    public function hasAllPermissions()
     {
         if (empty( \Auth::user() ) === true) {
             return false; // Not logged in, don't waste time
@@ -61,19 +61,7 @@ trait MedusaPermissions
             return true; // Don't waste time :)
         }
 
-        if (is_array($permissions) === false) {
-            $permissions = [$permissions];
-        }
-
-        $allowed = 0;
-
-        foreach ($permissions as $permission) {
-            if (in_array($permission, \Auth::user()->permissions) === true) {
-                $allowed++;
-            }
-        }
-
-        return count($permissions) == $allowed;
+        return false;
     }
 
     /**

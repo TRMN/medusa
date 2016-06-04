@@ -49,6 +49,7 @@
             <div class="rnav">
                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) === true)<a href="{{ route('user.index') }}">List
                     Members</a><br/>
+                <a href="{{route('user.find')}}">Search for a Member</a><br />
                 <a href="{{route('user.dups', 'CO')}}">Show COs</a><br/>
                 <a href="{{route('user.dups', 'XO')}}">Show XOs</a><br/>
                 <a href="{{route('user.dups', 'BOSUN')}}">Show Bosuns</a><br/>
@@ -75,6 +76,7 @@
                 @if($permsObj->hasPermissions(['EDIT_GRADE']) === true)
                     <a href="{{route('exam.list')}}">Master Exam List</a><br />
                     <a href="{{route('exam.create')}}">Add Exam</a><br />
+                    <a href="{{route('user.find')}}">Manage Exam Permissions</a><br />
                 @endif
                 @if($permsObj->hasPermissions(['ADD_GRADE', 'EDIT_GRADE']) === true)
                     <a href="{{route('exam.find')}}">Mange/Enter Grades</a>

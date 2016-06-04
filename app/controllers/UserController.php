@@ -1050,7 +1050,6 @@ class UserController extends \BaseController
             if (substr($kOrder->getClassName($data['class']), 0, 6) != 'Knight') {
                 $peerage['code'] = '';
             }
-
         } else {
             $peerage['precedence'] = $pTitleInfo->precedence;
             $peerage['generation'] = $data['generation'];
@@ -1123,15 +1122,15 @@ class UserController extends \BaseController
 
         return Redirect::route('home')->with('message', 'Peerage deleted');
     }
-    
+
     public function addOrEditNote(User $user)
     {
         $data = Input::all();
-        
+
         $msg = "Note added";
-        
+
         $user->note = $data['note_text'];
-        
+
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'update',
@@ -1140,9 +1139,45 @@ class UserController extends \BaseController
             $user->toJson(),
             'UserController@addOrEditNote'
         );
-        
+
         $user->save();
-        
+
         return Redirect::to(URL::previous())->with('message', $msg);
+    }
+
+    public function find(User $user = null)
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        return View::make('user.find', ['user' => $user]);
+    }
+
+    public function addPerm(User $user, $perm)
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        $user->updatePerms((array) $perm);
+
+        Cache::flush();
+
+        return Redirect::to(URL::previous())->with('message', $perm . ' permission has been given to ' . $user->getFullName());
+
+    }
+
+    public function deletePerm(User $user, $perm)
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        $user->deletePerm($perm);
+
+        Cache::flush();
+
+        return Redirect::to(URL::previous())->with('message', $perm . ' permission has been removed from ' . $user->getFullName());
     }
 }
