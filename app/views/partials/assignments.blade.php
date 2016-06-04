@@ -13,10 +13,8 @@
             <br />{{$user->getPrimaryBillet()}}
             <br /><span class="Incised901Bold">{{$user->member_id}}</span>
         @endif
-        @if(in_array($user->getPrimaryAssignmentId(),explode(',', $user->duty_roster)) && $user->id == Auth::user()->id)
-            @if(Chapter::find(Auth::user()->getPrimaryAssignmentId())->crewHasNewExams() === true)
-                <br /><span class="fi-alert alert Incised901Light">One or more crew members have had new exams posted since your last login.<br />View your <a href="{{route('chapter.show',$user->getPrimaryAssignmentId())}}">roster</a> for more information</span>
-            @endif
+        @if($user->checkRostersForNewExams())
+            <br /><span class="fi-alert alert Incised901Light">One or more crew members have had new exams posted since your last login.<br />View your <a href="{{route('chapter.show',$user->getPrimaryAssignmentId())}}">roster</a> for more information</span>
         @endif
     </div>
     <br />
