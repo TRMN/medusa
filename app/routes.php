@@ -37,6 +37,7 @@ Route::get('/user/{user}/peerage/{peerageId}', ['as' => 'delete_peerage', 'uses'
 Route::post('/user/{user}/note', ['as' => 'addOrEditNote', 'uses' => 'UserController@addOrEditNote', 'before' => 'auth']);
 Route::get('/user/{user}/perm/{perm}/add', ['as' => 'user.perm.add', 'uses' => 'UserController@addPerm', 'before' => 'auth']);
 Route::get('/user/{user}/perm/{perm}/delete', ['as' => 'user.perm.del', 'uses' => 'UserController@deletePerm', 'before' => 'auth']);
+Route::get('/users/{branch}', ['as' => 'showBranch', 'uses' => 'UserController@showBranch', 'before' => 'auth']);
 
 Route::resource( 'user', 'UserController', ['before' => 'auth'] );
 Route::get('/user/{user}/approve', ['as' => 'user.approve', 'uses' => 'UserController@approveApplication', 'before' => 'auth']);

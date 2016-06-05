@@ -624,7 +624,7 @@ class UserController extends \BaseController
     {
         if ($this->isInChainOfCommand($user) === false &&
             Auth::user()->id != $user->id &&
-            $this->hasPermissions(['VIEW_MEMBERS']) === false
+            $this->hasPermissions(['VIEW_MEMBERS', 'VIEW_' . $user->branch]) === false
         ) {
             return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
         }
@@ -1179,5 +1179,23 @@ class UserController extends \BaseController
         Cache::flush();
 
         return Redirect::to(URL::previous())->with('message', $perm . ' permission has been removed from ' . $user->getFullName());
+    }
+
+    public function showBranch($branch)
+    {
+        if (( $redirect = $this->checkPermissions('VIEW_' . $branch) ) !== true) {
+            return $redirect;
+        }
+
+        $users = User::where('active', '=', 1)
+                     ->where('registration_status', '=', 'Active')
+                     ->where('branch', '=', $branch)
+                     ->get();
+
+        $usersByBranch[$branch] = $users;
+
+        return View::make(
+            'user.byBranch', ['users' => $usersByBranch, 'title' => $branch . " Members", 'branch' => $branch]
+        );
     }
 }
