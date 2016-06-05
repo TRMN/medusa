@@ -493,6 +493,12 @@ table.dataTable.display tbody tr:first-child td {
 .yellow {
   color: #ffee00 !important; }
 
+.orange {
+  color: orange !important; }
+
+.orange-red {
+  color: orangered !important; }
+
 .hide {
   display: none !important; }
 
