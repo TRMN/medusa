@@ -10,8 +10,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if(isset($users['RMMC']))
-                    @foreach( $users['RMMC'] as $user )
+                @if(isset($users[$branch]))
+                    @foreach( $users[$branch] as $user )
                         <tr>
                             <td width="30%">{{ $user->last_name }}
                                 , {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}

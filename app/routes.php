@@ -34,7 +34,7 @@ Route::post('/user/osa', ['as' => 'osa', 'uses' => 'UserController@osa', 'before
 Route::post('/user/{user}/peerage', ['as' => 'addOrEditPeerage', 'uses' => 'UserController@addOrEditPeerage', 'before' => 'auth']);
 Route::get('/user/{user}/peerage/{peerageId}', ['as' => 'delete_peerage', 'uses' => 'UserController@deletePeerage', 'before' => 'auth']);
 Route::post('/user/{user}/note', ['as' => 'addOrEditNote', 'uses' => 'UserController@addOrEditNote', 'before' => 'auth']);
-Route::post('/user/show/{branch}', ['as' => 'showBranch', 'uses' => 'UserController@showBranch', 'before' => 'auth']);
+Route::get('/users/{branch}', ['as' => 'showBranch', 'uses' => 'UserController@showBranch', 'before' => 'auth']);
 
 Route::resource( 'user', 'UserController', ['before' => 'auth'] );
 Route::get('/user/{user}/approve', ['as' => 'user.approve', 'uses' => 'UserController@approveApplication', 'before' => 'auth']);
