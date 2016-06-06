@@ -9,7 +9,7 @@
         <div class="whitesmoke">
 
             <div class="sbAccordian">
-                @foreach(['RMN', 'SRN', 'GSN', 'STC|AFLTC|GTSC', 'RMMC', 'SRMC', 'RMA', 'RMAT', 'CORE|KC|QC'] as $branch)
+                @foreach(['RMN', 'SRN', 'GSN', 'STC|AFLTC|GTSC', 'RMMC', 'SRMC', 'RMA', 'RMAT', 'CORE|KC|QC', 'SFC'] as $branch)
                     @if(count($user->getExamList(['branch' => $branch])) > 0)
                         @if($branch == 'SRN')
                             <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMN Specialty
