@@ -153,7 +153,7 @@ class ExamController extends \BaseController
 
             $exams = $record->exams;
 
-            $exams[$data['exam']] = [
+            $exams[strtoupper($data['exam'])] = [
                 'score'        => $data['score'],
                 'date'         => $data['date'],
                 'entered_by'   => Auth::user()->id,
@@ -163,7 +163,7 @@ class ExamController extends \BaseController
             $record->exams = $exams;
 
             $message =
-                '<span class="fi-alert alert">' . $data['exam'] . ' updated in academy coursework for ' . $member->first_name . ' ' .
+                '<span class="fi-alert alert">' . strtoupper($data['exam']) . ' updated in academy coursework for ' . $member->first_name . ' ' .
                 ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
                 ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
@@ -186,7 +186,7 @@ class ExamController extends \BaseController
 
             // Massage the score, make sure that it's reasonably formated
 
-            $exams[$data['exam']] = [
+            $exams[strtoupper($data['exam'])] = [
                 'score'        => $data['score'],
                 'date'         => $data['date'],
                 'entered_by'   => Auth::user()->id,
@@ -196,7 +196,7 @@ class ExamController extends \BaseController
             $record->exams = $exams;
 
             $message =
-                '<span class="fi-alert yellow">' . $data['exam'] . ' added to academy coursework for ' . $member->first_name . ' ' .
+                '<span class="fi-alert yellow">' . strtoupper($data['exam']) . ' added to academy coursework for ' . $member->first_name . ' ' .
                 ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
                 ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
