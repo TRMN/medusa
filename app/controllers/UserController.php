@@ -607,10 +607,7 @@ class UserController extends \BaseController
 
         Event::fire('user.registered', $user);
 
-        return Redirect::route('login')->with(
-            'message',
-            'Thank you for joining The Royal Manticoran Navy: The Official Honor Harrington Fan Association.  Your application will be reviewed and you should receive an email in 48 to 72 hours once your account has been activated.'
-        );
+        return View::make('thankyou');
     }
 
     /**
