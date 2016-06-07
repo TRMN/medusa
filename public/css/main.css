@@ -487,8 +487,26 @@ table.dataTable.display tbody tr:first-child td {
 .blue {
   color: mediumblue !important; }
 
+.alert {
+  color: #ff1fdb !important; }
+
+.yellow {
+  color: #ffee00 !important; }
+
+.orange {
+  color: orange !important; }
+
+.orange-red {
+  color: orangered !important; }
+
 .hide {
   display: none !important; }
+
+.error {
+  list-style: none !important;
+  margin-left: 0 !important;
+  padding-left: 1em !important;
+  text-indent: -1em !important; }
 
 .nav-header {
   color: #ffee00;
@@ -619,7 +637,7 @@ body, html {
   font-family: "Incised 901 W01 Light";
   line-height: 100%; }
 
-#tos, #chooseShip, #examList {
+#tos, #chooseShip, #examList, #confirmExamDelete {
   color: WhiteSmoke;
   background-color: #000000;
   background-repeat: no-repeat;
@@ -869,3 +887,28 @@ footer {
   height: 100%;
   width: 100%;
   background: rgba(255, 255, 255, 0.8) url("/images/ajax-loader.gif") 50% 50% no-repeat; }
+
+.autocomplete-suggestions {
+  border: 1px solid #999;
+  background: #FFF;
+  overflow: auto;
+  color: black; }
+
+.autocomplete-suggestion {
+  padding: 2px 5px;
+  white-space: nowrap;
+  overflow: hidden; }
+
+.autocomplete-selected {
+  background: #F0F0F0; }
+
+.autocomplete-suggestions strong {
+  font-weight: normal;
+  color: #3399FF; }
+
+.autocomplete-group {
+  padding: 2px 5px; }
+
+.autocomplete-group strong {
+  display: block;
+  border-bottom: 1px solid #000; }

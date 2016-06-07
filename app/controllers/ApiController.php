@@ -153,12 +153,72 @@ class ApiController extends BaseController
     {
         $classes = [];
 
-        if(empty($order = Korders::find($orderId)) === false) {
+        if (empty($order = Korders::find($orderId)) === false) {
             foreach ($order->classes as $class) {
                 $classes[$class['postnominal']] = $class['class'];
             }
         }
 
         return Response::json($classes);
+    }
+
+    public function findMember()
+    {
+        $query = Input::get('query', null);
+
+        if (is_null($query) === true) {
+            return Response::json(['suggestions' => []]);
+        }
+
+        $terms = explode(' ', $query);
+
+        switch (count($terms)) {
+            case 1:
+                $query = User::where('member_id', 'like', '%' . $terms[0] . '%')->orWhere('first_name', 'like', $terms[0] . '%')->orWhere('last_name', 'like', $terms[0] . '%');
+                break;
+            case 2:
+                $query = User::where('first_name', 'like', $terms[0] . '%')->where('last_name', 'like', $terms[1] . '%');
+                break;
+            default:
+                $query = User::where('first_name', 'like', $terms[0] . '%')->where('middle_name', 'like', $terms[1] . '%')->where('last_name', 'like', $terms[2] . '%');
+        }
+
+        $results = $query->get();
+
+        $suggestions = [];
+
+        foreach ($results as $member) {
+            $suggestions[] =
+                [
+                    'value' => $member->member_id . ' ' . $member->first_name . ' ' . (!empty($member->middle_name)?$member->middle_name . ' ': '') . $member->last_name . (!empty($member->suffix)?' ' . $member->suffix:'') . ' (' . $member->getAssignmentName(
+                            'primary'
+                        ) . ')',
+                    'data' => $member->id
+                ];
+        }
+
+        return Response::json(['suggestions' => $suggestions]);
+    }
+
+    public function findExam()
+    {
+        $query = Input::get('query', null);
+
+        if (is_null($query) === true) {
+            return Response::json(['suggestions' => []]);
+        }
+
+        $results =
+            ExamList::where('name', 'like', '%' . $query . '%')->orWhere('exam_id', 'like', '%' . $query . '%')->get();
+
+        $suggestions = [];
+
+        foreach ($results as $exam) {
+            if ($exam->enabled === true) {
+                $suggestions[] = ['value' => $exam->name . ' (' . $exam->exam_id . ')', 'data' => $exam->exam_id];
+            }
+        }
+
+        return Response::json(['suggestions' => $suggestions]);
     }
 }

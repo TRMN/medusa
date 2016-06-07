@@ -153,6 +153,8 @@ switch ($detail->chapter_type) {
                                 , {{$command['CO']->branch}}
                                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                             </a>
+                            @if($command['CO']->hasNewExams()) <span class="fi-star red"
+                                                                     title="New Exams Posted">&nbsp;</span> @endif
                         @endif
                     @else
                         N/A
@@ -174,6 +176,7 @@ switch ($detail->chapter_type) {
                                     , {{$command['XO']->branch}}
                                     @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                                 </a>
+                                @if($command['XO']->hasNewExams()) <span class="fi-star red" title="New Exams Posted">&nbsp;</span> @endif
                             @endif
                         @else
                             N/A
@@ -216,6 +219,8 @@ switch ($detail->chapter_type) {
                                     , {{$command['BOSUN']->branch}}
                                     @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || in_array(Auth::user()->duty_roster,$detail->getChapterIdWithParents()) === true)
                                 </a>
+                                @if($command['BOSUN']->hasNewExams()) <span class="fi-star red"
+                                                                            title="New Exams Posted">&nbsp;</span> @endif
                             @endif
                         @else
                             N/A
@@ -234,6 +239,10 @@ switch ($detail->chapter_type) {
                 <table id="crewRoster" class="compact row-border" width="75%">
                     <thead>
                     <tr>
+                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                            <th class="center" width="20"><span class="fi-star red"
+                                                                title="New Exams Posted">&nbsp;</span></th>
+                        @endif
                         <th>Name</th>
                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                             <th>ID #</th>
@@ -251,6 +260,11 @@ switch ($detail->chapter_type) {
                     <tbody>
                     @foreach($crew as $member)
                         <tr>
+                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                                <td class="center">@if($member->hasNewExams()) <span class="fi-star red"
+                                                                                     title="New Exams Posted">&nbsp;</span> @endif
+                                </td>
+                            @endif
                             <td>
                                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                                     <a href="{{ route('user.show', [$member->_id]) }}">
@@ -259,6 +273,7 @@ switch ($detail->chapter_type) {
                                         , {{ $member->first_name }}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}
                                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                                     </a>
+
                                 @endif
                             </td>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
@@ -277,6 +292,9 @@ switch ($detail->chapter_type) {
                     </tbody>
                     <tfoot>
                     <tr>
+                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                            <th class="center"><span class="fi-star red" title="New Exams Posted">&nbsp;</span></th>
+                        @endif
                         <th>Name</th>
                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                             <th>ID #</th>
@@ -296,4 +314,19 @@ switch ($detail->chapter_type) {
         </div>
     @endif
 
+@stop
+@section('scriptFooter')
+    <script type="text/javascript">
+        $('#crewRoster').DataTable({
+            "autoWidth": true,
+            "pageLength": 25,
+            "language": {
+                "emptyTable": "No crew members found"
+            },
+            "$UI": true
+            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                ,"order": [[0, "desc"]]
+            @endif
+        });
+    </script>
 @stop

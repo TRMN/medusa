@@ -208,14 +208,17 @@ class Chapter extends Eloquent
     /**
      * Get all users/members assigned to a specific chapter or subordinate chapters
      *
-     * @param $chapterId
+     * @param $id Optional Chapter ID.  If not present, the id of the current instantiation is used.
      *
      * @return mixed
      */
 
-    public function getCrewWithChildren()
+    public function getCrewWithChildren($id = null)
     {
-        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren())->where(
+        if (empty($id) === true) {
+            $id = $this->id;
+        }
+        $users = User::wherein('assignment.chapter_id', $this->getChapterIdWithChildren($id))->where(
             'member_id',
             '!=',
             Auth::user()->member_id
@@ -393,15 +396,18 @@ class Chapter extends Eloquent
      * @return mixed
      */
 
-    public function getChapterIdWithChildren()
+    public function getChapterIdWithChildren($id = null)
     {
-        $children = Chapter::where('assigned_to', '=', (string)$this->_id)->get();
+        if (empty($id) === true) {
+            $id = $this->id;
+        }
+        $children = Chapter::where('assigned_to', '=', $id)->get();
 
         $results = [];
         foreach ($children as $child) {
             $results = array_merge($results, Chapter::find($child->id)->getChapterIdWithChildren());
         }
-        return array_unique(array_merge([$this->id], $results));
+        return array_unique(array_merge([$id], $results));
     }
 
     static function getChapterType($chapterId)
@@ -431,6 +437,29 @@ class Chapter extends Eloquent
         }
 
         return $retVal;
+    }
+
+    public function crewHasNewExams($id = null)
+    {
+        if (empty($id) === true) {
+            $id = $this->id;
+        }
+
+        try {
+            $crew = $this->getCrewWithChildren($id);
+        } catch (Exception $d) {
+            return false;
+        }
+
+        $hasExams = false;
+
+        foreach($crew as $member) {
+            if ($member->hasNewExams() === true) {
+                $hasExams = true;
+            }
+        }
+
+        return $hasExams;
     }
 
 }

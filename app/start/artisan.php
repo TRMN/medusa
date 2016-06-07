@@ -21,3 +21,4 @@ Artisan::add(new CreateEchelons());
 Artisan::add(new assignAHPerms());
 Artisan::add(new AddFleetCoPermission());
 Artisan::add(new MemberExport());
+Artisan::add(new DelPermission());

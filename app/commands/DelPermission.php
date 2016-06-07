@@ -4,7 +4,7 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class AddPermission extends Command
+class DelPermission extends Command
 {
 
     /**
@@ -12,14 +12,14 @@ class AddPermission extends Command
      *
      * @var string
      */
-    protected $name = 'user:addperm';
+    protected $name = 'user:delperm';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add a permission to a user';
+    protected $description = 'Delate a permission from a user';
 
     /**
      * Create a new command instance.
@@ -39,7 +39,7 @@ class AddPermission extends Command
     public function fire()
     {
         if ($user = User::where('member_id', '=', $this->argument('member_id'))->first()) {
-	        $user->updatePerms([strtoupper($this->argument('perm'))]);
+	        $user->deletePerm(strtoupper($this->argument('perm')));
 	} else {
 		$this->error($this->argument('member_id') . ' not found!');
 	}
