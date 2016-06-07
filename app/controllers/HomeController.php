@@ -3,7 +3,7 @@
 class HomeController extends BaseController
 {
 
-    public function index()
+    public function index($message = null)
     {
         if (Auth::check()) {
             $user = Auth::user();
@@ -12,6 +12,7 @@ class HomeController extends BaseController
                 'greeting' => $user->getGreetingArray(),
                 'user'     => $user,
                 'chapter'  => Chapter::find($user->getPrimaryAssignmentId()),
+                'message'  => $message,
             ];
 
             $titles[''] = 'Select Peerage Title';

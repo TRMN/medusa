@@ -1,13 +1,13 @@
-<div id="left-nav">
+<div id="left-nav" class="sbAccordian">
     @if(Auth::check())
         <div class="nav-header lnav">MEMBER</div>
         <div class="rnav">
 
             <a href="/home">Service Record</a><br/>
-            <a href="/id/card/{{Auth::user()->id}}">ID Card</a><br />
+            <a href="/id/card/{{Auth::user()->id}}">ID Card</a><br/>
             <a href="{{route('user.change.request', [Auth::user()->id])}}">Branch/Chapter Change</a><br/>
             <a href="{{ route('chapter.index') }}">Ship/Unit List</a><br/>
-            <a href="{{route('user.getReset', [Auth::user()->id])}}">Change Password</a><br><br>
+            <a href="{{route('user.getReset', [Auth::user()->id])}}">Change Password</a><br/><br/>
             <a href="/signout">Logout</a>
 
         </div>
@@ -16,9 +16,7 @@
             <div class="rnav">
                 @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true)
                     <a href="{{route('report.index')}}">Chapter Reports</a><br/>
-                    @endif
-                            <!-- <a href="">View Combined Roster</a><br /> -->
-
+                @endif
             </div>
         @endif
         @if($permsObj->hasPermissions(['CREATE_ECHELON',
@@ -51,6 +49,7 @@
             <div class="rnav">
                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) === true)<a href="{{ route('user.index') }}">List
                     Members</a><br/>
+                <a href="{{route('user.find')}}">Find a Member</a><br />
                 <a href="{{route('user.dups', 'CO')}}">Show COs</a><br/>
                 <a href="{{route('user.dups', 'XO')}}">Show XOs</a><br/>
                 <a href="{{route('user.dups', 'BOSUN')}}">Show Bosuns</a><br/>
@@ -68,28 +67,53 @@
             </div>
         @endif
 
-        @if($permsObj->hasPermissions(['UPLOAD_EXAMS']) === true)
+        @if($permsObj->hasPermissions(['UPLOAD_EXAMS','ADD_GRADE', 'EDIT_GRADE']) === true)
             <div class="nav-header lnav">BuTrain (6SL)</div>
             <div class="rnav">
-                <a href="{{route('exam.index')}}">Upload Exams</a>
+                @if($permsObj->hasPermissions(['UPLOAD_EXAMS']) === true)
+                    <a href="{{route('exam.index')}}">Upload Exams</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['EDIT_GRADE']) === true)
+                    <a href="{{route('exam.list')}}">Master Exam List</a><br />
+                    <a href="{{route('exam.create')}}">Add Exam</a><br />
+                    <a href="{{route('user.find')}}">Find a Member</a><br />
+                @endif
+                @if($permsObj->hasPermissions(['ADD_GRADE', 'EDIT_GRADE']) === true)
+                    <a href="{{route('exam.find')}}">Mange/Enter Grades</a>
+                @endif
             </div>
         @endif
 
-        @if($permsObj->hasPermissions(['ADD_MARDET','EDIT_MARDET','DELETE_MARDET']) === true)
+        @if($permsObj->hasPermissions(['ADD_MARDET','EDIT_MARDET','DELETE_MARDET', 'VIEW_RMMC']) === true)
             <div class="nav-header lnav">RMMC</div>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['ADD_MARDET']) === true)<a
-                        href="{{ route('mardet.create') }}">Stand-up MARDET</a>
+                @if($permsObj->hasPermissions(['ADD_MARDET']) === true)
+                    <a href="{{ route('mardet.create') }}">Stand-up MARDET</a><br />
+                @endif
+                @if($permsObj->hasPermissions(['VIEW_RMMC']) === true)
+                    <a href="{{route('showBranch', ['branch' => 'RMMC'])}}">Show RMMC members</a><br />
                 @endif
             </div>
         @endif
 
 
-        @if($permsObj->hasPermissions(['ADD_UNIT','EDIT_UNIT','DELETE_UNIT']) === true)
+        @if($permsObj->hasPermissions(['ADD_UNIT','EDIT_UNIT','DELETE_UNIT', 'VIEW_RMA']) === true)
             <div class="nav-header lnav">RMA</div>
             <div class="rnav">
                 @if($permsObj->hasPermissions(['ADD_UNIT']) === true)<a
-                        href="{{ route('unit.create') }}">Stand-up Command/Unit</a>
+                        href="{{ route('unit.create') }}">Stand-up Command/Unit</a><br />
+                @endif
+                @if($permsObj->hasPermissions(['VIEW_RMA']) === true)
+                    <a href="{{route('showBranch', ['branch' => 'RMA'])}}">Show RMA members</a><br />
+                @endif
+            </div>
+        @endif
+
+        @if($permsObj->hasPermissions(['VIEW_GSN']) === true)
+            <div class="nav-header lnav">GSN</div>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_GSN']) === true)
+                    <a href="{{route('showBranch', ['branch' => 'GSN'])}}">Show GSN members</a><br />
                 @endif
             </div>
         @endif
@@ -98,8 +122,8 @@
         @if($permsObj->hasPermissions(['ALL_PERMS']) === true)
             <div class="nav-header lnav">System</div>
             <div class="rnav">
-                <a href="{{ route('anyunit.create') }}">Create Unit/Echelon</a><br />
-                <a href="{{ route('type.index') }}">List Chapter Types</a><br />
+                <a href="{{ route('anyunit.create') }}">Create Unit/Echelon</a><br/>
+                <a href="{{ route('type.index') }}">List Chapter Types</a><br/>
                 <a href="{{ route('type.create') }}">Add Chapter Type</a>
             </div>
         @endif

@@ -2022,16 +2022,7 @@ $(document).ready(function ($) {
         "order": [[0, 'asc']],
         "$UI": true
     });
-
-    $('#crewRoster').DataTable({
-        "autoWidth": true,
-        "pageLength": 25,
-        "language": {
-            "emptyTable": "No crew members found"
-        },
-        "$UI": true
-    });
-
+    
     $('#subCrewRoster').DataTable({
         "autoWidth": true,
         "pageLength": 25,
@@ -2159,12 +2150,11 @@ $(document).ready(function ($) {
     }
 
     $('.dr').on('click', function () {
-        if($('#dutyroster').val().length == 0) {
+        if ($('#dutyroster').val().length == 0) {
             $('#dutyroster').val($(this).val());
         } else {
             $('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());
         }
-
     });
 
     $('#refreshExamList').on('click', function () {
@@ -2472,7 +2462,7 @@ $(document).ready(function ($) {
         $('#peerage-container').trigger('click');
     });
 
-    $('#note_clear').on('click', function() {
+    $('#note_clear').on('click', function () {
         $('#note_text').val('');
         $('#note_form').submit();
     });
@@ -2484,6 +2474,36 @@ $(document).ready(function ($) {
 
     });
 
+    $('.delete-exam').on('click', function () {
+        var item = $(this);
+        var examID = item.attr('data-examID');
+        var memberNumber = item.attr('data-memberNumber');
+        var fullName = item.attr('data-fullName');
+
+        $('#examDeleteYes').attr('data-examID', examID).attr('data-memberNumber', memberNumber);
+        $('#confirmMessage').html('Delete exam ' + examID + " from " + fullName + "'s record?");
+        $('#confirmExamDelete').foundation('reveal', 'open')
+    });
+
+    $('#examDeleteYes').on('click', function () {
+        var item = $(this);
+        var examID = item.attr('data-examID');
+        var memberNumber = item.attr('data-memberNumber');
+
+        $.post('/exam/user/delete', {'examID': examID, 'memberNumber': memberNumber}, function (response) {
+            var msg;
+            if (response.success == 'true') {
+                msg = examID + " has been removed from the members academic record.";
+            } else {
+                msg = "There was a problem removing " + examID + " from the members academic record";
+            }
+
+            $('#confirmExamDelete').foundation('reveal', 'close');
+            document.location = document.location + "/" + encodeURIComponent(msg);
+
+
+        });
+    });
 });
 
 },{"./ManticoreAuth.js":1,"./ManticoreChapter.js":2,"./ManticoreRegister.js":3,"./ManticoreUser.js":4,"./dropzone.js":5}]},{},[6]);

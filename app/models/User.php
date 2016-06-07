@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
+use Illuminate\Auth\Reminders\RemindableTrait;
+use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\UserTrait;
 use Jenssegers\Mongodb\Model as Eloquent;
 use Medusa\Enums\MedusaDefaults;
 
@@ -12,6 +12,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     use UserTrait, RemindableTrait;
     use \Medusa\Audit\MedusaAudit;
+    use \Medusa\Permissions\MedusaPermissions;
 
     public static $rules = [
         'first_name'         => 'required|min:2',
@@ -85,6 +86,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'osa',
         'idcard_printed',
         'note',
+        'last_login',
+        'previous_login',
     ];
 
     public function announcements()
@@ -94,10 +97,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getFullName()
     {
-        return ucfirst($this->first_name) . ' ' .
-        ( empty( $this->middle_name ) ? '' : ucfirst($this->middle_name) . ' ' ) .
-        ucfirst($this->last_name) . ' ' .
-        $this->suffix;
+        return trim(
+            ucfirst($this->first_name) . ' ' .
+            ( empty( $this->middle_name ) ? '' : ucfirst($this->middle_name) . ' ' ) .
+            ucfirst($this->last_name) . ' ' .
+            ( empty( $this->suffix ) ? '' : $this->suffix )
+        );
     }
 
     /**
@@ -203,7 +208,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         // At the moment, the only postnominals we know about are for knighthoods stored in the peerage record
 
         foreach (empty( $this->peerages ) === false ? $this->peerages : [] as $peerage) {
-            if (empty( $peerage['courtesy'] ) === true && empty($peerage['postnominal']) === false) {
+            if (empty( $peerage['courtesy'] ) === true && empty( $peerage['postnominal'] ) === false) {
                 $postnominals[$peerage['precedence']] = $peerage['postnominal']; // Order them by precedence
             }
         }
@@ -496,6 +501,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 } else {
                     $class = $options['class'];
                 }
+
+                if (empty( $options['since'] ) === true) {
+                    $since = null;
+                } else {
+                    $since = strtotime($options['since']);
+                }
             }
         } else {
             $branch = null;
@@ -528,6 +539,22 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                                 $after
                             )
                         ) {
+                            return true;
+                        }
+                    }
+                );
+            }
+
+            if (empty( $since ) === false) {
+                // Filter by date entered
+                $list = array_where(
+                    $list,
+                    function ($key, $value) use ($since) {
+                        if (empty( $value['date_entered'] ) === true) {
+                            return false;
+                        }
+
+                        if (strtotime($value['date_entered']) >= $since) {
                             return true;
                         }
                     }
@@ -710,6 +737,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
+    public function hasNewExams($branch = null)
+    {
+        $options['since'] = Auth::user()->getLastLogin();
+
+        if (is_null($branch) === false) {
+            $options['branch'] = $branch;
+        }
+
+        if (count($this->getExamList($options)) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function assignCoPerms()
     {
         $this->updatePerms(
@@ -786,6 +828,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $user = (string)Auth::user()->_id;
         }
 
+        $this->osa = false;
+
         $this->writeAuditTrail(
             $user,
             'update',
@@ -793,6 +837,37 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             (string)$this->_id,
             json_encode($this->permissions),
             'User@updatePerms'
+        );
+
+        $this->save();
+
+        return true;
+    }
+
+    public function deletePerm($perm)
+    {
+        $this->permissions = array_where(
+            $this->permissions,
+            function ($key, $value) use ($perm) {
+                return $value != $perm;
+            }
+        );
+
+        if (is_null(Auth::user())) {
+            $user = 'system user';
+        } else {
+            $user = (string)Auth::user()->_id;
+        }
+
+        $this->osa = false;
+
+        $this->writeAuditTrail(
+            $user,
+            'update',
+            'users',
+            (string)$this->_id,
+            json_encode($this->permissions),
+            'User@deletePerms'
         );
 
         $this->save();
@@ -1106,5 +1181,39 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getAuthPassword()
     {
         return $this->password;
+    }
+
+    public function updateLastLogin()
+    {
+        $this->previous_login = $this->last_login;
+        $this->last_login = date('Y-m-d H:i:s');
+        $this->save();
+    }
+
+    public function getLastLogin()
+    {
+        if (empty( $this->previous_login ) === true) {
+            return date('Y-m-d', strtotime('-2 weeks'));
+        }
+        return date('Y-m-d', strtotime($this->previous_login));
+    }
+
+    public function checkRostersForNewExams()
+    {
+        if ($this->id != Auth::user()->id || empty($this->duty_roster) === true) {
+            return false;
+        }
+        $rosters = explode(',', $this->duty_roster);
+        $newExams = false;
+
+        if (count($rosters) > 0 && is_array($rosters) === true) {
+            foreach ($rosters as $roster) {
+                if (Chapter::find($roster)->crewHasNewExams()) {
+                    $newExams = true;
+                }
+            }
+        }
+
+        return $newExams;
     }
 }
