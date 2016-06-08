@@ -107,7 +107,7 @@
             Association,
             Inc. Some Rights Reserved.
             Honor Harrington and all related materials are &copy; David Weber.</p>
-
+        <span class="text-center"><img src="{{asset('images/medusa.svg')}}" width="100px" height="100px"></span>
         <p>{{ Config::get('app.version') }}</p>
         <span id="siteseal"><script type="text/javascript"
                                     src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
