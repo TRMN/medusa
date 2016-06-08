@@ -52,15 +52,18 @@
         @endif
         <div class="small-9 columns trmn-width content end">
             @if( $errors->any() )
-                <ul class="errors">
+                <ul class="error">
                     @foreach( $errors->all() as $error )
-                        <li>{{ $error }}</li>
+                        <li class="fi-alert alert">{{ $error }}</li>
                     @endforeach
                 </ul>
             @endif
 
             @if(Session::has('message'))
                 <p>{{Session::get('message')}}</p>
+            @endif
+            @if(!empty($message))
+                <p>{{$message}}</p>
             @endif
             @if(Auth::check() ||
                 in_array(\Route::currentRouteName(),[
@@ -109,6 +112,15 @@
             Honor Harrington and all related materials are &copy; David Weber.</p>
         <span class="text-center"><img src="{{asset('images/medusa.svg')}}" width="100px" height="100px"></span>
         <p>{{ Config::get('app.version') }}</p>
+        @if($_SERVER['SERVER_NAME'] == "medusa.dev" || $_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
+            <p class="alert-box">
+                @if($_SERVER['SERVER_NAME'] == "medusa.dev")
+                    LOCAL SANDBOX SERVER
+                @else
+                    DEVELOPMENT / TEST SERVER
+                @endif
+            </p>
+        @endif
         <span id="siteseal"><script type="text/javascript"
                                     src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
     </footer>
@@ -123,6 +135,7 @@
     <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="{{ $serverUrl }}/js/dataTables.foundation.js"></script>
     <script type="text/javascript" src="{{ $serverUrl }}/js/dataTables.jqueryui.js"></script>
+    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.autocomplete.js"></script>
 @else
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript"
@@ -139,6 +152,7 @@
             src="//cdn.datatables.net/plug-ins/1.10.7/integration/foundation/dataTables.foundation.js"></script>
     <script type="text/javascript"
             src="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.js"></script>
+    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.autocomplete.min.js"></script>
 @endif
 <script>
     jQuery(document).foundation();

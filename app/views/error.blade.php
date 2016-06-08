@@ -18,7 +18,7 @@
 </div>
 
 <div class="row">
-    <div class="alert-box alert" data-alert>
+    <div class="alert-box" data-alert>
         <p>{{ $e->getMessage() }}</p>
         <p>Stack Trace:</p>
         <p class="small">{{ nl2br($e->getTraceAsString()) }}</p>

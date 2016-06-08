@@ -26,7 +26,8 @@ Route::post( '/apply', [ 'as' => 'user.apply', 'uses' => 'UserController@apply' 
 // Users
 
 Route::model( 'user', 'User');
-Route::get('/user/find/{billet2check}', ['as' => 'user.dups', 'uses' => 'UserController@findDuplicateAssignment']);
+Route::get('/user/finddups/{billet2check}', ['as' => 'user.dups', 'uses' => 'UserController@findDuplicateAssignment', 'before' => 'auth']);
+Route::get('/user/find/{user?}', ['as' => 'user.find', 'uses'=> 'UserController@find', 'before' => 'auth']);
 Route::get('/user/review', ['as' => 'user.review', 'uses' => 'UserController@reviewApplications', 'before' => 'auth']);
 Route::get( '/user/{user}/confirmdelete', [ 'as' => 'user.confirmdelete', 'uses' => 'UserController@confirmDelete', 'before' => 'auth' ] );
 Route::post('/user/tos', ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
@@ -34,6 +35,9 @@ Route::post('/user/osa', ['as' => 'osa', 'uses' => 'UserController@osa', 'before
 Route::post('/user/{user}/peerage', ['as' => 'addOrEditPeerage', 'uses' => 'UserController@addOrEditPeerage', 'before' => 'auth']);
 Route::get('/user/{user}/peerage/{peerageId}', ['as' => 'delete_peerage', 'uses' => 'UserController@deletePeerage', 'before' => 'auth']);
 Route::post('/user/{user}/note', ['as' => 'addOrEditNote', 'uses' => 'UserController@addOrEditNote', 'before' => 'auth']);
+Route::get('/user/{user}/perm/{perm}/add', ['as' => 'user.perm.add', 'uses' => 'UserController@addPerm', 'before' => 'auth']);
+Route::get('/user/{user}/perm/{perm}/delete', ['as' => 'user.perm.del', 'uses' => 'UserController@deletePerm', 'before' => 'auth']);
+Route::get('/users/{branch}', ['as' => 'showBranch', 'uses' => 'UserController@showBranch', 'before' => 'auth']);
 
 Route::resource( 'user', 'UserController', ['before' => 'auth'] );
 Route::get('/user/{user}/approve', ['as' => 'user.approve', 'uses' => 'UserController@approveApplication', 'before' => 'auth']);
@@ -60,7 +64,7 @@ Route::model('mardet', 'Chapter');
 Route::model('unit', 'Chapter');
 Route::model('anyunit', 'Chapter');
 
-Route::get( '/home', [ 'as' => 'home', 'uses' => 'HomeController@index'] );
+Route::get( '/home/{message?}', [ 'as' => 'home', 'uses' => 'HomeController@index'] );
 Route::get( '/', [ 'as' => 'root', 'uses' => 'HomeController@index' ] );
 Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
 Route::get(
@@ -106,6 +110,17 @@ Route::controller('password', 'RemindersController');
 
 Route::get('/exam', ['as' => 'exam.index', 'uses' => 'ExamController@index', 'before' => 'auth']);
 Route::post('/exam/upload', ['as' => 'exam.upload', 'uses' => 'ExamController@upload', 'before' => 'auth']);
+Route::post('/exam/update', ['as' => 'exam.update', 'uses' => 'ExamController@update', 'before' => 'auth']);
+Route::get('/exam/find/{user?}/{message?}', ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']);
+#Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'before' => 'auth']);
+Route::post('/exam/store', ['as' => 'exam.store', 'uses' => 'ExamController@store', 'before' => 'auth']);
+Route::get('/exam/list', ['as' => 'exam.list', 'uses' => 'ExamController@examList', 'before' => 'auth']);
+Route::get('/exam/create', ['as' => 'exam.create', 'uses' => 'ExamController@create', 'before' => 'auth']);
+
+Route::model('exam', 'ExamList');
+Route::get('/exam/edit/{exam}', ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'before' => 'auth']);
+Route::post('/exam/updateExam', ['as' => 'exam.updateExam', 'uses' => 'ExamController@updateExam', 'before' => 'auth']);
+Route::post('/exam/user/delete', ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']);
 
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);
@@ -137,5 +152,7 @@ Route::get('/api/institute', 'ApiController@getInstitutes');
 Route::get( '/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::get( '/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
+Route::get(' /api/find', 'ApiController@findMember', ['before' => 'auth']); // search for a member
+Route::get('/api/exam', 'ApiController@findExam', ['before' => 'auth']); // search for an exam
 
 

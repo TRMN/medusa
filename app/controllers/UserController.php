@@ -621,7 +621,7 @@ class UserController extends \BaseController
     {
         if ($this->isInChainOfCommand($user) === false &&
             Auth::user()->id != $user->id &&
-            $this->hasPermissions(['VIEW_MEMBERS']) === false
+            $this->hasPermissions(['VIEW_MEMBERS', 'VIEW_' . $user->branch]) === false
         ) {
             return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
         }
@@ -1047,7 +1047,6 @@ class UserController extends \BaseController
             if (substr($kOrder->getClassName($data['class']), 0, 6) != 'Knight') {
                 $peerage['code'] = '';
             }
-
         } else {
             $peerage['precedence'] = $pTitleInfo->precedence;
             $peerage['generation'] = $data['generation'];
@@ -1141,5 +1140,59 @@ class UserController extends \BaseController
         $user->save();
 
         return Redirect::to(URL::previous())->with('message', $msg);
+    }
+
+    public function find(User $user = null)
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        return View::make('user.find', ['user' => $user]);
+    }
+
+    public function addPerm(User $user, $perm)
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        $user->updatePerms((array) $perm);
+
+        Cache::flush();
+
+        return Redirect::to(URL::previous())->with('message', $perm . ' permission has been given to ' . $user->getFullName());
+
+    }
+
+    public function deletePerm(User $user, $perm)
+    {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE']) ) !== true) {
+            return $redirect;
+        }
+
+        $user->deletePerm($perm);
+
+        Cache::flush();
+
+        return Redirect::to(URL::previous())->with('message', $perm . ' permission has been removed from ' . $user->getFullName());
+    }
+
+    public function showBranch($branch)
+    {
+        if (( $redirect = $this->checkPermissions('VIEW_' . $branch) ) !== true) {
+            return $redirect;
+        }
+
+        $users = User::where('active', '=', 1)
+                     ->where('registration_status', '=', 'Active')
+                     ->where('branch', '=', $branch)
+                     ->get();
+
+        $usersByBranch[$branch] = $users;
+
+        return View::make(
+            'user.byBranch', ['users' => $usersByBranch, 'title' => $branch . " Members", 'branch' => $branch]
+        );
     }
 }

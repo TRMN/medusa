@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'timezone' => 'EST',
+    'timezone' => 'America/New_York',
 
     /*
     |--------------------------------------------------------------------------
@@ -132,6 +132,7 @@ return [
         'Iorme\SimpleCaptcha\SimpleCaptchaServiceProvider',
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
+        'Medusa\Services\MedusaServiceProvider',
 
     ],
 
@@ -208,7 +209,5 @@ return [
         'QrCode' => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
         'Image' => 'Intervention\Image\Facades\Image',
     ],
-
-    'version' => "Elizabeth I (Project MEDUSA v1.2.15)",
-
+    'version' => "Elizabeth I (Project MEDUSA v1.2.16)",
 ];
