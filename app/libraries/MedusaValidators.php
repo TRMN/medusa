@@ -64,12 +64,10 @@ class MedusaValidators extends Validator
 
     protected function validatePostDated($attribute, $value, $param)
     {
-        if (preg_match('/^\d\d\d\d-\d\d-\d\d/', $value)) {
-            return Carbon::createFromFormat('Y-m-d', $value)->lte(Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->toDateString()));
-        } else {
-            // Date not formated correctly
-            return false;
-        }
+        $value = date('Y-m-d', strtotime($value));
+        
+        return Carbon::createFromFormat('Y-m-d', $value)->lte(Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->toDateString()));
+
     }
 
 }
