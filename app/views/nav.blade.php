@@ -79,7 +79,7 @@
                     <a href="{{route('user.find')}}">Find a Member</a><br />
                 @endif
                 @if($permsObj->hasPermissions(['ADD_GRADE', 'EDIT_GRADE']) === true)
-                    <a href="{{route('exam.find')}}">Mange/Enter Grades</a>
+                    <a href="{{route('exam.find')}}">Manage/Enter Grades</a>
                 @endif
             </div>
         @endif
