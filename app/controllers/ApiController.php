@@ -119,6 +119,11 @@ class ApiController extends BaseController
         return Response::json(Chapter::getChaptersByType('institute'));
     }
 
+    public function getUniversities()
+    {
+        return Response::json(Chapter::getChaptersByType('university'));
+    }
+
     public function savePhoto()
     {
         if (Input::file('file')->isValid() === true) {
