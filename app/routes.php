@@ -21,8 +21,10 @@ App::singleton('oauth2', function() {
     $host = Config::get('database.connections.mongodb.host');
     $hosts = is_array($host)?$host:[$host];
     $dbName = Config::get('database.connections.mongodb.database');
+    $dbOptions = empty(Config::get('database.connections.mongodb.options'))?[]:Config::get('database.connections.mongodb.options');
 
-    $mongo = new MongoClient('mongodb://' . implode(',',$hosts) . '/' . $dbName);
+
+    $mongo = new MongoClient('mongodb://' . implode(',',$hosts) . '/' . $dbName, $dbOptions);
 	$storage = new OAuth2\Storage\Mongo($mongo->{$dbName});
 	$server = new OAuth2\Server($storage);
 
