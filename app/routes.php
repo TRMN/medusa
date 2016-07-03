@@ -18,7 +18,12 @@ View::share( 'authUser', $authUser );
 // OAuth2
 App::singleton('oauth2', function() {
 
-    $storage = $storage = new OAuth2\Storage\Mongo(\DB::getMongoDB());
+    $host = Config::get('database.connections.mongodb.host');
+    $hosts = is_array($host)?$host:[$host];
+    $dbName = Config::get('database.connections.mongodb.database');
+
+    $mongo = new MongoClient('mongodb://' . implode(',',$hosts) . '/' . $dbName);
+	$storage = new OAuth2\Storage\Mongo($mongo->{$dbName});
 	$server = new OAuth2\Server($storage);
 
     $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));

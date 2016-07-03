@@ -110,7 +110,7 @@
             Association,
             Inc. Some Rights Reserved.
             Honor Harrington and all related materials are &copy; David Weber.</p>
-        <span class="text-center"><img src="{{asset('images/medusa.svg')}}" width="100px" height="100px"></span>
+        <span class="text-center"><img src="{{asset('images/project-medusa.svg')}}" width="150px" height="150px" data-src="{{asset('images/project-medusa.svg')}}"></span>
         <p>{{ Config::get('app.version') }}</p>
         @if($_SERVER['SERVER_NAME'] == "medusa.dev" || $_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
             <p class="alert-box">
