@@ -15,6 +15,93 @@ if ( Auth::check() ) {
 View::share( 'serverUrl', $hostFull );
 View::share( 'authUser', $authUser );
 
+// OAuth2
+App::singleton('oauth2', function() {
+
+    $mongo = new MongoClient('mongodb://localhost:27017/trmn');
+
+	$storage = $storage = new OAuth2\Storage\Mongo(['host' => 'localhost', 'port' => '27017', 'database' => 'trmn']);
+	$server = new OAuth2\Server($storage);
+
+    $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
+	$server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
+	$server->addGrantType(new OAuth2\GrantType\UserCredentials($storage));
+    $server->addGrantType(new OAuth2\GrantType\RefreshToken($storage));
+
+	return $server;
+});
+
+Route::get('oauth/authorize', function ()
+{
+	$bridgedRequest  = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
+	$bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+
+    App::make('oauth2')->validateAuthorizeRequest($bridgedRequest, $bridgedResponse);
+
+    if (!$bridgedResponse) {
+        return $bridgedResponse;
+    }
+
+    $params = $bridgedRequest->getAllQueryParameters();
+    $client = OauthClient::where('client_id', '=', $params['client_id'])->first();
+
+    return View::make('oauth.authorization-form', ['client' => $client, 'params' => $params, 'permsObj' => new \Medusa\Permissions\PermissionsHelper()]);
+});
+
+Route::post('oauth/authorize', function()
+{
+	$bridgedRequest  = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
+	$bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+
+    $is_authorized = ($bridgedRequest->get('authorized') === 'Approve');
+
+    App::make('oauth2')->handleAuthorizeRequest($bridgedRequest, $bridgedResponse, $is_authorized, Auth::user()->id);
+
+    return $bridgedResponse;
+});
+
+Route::post('oauth/token', function()
+{
+	$bridgedRequest  = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
+	$bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+
+	$bridgedResponse = App::make('oauth2')->handleTokenRequest($bridgedRequest, $bridgedResponse);
+
+	return $bridgedResponse;
+});
+
+Route::get('oauth/profile', function()
+{
+	$bridgedRequest  = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
+	$bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+
+	if (App::make('oauth2')->verifyResourceRequest($bridgedRequest, $bridgedResponse)) {
+
+		$token = App::make('oauth2')->getAccessTokenData($bridgedRequest);
+
+        $user = User::find($token['user_id']);
+
+		return Response::json(array(
+			'uid' => $token['user_id'],
+            'email' => $user->email_address,
+            'firstname' => $user->first_name,
+            'lastname' => $user->last_name,
+            'city' => $user->city,
+            'state_province' => $user->state_province,
+            'country' => $user->country,
+            'imageurl' => $user->filePhoto,
+			'user_id' => $token['user_id'],
+			'client'  => $token['client_id'],
+			'expires' => $token['expires'],
+		));
+	}
+	else {
+		return Response::json(array(
+			'error' => 'Unauthorized'
+		), $bridgedResponse->getStatusCode());
+	}
+});
+
 // Authentication
 
 Route::get( '/signout', [ 'as' => 'signout', 'uses' => 'AuthController@signout' ] );

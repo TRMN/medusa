@@ -13,7 +13,7 @@ class AuthController extends BaseController
 
         if ( $validator->fails() )
         {
-            return Redirect::route('login')->withErrors( $validator );
+            return Redirect::back()->withErrors( $validator );
         }
 
         $email = Input::get( 'email' );
@@ -21,14 +21,11 @@ class AuthController extends BaseController
 
         if ( Auth::attempt(['email_address' => strtolower($email), 'password' => $password, 'active' => 1])) {
             User::find(Auth::user()->id)->updateLastLogin();
-            return Redirect::route('home');
+            return Redirect::back();
         } else {
-            return Redirect::route('login')->with('message', 'Your username/password combination was incorrect')
+            return Redirect::back()->with('message', 'Your username/password combination was incorrect')
                 ->withInput();
         }
-
-
-        return Redirect::route('login')->withErrors( $validator );
     }
 
     public function signout()
