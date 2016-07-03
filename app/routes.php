@@ -18,9 +18,7 @@ View::share( 'authUser', $authUser );
 // OAuth2
 App::singleton('oauth2', function() {
 
-    $mongo = new MongoClient('mongodb://localhost:27017/trmn');
-
-	$storage = $storage = new OAuth2\Storage\Mongo(['host' => 'localhost', 'port' => '27017', 'database' => 'trmn']);
+    $storage = $storage = new OAuth2\Storage\Mongo(\DB::getMongoDB());
 	$server = new OAuth2\Server($storage);
 
     $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
