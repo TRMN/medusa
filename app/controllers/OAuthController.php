@@ -1,67 +1,144 @@
 <?php
 
-use Illuminate\Routing\Controller;
-use LucaDegasperi\OAuth2Server\Authorizer;
-
 class OAuthController extends BaseController
 {
-    protected $authorizer;
-
-    public function __construct(Authorizer $authorizer)
+    public function index()
     {
+        if (( $redirect = $this->checkPermissions(['ALL_PERMS']) ) !== true) {
+            return $redirect;
+        }
 
-        $this->authorizer = $authorizer;
+        $clients = OauthClient::orderBy('client_name')->get();
 
-        $this->beforeFilter('auth', ['only' => ['getAuthorize', 'postAuthorize']]);
-        $this->beforeFilter('csrf', ['only' => 'postAuthorize']);
-        $this->beforeFilter('check-authorization-params', ['only' => ['getAuthorize', 'postAuthorize']]);
-
-        parent::__construct();
+        return View::make('oauth.index', ['clients' => $clients]);
     }
 
-    public function postAccessToken()
-    {
-        return Response::json($this->authorizer->issueAccessToken());
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 * GET /billet/create
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+        if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
+            return $redirect;
+        }
 
-    public function getAuthorize()
-    {
-        $authParams = $this->authorizer->getAuthCodeRequestParams();
+		return View::make("oauth.create");
+	}
 
-        $formParams = array_except($authParams, 'client');
+	/**
+	 * Store a newly created resource in storage.
+	 * POST /billet
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
+            return $redirect;
+        }
 
-        $formParams['client_id'] = $authParams['client']->getId();
+        $validator = Validator::make($data = Input::all(), OauthClient::$rules);
 
-        $formParams['scope'] = implode(
-            config('oauth2.scope_delimiter'),
-            array_map(
-                function ($scope) {
-                    return $scope->getId();
-                },
-                $authParams['scopes']
-            )
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        $this->writeAuditTrail(
+             Auth::user()->id,
+            'create',
+            'oauth_clients',
+            null,
+            json_encode($data),
+            'OauthController@store'
         );
 
+        OauthClient::create($data);
 
-        return View::make('oauth.authorization-form', ['params' => $formParams, 'client' => $authParams['client']]);
-    }
+        return Redirect::route('oauthclient.index');
+	}
 
-    public function postAuthorize()
-    {
-        $params = $this->authorizer->getAuthCodeRequestParams();
-        $params['user_id'] = Auth::user()->id;
-        $redirectUri = '/';
+	/**
+	 * Display the specified resource.
+	 * GET /billet/{id}
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		//
+	}
 
-        // If the user has allowed the client to access its data, redirect back to the client with an auth code.
-        if (Request::has('approve')) {
-            $redirectUri = $this->authorizer->issueAuthCode('user', $params['user_id'], $params);
+	/**
+	 * Show the form for editing the specified resource.
+	 * GET /billet/{id}/edit
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit(OauthClient $oauthClient)
+	{
+        if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
+            return $redirect;
         }
 
-        // If the user has denied the client to access its data, redirect back to the client with an error message.
-        if (Request::has('deny')) {
-            $redirectUri = $this->authorizer->authCodeRequestDeniedRedirectUri();
+		return View::make("oauth.edit", ['oauthclient' => $oauthClient]);
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 * PUT /billet/{id}
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update(OauthClient $oauthClient)
+	{
+		if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
+            return $redirect;
         }
 
-        return Redirect::to($redirectUri);
-    }
+        $validator = Validator::make($data = Input::all(), OauthClient::$updateRules);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        foreach(['client_id', 'client_secret', 'redirect_url', 'client_name'] as $property) {
+            $oauthClient->{$property} = $data[$property];
+        }
+
+        $this->writeAuditTrail(
+             Auth::user()->id,
+            'update',
+            'oauth_client',
+            null,
+            $oauthClient->toJson(),
+            'OAuthController@update'
+        );
+
+        $oauthClient->save();
+
+        return Redirect::route('oauthclient.index');
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 * DELETE /billet/{id}
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy(OauthClient $oauthClient)
+	{
+		try {
+            $oauthClient->delete();
+            return 1;
+        } catch(Exception $e) {
+            return 0;
+        }
+	}
 }

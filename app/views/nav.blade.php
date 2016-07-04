@@ -124,7 +124,9 @@
             <div class="rnav">
                 <a href="{{ route('anyunit.create') }}">Create Unit/Echelon</a><br/>
                 <a href="{{ route('type.index') }}">List Chapter Types</a><br/>
-                <a href="{{ route('type.create') }}">Add Chapter Type</a>
+                <a href="{{ route('type.create') }}">Add Chapter Type</a><br />
+                <a href="{{ route('oauthclient.index') }}">List OAuth Clients</a><br />
+                <a href="{{ route('oauthclient.create') }}">Add OAuth Client</a>
             </div>
         @endif
     @endif
