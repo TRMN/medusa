@@ -2,12 +2,6 @@
   "name": "trmn/medusa",
   "authors": [
     {
-      "name": "Ben Overmyer",
-      "email": "manatrance@gmail.com",
-      "homepage": "http://benovermyer.com",
-      "role": "Architect/Front End Developer"
-    },
-    {
       "name": "Dave Weiner",
       "email": "david.l.weiner30030@gmail.com",
       "role": "Architect/Full Stack Developer"
@@ -55,10 +49,12 @@
     "simplesoftwareio/simple-qrcode": "~1",
     "intervention/image": "^2.3",
     "google/recaptcha": "~1.1",
-    "nesbot/carbon": "1.17.0"
+    "nesbot/carbon": "1.17.0",
+    "bshaffer/oauth2-server-httpfoundation-bridge": "^1.1"
   },
   "require-dev": {
-    "way/generators": "~2.0"
+    "way/generators": "~2.0",
+    "phpunit/phpunit": "3.7.*"
   },
   "autoload": {
     "classmap": [

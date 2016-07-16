@@ -69,6 +69,11 @@ $medusa-yellow: #ffee00;
   display: none !important;
 }
 
+.hide-overflow {
+  overflow: hidden !important;
+  width: 175px;
+}
+
 .error {
   list-style: none !important;
   margin-left: 0 !important;
