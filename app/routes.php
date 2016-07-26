@@ -30,10 +30,12 @@ App::singleton(
 
         $mongo = new MongoClient('mongodb://' . implode(',', $hosts) . '/' . $dbName, $dbOptions);
         $storage = new OAuth2\Storage\Mongo($mongo->{$dbName});
-        $server = new OAuth2\Server($storage, [
+        $server = new OAuth2\Server(
+            $storage, [
             'always_issue_new_refresh_token' => true,
             'refresh_token_lifetime'         => 2419200,
-        ]);
+        ]
+        );
 
         $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
         $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
@@ -124,6 +126,51 @@ Route::get(
                     'expires'        => $token['expires'],
                 )
             );
+        } else {
+            return Response::json(
+                array(
+                    'error' => 'Unauthorized'
+                ),
+                $bridgedResponse->getStatusCode()
+            );
+        }
+    }
+);
+
+Route::get(
+    'oauth/user',
+    function () {
+        $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
+        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+
+        if (App::make('oauth2')->verifyResourceRequest($bridgedRequest, $bridgedResponse)) {
+
+            $token = App::make('oauth2')->getAccessTokenData($bridgedRequest);
+
+            $user = User::find($token['user_id']);
+            $exams = Exam::where('member_id', '=', $user->member_id)->first()->exams;
+
+            unset( $user->duty_roster, $user->permissions, $user->password, $user->osa, $user->remember_token, $user->tos );
+
+            $assignments = $user->assignment;
+
+            foreach ($assignments as $index => $assignment) {
+                unset( $assignments[$index]['chapter_id'] );
+            }
+
+            $user->assignment = $assignments;
+
+            $peerages = $user->peerages;
+
+            foreach ($peerages as $index => $peerage) {
+                unset( $peerages[$index]['peerage_id'] );
+            }
+
+            $user->peerages = $peerages;
+
+            $user->exams = $exams;
+
+            return Response::json($user);
         } else {
             return Response::json(
                 array(
@@ -235,6 +282,7 @@ Route::get(
     '/triadreport',
     ['as' => 'chapter.triadreport', 'uses' => 'ChapterController@commandTriadReport', 'before' => 'auth']
 );
+Route::get('/export/{chapter}', ['as' => 'roster.export', 'uses' => 'ChapterController@exportRoster', 'before' => 'auth']);
 Route::resource('announcement', 'AnnouncementController', ['before' => 'auth']);
 Route::resource('report', 'ReportController', ['before' => 'auth']);
 

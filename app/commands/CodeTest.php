@@ -39,10 +39,56 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        $exams = Exam::where('member_id', '=', 'RMN-1094-12')->first()->exams['KR1MA-RMAT-18B']['entered_by'];
+        $ship = Chapter::find('55fa1833e4bed832078b45dc');
 
-        print_r($exams);
+        $csv = \League\Csv\Writer::createFromFileObject(new \SplTempFileObject());
+        $csv->setNewline("\r\n");
+        $crew = $ship->getAllCrew();
 
+        $headers =
+            [
+                'RMN Number',
+                'First Name',
+                'Middle Name',
+                'Last Name',
+                'Suffix',
+                'Email Address',
+                'Phone Number',
+                'Address 1',
+                'Address 2',
+                'City',
+                'State/Province',
+                'Postal Code',
+                'Country',
+                'Rank',
+                'Date of Rank'
+            ];
+
+        $csv->insertOne($headers);
+
+        foreach ($crew as $member) {
+            $csv->insertOne(
+                [
+                    $member->member_id,
+                    $member->first_name,
+                    $member->middle_name,
+                    $member->last_name,
+                    $member->suffix,
+                    $member->email_address,
+                    $member->phone_number,
+                    $member->address1,
+                    $member->address2,
+                    $member->city,
+                    $member->state_province,
+                    $member->postal_code,
+                    $member->country,
+                    $member->rank['grade'],
+                    $member->rank['date_of_rank']
+                ]
+            );
+        }
+
+        $csv->output(date('Y-m-d') . '_' . str_replace(' ', '_', $ship->chapter_name) . '_roster.csv');
     }
 
     /**
@@ -62,7 +108,7 @@ class CodeTest extends Command
      */
     protected function getOptions()
     {
-		return [];
+        return [];
     }
 
 }

@@ -234,6 +234,9 @@ switch ($detail->chapter_type) {
         <div class="row padding-5">
             <div class="small-2 columns Incised901Light">
                 Crew Roster:
+                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                    <br /><a href="{{route('roster.export', [$detail->id])}}">Download Roster</a>
+                @endif
             </div>
             <div class="small-10 columns Incised901Light">
                 <table id="crewRoster" class="compact row-border" width="75%">
