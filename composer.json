@@ -50,7 +50,8 @@
     "intervention/image": "^2.3",
     "google/recaptcha": "~1.1",
     "nesbot/carbon": "1.17.0",
-    "bshaffer/oauth2-server-httpfoundation-bridge": "^1.1"
+    "bshaffer/oauth2-server-httpfoundation-bridge": "^1.1",
+    "league/csv": "^8.1"
   },
   "require-dev": {
     "way/generators": "~2.0",
