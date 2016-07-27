@@ -21,7 +21,7 @@
 
 <p>TRMN will not divulge your personal information to any third party without your permission. TRMN, a wholly owned subdivision of TRMN (such as the Manticore Company Limited), or an individual authorized by it may contact you with information related to the organization, or may contact you on behalf of a third party with whom the organization is working with (such as the American Red Cross). But at all times your personal and contact information will remain private.</p>
 
-<p>Access to member’s private information stored in any area of the Website is governed by the Official Secrets Act (Admiralty Order 0801-02), available at <a href="http://www.trmn.org/portal/index.php/ldrship/orders/86-admiralty-orders/197-the-official-secrets-act-admiralty-order-0801-02">http://www.trmn.org/portal/index.php/ldrship/orders/86-admiralty-orders/197-the-official-secrets-act-admiralty-order-0801-02</a>.</p>
+<p>Access to member’s private information stored in any area of the Website is governed by the Official Secrets Act (Admiralty Order 0801-02), available at <a href="http://wiki.trmn.org/wiki/index.php/Admiralty_Order_1511-07">http://wiki.trmn.org/wiki/index.php/Admiralty_Order_1511-07</a>.</p>
 
 <h2>IV.    Accounts</h2>
 <p>When you create an account on the Website you agree to provide accurate and complete information, and to keep that information current at all times. Failure to provide accurate or complete information will be considered a breach of these Terms and may, at our discretion, result in a suspension or termination of your account.</p>
