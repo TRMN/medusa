@@ -351,7 +351,9 @@ class ChapterController extends BaseController
                 'Postal Code',
                 'Country',
                 'Rank',
-                'Date of Rank'
+                'Date of Rank',
+                'Branch',
+                'Billet'
             ];
 
         $csv->insertOne($headers);
@@ -373,7 +375,9 @@ class ChapterController extends BaseController
                     $member->postal_code,
                     $member->country,
                     $member->rank['grade'],
-                    $member->rank['date_of_rank']
+                    $member->rank['date_of_rank'],
+                    $member->branch,
+                    $member->getBillet('primary')
                 ]
             );
         }
