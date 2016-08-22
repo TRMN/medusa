@@ -16,35 +16,41 @@ View::share('serverUrl', $hostFull);
 View::share('authUser', $authUser);
 
 // OAuth2
-App::singleton(
-    'oauth2',
-    function () {
+    App::singleton(
+        'oauth2',
+        function () {
 
-        $host = Config::get('database.connections.mongodb.host');
-        $hosts = is_array($host) ? $host : [$host];
-        $dbName = Config::get('database.connections.mongodb.database');
-        $dbOptions =
-            empty( Config::get('database.connections.mongodb.options') ) ? [] : Config::get(
-                'database.connections.mongodb.options'
+            $host = Config::get('database.connections.mongodb.host');
+            $hosts = is_array($host) ? $host : [$host];
+            $dbName = Config::get('database.connections.mongodb.database');
+            $dbOptions =
+                empty( Config::get('database.connections.mongodb.options') ) ? [] : Config::get(
+                    'database.connections.mongodb.options'
+                );
+
+            $mongo = new MongoClient('mongodb://' . implode(',', $hosts) . '/' . $dbName, $dbOptions);
+            $storage = new OAuth2\Storage\Mongo($mongo->{$dbName});
+            $server = new OAuth2\Server(
+                $storage, [
+                'always_issue_new_refresh_token' => true,
+                'refresh_token_lifetime'         => 2419200,
+            ]
             );
 
-        $mongo = new MongoClient('mongodb://' . implode(',', $hosts) . '/' . $dbName, $dbOptions);
-        $storage = new OAuth2\Storage\Mongo($mongo->{$dbName});
-        $server = new OAuth2\Server(
-            $storage, [
-            'always_issue_new_refresh_token' => true,
-            'refresh_token_lifetime'         => 2419200,
-        ]
-        );
+            $userStorage = new \Medusa\Oauth\Storage\MedusaUserCredentials();
 
-        $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
-        $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
-        $server->addGrantType(new OAuth2\GrantType\UserCredentials($storage));
-        $server->addGrantType(new OAuth2\GrantType\RefreshToken($storage));
+            $server->addStorage($userStorage, 'users');
 
-        return $server;
-    }
-);
+            $userCredentialGrant = new Oauth2\GrantType\UserCredentials($userStorage);
+
+            $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
+            $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
+            $server->addGrantType($userCredentialGrant);
+            $server->addGrantType(new OAuth2\GrantType\RefreshToken($storage));
+
+            return $server;
+        }
+    );
 
 Route::get(
     'oauth/authorize',
@@ -87,17 +93,17 @@ Route::post(
     }
 );
 
-Route::post(
-    'oauth/token',
-    function () {
-        $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
-        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+    Route::post(
+        'oauth/token',
+        function () {
+            $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
+            $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
 
-        $bridgedResponse = App::make('oauth2')->handleTokenRequest($bridgedRequest, $bridgedResponse);
-
-        return $bridgedResponse;
-    }
-);
+            $bridgedResponse = App::make('oauth2')->handleTokenRequest($bridgedRequest, $bridgedResponse);
+    print_r($bridgedResponse); die();
+            return $bridgedResponse;
+        }
+    );
 
 Route::get(
     'oauth/profile',
