@@ -133,7 +133,7 @@ return [
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
         'Medusa\Services\MedusaServiceProvider',
-
+        'Medusa\Providers\OAuthServiceProvider',
     ],
 
     /*
