@@ -15,7 +15,7 @@
 
         public function checkUserCredentials($username, $password)
         {
-            return Auth::attempt(['email_address' => strtolower($username), 'password' => $password, 'active' => 1]);
+            return \Auth::attempt(['email_address' => strtolower($username), 'password' => $password, 'active' => 1]);
         }
 
         public function getUserDetails($username)

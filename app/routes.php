@@ -16,41 +16,41 @@ View::share('serverUrl', $hostFull);
 View::share('authUser', $authUser);
 
 // OAuth2
-    App::singleton(
-        'oauth2',
-        function () {
+App::singleton(
+    'oauth2',
+    function () {
 
-            $host = Config::get('database.connections.mongodb.host');
-            $hosts = is_array($host) ? $host : [$host];
-            $dbName = Config::get('database.connections.mongodb.database');
-            $dbOptions =
-                empty( Config::get('database.connections.mongodb.options') ) ? [] : Config::get(
-                    'database.connections.mongodb.options'
-                );
+        $host = Config::get('database.connections.mongodb.host');
+        $hosts = is_array($host) ? $host : [$host];
+        $dbName = Config::get('database.connections.mongodb.database');
+        $dbOptions =
+            empty( Config::get('database.connections.mongodb.options') ) ? [] : Config::get(
+                'database.connections.mongodb.options'
+            );
 
-            $mongo = new MongoClient('mongodb://' . implode(',', $hosts) . '/' . $dbName, $dbOptions);
-            $storage = new OAuth2\Storage\Mongo($mongo->{$dbName});
-            $server = new OAuth2\Server(
-                $storage, [
+        $mongo = new MongoClient('mongodb://' . implode(',', $hosts) . '/' . $dbName, $dbOptions);
+        $storage = new OAuth2\Storage\Mongo($mongo->{$dbName});
+        $server = new OAuth2\Server(
+            $storage, [
                 'always_issue_new_refresh_token' => true,
                 'refresh_token_lifetime'         => 2419200,
             ]
-            );
+        );
 
-            $userStorage = new \Medusa\Oauth\Storage\MedusaUserCredentials();
+        $userStorage = new \Medusa\Oauth\Storage\MedusaUserCredentials();
 
-            $server->addStorage($userStorage, 'users');
+        $server->addStorage($userStorage, 'user_credentials');
 
-            $userCredentialGrant = new Oauth2\GrantType\UserCredentials($userStorage);
+        $userCredentialGrant = new OAuth2\GrantType\UserCredentials($userStorage);
 
-            $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
-            $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
-            $server->addGrantType($userCredentialGrant);
-            $server->addGrantType(new OAuth2\GrantType\RefreshToken($storage));
+        $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
+        $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
+        $server->addGrantType($userCredentialGrant);
+        $server->addGrantType(new OAuth2\GrantType\RefreshToken($storage));
 
-            return $server;
-        }
-    );
+        return $server;
+    }
+);
 
 Route::get(
     'oauth/authorize',
@@ -93,17 +93,16 @@ Route::post(
     }
 );
 
-    Route::post(
-        'oauth/token',
-        function () {
-            $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
-            $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+Route::post(
+    'oauth/token',
+    function () {
+        $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
+        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
 
-            $bridgedResponse = App::make('oauth2')->handleTokenRequest($bridgedRequest, $bridgedResponse);
-    print_r($bridgedResponse); die();
-            return $bridgedResponse;
-        }
-    );
+        $bridgedResponse = App::make('oauth2')->handleTokenRequest($bridgedRequest, $bridgedResponse);
+        return $bridgedResponse;
+    }
+);
 
 Route::get(
     'oauth/profile',
@@ -153,8 +152,7 @@ Route::get(
 
             $token = App::make('oauth2')->getAccessTokenData($bridgedRequest);
 
-            $user = User::find($token['user_id']);
-            $exams = Exam::where('member_id', '=', $user->member_id)->first()->exams;
+            $user = User::where('email_address', '=', $token['user_id'])->first();
 
             unset( $user->duty_roster, $user->permissions, $user->password, $user->osa, $user->remember_token, $user->tos );
 
@@ -166,25 +164,89 @@ Route::get(
 
             $user->assignment = $assignments;
 
-            $peerages = $user->peerages;
+            $peerages = [];
 
-            foreach ($peerages as $index => $peerage) {
-                unset( $peerages[$index]['peerage_id'] );
+            foreach ($user->getPeerages() as $peerage) {
+                if ($peerage['code'] != 'K' && $peerage['title'] != 'Knight' && $peerage['title'] != 'Dame') {
+                    $path = null;
+                    if (empty( $peerage['filename'] ) === false) {
+                        $peerage['path'] = 'https://medusa.trmn.org/arms/peerage/' . $peerage['filename'];
+                    }
+                    $peerage['fullTitle'] =
+                        $peerage['generation'] . ' ' . $peerage['title'] . ' of ' . $peerage['lands'];
+                } else {
+                    $orderInfo = Korders::where('classes.postnominal', '=', $peerage['postnominal'])->first();
+                    $peerage['path'] = 'https://medusa.trmn.org/awards/orders/medals/' . $orderInfo->filename;
+                    $peerage['fullTitle'] =
+                        $orderInfo->getClassName($peerage['postnominal']) . ', ' . $orderInfo->order;
+                }
+                unset( $peerage['peerage_id'] );
+                $peerages[] = $peerage;
             }
 
             $user->peerages = $peerages;
 
+            $schools =
+                [
+                    'RMN'            => 'RMN',
+                    'SRN'            => 'RMN Specialty',
+                    'GSN'            => 'GSN',
+                    'STC|AFLTC|GTSC' => 'GSN Specialty',
+                    'RMMC'           => 'RMMC',
+                    'SRMC'           => 'RMMC Specialty',
+                    'RMA'            => 'RMA',
+                    'RMAT'           => 'RMA Specialty',
+                    'CORE|KC|QC'     => 'Landing University',
+                    'SFC'            => 'SFC',
+                    'RMMM'           => 'RMMM',
+                    'RMACS'          => 'RMACS'
+                ];
+
+            $lastlogin = strtotime($user->previous_login);
+            $exams = [];
+
+            foreach ($schools as $branch => $label) {
+                $examList = $user->getExamList(['branch' => $branch]);
+                foreach ($examList as $exam_id => $gradeInfo) {
+                    if (!empty( $gradeInfo['date_entered'] ) &&
+                        strtotime($gradeInfo['date_entered']) >= $lastlogin) {
+                        $examList[$exam_id]['new'] = true;
+                    }
+
+                    $examInfo = ExamList::where('exam_id', '=', $exam_id)->first();
+
+                    if (!is_null($examInfo)) {
+                        $examList[$exam_id]['name'] = $examInfo->name;
+                    }
+
+                    if ($gradeInfo['date'] != 'UNKNOWN') {
+                        $examList[$exam_id]['date'] = date('d M Y', strtotime($gradeInfo['date']));
+                    }
+
+                    unset($examList[$exam_id]['entered_by']);
+
+                    $exams[$label] = $examList;
+                }
+            }
+
             $user->exams = $exams;
 
-            return Response::json($user);
-        } else {
-            return Response::json(
-                array(
-                    'error' => 'Unauthorized'
-                ),
-                $bridgedResponse->getStatusCode()
-            );
-        }
+        $user->greeting =
+            $user->getGreeting() . '(' . $user->branch . ') ' . $user->getFullName() . $user->getPostnominals();
+
+        $user->tig = $user->getTimeInGrade();
+        $user->tis = $user->getTimeInService();
+        $user->filePhoto = 'https://medusa.trmn.org' . $user->filePhoto;
+
+        return Response::json($user);
+    } else {
+    return Response::json(
+        array(
+            'error' => 'Unauthorized'
+        ),
+        $bridgedResponse->getStatusCode()
+    );
+}
     }
 );
 
@@ -288,7 +350,10 @@ Route::get(
     '/triadreport',
     ['as' => 'chapter.triadreport', 'uses' => 'ChapterController@commandTriadReport', 'before' => 'auth']
 );
-Route::get('/export/{chapter}', ['as' => 'roster.export', 'uses' => 'ChapterController@exportRoster', 'before' => 'auth']);
+Route::get(
+    '/export/{chapter}',
+    ['as' => 'roster.export', 'uses' => 'ChapterController@exportRoster', 'before' => 'auth']
+);
 Route::resource('announcement', 'AnnouncementController', ['before' => 'auth']);
 Route::resource('report', 'ReportController', ['before' => 'auth']);
 

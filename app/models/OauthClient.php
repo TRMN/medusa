@@ -9,15 +9,13 @@ class OauthClient extends Eloquent
 
     public static $rules = [
         'client_id'     => 'required|unique:oauth_clients',
-        'client_secret' => 'required',
-        'redirect_url'  => 'required|url',
+        'redirect_url'  => 'url',
         'client_name'   => 'required',
     ];
 
         public static $updateRules = [
         'client_id'     => 'required',
-        'client_secret' => 'required',
-        'redirect_url'  => 'required|url',
+        'redirect_url'  => 'url',
         'client_name'   => 'required',
     ];
 
