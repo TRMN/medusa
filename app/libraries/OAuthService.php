@@ -57,13 +57,12 @@ class OAuthService
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\View\View|\OAuth2\HttpFoundationBridge\Response
      */
-    public function authorize(\Illuminate\Http\Request $request)
+    public function authorize()
     {
-        $_request = Request::createFromRequest($request);
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
         $_response = new Response();
 
         $this->server->validateAuthorizeRequest($_request, $_response);
@@ -83,13 +82,12 @@ class OAuthService
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return \OAuth2\HttpFoundationBridge\Response
      */
-    public function authorizePost(\Illuminate\Http\Request $request)
+    public function authorizePost()
     {
-        $_request = Request::createFromRequest($request);
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
         $_response = new Response();
 
         /** @noinspection PhpUndefinedFieldInspection */
@@ -99,13 +97,12 @@ class OAuthService
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return \OAuth2\HttpFoundationBridge\Response
      */
-    public function token(\Illuminate\Http\Request $request)
+    public function token()
     {
-        $_request = Request::createFromRequest($request);
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
         $_response = new Response();
 
         $_response = $this->server->handleTokenRequest($_request, $_response);
@@ -114,13 +111,12 @@ class OAuthService
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function profile(\Illuminate\Http\Request $request)
+    public function profile()
     {
-        $_request = Request::createFromRequest($request);
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
         $_response = new Response();
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
@@ -149,13 +145,12 @@ class OAuthService
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function user(\Illuminate\Http\Request $request)
+    public function user()
     {
-        $_request = Request::createFromRequest($request);
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
         $_response = new Response();
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {

@@ -16,33 +16,32 @@ View::share('authUser', $authUser);
 
 // OAuth2 routes
 Route::get('oauth/authorize',
-    function(\Illuminate\Http\Request $request) {
-        return app('oauth2')->authorize($request);
-
+    function() {
+        return app('oauth2')->authorize();
     }
 );
 
 Route::post('oauth/authorize',
-    function(\Illuminate\Http\Request $request) {
-        return app('oauth2')->authorizePost($request);
+    function() {
+        return app('oauth2')->authorizePost();
     }
 );
 
 Route::post('oauth/token',
-    function(\Illuminate\Http\Request $request) {
-        return app('oauth2')->token($request);
+    function() {
+        return app('oauth2')->token();
     }
 );
 
 Route::get('oauth/profile',
-    function(\Illuminate\Http\Request $request) {
-        return app('oauth2')->profile($request);
+    function() {
+        return app('oauth2')->profile();
     }
 );
 
 Route::get('oauth/user',
-    function(\Illuminate\Http\Request $request) {
-        return app('oauth2')->user($request);
+    function() {
+        return app('oauth2')->user();
     }
 );
 
