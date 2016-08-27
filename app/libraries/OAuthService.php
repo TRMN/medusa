@@ -53,7 +53,10 @@ class OAuthService
 
         $this->server->addGrantType(new AuthorizationCode($_store));
         $this->server->addGrantType(new ClientCredentials($_store));
-        $this->server->addGrantType(new RefreshToken($_store));
+        $this->server->addGrantType(new RefreshToken($_store, [
+           'always_issue_new_refresh_token' => true,
+           'unset_refresh_token_after_use'  => true,
+       ]));
     }
 
     /**
