@@ -1,5 +1,5 @@
 <?php
-$protocol = (Request::secure()) ? "https:" : "http:";
+$protocol = ( Request::secure() ) ? "https:" : "http:";
 
 $host = Request::server('HTTP_HOST');
 
@@ -15,33 +15,52 @@ View::share('serverUrl', $hostFull);
 View::share('authUser', $authUser);
 
 // OAuth2 routes
-Route::get('oauth/authorize',
-    function() {
+Route::get(
+    'oauth/authorize',
+    function () {
         return app('oauth2')->authorize();
     }
 );
 
-Route::post('oauth/authorize',
-    function() {
+Route::post(
+    'oauth/authorize',
+    function () {
         return app('oauth2')->authorizePost();
     }
 );
 
-Route::post('oauth/token',
-    function() {
+Route::post(
+    'oauth/token',
+    function () {
         return app('oauth2')->token();
     }
 );
 
-Route::get('oauth/profile',
-    function() {
+Route::get(
+    'oauth/profile',
+    function () {
         return app('oauth2')->profile();
     }
 );
 
-Route::get('oauth/user',
-    function() {
+Route::get(
+    'oauth/user',
+    function () {
         return app('oauth2')->user();
+    }
+);
+
+Route::get(
+    'oauth/lastupdate',
+    function () {
+        return app('oauth2')->lastUpdated();
+    }
+);
+
+Route::get(
+    'oauth/tistig',
+    function () {
+        return app('oauth2')->getTisTig();
     }
 );
 

@@ -239,6 +239,8 @@ class UserController extends \BaseController
             'TRANSFER'
         ];
 
+        $user->lastUpdate = time();
+
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
             'update',
@@ -277,6 +279,8 @@ class UserController extends \BaseController
 
         $user->registration_status = 'Denied';
         $user->registration_date = date('Y-m-d');
+
+        $user->lastUpdate = time();
 
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
@@ -424,6 +428,8 @@ class UserController extends \BaseController
         unset( $data['_token'], $data['password_confirmation'] );
 
         $data['email_address'] = strtolower($data['email_address']);
+
+        $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
             (string)Auth::user()->_id,
@@ -593,6 +599,8 @@ class UserController extends \BaseController
         $data['email_address'] = strtolower($data['email_address']);
 
         asort($data);
+
+        $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
             'Guest from ' . \Request::getClientIp(),
@@ -862,6 +870,8 @@ class UserController extends \BaseController
         $data['email_address'] = strtolower($data['email_address']);
 
         $data['duty_roster'] = trim($data['duty_roster'], ',');
+
+        $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
             (string)Auth::user()->_id,

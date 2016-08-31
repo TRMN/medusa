@@ -88,6 +88,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'note',
         'last_login',
         'previous_login',
+        'lastUpdate',
     ];
 
     public function announcements()
@@ -455,7 +456,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 if ($timeInGrade->format('%d') > 25) {
                     $tig += 1;
                 }
-                return str_pad($tig, 2, '0', STR_PAD_LEFT) . ' Mo';
+                return $tig . ' Mo';
             } else {
                 return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
             }
@@ -464,7 +465,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
-    public function getTimeInService()
+    public function getTimeInService($short = false)
     {
         if (empty( $this->registration_date ) === false) {
             $regDateObj = new DateTime();
@@ -472,6 +473,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $regDateObj->setDate($year, $month, $day);
 
             $timeInService = $regDateObj->diff(new DateTime("now"));
+
+            if ($short === true) {
+                $tis = ($timeInService->format('%y') * 12) + $timeInService->format('%m');
+                if ($timeInService->format('%d') > 25) {
+                    $tis +=1;
+                }
+                return $tis . ' Mo';
+            }
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
             return null;
@@ -830,6 +839,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         $this->osa = false;
 
+        $this->lastUpdate = time();
+
         $this->writeAuditTrail(
             $user,
             'update',
@@ -860,6 +871,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
 
         $this->osa = false;
+        $this->lastUpdate = time();
 
         $this->writeAuditTrail(
             $user,
@@ -889,6 +901,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         );
 
         $this->peerages = $peerages;
+        $this->lastUpdate = time();
 
         $this->save();
 
@@ -1196,6 +1209,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             return date('Y-m-d', strtotime('-2 weeks'));
         }
         return date('Y-m-d', strtotime($this->previous_login));
+    }
+
+    public function getLastUpdated()
+    {
+        if (empty($this->lastUpdate) == true) {
+            return strtotime($this->updated_at->toDateTimeString());
+        }
+
+        return $this->lastUpdate;
+    }
+
+    public function updateLastUpdated()
+    {
+        $this->lastUpdate = time();
+        $this->save();
     }
 
     public function checkRostersForNewExams()
