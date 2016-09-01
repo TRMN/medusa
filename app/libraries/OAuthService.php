@@ -267,9 +267,12 @@ class OAuthService
 
             foreach ($_schools as $_branch => $_label) {
                 $_examList = $_user->getExamList(['branch' => $_branch]);
+                $_newExams = false;
+
                 foreach ($_examList as $_id => $_grades) {
                     if (!empty( $_grades['date_entered'] ) && strtotime($_grades['date_entered']) >= $_lastLogin) {
                         $_examList[$_id]['new'] = true;
+                        $_newExams = true;
                     }
 
                     /** @noinspection PhpUndefinedMethodInspection */
@@ -285,8 +288,15 @@ class OAuthService
 
                     unset( $_examList[$_id]['entered_by'] );
 
-                    $_exams[$_label] = $_examList;
+                    $_tmp = strpos($_branch, '|');
+
+                    if ($_tmp > 0) {
+                        $_branch = substr($_branch, 0, $_tmp);
+                    }
+
+                    $_exams[$_branch] = ['label' => $_label, 'new' => $_newExams, 'examlist' => $_examList];
                 }
+
             }
 
             $_user->exams = $_exams;
