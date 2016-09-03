@@ -339,4 +339,24 @@ class OAuthService
 
         return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
     }
+
+    public function getIdCard()
+    {
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
+        $_response = new Response();
+
+        \Log::info('ID card requested');
+
+        if ($this->server->verifyResourceRequest($_request, $_response)) {
+            $_token = $this->server->getAccessTokenData($_request);
+
+            $_idCard = \User::where('email_address', '=', $_token['user_id'])->first()->buildIdCard();
+
+            return $_idCard->response('png');
+
+        }
+
+        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+    }
 }

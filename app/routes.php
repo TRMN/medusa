@@ -64,6 +64,13 @@ Route::get(
     }
 );
 
+Route::get(
+    'oauth/idcard',
+    function () {
+        return app('oauth2')->getIdCard();
+    }
+);
+
 Route::model('oauthclient', 'OAuthClient');
 Route::resource('oauthclient', 'OAuthController', ['before' => 'auth']);
 
