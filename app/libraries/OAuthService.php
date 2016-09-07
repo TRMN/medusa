@@ -302,7 +302,7 @@ class OAuthService
             $_user->exams = $_exams;
 
             $_user->greeting =
-                $_user->getGreeting() . ' (' . $_user->branch . ') ' . $_user->getFullName() . $_user->getPostnominals(
+                $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals(
                 );
 
             if (!file_exists(public_path() . $_user->filePhoto)) {
