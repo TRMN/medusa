@@ -262,3 +262,4 @@ Route::get('/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get th
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
 Route::get(' /api/find', 'ApiController@findMember', ['before' => 'auth']); // search for a member
 Route::get('/api/exam', 'ApiController@findExam', ['before' => 'auth']); // search for an exam
+Route::get('/api/checkemail/{email}', 'ApiController@checkAddress'); // Check that an email address is available

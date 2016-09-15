@@ -124,6 +124,17 @@ class ApiController extends BaseController
         return Response::json(Chapter::getChaptersByType('university'));
     }
 
+    public function checkAddress($email_address)
+    {
+        $user = User::where('email_address', '=', $email_address)->first();
+
+        if (empty($user) === true) {
+            return Response::json(['available' => true]);
+        }
+
+        return Response::json(['available' => false]);
+    }
+
     public function savePhoto()
     {
         if (Input::file('file')->isValid() === true) {
