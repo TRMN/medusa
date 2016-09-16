@@ -237,7 +237,7 @@ class OAuthService
                     /** @var \Korders $orderInfo */
                     $orderInfo = \Korders::where('classes.postnominal', '=', $_peerage['postnominal'])->first();
                     if (file_exists(public_path() . '/awards/orders/medals/' . $orderInfo->filename)) {
-                        $_peerage['path'] = $orderInfo->filename;
+                        $_peerage['path'] = substr($orderInfo->filename, 0, strrpos($orderInfo->filename, '.'));
                     }
 
                     $_peerage['fullTitle'] =
