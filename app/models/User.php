@@ -475,9 +475,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $timeInService = $regDateObj->diff(new DateTime("now"));
 
             if ($short === true) {
-                $tis = ($timeInService->format('%y') * 12) + $timeInService->format('%m');
+                $tis = ( $timeInService->format('%y') * 12 ) + $timeInService->format('%m');
                 if ($timeInService->format('%d') > 25) {
-                    $tis +=1;
+                    $tis += 1;
                 }
                 return $tis . ' Mo';
             }
@@ -943,14 +943,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             }
         );
 
+        $primaryBillet = $this->getBillet('primary');
+        $fontSize = strlen($primaryBillet) < 30 ? 40 : 30;
+
         $idCard->text(
-            $this->getBillet('primary'),
+            $primaryBillet,
             382,
             527,
-            function ($font) {
+            function ($font) use ($fontSize) {
                 $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
                 $font->align('center');
-                $font->size(40);
+                $font->size($fontSize);
             }
         );
 
@@ -1213,7 +1216,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getLastUpdated()
     {
-        if (empty($this->lastUpdate) == true) {
+        if (empty( $this->lastUpdate ) == true) {
             return strtotime($this->updated_at->toDateTimeString());
         }
 
@@ -1228,7 +1231,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function checkRostersForNewExams()
     {
-        if ($this->id != Auth::user()->id || empty($this->duty_roster) === true) {
+        if ($this->id != Auth::user()->id || empty( $this->duty_roster ) === true) {
             return false;
         }
         $rosters = explode(',', $this->duty_roster);
