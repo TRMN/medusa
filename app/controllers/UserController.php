@@ -506,35 +506,39 @@ class UserController extends \BaseController
             'tos.required'                => 'You must agree to the Terms of Service to apply',
         ];
 
-        $validator = Validator::make($data = Input::all(), $rules, $error_message);
+        $data = Input::all();
 
-        if ($validator->fails()) {
-            return Redirect::to('register')->withErrors($validator)->withInput();
-        }
+        if (isset( $data['mobile'] ) === false) {
+            $validator = Validator::make($data, $rules, $error_message);
 
-        // Check Captcha
-        $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
-        $captcha = Input::get('g-recaptcha-response', null);
+            if ($validator->fails()) {
+                return Redirect::to('register')->withErrors($validator)->withInput();
+            }
 
-        if (empty( $captcha ) === false) {
-            $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+            // Check Captcha
+            $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
+            $captcha = Input::get('g-recaptcha-response', null);
 
-            $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
+            if (empty( $captcha ) === false) {
+                $recaptcha = new \ReCaptcha\ReCaptcha($secret);
 
-            if ($resp->isSuccess() === false) {
+                $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
+
+                if ($resp->isSuccess() === false) {
+                    return Redirect::to('register')
+                                   ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
+                                   ->withInput();
+                }
+            } else {
                 return Redirect::to('register')
                                ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
                                ->withInput();
             }
-        } else {
-            return Redirect::to('register')
-                           ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
-                           ->withInput();
         }
 
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
 
-        switch ($data['rank']) {
+        switch ($data['branch']) {
             case "CIVIL":
             case "INTEL":
                 $data['rank']['grade'] = 'C-1';
@@ -615,7 +619,23 @@ class UserController extends \BaseController
 
         Event::fire('user.registered', $user);
 
-        return View::make('thankyou');
+        if (isset($data['mobile']) === true) {
+            if (empty($user->id)) {
+                // No id, insert didn't happen
+                return Response::json([
+                    'status' => 'error',
+                    'message' => 'Unable to create user',
+                ], 500);
+            } else {
+                return Response::json([
+                    'status' => 'success',
+                    'message' => 'User created',
+                ]);
+            }
+        } else {
+            return View::make('thankyou');
+        }
+
     }
 
     /**
@@ -1167,12 +1187,14 @@ class UserController extends \BaseController
             return $redirect;
         }
 
-        $user->updatePerms((array) $perm);
+        $user->updatePerms((array)$perm);
 
         Cache::flush();
 
-        return Redirect::to(URL::previous())->with('message', $perm . ' permission has been given to ' . $user->getFullName());
-
+        return Redirect::to(URL::previous())->with(
+            'message',
+            $perm . ' permission has been given to ' . $user->getFullName()
+        );
     }
 
     public function deletePerm(User $user, $perm)
@@ -1185,7 +1207,10 @@ class UserController extends \BaseController
 
         Cache::flush();
 
-        return Redirect::to(URL::previous())->with('message', $perm . ' permission has been removed from ' . $user->getFullName());
+        return Redirect::to(URL::previous())->with(
+            'message',
+            $perm . ' permission has been removed from ' . $user->getFullName()
+        );
     }
 
     public function showBranch($branch)
@@ -1202,7 +1227,8 @@ class UserController extends \BaseController
         $usersByBranch[$branch] = $users;
 
         return View::make(
-            'user.byBranch', ['users' => $usersByBranch, 'title' => $branch . " Members", 'branch' => $branch]
+            'user.byBranch',
+            ['users' => $usersByBranch, 'title' => $branch . " Members", 'branch' => $branch]
         );
     }
 }
