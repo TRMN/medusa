@@ -36,6 +36,13 @@ Route::post(
     }
 );
 
+Route::post(
+    'oauth/updateuser',
+    function () {
+        return app('oauth2')->updateUser();
+    }
+);
+
 Route::get(
     'oauth/profile',
     function () {

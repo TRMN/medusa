@@ -917,7 +917,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return true;
     }
 
-    public function buildIdCard()
+    public function buildIdCard($showFullGrade = false)
     {
         $idCard = Image::make(public_path() . '/images/TRMN-membership-card.png');
 
@@ -958,6 +958,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         );
 
         $rankCode = substr($this->rank['grade'], 0, 1);
+        if ($showFullGrade === true) {
+            $rankCode = $this->rank['grade'];
+        }
+
 
         switch ($rankCode) {
             case 'C':

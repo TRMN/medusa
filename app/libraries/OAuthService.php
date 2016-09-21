@@ -1,5 +1,6 @@
 <?php namespace Medusa\Services;
 
+use Medusa\Audit\MedusaAudit;
 use Medusa\Oauth\Storage\MedusaUserCredentials;
 use Medusa\Permissions\PermissionsHelper;
 use OAuth2\GrantType\AuthorizationCode;
@@ -22,6 +23,8 @@ class OAuthService
      * @var Server
      */
     protected $server;
+
+    use MedusaAudit;
 
     /**
      * Constructor
@@ -189,6 +192,59 @@ class OAuthService
         return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
     }
 
+    public function updateUser()
+    {
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
+        $_response = new Response();
+
+        \Log::info('User Update Request');
+
+        if ($this->server->verifyResourceRequest($_request, $_response)) {
+            $_token = $this->server->getAccessTokenData($_request);
+
+            /** @var \User $_user */
+            /** @noinspection PhpUndefinedMethodInspection */
+            $_user = \User::where('email_address', '=', $_token['user_id'])->first();
+
+            $_data = \Input::all();
+
+            foreach ($_data as $k => $v) {
+                $_user->$k = $v;
+            }
+
+            if ($_user->save()) {
+                $this->writeAuditTrail(
+                    $_user->id,
+                    'update',
+                    'users',
+                    (string)$_user->_id,
+                    json_encode($_data),
+                    'OAuthService@updateUser'
+                );
+
+                \Log::info('User profile updated');
+
+                return \Response::json(
+                    [
+                        'status'  => 'success',
+                        'message' => 'Profile updated',
+                    ]
+                );
+                \Log::info('We should never get here');
+            } else {
+                \Log::info('There was some sort of problem');
+                return \Response::json(
+                    [
+                        'status'  => 'error',
+                        'message' => 'Unable to update profile',
+                    ],
+                    500
+                );
+            }
+        }
+    }
+
     /**
      * @return \Illuminate\Http\JsonResponse
      */
@@ -296,14 +352,12 @@ class OAuthService
 
                     $_exams[$_branch] = ['label' => $_label, 'new' => $_newExams, 'examlist' => $_examList];
                 }
-
             }
 
             $_user->exams = $_exams;
 
             $_user->greeting =
-                $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals(
-                );
+                $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
 
             if (!file_exists(public_path() . $_user->filePhoto)) {
                 unset( $_user->filePhoto );
@@ -351,10 +405,9 @@ class OAuthService
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
 
-            $_idCard = \User::where('email_address', '=', $_token['user_id'])->first()->buildIdCard();
+            $_idCard = \User::where('email_address', '=', $_token['user_id'])->first()->buildIdCard(true);
 
             return $_idCard->response('png');
-
         }
 
         return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
