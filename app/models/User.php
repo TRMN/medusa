@@ -452,11 +452,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $timeInGrade = $dorObj->diff(new DateTime("now"));
 
             if ($short === true) {
-                $tig = ( $timeInGrade->format('%y') * 12 ) + $timeInGrade->format('%m');
+                $years = $timeInGrade->format('%y');
+                $months = $timeInGrade->format('%m');
+                //$tig = ( $timeInGrade->format('%y') * 12 ) + $timeInGrade->format('%m');
                 if ($timeInGrade->format('%d') > 25) {
-                    $tig += 1;
+                    $months += 1;
                 }
-                return $tig . ' Mo';
+                return $years . ' Yr ' . $months . ' Mo';
             } else {
                 return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
             }
@@ -475,11 +477,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $timeInService = $regDateObj->diff(new DateTime("now"));
 
             if ($short === true) {
-                $tis = ( $timeInService->format('%y') * 12 ) + $timeInService->format('%m');
+                $years = $timeInService->format('%y');
+                $months = $timeInService->format('%m');
+                //$tis = ( $timeInService->format('%y') * 12 ) + $timeInService->format('%m');
                 if ($timeInService->format('%d') > 25) {
-                    $tis += 1;
+                    $months += 1;
                 }
-                return $tis . ' Mo';
+                return $years . ' Yr ' . $months . ' Mo';
             }
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
@@ -961,7 +965,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if ($showFullGrade === true) {
             $rankCode = $this->rank['grade'];
         }
-
 
         switch ($rankCode) {
             case 'C':
