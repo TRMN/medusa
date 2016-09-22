@@ -457,6 +457,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 //$tig = ( $timeInGrade->format('%y') * 12 ) + $timeInGrade->format('%m');
                 if ($timeInGrade->format('%d') > 25) {
                     $months += 1;
+                    if ($months > 11) {
+                        $years += 1;
+                        $months = 0;
+                    }
                 }
                 return $years . ' Yr ' . $months . ' Mo';
             } else {
@@ -482,6 +486,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 //$tis = ( $timeInService->format('%y') * 12 ) + $timeInService->format('%m');
                 if ($timeInService->format('%d') > 25) {
                     $months += 1;
+                    if ($months > 11) {
+                        $years += 1;
+                        $months = 0;
+                    }
                 }
                 return $years . ' Yr ' . $months . ' Mo';
             }
