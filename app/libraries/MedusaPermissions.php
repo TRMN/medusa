@@ -77,7 +77,7 @@ trait MedusaPermissions
         if ($param instanceof \User) {
             //called with a user object, get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
             $chapterIds = [];
-            foreach (['primary', 'secondary', 'additional', 'supplemental'] as $position) {
+            foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
                 $chapterIds[] = $param->getAssignmentId($position);
             }
 

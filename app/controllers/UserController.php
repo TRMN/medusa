@@ -1174,7 +1174,7 @@ class UserController extends \BaseController
 
     public function find(User $user = null)
     {
-        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE', 'VIEW_MEMBER']) ) !== true) {
+        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE', 'VIEW_MEMBERS']) ) !== true) {
             return $redirect;
         }
 

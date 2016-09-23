@@ -117,6 +117,24 @@
                 @endif
             </div>
         @endif
+        
+        @if($permsObj->hasPermissions(['VIEW_RHN']) === true)
+            <div class="nav-header lnav">RHN</div>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_RHN']) === true)
+                    <a href="{{route('showBranch', ['branch' => 'RHN'])}}">Show RHN members</a><br />
+                @endif
+            </div>
+        @endif
+        
+        @if($permsObj->hasPermissions(['VIEW_IAN']) === true)
+            <div class="nav-header lnav">IAN</div>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_IAN']) === true)
+                    <a href="{{route('showBranch', ['branch' => 'IAN'])}}">Show IAN members</a><br />
+                @endif
+            </div>
+        @endif        
 
 
         @if($permsObj->hasPermissions(['ALL_PERMS']) === true)

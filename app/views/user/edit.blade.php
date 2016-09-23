@@ -54,8 +54,8 @@
             <div class="small-3 columns ninety Incised901Light">
                 {{ Form::label('last_name', 'Last Name', ['class' => 'my']) }} {{ Form::text('last_name') }}
             </div>
-            <div class="small-1 columns ninety Incised901Light end">
-                {{ Form::label('suffix', 'Suffix', ['class' => 'my']) }} {{ Form::text('suffix') }}
+            <div class="small-2 columns ninety Incised901Light end">
+                {{ Form::label('suffix', 'Suffix', ['class' => 'my']) }} {{ Form::select('suffix', ['' => 'None', 'Jr' => 'Jr', 'Sr' => 'Sr', 'II' => 'II', 'III' => 'III', 'IV' => 'IV', 'V' => 'V']) }}
             </div>
         </div>
 
