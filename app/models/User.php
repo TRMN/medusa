@@ -88,6 +88,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         'note',
         'last_login',
         'previous_login',
+        'lastUpdate',
     ];
 
     public function announcements()
@@ -830,6 +831,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         $this->osa = false;
 
+        $this->lastUpdate = time();
+
         $this->writeAuditTrail(
             $user,
             'update',
@@ -860,6 +863,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
 
         $this->osa = false;
+        $this->lastUpdate = time();
 
         $this->writeAuditTrail(
             $user,
@@ -904,7 +908,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return true;
     }
 
-    public function buildIdCard()
+    public function buildIdCard($showFullGrade = false)
     {
         $idCard = Image::make(public_path() . '/images/TRMN-membership-card.png');
 
@@ -930,18 +934,24 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             }
         );
 
+        $primaryBillet = $this->getBillet('primary');
+        $fontSize = strlen($primaryBillet) < 30 ? 40 : 30;
+
         $idCard->text(
-            $this->getBillet('primary'),
+            $primaryBillet,
             382,
             527,
-            function ($font) {
+            function ($font) use ($fontSize) {
                 $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
                 $font->align('center');
-                $font->size(40);
+                $font->size($fontSize);
             }
         );
 
         $rankCode = substr($this->rank['grade'], 0, 1);
+        if ($showFullGrade === true) {
+            $rankCode = $this->rank['grade'];
+        }
 
         switch ($rankCode) {
             case 'C':
@@ -1196,6 +1206,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             return date('Y-m-d', strtotime('-2 weeks'));
         }
         return date('Y-m-d', strtotime($this->previous_login));
+    }
+
+    public function getLastUpdated()
+    {
+        if (empty( $this->lastUpdate ) == true) {
+            return strtotime($this->updated_at->toDateTimeString());
+        }
+
+        return $this->lastUpdate;
+    }
+
+    public function updateLastUpdated()
+    {
+        $this->lastUpdate = time();
+        $this->save();
     }
 
     public function checkRostersForNewExams()
