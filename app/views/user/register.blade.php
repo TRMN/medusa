@@ -52,7 +52,7 @@
                 {{ Form::label( 'last_name', 'Last Name' ) }} {{ Form::text( 'last_name' ) }}
             </div>
             <div class="small-1 columns">
-                {{ Form::label( 'suffix', 'Suffix' ) }} {{ Form::text( 'suffix' ) }}
+                {{ Form::label( 'suffix', 'Suffix' ) }} {{ Form::select('suffix', ['' => 'None', 'Jr' => 'Jr', 'Sr' => 'Sr', 'II' => 'II', 'III' => 'III', 'IV' => 'IV', 'V' => 'V']) }}
             </div>
         </div>
     </fieldset>
