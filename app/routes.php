@@ -238,6 +238,9 @@ Route::resource('billet', 'BilletController', ['before' => 'auth']);
 
 Route::controller('id', 'IdController', ['before' => 'auth']);
 
+Route::model('event', 'Event');
+Route::resource('events', 'EventController', ['before' => 'auth']);
+
 // API calls
 
 Route::get('/api/branch', 'ApiController@getBranchList'); // Get a list of all the tRMN branches
