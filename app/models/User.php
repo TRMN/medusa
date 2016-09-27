@@ -99,9 +99,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getFullName()
     {
         return trim(
-            ucfirst($this->first_name) . ' ' .
+            ucwords(strtolower($this->first_name)) . ' ' .
             ( empty( $this->middle_name ) ? '' : ucfirst($this->middle_name) . ' ' ) .
-            ucfirst($this->last_name) . ' ' .
+            ucwords(strtolower($this->last_name)) . ' ' .
             ( empty( $this->suffix ) ? '' : $this->suffix )
         );
     }
@@ -912,7 +912,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $idCard = Image::make(public_path() . '/images/TRMN-membership-card.png');
 
-        $name = ucwords(strtolower($this->getFullName()));
+        $name = $this->getFullName();
         $fontSize = strlen($name) < 30 ? 48 : 38;
         $idCard->text(
             $name,
