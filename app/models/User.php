@@ -912,7 +912,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         $idCard = Image::make(public_path() . '/images/TRMN-membership-card.png');
 
-        $name = $this->getFullName();
+        $name = ucwords(strtolower($this->getFullName()));
         $fontSize = strlen($name) < 30 ? 48 : 38;
         $idCard->text(
             $name,
