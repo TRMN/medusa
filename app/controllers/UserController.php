@@ -310,7 +310,7 @@ class UserController extends \BaseController
             'user.create',
             [
                 'user'      => new User,
-                'countries' => $this->_getCountries(),
+                'countries' => Country::getCountries(),
                 'branches'  => Branch::getBranchList(),
                 'grades'    => Grade::getGradesForBranch('RMN'),
                 'ratings'   => Rating::getRatingsForBranch('RMN'),
@@ -670,7 +670,7 @@ class UserController extends \BaseController
             'user.show',
             [
                 'user'      => $user,
-                'countries' => $this->_getCountries(),
+                'countries' => Country::getCountries(),
                 'branches'  => Branch::getBranchList(),
                 'ptitles'   => $titles,
                 'korders'   => $orders,
@@ -744,7 +744,7 @@ class UserController extends \BaseController
                 [
                     'user'        => $user,
                     'greeting'    => $greeting,
-                    'countries'   => $this->_getCountries(),
+                    'countries'   => Country::getCountries(),
                     'branches'    => Branch::getBranchList(),
                     'grades'      => Grade::getGradesForBranch($user->branch),
                     'ratings'     => Rating::getRatingsForBranch($user->branch),
@@ -1034,7 +1034,7 @@ class UserController extends \BaseController
 
         $viewData = [
             'user'      => new User,
-            'countries' => $countries,
+            'countries' => Country::getCountries(),
             'branches'  => $branches,
             'chapters'  => ['' => 'Select a Chapter'],
             'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),

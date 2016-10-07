@@ -412,4 +412,47 @@ class OAuthService
 
         return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
     }
+
+    public function getScheduledEvents()
+    {
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
+        $_response = new Response();
+
+        \Log::info('List of scheduled events requested');
+
+        if ($this->server->verifyResourceRequest($_request, $_response)) {
+            $_token = $this->server->getAccessTokenData($_request);
+            $_tz = \Input::get('tz', null);
+
+            \Log::info('TZ=' . $_tz);
+
+            return \Response::json(['events' => \User::where('email_address', '=', $_token['user_id'])->first()->getScheduledEvents($_tz)]);
+
+        }
+
+        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+    }
+
+    // checkMemberIn($event, $member, $continent = null, $city = null)
+
+    public function checkMemberIn()
+    {
+        /** @noinspection PhpParamsInspection */
+        $_request = Request::createFromRequest(\Request::instance());
+        $_response = new Response();
+
+        if ($this->server->verifyResourceRequest($_request, $_response)) {
+            $_token = $this->server->getAccessTokenData($_request);
+
+            $_data = \Input::all();
+
+            \Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
+
+            return \Response::json(\User::where('email_address', '=', $_token['user_id'])->first()->checkMemberIn($_data['event'], $_data['member'], $_data['tz']));
+
+        }
+
+        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+    }
 }

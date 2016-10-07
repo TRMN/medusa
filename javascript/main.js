@@ -94,7 +94,7 @@ $(document).ready(function ($) {
         "order": [[0, 'asc']],
         "$UI": true
     });
-    
+
     $('#subCrewRoster').DataTable({
         "autoWidth": true,
         "pageLength": 25,
@@ -318,6 +318,20 @@ $(document).ready(function ($) {
             header: "h5",
             heightStyle: "content",
             icons: {"header": "ui-icon-triangle-1-e", "activeHeader": "ui-icon-triangle-1-s"}
+        });
+    });
+
+    $(function () {
+        $('#left-nav').accordion({
+            active: Cookies.get('saved_index')==undefined?0:parseInt(Cookies.get('saved_index')),
+            collapsible: true,
+            header: "h3",
+            heightStyle: "content",
+            icons: {"header": "ui-icon-plusthick", "activeHeader": "ui-icon-minusthick"},
+            activate: function (event, ui) {
+                Cookies.set('saved_index', $("#left-nav")
+                    .accordion("option", "active"));
+            }
         });
     });
 

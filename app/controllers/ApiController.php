@@ -178,9 +178,11 @@ class ApiController extends BaseController
         return Response::json($classes);
     }
 
-    public function findMember()
+    public function findMember($query=null)
     {
-        $query = Input::get('query', null);
+        if (empty($query) === true) {
+          $query = Input::get('query', null);
+        }
 
         if (is_null($query) === true) {
             return Response::json(['suggestions' => []]);
@@ -190,13 +192,15 @@ class ApiController extends BaseController
 
         switch (count($terms)) {
             case 1:
-                $query = User::where('member_id', 'like', '%' . $terms[0] . '%')->orWhere('first_name', 'like', $terms[0] . '%')->orWhere('last_name', 'like', $terms[0] . '%');
+                $query = User::where('registration_status', '=', 'Active')->where(function($query) use($terms) {
+                  $query->where('member_id', 'like', '%' . $terms[0] . '%')->orWhere('first_name', 'like', $terms[0] . '%')->orWhere('last_name', 'like', $terms[0] . '%');
+                });
                 break;
             case 2:
-                $query = User::where('first_name', 'like', $terms[0] . '%')->where('last_name', 'like', $terms[1] . '%');
+                $query = User::where('first_name', 'like', $terms[0] . '%')->where('last_name', 'like', $terms[1] . '%')->where('registration_status', '=', 'Active');
                 break;
             default:
-                $query = User::where('first_name', 'like', $terms[0] . '%')->where('middle_name', 'like', $terms[1] . '%')->where('last_name', 'like', $terms[2] . '%');
+                $query = User::where('first_name', 'like', $terms[0] . '%')->where('middle_name', 'like', $terms[1] . '%')->where('last_name', 'like', $terms[2] . '%')->where('registration_status', '=', 'Active');
         }
 
         $results = $query->get();
@@ -236,5 +240,18 @@ class ApiController extends BaseController
         }
 
         return Response::json(['suggestions' => $suggestions]);
+    }
+
+    public function getScheduledEvents($user, $continent = null, $city = null)
+    {
+        return Response::json(['events' => $user->getScheduledEvents($continent, $city)]);
+    }
+
+    public function checkInMember($event, $user, $member, $continent = null, $city = null)
+    {
+        if (is_object($user) === false) {
+            return Response::json(['error' => 'Invalid User']);
+        }
+        return Response::json($user->checkMemberIn($event, $member, $continent, $city));
     }
 }

@@ -78,6 +78,20 @@ Route::get(
     }
 );
 
+Route::get(
+  'oauth/events',
+  function () {
+      return app('oauth2')->getScheduledEvents();
+  }
+);
+
+Route::get(
+  'oauth/checkin',
+  function () {
+      return app('oauth2')->checkMemberIn();
+  }
+);
+
 Route::model('oauthclient', 'OAuthClient');
 Route::resource('oauthclient', 'OAuthController', ['before' => 'auth']);
 
@@ -238,8 +252,9 @@ Route::resource('billet', 'BilletController', ['before' => 'auth']);
 
 Route::controller('id', 'IdController', ['before' => 'auth']);
 
-Route::model('event', 'Event');
+Route::model('events', 'Events');
 Route::resource('events', 'EventController', ['before' => 'auth']);
+Route::get('/events/export/{events}', ['as' => 'event.export', 'uses' => 'EventController@export', 'before' => 'auth']);
 
 // API calls
 
@@ -270,6 +285,6 @@ Route::get('/api/university', 'ApiController@getUniversities');
 Route::get('/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::get('/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
-Route::get(' /api/find', 'ApiController@findMember', ['before' => 'auth']); // search for a member
+Route::get('/api/find/{query?}', ['as' => 'user.find', 'uses' => 'ApiController@findMember', 'before' => 'auth']); // search for a member
 Route::get('/api/exam', 'ApiController@findExam', ['before' => 'auth']); // search for an exam
 Route::get('/api/checkemail/{email}', 'ApiController@checkAddress'); // Check that an email address is available

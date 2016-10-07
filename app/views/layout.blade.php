@@ -3,39 +3,25 @@
 <head>
 
     <title>@yield('pageTitle') | Royal Manticoran Navy Database</title>
-    @if(App::environment('local') === true)
-        <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/normalize.min.css">
-        <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/foundation.min.css">
-        <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/jquery.ui.datepicker.min.css">
-        <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/dataTables.foundation.css">
-        <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/dataTables.jqueryui.css">
-        <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/jquery-ui.css">
-    @else
-        <link rel="stylesheet" type="text/css"
-              href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/css/normalize.min.css">
-        <link rel="stylesheet" type="text/css"
-              href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/css/foundation.min.css">
-        <link rel="stylesheet" type="text/css"
-              href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/css/jquery.ui.datepicker.min.css">
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" type="text/css"
-              href="//cdn.datatables.net/plug-ins/1.10.7/integration/foundation/dataTables.foundation.css">
-        <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"
-        <link rel="stylesheet" type="text/css"
-              href="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.css">
-
-    @endif
-    <link rel="stylesheet" type="text/css" href="{{ $serverUrl }}/css/main.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/normalize.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/foundation.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.ui.datepicker.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/dataTables.foundation.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/dataTables.jqueryui.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery-ui.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/selectize.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-@yield('dochead')
+    @yield('dochead')
 </head>
 <body class="@yield('bodyclasses')">
 <div class="container">
     <header class="row trmn-width">
 
         <div class="small-2 columns trmn-width">
-            <p></p><a href="{{$serverUrl}}"><img src="{{$serverUrl}}/seals/RMN.png" alt="TRMN Seal" width="150px" height="150px"></a>
+            <p></p><a href="{{$serverUrl}}"><img src="{{ asset('seals/RMN.png') }}" alt="TRMN Seal" width="150px"
+                                                 height="150px"></a>
         </div>
         <div class="small-10 columns trmn-width end">
             <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
@@ -45,14 +31,14 @@
     </header>
 
     <div class="row trmn-width">
-        @if(empty(Auth::user()->tos) === false && empty(Auth::user()->osa) === false)
-        <div class="small-2 columns trmn-width">
-            @include( 'nav', ['permsObj' => $permsObj] )
-        </div>
+        @if(empty(Auth::user()->tos) === FALSE && empty(Auth::user()->osa) === FALSE)
+            <div class="small-2 columns trmn-width">
+                @include( 'nav', ['permsObj' => $permsObj] )
+            </div>
         @endif
         <div class="small-9 columns trmn-width content end">
             @if( $errors->any() )
-                <ul class="error">
+                <ul class="medusa-error">
                     @foreach( $errors->all() as $error )
                         <li class="fi-alert alert">{{ $error }}</li>
                     @endforeach
@@ -76,7 +62,7 @@
                     'RemindersController@getReset',
                     'RemindersController@postReset'
                 ]))
-            @yield('content')
+                @yield('content')
             @else
                 <div class="login-form row">
                     <div class="small-6 small-centered columns">
@@ -110,7 +96,8 @@
             Association,
             Inc. Some Rights Reserved.
             Honor Harrington and all related materials are &copy; David Weber.</p>
-        <span class="text-center"><img src="{{asset('images/project-medusa.svg')}}" width="150px" height="150px" data-src="{{asset('images/project-medusa.svg')}}"></span>
+        <span class="text-center"><img src="{{asset('images/project-medusa.svg')}}" width="150px" height="150px"
+                                       data-src="{{asset('images/project-medusa.svg')}}"></span>
         <p>{{ Config::get('app.version') }}</p>
         @if($_SERVER['SERVER_NAME'] == "medusa.dev" || $_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
             <p class="alert-box">
@@ -125,40 +112,24 @@
                                     src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
     </footer>
 </div>
-@if(App::environment('local') === true)
-    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/foundation.min.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/foundation.topbar.min.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/foundation.accordion.min.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/foundation.reveal.min.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/dataTables.foundation.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/dataTables.jqueryui.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.autocomplete.js"></script>
-@else
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript"
-            src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/js/foundation.min.js"></script>
-    <script type="text/javascript"
-            src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.topbar.min.js"></script>
-    <script type="text/javascript"
-            src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.accordion.min.js"></script>
-    <script type="text/javascript"
-            src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.reveal.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-    <script type="javascript"
-            src="//cdn.datatables.net/plug-ins/1.10.7/integration/foundation/dataTables.foundation.js"></script>
-    <script type="text/javascript"
-            src="//cdn.datatables.net/plug-ins/1.10.7/integration/jqueryui/dataTables.jqueryui.js"></script>
-    <script type="text/javascript" src="{{ $serverUrl }}/js/jquery.autocomplete.min.js"></script>
-@endif
+<script type="text/javascript" src="{{ asset('js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/foundation.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/foundation.topbar.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/foundation.accordion.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/foundation.reveal.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery-ui.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.dataTables.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/dataTables.foundation.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/dataTables.jqueryui.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.autocomplete.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/selectize.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.multipage.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/js.cookie.js') }}"></script>
 <script>
     jQuery(document).foundation();
 </script>
-<script src="{{ $serverUrl }}/js/rcswitcher.js"></script>
-<script src="{{ $serverUrl }}/js/bundle.js"></script>
+<script src="{{ asset('js/rcswitcher.js')}}"></script>
+<script src="{{ asset('js/bundle.js')}}"></script>
 @yield( 'scriptFooter' )
 </body>
 </html>
