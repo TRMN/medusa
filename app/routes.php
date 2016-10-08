@@ -285,6 +285,6 @@ Route::get('/api/university', 'ApiController@getUniversities');
 Route::get('/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::get('/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
-Route::get('/api/find/{query?}', ['as' => 'user.find', 'uses' => 'ApiController@findMember', 'before' => 'auth']); // search for a member
+Route::get('/api/find/{query?}', ['as' => 'user.find.api', 'uses' => 'ApiController@findMember', 'before' => 'auth']); // search for a member
 Route::get('/api/exam', 'ApiController@findExam', ['before' => 'auth']); // search for an exam
 Route::get('/api/checkemail/{email}', 'ApiController@checkAddress'); // Check that an email address is available

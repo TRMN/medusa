@@ -157,7 +157,7 @@
             load: function (query, callback) {
                 if (!query.length) return callback();
                 $.ajax({
-                    url: '{{route('user.find')}}/' + encodeURIComponent(query),
+                    url: '{{route('user.find.api')}}/' + encodeURIComponent(query),
                     type: 'GET',
                     error: function () {
                         callback();
