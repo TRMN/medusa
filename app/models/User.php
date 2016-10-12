@@ -509,12 +509,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (is_null($options) === false) {
             if (is_array($options) === false) {
-                $branch = $options; // backwards compatibility
+                $pattern = $options; // backwards compatibility
             } else {
-                if (empty($options['branch']) === true) {
-                    $branch = null;
+                if (empty($options['pattern']) === true) {
+                    $pattern = null;
                 } else {
-                    $branch = $options['branch'];
+                    $pattern = $options['pattern'];
                 }
 
                 if (empty($options['after']) === true) {
@@ -536,22 +536,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 }
             }
         } else {
-            $branch = null;
+            $pattern = null;
         }
 
         $exams = Exam::where('member_id', '=', $this->member_id)->first();
 
         if (empty($exams) === false) {
-            if (is_null($branch) === true) {
+            if (is_null($pattern) === true) {
                 $list = $exams->exams;
             } else {
                 // filter by branch
                 $list = array_where(
                   $exams->exams,
-                  function ($key, $value) use ($branch) {
-                      if (preg_match('/^.*-(' . $branch . ')-.*$/',
-                          $key) === 1
-                      ) {
+                  function ($key, $value) use ($pattern) {
+                      if (preg_match($pattern, $key) === 1) {
                           return true;
                       }
                   }
@@ -679,7 +677,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getHighestMainLineExamForBranch($class = null)
     {
-        $options['branch'] = $this->branch;
+        $options['pattern'] = '/^.*-' . $this->branch . '-.*/';
         if (empty($class) === false) {
             $options['class'] = $class;
         }
@@ -688,7 +686,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         if (count($exams) < 1) {
             // No exams found for branch, check RMN
-            $options['branch'] = 'RMN';
+            $options['pattern'] = '/^SIA-RMN-.*/';
 
             $exams = $this->getExamList($options);
         }
@@ -766,12 +764,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
-    public function hasNewExams($branch = null)
+    public function hasNewExams($regex = null)
     {
         $options['since'] = Auth::user()->getLastLogin();
 
-        if (is_null($branch) === false) {
-            $options['branch'] = $branch;
+        if (is_null($regex) === false) {
+            $options['pattern'] = $regex;
         }
 
         if (count($this->getExamList($options)) > 0) {
@@ -1305,8 +1303,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $events->toArray();
     }
 
-    public function checkMemberIn($event, $member, $continent = null, $city = null)
-    {
+    public function checkMemberIn(
+      $event,
+      $member,
+      $continent = null,
+      $city = null
+    ) {
         $currentTz = $this->setTimeZone($continent, $city);
 
         // Event sanity checks
@@ -1314,7 +1316,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             // If it's not an object, instantiate an event object
             try {
                 $event = Events::find($event);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $this->setTimeZone($currentTz);
                 return ['error' => 'Invalid Event id'];
             }
@@ -1352,7 +1354,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 }
                 if (in_array($user->id, $checkIns) === false) {
                     // Only check them in once
-                    $checkIns[] = ['_id' => $user->id, 'timestamp' => date('Y-m-d H:m:s')];
+                    $checkIns[] =
+                      ['_id' => $user->id, 'timestamp' => date('Y-m-d H:m:s')];
                     //$checkIns[] = $user->id;
                     $event->checkins = $checkIns;
                 }
@@ -1383,7 +1386,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
-    private function setTimeZone($continent = null, $city = null) {
+    private function setTimeZone($continent = null, $city = null)
+    {
         if (is_null($continent) === false) {
             // Optional TZ provided, save the current tz
             $currentTz = date_default_timezone_get();
@@ -1396,5 +1400,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             return $currentTz;
         }
         return null;
+    }
+
+    public static function getUserByMemberId($memberId)
+    {
+        return self::where('member_id', '=', $memberId)->firstOrFail();
     }
 }

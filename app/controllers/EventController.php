@@ -17,7 +17,7 @@ class EventController extends \BaseController
 
         return View::make(
           'events.index',
-          ['events' => Events::where('requestor', '=', Auth::user()->id)->get()]
+          ['events' => Events::where('requestor', '=', Auth::user()->id)->orderBy('start_date')->get()]
         );
     }
 
@@ -73,12 +73,11 @@ class EventController extends \BaseController
               (string)Auth::user()->_id,
               'create',
               'events',
-              null,
+              $event->id,
               $event->toJson(),
               'EventController@store'
             );
 
-            log::debug(print_r($event, true));
             $this->_updateUsers($event);
 
             $msg = 'Your event "' . $event->event_name . '" has been scheduled';
@@ -126,9 +125,9 @@ class EventController extends \BaseController
 
             $this->writeAuditTrail(
               (string)Auth::user()->_id,
-              'create',
+              'update',
               'users',
-              null,
+              $user->id,
               $user->toJson(),
               'EventController@store'
             );
@@ -210,17 +209,17 @@ class EventController extends \BaseController
         }
 
         try {
-            $event->update(Input::all());
-
             if (empty($event->registrars) === true) {
                 $event->registrars = [];
             }
+
+            $event->update(Input::all());
 
             $this->writeAuditTrail(
               (string)Auth::user()->_id,
               'update',
               'events',
-              null,
+              $event->id,
               json_encode(Input::all()),
               'EventController@update'
             );

@@ -306,23 +306,9 @@ class OAuthService
 
             $_user->peerages = $_peerages;
 
-            $_schools = [
-                'RMN'            => 'RMN',
-                'SRN'            => 'RMN Specialty',
-                'GSN'            => 'GSN',
-                'STC|AFLTC|GTSC' => 'GSN Specialty',
-                'RMMC'           => 'RMMC',
-                'SRMC'           => 'RMMC Specialty',
-                'RMA'            => 'RMA',
-                'RMAT'           => 'RMA Specialty',
-                'CORE|KC|QC'     => 'Landing University',
-                'SFC'            => 'SFC',
-                'RMMM'           => 'RMMM',
-                'RMACS'          => 'RMACS',
-            ];
-
-            foreach ($_schools as $_branch => $_label) {
-                $_examList = $_user->getExamList(['branch' => $_branch]);
+            $_schools = \MedusaConfig::get('exam.regex');
+            foreach ($_schools as $_label => $_regex) {
+                $_examList = $_user->getExamList(['pattern' => $_regex]);
                 $_newExams = false;
 
                 foreach ($_examList as $_id => $_grades) {
@@ -344,13 +330,7 @@ class OAuthService
 
                     unset( $_examList[$_id]['entered_by'] );
 
-                    $_tmp = strpos($_branch, '|');
-
-                    if ($_tmp > 0) {
-                        $_branch = substr($_branch, 0, $_tmp);
-                    }
-
-                    $_exams[$_branch] = ['label' => $_label, 'new' => $_newExams, 'examlist' => $_examList];
+                    $_exams[str_replace(' ', '_', $_label)] = ['label' => $_label, 'new' => $_newExams, 'examlist' => $_examList];
                 }
             }
 

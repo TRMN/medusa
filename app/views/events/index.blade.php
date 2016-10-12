@@ -12,20 +12,29 @@
     </div>
 
     @if(count($events))
+        <div class="row">
+            <div class="column small-3 Incised901Light underline">Dates</div>
+            <div class="column small-9 Incised901Light underline">Click to Edit/Download CSV</div>
+        </div>
+        <div class="row">
+            <div class="column small-12">
+                <br />
+            </div>
+        </div>
         @foreach($events as $event)
             <div class="row">
-                <div class="column small-2 Incised901Light">
+                <div class="column small-3 Incised901Light">
                     {{date('M j, Y', strtotime($event->start_date))}}@if(!empty($event->end_date))
                         - {{date('M j, Y', strtotime($event->end_date))}}@endif
                 </div>
-                <div class="column small-10 Incised901Light">
+                <div class="column small-9 Incised901Light">
                     <a href="
                         @if (isset($event->checkins))
-                            {{route('event.export', [$event->_id])}}
-                        @else
-                            {{route('events.edit', [$event->_id])}}
-                        @endif
-                    ">{{$event->event_name}}</a>
+                    {{route('event.export', [$event->_id])}}
+                    @else
+                    {{route('events.edit', [$event->_id])}}
+                    @endif
+                            ">{{$event->event_name}}</a>
                 </div>
             </div>
         @endforeach

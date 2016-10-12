@@ -349,8 +349,12 @@
             </div>
             <ul class="small-block-grid-3">
                 @foreach(DB::table('permissions')->orderBy('name', 'asc')->get() as $permission)
-                    <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions']) }}
-                        <span title="{{$permission['description']}}">{{$permission['name']}}</span></li>
+                    @if(($permission['name'] != 'CONFIG') || ($permission['name'] == 'CONFIG' && in_array('CONFIG', Auth::user()->permissions)))
+                        <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions']) }}
+                            <span title="{{$permission['description']}}">{{$permission['name']}}</span></li>
+                    @elseif($permission['name'] == 'CONFIG' && !in_array('CONFIG', Auth::user()->permissions) && in_array('CONFIG', $user->permissions))
+                        {{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions', 'style' => 'display: none !important']) }}
+                    @endif
                 @endforeach
             </ul>
         </fieldset>
@@ -367,7 +371,9 @@
 
         </div>
         <div class="row">
-            <button class="button" onclick="$('#dutyroster').val(''); $('.dr:checked').each(function(i) {$('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());}); $('#chooseShip').foundation('reveal', 'close');">OK
+            <button class="button"
+                    onclick="$('#dutyroster').val(''); $('.dr:checked').each(function(i) {$('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());}); $('#chooseShip').foundation('reveal', 'close');">
+                OK
             </button>
         </div>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>

@@ -679,3 +679,11 @@ ul.multipage_tabs li.active {
 .selectize-input {
   padding: 0px;
 }
+
+.border-right {
+  border-right: 1px solid WhiteSmoke;
+}
+
+#config-table tr:nth-of-type(even) {
+background: #4c4c4c;
+}

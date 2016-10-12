@@ -256,6 +256,9 @@ Route::model('events', 'Events');
 Route::resource('events', 'EventController', ['before' => 'auth']);
 Route::get('/events/export/{events}', ['as' => 'event.export', 'uses' => 'EventController@export', 'before' => 'auth']);
 
+Route::model('config', 'MedusaConfig');
+Route::resource('config', 'ConfigController', ['before' => 'auth']);
+
 // API calls
 
 Route::get('/api/branch', 'ApiController@getBranchList'); // Get a list of all the tRMN branches

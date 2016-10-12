@@ -48,7 +48,7 @@
         {{ Form::model( $event, [ 'route' => [ 'events.update', $event->_id ], 'method' => 'put', 'data-abide' => '', 'id' => 'event_form' ] ) }}
     @endif
     <div class="row">
-        <div class="columns small-8 end">
+        <div class="columns small-10 end">
             <fieldset id="location">
                 <legend>Event Name and Location</legend>
                 <div class="row">
@@ -99,13 +99,13 @@
                 <div class="row">
                     <div class="columns small-6 Incised901Light">
                         <label for="start_date">Start Date <span class="yellow">(required)</span></label>
-                        {{ Form::date('start_date', empty($event->start_date)? null : $event->start_date, ['id' => 'start_date', 'required' => '']) }}
+                        {{ Form::date('start_date', empty($event->start_date)? null : $event->start_date, ['id' => 'start_date', 'required' => '', 'placeholder' => 'YYYY-MM-DD']) }}
                         <small class="error">Start date is required</small>
                     </div>
                     <div class="columns small-6 Incised901Light">
                         <label for="end_date">End Date <span
                                     class="alert">(Leave blank for a single day event)</span></label>
-                        {{ Form::date('end_date', empty($event->end_date)? null : $event->end_date, ['id' => 'end_date', 'data-compare' => 'start_date', 'data-abide-validator' => 'greaterThanOrEqual']) }}
+                        {{ Form::date('end_date', empty($event->end_date)? null : $event->end_date, ['id' => 'end_date', 'data-compare' => 'start_date', 'data-abide-validator' => 'greaterThanOrEqual', 'placeholder' => 'YYYY-MM-DD']) }}
                         <small class="error">End date can not be before start date</small>
                     </div>
                 </div>
