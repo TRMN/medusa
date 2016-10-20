@@ -14,6 +14,8 @@ if (Auth::check()) {
 View::share('serverUrl', $hostFull);
 View::share('authUser', $authUser);
 
+Route::get('/osa', ['as' => 'osa', 'uses' => 'HomeController@osa']);
+
 // OAuth2 routes
 Route::get(
     'oauth/authorize',
@@ -291,3 +293,4 @@ Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // F
 Route::get('/api/find/{query?}', ['as' => 'user.find.api', 'uses' => 'ApiController@findMember', 'before' => 'auth']); // search for a member
 Route::get('/api/exam', 'ApiController@findExam', ['before' => 'auth']); // search for an exam
 Route::get('/api/checkemail/{email}', 'ApiController@checkAddress'); // Check that an email address is available
+Route::get('/api/findchapter/{query?}', ['as' => 'chapter.find.api', 'uses' => 'ApiController@findChapter']);

@@ -335,6 +335,7 @@ h2, h3, h4, h5 {
 label {
   color: $text-primary;
   font-family: "Incised 901 W01 Light";
+  font-size: 100% !important;
 }
 
 nav {
@@ -400,6 +401,10 @@ td.right {
   text-align: right;
 }
 
+td {
+  vertical-align: text-top;
+}
+
 footer {
   background: transparent;
   text-align: center;
@@ -448,16 +453,8 @@ footer {
   background: none;
 }
 
-#chapterList {
-  width: 75%;
-}
-
 .actionButtons {
   column-width: 50px;
-}
-
-.ui-toolbar {
-  width: 75%;
 }
 
 #members .ui-toolbar {
@@ -684,6 +681,14 @@ ul.multipage_tabs li.active {
   border-right: 1px solid WhiteSmoke;
 }
 
-#config-table tr:nth-of-type(even) {
+tr:nth-of-type(even) {
 background: #4c4c4c;
+}
+
+.zebra-even:nth-of-type(even) {
+  background: #4c4c4c;
+}
+
+.zebra-odd:nth-of-type(odd) {
+  background: #4c4c4c;
 }

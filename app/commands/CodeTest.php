@@ -39,9 +39,7 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        $user = User::find('55fa1856e4bed834078b514c');
-
-        print strtotime($user->updated_at->toDateTimeString()) . "\n";
+        print_r(Type::where('chapter_type', '=', 'office')->first());
     }
 
     /**

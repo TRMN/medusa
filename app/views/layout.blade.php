@@ -54,7 +54,8 @@
             @if(Auth::check() ||
                 in_array(\Route::currentRouteName(),[
                     'user.apply',
-                    'register'
+                    'register',
+                    'osa',
                 ]) ||
                 in_array(Route::currentRouteAction(), [
                     'RemindersController@getRemind',

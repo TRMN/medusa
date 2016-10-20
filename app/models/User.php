@@ -461,7 +461,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             if ($short === true) {
                 $years = $timeInGrade->format('%y');
                 $months = $timeInGrade->format('%m');
-                //$tig = ( $timeInGrade->format('%y') * 12 ) + $timeInGrade->format('%m');
+
                 if ($timeInGrade->format('%d') > 25) {
                     $months += 1;
                     if ($months > 11) {
@@ -469,7 +469,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                         $months = 0;
                     }
                 }
-                return $years . ' Yr ' . $months . ' Mo';
+
+                return $years < 1 ? $months . ' Mo': $years . ' Yr ' . $months . ' Mo';
             } else {
                 return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
             }

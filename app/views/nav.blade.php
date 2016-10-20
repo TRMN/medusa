@@ -9,13 +9,16 @@
             <a href="{{ route('chapter.index') }}">Ship/Unit List</a><br/>
             <a href="{{route('user.getReset', [Auth::user()->id])}}">Change Password</a>
         </div>
-        <h3 class="nav-header lnav">Events</h3>
-        <div class="rnav">
-            <a href="{{route('events.create')}}">Schedule an Event</a>
-            @if (count(Events::where('requestor', '=', Auth::user()->id)->get()))
-                <br/><a href="{{route('events.index')}}">View Scheduled Events</a>
-            @endif
-        </div>
+        @if(!is_null(MedusaConfig::get('show.events')))
+            <h3 class="nav-header lnav">Events</h3>
+            <div class="rnav">
+                <a href="{{route('events.create')}}">Schedule an Event</a>
+                @if (count(Events::where('requestor', '=', Auth::user()->id)->get()))
+                    <br/><a href="{{route('events.index')}}">View Scheduled Events</a>
+                @endif
+            </div>
+        @endif
+
         @if($permsObj->hasPermissions(['DUTY_ROSTER',]) === true)
             <h3 class="nav-header lnav">CO Tools</h3>
             <div class="rnav">
@@ -75,9 +78,6 @@
         @if($permsObj->hasPermissions(['UPLOAD_EXAMS','ADD_GRADE', 'EDIT_GRADE']) === true)
             <h3 class="nav-header lnav">BuTrain (6SL)</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['UPLOAD_EXAMS']) === true)
-                    <a href="{{route('exam.index')}}">Upload Exams</a><br/>
-                @endif
                 @if($permsObj->hasPermissions(['EDIT_GRADE']) === true)
                     <a href="{{route('exam.list')}}">Master Exam List</a><br/>
                     <a href="{{route('exam.create')}}">Add Exam</a><br/>
@@ -151,8 +151,8 @@
                 <a href="{{ route('oauthclient.index') }}">List OAuth Clients</a><br/>
                 <a href="{{ route('oauthclient.create') }}">Add OAuth Client</a>
                 @if($permsObj->hasPermissions('CONFIG', true))<br/>
-                    <a href="{{ route('config.index') }}">Configuration Settings</a><br/>
-                    <a href="{{route('config.create')}}">Add Configuration Setting</a>
+                <a href="{{ route('config.index') }}">Configuration Settings</a><br/>
+                <a href="{{route('config.create')}}">Add Configuration Setting</a>
                 @endif
             </div>
         @endif
