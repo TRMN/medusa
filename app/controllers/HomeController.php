@@ -31,7 +31,7 @@ class HomeController extends BaseController
             $viewData['korders'] = $orders;
 
             if (empty( $user->osa ) === true) {
-                return View::make('osa', ['showform' => true]);
+                return View::make('osa', array_merge($viewData, ['showform' => true]));
             } elseif ($user->tos === true) {
                 return View::make('home', $viewData);
             }
