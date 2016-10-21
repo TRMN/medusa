@@ -80,5 +80,5 @@
            href="{{ route('signout') }}">I do not agree</a> {{ Form::submit('I Agree', [ 'class' => 'button' ] ) }}
     </div>
     {{ Form::close() }}
-ß@endif
+@endif
 @stop
