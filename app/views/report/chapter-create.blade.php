@@ -28,7 +28,7 @@
             Name:
         </div>
         <div class="columns small-9">
-            {{$command['CO']->first_name}} @if(empty($command['CO']->middile_name) === false) {{$command['CO']->middle_name}} @endif {{$command['CO']->last_name}} @if(empty($command['CO']->suffix) === false) {{$command['CO']->suffix}} @endif
+            {{$command[1]['user']->first_name}} @if(empty($command[1]['user']->middile_name) === false) {{$command[1]['user']->middle_name}} @endif {{$command[1]['user']->last_name}} @if(empty($command[1]['user']->suffix) === false) {{$command[1]['user']->suffix}} @endif
         </div>
     </div>
 
@@ -37,7 +37,7 @@
             SID#:
         </div>
         <div class="columns small-9">
-            {{$command['CO']->member_id}}
+            {{$command[1]['user']->member_id}}
         </div>
     </div>
 
@@ -46,7 +46,7 @@
             Rank:
         </div>
         <div class="columns small-9">
-            {{$command['CO']->rank['grade']}}
+            {{$command[1]['user']->rank['grade']}}
         </div>
     </div>
 
@@ -55,13 +55,13 @@
             Last Course Completed:
         </div>
         <div class="columns small-3">
-            {{$command['CO']->getHighestMainLineExamForBranch('officer+flag')}}
+            {{$command[1]['user']->getHighestMainLineExamForBranch('officer+flag')}}
         </div>
         <div class="columns small-2 my">
             Date of Birth:
         </div>
         <div class="columns small-4">
-            {{date('m/d/Y', strtotime($command['CO']->dob))}}
+            {{date('m/d/Y', strtotime($command[1]['user']->dob))}}
         </div>
     </div>
 
@@ -70,7 +70,7 @@
             Phone:
         </div>
         <div class="columns small-9">
-            @if(empty($command['CO']) === true)N/A @else {{$command['CO']->phone_number}} @endif
+            @if(empty($command[1]['user']) === true)N/A @else {{$command[1]['user']->phone_number}} @endif
         </div>
     </div>
 
@@ -79,7 +79,7 @@
             Email:
         </div>
         <div class="columns small-9">
-            {{$command['CO']->email_address}}
+            {{$command[1]['user']->email_address}}
         </div>
     </div>
     <br>
@@ -90,13 +90,13 @@
         </div>
     </div>
     <br>
-    @if(empty($command['XO']) === false)
+    @if(empty($command[2]['user']) === false)
         <div class="row">
             <div class="columns small-3 my">
                 Name:
             </div>
             <div class="columns small-9">
-                {{$command['XO']->first_name}} @if(empty($command['XO']->middile_name) === false) {{$command['XO']->middle_name}} @endif {{$command['XO']->last_name}} @if(empty($command['XO']->suffix) === false) {{$command['XO']->suffix}} @endif
+                {{$command[2]['user']->first_name}} @if(empty($command[2]['user']->middile_name) === false) {{$command[2]['user']->middle_name}} @endif {{$command[2]['user']->last_name}} @if(empty($command[2]['user']->suffix) === false) {{$command[2]['user']->suffix}} @endif
             </div>
         </div>
 
@@ -105,7 +105,7 @@
                 SID#:
             </div>
             <div class="columns small-9">
-                {{$command['XO']->member_id}}
+                {{$command[2]['user']->member_id}}
             </div>
         </div>
 
@@ -114,7 +114,7 @@
                 Rank:
             </div>
             <div class="columns small-9">
-                {{$command['XO']->rank['grade']}}
+                {{$command[2]['user']->rank['grade']}}
             </div>
         </div>
 
@@ -123,13 +123,13 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$command['XO']->getHighestMainLineExamForBranch('officer+flag')}}
+                {{$command[2]['user']->getHighestMainLineExamForBranch('officer+flag')}}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
             </div>
             <div class="columns small-4">
-                {{date('m/d/Y', strtotime($command['XO']->dob))}}
+                {{date('m/d/Y', strtotime($command[2]['user']->dob))}}
             </div>
         </div>
 
@@ -138,7 +138,7 @@
                 Phone:
             </div>
             <div class="columns small-9">
-                @if(empty($command['XO']) === true)N/A @else {{$command['XO']->phone_number}} @endif
+                @if(empty($command[2]['user']) === true)N/A @else {{$command[2]['user']->phone_number}} @endif
             </div>
         </div>
 
@@ -147,7 +147,7 @@
                 Email:
             </div>
             <div class="columns small-9">
-                {{$command['XO']->email_address}}
+                {{$command[2]['user']->email_address}}
             </div>
         </div>
     @else
@@ -165,13 +165,13 @@
         </div>
     </div>
     <br>
-    @if(empty($command['BOSUN']) === false)
+    @if(empty($command[3]['user']) === false)
         <div class="row">
             <div class="columns small-3 my">
                 Name:
             </div>
             <div class="columns small-9">
-                {{$command['BOSUN']->first_name}} @if(empty($command['BOSUN']->middile_name) === false) {{$command['BOSUN']->middle_name}} @endif {{$command['BOSUN']->last_name}} @if(empty($command['BOSUN']->suffix) === false) {{$command['BOSUN']->suffix}} @endif
+                {{$command[3]['user']->first_name}} @if(empty($command[3]['user']->middile_name) === false) {{$command[3]['user']->middle_name}} @endif {{$command[3]['user']->last_name}} @if(empty($command[3]['user']->suffix) === false) {{$command[3]['user']->suffix}} @endif
             </div>
         </div>
 
@@ -180,7 +180,7 @@
                 SID#:
             </div>
             <div class="columns small-9">
-                {{$command['BOSUN']->member_id}}
+                {{$command[3]['user']->member_id}}
             </div>
         </div>
 
@@ -189,7 +189,7 @@
                 Rank:
             </div>
             <div class="columns small-9">
-                {{$command['BOSUN']->rank['grade']}}
+                {{$command[3]['user']->rank['grade']}}
             </div>
         </div>
 
@@ -198,13 +198,13 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$command['BOSUN']->getHighestMainLineExamForBranch('enlisted')}}
+                {{$command[3]['user']->getHighestMainLineExamForBranch('enlisted')}}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
             </div>
             <div class="columns small-4">
-                {{date('m/d/Y', strtotime($command['BOSUN']->dob))}}
+                {{date('m/d/Y', strtotime($command[3]['user']->dob))}}
             </div>
         </div>
 
@@ -213,7 +213,7 @@
                 Phone:
             </div>
             <div class="columns small-9">
-                @if(empty($command['BOSUN']) === true)N/A @else {{$command['BOSUN']->phone_number}} @endif
+                @if(empty($command[3]['user']) === true)N/A @else {{$command[3]['user']->phone_number}} @endif
             </div>
         </div>
 
@@ -222,7 +222,7 @@
                 Email:
             </div>
             <div class="columns small-9">
-                {{$command['BOSUN']->email_address}}
+                {{$command[3]['user']->email_address}}
             </div>
         </div>
     @else
@@ -304,7 +304,7 @@
             Location:
         </div>
         <div class="columns small-4">
-            {{$command['CO']->city}}, {{$command['CO']->state_province}}
+            {{$command[1]['user']->city}}, {{$command[1]['user']->state_province}}
         </div>
     </div>
 

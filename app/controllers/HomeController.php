@@ -31,7 +31,7 @@ class HomeController extends BaseController
             $viewData['korders'] = $orders;
 
             if (empty( $user->osa ) === true) {
-                return View::make('osa', $viewData);
+                return View::make('osa', ['showform' => true]);
             } elseif ($user->tos === true) {
                 return View::make('home', $viewData);
             }
@@ -39,5 +39,10 @@ class HomeController extends BaseController
         } else {
             return View::make('login');
         }
+    }
+
+    public function osa()
+    {
+        return View::make('osa', ['showform' => false]);
     }
 }

@@ -347,10 +347,14 @@
 
                 </div>
             </div>
-            <ul class="small-block-grid-3">
+            <ul class="small-block-grid-3 ninety">
                 @foreach(DB::table('permissions')->orderBy('name', 'asc')->get() as $permission)
-                    <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions']) }}
-                        <span title="{{$permission['description']}}">{{$permission['name']}}</span></li>
+                    @if(($permission['name'] != 'CONFIG') || ($permission['name'] == 'CONFIG' && in_array('CONFIG', Auth::user()->permissions)))
+                        <li>{{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions']) }}
+                            <span title="{{$permission['description']}}">{{$permission['name']}}</span></li>
+                    @elseif($permission['name'] == 'CONFIG' && !in_array('CONFIG', Auth::user()->permissions) && in_array('CONFIG', $user->permissions))
+                        {{ Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions', 'style' => 'display: none !important']) }}
+                    @endif
                 @endforeach
             </ul>
         </fieldset>
@@ -361,13 +365,15 @@
 
     <div id="chooseShip" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
         <div class="row">
-            Which Chapter does the DUTY_ROSTER permission apply to?<br/><br/>
-        </div>
-        <div class="row" id="selectDR">
-
+            Select the Chapter(s) the DUTY_ROSTER permission is for?<br/><br/>
         </div>
         <div class="row">
-            <button class="button" onclick="$('#dutyroster').val(''); $('.dr:checked').each(function(i) {$('#dutyroster').val($('#dutyroster').val() + ',' + $(this).val());}); $('#chooseShip').foundation('reveal', 'close');">OK
+            {{Form::select('chapters[]', [], null, ['id' => 'chapters'])}}
+        </div>
+        <div class="row">
+            <button class="button"
+                    onclick="$('#dutyroster').val(''); var $select=$('#chapters').selectize(); $.each($select[0].selectize.getValue(), function(i, val) {$('#dutyroster').val($('#dutyroster').val() + ',' + val);}); $('#chooseShip').foundation('reveal', 'close');">
+                OK
             </button>
         </div>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
@@ -389,4 +395,38 @@
         </div>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     </div>
+@stop
+@section('scriptFooter')
+    <script type="text/javascript">
+        $('#chapters').selectize({
+            valueField: 'data',
+            labelField: 'value',
+            searchField: 'value',
+            maxItems: null,
+            create: false,
+            load: function (query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{route('chapter.find.api')}}/' + encodeURIComponent(query),
+                    type: 'GET',
+                    error: function () {
+                        callback();
+                    },
+                    success: function (res) {
+                        callback(res.suggestions);
+                    }
+                });
+            },
+            onInitialize: function () {
+                var self = this;
+                @foreach(explode(',', $user->duty_roster) as $roster)
+                    self.addOption({
+                    data: '{{$roster}}',
+                    value: '{{Chapter::find($roster)->chapter_name}}'
+                });
+                self.addItem('{{$roster}}');
+                @endforeach
+            }
+        });
+    </script>
 @stop

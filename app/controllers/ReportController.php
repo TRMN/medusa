@@ -35,7 +35,7 @@ class ReportController extends \BaseController
             return $redirect;
         }
 
-        foreach (['primary', 'secondary', 'additional'] as $assignment) {
+        foreach (['primary', 'secondary', 'additional', 'extra'] as $assignment) {
             $chapter = Chapter::find(Auth::user()->getAssignmentId($assignment));
 
             if (empty($chapter->chapter_type) === false && ($chapter->chapter_type == 'ship' || $chapter->chapter_type == 'station')) {

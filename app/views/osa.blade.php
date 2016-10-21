@@ -10,6 +10,7 @@
     <hr>
     <p><em>Last Updated: November 16, 2015</em></p>
 
+@if($showform === true)
     <p>{{$greeting['rank']}} {{$greeting['last_name']}}, your access has changed. Please read the following and indicate
         your agreement to this policy.</p>
 
@@ -26,12 +27,11 @@
         confidential information. By agreeing you acknowledge that it is your responsibility to follow this and any
         subsequent Admiralty Orders regarding confidentiality, regardless of whether or not this acknowledgment has been
         updated or you have been asked to accept again.</p>
-
+@endif
     <h2 style="text-align: center;" class="trmn">THE OFFICIAL SECRETS ACT</h2>
 
     <p>The following Documents and Databases are to be considered classified Royal Manticoran Navy/Marine Corps/Army
         items and are not to be spread to members without rights to view them.</p>
-
 
     <ol>
         <li>The Online Membership Database – Only the Royal Council and BuComm Database Staff will have full access to
@@ -66,7 +66,7 @@
         membership termination, with no refund of remaining pro-rated membership dues.</p>
 
     <p>The information in this section can also be found in relevant Admiralty Orders</p>
-
+@if($showform === true)
     {{ Form::open(['route' => 'osa', 'method' => 'post']) }}
     {{ Form::hidden('id', Auth::user()->id) }}
     {{ Form::hidden('osa',1) }}
@@ -80,4 +80,5 @@
            href="{{ route('signout') }}">I do not agree</a> {{ Form::submit('I Agree', [ 'class' => 'button' ] ) }}
     </div>
     {{ Form::close() }}
+ß@endif
 @stop
