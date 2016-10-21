@@ -26,6 +26,11 @@
       "email": "bill.knight@conalscorner.com",
       "homepage": "http://www.conalscorner.com/trmn",
       "role": "Award Graphics"
+    },
+    {
+      "name": "Jerry Ablan",
+      "email": "jerryablan@gmail.com",
+      "role": "Refactoring and optimization"
     }
   ],
   "description": "Project MEDUSA (Manticoran Enhanced Data Usability Service Architecture)",

@@ -133,7 +133,7 @@ return [
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
         'Medusa\Services\MedusaServiceProvider',
-
+        'Medusa\Providers\OAuthServiceProvider',
     ],
 
     /*
@@ -209,5 +209,5 @@ return [
         'QrCode'              => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
 
     ],
-    'version' => "Elizabeth I (Project MEDUSA v1.2.29)",
+    'version' => "Trevor's Star (Project MEDUSA v1.3.0)",
 ];

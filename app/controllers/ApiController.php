@@ -121,13 +121,25 @@ class ApiController extends BaseController
 
     public function getUniversities()
     {
-        return Response::json(Chapter::getChaptersByType('university'));
+        return Response::json(Chapter::getChaptersByType('university') + Chapter::getChaptersByType('university_system'));
+    }
+
+    public function checkAddress($email_address)
+    {
+        $user = User::where('email_address', '=', $email_address)->first();
+
+        if (empty($user) === true) {
+            return Response::json(['available' => true]);
+        }
+
+        return Response::json(['available' => false]);
     }
 
     public function savePhoto()
     {
         if (Input::file('file')->isValid() === true) {
-            $res = User::where('member_id', '=', Input::get('member_id'))->get();
+            $res =
+              User::where('member_id', '=', Input::get('member_id'))->get();
 
             if (count($res) === 1 && $res[0]->member_id == Input::get('member_id')) {
 
@@ -141,12 +153,12 @@ class ApiController extends BaseController
                 $user->filePhoto = '/images/' . $fileName;
 
                 $this->writeAuditTrail(
-                    (string)Auth::user()->_id,
-                    'update',
-                    'users',
-                    (string)$user->_id,
-                    $user->toJson(),
-                    'ApiController@savePhoto'
+                  (string)Auth::user()->_id,
+                  'update',
+                  'users',
+                  (string)$user->_id,
+                  $user->toJson(),
+                  'ApiController@savePhoto'
                 );
 
                 $user->save();
@@ -167,9 +179,11 @@ class ApiController extends BaseController
         return Response::json($classes);
     }
 
-    public function findMember()
+    public function findMember($query = null)
     {
-        $query = Input::get('query', null);
+        if (empty($query) === true) {
+            $query = Input::get('query', null);
+        }
 
         if (is_null($query) === true) {
             return Response::json(['suggestions' => []]);
@@ -179,13 +193,27 @@ class ApiController extends BaseController
 
         switch (count($terms)) {
             case 1:
-                $query = User::where('member_id', 'like', '%' . $terms[0] . '%')->orWhere('first_name', 'like', $terms[0] . '%')->orWhere('last_name', 'like', $terms[0] . '%');
+                $query =
+                  User::where('registration_status', '=', 'Active')
+                      ->where(function ($query) use ($terms) {
+                          $query->where('member_id', 'like',
+                            '%' . $terms[0] . '%')
+                                ->orWhere('first_name', 'like', $terms[0] . '%')
+                                ->orWhere('last_name', 'like', $terms[0] . '%');
+                      });
                 break;
             case 2:
-                $query = User::where('first_name', 'like', $terms[0] . '%')->where('last_name', 'like', $terms[1] . '%');
+                $query =
+                  User::where('first_name', 'like', $terms[0] . '%')
+                      ->where('last_name', 'like', $terms[1] . '%')
+                      ->where('registration_status', '=', 'Active');
                 break;
             default:
-                $query = User::where('first_name', 'like', $terms[0] . '%')->where('middle_name', 'like', $terms[1] . '%')->where('last_name', 'like', $terms[2] . '%');
+                $query =
+                  User::where('first_name', 'like', $terms[0] . '%')
+                      ->where('middle_name', 'like', $terms[1] . '%')
+                      ->where('last_name', 'like', $terms[2] . '%')
+                      ->where('registration_status', '=', 'Active');
         }
 
         $results = $query->get();
@@ -194,12 +222,41 @@ class ApiController extends BaseController
 
         foreach ($results as $member) {
             $suggestions[] =
-                [
-                    'value' => $member->member_id . ' ' . $member->first_name . ' ' . (!empty($member->middle_name)?$member->middle_name . ' ': '') . $member->last_name . (!empty($member->suffix)?' ' . $member->suffix:'') . ' (' . $member->getAssignmentName(
-                            'primary'
-                        ) . ')',
-                    'data' => $member->id
-                ];
+              [
+                'value' => $member->member_id . ' ' . $member->first_name . ' ' . (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name . (!empty($member->suffix) ? ' ' . $member->suffix : '') . ' (' . $member->getAssignmentName(
+                    'primary'
+                  ) . ')',
+                'data'  => $member->id
+              ];
+        }
+
+        return Response::json(['suggestions' => $suggestions]);
+    }
+
+    public function findChapter($query = null)
+    {
+        if (empty($query) === true) {
+            $query = Input::get('query', null);
+        }
+
+        if (is_null($query) === true) {
+            return Response::json(['suggestions' => []]);
+        }
+
+        $results =
+          Chapter::orderBy('chapter_name', 'asc')
+                 ->where('chapter_name', 'like', '%' . $query . '%')
+                 ->whereNull('decommission_date')
+                 ->get();
+
+        $suggestions = [];
+
+        foreach ($results as $chapter) {
+            $suggestions[] =
+              [
+                'value' => $chapter->chapter_name,
+                'data' => $chapter->id,
+              ];
         }
 
         return Response::json(['suggestions' => $suggestions]);
@@ -214,16 +271,43 @@ class ApiController extends BaseController
         }
 
         $results =
-            ExamList::where('name', 'like', '%' . $query . '%')->orWhere('exam_id', 'like', '%' . $query . '%')->get();
+          ExamList::where('name', 'like', '%' . $query . '%')
+                  ->orWhere('exam_id', 'like', '%' . $query . '%')
+                  ->get();
 
         $suggestions = [];
 
         foreach ($results as $exam) {
             if ($exam->enabled === true) {
-                $suggestions[] = ['value' => $exam->name . ' (' . $exam->exam_id . ')', 'data' => $exam->exam_id];
+                $suggestions[] =
+                  [
+                    'value' => $exam->name . ' (' . $exam->exam_id . ')',
+                    'data'  => $exam->exam_id
+                  ];
             }
         }
 
         return Response::json(['suggestions' => $suggestions]);
+    }
+
+    public function getScheduledEvents($user, $continent = null, $city = null)
+    {
+        return Response::json([
+          'events' => $user->getScheduledEvents($continent, $city)
+        ]);
+    }
+
+    public function checkInMember(
+      $event,
+      $user,
+      $member,
+      $continent = null,
+      $city = null
+    ) {
+        if (is_object($user) === false) {
+            return Response::json(['error' => 'Invalid User']);
+        }
+        return Response::json($user->checkMemberIn($event, $member, $continent,
+          $city));
     }
 }

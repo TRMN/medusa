@@ -1,5 +1,4 @@
 <?php
-
 $protocol = ( Request::secure() ) ? "https:" : "http:";
 
 $host = Request::server('HTTP_HOST');
@@ -15,184 +14,96 @@ if (Auth::check()) {
 View::share('serverUrl', $hostFull);
 View::share('authUser', $authUser);
 
-// OAuth2
-App::singleton(
-    'oauth2',
-    function () {
+Route::get('/osa', ['as' => 'osa', 'uses' => 'HomeController@osa']);
 
-        $host = Config::get('database.connections.mongodb.host');
-        $hosts = is_array($host) ? $host : [$host];
-        $dbName = Config::get('database.connections.mongodb.database');
-        $dbOptions =
-            empty( Config::get('database.connections.mongodb.options') ) ? [] : Config::get(
-                'database.connections.mongodb.options'
-            );
-
-        $mongo = new MongoClient('mongodb://' . implode(',', $hosts) . '/' . $dbName, $dbOptions);
-        $storage = new OAuth2\Storage\Mongo($mongo->{$dbName});
-        $server = new OAuth2\Server(
-            $storage, [
-            'always_issue_new_refresh_token' => true,
-            'refresh_token_lifetime'         => 2419200,
-        ]
-        );
-
-        $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
-        $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
-        $server->addGrantType(new OAuth2\GrantType\UserCredentials($storage));
-        $server->addGrantType(new OAuth2\GrantType\RefreshToken($storage));
-
-        return $server;
-    }
-);
-
+// OAuth2 routes
 Route::get(
     'oauth/authorize',
     function () {
-        $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
-        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
-
-        App::make('oauth2')->validateAuthorizeRequest($bridgedRequest, $bridgedResponse);
-
-        if (!$bridgedResponse) {
-            return $bridgedResponse;
-        }
-
-        $params = $bridgedRequest->getAllQueryParameters();
-        $client = OauthClient::where('client_id', '=', $params['client_id'])->first();
-
-        return View::make(
-            'oauth.authorization-form',
-            ['client' => $client, 'params' => $params, 'permsObj' => new \Medusa\Permissions\PermissionsHelper()]
-        );
+        return app('oauth2')->authorize();
     }
 );
 
 Route::post(
     'oauth/authorize',
     function () {
-        $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
-        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
-
-        $is_authorized = ( $bridgedRequest->get('authorized') === 'Approve' );
-
-        App::make('oauth2')->handleAuthorizeRequest(
-            $bridgedRequest,
-            $bridgedResponse,
-            $is_authorized,
-            Auth::user()->id
-        );
-
-        return $bridgedResponse;
+        return app('oauth2')->authorizePost();
     }
 );
 
 Route::post(
     'oauth/token',
     function () {
-        $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
-        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
+        return app('oauth2')->token();
+    }
+);
 
-        $bridgedResponse = App::make('oauth2')->handleTokenRequest($bridgedRequest, $bridgedResponse);
-
-        return $bridgedResponse;
+Route::post(
+    'oauth/updateuser',
+    function () {
+        return app('oauth2')->updateUser();
     }
 );
 
 Route::get(
     'oauth/profile',
     function () {
-        $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
-        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
-
-        if (App::make('oauth2')->verifyResourceRequest($bridgedRequest, $bridgedResponse)) {
-
-            $token = App::make('oauth2')->getAccessTokenData($bridgedRequest);
-
-            $user = User::find($token['user_id']);
-
-            return Response::json(
-                array(
-                    'uid'            => $token['user_id'],
-                    'email'          => $user->email_address,
-                    'firstname'      => $user->first_name,
-                    'lastname'       => $user->last_name,
-                    'city'           => $user->city,
-                    'state_province' => $user->state_province,
-                    'country'        => $user->country,
-                    'imageurl'       => $user->filePhoto,
-                    'user_id'        => $token['user_id'],
-                    'client'         => $token['client_id'],
-                    'expires'        => $token['expires'],
-                )
-            );
-        } else {
-            return Response::json(
-                array(
-                    'error' => 'Unauthorized'
-                ),
-                $bridgedResponse->getStatusCode()
-            );
-        }
+        return app('oauth2')->profile();
     }
 );
 
 Route::get(
     'oauth/user',
     function () {
-        $bridgedRequest = OAuth2\HttpFoundationBridge\Request::createFromRequest(Request::instance());
-        $bridgedResponse = new OAuth2\HttpFoundationBridge\Response();
-
-        if (App::make('oauth2')->verifyResourceRequest($bridgedRequest, $bridgedResponse)) {
-
-            $token = App::make('oauth2')->getAccessTokenData($bridgedRequest);
-
-            $user = User::find($token['user_id']);
-            $exams = Exam::where('member_id', '=', $user->member_id)->first()->exams;
-
-            unset( $user->duty_roster, $user->permissions, $user->password, $user->osa, $user->remember_token, $user->tos );
-
-            $assignments = $user->assignment;
-
-            foreach ($assignments as $index => $assignment) {
-                unset( $assignments[$index]['chapter_id'] );
-            }
-
-            $user->assignment = $assignments;
-
-            $peerages = $user->peerages;
-
-            foreach ($peerages as $index => $peerage) {
-                unset( $peerages[$index]['peerage_id'] );
-            }
-
-            $user->peerages = $peerages;
-
-            $user->exams = $exams;
-
-            return Response::json($user);
-        } else {
-            return Response::json(
-                array(
-                    'error' => 'Unauthorized'
-                ),
-                $bridgedResponse->getStatusCode()
-            );
-        }
+        return app('oauth2')->user();
     }
+);
+
+Route::get(
+    'oauth/lastupdate',
+    function () {
+        return app('oauth2')->lastUpdated();
+    }
+);
+
+Route::get(
+    'oauth/tistig',
+    function () {
+        return app('oauth2')->getTisTig();
+    }
+);
+
+Route::get(
+    'oauth/idcard',
+    function () {
+        return app('oauth2')->getIdCard();
+    }
+);
+
+Route::get(
+  'oauth/events',
+  function () {
+      return app('oauth2')->getScheduledEvents();
+  }
+);
+
+Route::get(
+  'oauth/checkin',
+  function () {
+      return app('oauth2')->checkMemberIn();
+  }
 );
 
 Route::model('oauthclient', 'OAuthClient');
 Route::resource('oauthclient', 'OAuthController', ['before' => 'auth']);
-// Authentication
 
+// Authentication
 Route::get('/signout', ['as' => 'signout', 'uses' => 'AuthController@signout']);
 Route::post('/signin', ['as' => 'signin', 'uses' => 'AuthController@signin']);
 Route::get('/register', ['as' => 'register', 'uses' => 'UserController@register']);
 Route::post('/apply', ['as' => 'user.apply', 'uses' => 'UserController@apply']);
 
 // Users
-
 Route::model('user', 'User');
 Route::get(
     '/user/finddups/{billet2check}',
@@ -282,7 +193,10 @@ Route::get(
     '/triadreport',
     ['as' => 'chapter.triadreport', 'uses' => 'ChapterController@commandTriadReport', 'before' => 'auth']
 );
-Route::get('/export/{chapter}', ['as' => 'roster.export', 'uses' => 'ChapterController@exportRoster', 'before' => 'auth']);
+Route::get(
+    '/export/{chapter}',
+    ['as' => 'roster.export', 'uses' => 'ChapterController@exportRoster', 'before' => 'auth']
+);
 Route::resource('announcement', 'AnnouncementController', ['before' => 'auth']);
 Route::resource('report', 'ReportController', ['before' => 'auth']);
 
@@ -340,6 +254,13 @@ Route::resource('billet', 'BilletController', ['before' => 'auth']);
 
 Route::controller('id', 'IdController', ['before' => 'auth']);
 
+Route::model('events', 'Events');
+Route::resource('events', 'EventController', ['before' => 'auth']);
+Route::get('/events/export/{events}', ['as' => 'event.export', 'uses' => 'EventController@export', 'before' => 'auth']);
+
+Route::model('config', 'MedusaConfig');
+Route::resource('config', 'ConfigController', ['before' => 'auth']);
+
 // API calls
 
 Route::get('/api/branch', 'ApiController@getBranchList'); // Get a list of all the tRMN branches
@@ -369,7 +290,7 @@ Route::get('/api/university', 'ApiController@getUniversities');
 Route::get('/api/branch/{branchID}/rate', 'ApiController@getRatingsForBranch'); // Get a list of all the ratings
 Route::get('/api/korder/{orderid}', 'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
 Route::post('/api/photo', 'ApiController@savePhoto', ['before' => 'auth']); // File Photo upload
-Route::get(' /api/find', 'ApiController@findMember', ['before' => 'auth']); // search for a member
+Route::get('/api/find/{query?}', ['as' => 'user.find.api', 'uses' => 'ApiController@findMember', 'before' => 'auth']); // search for a member
 Route::get('/api/exam', 'ApiController@findExam', ['before' => 'auth']); // search for an exam
-
-
+Route::get('/api/checkemail/{email}', 'ApiController@checkAddress'); // Check that an email address is available
+Route::get('/api/findchapter/{query?}', ['as' => 'chapter.find.api', 'uses' => 'ApiController@findChapter']);

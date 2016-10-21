@@ -212,6 +212,8 @@ class ExamController extends \BaseController
 
         $record->save();
 
+        $member->updateLastUpdated();
+
         return Redirect::route('exam.find', ['user' => $member->id])->with('message', $message);
     }
 

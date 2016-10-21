@@ -9,27 +9,15 @@
         <div class="whitesmoke">
 
             <div class="sbAccordian">
-                @foreach(['RMN', 'SRN', 'GSN', 'STC|AFLTC|GTSC', 'RMMC', 'SRMC', 'RMA', 'RMAT', 'CORE|KC|QC', 'SFC', 'RMMM', 'RMACS'] as $branch)
-                    @if(count($user->getExamList(['branch' => $branch])) > 0)
-                        @if($branch == 'SRN')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMN Specialty
-                        @elseif($branch == 'SRMC')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMMC Specialty
-                        @elseif($branch == 'RMAT')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">RMA Specialty
-                        @elseif($branch == 'CORE|KC|QC')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">Landing University
-                        @elseif($branch == 'STC|AFLTC|GTSC')
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">GSN Specialty
-                        @else
-                            <h5 class="Incised901Light ninety" title="Click to expand/collapse">{{$branch}}
-                        @endif
-                        @if($user->hasNewExams($branch))
+                @foreach(MedusaConfig::get('exam.regex') as $school => $regex)
+                    @if(count($user->getExamList(['pattern' => $regex])) > 0)
+                        <h5 class="Incised901Light ninety" title="Click to expand/collapse">{{$school}}
+                        @if($user->hasNewExams($regex))
                             &nbsp;<strong class="yellow">(New exams posted)</strong>
                         @endif
                             </h5>
                         <div class="content">
-                            @foreach($user->getExamList(['branch' => $branch]) as $exam => $gradeInfo)
+                            @foreach($user->getExamList(['pattern' => $regex]) as $exam => $gradeInfo)
                                 <div class="row">
                                     <div class="small-5 columns Incised901Light ninety textLeft @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) >= strtotime(Auth::user()->getLastLogin())))yellow @endif">{{$exam}} @if (!is_null(ExamList::where('exam_id','=',$exam)->first())){{ExamList::where('exam_id','=',$exam)->first()->name}}@endif</div>
                                     <div class="small-1 columns Incised901Light ninety textRight">{{$gradeInfo['score']}}</div>
