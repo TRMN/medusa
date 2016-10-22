@@ -42,6 +42,14 @@
             </p>
         </div>
     </div>
+    <div class="row">
+        <div class="columns small-3 Incised901Light text-center">
+            <a href='https://play.google.com/store/apps/details?id=org.trmn.medusa&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a><br /><small class="Incised901Light">Google Play and the Google Play logo are trademarks of Google Inc.</small>
+        </div>
+        <div class="columns small-3 end Incised901Light text-center">
+            <img src="{{asset('images/appstore.svg')}}" alt="Download on the App Store" width="300px" style="padding-top: 21px; padding-bottom: 21px;"/><br />Coming Soon!
+        </div>
+    </div>
     @if ($action == "add")
         {{ Form::model( $event, [ 'route' => [ 'events.store' ], 'method' => 'post', 'data-abide' => '', 'id' => 'event_form' ] ) }}
     @else
