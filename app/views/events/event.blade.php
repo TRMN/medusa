@@ -30,7 +30,9 @@
                 </li>
                 <li>Event Registrars and the Event Coordinator will use the MEDUSA Mobile app to scan ID cards to check
                     people into events. A Registrar or Event Coordinator will be the only people that can access the
-                    event on the mobile app to check members in for attendance.
+                    event on the mobile app to check members in for attendance.  The event will not show up in the mobile
+                    app until the date(s) of the event.  If your event is not showing up, try signing out of the mobile
+                    app and signing back in, or reloading your profile from the Profile menu.
                 </li>
                 <li>
                     The Event Coordinator will be able to edit the event until the first attendee has been checked in.

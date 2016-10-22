@@ -416,7 +416,7 @@
                         callback(res.suggestions);
                     }
                 });
-            },
+            }@if(!empty($user->duty_roster)),
             onInitialize: function () {
                 var self = this;
                 @foreach(explode(',', $user->duty_roster) as $roster)
@@ -427,6 +427,7 @@
                 self.addItem('{{$roster}}');
                 @endforeach
             }
+            @endif
         });
     </script>
 @stop
