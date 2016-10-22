@@ -50,15 +50,15 @@
                 @if (!empty($user->note))
 
                     <?php
-                            $currentNote = $user->note;
-                            $title = '** VIEW';
+                    $currentNote = $user->note;
+                    $title = '** VIEW';
 
-                            if ($permsObj->hasPermissions(['EDIT_NOTE'])) {
-                                $title .= '/EDIT';
-                            }
+                    if ($permsObj->hasPermissions(['EDIT_NOTE'])) {
+                        $title .= '/EDIT';
+                    }
 
-                            $title .= ' NOTE **';
-                            $options = ["id" => "note_text"];
+                    $title .= ' NOTE **';
+                    $options = ["id" => "note_text"];
                     ?>
                     <h5 id="note_container">{{$title}}</h5>
                 @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
@@ -107,7 +107,7 @@
 
                         if ($peerage['code'] != 'K' && $peerage['title'] != 'Knight' && $peerage['title'] != 'Dame') {
                             $path = null;
-                            if (empty( $peerage['filename'] ) === false) {
+                            if (empty($peerage['filename']) === false) {
                                 $path = '/arms/peerage/' . $peerage['filename'];
                             }
                             $fullTitle = $peerage['generation'] . ' ' . $peerage['title'] . ' of ' . $peerage['lands'];
@@ -196,7 +196,7 @@
                 </div>
             </div>
         @endif
-@include('partials.coursework', ['user' => $user])
+        @include('partials.coursework', ['user' => $user])
     @endif
     <br/>
     @if($permsObj->hasPermissions(['DOB']) || ($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id))
@@ -218,6 +218,21 @@
                 {{ isset($user->phone_number) ? $user->phone_number . '<br />' : '' }}
             </div>
         </div>
+
+        @if($permsObj->hasPermissions(['ASSIGN_PERMS'])  && !empty($user->permissions))
+            <br />
+            <div class="row Incised901Light">
+                <div class="columns small-1">Permissions:</div>
+                <div class="columns small-5 end">
+                    <ul class="small-block-grid-3 ninety">
+                        @foreach($user->permissions as $permmission)
+                            <li>{{$permmission}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+
+            </div>
+        @endif
 
 
         <div class="row">
