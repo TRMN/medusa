@@ -158,6 +158,16 @@
         @endif
     @endif
 </div>
+<div style="width: 175px" class="text-center">
+    <a href="/signout"><h3 class="lnav nav-header whitesmoke">Logout</h3></a>
+    <br/>
+    <h5 class="whitesmoke Incised901Light">MEDUSA Mobile</h5>
+    <a href='https://play.google.com/store/apps/details?id=org.trmn.medusa&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img
+                alt='Get it on Google Play'
+                src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="175px"/></a><br/>
+    <small class="Incised901Light">Google Play and the Google Play logo are trademarks of Google Inc.</small>
+    <br /><br />
+    <img src="{{asset('images/appstore.svg')}}" alt="Download on the App Store" width="151px"/><br /><br />Coming Soon!
+</div>
 
-<a href="/signout"><h3 class="lnav nav-header whitesmoke">Logout</h3></a>
 
