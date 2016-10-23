@@ -167,7 +167,7 @@
                 src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="175px"/></a><br/>
     <small class="Incised901Light">Google Play and the Google Play logo are trademarks of Google Inc.</small>
     <br /><br />
-    <img src="{{asset('images/appstore.svg')}}" alt="Download on the App Store" width="151px"/><br /><br />Coming Soon!
+    <a href="https://itunes.apple.com/us/app/medusa-mobile/id1153191437?ls=1&mt=8"><img src="{{asset('images/appstore.svg')}}" alt="Download on the App Store" width="151px"/></a>
 </div>
 
 
