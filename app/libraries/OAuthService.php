@@ -179,7 +179,7 @@ class OAuthService
 
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
-            $_user = \User::where('email_address', '=', $_token['user_id'])->first();
+            $_user = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first();
 
             return \Response::json(
                 [
@@ -205,7 +205,7 @@ class OAuthService
 
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
-            $_user = \User::where('email_address', '=', $_token['user_id'])->first();
+            $_user = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first();
 
             $_data = \Input::all();
 
@@ -261,7 +261,7 @@ class OAuthService
 
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
-            $_user = \User::where('email_address', '=', $_token['user_id'])->first();
+            $_user = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first();
             unset( $_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos );
 
             $_assignments = $_user->assignment;
@@ -366,7 +366,7 @@ class OAuthService
 
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
-            $_lastUpdated = \User::where('email_address', '=', $_token['user_id'])->first()->getLastUpdated();
+            $_lastUpdated = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first()->getLastUpdated();
 
             return \Response::json(['lastUpdate' => $_lastUpdated]);
         }
@@ -385,7 +385,7 @@ class OAuthService
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
 
-            $_idCard = \User::where('email_address', '=', $_token['user_id'])->first()->buildIdCard(true);
+            $_idCard = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first()->buildIdCard(true);
 
             return $_idCard->response('png');
         }
@@ -407,7 +407,7 @@ class OAuthService
 
             \Log::info('TZ=' . $_tz);
 
-            return \Response::json(['events' => \User::where('email_address', '=', $_token['user_id'])->first()->getScheduledEvents($_tz)]);
+            return \Response::json(['events' => \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first()->getScheduledEvents($_tz)]);
 
         }
 
@@ -429,7 +429,7 @@ class OAuthService
 
             \Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
 
-            return \Response::json(\User::where('email_address', '=', $_token['user_id'])->first()->checkMemberIn($_data['event'], $_data['member'], $_data['tz']));
+            return \Response::json(\User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first()->checkMemberIn($_data['event'], $_data['member'], $_data['tz']));
 
         }
 
