@@ -293,8 +293,9 @@ class ChapterController extends BaseController
         foreach ($results as $chapter) {
             $commandTriad = $chapter->getCommandCrew();
 
-            foreach ($commandTriad as $billet => $user) {
-                if (is_object($user) && get_class($user) == 'User') {
+            foreach ($commandTriad as $billetInfo) {
+                if (is_object($billetInfo['user']) && get_class($billetInfo['user']) == 'User') {
+                    $user = $billetInfo['user'];
                     switch (substr($user->rank['grade'], 0, 1)) {
                         case 'E':
                             $exam = $user->getHighestEnlistedExam();
@@ -318,22 +319,10 @@ class ChapterController extends BaseController
                     }
 
                     $output[] =
-                      "{$user->member_id},{$chapter->getAssignedFleet()},{$user->getFullName()},{$user->rank['grade']},{$user->rank['date_of_rank']},$billet,$chapter->chapter_name,$examInfo\n";
+                      "{$user->member_id},{$chapter->getAssignedFleet()},{$user->getFullName()},{$user->rank['grade']},{$user->rank['date_of_rank']},{$billetInfo['display']},$chapter->chapter_name,$examInfo\n";
                 }
             }
         }
-
-        /**
-         * 1) Get list of Ship and Stations
-         * 2) Add column headers as first entry in $output array
-         * 3) iterate through list of ships and stations
-         * 4) Get Command Triad for ship/station
-         * 5) $tmp = '{$chapter->chapter_name},{$chapter->hull_number},';
-         */
-
-        //get Command triads for each ship/station
-
-        //get exams for each member of each command triads
 
         if (ini_get('zlib.output_compression')) {
             ini_set('zlib.output_compression', 'Off');
