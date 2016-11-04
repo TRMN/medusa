@@ -29,7 +29,7 @@
             Name:
         </div>
         <div class="columns small-9">
-            {{$report->command_crew['CO']['first_name']}} @if(empty($report->command_crew['CO']->middile_name) === false) {{$report->command_crew['CO']['middle_name']}} @endif {{$report->command_crew['CO']['last_name']}} @if(empty($report->command_crew['CO']->suffix) === false) {{$report->command_crew['CO']->suffix}} @endif
+            {{$report->command_crew['Commanding Officer']['first_name']}} @if(empty($report->command_crew['Commanding Officer']->middile_name) === false) {{$report->command_crew['Commanding Officer']['middle_name']}} @endif {{$report->command_crew['Commanding Officer']['last_name']}} @if(empty($report->command_crew['Commanding Officer']->suffix) === false) {{$report->command_crew['Commanding Officer']->suffix}} @endif
         </div>
     </div>
 
@@ -38,7 +38,7 @@
             SID#:
         </div>
         <div class="columns small-9">
-            {{$report->command_crew['CO']['member_id']}}
+            {{$report->command_crew['Commanding Officer']['member_id']}}
         </div>
     </div>
 
@@ -47,7 +47,7 @@
             Rank:
         </div>
         <div class="columns small-9">
-            {{$report->command_crew['CO']['rank']['grade']}}
+            {{$report->command_crew['Commanding Officer']['rank']['grade']}}
         </div>
     </div>
 
@@ -56,13 +56,13 @@
             Last Course Completed:
         </div>
         <div class="columns small-3">
-            {{$report->command_crew['CO']['last_course']}}
+            {{$report->command_crew['Commanding Officer']['last_course']}}
         </div>
         <div class="columns small-2 my">
             Date of Birth:
         </div>
         <div class="columns small-4">
-            {{date('m/d/Y', strtotime($report->command_crew['CO']['dob']))}}
+            {{date('m/d/Y', strtotime($report->command_crew['Commanding Officer']['dob']))}}
         </div>
     </div>
 
@@ -71,8 +71,8 @@
             Phone:
         </div>
         <div class="columns small-9">
-            @if(empty($report->command_crew['CO']['phone_number']) === true)
-                N/A @else {{$report->command_crew['CO']['phone_number']}} @endif
+            @if(empty($report->command_crew['Commanding Officer']['phone_number']) === true)
+                N/A @else {{$report->command_crew['Commanding Officer']['phone_number']}} @endif
         </div>
     </div>
 
@@ -81,7 +81,7 @@
             Email:
         </div>
         <div class="columns small-9">
-            {{$report->command_crew['CO']['email_address']}}
+            {{$report->command_crew['Commanding Officer']['email_address']}}
         </div>
     </div>
     <br>
@@ -91,13 +91,13 @@
         </div>
     </div>
     <br>
-    @if(empty($report->command_crew['XO']) === false)
+    @if(empty($report->command_crew['Executive Officer']) === false)
         <div class="row">
             <div class="columns small-3 my">
                 Name:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['XO']['first_name']}} @if(empty($report->command_crew['XO']->middile_name) === false) {{$report->command_crew['XO']['middle_name']}} @endif {{$report->command_crew['XO']['last_name']}} @if(empty($report->command_crew['XO']->suffix) === false) {{$report->command_crew['XO']->suffix}} @endif
+                {{$report->command_crew['Executive Officer']['first_name']}} @if(empty($report->command_crew['Executive Officer']->middile_name) === false) {{$report->command_crew['Executive Officer']['middle_name']}} @endif {{$report->command_crew['Executive Officer']['last_name']}} @if(empty($report->command_crew['Executive Officer']->suffix) === false) {{$report->command_crew['Executive Officer']->suffix}} @endif
             </div>
         </div>
 
@@ -106,7 +106,7 @@
                 SID#:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['XO']['member_id']}}
+                {{$report->command_crew['Executive Officer']['member_id']}}
             </div>
         </div>
 
@@ -115,7 +115,7 @@
                 Rank:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['XO']['rank']['grade']}}
+                {{$report->command_crew['Executive Officer']['rank']['grade']}}
             </div>
         </div>
 
@@ -124,13 +124,13 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$report->command_crew['XO']['last_course']}}
+                {{$report->command_crew['Executive Officer']['last_course']}}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
             </div>
             <div class="columns small-4">
-                {{date('m/d/Y', strtotime($report->command_crew['XO']['dob']))}}
+                {{date('m/d/Y', strtotime($report->command_crew['Executive Officer']['dob']))}}
             </div>
         </div>
 
@@ -139,8 +139,8 @@
                 Phone:
             </div>
             <div class="columns small-9">
-                @if(empty($report->command_crew['XO']['phone_number']) === true)
-                    N/A @else {{$report->command_crew['XO']['phone_number']}} @endif
+                @if(empty($report->command_crew['Executive Officer']['phone_number']) === true)
+                    N/A @else {{$report->command_crew['Executive Officer']['phone_number']}} @endif
             </div>
         </div>
 
@@ -149,7 +149,7 @@
                 Email:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['XO']['email_address']}}
+                {{$report->command_crew['Executive Officer']['email_address']}}
             </div>
         </div>
     @else
@@ -165,13 +165,13 @@
         </div>
     </div>
     <br>
-    @if(empty($report->command_crew['BOSUN']) === false)
+    @if(empty($report->command_crew['Bosun']) === false)
         <div class="row">
             <div class="columns small-3 my">
                 Name:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['BOSUN']['first_name']}} @if(empty($report->command_crew['BOSUN']->middile_name) === false) {{$report->command_crew['BOSUN']['middle_name']}} @endif {{$report->command_crew['BOSUN']['last_name']}} @if(empty($report->command_crew['BOSUN']->suffix) === false) {{$report->command_crew['BOSUN']->suffix}} @endif
+                {{$report->command_crew['Bosun']['first_name']}} @if(empty($report->command_crew['Bosun']->middile_name) === false) {{$report->command_crew['Bosun']['middle_name']}} @endif {{$report->command_crew['Bosun']['last_name']}} @if(empty($report->command_crew['Bosun']->suffix) === false) {{$report->command_crew['Bosun']->suffix}} @endif
             </div>
         </div>
 
@@ -180,7 +180,7 @@
                 SID#:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['BOSUN']['member_id']}}
+                {{$report->command_crew['Bosun']['member_id']}}
             </div>
         </div>
 
@@ -189,7 +189,7 @@
                 Rank:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['BOSUN']['rank']['grade']}}
+                {{$report->command_crew['Bosun']['rank']['grade']}}
             </div>
         </div>
 
@@ -198,13 +198,13 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$report->command_crew['BOSUN']['last_course']}}
+                {{$report->command_crew['Bosun']['last_course']}}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
             </div>
             <div class="columns small-4">
-                {{date('m/d/Y', strtotime($report->command_crew['BOSUN']['dob']))}}
+                {{date('m/d/Y', strtotime($report->command_crew['Bosun']['dob']))}}
             </div>
         </div>
 
@@ -213,8 +213,8 @@
                 Phone:
             </div>
             <div class="columns small-9">
-                @if(empty($report->command_crew['BOSUN']['phone_number']) === true)
-                    N/A @else {{$report->command_crew['BOSUN']['phone_number']}} @endif
+                @if(empty($report->command_crew['Bosun']['phone_number']) === true)
+                    N/A @else {{$report->command_crew['Bosun']['phone_number']}} @endif
             </div>
         </div>
 
@@ -223,7 +223,7 @@
                 Email:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['BOSUN']['email_address']}}
+                {{$report->command_crew['Bosun']['email_address']}}
             </div>
         </div>
     @else
@@ -301,7 +301,7 @@
             Location:
         </div>
         <div class="columns small-4">
-            {{$report->command_crew['CO']['city']}}, {{$report->command_crew['CO']['state_province']}}
+            {{$report->command_crew['Commanding Officer']['city']}}, {{$report->command_crew['Commanding Officer']['state_province']}}
         </div>
     </div>
 
