@@ -711,6 +711,9 @@ class UserController extends \BaseController
             $orders[$order->id] = $order->order;
         }
 
+        $user->leftRibbonCount = count($user->getRibbons('L'));
+        $user->leftRibbons = $user->getRibbons('L');
+
         return View::make(
           'user.show',
           [
@@ -1358,7 +1361,7 @@ class UserController extends \BaseController
             return substr($key, 0, 5) == 'group';
         });
 
-        foreach($groups as $award) {
+        foreach ($groups as $award) {
             if (empty($data[$award . '_quantity']) === false) {
                 $data['ribbon'][] = $award;
             }
@@ -1366,8 +1369,13 @@ class UserController extends \BaseController
 
         $awards = [];
 
-        foreach($data['ribbon'] as $award) {
-            $awards[$award] = ['count' => $data[$award . '_quantity'], 'location' => Award::where('code', '=', $award)->first()->location];
+        foreach ($data['ribbon'] as $award) {
+            $awards[$award] =
+              [
+                'count'    => $data[$award . '_quantity'],
+                'location' => Award::where('code', '=', $award)
+                                   ->first()->location
+              ];
         }
 
         Auth::user()->awards = $awards;
