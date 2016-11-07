@@ -982,6 +982,8 @@ class UserController extends \BaseController
           'UserController@update'
         );
 
+        $data['awards'] = $user->awards;
+
         $user->update($data);
 
         if ($data['reload_form'] === "yes") {
