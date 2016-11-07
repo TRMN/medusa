@@ -438,3 +438,4 @@ Route::get('/api/checkemail/{email}',
   'ApiController@checkAddress'); // Check that an email address is available
 Route::get('/api/findchapter/{query?}',
   ['as' => 'chapter.find.api', 'uses' => 'ApiController@findChapter']);
+Route::get('/api/ribbonrack/{memberid}', ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);
