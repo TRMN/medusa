@@ -3,6 +3,7 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use League\Csv\Reader;
 
 class CodeTest extends Command
 {
@@ -39,7 +40,7 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        print_r(Type::where('chapter_type', '=', 'office')->first());
+        print User::where('member_id', '=', 'RMN-1094-12')->first()->getPostnominalsFromAwards();
     }
 
     /**

@@ -26,6 +26,7 @@
             {{$user->getPrimaryBillet()}}<br/>
 
             <div class="Incised901Light seventy-five">Assigned: {{$user->getPrimaryDateAssigned()}}</div>
+            @include('partials.leftribbons', ['user' => $user])
         </div>
 
         <div class="Incised901Black ninety">

@@ -132,11 +132,44 @@ $medusa-yellow: #ffee00;
   text-decoration: underline;
 }
 
+div.ribbons {
+  padding-top: 5px;
+}
+
+div.ribbons img {
+  padding-bottom: 1px;
+}
+
+.ESWP, .OSWP {
+  width: 262px;
+}
+
+.HS {
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+.ribbon-group {
+  border: 1px solid white;
+  margin: 10px;
+}
+
+.ribbon-row {
+  height: 53px;
+  padding-left: 20px;
+}
+
+.ribbon-group-row {
+  height: 53px;
+  padding-top: 5px;
+  padding-left: 10px;
+}
+
 div.filePhoto {
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
+  width: 315px;
   text-align: center;
 }
 
@@ -596,81 +629,81 @@ footer {
 }
 
 .multipage_nav {
-    border-top: 1px solid #CCC;
-    padding-top: 10px;
+  border-top: 1px solid #CCC;
+  padding-top: 10px;
 }
 
 .multipage_nav a {
-    font-weight: bold;
-    display: block;
-    padding: 10px 20px;
-    color: #FFF;
-    text-shadow: #333 1px 1px 5px;
-    text-decoration: none;
-    -moz-box-shadow: 0px 0px 5px #333;
-    -webkit-box-shadow: 0px 0px 5px #333;
+  font-weight: bold;
+  display: block;
+  padding: 10px 20px;
+  color: #FFF;
+  text-shadow: #333 1px 1px 5px;
+  text-decoration: none;
+  -moz-box-shadow: 0px 0px 5px #333;
+  -webkit-box-shadow: 0px 0px 5px #333;
 }
 
 .multipage_nav .multipage_next {
-    float: right;
-    background: #ee3300; /* old browsers */
+  float: right;
+  background: #ee3300; /* old browsers */
 }
 
 .multipage_nav .multipage_back {
-    float: left;
-    background: #ee3300; /* old browsers */
+  float: left;
+  background: #ee3300; /* old browsers */
 }
 
 .multipage_nav .submit {
-    background: #ee3300; /* old browsers */
+  background: #ee3300; /* old browsers */
 }
 
 .multipage_nav .multipage_state {
-    display: block;
-    text-align: center;
-    width: 100px;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 18px;
+  display: block;
+  text-align: center;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 18px;
 }
 
 .multipage fieldset {
-    border: 0px;
-    padding: 10px;
-    margin: 0px;
+  border: 0px;
+  padding: 10px;
+  margin: 0px;
 }
 
 div.clearer {
-    display: block;
-    visibility: hidden;
-    clear: both;
-    height: 0;
-    border-width: 0;
-    margin: 0;
-    padding: 0;
+  display: block;
+  visibility: hidden;
+  clear: both;
+  height: 0;
+  border-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
 ul.multipage_tabs {
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
-    border-bottom: 1px solid #CCC;
-    margin-bottom: 20px;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  border-bottom: 1px solid #CCC;
+  margin-bottom: 20px;
 }
 
 ul.multipage_tabs li {
-    display: block;
-    float: left;
-    margin-right: 20px;
+  display: block;
+  float: left;
+  margin-right: 20px;
 }
 
 ul.multipage_tabs li a {
-    display: block;
-    padding: 10px;
+  display: block;
+  padding: 10px;
 }
 
 ul.multipage_tabs li.active {
-    background: #CCC;
+  background: #CCC;
 }
 
 .selectize-input {
@@ -682,7 +715,7 @@ ul.multipage_tabs li.active {
 }
 
 tr:nth-of-type(even) {
-background: #4c4c4c;
+  background: #4c4c4c;
 }
 
 .zebra-even:nth-of-type(even) {

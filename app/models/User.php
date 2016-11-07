@@ -209,11 +209,40 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getPostnominals()
     {
+
+        if (empty($this->awards) === false) {
+            return $this->getPostnominalsFromAwards();
+        } elseif (empty($this->perages) === false) {
+            return $this->getPostnominalsFromPeerages();
+        } else {
+            return null;
+        }
+    }
+
+    public function getPostnominalsFromAwards()
+    {
         $postnominals = [];
 
-        // At the moment, the only postnominals we know about are for knighthoods stored in the peerage record
+        foreach ($this->awards as $code => $info) {
+            $award = Award::getAwardByCode($code);
+            if (empty($award->post_nominal) === false) {
+                // It has a post-nominal
+                $postnominals[$award->display_order] = $award->post_nominal;
+            }
+        }
 
-        foreach (empty($this->peerages) === false ? $this->peerages : [] as $peerage) {
+        if (count($postnominals) > 0) {
+            ksort($postnominals);
+
+            return ', ' . implode(', ', $postnominals);
+        }
+    }
+
+    private function getPostnominalsFromPeerages()
+    {
+        $postnominals = [];
+
+        foreach ($this->peerages as $peerage) {
             if (empty($peerage['courtesy']) === true && empty($peerage['postnominal']) === false) {
                 $postnominals[$peerage['precedence']] =
                   $peerage['postnominal']; // Order them by precedence
@@ -225,8 +254,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
             return ', ' . implode(', ', $postnominals);
         }
-
-        return null;
     }
 
     public function getPeerages()
@@ -470,7 +497,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                     }
                 }
 
-                return $years < 1 ? $months . ' Mo': $years . ' Yr ' . $months . ' Mo';
+                return $years < 1 ? $months . ' Mo' : $years . ' Yr ' . $months . ' Mo';
             } else {
                 return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
             }
@@ -1406,5 +1433,31 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public static function getUserByMemberId($memberId)
     {
         return self::where('member_id', '=', $memberId)->firstOrFail();
+    }
+
+    public function getRibbons($location = 'L')
+    {
+        $tmp = [];
+
+        foreach ($this->awards as $code => $award) {
+            if ($award['location'] === $location) {
+                $award['code'] = $code;
+                $award['name'] =
+                  Award::where('code', '=', $code)->first()->name;
+                $tmp[Award::getDisplayOrder($code)] = $award;
+            }
+        }
+
+        ksort($tmp);
+
+        $awards = [];
+        $count = 1;
+
+        foreach ($tmp as $ribbon) {
+            $awards[$count] = $ribbon;
+            $count++;
+        }
+
+        return $awards;
     }
 }

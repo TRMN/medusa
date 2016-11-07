@@ -944,8 +944,9 @@ class UserController extends \BaseController
             $newPermissions = $data['permissions'];
 
             if (in_array('CONFIG', $currentPermissions) === true &&
-                in_array('CONFIG', $newPermissions) === false &&
-                in_array('CONFIG', Auth::user()->permissions) === false) {
+              in_array('CONFIG', $newPermissions) === false &&
+              in_array('CONFIG', Auth::user()->permissions) === false
+            ) {
                 // CONFIG perm in user record, not in submitted perms and logged in user does not have CONFIG perm
                 $data['permissions'][] = 'CONFIG';
             }
@@ -1331,5 +1332,47 @@ class UserController extends \BaseController
             'branch' => $branch
           ]
         );
+    }
+
+    public function buildRibbonRack()
+    {
+        if (($redirect =
+            $this->checkPermissions(['EDIT_SELF'])) !== true
+        ) {
+            return $redirect;
+        }
+
+        return View::make('user.rack', ['user' => Auth::user()]);
+    }
+
+    public function saveRibbonRack()
+    {
+        if (($redirect =
+            $this->checkPermissions(['EDIT_SELF'])) !== true
+        ) {
+            return $redirect;
+        }
+        $data = Input::all();
+
+        $groups = array_where($data, function ($key, $value) {
+            return substr($key, 0, 5) == 'group';
+        });
+
+        foreach($groups as $award) {
+            if (empty($data[$award . '_quantity']) === false) {
+                $data['ribbon'][] = $award;
+            }
+        }
+
+        $awards = [];
+
+        foreach($data['ribbon'] as $award) {
+            $awards[$award] = ['count' => $data[$award . '_quantity'], 'location' => Award::where('code', '=', $award)->first()->location];
+        }
+
+        Auth::user()->awards = $awards;
+        Auth::user()->save();
+
+        return Redirect::to('home');
     }
 }
