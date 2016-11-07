@@ -133,7 +133,21 @@
         @endif
     @endforeach
     <div class="row text-center">
-        {{Form::submit('Save', ['class' => 'button'])}}
+        <p><input type="checkbox" id="ack"> I acknowledge that I have earned all of the awards selected above and that any misrepresentation is subject to disciplinary action.</p>
+        {{Form::submit('Save', ['class' => 'button', 'disabled' => true])}}
     </div>
     {{Form::close()}}
 @stop
+
+@section('scriptFooter')
+    <script type="text/javascript">
+        $('#ack').change(function(){
+        if (this.checked) {
+            $('.button').prop( "disabled", false );
+        } else {
+            $('.button').prop( "disabled", true );
+        }
+});
+    </script>
+@stop
+
