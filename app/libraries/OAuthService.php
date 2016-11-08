@@ -370,7 +370,7 @@ class OAuthService
             if (!empty($_user->awards)) {
                 $_user->leftRibbonCount = count($_user->getRibbons('L'));
                 $_user->leftRibbons = $_user->getRibbons('L');
-                $_user->ribbonrack = View::make('partials.leftribbons', ['user' => $_user]);
+                $_user->ribbonrack = \View::make('partials.leftribbons', ['user' => $_user]);
             }
 
             if (empty($_user->lastUpdate)) {
