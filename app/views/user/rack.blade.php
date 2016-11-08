@@ -60,7 +60,7 @@
                             <div class="columns small-4">{{$group->name}}</div>
                             <div class="columns small-1 end">
                                 @if($group->multiple)
-                                    {{Form::select($group->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4'], isset($user->awards[$group->code])?$user->awards[$group->code]['count']:1)}}
+                                    {{Form::select($group->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$group->code])?$user->awards[$group->code]['count']:1)}}
                                 @else
                                     {{Form::hidden($group->code . '_quantity', '1')}}
                                 @endif
@@ -133,7 +133,8 @@
         @endif
     @endforeach
     <div class="row text-center">
-        <p><input type="checkbox" id="ack"> I acknowledge that I have earned all of the awards selected above and that any misrepresentation is subject to disciplinary action.</p>
+        <p><input type="checkbox" id="ack"> I acknowledge that I have earned all of the awards selected above and that
+            any misrepresentation is subject to disciplinary action.</p>
         {{Form::submit('Save', ['class' => 'button', 'disabled' => true])}}
     </div>
     {{Form::close()}}
@@ -141,13 +142,13 @@
 
 @section('scriptFooter')
     <script type="text/javascript">
-        $('#ack').change(function(){
-        if (this.checked) {
-            $('.button').prop( "disabled", false );
-        } else {
-            $('.button').prop( "disabled", true );
-        }
-});
+        $('#ack').change(function () {
+            if (this.checked) {
+                $('.button').prop("disabled", false);
+            } else {
+                $('.button').prop("disabled", true);
+            }
+        });
     </script>
 @stop
 
