@@ -371,6 +371,8 @@ class OAuthService
                 $_user->leftRibbonCount = count($_user->getRibbons('L'));
                 $_user->leftRibbons = $_user->getRibbons('L');
                 $_user->ribbonrack = \View::make('partials.leftribbons', ['user' => $_user])->render();
+            } else {
+                $_user->ribbonrack = null;
             }
 
             if (empty($_user->lastUpdate)) {
