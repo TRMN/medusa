@@ -319,7 +319,13 @@ class ApiController extends BaseController
             $user->leftRibbonCount = count($user->getRibbons('L'));
             $user->leftRibbons = $user->getRibbons('L');
 
-            return View::make('ribbonrack', ['user' => $user]);
+            if (Input::get('mobile', 'false') === 'true') {
+                return View::make('partials.leftribbons', ['user' => $user]);
+            } else {
+                return View::make('ribbonrack', ['user' => $user]);
+            }
+
+
         }
     }
 }
