@@ -574,7 +574,8 @@ div.ribbons img {
 .ribbon-group-row {
   height: 53px;
   padding-top: 5px;
-  padding-left: 10px; }
+  padding-left: 10px;
+  clear: both; }
 
 div.filePhoto {
   position: absolute;
