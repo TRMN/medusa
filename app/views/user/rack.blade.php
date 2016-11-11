@@ -132,7 +132,7 @@
             </div>
         @endif
     @endforeach
-    <div class="row text-center">
+    <div class="row text-left">
         <p><input type="checkbox" id="ack"> I acknowledge that awards entered into the MEDUSA System are not private,
             and are subject to review. Members knowingly holding themselves out as having awards they have not been
             given may be subject to discipline. Use of the award system is considered acknowledgment of this notice.</p>
