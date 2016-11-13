@@ -8,6 +8,9 @@ class HomeController extends BaseController
         if (Auth::check()) {
             $user = Auth::user();
 
+            $user->leftRibbonCount = count($user->getRibbons('L'));
+            $user->leftRibbons = $user->getRibbons('L');
+
             $viewData = [
                 'greeting' => $user->getGreetingArray(),
                 'user'     => $user,

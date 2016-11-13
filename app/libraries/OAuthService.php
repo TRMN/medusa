@@ -37,19 +37,19 @@ class OAuthService
         $_hosts = is_array($_hosts) ? $_hosts : [$_hosts];
 
         $this->mongo =
-            new \MongoClient(
-                'mongodb://' . implode(',', $_hosts) . '/' .
-                ( $_dbName = \Config::get('database.connections.mongodb.database') ),
-                \Config::get('database.connections.mongodb.options', [])
-            );
+          new \MongoClient(
+            'mongodb://' . implode(',', $_hosts) . '/' .
+            ($_dbName = \Config::get('database.connections.mongodb.database')),
+            \Config::get('database.connections.mongodb.options', [])
+          );
 
         $_store = new Mongo($this->mongo->{$_dbName});
 
         $this->server = new Server(
-            $_store, [
-                'always_issue_new_refresh_token' => true,
-                'refresh_token_lifetime'         => 2419200,
-            ]
+          $_store, [
+            'always_issue_new_refresh_token' => true,
+            'refresh_token_lifetime'         => 2419200,
+          ]
         );
 
         $_credentials = new MedusaUserCredentials();
@@ -59,12 +59,12 @@ class OAuthService
         $this->server->addGrantType(new AuthorizationCode($_store));
         $this->server->addGrantType(new ClientCredentials($_store));
         $this->server->addGrantType(
-            new RefreshToken(
-                $_store, [
-                    'always_issue_new_refresh_token' => true,
-                    'unset_refresh_token_after_use'  => true,
-                ]
-            )
+          new RefreshToken(
+            $_store, [
+              'always_issue_new_refresh_token' => true,
+              'unset_refresh_token_after_use'  => true,
+            ]
+          )
         );
     }
 
@@ -85,11 +85,16 @@ class OAuthService
 
         $_params = $_request->getAllQueryParameters();
         /** @noinspection PhpUndefinedMethodInspection */
-        $_client = \OauthClient::where('client_id', '=', $_params['client_id'])->first();
+        $_client =
+          \OauthClient::where('client_id', '=', $_params['client_id'])->first();
 
         return \View::make(
-            'oauth.authorization-form',
-            ['client' => $_client, 'params' => $_params, 'permsObj' => new PermissionsHelper(),]
+          'oauth.authorization-form',
+          [
+            'client'   => $_client,
+            'params'   => $_params,
+            'permsObj' => new PermissionsHelper(),
+          ]
         );
     }
 
@@ -104,10 +109,10 @@ class OAuthService
 
         /** @noinspection PhpUndefinedFieldInspection */
         $this->server->handleAuthorizeRequest(
-            $_request,
-            $_response,
-            ( 'Approve' === $_request->get('authorized') ),
-            \Auth::user()->id
+          $_request,
+          $_response,
+          ('Approve' === $_request->get('authorized')),
+          \Auth::user()->id
         );
 
         return $_response;
@@ -147,23 +152,24 @@ class OAuthService
             \Log::info('Profile request');
 
             return \Response::json(
-                [
-                    'uid'            => $_token['user_id'],
-                    'email'          => $_user->email_address,
-                    'firstname'      => $_user->first_name,
-                    'lastname'       => $_user->last_name,
-                    'city'           => $_user->city,
-                    'state_province' => $_user->state_province,
-                    'country'        => $_user->country,
-                    'imageurl'       => $_user->filePhoto,
-                    'user_id'        => $_token['user_id'],
-                    'client'         => $_token['client_id'],
-                    'expires'        => $_token['expires'],
-                ]
+              [
+                'uid'            => $_token['user_id'],
+                'email'          => $_user->email_address,
+                'firstname'      => $_user->first_name,
+                'lastname'       => $_user->last_name,
+                'city'           => $_user->city,
+                'state_province' => $_user->state_province,
+                'country'        => $_user->country,
+                'imageurl'       => $_user->filePhoto,
+                'user_id'        => $_token['user_id'],
+                'client'         => $_token['client_id'],
+                'expires'        => $_token['expires'],
+              ]
             );
         }
 
-        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+        return \Response::json(['error' => 'Unauthorized'],
+          $_response->getStatusCode());
     }
 
     public function getTisTig()
@@ -179,17 +185,20 @@ class OAuthService
 
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
-            $_user = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first();
+            $_user =
+              \User::where('email_address', '=',
+                str_replace(' ', '+', $_token['user_id']))->first();
 
             return \Response::json(
-                [
-                    'tig' => $_user->getTimeInGrade(true),
-                    'tis' => $_user->getTimeInService(true),
-                ]
+              [
+                'tig' => $_user->getTimeInGrade(true),
+                'tis' => $_user->getTimeInService(true),
+              ]
             );
         }
 
-        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+        return \Response::json(['error' => 'Unauthorized'],
+          $_response->getStatusCode());
     }
 
     public function updateUser()
@@ -205,7 +214,9 @@ class OAuthService
 
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
-            $_user = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first();
+            $_user =
+              \User::where('email_address', '=',
+                str_replace(' ', '+', $_token['user_id']))->first();
 
             $_data = \Input::all();
 
@@ -215,31 +226,31 @@ class OAuthService
 
             if ($_user->save()) {
                 $this->writeAuditTrail(
-                    $_user->id,
-                    'update',
-                    'users',
-                    (string)$_user->_id,
-                    json_encode($_data),
-                    'OAuthService@updateUser'
+                  $_user->id,
+                  'update',
+                  'users',
+                  (string)$_user->_id,
+                  json_encode($_data),
+                  'OAuthService@updateUser'
                 );
 
                 \Log::info('User profile updated');
 
                 return \Response::json(
-                    [
-                        'status'  => 'success',
-                        'message' => 'Profile updated',
-                    ]
+                  [
+                    'status'  => 'success',
+                    'message' => 'Profile updated',
+                  ]
                 );
                 \Log::info('We should never get here');
             } else {
                 \Log::info('There was some sort of problem');
                 return \Response::json(
-                    [
-                        'status'  => 'error',
-                        'message' => 'Unable to update profile',
-                    ],
-                    500
+                  [
+                    'status'  => 'error',
+                    'message' => 'Unable to update profile',
+                  ],
+                  500
                 );
             }
         }
@@ -261,14 +272,16 @@ class OAuthService
 
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
-            $_user = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first();
-            unset( $_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos );
+            $_user =
+              \User::where('email_address', '=',
+                str_replace(' ', '+', $_token['user_id']))->first();
+            unset($_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos);
 
             $_assignments = $_user->assignment;
             $_lastLogin = strtotime($_user->previous_login);
 
             foreach ($_assignments as $_index => $_assignment) {
-                unset( $_assignments[$_index]['chapter_id'] );
+                unset($_assignments[$_index]['chapter_id']);
             }
 
             $_user->assignment = $_assignments;
@@ -279,28 +292,33 @@ class OAuthService
 
                 if ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
 
-                    if (empty( $_peerage['filename'] ) === false && file_exists(
-                            public_path() . '/arms/peerage/' . $_peerage['filename']
-                        )
+                    if (empty($_peerage['filename']) === false && file_exists(
+                        public_path() . '/arms/peerage/' . $_peerage['filename']
+                      )
                     ) {
-                        $_peerage['path'] = '/arms/peerage/' . $_peerage['filename'];
+                        $_peerage['path'] =
+                          '/arms/peerage/' . $_peerage['filename'];
                     }
 
                     $_peerage['fullTitle'] =
-                        $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
+                      $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
                 } else {
                     /** @noinspection PhpUndefinedMethodInspection */
                     /** @var \Korders $orderInfo */
-                    $orderInfo = \Korders::where('classes.postnominal', '=', $_peerage['postnominal'])->first();
+                    $orderInfo =
+                      \Korders::where('classes.postnominal', '=',
+                        $_peerage['postnominal'])->first();
                     if (file_exists(public_path() . '/awards/orders/medals/' . $orderInfo->filename)) {
-                        $_peerage['path'] = substr($orderInfo->filename, 0, strrpos($orderInfo->filename, '.'));
+                        $_peerage['path'] =
+                          substr($orderInfo->filename, 0,
+                            strrpos($orderInfo->filename, '.'));
                     }
 
                     $_peerage['fullTitle'] =
-                        $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
+                      $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
                 }
 
-                unset( $_peerage['peerage_id'] );
+                unset($_peerage['peerage_id']);
                 $_peerages[] = $_peerage;
             }
 
@@ -312,7 +330,7 @@ class OAuthService
                 $_newExams = false;
 
                 foreach ($_examList as $_id => $_grades) {
-                    if (!empty( $_grades['date_entered'] ) && strtotime($_grades['date_entered']) >= $_lastLogin) {
+                    if (!empty($_grades['date_entered']) && strtotime($_grades['date_entered']) >= $_lastLogin) {
                         $_examList[$_id]['new'] = true;
                         $_newExams = true;
                     }
@@ -325,32 +343,48 @@ class OAuthService
                     }
 
                     if ($_grades['date'] != 'UNKNOWN') {
-                        $_examList[$_id]['date'] = date('d M Y', strtotime($_grades['date']));
+                        $_examList[$_id]['date'] =
+                          date('d M Y', strtotime($_grades['date']));
                     }
 
-                    unset( $_examList[$_id]['entered_by'] );
+                    unset($_examList[$_id]['entered_by']);
 
-                    $_exams[str_replace(' ', '_', $_label)] = ['label' => $_label, 'new' => $_newExams, 'examlist' => $_examList];
+                    $_exams[str_replace(' ', '_', $_label)] =
+                      [
+                        'label'    => $_label,
+                        'new'      => $_newExams,
+                        'examlist' => $_examList
+                      ];
                 }
             }
 
             $_user->exams = $_exams;
 
             $_user->greeting =
-                $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
+              $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
 
             if (!file_exists(public_path() . $_user->filePhoto)) {
-                unset( $_user->filePhoto );
+                unset($_user->filePhoto);
             }
 
-            if (empty( $_user->lastUpdate )) {
-                $_user->lastUpdate = strtotime($_user->updated_at->toDateTimeString());
+            if (!empty($_user->awards)) {
+                $_user->leftRibbonCount = count($_user->getRibbons('L'));
+                $_user->leftRibbons = $_user->getRibbons('L');
+                $_user->ribbonrack = \View::make('partials.leftribbons', ['user' => $_user])->render();
+            } else {
+                $_user->ribbonrack = null;
+            }
+
+            if (empty($_user->lastUpdate)) {
+                $_user->lastUpdate =
+                  strtotime($_user->updated_at->toDateTimeString());
             }
 
             return \Response::json($_user);
         }
 
-        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+        return \Response::json(['error' => 'Unauthorized'],
+          $_response->getStatusCode());
     }
 
     public function lastUpdated()
@@ -366,12 +400,17 @@ class OAuthService
 
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
-            $_lastUpdated = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first()->getLastUpdated();
+            $_lastUpdated =
+              \User::where('email_address', '=',
+                str_replace(' ', '+', $_token['user_id']))
+                   ->first()
+                   ->getLastUpdated();
 
             return \Response::json(['lastUpdate' => $_lastUpdated]);
         }
 
-        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+        return \Response::json(['error' => 'Unauthorized'],
+          $_response->getStatusCode());
     }
 
     public function getIdCard()
@@ -385,12 +424,17 @@ class OAuthService
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
 
-            $_idCard = \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first()->buildIdCard(true);
+            $_idCard =
+              \User::where('email_address', '=',
+                str_replace(' ', '+', $_token['user_id']))
+                   ->first()
+                   ->buildIdCard(true);
 
             return $_idCard->response('png');
         }
 
-        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+        return \Response::json(['error' => 'Unauthorized'],
+          $_response->getStatusCode());
     }
 
     public function getScheduledEvents()
@@ -407,11 +451,16 @@ class OAuthService
 
             \Log::info('TZ=' . $_tz);
 
-            return \Response::json(['events' => \User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first()->getScheduledEvents($_tz)]);
-
+            return \Response::json([
+              'events' => \User::where('email_address', '=',
+                str_replace(' ', '+', $_token['user_id']))
+                               ->first()
+                               ->getScheduledEvents($_tz)
+            ]);
         }
 
-        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+        return \Response::json(['error' => 'Unauthorized'],
+          $_response->getStatusCode());
     }
 
     // checkMemberIn($event, $member, $continent = null, $city = null)
@@ -429,10 +478,14 @@ class OAuthService
 
             \Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
 
-            return \Response::json(\User::where('email_address', '=', str_replace(' ', '+', $_token['user_id']))->first()->checkMemberIn($_data['event'], $_data['member'], $_data['tz']));
-
+            return \Response::json(\User::where('email_address', '=',
+              str_replace(' ', '+', $_token['user_id']))
+                                        ->first()
+                                        ->checkMemberIn($_data['event'],
+                                          $_data['member'], $_data['tz']));
         }
 
-        return \Response::json(['error' => 'Unauthorized'], $_response->getStatusCode());
+        return \Response::json(['error' => 'Unauthorized'],
+          $_response->getStatusCode());
     }
 }

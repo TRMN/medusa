@@ -4,6 +4,7 @@
         <div class="rnav">
 
             <a href="/home">Service Record</a><br/>
+            <a href="{{route('ribbonRack')}}">Ribbon Rack</a><br />
             <a href="/id/card/{{Auth::user()->id}}">ID Card</a><br/>
             <a href="{{route('user.change.request', [Auth::user()->id])}}">Branch/Chapter Change</a><br/>
             <a href="{{ route('chapter.index') }}">Ship/Unit List</a><br/>

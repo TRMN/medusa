@@ -550,11 +550,38 @@ table.dataTable.display tbody tr:first-child td {
 .underline {
   text-decoration: underline; }
 
+div.ribbons {
+  padding-top: 5px; }
+
+div.ribbons img {
+  padding-bottom: 1px; }
+
+.ESWP, .OSWP {
+  width: 262px; }
+
+.HS {
+  width: 55px;
+  margin-bottom: 10px; }
+
+.ribbon-group {
+  border: 1px solid white;
+  margin: 10px; }
+
+.ribbon-row {
+  height: 53px;
+  padding-left: 20px; }
+
+.ribbon-group-row {
+  height: 53px;
+  padding-top: 5px;
+  padding-left: 10px;
+  clear: both; }
+
 div.filePhoto {
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
+  width: 315px;
   text-align: center; }
 
 #photoPreview {

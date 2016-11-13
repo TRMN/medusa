@@ -255,7 +255,7 @@ class ApiController extends BaseController
             $suggestions[] =
               [
                 'value' => $chapter->chapter_name,
-                'data' => $chapter->id,
+                'data'  => $chapter->id,
               ];
         }
 
@@ -309,5 +309,23 @@ class ApiController extends BaseController
         }
         return Response::json($user->checkMemberIn($event, $member, $continent,
           $city));
+    }
+
+    public function getRibbonRack($member_id)
+    {
+        $user = User::where('member_id', '=', $member_id)->first();
+
+        if (isset($user->awards) === true) {
+            $user->leftRibbonCount = count($user->getRibbons('L'));
+            $user->leftRibbons = $user->getRibbons('L');
+
+            if (Input::get('mobile', 'false') === 'true') {
+                return View::make('partials.leftribbons', ['user' => $user]);
+            } else {
+                return View::make('ribbonrack', ['user' => $user]);
+            }
+
+
+        }
     }
 }
