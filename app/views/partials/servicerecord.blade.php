@@ -27,15 +27,17 @@
 
             <div class="Incised901Light seventy-five">Assigned: {{$user->getPrimaryDateAssigned()}}</div>
             @include('partials.leftribbons', ['user' => $user])
-            <div class="sbAccordian text-left">
-                <h5>Embeding Instructions</h5>
-                <div class="text-left">
-                    To embed your ribbon rack in other websites, use the following code:<br />
+            @if($user->leftRibbonCount)
+                <div class="sbAccordian text-left">
+                    <h5>Embeding Instructions</h5>
+                    <div class="text-left">
+                        To embed your ribbon rack in other websites, use the following code:<br/>
 
                         &lt;iframe src="{{url('api/ribbonrack/' . $user->member_id)}}"&gt;&lt;/iframe&gt;
 
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
 
         <div class="Incised901Black ninety">
@@ -230,7 +232,7 @@
         </div>
 
         @if($permsObj->hasPermissions(['ASSIGN_PERMS'])  && !empty($user->permissions))
-            <br />
+            <br/>
             <div class="row Incised901Light">
                 <div class="columns small-1">Permissions:</div>
                 <div class="columns small-5 end">
