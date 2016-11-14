@@ -209,5 +209,5 @@ return [
         'QrCode'              => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
 
     ],
-    'version' => "Trevor's Star (Project MEDUSA v1.3.11)",
+    'version' => "Trevor's Star (Project MEDUSA v1.3.12)",
 ];
