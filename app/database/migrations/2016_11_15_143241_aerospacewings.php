@@ -17,7 +17,7 @@ class Aerospacewings extends Migration
         $updates = Award::where("group_label",'=', 'Qualification Badges')->get();
 
         foreach ($updates as $row) {
-            $row->replaces .= ',SAW,EAW,OAW,ESAW,OSAW,EMAW,OMAW,ENW,ONW,ESNW,OSNW,EMNW,OMNW,EOW,OOW,ESOW,OSOW,EMOW,OMOw,ESW,OSW,ESSW,OSSW,EMSW,OMSW';
+            $row->replaces .= ',SAW,EAW,OAW,ESAW,OSAW,EMAW,OMAW,ENW,ONW,ESNW,OSNW,EMNW,OMNW,EOW,OOW,ESOW,OSOW,EMOW,OMOW,ESW,OSW,ESSW,OSSW,EMSW,OMSW';
             $row->save();
         }
 
