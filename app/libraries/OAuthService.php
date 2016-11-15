@@ -187,7 +187,7 @@ class OAuthService
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
               \User::where('email_address', '=',
-                str_replace(' ', '+', $_token['user_id']))->first();
+                strtolower(str_replace(' ', '+', $_token['user_id'])))->first();
 
             return \Response::json(
               [
@@ -216,7 +216,7 @@ class OAuthService
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
               \User::where('email_address', '=',
-                str_replace(' ', '+', $_token['user_id']))->first();
+                strtolower(str_replace(' ', '+', $_token['user_id'])))->first();
 
             $_data = \Input::all();
 
@@ -274,7 +274,7 @@ class OAuthService
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
               \User::where('email_address', '=',
-                str_replace(' ', '+', $_token['user_id']))->first();
+                strtolower(str_replace(' ', '+', $_token['user_id'])))->first();
             unset($_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos);
 
             $_assignments = $_user->assignment;
@@ -402,7 +402,7 @@ class OAuthService
             /** @noinspection PhpUndefinedMethodInspection */
             $_lastUpdated =
               \User::where('email_address', '=',
-                str_replace(' ', '+', $_token['user_id']))
+                strtolower(str_replace(' ', '+', $_token['user_id'])))
                    ->first()
                    ->getLastUpdated();
 
@@ -426,7 +426,7 @@ class OAuthService
 
             $_idCard =
               \User::where('email_address', '=',
-                str_replace(' ', '+', $_token['user_id']))
+                strtolower(str_replace(' ', '+', $_token['user_id'])))
                    ->first()
                    ->buildIdCard(true);
 
@@ -453,7 +453,7 @@ class OAuthService
 
             return \Response::json([
               'events' => \User::where('email_address', '=',
-                str_replace(' ', '+', $_token['user_id']))
+                strtolower(str_replace(' ', '+', $_token['user_id'])))
                                ->first()
                                ->getScheduledEvents($_tz)
             ]);
@@ -479,7 +479,7 @@ class OAuthService
             \Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
 
             return \Response::json(\User::where('email_address', '=',
-              str_replace(' ', '+', $_token['user_id']))
+              strtolower(str_replace(' ', '+', $_token['user_id'])))
                                         ->first()
                                         ->checkMemberIn($_data['event'],
                                           $_data['member'], $_data['tz']));
