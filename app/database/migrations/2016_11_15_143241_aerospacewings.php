@@ -28,8 +28,8 @@ class Aerospacewings extends Migration
         {
                 "display_order": 1003,
                 "name": "Solo Aerospace Wings",
-                "code": "",
-                "post_nominal": "SAW",
+                "code": "SAW",
+                "post_nominal": "",
                 "replaces": "HS,OSWP,ESWP,EAW,OAW,ESAW,OSAW,EMAW,OMAW,ENW,ONW,ESNW,OSNW,EMNW,OMNW,EOW,OOW,ESOW,OSOW,EMOW,OMOW,ESW,OSW,ESSW,OSSW,EMSW,OMSW",
                 "location": "TL",
                 "multiple": false,
@@ -274,17 +274,7 @@ class Aerospacewings extends Migration
                 "location": "TL",
                 "multiple": false,
                 "group_label": "Qualification Badges"
-         },
-         {
-                "display_order": 10,
-                "name": "Simulator Wings",
-                "code": "",
-                "post_nominal": "",
-                "replaces": "HS,OSWP,ESWP,SAW,EAW,OAW,ESAW,OSAW,EMAW,OMAW,ENW,ONW,ESNW,OSNW,EMNW,OMNW,EOW,OOW,ESOW,OSOW,EMOW,OMOw,ESW,OSW,ESSW,OSSW,EMSW,OMSW",
-                "location": "TL",
-                "multiple": false,
-                "group_label": "Qualification Badges"
-         },                                                                                                                                                                                                            
+         }                                                                                                                                                                                                            
         ]', true);
 
         foreach ($awards as $award) {
