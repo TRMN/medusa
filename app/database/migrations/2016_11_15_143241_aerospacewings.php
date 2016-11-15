@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class Aerospacewings extends Migration
@@ -236,7 +235,7 @@ class Aerospacewings extends Migration
                 "group_label": "Qualification Badges"
          },
          {
-                "display_order": 10,
+                "display_order": 1024,
                 "name": "Enlisted Senior Simulator Wings",
                 "code": "ESSW",
                 "post_nominal": "",
@@ -246,7 +245,7 @@ class Aerospacewings extends Migration
                 "group_label": "Qualification Badges"
          },
          {
-                "display_order": 10,
+                "display_order": 1025,
                 "name": "Officer Senior Simulator Wings",
                 "code": "OSSW",
                 "post_nominal": "",
@@ -256,7 +255,7 @@ class Aerospacewings extends Migration
                 "group_label": "Qualification Badges"
          },
          {
-                "display_order": 10,
+                "display_order": 1026,
                 "name": "Enlisted Master Simulator Wings",
                 "code": "EMSW",
                 "post_nominal": "",
@@ -266,7 +265,7 @@ class Aerospacewings extends Migration
                 "group_label": "Qualification Badges"
          },
          {
-                "display_order": 10,
+                "display_order": 1027,
                 "name": "Officer Master Simulator Wings",
                 "code": "OMSW",
                 "post_nominal": "",
