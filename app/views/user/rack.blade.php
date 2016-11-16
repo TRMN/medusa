@@ -49,7 +49,7 @@
     <div class="ribbon-group">
         @foreach(Award::getRightSleeve() as $badge)
             @if(file_exists(public_path('awards/stripes/' . $badge->code . '-1.svg')))
-                <div class="row ribbon-row">
+                <div class="row ribbon-group-row">
                     <div class="columns small-1">
                         {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null)}}
                     </div>
