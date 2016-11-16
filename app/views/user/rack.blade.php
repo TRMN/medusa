@@ -34,8 +34,7 @@
                 <div class="columns small-2 text-center">
                     <img src="{{asset('images/' . $badge->code . '.svg')}}" alt="{{$badge->name}}">
                 </div>
-                <div class="columns small-4">{{$badge->name}}</div>
-                <div class="columns small-1 end">
+                <div class="columns small-5 end">
                     @if($badge->multiple)
                         {{Form::select($badge->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:1)}}
                     @else
@@ -45,6 +44,7 @@
             </div>
         @endif
     @endforeach
+    <br clear="both"/>
     <div class="row text-center"><h3>Qualification Badges</h3></div>
     @foreach(Award::getTopBadges() as $index => $badge)
         @if(is_object($badge))
