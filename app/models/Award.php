@@ -1,7 +1,6 @@
 <?php
 
 use Jenssegers\Mongodb\Model as Eloquent;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Award extends Eloquent
 {
@@ -58,6 +57,11 @@ class Award extends Eloquent
     public static function getTopBadges()
     {
         return self::_getAwards('TL');
+    }
+
+    public static function getLeftSleeve()
+    {
+        return self::_getAwards('LS');
     }
 
     public static function getDisplayOrder($code)
