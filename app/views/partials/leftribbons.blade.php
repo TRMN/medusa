@@ -18,7 +18,7 @@
 @endif
 @endforeach
 
-@foreach($user->getRibbons('LS') as $ribbon)
+@foreach($user->getRibbons('RS') as $ribbon)
 <img src="{{asset('awards/stripes/' . $ribbon['code'] . '-' . $ribbon['count'] . '.svg')}}" alt="{{$ribbon['name']}}" title="{{$ribbon['name']}}" class="{{$ribbon['code']}}">
 @endforeach
 </div>
