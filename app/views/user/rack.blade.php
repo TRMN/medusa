@@ -26,7 +26,7 @@
 
     {{ Form::open(array('route' => 'saverack')) }}
     @foreach(Award::getLeftSleeve() as $badge)
-        @if(file_exists(public_path('awards/badges/' . $badge->code . '-1.svg')))
+        @if(file_exists(public_path('images/' . $badge->code . '.svg')))
             <div class="row ribbon-row">
                 <div class="columns small-1">
                     {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null)}}
