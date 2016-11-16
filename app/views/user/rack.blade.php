@@ -46,27 +46,29 @@
     @endforeach
     <br clear="both"/>
     <div class="row text-center"><h3>Award Stripes</h3></div>
-    @foreach(Award::getRightSleeve() as $badge)
-        @if(file_exists(public_path('awards/stripes/' . $badge->code . '-1.svg')))
-            <div class="row ribbon-row">
-                <div class="columns small-1">
-                    {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null)}}
+    <div class="ribbon-group">
+        @foreach(Award::getRightSleeve() as $badge)
+            @if(file_exists(public_path('awards/stripes/' . $badge->code . '-1.svg')))
+                <div class="row ribbon-row">
+                    <div class="columns small-1">
+                        {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null)}}
+                    </div>
+                    <div class="columns small-2 text-center">
+                        <img src="{{asset('awards/stripes/' . $badge->code . '-1.svg')}}" alt="{{$badge->name}}">
+                    </div>
+                    <div class="columns small-4">{{$badge->name}}</div>
+                    <div class="columns small-1 end">
+                        @if($badge->multiple)
+                            {{Form::select($badge->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:1)}}
+                        @else
+                            {{Form::hidden($badge->code . '_quantity', '1')}}
+                        @endif
+                    </div>
                 </div>
-                <div class="columns small-2 text-center">
-                    <img src="{{asset('awards/stripes/' . $badge->code . '-1.svg')}}" alt="{{$badge->name}}">
-                </div>
-                <div class="columns small-4">{{$badge->name}}</div>
-                <div class="columns small-1 end">
-                    @if($badge->multiple)
-                        {{Form::select($badge->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:1)}}
-                    @else
-                        {{Form::hidden($badge->code . '_quantity', '1')}}
-                    @endif
-                </div>
-            </div>
-            <br clear="both" />
-        @endif
-    @endforeach
+                <br clear="both"/>
+            @endif
+        @endforeach
+    </div>
 
     <div class="row text-center"><h3>Qualification Badges</h3></div>
     @foreach(Award::getTopBadges() as $index => $badge)
