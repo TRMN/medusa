@@ -64,6 +64,11 @@ class Award extends Eloquent
         return self::_getAwards('LS');
     }
 
+    public static function getRightSleeve()
+    {
+        return self::_getAwards('RS');
+    }
+
     public static function getDisplayOrder($code)
     {
         return self::where('code', '=', $code)->first()->display_order;
