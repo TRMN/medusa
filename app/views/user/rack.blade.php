@@ -64,6 +64,7 @@
                     @endif
                 </div>
             </div>
+            <br clear="both" />
         @endif
     @endforeach
 
