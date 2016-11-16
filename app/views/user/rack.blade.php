@@ -55,7 +55,8 @@
                 <div class="columns small-2 text-center">
                     <img src="{{asset('awards/stripes/' . $badge->code . '-1.svg')}}" alt="{{$badge->name}}">
                 </div>
-                <div class="columns small-5 end">
+                <div class="columns small-4">{{$badge->name}}</div>
+                <div class="columns small-1 end">
                     @if($badge->multiple)
                         {{Form::select($badge->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:1)}}
                     @else
