@@ -1,6 +1,6 @@
 <div class="text-center ribbons">
 @foreach($user->getRibbons('LS') as $ribbon)
-<img src="{{asset('imagess/' . $ribbon['code'] . '.svg')}}" alt="{{$ribbon['name']}}" title="{{$ribbon['name']}}" class="{{$ribbon['code']}}">
+<img src="{{asset('images/' . $ribbon['code'] . '.svg')}}" alt="{{$ribbon['name']}}" title="{{$ribbon['name']}}" class="{{$ribbon['code']}}">
 @endforeach
 @foreach($user->getRibbons('TL') as $ribbon)
 @if($ribbon['code'] == 'HS')
