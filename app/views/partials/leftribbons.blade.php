@@ -21,13 +21,14 @@
 @endif
 @endforeach
 </div>
-<div class="stripes">
 @if($user->getRibbons('RS'))
+<div class="stripes">
 @if(file_exists(public_path('patches/' . $user->branch . '.svg')))
 <img src="{{asset('patches/' . $user->branch . '.svg')}}" alt="{{$user->branch}}" title="{{$user->branch}}" class="branch">
 @endif
 @foreach($user->getRibbons('RS') as $ribbon)
 <img src="{{asset('awards/stripes/' . $ribbon['code'] . '-' . $ribbon['count'] . '.svg')}}" alt="{{$ribbon['name']}}" title="{{$ribbon['name']}}" class="{{$ribbon['code']}}">
 @endforeach
-@endif
 </div>
+@endif
+
