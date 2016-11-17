@@ -589,7 +589,9 @@ div.stripes {
   margin-bottom: 10px; }
 
 .patch {
-  width: 220px;
+  width: 220px; }
+
+.patch-top-margin {
   margin-top: -55px; }
 
 .branch {
