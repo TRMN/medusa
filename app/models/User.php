@@ -1479,7 +1479,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getShoulderPatchPath()
     {
         // Get this if of the primary chapter and any parents
-        $chapters = Chapter::find($this->getAssignmentId('primary')->getChapterIdWithParents());
+        $chapters = Chapter::find($this->getAssignmentId('primary'))->getChapterIdWithParents();
 
         // Check to see if we have a patch for this chapter
         foreach($chapters as $item) {
