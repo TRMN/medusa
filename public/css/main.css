@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url(trmn-fonts.css);
 /*
  * Table styles
@@ -550,22 +551,49 @@ table.dataTable.display tbody tr:first-child td {
 .underline {
   text-decoration: underline; }
 
-div.ribbons {
-  padding-top: 5px; }
+ø
+.ribbons {
+  padding-top: 5px;
+  padding-bottom: 10px;
+  text-align: center !important; }
 
-div.ribbons img {
+.ribbons img {
   padding-bottom: 1px; }
 
-.ESWP, .OSWP, .MT, .MID, .WS {
+div.stripes {
+  padding-top: 20px !important;
+  padding-bottom: 160px !important;
+  border: 1px solid white;
+  border-top-left-radius: 125px;
+  border-top-right-radius: 125px;
+  margin-top: 20px; }
+
+.ESWP, .OSWP {
   width: 262px; }
+
+.MT, .MID, .WS {
+  width: 262px;
+  margin-bottom: -150px; }
 
 .HS {
   width: 55px;
   margin-bottom: 10px; }
 
-.SAW, .EAW, .OAW, .ESAW, .OSAW, .EMAW, .OMAW, .ENW, .ONW, .ESNW, .OSNW, .EMNW, .OMNW, .EOW, .OOW, .ESOW, .OSOW, .EMOW, .OMOW, .ESW, .OSW, .ESSW, .OSSW, .EMSW, .OMSW, .UNC {
+.SAW, .EAW, .OAW, .ESAW, .OSAW, .EMAW, .OMAW, .ENW, .ONW, .ESNW, .OSNW, .EMNW, .OMNW, .EOW, .OOW, .ESOW, .OSOW, .EMOW, .OMOW, .ESW, .OSW, .ESSW, .OSSW, .EMSW, .OMSW {
   width: 262px;
   margin-bottom: 10px; }
+
+.UNC {
+  width: 262px;
+  margin-top: 20px;
+  margin-bottom: 10px; }
+
+.patch {
+  width: 220px;
+  margin-top: -55px; }
+
+.branch {
+  width: 75%; }
 
 .ribbon-group {
   border: 1px solid white;

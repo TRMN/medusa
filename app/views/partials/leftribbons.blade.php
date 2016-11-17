@@ -1,7 +1,10 @@
-<div class="text-center ribbons">
+<div class="ribbons">
 @foreach($user->getRibbons('LS') as $ribbon)
 <img src="{{asset('images/' . $ribbon['code'] . '.svg')}}" alt="{{$ribbon['name']}}" title="{{$ribbon['name']}}" class="{{$ribbon['code']}}">
 @endforeach
+@if(file_exists(public_path('patches/' . $user->getAssignmentType('primary') . '/' . $user->getAssignmentDesignation('primary') . '.svg')))
+<img src="{{asset('patches/' . $user->getAssignmentType('primary') . '/' . $user->getAssignmentDesignation('primary') . '.svg')}}" alt="{{$user->getAssignmentName('primary')}}" title="{{$user->getAssignmentName('primary')}}" class="patch">
+@endif
 @foreach($user->getRibbons('TL') as $ribbon)
 @if($ribbon['code'] == 'HS')
 @for ($i = 0; $i < $ribbon['count']; $i++)
@@ -17,8 +20,14 @@
 <br />
 @endif
 @endforeach
-
+</div>
+<div class="stripes">
+@if($user->getRibbons('RS'))
+@if(file_exists(public_path('patches/' . $user->branch . '.svg')))
+<img src="{{asset('patches/' . $user->branch . '.svg')}}" alt="{{$user->branch}}" title="{{$user->branch}}" class="branch">
+@endif
 @foreach($user->getRibbons('RS') as $ribbon)
 <img src="{{asset('awards/stripes/' . $ribbon['code'] . '-' . $ribbon['count'] . '.svg')}}" alt="{{$ribbon['name']}}" title="{{$ribbon['name']}}" class="{{$ribbon['code']}}">
 @endforeach
+@endif
 </div>

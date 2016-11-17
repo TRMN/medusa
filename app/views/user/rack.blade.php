@@ -10,7 +10,7 @@
             for {{  $user->getGreeting() }} {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {{ $user->last_name }}{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}</h1>
 
         <p>Currently, the Ribbon Rack Builder only supports individiual RMN/RMMC ribbons. As the artwork becomes
-            avaialble
+            available
             for RMA, GSN, RHN and IAN ribbons as well as unit awards worn on the right side of the RMN uniform, they
             will be
             added.</p>

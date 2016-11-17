@@ -381,6 +381,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
     }
 
+    public function getAssignmentType($position)
+    {
+        return $this->_getAssignmentAttribute($position, 'chapter_type');
+    }
+
+    private function _getAssignmentAttribute($position, $attribute)
+    {
+        $chapter = Chapter::find($this->getAssignmentId($position));
+        if (empty($chapter) === false) {
+            return $chapter->$attribute;
+        } else {
+            return false;
+        }
+    }
+
     public function getPrimaryAssignmentDesignation()
     {
         // Maintain backward compatibility
