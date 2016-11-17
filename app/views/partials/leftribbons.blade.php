@@ -3,7 +3,7 @@
 <img src="{{asset('images/' . $ribbon['code'] . '.svg')}}" alt="{{$ribbon['name']}}" title="{{$ribbon['name']}}" class="{{$ribbon['code']}}">
 @endforeach
 @if(file_exists(public_path($user->getShoulderPatchPath())))
-<img src="{{asset($user->getShoulderPatchPath())}}" alt="{{$user->getAssignmentName('primary')}}" title="{{$user->getAssignmentName('primary')}}" class="patch">
+<img src="{{asset($user->getShoulderPatchPath())}}" alt="{{$user->getAssignmentName('primary')}}" title="{{$user->getAssignmentName('primary')}}" class="patch"><br />
 @endif
 @foreach($user->getRibbons('TL') as $ribbon)
 @if($ribbon['code'] == 'HS')
