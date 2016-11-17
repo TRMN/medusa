@@ -1475,4 +1475,22 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         return $awards;
     }
+
+    public function getShoulderPatchPath()
+    {
+        // Get this if of the primary chapter and any parents
+        $chapters = Chapter::find($this->getAssignmentId('primary')->getChapterIdWithParents());
+
+        // Check to see if we have a patch for this chapter
+        foreach($chapters as $item) {
+            $chapter = Chapter::find($item);
+            $path = 'patches/' . $chapter->type . '/' . $chapter->hull_number . '.svg';
+
+            if (file_exists(public_path($path)) === true) {
+                return $path;
+            }
+        }
+
+        return null;
+    }
 }

@@ -2,8 +2,8 @@
 @foreach($user->getRibbons('LS') as $ribbon)
 <img src="{{asset('images/' . $ribbon['code'] . '.svg')}}" alt="{{$ribbon['name']}}" title="{{$ribbon['name']}}" class="{{$ribbon['code']}}">
 @endforeach
-@if(file_exists(public_path('patches/' . $user->getAssignmentType('primary') . '/' . $user->getAssignmentDesignation('primary') . '.svg')))
-<img src="{{asset('patches/' . $user->getAssignmentType('primary') . '/' . $user->getAssignmentDesignation('primary') . '.svg')}}" alt="{{$user->getAssignmentName('primary')}}" title="{{$user->getAssignmentName('primary')}}" class="patch">
+@if(file_exists(public_path($user->getShoulderPatchPath())))
+<img src="{{asset($user->getShoulderPatchPath())}}" alt="{{$user->getAssignmentName('primary')}}" title="{{$user->getAssignmentName('primary')}}" class="patch">
 @endif
 @foreach($user->getRibbons('TL') as $ribbon)
 @if($ribbon['code'] == 'HS')
