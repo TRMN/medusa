@@ -593,7 +593,8 @@ div.stripes {
   margin-top: 20px; }
 
 .patch-with-unc {
-  margin-top: -55px; }
+  margin-top: -55px;
+  margin-left: -4px; }
 
 .branch {
   width: 75%; }
