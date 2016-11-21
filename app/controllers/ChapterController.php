@@ -98,7 +98,7 @@ class ChapterController extends BaseController
         }
 
         $types =
-          Type::whereIn('chapter_type', ['ship', 'station'])
+          Type::whereIn('chapter_type', ['ship', 'station', 'small_craft', 'lac'])
               ->orderBy('chapter_description')
               ->get(
                 ['chapter_type', 'chapter_description']
@@ -113,6 +113,7 @@ class ChapterController extends BaseController
         $chapterTypes = ['' => 'Select a Ship Type'] + $chapterTypes;
 
         $chapters = array_merge(
+          Chapter::getChaptersByType('ship'),
           Chapter::getChaptersByType('fleet'),
           Chapter::getChaptersByType('task_force'),
           Chapter::getChaptersByType('task_group'),

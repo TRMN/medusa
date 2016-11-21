@@ -131,6 +131,7 @@ $medusa-yellow: #ffee00;
 .underline {
   text-decoration: underline;
 }
+
 ø
 .ribbons {
   padding-top: 5px;
@@ -203,6 +204,13 @@ div.stripes {
   height: 53px;
   padding-top: 5px;
   padding-left: 10px;
+  padding-bottom: 5px;
+  clear: both;
+}
+
+.patch-row {
+  padding-top: 5px;
+  padding-left: 10px;
   clear: both;
 }
 
@@ -272,7 +280,7 @@ div.filePhoto {
 }
 
 .ofpt {
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   height: 100%;

@@ -15,81 +15,82 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     use \Medusa\Permissions\MedusaPermissions;
 
     public static $rules = [
-      'first_name'         => 'required|min:2',
-      'last_name'          => 'required|min:2',
-      'address1'           => 'required|min:4',
-      'city'               => 'required|min:2',
-      'state_province'     => 'required|min:2',
-      'postal_code'        => 'required|min:2',
-      'country'            => 'required',
-      'email_address'      => 'required|email|unique:users',
-      'password'           => 'confirmed',
-      'branch'             => 'required',
-      'primary_assignment' => 'required',
+        'first_name' => 'required|min:2',
+        'last_name' => 'required|min:2',
+        'address1' => 'required|min:4',
+        'city' => 'required|min:2',
+        'state_province' => 'required|min:2',
+        'postal_code' => 'required|min:2',
+        'country' => 'required',
+        'email_address' => 'required|email|unique:users',
+        'password' => 'confirmed',
+        'branch' => 'required',
+        'primary_assignment' => 'required',
     ];
 
     public static $updateRules = [
-      'first_name'     => 'required|min:2',
-      'last_name'      => 'required|min:2',
-      'address1'       => 'required|min:4',
-      'city'           => 'required|min:2',
-      'state_province' => 'required|min:2',
-      'postal_code'    => 'required|min:2',
-      'country'        => 'required',
-      'email_address'  => 'required|email',
-      'password'       => 'confirmed',
-      'branch'         => 'required',
+        'first_name' => 'required|min:2',
+        'last_name' => 'required|min:2',
+        'address1' => 'required|min:4',
+        'city' => 'required|min:2',
+        'state_province' => 'required|min:2',
+        'postal_code' => 'required|min:2',
+        'country' => 'required',
+        'email_address' => 'required|email',
+        'password' => 'confirmed',
+        'branch' => 'required',
     ];
 
     public static $error_message = [
-      'min'                         => 'The members :attribute must be at least :min characters long',
-      'address1.required'           => 'Please enter the members street address',
-      'address1.min'                => 'The street address must be at least :size characters long',
-      'required'                    => 'Please enter the members :attribute',
-      'state_province.required'     => 'Please enter the members state or province',
-      'state_province.min'          => 'The members state or province must be at least :size character long',
-      'date_format'                 => 'Please enter a date in the format YYYY-MM-DD',
-      'branch.required'             => "Please select the members branch",
-      'email_address.unique'        => 'That email address is already in use',
-      'primary_assignment.required' => 'Please select a chapter'
+        'min' => 'The members :attribute must be at least :min characters long',
+        'address1.required' => 'Please enter the members street address',
+        'address1.min' => 'The street address must be at least :size characters long',
+        'required' => 'Please enter the members :attribute',
+        'state_province.required' => 'Please enter the members state or province',
+        'state_province.min' => 'The members state or province must be at least :size character long',
+        'date_format' => 'Please enter a date in the format YYYY-MM-DD',
+        'branch.required' => "Please select the members branch",
+        'email_address.unique' => 'That email address is already in use',
+        'primary_assignment.required' => 'Please select a chapter'
     ];
 
     protected $hidden = ['password', 'remember_token'];
 
     protected $fillable = [
-      'first_name',
-      'middle_name',
-      'last_name',
-      'suffix',
-      'address1',
-      'address2',
-      'city',
-      'state_province',
-      'postal_code',
-      'country',
-      'phone_number',
-      'email_address',
-      'branch',
-      'rating',
-      'rank',
-      'assignment',
-      'peerages',
-      'awards',
-      'password',
-      'permissions',
-      'duty_roster',
-      'registration_status',
-      'application_date',
-      'registration_date',
-      'active',
-      'dob',
-      'osa',
-      'idcard_printed',
-      'note',
-      'last_login',
-      'previous_login',
-      'lastUpdate',
-      'hasEvents',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'suffix',
+        'address1',
+        'address2',
+        'city',
+        'state_province',
+        'postal_code',
+        'country',
+        'phone_number',
+        'email_address',
+        'branch',
+        'rating',
+        'rank',
+        'assignment',
+        'peerages',
+        'awards',
+        'password',
+        'permissions',
+        'duty_roster',
+        'registration_status',
+        'application_date',
+        'registration_date',
+        'active',
+        'dob',
+        'osa',
+        'idcard_printed',
+        'note',
+        'last_login',
+        'previous_login',
+        'lastUpdate',
+        'hasEvents',
+        'unitPatchPath',
     ];
 
     public function announcements()
@@ -100,10 +101,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getFullName()
     {
         return trim(
-          ucfirst($this->first_name) . ' ' .
-          (empty($this->middle_name) ? '' : ucfirst($this->middle_name) . ' ') .
-          ucfirst($this->last_name) . ' ' .
-          (empty($this->suffix) ? '' : $this->suffix)
+            ucfirst($this->first_name) . ' ' .
+            (empty($this->middle_name) ? '' : ucfirst($this->middle_name) . ' ') .
+            ucfirst($this->last_name) . ' ' .
+            (empty($this->suffix) ? '' : $this->suffix)
         );
     }
 
@@ -147,7 +148,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function getDisplayRank()
     {
         $gradeDetails =
-          Grade::where('grade', '=', $this->rank['grade'])->First();
+            Grade::where('grade', '=', $this->rank['grade'])->First();
 
         if (empty($this->branch) === true) {
             $this->branch = 'RMN';
@@ -162,10 +163,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if (isset($this->rating) && !empty($this->rating)) {
             if (is_array($this->rating) === true) {
                 $results =
-                  Rating::where('rate_code', '=', $this->rating['rate'])->get();
+                    Rating::where('rate_code', '=', $this->rating['rate'])->get();
             } else {
                 $results =
-                  Rating::where('rate_code', '=', $this->rating)->get();
+                    Rating::where('rate_code', '=', $this->rating)->get();
             }
 
             $rate = $results[0];
@@ -177,10 +178,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             }
 
             $this->rating =
-              [
-                'rate'        => $currentRating,
-                'description' => $rate->rate['description']
-              ];
+                [
+                    'rate' => $currentRating,
+                    'description' => $rate->rate['description']
+                ];
         }
     }
 
@@ -195,7 +196,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     {
         if (is_array($this->rating) === true) {
             $rateDetail =
-              Rating::where('rate_code', '=', $this->rating['rate'])->get();
+                Rating::where('rate_code', '=', $this->rating['rate'])->get();
         } else {
             $rateDetail = Rating::where('rate_code', '=', $this->rating)->get();
         }
@@ -245,7 +246,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         foreach ($this->peerages as $peerage) {
             if (empty($peerage['courtesy']) === true && empty($peerage['postnominal']) === false) {
                 $postnominals[$peerage['precedence']] =
-                  $peerage['postnominal']; // Order them by precedence
+                    $peerage['postnominal']; // Order them by precedence
             }
         }
 
@@ -495,7 +496,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if (empty($this->rank['date_of_rank']) === false) {
             $dorObj = new DateTime();
             list($year, $month, $day) =
-              explode('-', $this->rank['date_of_rank']);
+                explode('-', $this->rank['date_of_rank']);
             $dorObj->setDate($year, $month, $day);
 
             $timeInGrade = $dorObj->diff(new DateTime("now"));
@@ -590,44 +591,44 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             } else {
                 // filter by branch
                 $list = array_where(
-                  $exams->exams,
-                  function ($key, $value) use ($pattern) {
-                      if (preg_match($pattern, $key) === 1) {
-                          return true;
-                      }
-                  }
+                    $exams->exams,
+                    function ($key, $value) use ($pattern) {
+                        if (preg_match($pattern, $key) === 1) {
+                            return true;
+                        }
+                    }
                 );
             }
 
             if (empty($after) === false) {
                 // filter by date
                 $list = array_where(
-                  $list,
-                  function ($key, $value) use ($after) {
-                      if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime(
-                          '+2 month',
-                          $after
-                        )
-                      ) {
-                          return true;
-                      }
-                  }
+                    $list,
+                    function ($key, $value) use ($after) {
+                        if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime(
+                                '+2 month',
+                                $after
+                            )
+                        ) {
+                            return true;
+                        }
+                    }
                 );
             }
 
             if (empty($since) === false) {
                 // Filter by date entered
                 $list = array_where(
-                  $list,
-                  function ($key, $value) use ($since) {
-                      if (empty($value['date_entered']) === true) {
-                          return false;
-                      }
+                    $list,
+                    function ($key, $value) use ($since) {
+                        if (empty($value['date_entered']) === true) {
+                            return false;
+                        }
 
-                      if (strtotime($value['date_entered']) >= $since) {
-                          return true;
-                      }
-                  }
+                        if (strtotime($value['date_entered']) >= $since) {
+                            return true;
+                        }
+                    }
                 );
             }
 
@@ -664,10 +665,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
                     case "officer+flag":
                         $list =
-                          array_merge(
-                            $this->getExamList(['class' => 'officer']),
-                            $this->getExamList(['class' => 'flag'])
-                          );
+                            array_merge(
+                                $this->getExamList(['class' => 'officer']),
+                                $this->getExamList(['class' => 'flag'])
+                            );
                         break;
                 }
             }
@@ -686,10 +687,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
 
         $list = array_sort(
-          $list,
-          function ($value) {
-              return $value['date'];
-          }
+            $list,
+            function ($value) {
+                return $value['date'];
+            }
         );
 
         end($list);
@@ -699,7 +700,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     /**
      * Function filterExams
      *
-     * @param array  $exams
+     * @param array $exams
      * @param string $search
      *
      * @return array $list
@@ -708,12 +709,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     private function filterExams(array $exams, $search)
     {
         $list = array_where(
-          $exams,
-          function ($key, $value) use ($search) {
-              if (preg_match($search, $key) === 1) {
-                  return true;
-              }
-          }
+            $exams,
+            function ($key, $value) use ($search) {
+                if (preg_match($search, $key) === 1) {
+                    return true;
+                }
+            }
         );
         return $list;
     }
@@ -785,12 +786,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $exams = $this->getExamList(['after' => $after]);
 
         $list = array_where(
-          $exams,
-          function ($key, $value) use ($after) {
-              if (intval($value['score']) > 70 || strtoupper($value['score'] == 'PASS')) {
-                  return $value;
-              }
-          }
+            $exams,
+            function ($key, $value) use ($after) {
+                if (intval($value['score']) > 70 || strtoupper($value['score'] == 'PASS')) {
+                    return $value;
+                }
+            }
         );
 
         return implode(', ', array_keys($list));
@@ -825,15 +826,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function assignCoPerms()
     {
         $this->updatePerms(
-          [
-            'DUTY_ROSTER',
-            'EXPORT_ROSTER',
-            'EDIT_WEBSITE',
-            'ASSIGN_NONCOMMAND_BILLET',
-            'PROMOTE_E6O1',
-            'REQUEST_PROMOTION',
-            'CHAPTER_REPORT',
-          ]
+            [
+                'DUTY_ROSTER',
+                'EXPORT_ROSTER',
+                'EDIT_WEBSITE',
+                'ASSIGN_NONCOMMAND_BILLET',
+                'PROMOTE_E6O1',
+                'REQUEST_PROMOTION',
+                'CHAPTER_REPORT',
+            ]
         );
 
         return true;
@@ -849,13 +850,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function assignBuShipPerms()
     {
         $this->updatePerms(
-          [
-            'COMMISSION_SHIP',
-            'DECOMMISSION_SHIP',
-            'EDIT_SHIP',
-            'VIEW_DSHIPS',
-            'VIEW_SU',
-          ]
+            [
+                'COMMISSION_SHIP',
+                'DECOMMISSION_SHIP',
+                'EDIT_SHIP',
+                'VIEW_DSHIPS',
+                'VIEW_SU',
+            ]
         );
 
         return true;
@@ -864,17 +865,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function assignBuPersPerms()
     {
         $this->updatePerms(
-          [
-            'ADD_MEMBER',
-            'DEL_MEMBER',
-            'EDIT_MEMBER',
-            'VIEW_MEMBERS',
-            'PROC_APPLICATIONS',
-            'PROC_XFERS',
-            'ADD_BILLET',
-            'DEL_BILLET',
-            'EDIT_BILLET',
-          ]
+            [
+                'ADD_MEMBER',
+                'DEL_MEMBER',
+                'EDIT_MEMBER',
+                'VIEW_MEMBERS',
+                'PROC_APPLICATIONS',
+                'PROC_XFERS',
+                'ADD_BILLET',
+                'DEL_BILLET',
+                'EDIT_BILLET',
+            ]
         );
 
         return true;
@@ -891,7 +892,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function updatePerms(array $perms)
     {
         $this->permissions =
-          array_unique(array_merge($this->permissions, $perms));
+            array_unique(array_merge($this->permissions, $perms));
 
         if (is_null(Auth::user())) {
             $user = 'system user';
@@ -904,12 +905,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $this->lastUpdate = time();
 
         $this->writeAuditTrail(
-          $user,
-          'update',
-          'users',
-          (string)$this->_id,
-          json_encode($this->permissions),
-          'User@updatePerms'
+            $user,
+            'update',
+            'users',
+            (string)$this->_id,
+            json_encode($this->permissions),
+            'User@updatePerms'
         );
 
         $this->save();
@@ -920,10 +921,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function deletePerm($perm)
     {
         $this->permissions = array_where(
-          $this->permissions,
-          function ($key, $value) use ($perm) {
-              return $value != $perm;
-          }
+            $this->permissions,
+            function ($key, $value) use ($perm) {
+                return $value != $perm;
+            }
         );
 
         if (is_null(Auth::user())) {
@@ -936,12 +937,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $this->lastUpdate = time();
 
         $this->writeAuditTrail(
-          $user,
-          'update',
-          'users',
-          (string)$this->_id,
-          json_encode($this->permissions),
-          'User@deletePerms'
+            $user,
+            'update',
+            'users',
+            (string)$this->_id,
+            json_encode($this->permissions),
+            'User@deletePerms'
         );
 
         $this->save();
@@ -952,14 +953,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function deletePeerage($peerageId)
     {
         $peerages = array_where(
-          $this->peerages,
-          function ($key, $value) use ($peerageId) {
-              if ($value['peerage_id'] != $peerageId) {
-                  return true;
-              }
+            $this->peerages,
+            function ($key, $value) use ($peerageId) {
+                if ($value['peerage_id'] != $peerageId) {
+                    return true;
+                }
 
-              return false;
-          }
+                return false;
+            }
         );
 
         $this->peerages = $peerages;
@@ -968,12 +969,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $this->save();
 
         $this->writeAuditTrail(
-          Auth::user()->id,
-          'update',
-          'users',
-          $this->id,
-          $this->toJson(),
-          'User@deletePeerage'
+            Auth::user()->id,
+            'update',
+            'users',
+            $this->id,
+            $this->toJson(),
+            'User@deletePeerage'
         );
 
         return true;
@@ -982,42 +983,42 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     public function buildIdCard($showFullGrade = false)
     {
         $idCard =
-          Image::make(public_path() . '/images/TRMN-membership-card.png');
+            Image::make(public_path() . '/images/TRMN-membership-card.png');
 
         $idCard->text(
-          $this->getFullName(),
-          382,
-          317,
-          function ($font) {
-              $font->file(public_path() . "/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf");
-              $font->size(48);
-              $font->align('center');
-          }
+            $this->getFullName(),
+            382,
+            317,
+            function ($font) {
+                $font->file(public_path() . "/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf");
+                $font->size(48);
+                $font->align('center');
+            }
         );
 
         $idCard->text(
-          $this->getAssignmentName('primary'),
-          382,
-          432,
-          function ($font) {
-              $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
-              $font->align('center');
-              $font->size(40);
-          }
+            $this->getAssignmentName('primary'),
+            382,
+            432,
+            function ($font) {
+                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->align('center');
+                $font->size(40);
+            }
         );
 
         $primaryBillet = $this->getBillet('primary');
         $fontSize = strlen($primaryBillet) < 30 ? 40 : 30;
 
         $idCard->text(
-          $primaryBillet,
-          382,
-          527,
-          function ($font) use ($fontSize) {
-              $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
-              $font->align('center');
-              $font->size($fontSize);
-          }
+            $primaryBillet,
+            382,
+            527,
+            function ($font) use ($fontSize) {
+                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->align('center');
+                $font->size($fontSize);
+            }
         );
 
         $rankCode = substr($this->rank['grade'], 0, 1);
@@ -1078,15 +1079,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
 
         $idCard->text(
-          $rankCode,
-          153,
-          628,
-          function ($font) {
-              $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
-              $font->align('center');
-              $font->size(40);
-              $font->color('#BE1E2D');
-          }
+            $rankCode,
+            153,
+            628,
+            function ($font) {
+                $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                $font->align('center');
+                $font->size(40);
+                $font->color('#BE1E2D');
+            }
         );
 
         $peerages = $this->getPeerages();
@@ -1095,68 +1096,68 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $pCode = $peerages[0]['code'];
 
             if ($pCode == "K" && substr(
-                Korders::where('classes.postnominal', '=',
-                  $peerages[0]['postnominal'])->first()->getClassName(
-                  $peerages[0]['postnominal']
-                ),
-                0,
-                6
-              ) != 'Knight'
+                    Korders::where('classes.postnominal', '=',
+                        $peerages[0]['postnominal'])->first()->getClassName(
+                        $peerages[0]['postnominal']
+                    ),
+                    0,
+                    6
+                ) != 'Knight'
             ) {
                 $pCode = '';
             }
 
             $idCard->text(
-              $pCode,
-              392,
-              628,
-              function ($font) {
-                  $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
-                  $font->align('center');
-                  $font->size(40);
-                  $font->color('#BE1E2D');
-              }
+                $pCode,
+                392,
+                628,
+                function ($font) {
+                    $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                    $font->align('center');
+                    $font->size(40);
+                    $font->color('#BE1E2D');
+                }
             );
         }
 
         $idCard->text(
-          $this->branch,
-          628,
-          628,
-          function ($font) {
-              $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
-              $font->align('center');
-              $font->size(40);
-              $font->color('#BE1E2D');
-          }
+            $this->branch,
+            628,
+            628,
+            function ($font) {
+                $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                $font->align('center');
+                $font->size(40);
+                $font->color('#BE1E2D');
+            }
         );
 
         $idCard->text(
-          $this->member_id,
-          855,
-          250,
-          function ($font) {
-              $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
-              $font->align('center');
-              $font->size(20);
-          }
+            $this->member_id,
+            855,
+            250,
+            function ($font) {
+                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->align('center');
+                $font->size(20);
+            }
         );
 
         $idCard->insert(
-          base64_encode(
-            QrCode::format('png')
-                  ->margin(1)
-                  ->size(150)
-                  ->errorCorrection('H')
-                  ->generate($this->member_id)
-          ),
-          'top-left',
-          780,
-          252
+            base64_encode(
+                QrCode::format('png')
+                    ->margin(1)
+                    ->size(150)
+                    ->errorCorrection('H')
+                    ->generate($this->member_id)
+            ),
+            'top-left',
+            780,
+            252
         );
 
         $idCard->insert(public_path() . '/seals/' . $seal, 'top-left', 747,
-          400);
+            400);
 
         return $idCard;
     }
@@ -1174,7 +1175,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         }
 
         if (strlen($state) == 4 && substr($state, -1) == '.' && substr($state,
-            -3, 1) == '.'
+                -3, 1) == '.'
         ) {
             // We have a 2 letter abbreviation with periods between the letters, like D.C. or B.C.
             return strtoupper(substr($state, 0, 1) . substr($state, -2, 1));
@@ -1183,7 +1184,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if (substr($state, 2, 2) == ' -') {
             // We may have a 2 letter abbreviation followed by the full name, try and validate
             if (array_key_exists(strtoupper(substr($state, 0, 2)),
-                MedusaDefaults::STATES_BY_ABREVIATION) === true
+                    MedusaDefaults::STATES_BY_ABREVIATION) === true
             ) {
                 return strtoupper(substr($state, 0, 2));
             }
@@ -1192,7 +1193,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         // Nothing else hits, check and see if we know the 2 letter abbreviation
 
         if (array_key_exists(strtoupper($state),
-            MedusaDefaults::STATES_BY_NAME) === true
+                MedusaDefaults::STATES_BY_NAME) === true
         ) {
             $tmp = MedusaDefaults::STATES_BY_NAME;
             return $tmp[strtoupper($state)];
@@ -1243,7 +1244,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         foreach ($uniqueMemberIds as $memberId) {
             if ((intval($lastId) + 1 < intval($memberId)) && ($honorary === true || intval($lastId) + 1 > 200)) {
                 return '-' . str_pad($lastId + 1, 4, '0',
-                  STR_PAD_LEFT) . '-' . date('y');
+                    STR_PAD_LEFT) . '-' . date('y');
             }
             $lastId = $memberId;
         }
@@ -1332,11 +1333,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $currentTz = $this->setTimeZone($continent, $city);
 
         $events =
-          Events::where('start_date', '<=', date('Y-m-d'))
+            Events::where('start_date', '<=', date('Y-m-d'))
                 ->where('end_date', '>=', date('Y-m-d'))
                 ->where(function ($query) {
                     $query->where('requestor', '=', $this->id)
-                          ->orWhere('registrars', '=', $this->id);
+                        ->orWhere('registrars', '=', $this->id);
                 })
                 ->orderBy('start_date', 'ASC')
                 ->get(['_id', 'event_name']);
@@ -1347,10 +1348,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     }
 
     public function checkMemberIn(
-      $event,
-      $member,
-      $continent = null,
-      $city = null
+        $event,
+        $member,
+        $continent = null,
+        $city = null
     ) {
         $currentTz = $this->setTimeZone($continent, $city);
 
@@ -1375,10 +1376,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         try {
             $user =
-              User::where('member_id', '=', $member)
-                  ->where('registration_status', '=', 'Active')
-                  ->where('active', '=', 1)
-                  ->firstOrFail();
+                User::where('member_id', '=', $member)
+                    ->where('registration_status', '=', 'Active')
+                    ->where('active', '=', 1)
+                    ->firstOrFail();
         } catch (Exception $e) {
             $this->setTimeZone($currentTz);
             return ['error' => 'Invalid Member ID'];
@@ -1389,7 +1390,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if ($event->start_date <= date('Y-m-d') && $event->end_date >= date('Y-m-d')) {
             // Is the user doing the check-in a requestor or a registrar?
             if ($event->requestor === $this->id || in_array($this->id,
-                $event->registrars) === true
+                    $event->registrars) === true
             ) {
                 $checkIns = [];
                 if (isset($event->checkins) === true) {
@@ -1398,7 +1399,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                 if (in_array($user->id, $checkIns) === false) {
                     // Only check them in once
                     $checkIns[] =
-                      ['_id' => $user->id, 'timestamp' => date('Y-m-d H:m:s')];
+                        ['_id' => $user->id, 'timestamp' => date('Y-m-d H:m:s')];
                     //$checkIns[] = $user->id;
                     $event->checkins = $checkIns;
                 }
@@ -1407,12 +1408,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                     $event->save();
 
                     $this->writeAuditTrail(
-                      $this->id,
-                      'update',
-                      'events',
-                      null,
-                      $event->toJson(),
-                      'User@checkMemberIn'
+                        $this->id,
+                        'update',
+                        'events',
+                        null,
+                        $event->toJson(),
+                        'User@checkMemberIn'
                     );
 
                     $this->setTimeZone($currentTz);
@@ -1458,7 +1459,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             if ($award['location'] === $location) {
                 $award['code'] = $code;
                 $award['name'] =
-                  Award::where('code', '=', $code)->first()->name;
+                    Award::where('code', '=', $code)->first()->name;
                 $tmp[Award::getDisplayOrder($code)] = $award;
             }
         }
@@ -1476,15 +1477,55 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $awards;
     }
 
-    public function getShoulderPatchPath()
+    public function getUnitPatchPath($assignment = 'primary')
     {
-        // Get this if of the primary chapter and any parents
-        $chapters = Chapter::find($this->getAssignmentId('primary'))->getChapterIdWithParents();
+
+        $chapter = Chapter::find($this->getAssignmentId($assignment));
+
+        if (is_null($chapter) === true) {
+            return false;
+        }
+
+        switch ($chapter->chapter_type) {
+            case 'small_craft':
+            case 'section':
+            case 'squad':
+            case 'platoon':
+            case 'company':
+            case 'battalion':
+            case 'shuttle':
+            case 'regiment':
+            case 'exp_force':
+            case 'corps':
+                $chapters = [$chapter->assigned_to];
+                break;
+            case 'lac':
+                $chapters = $chapter->getChapterIdWithParents('fleet');
+                break;
+            case 'fleet':
+            case 'ship':
+            case 'station':
+            case 'bivouac':
+            case 'outpost':
+            case 'fort':
+            case 'planetary':
+            case 'theater':
+            case 'task_force':
+            case 'task_group':
+            case 'squadron':
+            case 'division':
+            case 'headquarters':
+            case 'bureau':
+                $chapters = [$chapter->id];
+                break;
+            default:
+                $chapters = $chapter->getChapterIdWithParents();
+        }
 
         // Check to see if we have a patch for this chapter
-        foreach($chapters as $item) {
+        foreach ($chapters as $item) {
             $chapter = Chapter::find($item);
-            $path = 'patches/' . $chapter->chapter_type . '/' . $chapter->hull_number . '.svg';
+            $path = 'patches/' . $chapter->chapter_type . '/' . (empty($chapter->branch)?'':$chapter->branch . '/') . $chapter->hull_number . '.svg';
 
             if (file_exists(public_path($path)) === true) {
                 return $path;

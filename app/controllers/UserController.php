@@ -1347,7 +1347,17 @@ class UserController extends \BaseController
             return $redirect;
         }
 
-        return View::make('user.rack', ['user' => Auth::user()]);
+        // Try and find unit patches for all of the users assignments
+        $unitPatchPaths = [];
+        foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
+            $path = Auth::user()->getUnitPatchPath($position);
+
+            if ($path !== false ) {
+                $unitPatchPaths[] = $path;
+            }
+        }
+
+        return View::make('user.rack', ['user' => Auth::user(), 'unitPatchPaths' => $unitPatchPaths]);
     }
 
     public function saveRibbonRack()
@@ -1358,6 +1368,7 @@ class UserController extends \BaseController
             return $redirect;
         }
         $data = Input::all();
+
 
         $groups = array_where($data, function ($key, $value) {
             return substr($key, 0, 5) == 'group';
@@ -1381,6 +1392,11 @@ class UserController extends \BaseController
         }
 
         Auth::user()->awards = $awards;
+
+        if (empty($data['unitPatch']) === false) {
+            Auth::user()->unitPatchPath = $data['unitPatch'];
+        }
+
         Auth::user()->save();
 
         return Redirect::to('home');

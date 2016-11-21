@@ -20,10 +20,14 @@
             switch ($chapter->chapter_type) {
                 case 'task_force':
                 case 'task_group':
+                case 'small_craft':
                     $type = str_replace('_', ' ', $chapter->chapter_type);
                     break;
                 case 'exp_force':
                     $type = 'Expeditionary Force';
+                    break;
+                case 'lac':
+                    $type = 'LAC';
                     break;
                 default:
                     $type = $chapter->chapter_type;
@@ -41,18 +45,18 @@
                             <i class='fi-anchor' title='Reserve Fleet / Decomissioned'
                                alt="Reserve Fleet / Decommissioned" title="Reserve Fleet / Decommissioned"></i>
                         @endif
-                        @if(in_array($chapter->chapter_type, ['ship', 'station']) === true && empty($chapter->idcards_printed) && empty($chapter->decommission_date) && $permsObj->hasPermissions(['ID_CARD']))
+                        @if(in_array($chapter->chapter_type, ['ship', 'station', 'small_craft', 'lac']) === true && empty($chapter->idcards_printed) && empty($chapter->decommission_date) && $permsObj->hasPermissions(['ID_CARD']))
                             <a class="fi-credit-card green size-24" href="/id/bulk/{{$chapter->id}}"
                                title="Print ID Cards"></a>
                             <a class="fi-check green size-24" href="/id/markbulk/{{$chapter->id}}"
                                title="Mark ID Cards as printed"
                                onclick="return confirm('Mark ID cards as printed for this chapter?')"></a>
-                        @elseif(in_array($chapter->chapter_type, ['ship', 'station']) === true && !empty($chapter->idcards_printed) && empty($chapter->decommission_date) && $permsObj->hasPermissions(['ID_CARD']))
+                        @elseif(in_array($chapter->chapter_type, ['ship', 'station', 'small_craft', 'lac']) === true && !empty($chapter->idcards_printed) && empty($chapter->decommission_date) && $permsObj->hasPermissions(['ID_CARD']))
                             <span class="fi-print size-24" title="ID Cards printed"></span> @endif
                     </td>
                     <td>{{ ucwords($type) }}</td>
                     <td width="12%">
-                        @if(in_array($chapter->chapter_type, ['ship', 'station']) === true)
+                        @if(in_array($chapter->chapter_type, ['ship', 'station', 'small_craft', 'lac']) === true)
                             @if($permsObj->hasPermissions(['EDIT_SHIP']) === true)
                                 <a href="{{route('chapter.edit', [$chapter->id])}}" class="fi-pencil green"
                                    title="Edit Ship"></a>

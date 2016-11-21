@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('pageTitle')
- Commission {{ $chapter->chapter_name }}{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}
+    Commission {{ $chapter->chapter_name }}{{ isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' }}
 @stop
 
 @section('content')
@@ -27,7 +27,7 @@
     </div>
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
-            {{ Form::label('Assigned To', 'Assigned To') }} {{ Form::select('assigned_to', $chapterList, $chapter->assigned_to) }}
+            {{ Form::label('Assigned To', 'Assigned To') }} {{ Form::select('assigned_to', $chapterList, $chapter->assigned_to, ['id' => 'assigned_to']) }}
         </div>
     </div>
 
@@ -52,4 +52,11 @@
 
     <a class="button" href="{{ URL::previous() }}">Cancel</a> {{ Form::submit( 'Save', [ 'class' => 'button' ] ) }}
     {{ Form::close() }}
+@stop
+@section('scriptFooter')
+    <script type="application/javascript">
+        $('#assigned_to').selectize({
+            closeAfterSelect: true
+        });
+    </script>
 @stop

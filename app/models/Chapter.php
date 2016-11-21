@@ -1,7 +1,6 @@
 <?php
 
 use Jenssegers\Mongodb\Model as Eloquent;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Chapter extends Eloquent
 {
@@ -460,11 +459,18 @@ class Chapter extends Eloquent
         return $commandCrew;
     }
 
-    public function getChapterIdWithParents()
+    public function getChapterIdWithParents($stopAtType = null)
     {
-        if (empty($this->assigned_to) === false) {
+        if (empty($this->assigned_to) === false && is_null($stopAtType) === true) {
             return array_merge([$this->id],
-              Chapter::find($this->assigned_to)->getChapterIdWithParents());
+              Chapter::find($this->assigned_to)->getChapterIdWithParents($stopAtType));
+        } elseif(empty($this->assigned_to) === false && is_null($stopAtType) === false) {
+            $next = Chapter::find($this->assigned_to);
+            if ($next->chapter_type == $stopAtType) {
+                return [$this->id];
+            } else {
+                return array_merge([$this->id], $next->getChapterIdWithParents($stopAtType));
+            }
         } else {
             return [$this->id];
         }
