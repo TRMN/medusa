@@ -3,18 +3,19 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPeerageTitles extends Migration {
+class AddPeerageTitles extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		$titles = [
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $titles = [
             'Grand Duke' => '1:G',
             'Grand Duchess' => '1:G',
             'Duke' => '2:D',
@@ -42,16 +43,15 @@ class AddPeerageTitles extends Migration {
 
             Ptitles::create(["title" => $title, "code" => $code, "precedence" => $precedence]);
         }
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 }

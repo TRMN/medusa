@@ -23,17 +23,17 @@ class FixSecondaryAssignments extends Migration
             $foundAdditional = false;
 
             foreach ($user->assignment as $assignment) {
-                if (empty( $assignment['primary'] ) === false && $assignment['primary'] === true) {
+                if (empty($assignment['primary']) === false && $assignment['primary'] === true) {
                     $assignments[] = $assignment; // Don't need to do anything
                 } else {
                     if ($foundSecondary === false) {
                         // Not the primary, set it to secondary
-                        unset( $assignment['primary'] );
+                        unset($assignment['primary']);
                         $assignment['scondary'] = true;
                         $assignments[] = $assignment;
                         $foundSecondary = true;
                     } else {
-                        unset( $assignment['primary'] );
+                        unset($assignment['primary']);
                         $assignment['additional'] = true;
                         $assignments[] = $assignment;
                         $foundAdditional = true;
@@ -65,5 +65,4 @@ class FixSecondaryAssignments extends Migration
     {
         //
     }
-
 }

@@ -75,7 +75,7 @@ class IdController extends \BaseController
         foreach ($chapters as $chapterId) {
             $chapter = Chapter::find($chapterId);
             foreach ($chapter->getAllCrew() as $member) {
-                if (empty( $member->idcard_printed )) {
+                if (empty($member->idcard_printed)) {
                     $this->_markMember($member);
                 }
             }
@@ -108,5 +108,4 @@ class IdController extends \BaseController
 
         return;
     }
-
 }

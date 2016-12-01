@@ -93,7 +93,8 @@ class ImportChapters extends Command
                                 'ship_class'      => $ship['class'],
                                 'commission_date' => $ship['commissioned'],
                                 'assigned_to'     => $fleets[$ship['fleet']]['_id']
-                            ]), 'import.chapters');
+                            ]
+                        ), 'import.chapters');
 
                         $result = Chapter::create(
                             [
@@ -124,7 +125,7 @@ class ImportChapters extends Command
         $this->comment('Adding Decommissioned Ships');
 
         foreach ($decomissioned as $ship) {
-            if (empty( $ship['name'] ) === true) {
+            if (empty($ship['name']) === true) {
                 continue;
             }
             // Make sure that the ship doesn't already exist
@@ -192,5 +193,4 @@ class ImportChapters extends Command
     {
         return [];
     }
-
 }

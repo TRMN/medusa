@@ -12,7 +12,6 @@ trait MedusaPermissions
     public function checkPermissions($permissions)
     {
         if ($this->hasPermissions($permissions) === false) {
-
             return \Redirect::to(\URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
@@ -30,7 +29,7 @@ trait MedusaPermissions
 
     public function hasPermissions($permissions, $skipAll = false)
     {
-        if (empty( \Auth::user() ) === true) {
+        if (empty(\Auth::user()) === true) {
             return false; // Not logged in, don't waste time
         }
 
@@ -53,7 +52,7 @@ trait MedusaPermissions
 
     public function hasAllPermissions()
     {
-        if (empty( \Auth::user() ) === true) {
+        if (empty(\Auth::user()) === true) {
             return false; // Not logged in, don't waste time
         }
 
@@ -115,5 +114,4 @@ trait MedusaPermissions
 
         return false;
     }
-
 }

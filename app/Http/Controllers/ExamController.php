@@ -77,7 +77,7 @@ class ExamController extends \BaseController
 
         $exam = ExamList::find($data['id']);
         $exam->name = $data['name'];
-        if (empty( $data['enabled'] ) === true) {
+        if (empty($data['enabled']) === true) {
             $exam->enabled = false;
         } else {
             $exam->enabled = true;
@@ -94,7 +94,7 @@ class ExamController extends \BaseController
             return $redirect;
         }
 
-        unset( $message );
+        unset($message);
 
         // Validation rules
 
@@ -148,7 +148,7 @@ class ExamController extends \BaseController
 
         // This might be an update, so check and see if the exam exists in the exams array
 
-        if (empty( $record->exams ) === false && array_key_exists($data['exam'], $record->exams) === true) {
+        if (empty($record->exams) === false && array_key_exists($data['exam'], $record->exams) === true) {
             // This is an edit, update it
 
             $exams = $record->exams;
@@ -164,12 +164,11 @@ class ExamController extends \BaseController
 
             $message =
                 '<span class="fi-alert alert">' . strtoupper($data['exam']) . ' updated in academy coursework for ' . $member->first_name . ' ' .
-                ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
-                ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
+                ( !empty($member->middle_name) ? $member->middle_name . ' ' : '' ) . $member->last_name .
+                ( !empty($member->suffix) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
         } else {
-
-            if (empty( $record->exams ) === false) {
+            if (empty($record->exams) === false) {
                 $exams = $record->exams;
             } else {
                 $this->writeAuditTrail(
@@ -197,8 +196,8 @@ class ExamController extends \BaseController
 
             $message =
                 '<span class="fi-alert yellow">' . strtoupper($data['exam']) . ' added to academy coursework for ' . $member->first_name . ' ' .
-                ( !empty( $member->middle_name ) ? $member->middle_name . ' ' : '' ) . $member->last_name .
-                ( !empty( $member->suffix ) ? ' ' . $member->suffix : '' ) .
+                ( !empty($member->middle_name) ? $member->middle_name . ' ' : '' ) . $member->last_name .
+                ( !empty($member->suffix) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
         }
         $this->writeAuditTrail(
@@ -224,7 +223,6 @@ class ExamController extends \BaseController
         }
 
         if (Input::file('file')->isValid() === true) {
-
             // Delete any records in the messages collection, this is a fresh run
             Message::where('source', '=', 'import_grades')->delete();
 
@@ -320,9 +318,8 @@ class ExamController extends \BaseController
             $examRecord->save();
 
             return Response::json(['success' => 'true']);
-        } catch ( Exception $e ) {
+        } catch (Exception $e) {
             return Response::json(['success' => 'false']);
         }
     }
-
 }

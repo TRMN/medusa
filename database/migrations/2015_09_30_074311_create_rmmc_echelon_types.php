@@ -33,17 +33,16 @@ class CreateRmmcEchelonTypes extends Migration
 
         if (empty($mardet->id) === false) {
                    $this->writeAuditTrail(
-            'system user',
-            'delete',
-            'types',
-            $mardet->id,
-            $mardet->toJson(),
-            'create_rmmc_echelon_types'
-        );
+                       'system user',
+                       'delete',
+                       'types',
+                       $mardet->id,
+                       $mardet->toJson(),
+                       'create_rmmc_echelon_types'
+                   );
 
-        $mardet->delete();
+            $mardet->delete();
         }
-
     }
 
     /**
@@ -70,5 +69,4 @@ class CreateRmmcEchelonTypes extends Migration
 
         \Type::create(['chapter_type' => $type, 'chapter_description' => $description, 'can_have' => $can_have]);
     }
-
 }

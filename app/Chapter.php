@@ -32,15 +32,16 @@ class Chapter extends Eloquent
     {
         $results =
           Chapter::where('joinable', '!=', false)
-                 ->whereIn('hull_number',
-                   ['SS-001', 'SS-002', 'RMOP-01', 'HC', 'RHSS-01', 'SMRS-01'])
+                 ->whereIn(
+                     'hull_number',
+                     ['SS-001', 'SS-002', 'RMOP-01', 'HC', 'RHSS-01', 'SMRS-01']
+                 )
                  ->orderBy('chapter_name')
                  ->get();
 
         $chapters = [];
 
         foreach ($results as $chapter) {
-
             $chapters[$chapter->_id] = $chapter->chapter_name;
         }
 
@@ -57,7 +58,6 @@ class Chapter extends Eloquent
         $chapters = [];
 
         foreach ($results as $chapter) {
-
             switch ($type) {
                 case 'SU':
                     $name =
@@ -84,9 +84,9 @@ class Chapter extends Eloquent
     }
 
     static function getChapters(
-      $branch = '',
-      $location = 0,
-      $joinableOnly = true
+        $branch = '',
+        $location = 0,
+        $joinableOnly = true
     ) {
         $nf = new NumberFormatter('en_US', NumberFormatter::ORDINAL);
 
@@ -99,8 +99,8 @@ class Chapter extends Eloquent
                      ->where('joinable', '!=', false)
                      ->whereNull('decommission_date')
                      ->orderBy(
-                       'chapter_name',
-                       'asc'
+                         'chapter_name',
+                         'asc'
                      )
                      ->get();
         } elseif ($joinableOnly === false) {
@@ -175,14 +175,14 @@ class Chapter extends Eloquent
           User::where('assignment.chapter_id', '=', (string)$this->_id)
               ->where('active', '=', 1)
               ->where(
-                'registration_status',
-                '=',
-                'Active'
+                  'registration_status',
+                  '=',
+                  'Active'
               )
               ->orderBy('last_name', 'asc')
               ->orderBy(
-                'rank.grade',
-                'asc'
+                  'rank.grade',
+                  'asc'
               )
               ->get();
 
@@ -201,7 +201,7 @@ class Chapter extends Eloquent
                       'Space Lord',
                       'Deputy Space Lord',
                     ]
-                  ) === true
+                ) === true
                 ) {
                     unset($users[$key]);
                 }
@@ -209,7 +209,6 @@ class Chapter extends Eloquent
         }
 
         if ($forReport === true) {
-
             $users = $users->toArray();
             // Only need members that have been assigned to the chapter since the last report
 
@@ -218,7 +217,6 @@ class Chapter extends Eloquent
                     $include = true;
                     if ($assignment['chapter_id'] == (string)$this->id) {
                         if (empty($assignment['date_assigned']) === false && $assignment['date_assigned'] != '1969-01-01') {
-
                             if (strtotime($assignment['date_assigned']) < $ts) {
                                 $include = false;
                             }
@@ -249,11 +247,13 @@ class Chapter extends Eloquent
             $id = $this->id;
         }
         $users =
-          User::wherein('assignment.chapter_id',
-            $this->getChapterIdWithChildren($id))->where(
-            'member_id',
-            '!=',
-            Auth::user()->member_id
+          User::wherein(
+              'assignment.chapter_id',
+              $this->getChapterIdWithChildren($id)
+          )->where(
+              'member_id',
+              '!=',
+              Auth::user()->member_id
           )->orderBy('last_name', 'asc')->get();
 
         return $users;
@@ -274,9 +274,9 @@ class Chapter extends Eloquent
         return User::where('assignment.chapter_id', '=', $chapterId)
                    ->where('active', '=', 1)
                    ->where(
-                     'registration_status',
-                     '=',
-                     'Active'
+                       'registration_status',
+                       '=',
+                       'Active'
                    )
                    ->orderBy('last_name', 'asc')
                    ->get();
@@ -319,8 +319,8 @@ class Chapter extends Eloquent
         $users =
           User::where('assignment.chapter_id', '=', (string)$this->_id)
               ->whereIn(
-                'assignment.billet',
-                ['Commanding Officer', 'Fleet Commander', 'Space Lord']
+                  'assignment.billet',
+                  ['Commanding Officer', 'Fleet Commander', 'Space Lord']
               )
               ->get();
 
@@ -335,7 +335,7 @@ class Chapter extends Eloquent
                 if ($assignment['chapter_id'] === (string)$this->_id && in_array(
                     $assignment['billet'],
                     ['Commanding Officer', 'Fleet Commander', 'Space Lord']
-                  )
+                )
                 ) {
                     return $user;
                 }
@@ -350,12 +350,12 @@ class Chapter extends Eloquent
         $users =
           User::where('assignment.chapter_id', '=', (string)$this->_id)
               ->whereIn(
-                'assignment.billet',
-                [
+                  'assignment.billet',
+                  [
                   'Executive Officer',
                   'Deputy Fleet Commander',
                   'Deputy Space Lord'
-                ]
+                  ]
               )
               ->get();
         if (empty($users) === true) {
@@ -371,7 +371,7 @@ class Chapter extends Eloquent
                       'Deputy Fleet Commander',
                       'Deputy Space Lord'
                     ]
-                  )
+                )
                 ) {
                     return $user;
                 }
@@ -386,8 +386,8 @@ class Chapter extends Eloquent
         $users =
           User::where('assignment.chapter_id', '=', (string)$this->_id)
               ->whereIn(
-                'assignment.billet',
-                ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC', 'Chief of Staff']
+                  'assignment.billet',
+                  ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC', 'Chief of Staff']
               )
               ->get();
         if (empty($users) === true) {
@@ -399,7 +399,7 @@ class Chapter extends Eloquent
                 if ($assignment['chapter_id'] === (string)$this->_id && in_array(
                     $assignment['billet'],
                     ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC', 'Chief of Staff']
-                  )
+                )
                 ) {
                     return $user;
                 }
@@ -446,8 +446,10 @@ class Chapter extends Eloquent
               str_replace($search, $replace, $billetInfo['billet']);
 
             $user =
-              $this->getCommandBillet($billetInfo['billet'],
-                isset($billetInfo['exact']) === true ? $billetInfo['exact'] : true);
+              $this->getCommandBillet(
+                  $billetInfo['billet'],
+                  isset($billetInfo['exact']) === true ? $billetInfo['exact'] : true
+              );
             if (is_a($user, 'User') === true) {
                 $commandCrew[(int)$billetInfo['display_order']] = [
                   'display' => $position,
@@ -462,9 +464,11 @@ class Chapter extends Eloquent
     public function getChapterIdWithParents($stopAtType = null)
     {
         if (empty($this->assigned_to) === false && is_null($stopAtType) === true) {
-            return array_merge([$this->id],
-              Chapter::find($this->assigned_to)->getChapterIdWithParents($stopAtType));
-        } elseif(empty($this->assigned_to) === false && is_null($stopAtType) === false) {
+            return array_merge(
+                [$this->id],
+                Chapter::find($this->assigned_to)->getChapterIdWithParents($stopAtType)
+            );
+        } elseif (empty($this->assigned_to) === false && is_null($stopAtType) === false) {
             $next = Chapter::find($this->assigned_to);
             if ($next->chapter_type == $stopAtType) {
                 return [$this->id];
@@ -482,8 +486,10 @@ class Chapter extends Eloquent
             $fleet = self::find($chapterId);
             if ($fleet->chapter_type == 'fleet') {
                 $nf = new NumberFormatter('en_US', NumberFormatter::SPELLOUT);
-                $nf->setTextAttribute(NumberFormatter::DEFAULT_RULESET,
-                  "%spellout-ordinal");
+                $nf->setTextAttribute(
+                    NumberFormatter::DEFAULT_RULESET,
+                    "%spellout-ordinal"
+                );
                 return ucfirst($nf->format($fleet->hull_number)) . ' Fleet';
             }
         }
@@ -500,12 +506,12 @@ class Chapter extends Eloquent
     {
 
         return array_where(
-          $this->getChapterIdWithChildren(),
-          function ($key, $value) {
-              if ($value != $this->id) {
-                  return $value;
-              }
-          }
+            $this->getChapterIdWithChildren(),
+            function ($key, $value) {
+                if ($value != $this->id) {
+                    return $value;
+                }
+            }
         );
     }
 
@@ -527,8 +533,10 @@ class Chapter extends Eloquent
         $results = [];
         foreach ($children as $child) {
             $results =
-              array_merge($results,
-                Chapter::find($child->id)->getChapterIdWithChildren());
+              array_merge(
+                  $results,
+                  Chapter::find($child->id)->getChapterIdWithChildren()
+              );
         }
         return array_unique(array_merge([$id], $results));
     }
@@ -559,8 +567,10 @@ class Chapter extends Eloquent
 
         foreach (array_keys($chapterLocations) as $location) {
             $retVal[$location] =
-              array_key_exists($location,
-                $states) === true ? $states[$location] : $location;
+              array_key_exists(
+                  $location,
+                  $states
+              ) === true ? $states[$location] : $location;
         }
 
         return $retVal;
@@ -588,5 +598,4 @@ class Chapter extends Eloquent
 
         return $hasExams;
     }
-
 }

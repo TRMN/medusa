@@ -18,80 +18,80 @@ Route::get('/osa', ['as' => 'osa', 'uses' => 'HomeController@osa']);
 
 // OAuth2 routes
 Route::get(
-  'oauth/authorize',
-  function () {
-      return app('oauth2')->authorize();
-  }
+    'oauth/authorize',
+    function () {
+        return app('oauth2')->authorize();
+    }
 );
 
 Route::post(
-  'oauth/authorize',
-  function () {
-      return app('oauth2')->authorizePost();
-  }
+    'oauth/authorize',
+    function () {
+        return app('oauth2')->authorizePost();
+    }
 );
 
 Route::post(
-  'oauth/token',
-  function () {
-      return app('oauth2')->token();
-  }
+    'oauth/token',
+    function () {
+        return app('oauth2')->token();
+    }
 );
 
 Route::post(
-  'oauth/updateuser',
-  function () {
-      return app('oauth2')->updateUser();
-  }
+    'oauth/updateuser',
+    function () {
+        return app('oauth2')->updateUser();
+    }
 );
 
 Route::get(
-  'oauth/profile',
-  function () {
-      return app('oauth2')->profile();
-  }
+    'oauth/profile',
+    function () {
+        return app('oauth2')->profile();
+    }
 );
 
 Route::get(
-  'oauth/user',
-  function () {
-      return app('oauth2')->user();
-  }
+    'oauth/user',
+    function () {
+        return app('oauth2')->user();
+    }
 );
 
 Route::get(
-  'oauth/lastupdate',
-  function () {
-      return app('oauth2')->lastUpdated();
-  }
+    'oauth/lastupdate',
+    function () {
+        return app('oauth2')->lastUpdated();
+    }
 );
 
 Route::get(
-  'oauth/tistig',
-  function () {
-      return app('oauth2')->getTisTig();
-  }
+    'oauth/tistig',
+    function () {
+        return app('oauth2')->getTisTig();
+    }
 );
 
 Route::get(
-  'oauth/idcard',
-  function () {
-      return app('oauth2')->getIdCard();
-  }
+    'oauth/idcard',
+    function () {
+        return app('oauth2')->getIdCard();
+    }
 );
 
 Route::get(
-  'oauth/events',
-  function () {
-      return app('oauth2')->getScheduledEvents();
-  }
+    'oauth/events',
+    function () {
+        return app('oauth2')->getScheduledEvents();
+    }
 );
 
 Route::get(
-  'oauth/checkin',
-  function () {
-      return app('oauth2')->checkMemberIn();
-  }
+    'oauth/checkin',
+    function () {
+        return app('oauth2')->checkMemberIn();
+    }
 );
 
 Route::model('oauthclient', 'OAuthClient');
@@ -100,71 +100,79 @@ Route::resource('oauthclient', 'OAuthController', ['before' => 'auth']);
 // Authentication
 Route::get('/signout', ['as' => 'signout', 'uses' => 'AuthController@signout']);
 Route::post('/signin', ['as' => 'signin', 'uses' => 'AuthController@signin']);
-Route::get('/register',
-  ['as' => 'register', 'uses' => 'UserController@register']);
+Route::get(
+    '/register',
+    ['as' => 'register', 'uses' => 'UserController@register']
+);
 Route::post('/apply', ['as' => 'user.apply', 'uses' => 'UserController@apply']);
 
 // Users
 Route::model('user', 'User');
 Route::get(
-  '/user/finddups/{billet2check}',
-  ['as'     => 'user.dups',
-   'uses'   => 'UserController@findDuplicateAssignment',
-   'before' => 'auth'
-  ]
+    '/user/finddups/{billet2check}',
+    ['as'     => 'user.dups',
+    'uses'   => 'UserController@findDuplicateAssignment',
+    'before' => 'auth'
+    ]
 );
-Route::get('/user/find/{user?}',
-  ['as' => 'user.find', 'uses' => 'UserController@find', 'before' => 'auth']);
+Route::get(
+    '/user/find/{user?}',
+    ['as' => 'user.find', 'uses' => 'UserController@find', 'before' => 'auth']
+);
 Route::get('/user/review', [
   'as'     => 'user.review',
   'uses'   => 'UserController@reviewApplications',
   'before' => 'auth'
 ]);
 Route::get(
-  '/user/{user}/confirmdelete',
-  ['as'     => 'user.confirmdelete',
-   'uses'   => 'UserController@confirmDelete',
-   'before' => 'auth'
-  ]
-);
-Route::post('/user/tos',
-  ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']);
-Route::post('/user/osa',
-  ['as' => 'osa', 'uses' => 'UserController@osa', 'before' => 'auth']);
-Route::post(
-  '/user/{user}/peerage',
-  ['as'     => 'addOrEditPeerage',
-   'uses'   => 'UserController@addOrEditPeerage',
-   'before' => 'auth'
-  ]
-);
-Route::get(
-  '/user/{user}/peerage/{peerageId}',
-  ['as'     => 'delete_peerage',
-   'uses'   => 'UserController@deletePeerage',
-   'before' => 'auth'
-  ]
+    '/user/{user}/confirmdelete',
+    ['as'     => 'user.confirmdelete',
+    'uses'   => 'UserController@confirmDelete',
+    'before' => 'auth'
+    ]
 );
 Route::post(
-  '/user/{user}/note',
-  ['as'     => 'addOrEditNote',
-   'uses'   => 'UserController@addOrEditNote',
-   'before' => 'auth'
-  ]
+    '/user/tos',
+    ['as' => 'tos', 'uses' => 'UserController@tos', 'before' => 'auth']
+);
+Route::post(
+    '/user/osa',
+    ['as' => 'osa', 'uses' => 'UserController@osa', 'before' => 'auth']
+);
+Route::post(
+    '/user/{user}/peerage',
+    ['as'     => 'addOrEditPeerage',
+    'uses'   => 'UserController@addOrEditPeerage',
+    'before' => 'auth'
+    ]
 );
 Route::get(
-  '/user/{user}/perm/{perm}/add',
-  ['as'     => 'user.perm.add',
-   'uses'   => 'UserController@addPerm',
-   'before' => 'auth'
-  ]
+    '/user/{user}/peerage/{peerageId}',
+    ['as'     => 'delete_peerage',
+    'uses'   => 'UserController@deletePeerage',
+    'before' => 'auth'
+    ]
+);
+Route::post(
+    '/user/{user}/note',
+    ['as'     => 'addOrEditNote',
+    'uses'   => 'UserController@addOrEditNote',
+    'before' => 'auth'
+    ]
 );
 Route::get(
-  '/user/{user}/perm/{perm}/delete',
-  ['as'     => 'user.perm.del',
-   'uses'   => 'UserController@deletePerm',
-   'before' => 'auth'
-  ]
+    '/user/{user}/perm/{perm}/add',
+    ['as'     => 'user.perm.add',
+    'uses'   => 'UserController@addPerm',
+    'before' => 'auth'
+    ]
+);
+Route::get(
+    '/user/{user}/perm/{perm}/delete',
+    ['as'     => 'user.perm.del',
+    'uses'   => 'UserController@deletePerm',
+    'before' => 'auth'
+    ]
 );
 Route::get('/users/{branch}', [
   'as'     => 'showBranch',
@@ -184,18 +192,18 @@ Route::post('/user/rack/save', [
 
 Route::resource('user', 'UserController', ['before' => 'auth']);
 Route::get(
-  '/user/{user}/approve',
-  ['as'     => 'user.approve',
-   'uses'   => 'UserController@approveApplication',
-   'before' => 'auth'
-  ]
+    '/user/{user}/approve',
+    ['as'     => 'user.approve',
+    'uses'   => 'UserController@approveApplication',
+    'before' => 'auth'
+    ]
 );
 Route::get(
-  '/user/{user}/deny',
-  ['as'     => 'user.deny',
-   'uses'   => 'UserController@denyApplication',
-   'before' => 'auth'
-  ]
+    '/user/{user}/deny',
+    ['as'     => 'user.deny',
+    'uses'   => 'UserController@denyApplication',
+    'before' => 'auth'
+    ]
 );
 Route::get('/user/{user}/reset', [
   'as'     => 'user.getReset',
@@ -211,39 +219,39 @@ Route::post('/user/{user}/reset', [
 // Assignment Change Requests
 Route::model('request', 'ChangeRequest');
 Route::get(
-  '/user_request/{user}/create',
-  ['as'     => 'user.change.request',
-   'uses'   => 'UserChangeRequestController@create',
-   'before' => 'auth'
-  ]
+    '/user_request/{user}/create',
+    ['as'     => 'user.change.request',
+    'uses'   => 'UserChangeRequestController@create',
+    'before' => 'auth'
+    ]
 );
 Route::post(
-  '/user_request',
-  ['as'     => 'user.change.store',
-   'uses'   => 'UserChangeRequestController@store',
-   'before' => 'auth'
-  ]
+    '/user_request',
+    ['as'     => 'user.change.store',
+    'uses'   => 'UserChangeRequestController@store',
+    'before' => 'auth'
+    ]
 );
 Route::get(
-  '/user_request/review',
-  ['as'     => 'user.change.review',
-   'uses'   => 'UserChangeRequestController@review',
-   'before' => 'auth'
-  ]
+    '/user_request/review',
+    ['as'     => 'user.change.review',
+    'uses'   => 'UserChangeRequestController@review',
+    'before' => 'auth'
+    ]
 );
 Route::get(
-  '/user_request/approve/{request}',
-  ['as'     => 'user.change.approve',
-   'uses'   => 'UserChangeRequestController@approve',
-   'before' => 'auth'
-  ]
+    '/user_request/approve/{request}',
+    ['as'     => 'user.change.approve',
+    'uses'   => 'UserChangeRequestController@approve',
+    'before' => 'auth'
+    ]
 );
 Route::get(
-  '/user_request/deny/{request}',
-  ['as'     => 'user.change.deny',
-   'uses'   => 'UserChangeRequestController@deny',
-   'before' => 'auth'
-  ]
+    '/user_request/deny/{request}',
+    ['as'     => 'user.change.deny',
+    'uses'   => 'UserChangeRequestController@deny',
+    'before' => 'auth'
+    ]
 );
 
 // Other Routes
@@ -253,41 +261,43 @@ Route::model('mardet', 'Chapter');
 Route::model('unit', 'Chapter');
 Route::model('anyunit', 'Chapter');
 
-Route::get('/home/{message?}',
-  ['as' => 'home', 'uses' => 'HomeController@index']);
+Route::get(
+    '/home/{message?}',
+    ['as' => 'home', 'uses' => 'HomeController@index']
+);
 Route::get('/', ['as' => 'root', 'uses' => 'HomeController@index']);
 Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
 Route::get(
-  '/chapter/{chapter}/decommission',
-  ['as'     => 'chapter.decommission',
-   'uses'   => 'ChapterController@decommission',
-   'before' => 'auth'
-  ]
+    '/chapter/{chapter}/decommission',
+    ['as'     => 'chapter.decommission',
+    'uses'   => 'ChapterController@decommission',
+    'before' => 'auth'
+    ]
 );
 Route::resource('chapter', 'ChapterController', ['before' => 'auth']);
 Route::get(
-  '/triadreport',
-  ['as'     => 'chapter.triadreport',
-   'uses'   => 'ChapterController@commandTriadReport',
-   'before' => 'auth'
-  ]
+    '/triadreport',
+    ['as'     => 'chapter.triadreport',
+    'uses'   => 'ChapterController@commandTriadReport',
+    'before' => 'auth'
+    ]
 );
 Route::get(
-  '/export/{chapter}',
-  ['as'     => 'roster.export',
-   'uses'   => 'ChapterController@exportRoster',
-   'before' => 'auth'
-  ]
+    '/export/{chapter}',
+    ['as'     => 'roster.export',
+    'uses'   => 'ChapterController@exportRoster',
+    'before' => 'auth'
+    ]
 );
 Route::resource('announcement', 'AnnouncementController', ['before' => 'auth']);
 Route::resource('report', 'ReportController', ['before' => 'auth']);
 
 Route::get(
-  '/report/getexams/{id}',
-  ['as'     => 'report.getexams',
-   'uses'   => 'ReportController@getCompletedExamsForCrew',
-   'before' => 'auth'
-  ]
+    '/report/getexams/{id}',
+    ['as'     => 'report.getexams',
+    'uses'   => 'ReportController@getCompletedExamsForCrew',
+    'before' => 'auth'
+    ]
 );
 Route::get('/report/send/{id}', [
   'as'     => 'report.send',
@@ -296,39 +306,39 @@ Route::get('/report/send/{id}', [
 ]);
 
 Route::get(
-  '/echelon/{echelon}/deactivate',
-  ['as'     => 'echelon.deactivate',
-   'uses'   => 'EchelonController@deactivate',
-   'before' => 'auth'
-  ]
+    '/echelon/{echelon}/deactivate',
+    ['as'     => 'echelon.deactivate',
+    'uses'   => 'EchelonController@deactivate',
+    'before' => 'auth'
+    ]
 );
 Route::resource('echelon', 'EchelonController', ['before' => 'auth']);
 
 Route::model('unit', 'Chapter');
 Route::get(
-  '/unit/{unit}/deactivate',
-  ['as'     => 'unit.deactivate',
-   'uses'   => 'UnitController@deactivate',
-   'before' => 'auth'
-  ]
+    '/unit/{unit}/deactivate',
+    ['as'     => 'unit.deactivate',
+    'uses'   => 'UnitController@deactivate',
+    'before' => 'auth'
+    ]
 );
 
 Route::resource('unit', 'UnitController', ['before' => 'auth']);
 Route::resource('mardet', 'MardetController', ['before' => 'auth']);
 Route::get(
-  '/mardet/{unit}/deactivate',
-  ['as'     => 'mardet.deactivate',
-   'uses'   => 'MardetController@deactivate',
-   'before' => 'auth'
-  ]
+    '/mardet/{unit}/deactivate',
+    ['as'     => 'mardet.deactivate',
+    'uses'   => 'MardetController@deactivate',
+    'before' => 'auth'
+    ]
 );
 Route::resource('anyunit', 'AnyUnitController', ['before' => 'auth']);
 Route::get(
-  '/anyunit/{unit}/deactivate',
-  ['as'     => 'anyunit.deactivate',
-   'uses'   => 'AnyUnitController@deactivate',
-   'before' => 'auth'
-  ]
+    '/anyunit/{unit}/deactivate',
+    ['as'     => 'anyunit.deactivate',
+    'uses'   => 'AnyUnitController@deactivate',
+    'before' => 'auth'
+    ]
 );
 
 Route::model('type', 'Type');
@@ -336,8 +346,10 @@ Route::resource('type', 'TypeController', ['before' => 'auth']);
 
 Route::controller('password', 'RemindersController');
 
-Route::get('/exam',
-  ['as' => 'exam.index', 'uses' => 'ExamController@index', 'before' => 'auth']);
+Route::get(
+    '/exam',
+    ['as' => 'exam.index', 'uses' => 'ExamController@index', 'before' => 'auth']
+);
 Route::post('/exam/upload', [
   'as'     => 'exam.upload',
   'uses'   => 'ExamController@upload',
@@ -348,11 +360,15 @@ Route::post('/exam/update', [
   'uses'   => 'ExamController@update',
   'before' => 'auth'
 ]);
-Route::get('/exam/find/{user?}/{message?}',
-  ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']);
+Route::get(
+    '/exam/find/{user?}/{message?}',
+    ['as' => 'exam.find', 'uses' => 'ExamController@find', 'before' => 'auth']
+);
 #Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'before' => 'auth']);
-Route::post('/exam/store',
-  ['as' => 'exam.store', 'uses' => 'ExamController@store', 'before' => 'auth']);
+Route::post(
+    '/exam/store',
+    ['as' => 'exam.store', 'uses' => 'ExamController@store', 'before' => 'auth']
+);
 Route::get('/exam/list', [
   'as'     => 'exam.list',
   'uses'   => 'ExamController@examList',
@@ -365,15 +381,19 @@ Route::get('/exam/create', [
 ]);
 
 Route::model('exam', 'ExamList');
-Route::get('/exam/edit/{exam}',
-  ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'before' => 'auth']);
+Route::get(
+    '/exam/edit/{exam}',
+    ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'before' => 'auth']
+);
 Route::post('/exam/updateExam', [
   'as'     => 'exam.updateExam',
   'uses'   => 'ExamController@updateExam',
   'before' => 'auth'
 ]);
-Route::post('/exam/user/delete',
-  ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']);
+Route::post(
+    '/exam/user/delete',
+    ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']
+);
 
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['before' => 'auth']);
@@ -393,18 +413,26 @@ Route::resource('config', 'ConfigController', ['before' => 'auth']);
 
 // API calls
 
-Route::get('/api/branch',
-  'ApiController@getBranchList'); // Get a list of all the tRMN branches
-Route::get('/api/country',
-  'ApiController@getCountries'); // Get a list of Countries and Country Codes
 Route::get(
-  '/api/branch/{branchID}/grade',
-  'ApiController@getGradesForBranch'
+    '/api/branch',
+    'ApiController@getBranchList'
+); // Get a list of all the tRMN branches
+Route::get(
+    '/api/country',
+    'ApiController@getCountries'
+); // Get a list of Countries and Country Codes
+Route::get(
+    '/api/branch/{branchID}/grade',
+    'ApiController@getGradesForBranch'
 ); // Get a list of pay grades for that branch
-Route::get('/api/chapter',
-  'ApiController@getChapters'); // Get a list of all the chapters
-Route::get('/api/chapter/{branchID}/{location}',
-  'ApiController@getChaptersByBranch');
+Route::get(
+    '/api/chapter',
+    'ApiController@getChapters'
+); // Get a list of all the chapters
+Route::get(
+    '/api/chapter/{branchID}/{location}',
+    'ApiController@getChaptersByBranch'
+);
 Route::get('/api/locations', 'ApiController@getChapterLocations');
 Route::get('/api/holding', 'ApiController@getHoldingChapters');
 Route::get('/api/fleet', 'ApiController@getFleets');
@@ -421,21 +449,35 @@ Route::get('/api/college', 'ApiController@getColleges');
 Route::get('/api/center', 'ApiController@getCenters');
 Route::get('/api/institute', 'ApiController@getInstitutes');
 Route::get('/api/university', 'ApiController@getUniversities');
-Route::get('/api/branch/{branchID}/rate',
-  'ApiController@getRatingsForBranch'); // Get a list of all the ratings
-Route::get('/api/korder/{orderid}',
-  'ApiController@getKnightClasses'); // Get the classes for a Knightly Order
-Route::post('/api/photo', 'ApiController@savePhoto',
-  ['before' => 'auth']); // File Photo upload
+Route::get(
+    '/api/branch/{branchID}/rate',
+    'ApiController@getRatingsForBranch'
+); // Get a list of all the ratings
+Route::get(
+    '/api/korder/{orderid}',
+    'ApiController@getKnightClasses'
+); // Get the classes for a Knightly Order
+Route::post(
+    '/api/photo',
+    'ApiController@savePhoto',
+    ['before' => 'auth']
+); // File Photo upload
 Route::get('/api/find/{query?}', [
   'as'     => 'user.find.api',
   'uses'   => 'ApiController@findMember',
   'before' => 'auth'
 ]); // search for a member
-Route::get('/api/exam', 'ApiController@findExam',
-  ['before' => 'auth']); // search for an exam
-Route::get('/api/checkemail/{email}',
-  'ApiController@checkAddress'); // Check that an email address is available
-Route::get('/api/findchapter/{query?}',
-  ['as' => 'chapter.find.api', 'uses' => 'ApiController@findChapter']);
+Route::get(
+    '/api/exam',
+    'ApiController@findExam',
+    ['before' => 'auth']
+); // search for an exam
+Route::get(
+    '/api/checkemail/{email}',
+    'ApiController@checkAddress'
+); // Check that an email address is available
+Route::get(
+    '/api/findchapter/{query?}',
+    ['as' => 'chapter.find.api', 'uses' => 'ApiController@findChapter']
+);
 Route::get('/api/ribbonrack/{memberid}', ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);

@@ -38,5 +38,4 @@ class Unconquered extends Migration
     {
         //
     }
-
 }

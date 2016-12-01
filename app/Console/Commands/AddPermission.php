@@ -39,10 +39,10 @@ class AddPermission extends Command
     public function fire()
     {
         if ($user = User::where('member_id', '=', $this->argument('member_id'))->first()) {
-	        $user->updatePerms([strtoupper($this->argument('perm'))]);
-	} else {
-		$this->error($this->argument('member_id') . ' not found!');
-	}
+            $user->updatePerms([strtoupper($this->argument('perm'))]);
+        } else {
+            $this->error($this->argument('member_id') . ' not found!');
+        }
     }
 
     /**
@@ -67,5 +67,4 @@ class AddPermission extends Command
     {
         return [ ];
     }
-
 }

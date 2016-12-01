@@ -20,7 +20,7 @@ class UpdateAssignemnts extends Migration
         foreach ($members as $member) {
             $assignments = $member->assignment;
             foreach ($assignments as $key => $assignment) {
-                if (empty( $assignment['primary'] ) === true) {
+                if (empty($assignment['primary']) === true) {
                     $assignment['secondary'] = true;
                     $assignments[$key] === $assignment;
                 }
@@ -48,5 +48,4 @@ class UpdateAssignemnts extends Migration
     {
         //
     }
-
 }

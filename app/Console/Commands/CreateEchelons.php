@@ -4,41 +4,42 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class CreateEchelons extends Command {
+class CreateEchelons extends Command
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * The console command name.
-	 *
-	 * @var string
-	 */
-	protected $name = 'create:echelons';
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $name = 'create:echelons';
 
-	/**
-	 * The console command description.
-	 *
-	 * @var string
-	 */
-	protected $description = 'Create the current TRMN echelons';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create the current TRMN echelons';
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-	/**
-	 * Execute the console command.
-	 *
-	 * @return mixed
-	 */
-	public function fire()
-	{
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function fire()
+    {
         // 10th Fleet Echelons
         $this->createEchelon('Battlecruiser Division 962', 'division', '2015-01-20', 'BatCruDiv 962', 'RMN', 'RMN-1017-12', ['HMS Helen', 'HMS Black Rose', 'HMS Earsidh Kamerling']);
         $this->createEchelon('Battlecruiser Division 961', 'division', '2015-01-20', 'BatCruDiv 961', 'RMN', 'RMN-0485-11', ['HMS Truculent', 'HMS Andromeda', 'HMS Callisto']);
@@ -63,33 +64,33 @@ class CreateEchelons extends Command {
         $this->createEchelon('Cruiser Division 711', 'division', '2015-08-25', 'CruDiv 711', 'RMN', 'RMN-0542-12', ['HMS Hexapuma', 'HMS Sabrepike'], '2');
         $this->createEchelon('Cruiser (Light) Division 651', 'division', '2015-08-25', 'LCruDiv 651', 'RMN', 'RMN-2374-14', ['HMS Gallant', 'HMS Odin', 'HMS Apollo'], '2');
         $this->createEchelon('Battle Squadron 1', 'squadron', '2014-11-03', 'BatRon 1', 'RMN', 'RMN-0366-11', ['HMS Invincible', 'HMS Valkyrie', 'HMS Intrepid', 'HMS Imperatrix']);
-        $this->createEchelon('Task Group 21.2', 'task_group', '2014-11-03', 'TG 21.2', 'RMN', 'RMN-0384-11',['HMS Musashi', 'HMS Kodiak Max', 'HMS Gawain', 'HMS Galahad']);
+        $this->createEchelon('Task Group 21.2', 'task_group', '2014-11-03', 'TG 21.2', 'RMN', 'RMN-0384-11', ['HMS Musashi', 'HMS Kodiak Max', 'HMS Gawain', 'HMS Galahad']);
         $this->createEchelon('Task Group 21.1', 'task_group', '2014-11-03', 'TG 21.1', 'RMN', 'RMN-0366-11', ['Battle Squadron 1','HMS Leonidas', 'HMS Samurai', 'HMS Lodestone', 'HMLAC Superior', 'Pinnace Invincible 01', 'Pinnace Intrepid 01', 'Pinnace Valkyrie 01']);
         $this->createEchelon('Task Force 21', 'task_force', '2014-11-03', 'TF 21', 'RMN', 'RMN-0117-11', ['Task Group 21.1', 'Task Group 21.2'], '2');
 
         // 1st Fleet Echelons
         $this->createEchelon('BattleCruiser Division 111', 'division', '2014-04-02', 'BatCruDiv 111', 'RMN', 'RMN-1512-13', ['HMS Rigel', 'HMS Heracles'], '1');
-	}
+    }
 
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
         return [];
-	}
+    }
 
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
         return [];
-	}
+    }
 
     protected function assignChaptersToEchelon($echelon, array $ships)
     {
@@ -122,7 +123,7 @@ class CreateEchelons extends Command {
     protected function assignEchelonCO($echelon, $name, $trmnID)
     {
         // Get the CO
-        $member = User::where('member_id','=', $trmnID)->First();
+        $member = User::where('member_id', '=', $trmnID)->First();
 
         // Get the CO's current assignments
         $assignments = $member->assignment;
@@ -131,7 +132,7 @@ class CreateEchelons extends Command {
 
         $makeCO = true;
 
-        foreach($assignments as $assignment){
+        foreach ($assignments as $assignment) {
             if ($assignment['chapter_id'] === $echelon) {
                 $makeCO = false;
             }
@@ -160,8 +161,6 @@ class CreateEchelons extends Command {
             );
 
             $member->save();
-
-
         }
 
         // Assign CO permissions
@@ -186,13 +185,12 @@ class CreateEchelons extends Command {
 
         // Assign this echelon directly to a fleet
         if (is_null($fleet) === false) {
-            $fleet = Chapter::where('chapter_type', '=', 'fleet')->where('hull_number','=',$fleet)->First();
+            $fleet = Chapter::where('chapter_type', '=', 'fleet')->where('hull_number', '=', $fleet)->First();
             $echelonRecord['assigned_to'] = (string)$fleet->_id;
         }
 
         // Create the echelon unless it already exists
         if (count(Chapter::where('hull_number', '=', $designation)->get()) === 0) {
-
             $this->writeAuditTrail(
                 'import',
                 'create',
@@ -216,5 +214,4 @@ class CreateEchelons extends Command {
 
         return true;
     }
-
 }

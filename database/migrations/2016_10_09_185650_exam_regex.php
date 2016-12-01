@@ -44,5 +44,4 @@ class ExamRegex extends Migration
     {
         MedusaConfig::where('key', '=', 'exam.regex')->firstOrFail()->delete();
     }
-
 }

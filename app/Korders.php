@@ -4,7 +4,7 @@ use Jenssegers\Mongodb\Model as Eloquent;
 
 class Korders extends Eloquent
 {
-	protected $fillable = ['order', 'filename', 'classes'];
+    protected $fillable = ['order', 'filename', 'classes'];
 
     protected $table = 'korders';
 
@@ -18,7 +18,7 @@ class Korders extends Eloquent
             ];
         }
 
-        foreach($this->classes as $item) {
+        foreach ($this->classes as $item) {
             if ($item[$options['type']] == $options['value']) {
                 return $item['precedence'];
             }
@@ -29,7 +29,7 @@ class Korders extends Eloquent
 
     public function getClassName($postNominal)
     {
-        foreach($this->classes as $item) {
+        foreach ($this->classes as $item) {
             if ($item['postnominal'] == $postNominal) {
                 return $item['class'];
             }

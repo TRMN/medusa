@@ -6,7 +6,7 @@ class GradeSeeder extends Seeder
 
     public function run()
     {
-        DB::collection( 'grades' )->delete();
+        DB::collection('grades')->delete();
 
         $grades = [
             "E-1"   => [
@@ -410,8 +410,7 @@ class GradeSeeder extends Seeder
             ]
         ];
 
-        foreach ( $grades as $grade => $ranks )
-        {
+        foreach ($grades as $grade => $ranks) {
             $this->command->comment('Creating ' . $grade);
             $this->writeAuditTrail(
                 'db:seed',
@@ -421,7 +420,7 @@ class GradeSeeder extends Seeder
                 json_encode(["grade" => $grade, "rank" => $ranks]),
                 'grade'
             );
-            Grade::create( ["grade" => $grade, "rank" => $ranks] );
+            Grade::create(["grade" => $grade, "rank" => $ranks]);
         }
     }
 }

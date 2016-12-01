@@ -6,7 +6,8 @@
  * Time: 4:45 PM
  */
 
-class BranchSeeder extends Seeder {
+class BranchSeeder extends Seeder
+{
 
     use \Medusa\Audit\MedusaAudit;
 
@@ -26,7 +27,7 @@ class BranchSeeder extends Seeder {
             "SFS" => "Civil Service/Sphinx Forestry Service"
         );
 
-        foreach($branches as $branch => $name) {
+        foreach ($branches as $branch => $name) {
             $this->command->comment('Creating ' . $name . ' branch');
 
             $this->writeAuditTrail(

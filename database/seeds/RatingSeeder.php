@@ -1493,7 +1493,6 @@ class RatingSeeder extends Seeder
 
 
         foreach ($ratings as $rating => $description) {
-
             $this->writeAuditTrail(
                 'db:seed',
                 'create',

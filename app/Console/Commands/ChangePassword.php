@@ -65,5 +65,4 @@ class ChangePassword extends Command
     {
         return [ ];
     }
-
 }

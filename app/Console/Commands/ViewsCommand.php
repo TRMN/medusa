@@ -51,5 +51,4 @@ class ViewsCommand extends Command
 
         $this->info('Views deleted from cache');
     }
-
 }

@@ -1,46 +1,47 @@
 <?php
 
-class BilletController extends \BaseController {
+class BilletController extends \BaseController
+{
 
-	/**
-	 * Display a listing of the resource.
-	 * GET /billet
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-        if (($redirect = $this->checkPermissions('EDIT_BILLET','DEL_BILLET')) !== true) {
+    /**
+     * Display a listing of the resource.
+     * GET /billet
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        if (($redirect = $this->checkPermissions('EDIT_BILLET', 'DEL_BILLET')) !== true) {
             return $redirect;
         }
 
-		return View::make('billet.index');
-	}
+        return View::make('billet.index');
+    }
 
-	/**
-	 * Show the form for creating a new resource.
-	 * GET /billet/create
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
+    /**
+     * Show the form for creating a new resource.
+     * GET /billet/create
+     *
+     * @return Response
+     */
+    public function create()
+    {
         if (($redirect = $this->checkPermissions('ADD_BILLET')) !== true) {
             return $redirect;
         }
 
-		return View::make("billet.create");
-	}
+        return View::make("billet.create");
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 * POST /billet
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		if (($redirect = $this->checkPermissions('ADD_BILLET')) !== true) {
+    /**
+     * Store a newly created resource in storage.
+     * POST /billet
+     *
+     * @return Response
+     */
+    public function store()
+    {
+        if (($redirect = $this->checkPermissions('ADD_BILLET')) !== true) {
             return $redirect;
         }
 
@@ -51,7 +52,7 @@ class BilletController extends \BaseController {
         }
 
         $this->writeAuditTrail(
-             Auth::user()->id,
+            Auth::user()->id,
             'create',
             'billet',
             null,
@@ -62,46 +63,46 @@ class BilletController extends \BaseController {
         Billet::create($data);
 
         return Redirect::route('billet.index');
-	}
+    }
 
-	/**
-	 * Display the specified resource.
-	 * GET /billet/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    /**
+     * Display the specified resource.
+     * GET /billet/{id}
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        //
+    }
 
-	/**
-	 * Show the form for editing the specified resource.
-	 * GET /billet/{id}/edit
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit(Billet $billet)
-	{
+    /**
+     * Show the form for editing the specified resource.
+     * GET /billet/{id}/edit
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit(Billet $billet)
+    {
         if (($redirect = $this->checkPermissions('EDIT_BILLET')) !== true) {
             return $redirect;
         }
 
-		return View::make("billet.edit", ['billet' => $billet]);
-	}
+        return View::make("billet.edit", ['billet' => $billet]);
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 * PUT /billet/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update(Billet $billet)
-	{
-		if (($redirect = $this->checkPermissions('EDIT_BILLET')) !== true) {
+    /**
+     * Update the specified resource in storage.
+     * PUT /billet/{id}
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update(Billet $billet)
+    {
+        if (($redirect = $this->checkPermissions('EDIT_BILLET')) !== true) {
             return $redirect;
         }
 
@@ -114,7 +115,7 @@ class BilletController extends \BaseController {
         $billet->billet_name = $data['billet_name'];
 
         $this->writeAuditTrail(
-             Auth::user()->id,
+            Auth::user()->id,
             'update',
             'billet',
             null,
@@ -126,7 +127,7 @@ class BilletController extends \BaseController {
 
         // Update all users that have this billet
 
-        foreach(User::where('assignment.billet','=', $data['old_name'])->get() as $user) {
+        foreach (User::where('assignment.billet', '=', $data['old_name'])->get() as $user) {
             if (empty($user->assignment) === false) {
                 $assignment = $user->assignment;
                 foreach ($assignment as $index => $value) {
@@ -149,27 +150,25 @@ class BilletController extends \BaseController {
             );
 
             $user->save();
-
         }
 
         return Redirect::route('billet.index');
-	}
+    }
 
-	/**
-	 * Remove the specified resource from storage.
-	 * DELETE /billet/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy(Billet $billet)
-	{
-		try {
+    /**
+     * Remove the specified resource from storage.
+     * DELETE /billet/{id}
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy(Billet $billet)
+    {
+        try {
             $billet->delete();
             return 1;
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 0;
         }
-	}
-
+    }
 }

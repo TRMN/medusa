@@ -38,14 +38,14 @@ class ChapterController extends BaseController
         $crew = $chapter->getAllCrew();
 
         return View::make(
-          'chapter.show',
-          [
+            'chapter.show',
+            [
             'detail'   => $chapter,
             'higher'   => $parentChapter,
             'includes' => $includes,
             'command'  => $commandCrew,
             'crew'     => $crew
-          ]
+            ]
         );
     }
 
@@ -64,7 +64,7 @@ class ChapterController extends BaseController
           Type::whereIn('chapter_type', ['ship', 'station'])
               ->orderBy('chapter_description')
               ->get(
-                ['chapter_type', 'chapter_description']
+                  ['chapter_type', 'chapter_description']
               );
         $chapterTypes = [];
 
@@ -80,13 +80,13 @@ class ChapterController extends BaseController
         asort($chapters);
 
         return View::make(
-          'chapter.create',
-          [
+            'chapter.create',
+            [
             'chapterTypes' => $chapterTypes,
             'chapter'      => new Chapter,
             'branches'     => Branch::getNavalBranchList(),
             'fleets'       => ['' => 'Select a Fleet'] + $chapters,
-          ]
+            ]
         );
     }
 
@@ -101,7 +101,7 @@ class ChapterController extends BaseController
           Type::whereIn('chapter_type', ['ship', 'station', 'small_craft', 'lac'])
               ->orderBy('chapter_description')
               ->get(
-                ['chapter_type', 'chapter_description']
+                  ['chapter_type', 'chapter_description']
               );
         $chapterTypes = [];
 
@@ -113,12 +113,12 @@ class ChapterController extends BaseController
         $chapterTypes = ['' => 'Select a Ship Type'] + $chapterTypes;
 
         $chapters = array_merge(
-          Chapter::getChaptersByType('ship'),
-          Chapter::getChaptersByType('fleet'),
-          Chapter::getChaptersByType('task_force'),
-          Chapter::getChaptersByType('task_group'),
-          Chapter::getChaptersByType('squadron'),
-          Chapter::getChaptersByType('division')
+            Chapter::getChaptersByType('ship'),
+            Chapter::getChaptersByType('fleet'),
+            Chapter::getChaptersByType('task_force'),
+            Chapter::getChaptersByType('task_group'),
+            Chapter::getChaptersByType('squadron'),
+            Chapter::getChaptersByType('division')
         );
 
         asort($chapters);
@@ -128,14 +128,14 @@ class ChapterController extends BaseController
               ->get();
 
         return View::make(
-          'chapter.edit',
-          [
+            'chapter.edit',
+            [
             'chapterTypes' => $chapterTypes,
             'chapter'      => $chapter,
             'chapterList'  => $chapters,
             'branches'     => Branch::getNavalBranchList(),
             'numCrew'      => count($crew),
-          ]
+            ]
         );
     }
 
@@ -177,15 +177,16 @@ class ChapterController extends BaseController
         }
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'update',
-          'chapters',
-          (string)$chapter->_id,
-          $chapter->toJson(),
-          'ChapterController@update'
+            (string)Auth::user()->_id,
+            'update',
+            'chapters',
+            (string)$chapter->_id,
+            $chapter->toJson(),
+            'ChapterController@update'
         );
 
-        $chapter->save();;
+        $chapter->save();
+        ;
 
         Cache::flush();
 
@@ -216,12 +217,12 @@ class ChapterController extends BaseController
         }
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'create',
-          'chapters',
-          null,
-          json_encode($data),
-          'ChapterController@store'
+            (string)Auth::user()->_id,
+            'create',
+            'chapters',
+            null,
+            json_encode($data),
+            'ChapterController@store'
         );
 
         Chapter::create($data);
@@ -241,8 +242,10 @@ class ChapterController extends BaseController
           User::where('assignment.chapter_id', '=', (string)$chapter->_id)
               ->get();
 
-        return View::make('chapter.confirm-decommission',
-          ['chapter' => $chapter, 'numCrew' => count($crew),]);
+        return View::make(
+            'chapter.confirm-decommission',
+            ['chapter' => $chapter, 'numCrew' => count($crew),]
+        );
     }
 
     /**
@@ -264,12 +267,12 @@ class ChapterController extends BaseController
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'update',
-          'chapters',
-          (string)$chapter->_id,
-          $chapter->toJson(),
-          'ChapterController@destroy'
+            (string)Auth::user()->_id,
+            'update',
+            'chapters',
+            (string)$chapter->_id,
+            $chapter->toJson(),
+            'ChapterController@destroy'
         );
 
         $chapter->save();
@@ -379,7 +382,7 @@ class ChapterController extends BaseController
 
         foreach ($crew as $member) {
             $csv->insertOne(
-              [
+                [
                 $member->member_id,
                 $member->first_name,
                 $member->middle_name,
@@ -397,11 +400,14 @@ class ChapterController extends BaseController
                 $member->rank['date_of_rank'],
                 $member->branch,
                 $member->getBillet('primary')
-              ]
+                ]
             );
         }
 
-        $csv->output(date('Y-m-d') . '_' . str_replace(' ', '_',
-            $chapter->chapter_name) . '_roster.csv');
+        $csv->output(date('Y-m-d') . '_' . str_replace(
+            ' ',
+            '_',
+            $chapter->chapter_name
+        ) . '_roster.csv');
     }
 }

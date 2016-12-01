@@ -465,7 +465,7 @@ class UpdateRankTitles extends Migration
         foreach ($grades as $grade => $titles) {
             $record = Grade::where('grade', '=', $grade)->first();
 
-            if (empty( $record ) === true) {
+            if (empty($record) === true) {
                 // Grade does not exist, we must create it
                 $record = new Grade;
 
@@ -507,5 +507,4 @@ class UpdateRankTitles extends Migration
     {
         //
     }
-
 }

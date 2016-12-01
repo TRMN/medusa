@@ -13,7 +13,7 @@ class TigSeeder extends Seeder
 
     public function run()
     {
-        DB::collection( 'tig' )->delete();
+        DB::collection('tig')->delete();
 
         $tigs = array(
             "E-2" => array("tig_as" => "E-1", "tig" => "3"),
@@ -60,7 +60,6 @@ class TigSeeder extends Seeder
         );
 
         foreach ($tigs as $grade => $tig) {
-
             $this->writeAuditTrail(
                 'db:seed',
                 'create',
@@ -73,5 +72,4 @@ class TigSeeder extends Seeder
             Tig::create([ 'grade' => $grade, 'tig' => $tig ]);
         }
     }
-
 }

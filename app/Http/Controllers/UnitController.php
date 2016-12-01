@@ -34,5 +34,4 @@ class UnitController extends \BaseController
     {
         return Form::hidden('branch', $this->branch);
     }
-
 }

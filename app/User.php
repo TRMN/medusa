@@ -120,7 +120,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         $displayRank = $this->rank_title;
 
         if (isset($this->rating) && !empty($this->rating)) {
-
             $rateGreeting = $this->getRateTitle($this->rank['grade']);
 
             if (isset($rateGreeting) === true && empty($rateGreeting) === false) {
@@ -606,9 +605,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
                     $list,
                     function ($key, $value) use ($after) {
                         if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime(
-                                '+2 month',
-                                $after
-                            )
+                            '+2 month',
+                            $after
+                        )
                         ) {
                             return true;
                         }
@@ -1096,13 +1095,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             $pCode = $peerages[0]['code'];
 
             if ($pCode == "K" && substr(
-                    Korders::where('classes.postnominal', '=',
-                        $peerages[0]['postnominal'])->first()->getClassName(
-                        $peerages[0]['postnominal']
-                    ),
-                    0,
-                    6
-                ) != 'Knight'
+                Korders::where(
+                    'classes.postnominal',
+                    '=',
+                    $peerages[0]['postnominal']
+                )->first()->getClassName(
+                    $peerages[0]['postnominal']
+                ),
+                0,
+                6
+            ) != 'Knight'
             ) {
                 $pCode = '';
             }
@@ -1156,8 +1158,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             252
         );
 
-        $idCard->insert(public_path() . '/seals/' . $seal, 'top-left', 747,
-            400);
+        $idCard->insert(
+            public_path() . '/seals/' . $seal,
+            'top-left',
+            747,
+            400
+        );
 
         return $idCard;
     }
@@ -1174,8 +1180,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface
             return strtoupper(substr($state, 0, 2));
         }
 
-        if (strlen($state) == 4 && substr($state, -1) == '.' && substr($state,
-                -3, 1) == '.'
+        if (strlen($state) == 4 && substr($state, -1) == '.' && substr(
+            $state,
+            -3,
+            1
+        ) == '.'
         ) {
             // We have a 2 letter abbreviation with periods between the letters, like D.C. or B.C.
             return strtoupper(substr($state, 0, 1) . substr($state, -2, 1));
@@ -1183,8 +1192,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         if (substr($state, 2, 2) == ' -') {
             // We may have a 2 letter abbreviation followed by the full name, try and validate
-            if (array_key_exists(strtoupper(substr($state, 0, 2)),
-                    MedusaDefaults::STATES_BY_ABREVIATION) === true
+            if (array_key_exists(
+                strtoupper(substr($state, 0, 2)),
+                MedusaDefaults::STATES_BY_ABREVIATION
+            ) === true
             ) {
                 return strtoupper(substr($state, 0, 2));
             }
@@ -1192,8 +1203,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         // Nothing else hits, check and see if we know the 2 letter abbreviation
 
-        if (array_key_exists(strtoupper($state),
-                MedusaDefaults::STATES_BY_NAME) === true
+        if (array_key_exists(
+            strtoupper($state),
+            MedusaDefaults::STATES_BY_NAME
+        ) === true
         ) {
             $tmp = MedusaDefaults::STATES_BY_NAME;
             return $tmp[strtoupper($state)];
@@ -1243,8 +1256,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         foreach ($uniqueMemberIds as $memberId) {
             if ((intval($lastId) + 1 < intval($memberId)) && ($honorary === true || intval($lastId) + 1 > 200)) {
-                return '-' . str_pad($lastId + 1, 4, '0',
-                    STR_PAD_LEFT) . '-' . date('y');
+                return '-' . str_pad(
+                    $lastId + 1,
+                    4,
+                    '0',
+                    STR_PAD_LEFT
+                ) . '-' . date('y');
             }
             $lastId = $memberId;
         }
@@ -1389,8 +1406,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         if ($event->start_date <= date('Y-m-d') && $event->end_date >= date('Y-m-d')) {
             // Is the user doing the check-in a requestor or a registrar?
-            if ($event->requestor === $this->id || in_array($this->id,
-                    $event->registrars) === true
+            if ($event->requestor === $this->id || in_array(
+                $this->id,
+                $event->registrars
+            ) === true
             ) {
                 $checkIns = [];
                 if (isset($event->checkins) === true) {

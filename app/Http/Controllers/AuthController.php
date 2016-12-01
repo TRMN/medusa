@@ -9,17 +9,16 @@ class AuthController extends BaseController
             'password' => 'required',
         ];
 
-        $validator = Validator::make( Input::all(), $rules );
+        $validator = Validator::make(Input::all(), $rules);
 
-        if ( $validator->fails() )
-        {
-            return Redirect::back()->withErrors( $validator );
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
         }
 
-        $email = Input::get( 'email' );
-        $password = Input::get( 'password' );
+        $email = Input::get('email');
+        $password = Input::get('password');
 
-        if ( Auth::attempt(['email_address' => strtolower($email), 'password' => $password, 'active' => 1])) {
+        if (Auth::attempt(['email_address' => strtolower($email), 'password' => $password, 'active' => 1])) {
             User::find(Auth::user()->id)->updateLastLogin();
             return Redirect::back();
         } else {
@@ -33,6 +32,6 @@ class AuthController extends BaseController
         Auth::logout();
         Session::flush();
 
-        return Redirect::intended( '/' );
+        return Redirect::intended('/');
     }
 }

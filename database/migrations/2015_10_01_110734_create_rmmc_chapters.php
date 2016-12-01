@@ -130,8 +130,6 @@ class CreateRmmcChapters extends Migration
         $ship = Chapter::where('chapter_name', '=', 'HMS Invictus')->firstOrFail();
 
         $this->createChapter('AS Invictus-01', 'shuttle', '', 'RMMC', $ship->id, true, '2014-08-10');
-
-
     }
 
     /**
@@ -155,7 +153,7 @@ class CreateRmmcChapters extends Migration
     ) {
         $query = \Chapter::where('chapter_name', '=', $name)->first();
 
-        if (empty( $query->id ) === true) {
+        if (empty($query->id) === true) {
             $record =
                 [
                     'chapter_name' => $name,
@@ -187,5 +185,4 @@ class CreateRmmcChapters extends Migration
             return $query;
         }
     }
-
 }

@@ -16,8 +16,8 @@ class EventController extends \BaseController
         }
 
         return View::make(
-          'events.index',
-          ['events' => Events::where('requestor', '=', Auth::user()->id)->orderBy('start_date')->get()]
+            'events.index',
+            ['events' => Events::where('requestor', '=', Auth::user()->id)->orderBy('start_date')->get()]
         );
     }
 
@@ -34,12 +34,12 @@ class EventController extends \BaseController
         }
 
         return View::make(
-          'events.event',
-          [
+            'events.event',
+            [
             'action'    => 'add',
             'event'     => new Events(),
             'countries' => Country::getCountries(),
-          ]
+            ]
         );
     }
 
@@ -70,12 +70,12 @@ class EventController extends \BaseController
             $event = Events::create($data);
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'create',
-              'events',
-              $event->id,
-              $event->toJson(),
-              'EventController@store'
+                (string)Auth::user()->_id,
+                'create',
+                'events',
+                $event->id,
+                $event->toJson(),
+                'EventController@store'
             );
 
             $this->_updateUsers($event);
@@ -88,8 +88,8 @@ class EventController extends \BaseController
         }
 
         return Redirect::route('events.show', [$event->id])->with(
-          'message',
-          $msg
+            'message',
+            $msg
         );
     }
 
@@ -124,12 +124,12 @@ class EventController extends \BaseController
             $user->save();
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'update',
-              'users',
-              $user->id,
-              $user->toJson(),
-              'EventController@store'
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                $user->id,
+                $user->toJson(),
+                'EventController@store'
             );
 
             return true;
@@ -153,11 +153,11 @@ class EventController extends \BaseController
         }
 
         return View::make(
-          'events.show',
-          [
+            'events.show',
+            [
             'event'     => $event,
             'countries' => Country::getCountries()
-          ]
+            ]
         );
     }
 
@@ -185,12 +185,12 @@ class EventController extends \BaseController
         }
 
         return View::make(
-          'events.event',
-          [
+            'events.event',
+            [
             'action'    => 'edit',
             'event'     => $event,
             'countries' => Country::getCountries(),
-          ]
+            ]
         );
     }
 
@@ -216,12 +216,12 @@ class EventController extends \BaseController
             $event->update(Input::all());
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'update',
-              'events',
-              $event->id,
-              json_encode(Input::all()),
-              'EventController@update'
+                (string)Auth::user()->_id,
+                'update',
+                'events',
+                $event->id,
+                json_encode(Input::all()),
+                'EventController@update'
             );
 
             $msg = 'Your event "' . $event->event_name . '" has been updated';
@@ -248,5 +248,4 @@ class EventController extends \BaseController
     {
         //
     }
-
 }

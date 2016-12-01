@@ -43,11 +43,11 @@ class MedusaValidators extends Validator
         }
 
         if ($exams = \Exam::where('member_id', '=', $this->data['member_id'])->first()) {
-            if (empty( $exams->exams[$value] ) === true) {
+            if (empty($exams->exams[$value]) === true) {
                 return true; // Exam not present, it's a new entry, allow it
             }
 
-            if (empty( $exams->exams[$value]['entered_by'] ) === true) {
+            if (empty($exams->exams[$value]['entered_by']) === true) {
                 return false; // No entered_by field, only somebody with EDIT_GRADE or ALL_PERMS permissions can edit it
             }
         } else {
@@ -67,7 +67,5 @@ class MedusaValidators extends Validator
         $value = date('Y-m-d', strtotime($value));
         
         return Carbon::createFromFormat('Y-m-d', $value)->lte(Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->toDateString()));
-
     }
-
 }

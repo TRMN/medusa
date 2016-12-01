@@ -43,5 +43,4 @@ class AddNewPermissions extends Migration
     {
         //
     }
-
 }

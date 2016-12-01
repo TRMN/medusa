@@ -5,8 +5,10 @@ class MedusaConfigTest extends TestCase
 
     public function testConfigSet()
     {
-        $this->assertNotEmpty(MedusaConfig::set('test.config',
-          'This is a test'));
+        $this->assertNotEmpty(MedusaConfig::set(
+            'test.config',
+            'This is a test'
+        ));
     }
 
     public function testConfigGet()
@@ -17,8 +19,10 @@ class MedusaConfigTest extends TestCase
     public function testConfigUpdate()
     {
         MedusaConfig::set('test.config', 'This is another test');
-        $this->assertEquals('This is another test',
-          MedusaConfig::get('test.config'));
+        $this->assertEquals(
+            'This is another test',
+            MedusaConfig::get('test.config')
+        );
     }
 
     public function testConfigGetSubKey()
@@ -32,8 +36,10 @@ class MedusaConfigTest extends TestCase
     }
     }'));
 
-        $this->assertEquals("/^SIA-RMN-.*/",
-          MedusaConfig::get('test.config', null, 'RMN')['regex']);
+        $this->assertEquals(
+            "/^SIA-RMN-.*/",
+            MedusaConfig::get('test.config', null, 'RMN')['regex']
+        );
     }
 
     public function testConfigKeyNotExist()
@@ -43,8 +49,10 @@ class MedusaConfigTest extends TestCase
 
     public function testConfigKeyDefault()
     {
-        $this->assertEquals('This is a test',
-          MedusaConfig::get('config.test', 'This is a test'));
+        $this->assertEquals(
+            'This is a test',
+            MedusaConfig::get('config.test', 'This is a test')
+        );
     }
 
     public function textConfigKeySubKey()

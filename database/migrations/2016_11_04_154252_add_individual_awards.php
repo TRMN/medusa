@@ -3,18 +3,19 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIndividualAwards extends Migration {
+class AddIndividualAwards extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		$awards = json_decode('[
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $awards = json_decode('[
     {
         "display_order":  1,
         "name": "Parlimentary Medal of Valor",
@@ -693,20 +694,18 @@ class AddIndividualAwards extends Migration {
     }
 ]', true);
 
-        foreach($awards as $award) {
+        foreach ($awards as $award) {
             Award::create($award);
         }
+    }
 
-	}
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
 //		Award::all()->destroy();
-	}
-
+    }
 }

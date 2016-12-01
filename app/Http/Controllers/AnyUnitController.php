@@ -64,5 +64,4 @@ class AnyUnitController extends \BaseController
     </div>
 </div>';
     }
-
 }

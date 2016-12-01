@@ -39,7 +39,7 @@ class AddOfficeOfHa extends Migration
     ) {
         $query = \Chapter::where('chapter_name', '=', $name)->first();
 
-        if (empty( $query->id ) === true) {
+        if (empty($query->id) === true) {
             $record =
                 [
                     'chapter_name' => $name,
@@ -71,5 +71,4 @@ class AddOfficeOfHa extends Migration
             return $query;
         }
     }
-
 }

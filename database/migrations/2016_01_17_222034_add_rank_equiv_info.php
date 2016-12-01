@@ -1031,5 +1031,4 @@ class AddRankEquivInfo extends Migration
             );
         }
     }
-
 }

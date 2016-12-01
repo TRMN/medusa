@@ -2,15 +2,16 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class Divorcestripes extends Migration {
+class Divorcestripes extends Migration
+{
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
         $awards = json_decode('[
     {
         "display_order":  26,
@@ -46,14 +47,13 @@ class Divorcestripes extends Migration {
         }
     }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 }

@@ -124,7 +124,7 @@ class TypeController extends \BaseController
 
         $type->update($data);
 
-        if(empty($oldValue) === false) {
+        if (empty($oldValue) === false) {
             Chapter::where('chapter_type', '=', $oldValue)->update(['chapter_type' => $data['chapter_type']]);
         }
 
@@ -145,5 +145,4 @@ class TypeController extends \BaseController
     {
         //
     }
-
 }

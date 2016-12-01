@@ -8,7 +8,7 @@ class TypeSeeder extends Seeder
     {
         // Chapter types
 
-        DB::collection( 'types' )->delete();
+        DB::collection('types')->delete();
 
         $this->createChapterType('district', 'Naval District', [ 'fleet']);
         $this->createChapterType('fleet', 'Fleet', ['ship', 'division', 'squadron', 'task_group', 'task_force']);
@@ -30,7 +30,8 @@ class TypeSeeder extends Seeder
         $this->createChapterType('academy', 'Service Academy');
     }
 
-    function createChapterType($type, $description, array $can_have=[]) {
+    function createChapterType($type, $description, array $can_have = [])
+    {
         $this->command->comment('Creating ' . $description . ' type');
 
         $this->writeAuditTrail(
@@ -42,6 +43,6 @@ class TypeSeeder extends Seeder
             'type'
         );
 
-        Type::create( [ 'chapter_type' => $type, 'chapter_description' => $description, 'can_have' => $can_have]);
+        Type::create([ 'chapter_type' => $type, 'chapter_description' => $description, 'can_have' => $can_have]);
     }
 }

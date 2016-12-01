@@ -3,24 +3,25 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class FixSecondaryAssignmentsAgain extends Migration {
+class FixSecondaryAssignmentsAgain extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
         $users = User::all();
 
         foreach ($users as $user) {
             $assignments = [];
 
             foreach ($user->assignment as $assignment) {
-                if (empty( $assignment['scondary'] ) === true) {
+                if (empty($assignment['scondary']) === true) {
                     $assignments[] = $assignment; // Don't need to do anything
                 } else {
                     // Let's spell secondary correct this time, shall we?
@@ -44,16 +45,15 @@ class FixSecondaryAssignmentsAgain extends Migration {
 
             $user->save();
         }
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 }
