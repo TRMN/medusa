@@ -943,7 +943,14 @@ class UserController extends \BaseController
         if ($this->hasPermissions(['ASSIGN_PERMS']) === false) {
             $data['permissions'] = $user->permissions;
         } else {
-            $currentPermissions = empty($user->permissions)?[]:sort($user->permissions);
+
+            if (empty($user->permissions) === true) {
+                $currentPermissions = [];
+            } else {
+                $currentPermissions = $user->permissions;
+                sort($currentPermissions);
+            }
+
             $newPermissions = $data['permissions'];
 
             if (in_array('CONFIG', $currentPermissions) === true &&
