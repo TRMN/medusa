@@ -451,6 +451,16 @@ class ReportController extends \BaseController
         $report = Report::find($id);
         $chapter = Chapter::find($report->chapter_id);
 
+        $commandCrew = $report['command_crew'];
+
+        if (empty($commandCrew['CO']) === false) {
+            $commandCrew['Commanding Officer'] = $commandCrew['CO'];
+            $commandCrew['Executive Officer'] = $commandCrew['XO'];
+            $commandCrew['Bosun'] = $commandCrew['BOSUN'];
+
+            $report['command_crew'] = $commandCrew;
+        }
+
         $echelonEmails = [];
 
         foreach ($chapter->getChapterIdWithParents() as $chapterId) {
