@@ -1,16 +1,16 @@
 <?php
 
-use Illuminate\Auth\Reminders\RemindableInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\UserTrait;
 use Jenssegers\Mongodb\Model as Eloquent;
 use Medusa\Enums\MedusaDefaults;
 
-class User extends Eloquent implements UserInterface, RemindableInterface
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
 
-    use UserTrait, RemindableTrait;
+    use Authenticatable, CanResetPassword;
     use \Medusa\Audit\MedusaAudit;
     use \Medusa\Permissions\MedusaPermissions;
 
