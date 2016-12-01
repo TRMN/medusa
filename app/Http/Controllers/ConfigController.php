@@ -1,6 +1,6 @@
 <?php
 
-class ConfigController extends \BaseController
+class ConfigController extends Controller
 {
     use \Medusa\Audit\MedusaAudit;
 

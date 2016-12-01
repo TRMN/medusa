@@ -1,6 +1,6 @@
 <?php
 
-class UserChangeRequestController extends \BaseController
+class UserChangeRequestController extends Controller
 {
 
     /**

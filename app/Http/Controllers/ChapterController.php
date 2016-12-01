@@ -1,6 +1,6 @@
 <?php
 
-class ChapterController extends BaseController
+class ChapterController extends Controller
 {
 
     public function index()

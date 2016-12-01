@@ -1,6 +1,6 @@
 <?php
 
-class RemindersController extends \BaseController
+class RemindersController extends Controller
 {
 
     /**

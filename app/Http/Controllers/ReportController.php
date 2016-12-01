@@ -1,6 +1,6 @@
 <?php
 
-class ReportController extends \BaseController
+class ReportController extends Controller
 {
 
     /**

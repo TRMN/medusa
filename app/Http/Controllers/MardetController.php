@@ -1,6 +1,6 @@
 <?php
 
-class MardetController extends \BaseController
+class MardetController extends Controller
 {
 
     private $chapterTypes = ['shuttle', 'section', 'squad', 'platoon', 'company', 'battalion', 'corps', 'exp_force', 'regiment'];
