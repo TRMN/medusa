@@ -35,7 +35,7 @@ class UserController extends Controller
             $usersOtherThanActive[$user->registration_status][] = $user;
         }
 
-        return View::make(
+        return view(
             'user.index',
             [
             'users'            => $usersByBranch,
@@ -114,7 +114,7 @@ class UserController extends Controller
               )
               ->get();
 
-        return View::make(
+        return view(
             'user.duplicates',
             ['users' => $users, 'title' => 'Show ' . $billet]
         );
@@ -122,7 +122,7 @@ class UserController extends Controller
 
     public function getReset(User $user)
     {
-        return View::make('user.reset', ['user' => $user]);
+        return view('user.reset', ['user' => $user]);
     }
 
     public function postReset(User $user)
@@ -193,7 +193,7 @@ class UserController extends Controller
               ->where('registration_status', '=', 'Pending')
               ->get();
 
-        return View::make(
+        return view(
             'user.review',
             [
             'users' => $users,
@@ -354,7 +354,7 @@ class UserController extends Controller
         if (($redirect = $this->checkPermissions('ADD_MEMBER')) !== true) {
             return $redirect;
         }
-        return View::make(
+        return view(
             'user.create',
             [
             'user'      => new User,
@@ -572,7 +572,7 @@ class UserController extends Controller
             $validator = Validator::make($data, $rules, $error_message);
 
             if ($validator->fails()) {
-                return Redirect::to('register')
+                return redirect('register')
                                ->withErrors($validator)
                                ->withInput();
             }
@@ -587,12 +587,12 @@ class UserController extends Controller
                 $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
 
                 if ($resp->isSuccess() === false) {
-                    return Redirect::to('register')
+                    return redirect('register')
                                    ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
                                    ->withInput();
                 }
             } else {
-                return Redirect::to('register')
+                return redirect('register')
                                ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
                                ->withInput();
             }
@@ -696,7 +696,7 @@ class UserController extends Controller
                 ]);
             }
         } else {
-            return View::make('thankyou');
+            return view('thankyou');
         }
     }
 
@@ -716,7 +716,7 @@ class UserController extends Controller
             'VIEW_' . $user->branch
           ]) === false
         ) {
-            return Redirect::to(URL::previous())
+            return redirect(URL::previous())
                            ->with(
                                'message',
                                'You do not have permission to view that page'
@@ -738,7 +738,7 @@ class UserController extends Controller
         $user->leftRibbonCount = count($user->getRibbons('L'));
         $user->leftRibbons = $user->getRibbons('L');
 
-        return View::make(
+        return view(
             'user.show',
             [
             'user'      => $user,
@@ -815,7 +815,7 @@ class UserController extends Controller
                 ];
             }
 
-            return View::make(
+            return view(
                 'user.edit',
                 [
                 'user'        => $user,
@@ -838,7 +838,7 @@ class UserController extends Controller
                 ]
             );
         } else {
-            return Redirect::to(URL::previous())
+            return redirect(URL::previous())
                            ->with(
                                'message',
                                'You do not have permission to view that page'
@@ -869,7 +869,7 @@ class UserController extends Controller
           );
 
         if ($validator->fails()) {
-            return Redirect::to(URL::previous())
+            return redirect(URL::previous())
                            ->withErrors($validator)
                            ->withInput();
         }
@@ -1034,7 +1034,7 @@ class UserController extends Controller
 
         Cache::flush();
 
-        return Redirect::to($data['redirectTo']);
+        return redirect($data['redirectTo']);
     }
 
     public function tos()
@@ -1058,10 +1058,10 @@ class UserController extends Controller
 
             $user->save();
 
-            return Redirect::to('home');
+            return redirect('home');
         }
 
-        return Redirect::to('signout');
+        return redirect('signout');
     }
 
     public function osa()
@@ -1085,10 +1085,10 @@ class UserController extends Controller
 
             $user->save();
 
-            return Redirect::to('home');
+            return redirect('home');
         }
 
-        return Redirect::to('signout');
+        return redirect('signout');
     }
 
     /**
@@ -1104,7 +1104,7 @@ class UserController extends Controller
             return $redirect;
         }
 
-        return View::make('user.confirm-delete', ['user' => $user,]);
+        return view('user.confirm-delete', ['user' => $user,]);
     }
 
     /**
@@ -1165,7 +1165,7 @@ class UserController extends Controller
           'register'  => true,
         ];
 
-        return View::make('user.register', $viewData);
+        return view('user.register', $viewData);
     }
 
     private function _getCountries()
@@ -1277,7 +1277,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return Redirect::to(URL::previous())->with('message', $msg);
+        return redirect(URL::previous())->with('message', $msg);
     }
 
     public function deletePeerage(User $user, $peerageId)
@@ -1306,7 +1306,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return Redirect::to(URL::previous())->with('message', $msg);
+        return redirect(URL::previous())->with('message', $msg);
     }
 
     public function find(User $user = null)
@@ -1321,7 +1321,7 @@ class UserController extends Controller
             return $redirect;
         }
 
-        return View::make('user.find', ['user' => $user]);
+        return view('user.find', ['user' => $user]);
     }
 
     public function addPerm(User $user, $perm)
@@ -1336,7 +1336,7 @@ class UserController extends Controller
 
         Cache::flush();
 
-        return Redirect::to(URL::previous())->with(
+        return redirect(URL::previous())->with(
             'message',
             $perm . ' permission has been given to ' . $user->getFullName()
         );
@@ -1354,7 +1354,7 @@ class UserController extends Controller
 
         Cache::flush();
 
-        return Redirect::to(URL::previous())->with(
+        return redirect(URL::previous())->with(
             'message',
             $perm . ' permission has been removed from ' . $user->getFullName()
         );
@@ -1373,7 +1373,7 @@ class UserController extends Controller
 
         $usersByBranch[$branch] = $users;
 
-        return View::make(
+        return view(
             'user.byBranch',
             [
             'users'  => $usersByBranch,
@@ -1401,7 +1401,7 @@ class UserController extends Controller
             }
         }
 
-        return View::make('user.rack', ['user' => Auth::user(), 'unitPatchPaths' => $unitPatchPaths]);
+        return view('user.rack', ['user' => Auth::user(), 'unitPatchPaths' => $unitPatchPaths]);
     }
 
     public function saveRibbonRack()
@@ -1443,6 +1443,6 @@ class UserController extends Controller
 
         Auth::user()->save();
 
-        return Redirect::to('home');
+        return redirect('home');
     }
 }

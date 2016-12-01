@@ -54,7 +54,7 @@ class ReportController extends Controller
         }
 
         if (in_array($chapter->chapter_type, ['ship', 'station']) === false) {
-            return \Redirect::to(\URL::previous())->with(
+            return \redirect(\URL::previous())->with(
                 'message',
                 'I was unable to find an appropriate command for this report.'
             );

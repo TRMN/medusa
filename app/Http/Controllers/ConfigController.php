@@ -16,7 +16,7 @@ class ConfigController extends Controller
             return $redirect;
         }
 
-        return View::make('config.index');
+        return view('config.index');
     }
 
     /**
@@ -31,7 +31,7 @@ class ConfigController extends Controller
             return $redirect;
         }
 
-        return View::make(
+        return view(
             'config.config',
             [
             'action' => 'add',
@@ -115,7 +115,7 @@ class ConfigController extends Controller
             return $redirect;
         }
 
-        return View::make(
+        return view(
             'config.config',
             [
             'action' => 'edit',

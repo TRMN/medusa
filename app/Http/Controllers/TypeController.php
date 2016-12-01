@@ -15,7 +15,7 @@ class TypeController extends Controller
             return $redirect;
         }
 
-        return View::make('type.index');
+        return view('type.index');
     }
 
     /**
@@ -30,7 +30,7 @@ class TypeController extends Controller
             return $redirect;
         }
 
-        return View::make("type.create");
+        return view("type.create");
     }
 
     /**
@@ -88,7 +88,7 @@ class TypeController extends Controller
             return $redirect;
         }
 
-        return View::make('type.edit', ['type' => $type]);
+        return view('type.edit', ['type' => $type]);
     }
 
     /**

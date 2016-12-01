@@ -15,7 +15,7 @@ class EventController extends Controller
             return $redirect;
         }
 
-        return View::make(
+        return view(
             'events.index',
             ['events' => Events::where('requestor', '=', Auth::user()->id)->orderBy('start_date')->get()]
         );
@@ -33,7 +33,7 @@ class EventController extends Controller
             return $redirect;
         }
 
-        return View::make(
+        return view(
             'events.event',
             [
             'action'    => 'add',
@@ -152,7 +152,7 @@ class EventController extends Controller
             return $redirect;
         }
 
-        return View::make(
+        return view(
             'events.show',
             [
             'event'     => $event,
@@ -184,7 +184,7 @@ class EventController extends Controller
             return $redirect;
         }
 
-        return View::make(
+        return view(
             'events.event',
             [
             'action'    => 'edit',

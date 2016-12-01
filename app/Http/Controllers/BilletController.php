@@ -15,7 +15,7 @@ class BilletController extends Controller
             return $redirect;
         }
 
-        return View::make('billet.index');
+        return view('billet.index');
     }
 
     /**
@@ -30,7 +30,7 @@ class BilletController extends Controller
             return $redirect;
         }
 
-        return View::make("billet.create");
+        return view("billet.create");
     }
 
     /**
@@ -90,7 +90,7 @@ class BilletController extends Controller
             return $redirect;
         }
 
-        return View::make("billet.edit", ['billet' => $billet]);
+        return view("billet.edit", ['billet' => $billet]);
     }
 
     /**

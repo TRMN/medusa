@@ -15,7 +15,7 @@ trait MedusaEchelons
     {
         $chapters = \Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get();
 
-        return \View::make('chapter.index', ['chapters' => $chapters]);
+        return \view('chapter.index', ['chapters' => $chapters]);
     }
 
     /**
@@ -44,7 +44,7 @@ trait MedusaEchelons
 
         $chapterTypes = ['0' => $this->select] + $chapterTypes;
 
-        return \View::make(
+        return \view(
             'unit.create',
             [
                 'chapterTypes' => $chapterTypes,
@@ -121,7 +121,7 @@ trait MedusaEchelons
 
         $crew = $chapter->getCrew();
 
-        return \View::make(
+        return \view(
             'chapter.show',
             [
                 'detail'   => $chapter,
@@ -165,7 +165,7 @@ trait MedusaEchelons
 
         $childUnits = \Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
 
-        return \View::make(
+        return \view(
             'unit.edit',
             [
                 'chapterTypes' => $chapterTypes,
@@ -285,7 +285,7 @@ trait MedusaEchelons
 
         $childUnits = \Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
 
-        return \View::make(
+        return \view(
             'unit.confirm-deactivate',
             ['chapter' => $chapter, 'numCrew' => count($crew) + count($childUnits), 'title' => $this->title,]
         );

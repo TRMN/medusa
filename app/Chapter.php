@@ -438,7 +438,7 @@ class Chapter extends Model
         $search = ['%ordinal%'];
         $replace = [\Medusa\Utility\MedusaUtility::ordinal($this->hull_number)];
 
-        $billets = MedusaConfig::get('chapter.show', $default, $this->chapter_type);
+        $billets = Medusaconfig('chapter.show', $default, $this->chapter_type);
 
         $commandCrew = [];
 

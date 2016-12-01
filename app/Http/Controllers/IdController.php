@@ -18,10 +18,10 @@ class IdController extends Controller
             Auth::user()->id != $user->id &&
             $this->hasPermissions(['VIEW_MEMBERS']) === false
         ) {
-            return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
+            return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
-        return View::make('id.qrcode', ['member_id' => $user->member_id]);
+        return view('id.qrcode', ['member_id' => $user->member_id]);
     }
 
     /**
@@ -39,10 +39,10 @@ class IdController extends Controller
             Auth::user()->id != $user->id &&
             $this->hasPermissions(['VIEW_MEMBERS']) === false
         ) {
-            return Redirect::to(URL::previous())->with('message', 'You do not have permission to view that page');
+            return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
-        return View::make('id.card', ['card' => $user->buildIdCard()]);
+        return view('id.card', ['card' => $user->buildIdCard()]);
     }
 
     /**
@@ -61,7 +61,7 @@ class IdController extends Controller
 
         $chapters = Chapter::find($shipID)->getChapterIdWithChildren();
 
-        return View::make('id.bulk', ['chapters' => $chapters]);
+        return view('id.bulk', ['chapters' => $chapters]);
     }
 
     public function getMarkbulk($shipID)
@@ -83,7 +83,7 @@ class IdController extends Controller
             $chapter->save();
         }
 
-        return Redirect::to(URL::previous());
+        return redirect(URL::previous());
     }
 
     public function getMark($userID)
@@ -94,7 +94,7 @@ class IdController extends Controller
 
         $this->_markMember($userID);
 
-        return Redirect::to(URL::previous());
+        return redirect(URL::previous());
     }
 
     private function _markMember($member)

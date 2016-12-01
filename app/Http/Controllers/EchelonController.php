@@ -23,7 +23,7 @@ class EchelonController extends Controller
     {
         $chapters = Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get();
 
-        return View::make('chapter.index', ['chapters' => $chapters]);
+        return view('chapter.index', ['chapters' => $chapters]);
     }
 
     /**
@@ -61,7 +61,7 @@ class EchelonController extends Controller
 
         asort($chapters);
 
-        return View::make(
+        return view(
             'echelon.create',
             [
                 'chapterTypes' => $chapterTypes,
@@ -133,7 +133,7 @@ class EchelonController extends Controller
 
         $crew = $chapter->getCrew();
 
-        return View::make(
+        return view(
             'chapter.show',
             [
                 'detail'   => $chapter,
@@ -187,7 +187,7 @@ class EchelonController extends Controller
 
         $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
 
-        return View::make(
+        return view(
             'echelon.edit',
             [
                 'chapterTypes' => $chapterTypes,
@@ -301,6 +301,6 @@ class EchelonController extends Controller
 
         $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
 
-        return View::make('echelon.confirm-deactivate', ['chapter' => $chapter, 'numCrew' => count($crew) + count($childUnits),]);
+        return view('echelon.confirm-deactivate', ['chapter' => $chapter, 'numCrew' => count($crew) + count($childUnits),]);
     }
 }

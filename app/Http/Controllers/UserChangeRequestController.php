@@ -22,7 +22,7 @@ class UserChangeRequestController extends Controller
      */
     public function create(User $user)
     {
-        return View::make(
+        return view(
             "user.requests.index",
             [
                 'user'      => $user,
@@ -144,7 +144,7 @@ class UserChangeRequestController extends Controller
             }
         }
 
-        return View::make('user.requests.review', ['records' => $records]);
+        return view('user.requests.review', ['records' => $records]);
     }
 
     public function approve(ChangeRequest $request)

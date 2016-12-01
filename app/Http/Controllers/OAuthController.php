@@ -10,7 +10,7 @@ class OAuthController extends Controller
 
         $clients = OauthClient::orderBy('client_name')->get();
 
-        return View::make('oauth.index', ['clients' => $clients]);
+        return view('oauth.index', ['clients' => $clients]);
     }
 
     /**
@@ -25,7 +25,7 @@ class OAuthController extends Controller
             return $redirect;
         }
 
-        return View::make("oauth.create");
+        return view("oauth.create");
     }
 
     /**
@@ -85,7 +85,7 @@ class OAuthController extends Controller
             return $redirect;
         }
 
-        return View::make("oauth.edit", ['oauthclient' => $oauthClient]);
+        return view("oauth.edit", ['oauthclient' => $oauthClient]);
     }
 
     /**
