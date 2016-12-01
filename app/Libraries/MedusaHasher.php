@@ -3,17 +3,17 @@
 class MedusaHasher implements Illuminate\Hashing\HasherInterface
 {
 
-    public function make($value, array $options = array())
+    public function make($value, array $options = [])
     {
         return sha1($value);
     }
 
-    public function check($value, $hashedValue, array $options = array())
+    public function check($value, $hashedValue, array $options = [])
     {
         return $hashedValue == sha1($value);
     }
 
-    public function needsRehash($hashedValue, array $options = array())
+    public function needsRehash($hashedValue, array $options = [])
     {
         return false;
     }

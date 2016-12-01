@@ -11,7 +11,7 @@ class ApiController extends BaseController
     public function getCountries()
     {
         $results = Countries::getList();
-        $countries = array();
+        $countries = [];
 
         foreach ($results as $country) {
             $countries[$country['iso_3166_3']] = $country['name'];
@@ -19,7 +19,7 @@ class ApiController extends BaseController
 
         asort($countries);
 
-        $countries = array('' => 'Select a Country') + $countries;
+        $countries = ['' => 'Select a Country'] + $countries;
 
         return Response::json($countries);
     }

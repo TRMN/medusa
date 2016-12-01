@@ -15,7 +15,7 @@ class Country extends \Eloquent
 
         asort($countries);
 
-        $countries = array('' => 'Select a Country') + $countries;
+        $countries = ['' => 'Select a Country'] + $countries;
 
         return $countries;
     }

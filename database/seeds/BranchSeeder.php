@@ -15,7 +15,7 @@ class BranchSeeder extends Seeder
     {
         DB::collection('branches')->delete();
 
-        $branches = array(
+        $branches = [
             "RMA" => "Royal Manticoran Army",
             "RMMC" => "Royal Manticoran Marine Corp",
             "RMN" => "Royal Manticoran Navy",
@@ -25,7 +25,7 @@ class BranchSeeder extends Seeder
             "CIVIL" => "Civil Service/Government and Diplomatic Corp",
             "INTEL" => "Civil Service/Espionage and Intelligence",
             "SFS" => "Civil Service/Sphinx Forestry Service"
-        );
+        ];
 
         foreach ($branches as $branch => $name) {
             $this->command->comment('Creating ' . $name . ' branch');
