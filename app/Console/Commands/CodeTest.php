@@ -8,8 +8,6 @@ use League\Csv\Reader;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-
-
 class CodeTest extends Command
 {
     use \Medusa\Permissions\MedusaPermissions;

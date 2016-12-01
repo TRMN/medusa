@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
-
 class UserChangeRequestController extends Controller
 {
 

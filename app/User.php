@@ -13,9 +13,6 @@ use Jenssegers\Mongodb\Model as Eloquent;
 use Medusa\Enums\MedusaDefaults;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-
-
-
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
 

@@ -10,8 +10,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-
-
 class ImportGrades extends Command
 {
     use \Medusa\Audit\MedusaAudit;

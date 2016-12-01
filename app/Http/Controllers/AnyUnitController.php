@@ -6,7 +6,6 @@ use App\Branch;
 use App\Chapter;
 use Smalldogs\Html5inputs\Html5InputsFacade;
 
-
 class AnyUnitController extends Controller
 {
 
