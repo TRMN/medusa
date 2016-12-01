@@ -943,7 +943,7 @@ class UserController extends \BaseController
         if ($this->hasPermissions(['ASSIGN_PERMS']) === false) {
             $data['permissions'] = $user->permissions;
         } else {
-            $currentPermissions = $user->permissions;
+            $currentPermissions = empty($user->permissions)?[]:sort($user->permissions);
             $newPermissions = $data['permissions'];
 
             if (in_array('CONFIG', $currentPermissions) === true &&
@@ -952,12 +952,6 @@ class UserController extends \BaseController
             ) {
                 // CONFIG perm in user record, not in submitted perms and logged in user does not have CONFIG perm
                 $data['permissions'][] = 'CONFIG';
-            }
-
-            if (empty($currentPermissions) === false) {
-                sort($currentPermissions);
-            } else {
-                $currentPermissions = [];
             }
 
             sort($newPermissions);
