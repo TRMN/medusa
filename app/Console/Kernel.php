@@ -12,7 +12,19 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        'App\Console\Commands\CodeTest',
+        'App\Console\Commands\CreateEchelons',
+        'App\Console\Commands\ImportGrades',
+        'App\Console\Commands\AddPermission',
+        'App\Console\Commands\ViewsCommand',
+        'App\Console\Commands\ImportChapters',
         'App\Console\Commands\Inspire',
+        'App\Console\Commands\ChangePassword',
+        'App\Console\Commands\DelPermission',
+        'App\Console\Commands\MemberExport',
+        'App\Console\Commands\ImportUsers',
+        'App\Console\Commands\assignAHPerms',
+        'App\Console\Commands\AddFleetCoPermission',
     ];
 
     /**
