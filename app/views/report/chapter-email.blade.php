@@ -9,35 +9,35 @@ COMMAND CREW INFORMATION<br>
 
 COMMANDING OFFICER<br>
 <br>
-Name: {{$report->command_crew['CO']['first_name']}} @if(empty($report->command_crew['CO']->middile_name) === false) {{$report->command_crew['CO']['middle_name']}} @endif {{$report->command_crew['CO']['last_name']}} @if(empty($report->command_crew['CO']->suffix) === false) {{$report->command_crew['CO']->suffix}} @endif
+Name: {{$report->command_crew['Commanding Officer']['first_name']}} @if(empty($report->command_crew['Commanding Officer']->middile_name) === false) {{$report->command_crew['Commanding Officer']['middle_name']}} @endif {{$report->command_crew['Commanding Officer']['last_name']}} @if(empty($report->command_crew['Commanding Officer']->suffix) === false) {{$report->command_crew['Commanding Officer']->suffix}} @endif
 <br>
-SID#: {{$report->command_crew['CO']['member_id']}}<br>
-Rank: {{$report->command_crew['CO']['rank']['grade']}}<br>
+SID#: {{$report->command_crew['Commanding Officer']['member_id']}}<br>
+Rank: {{$report->command_crew['Commanding Officer']['rank']['grade']}}<br>
 <br>
-Last Course Completed: {{$report->command_crew['CO']['last_course']}}<br>
+Last Course Completed: {{$report->command_crew['Commanding Officer']['last_course']}}<br>
 <br>
-Date of Birth: {{date('m/d/Y', strtotime($report->command_crew['CO']['dob']))}}<br>
+Date of Birth: {{date('m/d/Y', strtotime($report->command_crew['Commanding Officer']['dob']))}}<br>
 <br>
-Phone:@if(empty($report->command_crew['CO']['phone_number']) === true)
-    N/A @else {{$report->command_crew['CO']['phone_number']}} @endif <br>
-Email: {{$report->command_crew['CO']['email_address']}}<br>
+Phone:@if(empty($report->command_crew['Commanding Officer']['phone_number']) === true)
+    N/A @else {{$report->command_crew['Commanding Officer']['phone_number']}} @endif <br>
+Email: {{$report->command_crew['Commanding Officer']['email_address']}}<br>
 <br>
 
 EXECUTIVE OFFICER<br>
 <br>
-@if(empty($report->command_crew['XO']) === false)
-Name: {{$report->command_crew['XO']['first_name']}} @if(empty($report->command_crew['XO']->middile_name) === false) {{$report->command_crew['XO']['middle_name']}} @endif {{$report->command_crew['XO']['last_name']}} @if(empty($report->command_crew['XO']->suffix) === false) {{$report->command_crew['XO']->suffix}} @endif
+@if(empty($report->command_crew['Executive Officer']) === false)
+Name: {{$report->command_crew['Executive Officer']['first_name']}} @if(empty($report->command_crew['Executive Officer']->middile_name) === false) {{$report->command_crew['Executive Officer']['middle_name']}} @endif {{$report->command_crew['Executive Officer']['last_name']}} @if(empty($report->command_crew['Executive Officer']->suffix) === false) {{$report->command_crew['Executive Officer']->suffix}} @endif
 <br>
-SID#: {{$report->command_crew['XO']['member_id']}}<br>
-Rank: {{$report->command_crew['XO']['rank']['grade']}}<br>
+SID#: {{$report->command_crew['Executive Officer']['member_id']}}<br>
+Rank: {{$report->command_crew['Executive Officer']['rank']['grade']}}<br>
 <br>
-Last Course Completed: {{$report->command_crew['XO']['last_course']}}<br>
+Last Course Completed: {{$report->command_crew['Executive Officer']['last_course']}}<br>
 <br>
-Date of Birth: {{date('m/d/Y', strtotime($report->command_crew['XO']['dob']))}}<br>
+Date of Birth: {{date('m/d/Y', strtotime($report->command_crew['Executive Officer']['dob']))}}<br>
 <br>
-Phone:@if(empty($report->command_crew['XO']['phone_number']) === true)
-    N/A @else {{$report->command_crew['XO']['phone_number']}} @endif <br>
-Email: {{$report->command_crew['XO']['email_address']}}<br>
+Phone:@if(empty($report->command_crew['Executive Officer']['phone_number']) === true)
+    N/A @else {{$report->command_crew['Executive Officer']['phone_number']}} @endif <br>
+Email: {{$report->command_crew['Executive Officer']['email_address']}}<br>
 @else
 None Found
 @endif
@@ -46,19 +46,19 @@ None Found
 
 CHIEF PETTY OFFICER<br>
 <br>
-@if(empty($report->command_crew['BOSUN']) === false)
-Name: {{$report->command_crew['BOSUN']['first_name']}} @if(empty($report->command_crew['BOSUN']->middile_name) === false) {{$report->command_crew['BOSUN']['middle_name']}} @endif {{$report->command_crew['BOSUN']['last_name']}} @if(empty($report->command_crew['BOSUN']->suffix) === false) {{$report->command_crew['BOSUN']->suffix}} @endif
+@if(empty($report->command_crew['Bosun']) === false)
+Name: {{$report->command_crew['Bosun']['first_name']}} @if(empty($report->command_crew['Bosun']->middile_name) === false) {{$report->command_crew['Bosun']['middle_name']}} @endif {{$report->command_crew['Bosun']['last_name']}} @if(empty($report->command_crew['Bosun']->suffix) === false) {{$report->command_crew['Bosun']->suffix}} @endif
 <br>
-SID#: {{$report->command_crew['BOSUN']['member_id']}}<br>
-Rank: {{$report->command_crew['BOSUN']['rank']['grade']}}<br>
+SID#: {{$report->command_crew['Bosun']['member_id']}}<br>
+Rank: {{$report->command_crew['Bosun']['rank']['grade']}}<br>
 <br>
-Last Course Completed: {{$report->command_crew['BOSUN']['last_course']}}<br>
+Last Course Completed: {{$report->command_crew['Bosun']['last_course']}}<br>
 <br>
-Date of Birth: {{date('m/d/Y', strtotime($report->command_crew['BOSUN']['dob']))}}<br>
+Date of Birth: {{date('m/d/Y', strtotime($report->command_crew['Bosun']['dob']))}}<br>
 <br>
-Phone:@if(empty($report->command_crew['BOSUN']['phone_number']) === true)
-    N/A @else {{$report->command_crew['BOSUN']['phone_number']}} @endif <br>
-Email: {{$report->command_crew['BOSUN']['email_address']}}<br>
+Phone:@if(empty($report->command_crew['Bosun']['phone_number']) === true)
+    N/A @else {{$report->command_crew['Bosun']['phone_number']}} @endif <br>
+Email: {{$report->command_crew['Bosun']['email_address']}}<br>
 @else
 None Found
 @endif
@@ -88,7 +88,7 @@ Class Code: @if(empty($report->chapter_info['hull_number']) === false) {{$report
 <br>
 Ship Name: {{$report->chapter_info['chapter_name']}}<br>
 <br>
-Location: {{$report->command_crew['CO']['city']}}, {{$report->command_crew['CO']['state_province']}}<br>
+Location: {{$report->command_crew['Commanding Officer']['city']}}, {{$report->command_crew['Commanding Officer']['state_province']}}<br>
 @if(empty($report->chapter_info['url']) === false)
     <br>Web Site: {{$report->chapter_info['url']}} <br>
 @endif
