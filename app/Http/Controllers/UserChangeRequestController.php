@@ -1,5 +1,18 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Billet;
+use App\Branch;
+use App\ChangeRequest;
+use App\Chapter;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+
+
 class UserChangeRequestController extends Controller
 {
 

@@ -1,5 +1,15 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Billet;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+
+
 class BilletController extends Controller
 {
 

@@ -1,5 +1,31 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Award;
+use App\Billet;
+use App\Branch;
+use App\Chapter;
+use App\Country;
+use App\Events\Event;
+use App\Grade;
+use App\Korders;
+use App\Ptitles;
+use App\Rating;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
+use Webpatser\Countries\CountriesFacade;
+
+
 class UserController extends Controller
 {
 

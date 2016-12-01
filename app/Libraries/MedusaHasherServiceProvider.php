@@ -1,5 +1,9 @@
 <?php
+
+namespace App\Libraries;
+
 use Illuminate\Support\ServiceProvider;
+
 
 class MedusaHasherServiceProvider extends ServiceProvider
 {

@@ -1,5 +1,20 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Branch;
+use App\Chapter;
+use App\ExamList;
+use App\Grade;
+use App\Korders;
+use App\Rating;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
+use Webpatser\Countries\CountriesFacade;
+
+
 class ApiController extends Controller
 {
 

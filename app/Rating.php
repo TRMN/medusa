@@ -1,14 +1,18 @@
 <?php
 
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Model as Eloquent;
+
+
 /**
  * Rating Model
  *
  * Enlisted Ratings
  */
 
-use Jenssegers\Mongodb\Model as Eloquent;
 
-use Illuminate\Database\Eloquent\Model;
 
 class Rating extends Model
 {

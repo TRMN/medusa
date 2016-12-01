@@ -1,5 +1,11 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Chapter;
+use Smalldogs\Html5inputs\Html5InputsFacade;
+
+
 class MardetController extends Controller
 {
 

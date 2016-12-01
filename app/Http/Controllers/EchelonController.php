@@ -1,5 +1,18 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Branch;
+use App\Chapter;
+use App\Type;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+
+
 /**
  * Class EchelonController
  */
