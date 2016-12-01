@@ -40,7 +40,9 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        print User::where('member_id', '=', 'RMN-1094-12')->first()->getPostnominalsFromAwards();
+        $this->info('Attemping to retrieve a user');
+        var_dump(User::where('member_id', '=', 'RMN-1094-12')->first());
+        
     }
 
     /**
