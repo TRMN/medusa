@@ -6,20 +6,20 @@
 
 @section('content')
     <h1>Create New Announcement</h1>
-    {{ Form::model('announcement', [ 'route' => [ 'announcement.store' ] ] ) }}
+    {!! Form::model('announcement', [ 'route' => [ 'announcement.store' ] ] ) !!}
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
-            {{ Form::label('summary', 'Summary') }} {{ Form::text('summary') }}
+            {!! Form::label('summary', 'Summary') !!} {!! Form::text('summary') !!}
         </div>
     </div>
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
-            {{ Form::label('body', 'Message') }} {{ Form::textarea('body') }}
+            {!! Form::label('body', 'Message') !!} {!! Form::textarea('body') !!}
         </div>
     </div>
     <p>Note: this announcement will not be published immediately when you save.</p>
-    {{ Form::submit('Save', [ 'class' => 'button' ]) }}
-    {{ Form::close() }}
+    {!! Form::submit('Save', [ 'class' => 'button' ]) !!}
+    {!! Form::close() !!}
 @stop
 
 @section('scriptFooter')

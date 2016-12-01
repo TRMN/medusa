@@ -19,10 +19,10 @@
 
 <div class="row">
     <div class="alert-box" data-alert>
-        <p>{{ $e->getMessage() }}</p>
+        <p>{!! $e->getMessage() !!}</p>
         <p>Stack Trace:</p>
-        <p class="small">{{ nl2br($e->getTraceAsString()) }}</p>
-        <p>{{date('Y-m-d H:m:s')}}</p>
+        <p class="small">{!! nl2br($e->getTraceAsString()) !!}</p>
+        <p>{!!date('Y-m-d H:m:s')!!}</p>
     </div>
 </div>
 

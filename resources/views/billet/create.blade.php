@@ -7,14 +7,14 @@ Create a Billet
 @section('content')
 <h2>Create a Billet</h2>
 
-{{ Form::open( [ 'route' => [ 'billet.store' ] ] ) }}
+{!! Form::open( [ 'route' => [ 'billet.store' ] ] ) !!}
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
-    {{ Form::label('billet_name', 'Billet Name') }} {{ Form::text('billet_name') }}
+    {!! Form::label('billet_name', 'Billet Name') !!} {!! Form::text('billet_name') !!}
     </div>
 </div>
 
 
-{{ Form::submit( 'Save', [ 'class' => 'button round'] ) }}
-{{ Form::close() }}
+{!! Form::submit( 'Save', [ 'class' => 'button round'] ) !!}
+{!! Form::close() !!}
 @stop

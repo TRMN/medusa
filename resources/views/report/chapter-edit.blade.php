@@ -1,16 +1,16 @@
 @extends('layout')
 
 @section('pageTitle')
-    {{date('F, Y', strtotime($report->report_date))}} Chapter Report
-    for {{$report->chapter_info['chapter_name']}}
+    {!!date('F, Y', strtotime($report->report_date))!!} Chapter Report
+    for {!!$report->chapter_info['chapter_name']!!}
 @stop
 
 @section('content')
-    <h1 class="text-center">{{date('F, Y', strtotime($report->report_date))}} Chapter Report
-        for {{$report->chapter_info['chapter_name']}}</h1>
+    <h1 class="text-center">{!!date('F, Y', strtotime($report->report_date))!!} Chapter Report
+        for {!!$report->chapter_info['chapter_name']!!}</h1>
     <hr>
 
-    {{Form::model($report, [ 'route' => [ 'report.update', $report->id ], 'method' => 'put'])}}
+    {!!Form::model($report, [ 'route' => [ 'report.update', $report->id ], 'method' => 'put'])!!}
 
     <div class="row">
         <div class="columns small-12 small-text-center my reportHeader">
@@ -29,7 +29,7 @@
             Name:
         </div>
         <div class="columns small-9">
-            {{$report->command_crew['Commanding Officer']['first_name']}} @if(empty($report->command_crew['Commanding Officer']->middile_name) === false) {{$report->command_crew['Commanding Officer']['middle_name']}} @endif {{$report->command_crew['Commanding Officer']['last_name']}} @if(empty($report->command_crew['Commanding Officer']->suffix) === false) {{$report->command_crew['Commanding Officer']->suffix}} @endif
+            {!!$report->command_crew['Commanding Officer']['first_name']!!} @if(empty($report->command_crew['Commanding Officer']->middile_name) === false) {!!$report->command_crew['Commanding Officer']['middle_name']!!} @endif {!!$report->command_crew['Commanding Officer']['last_name']!!} @if(empty($report->command_crew['Commanding Officer']->suffix) === false) {!!$report->command_crew['Commanding Officer']->suffix!!} @endif
         </div>
     </div>
 
@@ -38,7 +38,7 @@
             SID#:
         </div>
         <div class="columns small-9">
-            {{$report->command_crew['Commanding Officer']['member_id']}}
+            {!!$report->command_crew['Commanding Officer']['member_id']!!}
         </div>
     </div>
 
@@ -47,7 +47,7 @@
             Rank:
         </div>
         <div class="columns small-9">
-            {{$report->command_crew['Commanding Officer']['rank']['grade']}}
+            {!!$report->command_crew['Commanding Officer']['rank']['grade']!!}
         </div>
     </div>
 
@@ -56,13 +56,13 @@
             Last Course Completed:
         </div>
         <div class="columns small-3">
-            {{$report->command_crew['Commanding Officer']['last_course']}}
+            {!!$report->command_crew['Commanding Officer']['last_course']!!}
         </div>
         <div class="columns small-2 my">
             Date of Birth:
         </div>
         <div class="columns small-4">
-            {{date('m/d/Y', strtotime($report->command_crew['Commanding Officer']['dob']))}}
+            {!!date('m/d/Y', strtotime($report->command_crew['Commanding Officer']['dob']))!!}
         </div>
     </div>
 
@@ -72,7 +72,7 @@
         </div>
         <div class="columns small-9">
             @if(empty($report->command_crew['Commanding Officer']['phone_number']) === true)
-                N/A @else {{$report->command_crew['Commanding Officer']['phone_number']}} @endif
+                N/A @else {!!$report->command_crew['Commanding Officer']['phone_number']!!} @endif
         </div>
     </div>
 
@@ -81,7 +81,7 @@
             Email:
         </div>
         <div class="columns small-9">
-            {{$report->command_crew['Commanding Officer']['email_address']}}
+            {!!$report->command_crew['Commanding Officer']['email_address']!!}
         </div>
     </div>
     <br>
@@ -97,7 +97,7 @@
                 Name:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['Executive Officer']['first_name']}} @if(empty($report->command_crew['Executive Officer']->middile_name) === false) {{$report->command_crew['Executive Officer']['middle_name']}} @endif {{$report->command_crew['Executive Officer']['last_name']}} @if(empty($report->command_crew['Executive Officer']->suffix) === false) {{$report->command_crew['Executive Officer']->suffix}} @endif
+                {!!$report->command_crew['Executive Officer']['first_name']!!} @if(empty($report->command_crew['Executive Officer']->middile_name) === false) {!!$report->command_crew['Executive Officer']['middle_name']!!} @endif {!!$report->command_crew['Executive Officer']['last_name']!!} @if(empty($report->command_crew['Executive Officer']->suffix) === false) {!!$report->command_crew['Executive Officer']->suffix!!} @endif
             </div>
         </div>
 
@@ -106,7 +106,7 @@
                 SID#:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['Executive Officer']['member_id']}}
+                {!!$report->command_crew['Executive Officer']['member_id']!!}
             </div>
         </div>
 
@@ -115,7 +115,7 @@
                 Rank:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['Executive Officer']['rank']['grade']}}
+                {!!$report->command_crew['Executive Officer']['rank']['grade']!!}
             </div>
         </div>
 
@@ -124,13 +124,13 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$report->command_crew['Executive Officer']['last_course']}}
+                {!!$report->command_crew['Executive Officer']['last_course']!!}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
             </div>
             <div class="columns small-4">
-                {{date('m/d/Y', strtotime($report->command_crew['Executive Officer']['dob']))}}
+                {!!date('m/d/Y', strtotime($report->command_crew['Executive Officer']['dob']))!!}
             </div>
         </div>
 
@@ -140,7 +140,7 @@
             </div>
             <div class="columns small-9">
                 @if(empty($report->command_crew['Executive Officer']['phone_number']) === true)
-                    N/A @else {{$report->command_crew['Executive Officer']['phone_number']}} @endif
+                    N/A @else {!!$report->command_crew['Executive Officer']['phone_number']!!} @endif
             </div>
         </div>
 
@@ -149,7 +149,7 @@
                 Email:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['Executive Officer']['email_address']}}
+                {!!$report->command_crew['Executive Officer']['email_address']!!}
             </div>
         </div>
     @else
@@ -171,7 +171,7 @@
                 Name:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['Bosun']['first_name']}} @if(empty($report->command_crew['Bosun']->middile_name) === false) {{$report->command_crew['Bosun']['middle_name']}} @endif {{$report->command_crew['Bosun']['last_name']}} @if(empty($report->command_crew['Bosun']->suffix) === false) {{$report->command_crew['Bosun']->suffix}} @endif
+                {!!$report->command_crew['Bosun']['first_name']!!} @if(empty($report->command_crew['Bosun']->middile_name) === false) {!!$report->command_crew['Bosun']['middle_name']!!} @endif {!!$report->command_crew['Bosun']['last_name']!!} @if(empty($report->command_crew['Bosun']->suffix) === false) {!!$report->command_crew['Bosun']->suffix!!} @endif
             </div>
         </div>
 
@@ -180,7 +180,7 @@
                 SID#:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['Bosun']['member_id']}}
+                {!!$report->command_crew['Bosun']['member_id']!!}
             </div>
         </div>
 
@@ -189,7 +189,7 @@
                 Rank:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['Bosun']['rank']['grade']}}
+                {!!$report->command_crew['Bosun']['rank']['grade']!!}
             </div>
         </div>
 
@@ -198,13 +198,13 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$report->command_crew['Bosun']['last_course']}}
+                {!!$report->command_crew['Bosun']['last_course']!!}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
             </div>
             <div class="columns small-4">
-                {{date('m/d/Y', strtotime($report->command_crew['Bosun']['dob']))}}
+                {!!date('m/d/Y', strtotime($report->command_crew['Bosun']['dob']))!!}
             </div>
         </div>
 
@@ -214,7 +214,7 @@
             </div>
             <div class="columns small-9">
                 @if(empty($report->command_crew['Bosun']['phone_number']) === true)
-                    N/A @else {{$report->command_crew['Bosun']['phone_number']}} @endif
+                    N/A @else {!!$report->command_crew['Bosun']['phone_number']!!} @endif
             </div>
         </div>
 
@@ -223,7 +223,7 @@
                 Email:
             </div>
             <div class="columns small-9">
-                {{$report->command_crew['Bosun']['email_address']}}
+                {!!$report->command_crew['Bosun']['email_address']!!}
             </div>
         </div>
     @else
@@ -249,14 +249,14 @@
         @foreach($report->new_crew as $user)
             <div class="row">
                 <row class="columns small-1">
-                    {{$user['rank']['grade']}}
+                    {!!$user['rank']['grade']!!}
                 </row>
                 <div class="columns small-4">
-                    {{ $user['first_name'] }}{{ isset($user['middle_name']) ? ' ' . $user['middle_name'] : '' }} {{ $user['last_name'] }}{{ !empty($user['suffix']) ? ' ' . $user['suffix'] : '' }}
-                    , {{$user['branch']}}
+                    {!! $user['first_name'] !!}{{ isset($user['middle_name']) ? ' ' . $user['middle_name'] : '' }} {!! $user['last_name'] !!}{{ !empty($user['suffix']) ? ' ' . $user['suffix'] : '' }}
+                    , {!!$user['branch']!!}
                 </div>
                 <div class="columns small-3 end">
-                    {{$user['member_id']}}
+                    {!!$user['member_id']!!}
                 </div>
             </div>
         @endforeach
@@ -277,7 +277,7 @@
         </div>
         <div class="columns small-4">
             @if(empty($report->chapter_info['ship_class']) === false)
-                {{$report->chapter_info['ship_class']}}
+                {!!$report->chapter_info['ship_class']!!}
             @endif
         </div>
         <div class="columns small-2">
@@ -285,7 +285,7 @@
         </div>
         <div class="columns small-4">
             @if(empty($report->chapter_info['hull_number']) === false)
-                {{$report->chapter_info['hull_number']}}
+                {!!$report->chapter_info['hull_number']!!}
             @endif
         </div>
     </div>
@@ -295,13 +295,13 @@
             Ship Name:
         </div>
         <div class="columns small-4">
-            {{$report->chapter_info['chapter_name']}}
+            {!!$report->chapter_info['chapter_name']!!}
         </div>
         <div class="columns small-2">
             Location:
         </div>
         <div class="columns small-4">
-            {{$report->command_crew['Commanding Officer']['city']}}, {{$report->command_crew['Commanding Officer']['state_province']}}
+            {!!$report->command_crew['Commanding Officer']['city']!!}, {!!$report->command_crew['Commanding Officer']['state_province']!!}
         </div>
     </div>
 
@@ -311,7 +311,7 @@
                 Web Site:
             </div>
             <div class="columns small-10">
-                {{$report->chapter_info['url']}}
+                {!!$report->chapter_info['url']!!}
             </div>
         </div>
     @endif
@@ -329,7 +329,7 @@
             Promotions Awarded/Requested:
         </div>
         <div class="columns small-9">
-            {{Form::text('promotion_actions')}}
+            {!!Form::text('promotion_actions')!!}
         </div>
     </div>
 
@@ -338,18 +338,18 @@
             Awards Given/Requested:
         </div>
         <div class="columns small-9">
-            {{Form::text('award_actions')}}
+            {!!Form::text('award_actions')!!}
         </div>
     </div>
 
     <div class="row">
         <div class="columns small-3">
-            {{Form::hidden('chapter_id',$report->chapter_id, ['id' => 'chapter_id'])}}
+            {!!Form::hidden('chapter_id',$report->chapter_id, ['id' => 'chapter_id'])!!}
             <a href="#" data-reveal-id="examList" class="fi-refresh green size-21" id="refreshExamList"
                title="Refresh Course List"></a> Courses Completed:
         </div>
         <div class="columns small-9">
-            {{Form::textarea('courses', $report->courses, ['id' => 'courses'])}}
+            {!!Form::textarea('courses', $report->courses, ['id' => 'courses'])!!}
         </div>
     </div>
 
@@ -358,7 +358,7 @@
             Chapter Activites, Last 60 Days:
         </div>
         <div class="columns small-9">
-            {{Form::textarea('activities')}}
+            {!!Form::textarea('activities')!!}
         </div>
     </div>
 
@@ -367,7 +367,7 @@
             Problems:
         </div>
         <div class="columns small-9">
-            {{Form::textarea('problems')}}
+            {!!Form::textarea('problems')!!}
         </div>
     </div>
 
@@ -376,18 +376,18 @@
             General Questions:
         </div>
         <div class="columns small-9">
-            {{Form::textarea('questions')}}
+            {!!Form::textarea('questions')!!}
         </div>
     </div>
 
     <div class="text-center button-bar">
-        <a href="{{ URL::previous() }}" class="button round"> Cancel </a>&nbsp;
-        {{ Form::submit('Save', [ 'class' => 'button round' ] ) }}&nbsp;
-        {{ Form::submit('Send', [ 'class' => 'button round', 'name' => 'send_report']) }}
+        <a href="{!! URL::previous() !!}" class="button round"> Cancel </a>&nbsp;
+        {!! Form::submit('Save', [ 'class' => 'button round' ] ) !!}&nbsp;
+        {!! Form::submit('Send', [ 'class' => 'button round', 'name' => 'send_report']) !!}
     </div>
 
 
-    {{Form::close()}}
+    {!!Form::close()!!}
 
     <div id="examList" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
         <h4 class="text-center">Current Completed Exams</h4>
@@ -397,7 +397,7 @@
 
         <div class="row">
             <div>
-                {{Form::textarea('results', null, ['id' => 'results', 'disabled'])}}
+                {!!Form::textarea('results', null, ['id' => 'results', 'disabled'])!!}
             </div>
         </div>
         <div class="row">

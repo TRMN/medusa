@@ -3,9 +3,9 @@
 <body>
 <table border="0">
     <tr>
-        <td valign="middle"><img src="{{$message->embed(public_path() . '/images/shoulder-patch.png')}}" alt="Rampant Manticore" /></td>
+        <td valign="middle"><img src="{!!$message->embed(public_path() . '/images/shoulder-patch.png')!!}" alt="Rampant Manticore" /></td>
         <td valign="middle" align="center"><h2>THE ROYAL MANTICORAN NAVY<br />OFFICE OF THE FIFTH SPACE LORD<br />BUREAU OF PERSONNEL<br/>ADMIRALTY HOUSE<br/>LANDING</h2></td>
-        <td valign="middle"><img src="{{$message->embed(public_path() . '/images/bupers.png')}}" alt="BuPers" /></td>
+        <td valign="middle"><img src="{!!$message->embed(public_path() . '/images/bupers.png')!!}" alt="BuPers" /></td>
     </tr>
 </table>
 
@@ -18,27 +18,27 @@
     The following is the address I currently have for you:</p>
 
 <p><br>
-    RMN ID: {{$user->member_id}}<br>
-    Name: {{$user->first_name}} {{$user->last_name}}<br>
-    Address: {{$user->address1}}<br>
+    RMN ID: {!!$user->member_id!!}<br>
+    Name: {!!$user->first_name!!} {!!$user->last_name!!}<br>
+    Address: {!!$user->address1!!}<br>
     @if(!empty($user->address2))
-    Address: {{$user->address2}}<br>
+    Address: {!!$user->address2!!}<br>
     @endif
-    City: {{$user->city}}<br>
-    State: {{$user->state_province}}<br>
-    Zip/Postal Code: {{$user->postal_code}} <br>
-    Country: {{$user->country}}<br>
+    City: {!!$user->city!!}<br>
+    State: {!!$user->state_province!!}<br>
+    Zip/Postal Code: {!!$user->postal_code!!} <br>
+    Country: {!!$user->country!!}<br>
     @if(!empty($user->phone_number))
-    Phone: {{$user->phone_number}}<br>
+    Phone: {!!$user->phone_number!!}<br>
     @endif
-    Branch: {{$user->branch}}<br>
-    Email: {{$user->email_address}}<br>
+    Branch: {!!$user->branch!!}<br>
+    Email: {!!$user->email_address!!}<br>
     @if(!empty($user->dob))
-    Birthday: {{$user->dob}}<br>
+    Birthday: {!!$user->dob!!}<br>
     @endif
-    Rank: {{$user->getGreeting()}}<br>
+    Rank: {!!$user->getGreeting()!!}<br>
     <br>
-    You are currently assigned to the {{$user->getPrimaryAssignmentName()}}. To learn about our Chapters, visit the
+    You are currently assigned to the {!!$user->getPrimaryAssignmentName()!!}. To learn about our Chapters, visit the
     Berthing Registry at: <a href="http://is.gd/9uhAib">http://is.gd/9uhAib</a></p>
 
 <p>Be sure to check out our main Facebook group at <a href="https://www.facebook.com/groups/TRMN.ORG/">https://www.facebook.com/groups/TRMN.ORG/</a>

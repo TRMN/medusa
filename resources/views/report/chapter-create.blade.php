@@ -1,16 +1,16 @@
 @extends('layout')
 
 @section('pageTitle')
-    {{$month}} Chapter Report for {{$chapter->chapter_name}}
+    {!!$month!!} Chapter Report for {!!$chapter->chapter_name!!}
 @stop
 
 @section('content')
-    <h1 class="text-center">{{$month}} Chapter Report for {{$chapter->chapter_name}}</h1>
+    <h1 class="text-center">{!!$month!!} Chapter Report for {!!$chapter->chapter_name!!}</h1>
     <hr>
 
-    {{Form::open([ 'route' => [ 'report.store' ]])}}
-    {{Form::hidden('chapter_id', $chapter->_id)}}
-    {{Form::hidden('report_date', date('Y-m', strtotime($month)))}}
+    {!!Form::open([ 'route' => [ 'report.store' ]])!!}
+    {!!Form::hidden('chapter_id', $chapter->_id)!!}
+    {!!Form::hidden('report_date', date('Y-m', strtotime($month)))!!}
     <div class="row">
         <div class="columns small-12 small-text-center my reportHeader">
             <br>COMMAND CREW INFORMATION<br><br>
@@ -28,7 +28,7 @@
             Name:
         </div>
         <div class="columns small-9">
-            {{$command[1]['user']->first_name}} @if(empty($command[1]['user']->middile_name) === false) {{$command[1]['user']->middle_name}} @endif {{$command[1]['user']->last_name}} @if(empty($command[1]['user']->suffix) === false) {{$command[1]['user']->suffix}} @endif
+            {!!$command[1]['user']->first_name!!} @if(empty($command[1]['user']->middile_name) === false) {!!$command[1]['user']->middle_name!!} @endif {!!$command[1]['user']->last_name!!} @if(empty($command[1]['user']->suffix) === false) {!!$command[1]['user']->suffix!!} @endif
         </div>
     </div>
 
@@ -37,7 +37,7 @@
             SID#:
         </div>
         <div class="columns small-9">
-            {{$command[1]['user']->member_id}}
+            {!!$command[1]['user']->member_id!!}
         </div>
     </div>
 
@@ -46,7 +46,7 @@
             Rank:
         </div>
         <div class="columns small-9">
-            {{$command[1]['user']->rank['grade']}}
+            {!!$command[1]['user']->rank['grade']!!}
         </div>
     </div>
 
@@ -55,13 +55,13 @@
             Last Course Completed:
         </div>
         <div class="columns small-3">
-            {{$command[1]['user']->getHighestMainLineExamForBranch('officer+flag')}}
+            {!!$command[1]['user']->getHighestMainLineExamForBranch('officer+flag')!!}
         </div>
         <div class="columns small-2 my">
             Date of Birth:
         </div>
         <div class="columns small-4">
-            {{date('m/d/Y', strtotime($command[1]['user']->dob))}}
+            {!!date('m/d/Y', strtotime($command[1]['user']->dob))!!}
         </div>
     </div>
 
@@ -70,7 +70,7 @@
             Phone:
         </div>
         <div class="columns small-9">
-            @if(empty($command[1]['user']) === true)N/A @else {{$command[1]['user']->phone_number}} @endif
+            @if(empty($command[1]['user']) === true)N/A @else {!!$command[1]['user']->phone_number!!} @endif
         </div>
     </div>
 
@@ -79,7 +79,7 @@
             Email:
         </div>
         <div class="columns small-9">
-            {{$command[1]['user']->email_address}}
+            {!!$command[1]['user']->email_address!!}
         </div>
     </div>
     <br>
@@ -96,7 +96,7 @@
                 Name:
             </div>
             <div class="columns small-9">
-                {{$command[2]['user']->first_name}} @if(empty($command[2]['user']->middile_name) === false) {{$command[2]['user']->middle_name}} @endif {{$command[2]['user']->last_name}} @if(empty($command[2]['user']->suffix) === false) {{$command[2]['user']->suffix}} @endif
+                {!!$command[2]['user']->first_name!!} @if(empty($command[2]['user']->middile_name) === false) {!!$command[2]['user']->middle_name!!} @endif {!!$command[2]['user']->last_name!!} @if(empty($command[2]['user']->suffix) === false) {!!$command[2]['user']->suffix!!} @endif
             </div>
         </div>
 
@@ -105,7 +105,7 @@
                 SID#:
             </div>
             <div class="columns small-9">
-                {{$command[2]['user']->member_id}}
+                {!!$command[2]['user']->member_id!!}
             </div>
         </div>
 
@@ -114,7 +114,7 @@
                 Rank:
             </div>
             <div class="columns small-9">
-                {{$command[2]['user']->rank['grade']}}
+                {!!$command[2]['user']->rank['grade']!!}
             </div>
         </div>
 
@@ -123,13 +123,13 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$command[2]['user']->getHighestMainLineExamForBranch('officer+flag')}}
+                {!!$command[2]['user']->getHighestMainLineExamForBranch('officer+flag')!!}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
             </div>
             <div class="columns small-4">
-                {{date('m/d/Y', strtotime($command[2]['user']->dob))}}
+                {!!date('m/d/Y', strtotime($command[2]['user']->dob))!!}
             </div>
         </div>
 
@@ -138,7 +138,7 @@
                 Phone:
             </div>
             <div class="columns small-9">
-                @if(empty($command[2]['user']) === true)N/A @else {{$command[2]['user']->phone_number}} @endif
+                @if(empty($command[2]['user']) === true)N/A @else {!!$command[2]['user']->phone_number!!} @endif
             </div>
         </div>
 
@@ -147,7 +147,7 @@
                 Email:
             </div>
             <div class="columns small-9">
-                {{$command[2]['user']->email_address}}
+                {!!$command[2]['user']->email_address!!}
             </div>
         </div>
     @else
@@ -171,7 +171,7 @@
                 Name:
             </div>
             <div class="columns small-9">
-                {{$command[3]['user']->first_name}} @if(empty($command[3]['user']->middile_name) === false) {{$command[3]['user']->middle_name}} @endif {{$command[3]['user']->last_name}} @if(empty($command[3]['user']->suffix) === false) {{$command[3]['user']->suffix}} @endif
+                {!!$command[3]['user']->first_name!!} @if(empty($command[3]['user']->middile_name) === false) {!!$command[3]['user']->middle_name!!} @endif {!!$command[3]['user']->last_name!!} @if(empty($command[3]['user']->suffix) === false) {!!$command[3]['user']->suffix!!} @endif
             </div>
         </div>
 
@@ -180,7 +180,7 @@
                 SID#:
             </div>
             <div class="columns small-9">
-                {{$command[3]['user']->member_id}}
+                {!!$command[3]['user']->member_id!!}
             </div>
         </div>
 
@@ -189,7 +189,7 @@
                 Rank:
             </div>
             <div class="columns small-9">
-                {{$command[3]['user']->rank['grade']}}
+                {!!$command[3]['user']->rank['grade']!!}
             </div>
         </div>
 
@@ -198,13 +198,13 @@
                 Last Course Completed:
             </div>
             <div class="columns small-3">
-                {{$command[3]['user']->getHighestMainLineExamForBranch('enlisted')}}
+                {!!$command[3]['user']->getHighestMainLineExamForBranch('enlisted')!!}
             </div>
             <div class="columns small-2 my">
                 Date of Birth:
             </div>
             <div class="columns small-4">
-                {{date('m/d/Y', strtotime($command[3]['user']->dob))}}
+                {!!date('m/d/Y', strtotime($command[3]['user']->dob))!!}
             </div>
         </div>
 
@@ -213,7 +213,7 @@
                 Phone:
             </div>
             <div class="columns small-9">
-                @if(empty($command[3]['user']) === true)N/A @else {{$command[3]['user']->phone_number}} @endif
+                @if(empty($command[3]['user']) === true)N/A @else {!!$command[3]['user']->phone_number!!} @endif
             </div>
         </div>
 
@@ -222,7 +222,7 @@
                 Email:
             </div>
             <div class="columns small-9">
-                {{$command[3]['user']->email_address}}
+                {!!$command[3]['user']->email_address!!}
             </div>
         </div>
     @else
@@ -248,14 +248,14 @@
         @foreach($newCrew as $user)
             <div class="row">
                 <row class="columns small-1">
-                    {{$user['rank']['grade']}}
+                    {!!$user['rank']['grade']!!}
                 </row>
                 <div class="columns small-4">
-                    {{ $user['first_name'] }}{{ isset($user['middle_name']) ? ' ' . $user['middle_name'] : '' }} {{ $user['last_name'] }}{{ !empty($user['suffix']) ? ' ' . $user['suffix'] : '' }}
-                    {{!empty($user['branch']) ? ', ' . $user['branch'] : ''}}
+                    {!! $user['first_name'] !!}{{ isset($user['middle_name']) ? ' ' . $user['middle_name'] : '' }} {!! $user['last_name'] !!}{{ !empty($user['suffix']) ? ' ' . $user['suffix'] : '' }}
+                    {!!!empty($user['branch']) ? ', ' . $user['branch'] : ''!!}
                 </div>
                 <div class="columns small-3 end">
-                    {{$user['member_id']}}
+                    {!!$user['member_id']!!}
                 </div>
             </div>
         @endforeach
@@ -276,7 +276,7 @@
         </div>
         <div class="columns small-4">
             @if(empty($chapter->ship_class) === false)
-                {{$chapter->ship_class}}
+                {!!$chapter->ship_class!!}
             @else
                 N/A
             @endif
@@ -286,7 +286,7 @@
         </div>
         <div class="columns small-4">
             @if(empty($chapter->hull_number) === false)
-                {{$chapter->hull_number}}
+                {!!$chapter->hull_number!!}
             @else
                 N/A
             @endif
@@ -298,13 +298,13 @@
             Ship Name:
         </div>
         <div class="columns small-4">
-            {{$chapter->chapter_name}}
+            {!!$chapter->chapter_name!!}
         </div>
         <div class="columns small-2">
             Location:
         </div>
         <div class="columns small-4">
-            {{$command[1]['user']->city}}, {{$command[1]['user']->state_province}}
+            {!!$command[1]['user']->city!!}, {!!$command[1]['user']->state_province!!}
         </div>
     </div>
 
@@ -314,7 +314,7 @@
                 Web Site:
             </div>
             <div class="columns small-10">
-                {{$chapter->url}}
+                {!!$chapter->url!!}
             </div>
         </div>
     @endif
@@ -332,7 +332,7 @@
             Promotions Awarded/Requested:
         </div>
         <div class="columns small-9">
-            {{Form::text('promotion_actions')}}
+            {!!Form::text('promotion_actions')!!}
         </div>
     </div>
 
@@ -341,7 +341,7 @@
             Awards Given/Requested:
         </div>
         <div class="columns small-9">
-            {{Form::text('award_actions')}}
+            {!!Form::text('award_actions')!!}
         </div>
     </div>
 
@@ -350,7 +350,7 @@
             Courses Completed:
         </div>
         <div class="columns small-9">
-            {{Form::textarea('courses', $completed)}}
+            {!!Form::textarea('courses', $completed)!!}
         </div>
     </div>
 
@@ -359,7 +359,7 @@
             Chapter Activites, Last 60 Days:
         </div>
         <div class="columns small-9">
-            {{Form::textarea('activities')}}
+            {!!Form::textarea('activities')!!}
         </div>
     </div>
 
@@ -368,7 +368,7 @@
             Problems:
         </div>
         <div class="columns small-9">
-            {{Form::textarea('problems')}}
+            {!!Form::textarea('problems')!!}
         </div>
     </div>
 
@@ -377,16 +377,16 @@
             General Questions:
         </div>
         <div class="columns small-9">
-            {{Form::textarea('questions')}}
+            {!!Form::textarea('questions')!!}
         </div>
     </div>
 
     <div class="text-center button-bar">
-        <a href="{{ URL::previous() }}" class="button round"> Cancel </a>&nbsp;
-        {{ Form::submit('Save', [ 'class' => 'button round' ] ) }}&nbsp;
-        {{ Form::submit('Send', [ 'class' => 'button round', 'name' => 'send_report']) }}
+        <a href="{!! URL::previous() !!}" class="button round"> Cancel </a>&nbsp;
+        {!! Form::submit('Save', [ 'class' => 'button round' ] ) !!}&nbsp;
+        {!! Form::submit('Send', [ 'class' => 'button round', 'name' => 'send_report']) !!}
     </div>
 
 
-    {{Form::close()}}
+    {!!Form::close()!!}
 @stop
