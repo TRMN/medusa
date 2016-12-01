@@ -8,7 +8,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Rating extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Rating extends Model
 {
 
     protected $fillable = [ 'rate_code', 'rate' ];

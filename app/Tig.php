@@ -2,7 +2,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Tig extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Tig extends Model
 {
 
     protected $collection = "tig";

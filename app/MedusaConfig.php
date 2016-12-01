@@ -2,7 +2,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class MedusaConfig extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class MedusaConfig extends Model
 {
     protected $fillable = [
       'key',

@@ -2,7 +2,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Status extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Status extends Model
 {
     protected $fillable = [
         'status',

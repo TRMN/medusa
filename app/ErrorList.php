@@ -1,7 +1,9 @@
 <?php
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class ErrorList extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class ErrorList extends Model
 {
     protected $fillable = [ 'severity', 'source', 'msg' ];
 

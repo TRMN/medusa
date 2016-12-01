@@ -8,7 +8,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Grade extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Grade extends Model
 {
 
     protected $fillable = [ 'grade', 'rank' ];
