@@ -85,13 +85,13 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'host' => 'localhost',
+            'host' => ['172.31.9.142', '172.31.51.196', '172.31.55.151'],
             'port' => 27017,
             'username' => '',
             'password' => '',
-            'database' => 'trmn'
+            'database' => 'trmn',
+            'options' => ['replicaSet' => 'rs0'],
         ],
-
     ],
 
     /*
