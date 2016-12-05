@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
-
 class ExamController extends Controller
 {
 

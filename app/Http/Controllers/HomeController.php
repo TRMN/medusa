@@ -7,7 +7,6 @@ use App\Korders;
 use App\Ptitles;
 use Illuminate\Support\Facades\Auth;
 
-
 class HomeController extends Controller
 {
 

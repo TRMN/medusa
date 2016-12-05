@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Webpatser\Countries\CountriesFacade;
 
-
 class ApiController extends Controller
 {
 

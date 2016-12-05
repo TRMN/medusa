@@ -25,7 +25,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Webpatser\Countries\CountriesFacade;
 
-
 class UserController extends Controller
 {
 

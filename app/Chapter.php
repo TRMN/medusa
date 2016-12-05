@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Jenssegers\Mongodb\Model as Eloquent;
 
-
-
-
 class Chapter extends Model
 {
 
