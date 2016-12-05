@@ -146,7 +146,7 @@ return [
 
         'MedusaHasherServiceProvider',
         'Jenssegers\Mongodb\MongodbServiceProvider',
-        'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
+//        'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Webpatser\Countries\CountriesServiceProvider',
         'mnshankar\CSV\CSVServiceProvider',
