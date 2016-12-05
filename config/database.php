@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => 'mongodb',
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -48,14 +48,14 @@ return [
 
         'sqlite' => [
             'driver'   => 'sqlite',
-            'database' => storage_path().'/database.sqlite',
+            'database' => database_path('database.sqlite'),
             'prefix'   => '',
         ],
 
         'mongodb' => [
             'driver' => 'mongodb',
             'host' => ['172.31.9.142', '172.31.51.196', '172.31.55.151'],
-            'port' => 27017,
+            'port' => env('DB_PORT'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'database' => env('DB_DATABASE', 'forge'),
@@ -91,6 +91,7 @@ return [
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
+            'charset'  => 'utf8',
             'prefix'   => '',
         ],
 
@@ -125,8 +126,9 @@ return [
         'cluster' => false,
 
         'default' => [
-            'host'     => '127.0.0.1',
-            'port'     => 6379,
+            'host'     => env('REDIS_HOST', 'localhost'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port'     => env('REDIS_PORT', 6379),
             'database' => 0,
         ],
 
