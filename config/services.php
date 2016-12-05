@@ -2,7 +2,7 @@
 
 return [
 
-    /*
+	/*
 	|--------------------------------------------------------------------------
 	| Third Party Services
 	|--------------------------------------------------------------------------
@@ -14,18 +14,24 @@ return [
 	|
 	*/
 
-    'mailgun' => [
-        'domain' => '',
-        'secret' => '',
-    ],
+	'mailgun' => [
+		'domain' => '',
+		'secret' => '',
+	],
 
-    'mandrill' => [
-        'secret' => '',
-    ],
+	'mandrill' => [
+		'secret' => '',
+	],
 
-    'stripe' => [
-        'model'  => 'User',
-        'secret' => '',
-    ],
+	'ses' => [
+		'key' => '',
+		'secret' => '',
+		'region' => 'us-east-1',
+	],
+
+	'stripe' => [
+		'model'  => 'App\User',
+		'secret' => '',
+	],
 
 ];

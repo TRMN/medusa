@@ -13,9 +13,7 @@ return [
     |
     */
 
-    'debug' => false,
-
-    'log' => 'daily',
+    'debug' => env('APP_DEBUG'),
 
     /*
     |--------------------------------------------------------------------------
@@ -80,9 +78,24 @@ return [
     |
     */
 
-    'key' => 'vGlJVOC2FYUklsK1Yx7yjA4Xsf84Y6qq',
+    'key' => env('APP_KEY', 'SomeRandomString'),
 
     'cipher' => MCRYPT_RIJNDAEL_128,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Logging Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the log settings for your application. Out of
+    | the box, Laravel uses the Monolog PHP logging library. This gives
+    | you a variety of powerful log handlers / formatters to utilize.
+    |
+    | Available Settings: "single", "daily", "syslog", "errorlog"
+    |
+    */
+
+    'log' => 'daily',
 
     /*
     |--------------------------------------------------------------------------
@@ -97,8 +110,12 @@ return [
 
     'providers' => [
 
+        /*
+         * Laravel Framework Service Providers...
+         */
         'Illuminate\Foundation\Providers\ArtisanServiceProvider',
         'Illuminate\Auth\AuthServiceProvider',
+        'Illuminate\Bus\BusServiceProvider',
         'Illuminate\Cache\CacheServiceProvider',
         'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
         'Illuminate\Routing\ControllerServiceProvider',
@@ -106,16 +123,28 @@ return [
         'Illuminate\Database\DatabaseServiceProvider',
         'Illuminate\Encryption\EncryptionServiceProvider',
         'Illuminate\Filesystem\FilesystemServiceProvider',
-        'MedusaHasherServiceProvider',
+        'Illuminate\Foundation\Providers\FoundationServiceProvider',
         'Illuminate\Mail\MailServiceProvider',
         'Illuminate\Pagination\PaginationServiceProvider',
+        'Illuminate\Pipeline\PipelineServiceProvider',
         'Illuminate\Queue\QueueServiceProvider',
         'Illuminate\Redis\RedisServiceProvider',
+        'Illuminate\Auth\Passwords\PasswordResetServiceProvider',
         'Illuminate\Session\SessionServiceProvider',
         'Illuminate\Translation\TranslationServiceProvider',
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
-        'Way\Generators\GeneratorsServiceProvider',
+
+        /*
+         * Application Service Providers...
+         */
+        'App\Providers\AppServiceProvider',
+        'App\Providers\BusServiceProvider',
+        'App\Providers\ConfigServiceProvider',
+        'App\Providers\EventServiceProvider',
+        'App\Providers\RouteServiceProvider',
+
+        'MedusaHasherServiceProvider',
         'Jenssegers\Mongodb\MongodbServiceProvider',
         'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
@@ -128,30 +157,8 @@ return [
         'Intervention\Image\ImageServiceProvider',
         'Medusa\Services\MedusaServiceProvider',
         'Medusa\Providers\OAuthServiceProvider',
-        'Illuminate\Bus\BusServiceProvider',
-        'Illuminate\Foundation\Providers\FoundationServiceProvider',
-        'Illuminate\Pipeline\PipelineServiceProvider',
-        'Illuminate\Auth\Passwords\PasswordResetServiceProvider',
-        'Collective\Html\HtmlServiceProvider',
-        'App\Providers\AppServiceProvider',
-        'App\Providers\BusServiceProvider',
-        'App\Providers\ConfigServiceProvider',
-        'App\Providers\EventServiceProvider',
-        'App\Providers\RouteServiceProvider'
+
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Service Provider Manifest
-    |--------------------------------------------------------------------------
-    |
-    | The service provider manifest is used by Laravel to lazy load service
-    | providers which are not needed for each request, as well to keep a
-    | list of all of the services. Here, you may set its storage spot.
-    |
-    */
-
-    'manifest' => storage_path() . '/meta',
 
     /*
     |--------------------------------------------------------------------------
@@ -166,36 +173,40 @@ return [
 
     'aliases' => [
 
-        'App'                 => 'Illuminate\Support\Facades\App',
-        'Artisan'             => 'Illuminate\Support\Facades\Artisan',
-        'Auth'                => 'Illuminate\Support\Facades\Auth',
-        'Blade'               => 'Illuminate\Support\Facades\Blade',
-        'Cache'               => 'Illuminate\Support\Facades\Cache',
-        'Config'              => 'Illuminate\Support\Facades\Config',
-        'Cookie'              => 'Illuminate\Support\Facades\Cookie',
-        'Crypt'               => 'Illuminate\Support\Facades\Crypt',
-        'DB'                  => 'Illuminate\Support\Facades\DB',
-        'Eloquent'            => 'Illuminate\Database\Eloquent\Model',
-        'Event'               => 'Illuminate\Support\Facades\Event',
-        'File'                => 'Illuminate\Support\Facades\File',
+        'App'       => 'Illuminate\Support\Facades\App',
+        'Artisan'   => 'Illuminate\Support\Facades\Artisan',
+        'Auth'      => 'Illuminate\Support\Facades\Auth',
+        'Blade'     => 'Illuminate\Support\Facades\Blade',
+        'Bus'       => 'Illuminate\Support\Facades\Bus',
+        'Cache'     => 'Illuminate\Support\Facades\Cache',
+        'Config'    => 'Illuminate\Support\Facades\Config',
+        'Cookie'    => 'Illuminate\Support\Facades\Cookie',
+        'Crypt'     => 'Illuminate\Support\Facades\Crypt',
+        'DB'        => 'Illuminate\Support\Facades\DB',
+        'Eloquent'  => 'Illuminate\Database\Eloquent\Model',
+        'Event'     => 'Illuminate\Support\Facades\Event',
+        'File'      => 'Illuminate\Support\Facades\File',
+        'Hash'      => 'Illuminate\Support\Facades\Hash',
+        'Input'     => 'Illuminate\Support\Facades\Input',
+        'Inspiring' => 'Illuminate\Foundation\Inspiring',
+        'Lang'      => 'Illuminate\Support\Facades\Lang',
+        'Log'       => 'Illuminate\Support\Facades\Log',
+        'Mail'      => 'Illuminate\Support\Facades\Mail',
+        'Password'  => 'Illuminate\Support\Facades\Password',
+        'Queue'     => 'Illuminate\Support\Facades\Queue',
+        'Redirect'  => 'Illuminate\Support\Facades\Redirect',
+        'Redis'     => 'Illuminate\Support\Facades\Redis',
+        'Request'   => 'Illuminate\Support\Facades\Request',
+        'Response'  => 'Illuminate\Support\Facades\Response',
+        'Route'     => 'Illuminate\Support\Facades\Route',
+        'Schema'    => 'Illuminate\Support\Facades\Schema',
+        'Session'   => 'Illuminate\Support\Facades\Session',
+        'Storage'   => 'Illuminate\Support\Facades\Storage',
+        'URL'       => 'Illuminate\Support\Facades\URL',
+        'Validator' => 'Illuminate\Support\Facades\Validator',
+        'View'      => 'Illuminate\Support\Facades\View',
+
         'Form'                => 'Smalldogs\Html5inputs\Html5InputsFacade',
-        'Hash'                => 'Illuminate\Support\Facades\Hash',
-        'Input'               => 'Illuminate\Support\Facades\Input',
-        'Lang'                => 'Illuminate\Support\Facades\Lang',
-        'Log'                 => 'Illuminate\Support\Facades\Log',
-        'Mail'                => 'Illuminate\Support\Facades\Mail',
-        'Password'            => 'Illuminate\Support\Facades\Password',
-        'Queue'               => 'Illuminate\Support\Facades\Queue',
-        'Redirect'            => 'Illuminate\Support\Facades\Redirect',
-        'Redis'               => 'Illuminate\Support\Facades\Redis',
-        'Request'             => 'Illuminate\Support\Facades\Request',
-        'Response'            => 'Illuminate\Support\Facades\Response',
-        'Route'               => 'Illuminate\Support\Facades\Route',
-        'Schema'              => 'Illuminate\Support\Facades\Schema',
-        'Session'             => 'Illuminate\Support\Facades\Session',
-        'URL'                 => 'Illuminate\Support\Facades\URL',
-        'Validator'           => 'Illuminate\Support\Facades\Validator',
-        'View'                => 'Illuminate\Support\Facades\View',
         'Moloquent'           => 'Jenssegers\Mongodb\Model',
         'Countries'           => 'Webpatser\Countries\CountriesFacade',
         'CSV'                 => 'mnshankar\CSV\CSVFacade',
@@ -203,12 +214,10 @@ return [
         'Image'               => 'Intervention\Image\Facades\Image',
         'SimpleCaptcha'       => 'Iorme\SimpleCaptcha\Facades\SimpleCaptcha',
         'QrCode'              => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
-
-        'Bus' => 'Illuminate\Support\Facades\Bus',
-        'Inspiring' => 'Illuminate\Foundation\Inspiring',
-        'Storage' => 'Illuminate\Support\Facades\Storage',
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
+
     ],
+
     'version' => "Trevor's Star (Project MEDUSA v1.3.16)",
 ];
