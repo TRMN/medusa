@@ -1,6 +1,11 @@
 <?php
 
+namespace App;
+
 use Illuminate\Database\Eloquent\Model;
+use Webpatser\Countries\CountriesFacade;
+
+
 
 class Country extends Model
 {

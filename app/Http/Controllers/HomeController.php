@@ -1,5 +1,13 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Chapter;
+use App\Korders;
+use App\Ptitles;
+use Illuminate\Support\Facades\Auth;
+
+
 class HomeController extends Controller
 {
 

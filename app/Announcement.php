@@ -1,8 +1,12 @@
 <?php
 
-use Jenssegers\Mongodb\Model as Eloquent;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Model as Eloquent;
+
+
+
 
 class Announcement extends Model
 {
@@ -16,7 +20,7 @@ class Announcement extends Model
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('App\User');
     }
 
     public function getPublishLabels()

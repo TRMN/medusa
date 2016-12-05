@@ -1,5 +1,13 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\MedusaConfig;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+
+
 class ConfigController extends Controller
 {
     use \Medusa\Audit\MedusaAudit;

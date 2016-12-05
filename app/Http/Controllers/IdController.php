@@ -1,5 +1,13 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Chapter;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+
+
 class IdController extends Controller
 {
 

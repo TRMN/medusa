@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Libraries;
+
+
 class MedusaHasher implements Illuminate\Hashing\HasherInterface
 {
 

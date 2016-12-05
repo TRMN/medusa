@@ -1,14 +1,18 @@
 <?php
 
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Model as Eloquent;
+
+
 /**
  * Grade Model
  *
  * Pay Grades and descriptions
  */
 
-use Jenssegers\Mongodb\Model as Eloquent;
 
-use Illuminate\Database\Eloquent\Model;
 
 class Grade extends Model
 {

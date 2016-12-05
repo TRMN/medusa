@@ -1,5 +1,15 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Country;
+use App\Events;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+
+
 class EventController extends Controller
 {
 

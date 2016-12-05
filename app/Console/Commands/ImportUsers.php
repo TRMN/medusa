@@ -1,5 +1,17 @@
 <?php
 
+namespace App\Console\Commands;
+
+use App\Chapter;
+use App\User;
+use Illuminate\Console\Command;
+use Maatwebsite\Excel\Facades\Excel;
+use Medusa\Enums\MedusaDefaults;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Webpatser\Countries\CountriesFacade;
+
+
 /*
  * Query to export member database
 
@@ -57,10 +69,6 @@ ORDER BY
 
  */
 
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
-use Medusa\Enums\MedusaDefaults;
 
 class ImportUsers extends Command
 {

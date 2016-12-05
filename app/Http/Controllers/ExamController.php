@@ -1,5 +1,21 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Exam;
+use App\ExamList;
+use App\Message;
+use App\User;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
+
+
 class ExamController extends Controller
 {
 

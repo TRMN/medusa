@@ -1,8 +1,14 @@
 <?php
 
+namespace App\Console\Commands;
+
+use App\Chapter;
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+
+
 
 class ImportChapters extends Command
 {
