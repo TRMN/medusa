@@ -101,7 +101,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function announcements()
     {
-        return $this->hasMany('App\Announcement');
+        return $this->hasMany(\App\Announcement::class);
     }
 
     public function getFullName()
