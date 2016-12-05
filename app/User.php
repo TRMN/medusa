@@ -13,10 +13,13 @@ use Jenssegers\Mongodb\Model as Eloquent;
 use Medusa\Enums\MedusaDefaults;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+
+class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
 
-    use Authenticatable, CanResetPassword;
+    use Authenticatable, Authorizable, CanResetPassword;
     use \Medusa\Audit\MedusaAudit;
     use \Medusa\Permissions\MedusaPermissions;
 
