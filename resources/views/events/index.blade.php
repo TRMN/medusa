@@ -24,17 +24,17 @@
         @foreach($events as $event)
             <div class="row">
                 <div class="column small-3 Incised901Light">
-                    {{date('M j, Y', strtotime($event->start_date))}}@if(!empty($event->end_date))
-                        - {{date('M j, Y', strtotime($event->end_date))}}@endif
+                    {!!date('M j, Y', strtotime($event->start_date))!!}@if(!empty($event->end_date))
+                        - {!!date('M j, Y', strtotime($event->end_date))!!}@endif
                 </div>
                 <div class="column small-9 Incised901Light">
                     <a href="
                         @if (isset($event->checkins))
-                    {{route('event.export', [$event->_id])}}
+                    {!!route('event.export', [$event->_id])!!}
                     @else
-                    {{route('events.edit', [$event->_id])}}
+                    {!!route('events.edit', [$event->_id])!!}
                     @endif
-                            ">{{$event->event_name}}</a>
+                            ">{!!$event->event_name!!}</a>
                 </div>
             </div>
         @endforeach

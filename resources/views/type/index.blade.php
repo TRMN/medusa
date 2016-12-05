@@ -18,9 +18,9 @@ Chapter Types
         <tbody>
         @foreach(Type::orderBy('chapter_description', 'asc')->get() as $type)
             <tr>
-                <td>{{ $type->chapter_description }}</td>
-                <td>{{ $type->chapter_type }}</td>
-                <td><a class="tiny fi-pencil green size-24" href="{{ route('type.edit', [ $type->_id ]) }}" title="Edit Chapter Type"></a></td>
+                <td>{!! $type->chapter_description !!}</td>
+                <td>{!! $type->chapter_type !!}</td>
+                <td><a class="tiny fi-pencil green size-24" href="{!! route('type.edit', [ $type->_id ]) !!}" title="Edit Chapter Type"></a></td>
             </tr>
         @endforeach
         </tbody>

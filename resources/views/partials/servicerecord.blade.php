@@ -6,7 +6,7 @@
     @endif
 </h4>
 
-<h5 class="Incised901Light ninety">Last Login: {{date('d M Y @ g:i A T', strtotime($user->getLastLogin()))}}</h5>
+<h5 class="Incised901Light ninety">Last Login: {!!date('d M Y @ g:i A T', strtotime($user->getLastLogin()))!!}</h5>
 
 <div id="user-profile">
     <ul class="small-block-grid-2">
@@ -16,10 +16,10 @@
             @if($user->registration_status != "Pending")
                 <div class="Incised901Black ninety">
                     Time In
-                    Grade: {{is_null($tig = $user->getTimeInGrade())?'No Time In Grade information available at this time':$tig}}
+                    Grade: {!!is_null($tig = $user->getTimeInGrade())?'No Time In Grade information available at this time':$tig!!}
                 </div>
                 <div class="Incised901Black ninety">
-                    Time In Service: {{$user->getTimeInService()}}
+                    Time In Service: {!!$user->getTimeInService()!!}
                 </div>
 
                 <br/>
@@ -46,7 +46,7 @@
                             $title .= ' NOTE **';
                             $options = ["id" => "note_text"];
                             ?>
-                            <h5 id="note_container">{{$title}}</h5>
+                            <h5 id="note_container">{!!$title!!}</h5>
                         @elseif ($permsObj->hasPermissions(['EDIT_NOTE']))
                             <h5 id="note_container">Add Note</h5>
                             <?php
@@ -55,10 +55,10 @@
                         @endif
 
                         <div class='content'>
-                            {{ Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) }}
+                            {!! Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) !!}
                             <div class="row">
                                 <div class="columns small-10 end Incised901Light end">
-                                    {{ Form::textarea('note_text', $currentNote, $options) }}
+                                    {!! Form::textarea('note_text', $currentNote, $options) !!}
                                 </div>
                             </div>
                             @if ($permsObj->hasPermissions(['EDIT_NOTE']))
@@ -66,11 +66,11 @@
                                     <div class="columns small-10 end Incised901Light end">
                                         <button class="button round" id="note_clear">Delete</button>
                                         <button class="button round" id="note_cancel">Cancel
-                                        </button> {{Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])}}
+                                        </button> {!!Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])!!}
                                     </div>
                                 </div>
                             @endif
-                            {{ Form::close() }}
+                            {!! Form::close() !!}
                         </div>
                     </div>
                 @endif
@@ -110,9 +110,9 @@
                                 }
                                 ?>
                                 @if(file_exists(public_path() . $path) === true && empty($path) === false)
-                                    <img class='crest' src="{{asset($path)}}"
-                                         alt="{{$fullTitle}}"
-                                         width="50px" title="{{$toolTip}}">
+                                    <img class='crest' src="{!!asset($path)!!}"
+                                         alt="{!!$fullTitle!!}"
+                                         width="50px" title="{!!$toolTip!!}">
                                 @else
                                     &nbsp;
                                 @endif
@@ -121,7 +121,7 @@
                                 @if(empty($peerage['courtesy']) === false)
                                     <em>
                                         @endif
-                                        {{$fullTitle}}
+                                        {!!$fullTitle!!}
                                         @if(empty($peerage['courtesy']) === false)
                                     </em>
                                 @endif
@@ -130,19 +130,19 @@
                             <div class="small-2 columns end text-left vertical-center-50px">
                                 @if($permsObj->hasPermissions(['EDIT_PEERAGE', 'DEL_PEERAGE']))
                                     @if($permsObj->hasPermissions(['EDIT_PEERAGE']))
-                                        <a href="#" data-peerage-id="{{$peerage['peerage_id']}}"
-                                           data-peerage-title="{{$peerage['title']}}"
-                                           data-peerage-generation="{{$peerage['generation'] or ''}}"
-                                           data-peerage-lands="{{$peerage['lands'] or ''}}"
-                                           data-peerage-order="{{$orderInfo->id or ''}}"
-                                           data-peerage-class="{{$peerage['postnominal'] or ''}}"
-                                           data-peerage-courtesy="{{$peerage['courtesy'] or "0"}}"
-                                           data-peerage-filename="{{$peerage['filename'] or ''}}"
+                                        <a href="#" data-peerage-id="{!!$peerage['peerage_id']!!}"
+                                           data-peerage-title="{!!$peerage['title']!!}"
+                                           data-peerage-generation="{!!$peerage['generation'] or ''!!}"
+                                           data-peerage-lands="{!!$peerage['lands'] or ''!!}"
+                                           data-peerage-order="{!!$orderInfo->id or ''!!}"
+                                           data-peerage-class="{!!$peerage['postnominal'] or ''!!}"
+                                           data-peerage-courtesy="{!!$peerage['courtesy'] or "0"!!}"
+                                           data-peerage-filename="{!!$peerage['filename'] or ''!!}"
                                            class="edit_peerage fi-pencil green">&nbsp;</a>
                                     @endif
                                     @if($permsObj->hasPermissions(['DEL_PEERAGE']))
-                                        <a href="#" data-peerage-text="{{$fullTitle}}" data-user-id="{{$user->id}}"
-                                           data-peerage-id="{{$peerage['peerage_id']}}" class="delete_peerage fi-x red">
+                                        <a href="#" data-peerage-text="{!!$fullTitle!!}" data-user-id="{!!$user->id!!}"
+                                           data-peerage-id="{!!$peerage['peerage_id']!!}" class="delete_peerage fi-x red">
                                             &nbsp;</a>
                                     @endif
                                 @else
@@ -157,51 +157,51 @@
                     <div class="sbAccordian">
                         <h5 id="peerage-container">Add Peerage</h5>
                         <div class="content">
-                            {{ Form::open(['route' => ['addOrEditPeerage', $user->id], 'method' => 'post', 'files' => true, 'id'=>'peerage_form']) }}
+                            {!! Form::open(['route' => ['addOrEditPeerage', $user->id], 'method' => 'post', 'files' => true, 'id'=>'peerage_form']) !!}
                             <div class="row">
-                                <div class="small-4 columns Incised901Light ninety text-left">{{Form::select('ptitle', $ptitles, '', ['id' => 'ptitle'])}}{{Form::checkbox('courtesy', 1, null, ['id' => 'courtesy'])}}
+                                <div class="small-4 columns Incised901Light ninety text-left">{!!Form::select('ptitle', $ptitles, '', ['id' => 'ptitle'])!!}{{Form::checkbox('courtesy', 1, null, ['id' => 'courtesy'])}}
                                     <label for="courtesy" id="courtesy_label">Courtesy Title</label></div>
                                 <div class="small-4 columns Incised901Light ninety text-left">
-                                    {{Form::select('generation',
+                                    {!!Form::select('generation',
                                     ['' => 'Select Peerage Generation', 'First' => 'First', 'Second' => 'Second', 'Third' => 'Third', 'Fourth' => 'Fourth', 'Fifth'=> 'Fifth'], '',
-                                    ['id' => 'generation'])}}
-                                    {{Form::select('order', $korders, '',['id' => 'order'])}}
+                                    ['id' => 'generation'])!!}
+                                    {!!Form::select('order', $korders, '',['id' => 'order'])!!}
                                 </div>
                                 <div class="small-4 columns Incised901Light ninety text-left end">
-                                    {{Form::text('lands', null, ['placeholder' => 'Name of Peerage Lands', 'id' => 'lands'])}}
-                                    {{Form::select('class', ['' => 'Select Class'], null, ['id' => 'class'])}}
+                                    {!!Form::text('lands', null, ['placeholder' => 'Name of Peerage Lands', 'id' => 'lands'])!!}
+                                    {!!Form::select('class', ['' => 'Select Class'], null, ['id' => 'class'])!!}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="small-4 columns incised901light ninety text-left">
-                                    {{Form::label('arms','Upload Peerage Arms', ['id'=>'arms-label'])}}
-                                    {{Form::file('arms', ['id' => 'arms'])}}
+                                    {!!Form::label('arms','Upload Peerage Arms', ['id'=>'arms-label'])!!}
+                                    {!!Form::file('arms', ['id' => 'arms'])!!}
                                 </div>
                                 <div class="small-8 columns Incised901Light ninety text-left end">
                                     <button class="button round" id="cancel">Cancel
-                                    </button> {{Form::submit('Save Peerage', ['id' => 'save_peerage', 'class' => 'button round'])}}
+                                    </button> {!!Form::submit('Save Peerage', ['id' => 'save_peerage', 'class' => 'button round'])!!}
                                 </div>
                             </div>
-                            {{ Form::close() }}
+                            {!! Form::close() !!}
                         </div>
                     </div>
                 @endif
                 @include('partials.coursework', ['user' => $user])</li>
         <li>
             <div class="Incised901Light filePhoto">
-                <a href="/id/qrcode/{{$user->id}}">{{$user->member_id}}</a>
+                <a href="/id/qrcode/{!!$user->id!!}">{!!$user->member_id!!}</a>
                 <div class="filePhotoBox">
 
                     @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
-                        <img src="{{$user->filePhoto}}" alt="Official File Photo">
+                        <img src="{!!$user->filePhoto!!}" alt="Official File Photo">
                     @else
                         <div class="ofpt">Official<br/>File<br/>Photo</div>
                     @endif
 
                 </div>
-                {{$user->getPrimaryBillet()}}<br/>
+                {!!$user->getPrimaryBillet()!!}<br/>
 
-                <div class="Incised901Light seventy-five">Assigned: {{$user->getPrimaryDateAssigned()}}</div>
+                <div class="Incised901Light seventy-five">Assigned: {!!$user->getPrimaryDateAssigned()!!}</div>
                 @include('partials.leftribbons', ['user' => $user])
                 @if($user->leftRibbonCount)
                     <div class="sbAccordian text-left">
@@ -209,7 +209,7 @@
                         <div class="text-left">
                             To embed your ribbon rack in other websites, use the following code:<br/>
 
-                            &lt;iframe src="{{url('api/ribbonrack/' . $user->member_id)}}"&gt;&lt;/iframe&gt;
+                            &lt;iframe src="{!!url('api/ribbonrack/' . $user->member_id)!!}"&gt;&lt;/iframe&gt;
 
                         </div>
                     </div>
@@ -220,7 +220,7 @@
     @endif
     <br/>
     @if($permsObj->hasPermissions(['DOB']) || ($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id))
-        <div class="Incised901Light ninety">Date of Birth: {{date('d M Y', strtotime($user->dob))}}</div>
+        <div class="Incised901Light ninety">Date of Birth: {!!date('d M Y', strtotime($user->dob))!!}</div>
         <br/>
     @endif
 
@@ -229,13 +229,13 @@
         <div class="row">
             <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
             <div class="small-10 columns Incised901Light ninety textLeft end">
-                {{ $user->address1 }}<br/>
+                {!! $user->address1 !!}<br/>
                 @if(!empty($user->address2))
-                    {{ $user->address2 }}<br/>
+                    {!! $user->address2 !!}<br/>
                 @endif
-                {{ $user->city }}, {{ $user->state_province }} {{ $user->postal_code }}<br/>
-                {{ $user->email_address }}<br/>
-                {{ isset($user->phone_number) ? $user->phone_number . '<br />' : '' }}
+                {!! $user->city !!}, {!! $user->state_province !!} {!! $user->postal_code !!}<br/>
+                {!! $user->email_address !!}<br/>
+                {!! isset($user->phone_number) ? $user->phone_number . '<br />' : '' !!}
             </div>
         </div>
 
@@ -246,7 +246,7 @@
                 <div class="columns small-5 end">
                     <ul class="small-block-grid-3 ninety">
                         @foreach($user->permissions as $permmission)
-                            <li>{{$permmission}}</li>
+                            <li>{!!$permmission!!}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -260,10 +260,10 @@
             <div class="small-10 columns Incised901Light ninety textLeft end">
                 <br/>
                 @if($user->registration_status != "Pending" && (($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || ($permsObj->hasPermissions(['EDIT_MEMBER']))))
-                    <a href="{{route('user.edit', [$user->_id])}}" class="editButton Incised901Black margin-5">EDIT</a>
+                    <a href="{!!route('user.edit', [$user->_id])!!}" class="editButton Incised901Black margin-5">EDIT</a>
                 @elseif($permsObj->hasPermissions(['PROC_APPLICATIONS']))
-                    <a href="{{action('user.approve', [$user->_id])}}" class="editButton Incised901Black margin-5">Approve</a>
-                    <a href="{{action('user.deny', [$user->_id])}}" class="editButton
+                    <a href="{!!action('user.approve', [$user->_id])!!}" class="editButton Incised901Black margin-5">Approve</a>
+                    <a href="{!!action('user.deny', [$user->_id])!!}" class="editButton
                         Incised901Black margin-5">DENY</a>
                 @endif
             </div>

@@ -1,11 +1,11 @@
 @extends('layout')
 
 @section('pageTitle')
-    {{ $title }}
+    {!! $title !!}
 @stop
 
 @section('content')
-    <div><h3 class="trmn">{{ $title }}</h3></div>
+    <div><h3 class="trmn">{!! $title !!}</h3></div>
 
     <div id="duplicate">
         <table id="duplicates" class="compact row-border">
@@ -22,30 +22,30 @@
             <tbody>
             @foreach( $users as $user )
                 <tr>
-                    <td>{{ $user->last_name }}, {{ $user->first_name }}
-                        {{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }}
+                    <td>{!! $user->last_name !!}, {!! $user->first_name !!}
+                        {!! isset($user->middle_name) ? ' ' . $user->middle_name : '' !!}
                     </td>
-                    <td>{{ $user->member_id }}</td>
-                    <td>{{ $user->getAssignmentName('primary') }} <br /> <em>{{$user->getBillet('primary')}}</em></td>
+                    <td>{!! $user->member_id !!}</td>
+                    <td>{!! $user->getAssignmentName('primary') !!} <br /> <em>{!!$user->getBillet('primary')!!}</em></td>
                     <td>
                         @if(empty($user->getAssignmentName('secondary')) === false)
-                            {{ $user->getAssignmentName('secondary') }}  <br /> <em>{{$user->getBillet('secondary')}}</em>
+                            {!! $user->getAssignmentName('secondary') !!}  <br /> <em>{!!$user->getBillet('secondary')!!}</em>
                         @else
                             No assignment
                         @endif
                     </td>
                     <td>
                         @if(empty($user->getAssignmentName('additional')) === false)
-                            {{ $user->getAssignmentName('additional') }}  <br /> <em>{{$user->getBillet('additional')}}</em>
+                            {!! $user->getAssignmentName('additional') !!}  <br /> <em>{!!$user->getBillet('additional')!!}</em>
                         @else
                             No assignment
                         @endif
                     </td>
                     <td>
                         @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                            <a class="fi-torso my size-24" href="{{ route('user.show' , [$user->_id]) }}"
+                            <a class="fi-torso my size-24" href="{!! route('user.show' , [$user->_id]) !!}"
                                title="View User"></a>
-                            <a class="tiny fi-pencil green size-24" href="{{ route('user.edit', [ $user->_id ]) }}"
+                            <a class="tiny fi-pencil green size-24" href="{!! route('user.edit', [ $user->_id ]) !!}"
                                title="Edit User"></a>
                         @endif
                     </td>

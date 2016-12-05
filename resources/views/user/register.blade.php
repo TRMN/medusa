@@ -15,7 +15,7 @@
 @section( 'content' )
     <h1>Membership Application</h1>
 
-    {{ Form::model( $user, [ 'route' => [ 'user.apply' ], 'id' => 'register' ] ) }}
+    {!! Form::model( $user, [ 'route' => [ 'user.apply' ], 'id' => 'register' ] ) !!}
 
     <h2>The Basics</h2>
     <fieldset>
@@ -23,16 +23,16 @@
 
         <div class="row">
             <div class="small-6 columns">
-                {{ Form::label( 'email_address', 'Email' ) }} {{ Form::email( 'email_address' ) }}
+                {!! Form::label( 'email_address', 'Email' ) !!} {!! Form::email( 'email_address' ) !!}
             </div>
         </div>
 
         <div class="row">
             <div class="small-6 columns">
-                {{ Form::label( 'password', 'Password' ) }} {{ Form::password( 'password' ) }}
+                {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password' ) !!}
             </div>
             <div class="small-6 columns">
-                {{ Form::label( 'password_confirmation', 'Confirm Password' ) }} {{ Form::password( 'password_confirmation' ) }}
+                {!! Form::label( 'password_confirmation', 'Confirm Password' ) !!} {!! Form::password( 'password_confirmation' ) !!}
             </div>
         </div>
     </fieldset>
@@ -43,16 +43,16 @@
 
         <div class="row">
             <div class="small-4 columns">
-                {{ Form::label( 'first_name', 'First Name' ) }} {{ Form::text( 'first_name' ) }}
+                {!! Form::label( 'first_name', 'First Name' ) !!} {!! Form::text( 'first_name' ) !!}
             </div>
             <div class="small-3 columns">
-                {{ Form::label( 'middle_name', 'Middle Name' ) }} {{ Form::text( 'middle_name' ) }}
+                {!! Form::label( 'middle_name', 'Middle Name' ) !!} {!! Form::text( 'middle_name' ) !!}
             </div>
             <div class="small-4 columns">
-                {{ Form::label( 'last_name', 'Last Name' ) }} {{ Form::text( 'last_name' ) }}
+                {!! Form::label( 'last_name', 'Last Name' ) !!} {!! Form::text( 'last_name' ) !!}
             </div>
             <div class="small-1 columns">
-                {{ Form::label( 'suffix', 'Suffix' ) }} {{ Form::select('suffix', ['' => 'None', 'Jr' => 'Jr', 'Sr' => 'Sr', 'II' => 'II', 'III' => 'III', 'IV' => 'IV', 'V' => 'V']) }}
+                {!! Form::label( 'suffix', 'Suffix' ) !!} {!! Form::select('suffix', ['' => 'None', 'Jr' => 'Jr', 'Sr' => 'Sr', 'II' => 'II', 'III' => 'III', 'IV' => 'IV', 'V' => 'V']) !!}
             </div>
         </div>
     </fieldset>
@@ -66,25 +66,25 @@
 
         <div class="row">
             <div class="small-6 columns">
-                {{ Form::label( 'address1', 'Street Address' ) }} {{ Form::text( 'address1' ) }}
+                {!! Form::label( 'address1', 'Street Address' ) !!} {!! Form::text( 'address1' ) !!}
             </div>
             <div class="small-6 columns">
-                {{ Form::label( 'address2', 'Address Line 2' ) }} {{ Form::text( 'address2' ) }}
+                {!! Form::label( 'address2', 'Address Line 2' ) !!} {!! Form::text( 'address2' ) !!}
             </div>
         </div>
 
         <div class="row">
             <div class="small-3 columns">
-                {{ Form::label( 'city', 'City' ) }} {{ Form::text( 'city' ) }}
+                {!! Form::label( 'city', 'City' ) !!} {!! Form::text( 'city' ) !!}
             </div>
             <div class="small-3 columns">
-                {{ Form::label( 'state_province', 'State/Province' ) }} {{ Form::text( 'state_province' ) }}
+                {!! Form::label( 'state_province', 'State/Province' ) !!} {!! Form::text( 'state_province' ) !!}
             </div>
             <div class="small-3 columns">
-                {{ Form::label( 'postal_code', 'Zip/Postal Code' ) }} {{ Form::text( 'postal_code' ) }}
+                {!! Form::label( 'postal_code', 'Zip/Postal Code' ) !!} {!! Form::text( 'postal_code' ) !!}
             </div>
             <div class="small-3 columns">
-                {{ Form::label( 'country', 'Country' ) }} {{ Form::select( 'country', $countries, 'USA' ) }}
+                {!! Form::label( 'country', 'Country' ) !!} {!! Form::select( 'country', $countries, 'USA' ) !!}
             </div>
         </div>
     </fieldset>
@@ -93,7 +93,7 @@
     <fieldset>
         <legend>We only use this to verify your eligibility for certain leadership positions</legend>
         <div class="small-6 columns end">
-            {{ Form::label('dob', 'Date of Birth') }} {{Form::date('dob', $user->dob)}}
+            {!! Form::label('dob', 'Date of Birth') !!} {!!Form::date('dob', $user->dob)!!}
         </div>
     </fieldset>
 
@@ -103,7 +103,7 @@
         <legend>Please choose which branch you would like to be part of</legend>
         <div class="row">
             <div class="small-6 columns end">
-                {{ Form::label( 'branch', "Branch") }} {{ Form::select( 'branch', $branches, 'RMN' ) }}
+                {!! Form::label( 'branch', "Branch") !!} {!! Form::select( 'branch', $branches, 'RMN' ) !!}
             </div>
         </div>
     </fieldset>
@@ -115,17 +115,17 @@
         </legend>
         <div class="row">
             <div class="small-2 columns">
-                {{ Form::label( 'location', 'Location') }} {{ Form::select('location', $locations) }}
+                {!! Form::label( 'location', 'Location') !!} {!! Form::select('location', $locations) !!}
             </div>
             <div class="small-6 columns end">
-                {{ Form::label( 'primary_assignment', "Chapter") }} {{ Form::select( 'primary_assignment', $chapters ) }}
+                {!! Form::label( 'primary_assignment', "Chapter") !!} {!! Form::select( 'primary_assignment', $chapters ) !!}
             </div>
         </div>
     </fieldset>
     <fieldset>
         <legend>Terms of Service</legend>
         <div class="row">
-            {{ Form::checkbox('tos',1, false, ['class' => 'switcher']) }} I have read and agree to the <a href="#"
+            {!! Form::checkbox('tos',1, false, ['class' => 'switcher']) !!} I have read and agree to the <a href="#"
                                                                                                           data-reveal-id="tos">Terms
                 of Service</a>
         </div>
@@ -138,9 +138,9 @@
             </div>
         </div>
     </fieldset>
-    {{ Form::submit( 'Sign me up!', [ 'class' => 'button' ] ) }}
+    {!! Form::submit( 'Sign me up!', [ 'class' => 'button' ] ) !!}
 
-    {{ Form::close() }}
+    {!! Form::close() !!}
 
     <div id="tos" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
         @include('partials.tos')

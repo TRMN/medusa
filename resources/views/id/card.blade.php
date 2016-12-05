@@ -21,7 +21,7 @@
     </style>
 </head>
 <body bgcolor="#000000">
-<div style="page-break-before: always"><img src="data:image/png;base64, {{{ base64_encode($card->encode('png')) }}}"></div>
-<div style="page-break-before: always"><img src="{{asset('images/TRMN-membership-card-back.png')}}"></div>
+<div style="page-break-before: always"><img src="data:image/png;base64, {{ base64_encode($card->encode('png')) }}"></div>
+<div style="page-break-before: always"><img src="{!!asset('images/TRMN-membership-card-back.png')!!}"></div>
 </body>
 </html>

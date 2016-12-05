@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('pageTitle')
-    {{ $title }}
+    {!! $title !!}
 @stop
 
 @section('content')
-    <div><h3 class="trmn">{{ $title }}</h3></div>
-    <div>Active Members: {{$totalMembers}} Enlisted: {{$totalEnlisted}} Officer: {{$totalOfficer}} Flag
-        Officer: {{$totalFlagOfficer}} Civilian: {{$totalCivilian}}</div>
+    <div><h3 class="trmn">{!! $title !!}</h3></div>
+    <div>Active Members: {!!$totalMembers!!} Enlisted: {!!$totalEnlisted!!} Officer: {!!$totalOfficer!!} Flag
+        Officer: {!!$totalFlagOfficer!!} Civilian: {!!$totalCivilian!!}</div>
     <div id="members">
         <ul>
             <li><a href="#members-1">RMN</a></li>

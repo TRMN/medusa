@@ -31,14 +31,14 @@ Announcements
 
 @foreach($announcements as $announcement)
     <tr>
-        <td><a href="{{ route('announcement.edit', [ $announcement->id ] )}}">{{ $announcement->summary }}</a></td>
-        <td>@if( $announcement->user ){{ $announcement->user->getGreeting() . ' ' . $announcement->user->last_name }} @else Undefined @endif</td>
-        <td>{{ $announcement->updated_at }}</td>
-        <td>{{ $announcement->is_published ? 'Published' : 'Unpublished' }}</td>
-        <td><a href="#" id="{{ $announcement->id }}" class="btn" onclick="confirmDelete( '{{ $announcement->id }}' );" data-title="{{ $announcement->summary }}">Delete</a>
-            {{ Form::open([ 'url' => route( 'announcement.destroy' , [ $announcement->id ] ) , 'method'=> 'delete' , 'id' => 'deleteAnnouncement-' . $announcement->id , 'style' => 'display:none;' ]) }}
-                {{ Form::submit( 'Delete' )  }}
-            {{ Form::close() }}
+        <td><a href="{!! route('announcement.edit', [ $announcement->id ] )!!}">{!! $announcement->summary !!}</a></td>
+        <td>@if( $announcement->user ){!! $announcement->user->getGreeting() . ' ' . $announcement->user->last_name !!} @else Undefined @endif</td>
+        <td>{!! $announcement->updated_at !!}</td>
+        <td>{!! $announcement->is_published ? 'Published' : 'Unpublished' !!}</td>
+        <td><a href="#" id="{!! $announcement->id !!}" class="btn" onclick="confirmDelete( '{!! $announcement->id !!}' );" data-title="{!! $announcement->summary !!}">Delete</a>
+            {!! Form::open([ 'url' => route( 'announcement.destroy' , [ $announcement->id ] ) , 'method'=> 'delete' , 'id' => 'deleteAnnouncement-' . $announcement->id , 'style' => 'display:none;' ]) !!}
+                {!! Form::submit( 'Delete' )  !!}
+            {!! Form::close() !!}
         </td>
     </tr>
 @endforeach
@@ -46,7 +46,7 @@ Announcements
     </tbody>
 </table>
 
-<a href="{{ route('announcement.create') }}" class="button">Create New</a>
+<a href="{!! route('announcement.create') !!}" class="button">Create New</a>
 
 @stop
 

@@ -18,9 +18,9 @@
         <tbody>
         @foreach(ExamList::all() as $exam)
             <tr>
-                <td>{{ $exam->exam_id }} @if($exam->enabled === false) (Disabled) @endif</td>
-                <td>{{ $exam->name }}</td>
-                <td><a href="{{route('exam.edit', [$exam->id])}}" class="tiny fi-pencil green size-24"
+                <td>{!! $exam->exam_id !!} @if($exam->enabled === false) (Disabled) @endif</td>
+                <td>{!! $exam->name !!}</td>
+                <td><a href="{!!route('exam.edit', [$exam->id])!!}" class="tiny fi-pencil green size-24"
                        title="Edit Exam"></a>
                 </td>
             </tr>

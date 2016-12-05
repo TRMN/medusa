@@ -23,14 +23,14 @@
             <tbody>
             @foreach(MedusaConfig::all() as $item)
                 <tr>
-                    <td class="border-right">{{ $item->key }}</td>
+                    <td class="border-right">{!! $item->key !!}</td>
                     <td class="border-right">@if(is_array($item->value)) <pre class="json"> @endif
-                        {{ is_array($item->value)?json_encode($item->value):$item->value }}
+                        {!! is_array($item->value)?json_encode($item->value):$item->value !!}
                         @if(is_array($item->value)) </pre> @endif
                     </td>
-                    <td><a href="{{route('config.edit', [$item->id])}}" class="tiny fi-pencil green size-24"
+                    <td><a href="{!!route('config.edit', [$item->id])!!}" class="tiny fi-pencil green size-24"
                            title="Edit Config"></a>
-                        <a href="javascript:deleteConfig('{{$item->id}}','{{$item->key}}');"
+                        <a href="javascript:deleteConfig('{!!$item->id!!}','{!!$item->key!!}');"
                            class="tiny fi-x red size-24"></a>
                     </td>
                 </tr>

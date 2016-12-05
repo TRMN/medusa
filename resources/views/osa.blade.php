@@ -11,7 +11,7 @@
     <p><em>Last Updated: November 16, 2015</em></p>
 
 @if($showform === true)
-    <p>{{$greeting['rank']}} {{$greeting['last_name']}}, your access has changed. Please read the following and indicate
+    <p>{!!$greeting['rank']!!} {!!$greeting['last_name']!!}, your access has changed. Please read the following and indicate
         your agreement to this policy.</p>
 
     <p>By reading this document and agreeing to the policy (by clicking that you have read and agree below) you are
@@ -67,9 +67,9 @@
 
     <p>The information in this section can also be found in relevant Admiralty Orders</p>
 @if($showform === true)
-    {{ Form::open(['route' => 'osa', 'method' => 'post']) }}
-    {{ Form::hidden('id', Auth::user()->id) }}
-    {{ Form::hidden('osa',1) }}
+    {!! Form::open(['route' => 'osa', 'method' => 'post']) !!}
+    {!! Form::hidden('id', Auth::user()->id) !!}
+    {!! Form::hidden('osa',1) !!}
 
     <p><em>By clicking "I Agree", you agee that you have read and understand this policy. If you click "I do not agree",
             you will be logged out and will be unable to use Medusa until you agree. For more information on why you
@@ -77,8 +77,8 @@
     </p>
     <div>
         <a class="button"
-           href="{{ route('signout') }}">I do not agree</a> {{ Form::submit('I Agree', [ 'class' => 'button' ] ) }}
+           href="{!! route('signout') !!}">I do not agree</a> {!! Form::submit('I Agree', [ 'class' => 'button' ] ) !!}
     </div>
-    {{ Form::close() }}
+    {!! Form::close() !!}
 @endif
 @stop

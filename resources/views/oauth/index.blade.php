@@ -18,11 +18,11 @@
         <tbody>
         @foreach($clients as $client)
             <tr>
-                <td>{{ $client->client_id }}</td>
-                <td>{{ $client->client_name }}</td>
-                <td><a href="{{route('oauthclient.edit', [$client->id])}}" class="tiny fi-pencil green size-24"
+                <td>{!! $client->client_id !!}</td>
+                <td>{!! $client->client_name !!}</td>
+                <td><a href="{!!route('oauthclient.edit', [$client->id])!!}" class="tiny fi-pencil green size-24"
                        title="Edit OAuth Client"></a>
-                    <a href="javascript:deleteClient('{{$client->id}}','{{$client->client_name}}');"
+                    <a href="javascript:deleteClient('{!!$client->id!!}','{!!$client->client_name!!}');"
                        class="tiny fi-x red size-24"></a>
                 </td>
             </tr>

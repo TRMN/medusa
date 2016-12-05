@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="columns small-6 ninety Incised901Light end">
-            {{Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name'])}}
+            {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name'])!!}
         </div>
     </div>
     @if(!is_null($user))
@@ -22,14 +22,14 @@
         @if($permsObj->hasPermissions(['EDIT_GRADE'], true))
             <br/>
             <div>
-                {{ $user->getGreeting() }} {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {{ $user->last_name }}{{ !empty($user->suffix) ? ' ' . $user->suffix : '' }}
+                {!! $user->getGreeting() !!} {!! $user->first_name !!}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {!! $user->last_name !!}{{ !empty($user->suffix) ? ' ' . $user->suffix : '' }}
                 @if(in_array('ALL_PERMS', $user->permissions))
                     is a <span class="alert">super user</span> and has permission to do everything.
                 @else
                     @if(in_array('ADD_GRADE', $user->permissions))
-                        has permission to add grades. <a href="{{route('user.perm.del', [$user->id, 'ADD_GRADE'])}}"><span class="fi-trash red" title="Remove Permission">&nbsp;</span></a>
+                        has permission to add grades. <a href="{!!route('user.perm.del', [$user->id, 'ADD_GRADE'])!!}"><span class="fi-trash red" title="Remove Permission">&nbsp;</span></a>
                     @else
-                        does not have permission to add grades. <a href="{{route('user.perm.add', [$user->id, 'ADD_GRADE'])}}"><span class="fi-plus green" title="Add Permission">&nbsp;</span></a>
+                        does not have permission to add grades. <a href="{!!route('user.perm.add', [$user->id, 'ADD_GRADE'])!!}"><span class="fi-plus green" title="Add Permission">&nbsp;</span></a>
                     @endif
                 @endif
             </div>

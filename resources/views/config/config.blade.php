@@ -11,20 +11,20 @@
 @section('content')
     <div class="row">
         <div class="columns small-12 Incised901Light">
-            <h1>{{$action == "add"? "Add": "Edit"}} a Configuration Value</h1>
+            <h1>{!!$action == "add"? "Add": "Edit"!!} a Configuration Value</h1>
         </div>
     </div>
 
     @if ($action == "add")
-        {{ Form::model( $config, [ 'route' => [ 'config.store' ], 'method' => 'post', 'id' => 'config_form' ] ) }}
+        {!! Form::model( $config, [ 'route' => [ 'config.store' ], 'method' => 'post', 'id' => 'config_form' ] ) !!}
     @else
-        {{ Form::model( $config, [ 'route' => [ 'config.update', $config->_id ], 'method' => 'put', 'id' => 'config_form' ] ) }}
+        {!! Form::model( $config, [ 'route' => [ 'config.update', $config->_id ], 'method' => 'put', 'id' => 'config_form' ] ) !!}
     @endif
 
     <div class="row">
         <div class="small-8 columns end Incised901Light">
             <label for="key" class="my Incised901Light">Key</label>
-            {{Form::text('key', empty($config->key)?null:$config->key, ['id' => 'key', 'placeholder' => 'Configuration Key'])}}
+            {!!Form::text('key', empty($config->key)?null:$config->key, ['id' => 'key', 'placeholder' => 'Configuration Key'])!!}
         </div>
     </div>
 
@@ -32,7 +32,7 @@
         <div class="small-8 columns end Incised901Light">
             <label for="value" class="my Incised901Light">Value</label>
 
-            {{Form::textarea('value', empty($config->value)?null:is_array($config->value)?json_encode($config->value):$config->value, ['id' => 'value'])}}
+            {!!Form::textarea('value', empty($config->value)?null:is_array($config->value)?json_encode($config->value):$config->value, ['id' => 'value'])!!}
         </div>
     </div>
     <div class="row">

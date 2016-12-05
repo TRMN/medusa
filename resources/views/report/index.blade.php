@@ -30,13 +30,13 @@ Chapter Reports
                 @endif
             </div>
             <div class="columns small-2">
-                {{date('F, Y', strtotime($report['report_date']))}}
+                {!!date('F, Y', strtotime($report['report_date']))!!}
             </div>
             <div class="columns small-2 end">
-                <a class="fi-eye my size-24" href="{{ route('report.show', [ $report->id ]) }}" title="View Report"></a>&nbsp;
+                <a class="fi-eye my size-24" href="{!! route('report.show', [ $report->id ]) !!}" title="View Report"></a>&nbsp;
                 @if(empty($report['report_sent']) === true)
-                    <a class="fi-mail my size-24" href="{{ route('report.send', [$report->id]) }}" title="Send Report"></a>&nbsp;
-                    <a class="fi-page-edit green size-24" href="{{ route('report.edit', [ $report->id ]) }}" title="Edit Report"></a>
+                    <a class="fi-mail my size-24" href="{!! route('report.send', [$report->id]) !!}" title="Send Report"></a>&nbsp;
+                    <a class="fi-page-edit green size-24" href="{!! route('report.edit', [ $report->id ]) !!}" title="Edit Report"></a>
                 @endif
             </div>
         </div>
@@ -46,7 +46,7 @@ Chapter Reports
 <br><br>
 <div class="row">
     <div class="columns small-6 end text-center">
-        <a href="{{ route('report.create')}}" class="button round">Create New</a>
+        <a href="{!! route('report.create')!!}" class="button round">Create New</a>
     </div>
 </div>
 

@@ -21,12 +21,12 @@
             $count = $billet->getAssignedCount();
             ?>
             <tr>
-                <td>{{ $billet->billet_name }}</td>
-                <td>{{ $count }}</td>
-                <td><a href="{{route('billet.edit', [$billet->id])}}" class="tiny fi-pencil green size-24"
+                <td>{!! $billet->billet_name !!}</td>
+                <td>{!! $count !!}</td>
+                <td><a href="{!!route('billet.edit', [$billet->id])!!}" class="tiny fi-pencil green size-24"
                        title="Edit Billet"></a>
                     @if($count == 0)
-                        <a href="javascript:deleteUser('{{$billet->id}}','{{$billet->billet_name}}');"
+                        <a href="javascript:deleteUser('{!!$billet->id!!}','{!!$billet->billet_name!!}');"
                            class="tiny fi-x red size-24"></a>
                     @endif
 
