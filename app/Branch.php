@@ -3,7 +3,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Branch extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Branch extends Model
 {
 
     protected $fillable = [ 'branch', 'branch_name' ];

@@ -3,7 +3,9 @@
 use Jenssegers\Mongodb\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class Billet extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Billet extends Model
 {
     protected $fillable = ['billet_name'];
 

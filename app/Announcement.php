@@ -2,7 +2,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Announcement extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Announcement extends Model
 {
 
     public $fillable = [

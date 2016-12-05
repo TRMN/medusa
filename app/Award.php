@@ -2,7 +2,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Award extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Award extends Model
 {
     protected $fillable = [
       'display_order',

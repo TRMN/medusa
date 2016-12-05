@@ -3,10 +3,12 @@
 use Jenssegers\Mongodb\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ChangeRequest extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class ChangeRequest extends Model
 {
 
-    use \Jenssegers\Mongodb\Eloquent\SoftDeletingTrait;
+    use \Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
     protected $fillable = ['user', 'requestor', 'req_type', 'old_value', 'new_value', 'status'];
 }

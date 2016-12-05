@@ -3,7 +3,9 @@
 use Jenssegers\Mongodb\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class RegStatus extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class RegStatus extends Model
 {
     protected $fillable = ['status'];
 

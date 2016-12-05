@@ -2,7 +2,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Chapter extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Chapter extends Model
 {
 
     protected $fillable = [

@@ -2,7 +2,9 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Korders extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Korders extends Model
 {
     protected $fillable = ['order', 'filename', 'classes'];
 

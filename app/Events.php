@@ -1,7 +1,9 @@
 <?php
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Events extends Eloquent
+use Illuminate\Database\Eloquent\Model;
+
+class Events extends Model
 {
     protected $fillable = [
       'event_name',
