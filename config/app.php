@@ -151,7 +151,6 @@ return [
         'Webpatser\Countries\CountriesServiceProvider',
         'mnshankar\CSV\CSVServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
-        'Smalldogs\Html5inputs\Html5InputsServiceProvider',
         'Iorme\SimpleCaptcha\SimpleCaptchaServiceProvider',
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
@@ -206,7 +205,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
-        'Form'                => 'Smalldogs\Html5inputs\Html5InputsFacade',
         'Moloquent'           => 'Jenssegers\Mongodb\Model',
         'Countries'           => 'Webpatser\Countries\CountriesFacade',
         'CSV'                 => 'mnshankar\CSV\CSVFacade',
