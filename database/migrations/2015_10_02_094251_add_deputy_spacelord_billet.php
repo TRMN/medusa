@@ -44,5 +44,4 @@ class AddDeputySpacelordBillet extends Migration
     {
         //
     }
-
 }

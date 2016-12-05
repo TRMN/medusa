@@ -51,12 +51,12 @@ class NewChapterTypes extends Migration
         $chapter->chapter_type = $type;
 
         $this->writeAuditTrail(
-          'system user',
-          'update',
-          'chapters',
-          $chapter->id,
-          $chapter->toJson(),
-          'new_chapter_types'
+            'system user',
+            'update',
+            'chapters',
+            $chapter->id,
+            $chapter->toJson(),
+            'new_chapter_types'
         );
 
         $chapter->save();
@@ -66,16 +66,16 @@ class NewChapterTypes extends Migration
     {
 
         $this->writeAuditTrail(
-          'system user',
-          'create',
-          'types',
-          null,
-          json_encode([
+            'system user',
+            'create',
+            'types',
+            null,
+            json_encode([
             'chapter_type'        => $type,
             'chapter_description' => $description,
             'can_have'            => $can_have
-          ]),
-          'new_chapter_types'
+            ]),
+            'new_chapter_types'
         );
 
         \Type::create([
@@ -84,5 +84,4 @@ class NewChapterTypes extends Migration
           'can_have'            => $can_have
         ]);
     }
-
 }

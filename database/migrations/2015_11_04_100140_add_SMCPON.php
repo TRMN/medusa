@@ -3,31 +3,32 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSMCPON extends Migration {
+class AddSMCPON extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		$firstSL = Chapter::where('chapter_name','=','Office of the First Space Lord')->first();
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $firstSL = Chapter::where('chapter_name', '=', 'Office of the First Space Lord')->first();
 
         $this->createChapter('Office of the Senior Master Chief Petty Officer of the Navy', 'bureau', '', 'RMN', $firstSL->id, false);
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 
     function createChapter(
         $name,
@@ -40,7 +41,7 @@ class AddSMCPON extends Migration {
     ) {
         $query = \Chapter::where('chapter_name', '=', $name)->first();
 
-        if (empty( $query->id ) === true) {
+        if (empty($query->id) === true) {
             $record =
                 [
                     'chapter_name' => $name,
@@ -72,6 +73,4 @@ class AddSMCPON extends Migration {
             return $query;
         }
     }
-
-
 }

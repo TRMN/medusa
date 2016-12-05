@@ -25,7 +25,7 @@ class SetAssignmentDates extends Migration
             $assignments = $member->assignment;
             $newAssignments = [];
             foreach ($assignments as $assignment) {
-                if (empty( $assignment['date_assigned'] ) === true) {
+                if (empty($assignment['date_assigned']) === true) {
                     if (strtotime($member->registration_date) > $july31) {
                         $assignment['date_assigned'] = $member->registration_date;
                     } else {
@@ -59,5 +59,4 @@ class SetAssignmentDates extends Migration
     {
         //
     }
-
 }

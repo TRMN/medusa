@@ -85,5 +85,4 @@ class AddFleetCoPermission extends Command
     {
         return [ ];
     }
-
 }

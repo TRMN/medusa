@@ -3,17 +3,18 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDobPerms extends Migration {
+class AddDobPerms extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
         $newPerms = [
             'DOB'  => 'See Date of Birth',
         ];
@@ -29,16 +30,15 @@ class AddDobPerms extends Migration {
             );
             Permission::create(["name" => $perm, "description" => $desc]);
         }
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 }

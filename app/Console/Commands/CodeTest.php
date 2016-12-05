@@ -42,7 +42,6 @@ class CodeTest extends Command
     {
         $this->info('Attemping to retrieve a user');
         var_dump(User::where('member_id', '=', 'RMN-1094-12')->first());
-        
     }
 
     /**
@@ -64,5 +63,4 @@ class CodeTest extends Command
     {
         return [];
     }
-
 }

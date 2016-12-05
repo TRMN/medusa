@@ -570,9 +570,8 @@ class AddExamList extends Migration
      */
     public function down()
     {
-        foreach(ExamList::all() as $exam) {
+        foreach (ExamList::all() as $exam) {
             $exam->forceDelete();
         }
     }
-
 }

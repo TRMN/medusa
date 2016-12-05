@@ -1,33 +1,37 @@
 <?php
 
-class AnnouncementController extends BaseController {
+class AnnouncementController extends BaseController
+{
 
-    public function index() {
-        $announcements = Announcement::orderBy( 'publish_date' )->get();
+    public function index()
+    {
+        $announcements = Announcement::orderBy('publish_date')->get();
 
         $viewData = [
             'announcements' => $announcements,
         ];
 
-        return Response::view( 'announcement.index', $viewData );
+        return Response::view('announcement.index', $viewData);
     }
 
-    public function show( $id ) {
+    public function show($id)
+    {
 
-        $announcement = Announcement::with( 'user' )->find( $id );
+        $announcement = Announcement::with('user')->find($id);
 
-        if( empty( $announcement ) ) {
-            return Redirect::route( 'announcement.index' );
+        if (empty($announcement)) {
+            return Redirect::route('announcement.index');
         }
 
         $viewData = [
             'announcement' => $announcement,
         ];
 
-        return Response::view( 'announcement.show', $viewData );
+        return Response::view('announcement.show', $viewData);
     }
 
-    public function create() {
+    public function create()
+    {
 
         $announcement = new Announcement;
 
@@ -35,65 +39,68 @@ class AnnouncementController extends BaseController {
             'announcement' => $announcement,
         ];
 
-        return Response::view( 'announcement.create', $viewData );
+        return Response::view('announcement.create', $viewData);
     }
 
-    public function edit( $id ) {
+    public function edit($id)
+    {
 
-        $announcement = Announcement::with( 'user' )->find( $id );
+        $announcement = Announcement::with('user')->find($id);
 
         // @todo: ACL will probably do more checking
-        if( Auth::id() != $announcement->user->id ) {
-            return Redirect::to( 'announcement/' . $id );
+        if (Auth::id() != $announcement->user->id) {
+            return Redirect::to('announcement/' . $id);
         }
 
         $viewData = [
             'announcement' => $announcement,
         ];
 
-        return Response::view( 'announcement.edit', $viewData );
+        return Response::view('announcement.edit', $viewData);
     }
 
-    public function update( $id ) {
+    public function update($id)
+    {
 
         $data = Input::all();
 
-        $announcement = Announcement::with( 'user' )->find( $id );
+        $announcement = Announcement::with('user')->find($id);
 
         $announcementUserId = $announcement->user->id;
 
         // @todo: ACL will probably do more checking
-        if( Auth::id() != $announcementUserId ) {
-            return Redirect::to( 'announcement/' . $id );
+        if (Auth::id() != $announcementUserId) {
+            return Redirect::to('announcement/' . $id);
         }
 
-        $announcement->update( $data );
+        $announcement->update($data);
 
-        return Redirect::route( 'announcement.show', $id );
+        return Redirect::route('announcement.show', $id);
     }
 
-    public function store() {
+    public function store()
+    {
 
         $data = Input::all();
 
-        $announcement = Announcement::create( $data );
+        $announcement = Announcement::create($data);
 
         $announcement->is_published = false;
 
         // @todo: ACL will probably do more checking
         $currentUser = Auth::getUser();
 
-        $currentUser->announcements()->save( $announcement );
+        $currentUser->announcements()->save($announcement);
 
-        return Redirect::route( 'announcement.show', $announcement->id );
+        return Redirect::route('announcement.show', $announcement->id);
     }
 
-    public function destroy( $id ) {
+    public function destroy($id)
+    {
 
         // @todo: ACL will probably do more checking
-        Announcement::destroy( $id );
+        Announcement::destroy($id);
 
-        return Redirect::route( 'announcement.index' );
+        return Redirect::route('announcement.index');
     }
-
 }

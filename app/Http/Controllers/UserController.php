@@ -28,44 +28,61 @@ class UserController extends \BaseController
 
         $usersOtherThanActive = [];
 
-        foreach (User::whereIn('registration_status',
-          ['Inactive', 'Suspended', 'Expelled'])->get() as $user) {
+        foreach (User::whereIn(
+            'registration_status',
+            ['Inactive', 'Suspended', 'Expelled']
+        )->get() as $user) {
             $usersOtherThanActive[$user->registration_status][] = $user;
         }
 
         return View::make(
-          'user.index',
-          [
+            'user.index',
+            [
             'users'            => $usersByBranch,
             'title'            => 'Membership List',
             'otherThanActive'  => $usersOtherThanActive,
-            'totalMembers'     => User::where('registration_status', '=',
-              'Active')->where('active', '=', 1)->count(),
-            'totalEnlisted'    => User::where('registration_status', '=',
-              'Active')->where('active', '=', 1)->where(
-              'rank.grade',
-              'like',
-              'E%'
+            'totalMembers'     => User::where(
+                'registration_status',
+                '=',
+                'Active'
+            )->where('active', '=', 1)->count(),
+            'totalEnlisted'    => User::where(
+                'registration_status',
+                '=',
+                'Active'
+            )->where('active', '=', 1)->where(
+                'rank.grade',
+                'like',
+                'E%'
             )->count(),
-            'totalOfficer'     => User::where('registration_status', '=',
-              'Active')->where('active', '=', 1)->where(
-              'rank.grade',
-              'like',
-              'O%'
+            'totalOfficer'     => User::where(
+                'registration_status',
+                '=',
+                'Active'
+            )->where('active', '=', 1)->where(
+                'rank.grade',
+                'like',
+                'O%'
             )->count(),
-            'totalFlagOfficer' => User::where('registration_status', '=',
-              'Active')->where('active', '=', 1)->where(
-              'rank.grade',
-              'like',
-              'F%'
+            'totalFlagOfficer' => User::where(
+                'registration_status',
+                '=',
+                'Active'
+            )->where('active', '=', 1)->where(
+                'rank.grade',
+                'like',
+                'F%'
             )->count(),
-            'totalCivilian'    => User::where('registration_status', '=',
-              'Active')->where('active', '=', 1)->where(
-              'rank.grade',
-              'like',
-              'C%'
+            'totalCivilian'    => User::where(
+                'registration_status',
+                '=',
+                'Active'
+            )->where('active', '=', 1)->where(
+                'rank.grade',
+                'like',
+                'C%'
             )->count()
-          ]
+            ]
         );
     }
 
@@ -91,14 +108,16 @@ class UserController extends \BaseController
           User::where('active', '=', 1)
               ->where('registration_status', '=', 'Active')
               ->where(
-                'assignment.billet',
-                '=',
-                $billet
+                  'assignment.billet',
+                  '=',
+                  $billet
               )
               ->get();
 
-        return View::make('user.duplicates',
-          ['users' => $users, 'title' => 'Show ' . $billet]);
+        return View::make(
+            'user.duplicates',
+            ['users' => $users, 'title' => 'Show ' . $billet]
+        );
     }
 
     public function getReset(User $user)
@@ -119,8 +138,8 @@ class UserController extends \BaseController
 
         if (Hash::make($in['current_password']) !== $user->getAuthPassword()) {
             return Redirect::route('user.getReset', [$user->id])->with(
-              'message',
-              'Please re-enter your current password'
+                'message',
+                'Please re-enter your current password'
             );
         }
 
@@ -135,8 +154,8 @@ class UserController extends \BaseController
 
             if ($validator->fails()) {
                 return Redirect::route('user.getReset', [$user->id])->with(
-                  'message',
-                  'The password must be at least 8 characters long'
+                    'message',
+                    'The password must be at least 8 characters long'
                 );
             }
 
@@ -144,12 +163,12 @@ class UserController extends \BaseController
             $user->password = Hash::make($in['password']);
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'update',
-              'users',
-              (string)$user->_id,
-              'Password Change',
-              'UserController@postReset'
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                'Password Change',
+                'UserController@postReset'
             );
             $user->save();
 
@@ -175,11 +194,11 @@ class UserController extends \BaseController
               ->get();
 
         return View::make(
-          'user.review',
-          [
+            'user.review',
+            [
             'users' => $users,
             'title' => 'Approve Membership Applications',
-          ]
+            ]
         );
     }
 
@@ -267,12 +286,12 @@ class UserController extends \BaseController
         $user->lastUpdate = time();
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'update',
-          'users',
-          (string)$user->_id,
-          $user->toJson(),
-          'UserController@approveApplication'
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@approveApplication'
         );
 
         $user->save();
@@ -284,15 +303,15 @@ class UserController extends \BaseController
 
         // Send welcome email
         Mail::send(
-          'emails.welcome',
-          ['user' => $user],
-          function ($message) use ($user) {
-              $message->from('membership@trmn.org', 'TRMN Membership');
+            'emails.welcome',
+            ['user' => $user],
+            function ($message) use ($user) {
+                $message->from('membership@trmn.org', 'TRMN Membership');
 
-              $message->to($user->email_address)->bcc($user->co_email);
+                $message->to($user->email_address)->bcc($user->co_email);
 
-              $message->subject('TRMN Membership');
-          }
+                $message->subject('TRMN Membership');
+            }
         );
 
         return Redirect::route('user.review');
@@ -312,12 +331,12 @@ class UserController extends \BaseController
         $user->lastUpdate = time();
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'update',
-          'users',
-          (string)$user->_id,
-          $user->toJson(),
-          'UserController@denyApplication'
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@denyApplication'
         );
 
         $user->save();
@@ -336,8 +355,8 @@ class UserController extends \BaseController
             return $redirect;
         }
         return View::make(
-          'user.create',
-          [
+            'user.create',
+            [
             'user'      => new User,
             'countries' => Country::getCountries(),
             'branches'  => Branch::getBranchList(),
@@ -347,7 +366,7 @@ class UserController extends \BaseController
             'billets'   => ['0' => 'Select a Billet'] + Billet::getBillets(),
             'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
 
-          ]
+            ]
         );
     }
 
@@ -382,8 +401,8 @@ class UserController extends \BaseController
         $data['rank'] = [
           'grade'        => $data['display_rank'],
           'date_of_rank' => date(
-            'Y-m-d',
-            strtotime($data['dor'])
+              'Y-m-d',
+              strtotime($data['dor'])
           )
         ];
         unset($data['display_rank'], $data['dor']);
@@ -395,8 +414,10 @@ class UserController extends \BaseController
         $assignment[] = [
           'chapter_id'    => $data['primary_assignment'],
           'chapter_name'  => $chapterName,
-          'date_assigned' => date('Y-m-d',
-            strtotime($data['primary_date_assigned'])),
+          'date_assigned' => date(
+              'Y-m-d',
+              strtotime($data['primary_date_assigned'])
+          ),
           'billet'        => $data['primary_billet'],
           'primary'       => true
         ];
@@ -410,8 +431,10 @@ class UserController extends \BaseController
             $assignment[] = [
               'chapter_id'    => $data['secondary_assignment'],
               'chapter_name'  => $chapterName,
-              'date_assigned' => date('Y-m-d',
-                strtotime($data['secondary_date_assigned'])),
+              'date_assigned' => date(
+                  'Y-m-d',
+                  strtotime($data['secondary_date_assigned'])
+              ),
               'billet'        => $data['secondary_billet'],
               'secondary'     => true
             ];
@@ -469,12 +492,12 @@ class UserController extends \BaseController
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'create',
-          'users',
-          null,
-          json_encode($data),
-          'UserController@store'
+            (string)Auth::user()->_id,
+            'create',
+            'users',
+            null,
+            json_encode($data),
+            'UserController@store'
         );
 
         $user = User::create($data);
@@ -606,7 +629,6 @@ class UserController extends \BaseController
         }
 
         if (isset($data['primary_assignment']) === true && empty($data['primary_assignment']) === false) {
-
             $chapterName =
               Chapter::find($data['primary_assignment'])->chapter_name;
 
@@ -648,12 +670,12 @@ class UserController extends \BaseController
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-          'Guest from ' . \Request::getClientIp(),
-          'create',
-          'users',
-          null,
-          json_encode($data),
-          'UserController@apply'
+            'Guest from ' . \Request::getClientIp(),
+            'create',
+            'users',
+            null,
+            json_encode($data),
+            'UserController@apply'
         );
 
         $user = User::create($data);
@@ -695,8 +717,10 @@ class UserController extends \BaseController
           ]) === false
         ) {
             return Redirect::to(URL::previous())
-                           ->with('message',
-                             'You do not have permission to view that page');
+                           ->with(
+                               'message',
+                               'You do not have permission to view that page'
+                           );
         }
 
         $titles[''] = 'Select Peerage Title';
@@ -715,14 +739,14 @@ class UserController extends \BaseController
         $user->leftRibbons = $user->getRibbons('L');
 
         return View::make(
-          'user.show',
-          [
+            'user.show',
+            [
             'user'      => $user,
             'countries' => Country::getCountries(),
             'branches'  => Branch::getBranchList(),
             'ptitles'   => $titles,
             'korders'   => $orders,
-          ]
+            ]
         );
     }
 
@@ -737,20 +761,22 @@ class UserController extends \BaseController
     {
         if (($this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id) || $this->hasPermissions(
             ['EDIT_MEMBER']
-          ) === true
+        ) === true
         ) {
-
             $greeting = $user->getGreetingArray();
 
             if (isset($user->rating) === true && empty($user->rating) === false && is_array(
                 $user->rating
-              ) === false
+            ) === false
             ) {
                 $user->rating =
                   [
                     'rate'        => $user->rating,
-                    'description' => Rating::where('rate_code', '=',
-                      $user->rating)->get()[0]->rate['description']
+                    'description' => Rating::where(
+                        'rate_code',
+                        '=',
+                        $user->rating
+                    )->get()[0]->rate['description']
                   ];
             }
 
@@ -790,28 +816,33 @@ class UserController extends \BaseController
             }
 
             return View::make(
-              'user.edit',
-              [
+                'user.edit',
+                [
                 'user'        => $user,
                 'greeting'    => $greeting,
                 'countries'   => Country::getCountries(),
                 'branches'    => Branch::getBranchList(),
                 'grades'      => Grade::getGradesForBranch($user->branch),
                 'ratings'     => Rating::getRatingsForBranch($user->branch),
-                'chapters'    => array_merge(Chapter::getChapters(null, 0,
-                  false), Chapter::getHoldingChapters()),
+                'chapters'    => array_merge(Chapter::getChapters(
+                    null,
+                    0,
+                    false
+                ), Chapter::getHoldingChapters()),
                 'billets'     => ['0' => 'Select a billet'] + Billet::getBillets(),
                 'locations'   => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
                 'permissions' => DB::table('permissions')
                                    ->orderBy('name', 'asc')
                                    ->get(),
 
-              ]
+                ]
             );
         } else {
             return Redirect::to(URL::previous())
-                           ->with('message',
-                             'You do not have permission to view that page');
+                           ->with(
+                               'message',
+                               'You do not have permission to view that page'
+                           );
         }
     }
 
@@ -831,8 +862,11 @@ class UserController extends \BaseController
         }
 
         $validator =
-          Validator::make($data = Input::all(), User::$updateRules,
-            User::$error_message);
+          Validator::make(
+              $data = Input::all(),
+              User::$updateRules,
+              User::$error_message
+          );
 
         if ($validator->fails()) {
             return Redirect::to(URL::previous())
@@ -863,8 +897,10 @@ class UserController extends \BaseController
         $assignment[] = [
           'chapter_id'    => $data['primary_assignment'],
           'chapter_name'  => $chapterName,
-          'date_assigned' => date('Y-m-d',
-            strtotime($data['primary_date_assigned'])),
+          'date_assigned' => date(
+              'Y-m-d',
+              strtotime($data['primary_date_assigned'])
+          ),
           'billet'        => $data['primary_billet'],
           'primary'       => true
         ];
@@ -878,8 +914,10 @@ class UserController extends \BaseController
             $assignment[] = [
               'chapter_id'    => $data['secondary_assignment'],
               'chapter_name'  => $chapterName,
-              'date_assigned' => date('Y-m-d',
-                strtotime($data['secondary_date_assigned'])),
+              'date_assigned' => date(
+                  'Y-m-d',
+                  strtotime($data['secondary_date_assigned'])
+              ),
               'billet'        => $data['secondary_billet'],
               'secondary'     => true
             ];
@@ -894,8 +932,10 @@ class UserController extends \BaseController
             $assignment[] = [
               'chapter_id'    => $data['additional_assignment'],
               'chapter_name'  => $chapterName,
-              'date_assigned' => date('Y-m-d',
-                strtotime($data['additional_date_assigned'])),
+              'date_assigned' => date(
+                  'Y-m-d',
+                  strtotime($data['additional_date_assigned'])
+              ),
               'billet'        => $data['additional_billet'],
               'additional'    => true
             ];
@@ -910,8 +950,10 @@ class UserController extends \BaseController
             $assignment[] = [
               'chapter_id'    => $data['extra_assignment'],
               'chapter_name'  => $chapterName,
-              'date_assigned' => date('Y-m-d',
-                strtotime($data['extra_date_assigned'])),
+              'date_assigned' => date(
+                  'Y-m-d',
+                  strtotime($data['extra_date_assigned'])
+              ),
               'billet'        => $data['extra_billet'],
               'extra'         => true
             ];
@@ -943,7 +985,6 @@ class UserController extends \BaseController
         if ($this->hasPermissions(['ASSIGN_PERMS']) === false) {
             $data['permissions'] = $user->permissions;
         } else {
-
             if (empty($user->permissions) === true) {
                 $currentPermissions = [];
             } else {
@@ -975,12 +1016,12 @@ class UserController extends \BaseController
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'update',
-          'users',
-          (string)$user->_id,
-          json_encode($data),
-          'UserController@update'
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            json_encode($data),
+            'UserController@update'
         );
 
         $data['awards'] = $user->awards;
@@ -1007,12 +1048,12 @@ class UserController extends \BaseController
             $user->tos = true;
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'update',
-              'users',
-              (string)$user->_id,
-              $user->toJson(),
-              'UserController@tos'
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                $user->toJson(),
+                'UserController@tos'
             );
 
             $user->save();
@@ -1034,12 +1075,12 @@ class UserController extends \BaseController
             $user->osa = date('Y-m-d');
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'update',
-              'users',
-              (string)$user->_id,
-              $user->toJson(),
-              'UserController@osa'
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                $user->toJson(),
+                'UserController@osa'
             );
 
             $user->save();
@@ -1080,12 +1121,12 @@ class UserController extends \BaseController
         }
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'hard delete',
-          'users',
-          (string)$user->_id,
-          $user->toJson(),
-          'UserController@destroy'
+            (string)Auth::user()->_id,
+            'hard delete',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@destroy'
         );
 
         User::destroy($user->_id);
@@ -1150,7 +1191,6 @@ class UserController extends \BaseController
         $peerage['code'] = $pTitleInfo->code;
 
         if ($data['ptitle'] == 'Knight' || $data['ptitle'] == 'Dame') {
-
             $kOrder =
               Korders::where('classes.postnominal', '=', $data['class'])
                      ->first();
@@ -1163,8 +1203,11 @@ class UserController extends \BaseController
               ]);
             $peerage['postnominal'] = $data['class'];
 
-            if (substr($kOrder->getClassName($data['class']), 0,
-                6) != 'Knight'
+            if (substr(
+                $kOrder->getClassName($data['class']),
+                0,
+                6
+            ) != 'Knight'
             ) {
                 $peerage['code'] = '';
             }
@@ -1176,8 +1219,8 @@ class UserController extends \BaseController
                                                         ->isValid() === true
             ) {
                 Input::file('arms')->move(
-                  public_path() . '/arms/peerage',
-                  Input::file('arms')->getClientOriginalName()
+                    public_path() . '/arms/peerage',
+                    Input::file('arms')->getClientOriginalName()
                 );
                 $peerage['filename'] =
                   Input::file('arms')->getClientOriginalName();
@@ -1224,12 +1267,12 @@ class UserController extends \BaseController
         $user->peerages = $currentPeerages;
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'update',
-          'users',
-          (string)$user->_id,
-          $user->toJson(),
-          'UserController@addOrEditPeerage'
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@addOrEditPeerage'
         );
 
         $user->save();
@@ -1253,12 +1296,12 @@ class UserController extends \BaseController
         $user->note = $data['note_text'];
 
         $this->writeAuditTrail(
-          (string)Auth::user()->_id,
-          'update',
-          'users',
-          (string)$user->_id,
-          $user->toJson(),
-          'UserController@addOrEditNote'
+            (string)Auth::user()->_id,
+            'update',
+            'users',
+            (string)$user->_id,
+            $user->toJson(),
+            'UserController@addOrEditNote'
         );
 
         $user->save();
@@ -1294,8 +1337,8 @@ class UserController extends \BaseController
         Cache::flush();
 
         return Redirect::to(URL::previous())->with(
-          'message',
-          $perm . ' permission has been given to ' . $user->getFullName()
+            'message',
+            $perm . ' permission has been given to ' . $user->getFullName()
         );
     }
 
@@ -1312,8 +1355,8 @@ class UserController extends \BaseController
         Cache::flush();
 
         return Redirect::to(URL::previous())->with(
-          'message',
-          $perm . ' permission has been removed from ' . $user->getFullName()
+            'message',
+            $perm . ' permission has been removed from ' . $user->getFullName()
         );
     }
 
@@ -1331,12 +1374,12 @@ class UserController extends \BaseController
         $usersByBranch[$branch] = $users;
 
         return View::make(
-          'user.byBranch',
-          [
+            'user.byBranch',
+            [
             'users'  => $usersByBranch,
             'title'  => $branch . " Members",
             'branch' => $branch
-          ]
+            ]
         );
     }
 
@@ -1353,7 +1396,7 @@ class UserController extends \BaseController
         foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
             $path = Auth::user()->getUnitPatchPath($position);
 
-            if ($path !== false ) {
+            if ($path !== false) {
                 $unitPatchPaths[] = $path;
             }
         }

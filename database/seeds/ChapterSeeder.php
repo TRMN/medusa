@@ -6,7 +6,7 @@ class ChapterSeeder extends Seeder
 
     public function run()
     {
-        DB::collection( 'chapters' )->delete();
+        DB::collection('chapters')->delete();
 
         // Setup the Naval Districts
 
@@ -38,7 +38,7 @@ class ChapterSeeder extends Seeder
             10 => ['chapter_name' => 'Talbott Fleet', 'chapter_type' => 'fleet', 'hull_number' => '10'],
         ];
 
-        foreach ($districts as  $district) {
+        foreach ($districts as $district) {
             $district['joinable'] = false;
             $this->command->comment("Creating " . $district['chapter_name']);
 
@@ -117,10 +117,9 @@ class ChapterSeeder extends Seeder
         $this->createChapter('HMS Valhalla', 'SU', 'Passed Away', 'RMN', false);
         $this->createChapter('HMS Tartarus', 'SU', 'Expelled', 'RMN', false);
         $this->createChapter('HMS Charon', 'SU', 'Withdrawn', 'RMN', false);
-
     }
 
-    function createChapter( $name, $type = "ship", $hull_number = '', $branch='', $joinable = true )
+    function createChapter($name, $type = "ship", $hull_number = '', $branch = '', $joinable = true)
     {
         $this->command->comment('Creating ' . $name);
 
@@ -136,10 +135,11 @@ class ChapterSeeder extends Seeder
                     'hull_number'  => $hull_number,
                     'branch'       => $branch,
                     'joinable'     => $joinable
-                ]),
+                ]
+            ),
             'chapter'
         );
 
-        return Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number, 'branch' => $branch, 'joinable' => $joinable] );
+        return Chapter::create(['chapter_name' => $name, 'chapter_type' => $type, 'hull_number' => $hull_number, 'branch' => $branch, 'joinable' => $joinable]);
     }
 }

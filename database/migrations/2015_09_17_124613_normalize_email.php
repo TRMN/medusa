@@ -3,17 +3,18 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class NormalizeEmail extends Migration {
+class NormalizeEmail extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
         $users = User::all();
 
         foreach ($users as $user) {
@@ -30,16 +31,14 @@ class NormalizeEmail extends Migration {
 
             $user->save();
         }
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+    }
 }

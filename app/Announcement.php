@@ -2,7 +2,8 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Announcement extends Eloquent {
+class Announcement extends Eloquent
+{
 
     public $fillable = [
         'user_id',
@@ -13,11 +14,11 @@ class Announcement extends Eloquent {
 
     public function user()
     {
-        return $this->belongsTo( 'User' );
+        return $this->belongsTo('User');
     }
 
-    public function getPublishLabels() {
+    public function getPublishLabels()
+    {
         return [  0  => 'Unpublished' , 1 => 'Publish' , ];
     }
-
 }

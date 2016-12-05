@@ -142,7 +142,6 @@ class ApiController extends BaseController
               User::where('member_id', '=', Input::get('member_id'))->get();
 
             if (count($res) === 1 && $res[0]->member_id == Input::get('member_id')) {
-
                 $user = $res[0];
                 $ext = Input::file('file')->getClientOriginalExtension();
                 $fileName = $user->member_id . '.' . $ext;
@@ -153,12 +152,12 @@ class ApiController extends BaseController
                 $user->filePhoto = '/images/' . $fileName;
 
                 $this->writeAuditTrail(
-                  (string)Auth::user()->_id,
-                  'update',
-                  'users',
-                  (string)$user->_id,
-                  $user->toJson(),
-                  'ApiController@savePhoto'
+                    (string)Auth::user()->_id,
+                    'update',
+                    'users',
+                    (string)$user->_id,
+                    $user->toJson(),
+                    'ApiController@savePhoto'
                 );
 
                 $user->save();
@@ -196,8 +195,11 @@ class ApiController extends BaseController
                 $query =
                   User::where('registration_status', '=', 'Active')
                       ->where(function ($query) use ($terms) {
-                          $query->where('member_id', 'like',
-                            '%' . $terms[0] . '%')
+                          $query->where(
+                              'member_id',
+                              'like',
+                              '%' . $terms[0] . '%'
+                          )
                                 ->orWhere('first_name', 'like', $terms[0] . '%')
                                 ->orWhere('last_name', 'like', $terms[0] . '%');
                       });
@@ -225,7 +227,7 @@ class ApiController extends BaseController
               [
                 'value' => $member->member_id . ' ' . $member->first_name . ' ' . (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name . (!empty($member->suffix) ? ' ' . $member->suffix : '') . ' (' . $member->getAssignmentName(
                     'primary'
-                  ) . ')',
+                ) . ')',
                 'data'  => $member->id
               ];
         }
@@ -298,17 +300,21 @@ class ApiController extends BaseController
     }
 
     public function checkInMember(
-      $event,
-      $user,
-      $member,
-      $continent = null,
-      $city = null
+        $event,
+        $user,
+        $member,
+        $continent = null,
+        $city = null
     ) {
         if (is_object($user) === false) {
             return Response::json(['error' => 'Invalid User']);
         }
-        return Response::json($user->checkMemberIn($event, $member, $continent,
-          $city));
+        return Response::json($user->checkMemberIn(
+            $event,
+            $member,
+            $continent,
+            $city
+        ));
     }
 
     public function getRibbonRack($member_id)
@@ -324,8 +330,6 @@ class ApiController extends BaseController
             } else {
                 return View::make('ribbonrack', ['user' => $user]);
             }
-
-
         }
     }
 }

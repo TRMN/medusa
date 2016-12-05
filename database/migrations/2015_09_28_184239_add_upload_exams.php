@@ -3,16 +3,17 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUploadExams extends Migration {
+class AddUploadExams extends Migration
+{
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
         $this->writeAuditTrail(
             'system user',
             'create',
@@ -22,16 +23,15 @@ class AddUploadExams extends Migration {
             'add_flag_lt'
         );
         Permission::create(["name" => "UPLOAD_EXAMS", "description" => "Upload Academy Exam Grades"]);
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 }

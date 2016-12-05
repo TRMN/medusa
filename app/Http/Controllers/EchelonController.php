@@ -3,7 +3,8 @@
 /**
  * Class EchelonController
  */
-class EchelonController extends \BaseController {
+class EchelonController extends \BaseController
+{
 
     private $chapterTypes = ['district', 'fleet', 'task_force', 'task_group', 'squadron', 'division'];
     private $permissions = ['ADD' => 'CREATE_ECHELON', 'EDIT' => 'CREATE_ECHELON', 'DELETE' => 'DEL_ECHELON'];
@@ -12,27 +13,27 @@ class EchelonController extends \BaseController {
     private $title = 'an Echelon';
     private $branch = 'RMN';
 
-	/**
-	 * Display a listing of the resource.
-	 * GET /echelon
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
+    /**
+     * Display a listing of the resource.
+     * GET /echelon
+     *
+     * @return Response
+     */
+    public function index()
+    {
         $chapters = Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get();
 
         return View::make('chapter.index', ['chapters' => $chapters]);
-	}
+    }
 
-	/**
-	 * Show the form for creating a new resource.
-	 * GET /echelon/create
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
+    /**
+     * Show the form for creating a new resource.
+     * GET /echelon/create
+     *
+     * @return Response
+     */
+    public function create()
+    {
         if (($redirect = $this->checkPermissions('CREATE_ECHELON')) !== true) {
             return $redirect;
         }
@@ -69,16 +70,16 @@ class EchelonController extends \BaseController {
                 'fleets'       => ['' => 'Select an Echelon'] + $chapters,
             ]
         );
-	}
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 * POST /echelon
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
+    /**
+     * Store a newly created resource in storage.
+     * POST /echelon
+     *
+     * @return Response
+     */
+    public function store()
+    {
         if (($redirect = $this->checkPermissions('CREATE_ECHELON')) !== true) {
             return $redirect;
         }
@@ -90,8 +91,8 @@ class EchelonController extends \BaseController {
         }
 
         foreach ($data as $k => $v) {
-            if (empty( $data[$k] ) === true) {
-                unset( $data[$k] );
+            if (empty($data[$k]) === true) {
+                unset($data[$k]);
             }
         }
 
@@ -109,18 +110,18 @@ class EchelonController extends \BaseController {
         Chapter::create($data);
 
         return Redirect::route('chapter.index');
-	}
+    }
 
-	/**
-	 * Display the specified resource.
-	 * GET /echelon/{id}
-	 *
-	 * @param  int  $chapter
-	 * @return Response
-	 */
-	public function show(Chapter $chapter)
-	{
-        if (isset( $chapter->assigned_to )) {
+    /**
+     * Display the specified resource.
+     * GET /echelon/{id}
+     *
+     * @param  int  $chapter
+     * @return Response
+     */
+    public function show(Chapter $chapter)
+    {
+        if (isset($chapter->assigned_to)) {
             $parentChapter = Chapter::find($chapter->assigned_to);
         } else {
             $parentChapter = false;
@@ -132,7 +133,8 @@ class EchelonController extends \BaseController {
 
         $crew = $chapter->getCrew();
 
-        return View::make('chapter.show',
+        return View::make(
+            'chapter.show',
             [
                 'detail'   => $chapter,
                 'higher'   => $parentChapter,
@@ -141,17 +143,17 @@ class EchelonController extends \BaseController {
                 'crew'     => $crew
             ]
         );
-	}
+    }
 
-	/**
-	 * Show the form for editing the specified resource.
-	 * GET /echelon/{id}/edit
-	 *
-	 * @param  int  $chapter
-	 * @return Response
-	 */
-	public function edit(Chapter $chapter)
-	{
+    /**
+     * Show the form for editing the specified resource.
+     * GET /echelon/{id}/edit
+     *
+     * @param  int  $chapter
+     * @return Response
+     */
+    public function edit(Chapter $chapter)
+    {
         if (($redirect = $this->checkPermissions('EDIT_ECHELON')) !== true) {
             return $redirect;
         }
@@ -195,15 +197,15 @@ class EchelonController extends \BaseController {
                 'numCrew'      => count($crew) + count($childUnits),
             ]
         );
-	}
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 * PUT /echelon/{id}
-	 *
-	 * @param  int  $chapter
-	 * @return Response
-	 */
+    /**
+     * Update the specified resource in storage.
+     * PUT /echelon/{id}
+     *
+     * @param  int  $chapter
+     * @return Response
+     */
     public function update(Chapter $chapter)
     {
         if (($redirect = $this->checkPermissions('EDIT_ECHELON')) !== true) {
@@ -216,26 +218,26 @@ class EchelonController extends \BaseController {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        unset( $data['_method'], $data['_token'] );
+        unset($data['_method'], $data['_token']);
 
-        if (empty( $data['decommission_date'] ) === false &&
-            empty( $data['commission_date'] ) === false
+        if (empty($data['decommission_date']) === false &&
+            empty($data['commission_date']) === false
         ) {
             // Figure out if the ship is in commission or not
 
             if (strtotime($data['commission_date']) > strtotime($data['decommission_date'])) {
                 // Commission date is newer than decommission date
-                unset( $data['decommission_date'] );
+                unset($data['decommission_date']);
                 $chapter->decommission_date = '';
             } else {
                 // Decommission date is newer
-                unset( $data['commission_date'] );
+                unset($data['commission_date']);
                 $chapter->commission_date = '';
             }
         }
 
         foreach ($data as $k => $v) {
-            if (empty( $data[$k] ) === false) {
+            if (empty($data[$k]) === false) {
                 $chapter->$k = $v;
             }
         }
@@ -251,20 +253,21 @@ class EchelonController extends \BaseController {
             'EchelonController@update'
         );
 
-        $chapter->save();;
+        $chapter->save();
+        ;
 
         Cache::flush();
 
         return Redirect::route('chapter.index');
     }
 
-	/**
-	 * Remove the specified resource from storage.
-	 * DELETE /echelon/{id}
-	 *
-	 * @param  int  $chapter
-	 * @return Response
-	 */
+    /**
+     * Remove the specified resource from storage.
+     * DELETE /echelon/{id}
+     *
+     * @param  int  $chapter
+     * @return Response
+     */
     public function destroy(Chapter $chapter)
     {
         if (($redirect = $this->checkPermissions('DEL_ECHELON')) !== true) {
@@ -300,5 +303,4 @@ class EchelonController extends \BaseController {
 
         return View::make('echelon.confirm-deactivate', ['chapter' => $chapter, 'numCrew' => count($crew) + count($childUnits),]);
     }
-
 }

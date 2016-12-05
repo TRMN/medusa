@@ -3,8 +3,9 @@
 use Jenssegers\Mongodb\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class RegStatus extends Eloquent {
-	protected $fillable = ['status'];
+class RegStatus extends Eloquent
+{
+    protected $fillable = ['status'];
 
     protected $table = 'status';
 
@@ -12,7 +13,7 @@ class RegStatus extends Eloquent {
     {
         $retVal = [];
 
-        foreach(self::orderBy('status')->get() as $status) {
+        foreach (self::orderBy('status')->get() as $status) {
             $retVal[$status->status] = $status->status;
         }
 
@@ -20,5 +21,4 @@ class RegStatus extends Eloquent {
 
         return ['' => 'Select a status'] + $retVal;
     }
-
 }

@@ -3,17 +3,18 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFleetCoAndDco extends Migration {
+class AddFleetCoAndDco extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
         $billets = ['Fleet Commander', 'Deputy Fleet Commander', 'Fleet Bosun'];
 
         foreach ($billets as $billet) {
@@ -27,16 +28,15 @@ class AddFleetCoAndDco extends Migration {
             );
             Billet::create(["billet_name" => $billet]);
         }
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 }

@@ -62,7 +62,6 @@ class ImportGrades extends Command
                      'Landing Queen\'s'            => 'importLandingUExams',
                      'IMNA Specialist Exam Grades' => 'importGsnSpecialityExams',
                  ] as $sheet => $importRoutine) {
-
             $examRecords = $this->processExams($examRecords, $sheet, $importRoutine);
         }
 
@@ -70,7 +69,7 @@ class ImportGrades extends Command
 
         // Set it back to what it was
 
-        if (empty( $timeLimit ) === true) {
+        if (empty($timeLimit) === true) {
             set_time_limit(30);
         } else {
             set_time_limit($timeLimit);
@@ -81,11 +80,9 @@ class ImportGrades extends Command
     {
 
         foreach ($records as $memberId => $record) {
-
             $res = Exam::where('member_id', '=', $memberId)->First();
 
             if (is_null($res) === false) {
-
                 // Exam record exists, replace it
                 $res->exams = $record;
 
@@ -100,7 +97,7 @@ class ImportGrades extends Command
 
                 try {
                     $res->save();
-                } catch ( Exception $e ) {
+                } catch (Exception $e) {
                     $details =
                         [
                             'severity' => 'warning',
@@ -110,7 +107,6 @@ class ImportGrades extends Command
                     $this->logMsg($details);
                 }
             } else {
-
                 $examRecord = ['member_id' => $memberId, 'exams' => $record];
                 $this->writeAuditTrail(
                     'import',
@@ -123,7 +119,7 @@ class ImportGrades extends Command
 
                 try {
                     Exam::create($examRecord);
-                } catch ( Exception $e ) {
+                } catch (Exception $e) {
                     $details =
                         [
                             'severity' => 'warning',
@@ -156,8 +152,7 @@ class ImportGrades extends Command
                       ->toArray();
 
         foreach ($exams as $userRecord) {
-
-            if (empty( $userRecord['last_name'] ) === true) {
+            if (empty($userRecord['last_name']) === true) {
                 continue;
             }
 
@@ -170,7 +165,7 @@ class ImportGrades extends Command
 
             //if validatedUserRecord is not null, process this one
 
-            if (empty( $examRecords[$validatedUserRecord['member_number']] ) === true) {
+            if (empty($examRecords[$validatedUserRecord['member_number']]) === true) {
                 // We have no exam record for this member
                 $examRecords[$validatedUserRecord['member_number']] = $this->$importRoutine($validatedUserRecord);
             } else {
@@ -239,7 +234,7 @@ class ImportGrades extends Command
         if ($debug) {
             $this->info(print_r($scoreAndDate, true));
         }
-        if (isset( $scoreAndDate[1] ) === true) {
+        if (isset($scoreAndDate[1]) === true) {
             $scoreAndDate[0] = trim($scoreAndDate[0]);
             $scoreAndDate[1] = trim($scoreAndDate[1]);
 
@@ -287,7 +282,7 @@ class ImportGrades extends Command
             $score = $scoreAndDate[0];
         }
 
-        if (isset( $scoreAndDate[1] ) === true) {
+        if (isset($scoreAndDate[1]) === true) {
             // Make sure we have a % at the end of the score
             if (substr($score, -1) != '%' && $score != 'PASS' && $score != 'BETA' && substr($score, 0, 4) != 'CREA') {
                 $score .= '%';
@@ -331,7 +326,7 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($mainLineExams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 $exam[$examId] = $this->parseScoreAndDate($record[$field]);
             }
         }
@@ -373,7 +368,7 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($mainLineExams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 $exam[$examId] = $this->parseScoreAndDate($record[$field]);
             }
         }
@@ -505,7 +500,7 @@ class ImportGrades extends Command
 
         $exams = [];
 
-        foreach($fieldNames as $fieldName) {
+        foreach ($fieldNames as $fieldName) {
             $exams[$fieldName] = 'KR1MA-' . str_replace('_', '-', strtoupper($fieldName));
         }
 
@@ -513,7 +508,7 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($exams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 $exam[$examId] = $this->parseScoreAndDate($record[$field]);
             }
         }
@@ -549,7 +544,7 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($mainLineExams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 $exam[$examId] = $this->parseScoreAndDate($record[$field]);
             }
         }
@@ -595,7 +590,7 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($mainLineExams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 $exam[$examId] = $this->parseScoreAndDate($record[$field]);
             }
         }
@@ -605,15 +600,14 @@ class ImportGrades extends Command
 
     protected function importLandingUExams(array $record)
     {
-        $landingUExams = array_where($record, function ($key, $value)
-        {
+        $landingUExams = array_where($record, function ($key, $value) {
             return strtoupper(substr($key, 0, 2)) == 'LU';
         });
 
         $exam = [];
 
         foreach ($landingUExams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 $examId = str_replace('_', '-', strtoupper($field));
                 $exam[$examId] = $this->parseScoreAndDate($record[$field]);
             }
@@ -624,15 +618,14 @@ class ImportGrades extends Command
 
     protected function importGsnSpecialityExams(array $record)
     {
-        $exams = array_where($record, function ($key, $value)
-        {
-            return preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/',strtoupper($key));
+        $exams = array_where($record, function ($key, $value) {
+            return preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/', strtoupper($key));
         });
 
         $exam = [];
 
         foreach ($exams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/', strtoupper($field), $matches);
                 $examId = str_replace('_', '-', $matches[0]);
                 $exam[$examId] = $this->parseScoreAndDate($record[$field]);
@@ -659,7 +652,7 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($rmnSpecialityExams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 if (strtoupper($record[$field]) !== 'SKIPPED') {
                     $exam[$examId] = $this->parseScoreAndDate($record[$field]);
                 }
@@ -685,7 +678,7 @@ class ImportGrades extends Command
         $exam = [];
 
         foreach ($rmmcSpecialityExams as $field => $examId) {
-            if (empty( $record[$field] ) === false) {
+            if (empty($record[$field]) === false) {
                 if (strtoupper($record[$field]) !== 'SKIPPED') {
                     $exam[$examId] = $this->parseScoreAndDate($record[$field]);
                 }
@@ -701,16 +694,15 @@ class ImportGrades extends Command
         $lastName = explode(' ', preg_replace('/\W+/', ' ', $memberExamRecord['last_name']));
 
         if (preg_match('/^RMN\-\d{4}.*/', trim($memberExamRecord['member_number'])) === 1) {
-
             $user =
                 User::where('member_id', '=', trim($memberExamRecord['member_number']))
                     ->first();
 
             if (is_null($user) === false) {
-                if (stripos(trim($user['first_name']), substr(trim($firstName[0]),0,2)) === 0 && stripos(
-                        trim($user['last_name']),
-                        trim($lastName[0])
-                    ) === 0
+                if (stripos(trim($user['first_name']), substr(trim($firstName[0]), 0, 2)) === 0 && stripos(
+                    trim($user['last_name']),
+                    trim($lastName[0])
+                ) === 0
                 ) {
                     return $memberExamRecord;
                 }
@@ -718,7 +710,7 @@ class ImportGrades extends Command
         }
 
         $users =
-            User::where('first_name', 'like', substr(trim($firstName[0]),0,2) . '%')
+            User::where('first_name', 'like', substr(trim($firstName[0]), 0, 2) . '%')
                 ->where('last_name', '=', trim($memberExamRecord['last_name']))
                 ->get();
 

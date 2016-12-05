@@ -3,17 +3,18 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFlagLt extends Migration {
+class AddFlagLt extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
         $this->writeAuditTrail(
             'system user',
             'create',
@@ -23,16 +24,15 @@ class AddFlagLt extends Migration {
             'add_flag_lt'
         );
         Billet::create(["billet_name" => "Flag Lieutenant"]);
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 }

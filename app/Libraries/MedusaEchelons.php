@@ -76,12 +76,12 @@ trait MedusaEchelons
         }
 
         foreach ($data as $k => $v) {
-            if (empty( $data[$k] ) === true) {
-                unset( $data[$k] );
+            if (empty($data[$k]) === true) {
+                unset($data[$k]);
             }
         }
 
-        if (empty( $data['joinable'] ) === true) {
+        if (empty($data['joinable']) === true) {
             $data['joinable'] = false;
         }
 
@@ -109,7 +109,7 @@ trait MedusaEchelons
      */
     public function show(\Chapter $chapter)
     {
-        if (isset( $chapter->assigned_to )) {
+        if (isset($chapter->assigned_to)) {
             $parentChapter = \Chapter::find($chapter->assigned_to);
         } else {
             $parentChapter = false;
@@ -199,31 +199,31 @@ trait MedusaEchelons
             return \Redirect::back()->withErrors($validator)->withInput();
         }
 
-        unset( $data['_method'], $data['_token'] );
+        unset($data['_method'], $data['_token']);
 
-        if (empty( $data['decommission_date'] ) === false &&
-            empty( $data['commission_date'] ) === false
+        if (empty($data['decommission_date']) === false &&
+            empty($data['commission_date']) === false
         ) {
             // Figure out if the ship is in commission or not
 
             if (strtotime($data['commission_date']) > strtotime($data['decommission_date'])) {
                 // Commission date is newer than decommission date
-                unset( $data['decommission_date'] );
+                unset($data['decommission_date']);
                 $chapter->decommission_date = null;
             } else {
                 // Decommission date is newer
-                unset( $data['commission_date'] );
+                unset($data['commission_date']);
                 $chapter->commission_date = null;
             }
         }
 
         foreach ($data as $k => $v) {
-            if (empty( $data[$k] ) === false) {
+            if (empty($data[$k]) === false) {
                 $chapter->$k = $v;
             }
         }
 
-        if (empty( $data['joinable'] ) === true) {
+        if (empty($data['joinable']) === true) {
             $chapter->joinable = false;
         }
 
@@ -236,7 +236,8 @@ trait MedusaEchelons
             $this->auditName . '@update'
         );
 
-        $chapter->save();;
+        $chapter->save();
+        ;
 
         \Cache::flush();
 

@@ -3,7 +3,8 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Branch extends Eloquent {
+class Branch extends Eloquent
+{
 
     protected $fillable = [ 'branch', 'branch_name' ];
 
@@ -22,7 +23,7 @@ class Branch extends Eloquent {
 
     static function getNavalBranchList()
     {
-        foreach (Branch::whereIn('branch',['RMN', 'GSN', 'IAN', 'RHN'])->get(['branch', 'branch_name']) as $branch) {
+        foreach (Branch::whereIn('branch', ['RMN', 'GSN', 'IAN', 'RHN'])->get(['branch', 'branch_name']) as $branch) {
             $branches[$branch['branch']] = $branch['branch_name'];
         }
 
@@ -32,5 +33,4 @@ class Branch extends Eloquent {
 
         return $branches;
     }
-
 }

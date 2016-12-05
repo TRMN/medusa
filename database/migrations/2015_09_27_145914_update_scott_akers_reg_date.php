@@ -41,5 +41,4 @@ class UpdateScottAkersRegDate extends Migration
     {
         //
     }
-
 }

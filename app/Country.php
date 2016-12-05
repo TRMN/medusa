@@ -1,20 +1,22 @@
 <?php
 
-class Country extends \Eloquent {
-  protected $fillable = [];
+class Country extends \Eloquent
+{
+    protected $fillable = [];
 
-  public static function getCountries() {
-    $results = Countries::getList();
-    $countries = [];
+    public static function getCountries()
+    {
+        $results = Countries::getList();
+        $countries = [];
 
-    foreach ($results as $country) {
-      $countries[$country['iso_3166_3']] = $country['name'];
+        foreach ($results as $country) {
+            $countries[$country['iso_3166_3']] = $country['name'];
+        }
+
+        asort($countries);
+
+        $countries = array('' => 'Select a Country') + $countries;
+
+        return $countries;
     }
-
-    asort($countries);
-
-    $countries = array('' => 'Select a Country') + $countries;
-
-    return $countries;
-  }
 }

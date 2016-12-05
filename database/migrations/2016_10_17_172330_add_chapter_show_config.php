@@ -191,5 +191,4 @@ class AddChapterShowConfig extends Migration
     {
         MedusaConfig::where('key', '=', 'chapter.show')->firstOrFail()->delete();
     }
-
 }

@@ -41,5 +41,4 @@ class UpdateMartin extends Migration
     {
         //
     }
-
 }

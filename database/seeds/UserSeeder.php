@@ -1,10 +1,10 @@
 <?php
 
-class UserSeeder extends Seeder {
+class UserSeeder extends Seeder
+{
 
-	public function run()
-	{
-        DB::collection( 'users' )->delete();
-	}
-
+    public function run()
+    {
+        DB::collection('users')->delete();
+    }
 }

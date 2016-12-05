@@ -6,8 +6,8 @@ class RegStatusSeeder extends Seeder
 
     use \Medusa\Audit\MedusaAudit;
 
-	public function run()
-	{
+    public function run()
+    {
         DB::collection('status')->delete();
 
         $statuses = ['Active', 'Inactive', 'Pending', 'Suspended', 'Expelled'];
@@ -15,7 +15,6 @@ class RegStatusSeeder extends Seeder
         $this->command->info('Adding Registration Statuses');
 
         foreach ($statuses as $status) {
-
             $this->writeAuditTrail(
                 'db:seed',
                 'create',
@@ -27,6 +26,5 @@ class RegStatusSeeder extends Seeder
 
             RegStatus::create(['status' => $status]);
         }
-	}
-
+    }
 }

@@ -43,7 +43,7 @@ class AddNewBranches extends Migration
     {
         foreach (['RMMM', 'RMACS'] as $value) {
             $branch = Branch::where('branch', '=', $value)->first();
-            if (empty( $branch ) === false) {
+            if (empty($branch) === false) {
                 $this->writeAuditTrail(
                     'system user',
                     'delete',

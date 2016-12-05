@@ -32,11 +32,11 @@ class ConfigController extends \BaseController
         }
 
         return View::make(
-          'config.config',
-          [
+            'config.config',
+            [
             'action' => 'add',
             'config' => new MedusaConfig(),
-          ]
+            ]
         );
     }
 
@@ -68,12 +68,12 @@ class ConfigController extends \BaseController
             $config->save();
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'create',
-              'config',
-              null,
-              $config->toJson(),
-              'ConfigController@update'
+                (string)Auth::user()->_id,
+                'create',
+                'config',
+                null,
+                $config->toJson(),
+                'ConfigController@update'
             );
 
             $msg = '"' . $config->key . '" has been added';
@@ -116,11 +116,11 @@ class ConfigController extends \BaseController
         }
 
         return View::make(
-          'config.config',
-          [
+            'config.config',
+            [
             'action' => 'edit',
             'config' => $config,
-          ]
+            ]
         );
     }
 
@@ -152,12 +152,12 @@ class ConfigController extends \BaseController
             $config->save();
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'update',
-              'config',
-              $config->id,
-              $config->toJson(),
-              'ConfigController@update'
+                (string)Auth::user()->_id,
+                'update',
+                'config',
+                $config->id,
+                $config->toJson(),
+                'ConfigController@update'
             );
 
             $msg = '"' . $config->key . '" has been updated';
@@ -188,12 +188,12 @@ class ConfigController extends \BaseController
             $config->delete();
 
             $this->writeAuditTrail(
-              (string)Auth::user()->_id,
-              'delete',
-              'config',
-              $config->id,
-              $config->toJson(),
-              'ConfigController@delete'
+                (string)Auth::user()->_id,
+                'delete',
+                'config',
+                $config->id,
+                $config->toJson(),
+                'ConfigController@delete'
             );
 
             return 1;
@@ -202,5 +202,4 @@ class ConfigController extends \BaseController
             return 0;
         }
     }
-
 }

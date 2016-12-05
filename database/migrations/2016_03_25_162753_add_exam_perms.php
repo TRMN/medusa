@@ -3,17 +3,18 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddExamPerms extends Migration {
+class AddExamPerms extends Migration
+{
 
     use \Medusa\Audit\MedusaAudit;
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
         $newPerms = [
             'ADD_GRADE'  => 'Add an exam grade or edit a grade they entered',
             'EDIT_GRADE' => 'Edit any exam grade',
@@ -30,15 +31,15 @@ class AddExamPerms extends Migration {
             );
             Permission::create(["name" => $perm, "description" => $desc]);
         }
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		//
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
 }

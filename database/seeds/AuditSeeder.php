@@ -7,5 +7,4 @@ class AuditSeeder extends Seeder
     {
         DB::collection('audit_trail')->delete();
     }
-
 }

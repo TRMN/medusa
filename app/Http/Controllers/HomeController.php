@@ -20,20 +20,20 @@ class HomeController extends BaseController
 
             $titles[''] = 'Select Peerage Title';
 
-            foreach(Ptitles::orderBy('precedence')->get() as $title) {
+            foreach (Ptitles::orderBy('precedence')->get() as $title) {
                 $titles[$title->title] = $title->title;
             }
 
             $orders[''] = 'Select Order';
 
-            foreach(Korders::all() as $order) {
+            foreach (Korders::all() as $order) {
                 $orders[$order->id] = $order->order;
             }
 
             $viewData['ptitles'] = $titles;
             $viewData['korders'] = $orders;
 
-            if (empty( $user->osa ) === true) {
+            if (empty($user->osa) === true) {
                 return View::make('osa', array_merge($viewData, ['showform' => true]));
             } elseif ($user->tos === true) {
                 return View::make('home', $viewData);

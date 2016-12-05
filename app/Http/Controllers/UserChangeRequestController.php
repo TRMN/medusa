@@ -46,7 +46,7 @@ class UserChangeRequestController extends \BaseController
         $data = Input::all();
 
         $user = User::find($data['user_id']);
-        if (empty( $data['req_id'] ) === false && $data['user_id'] !== $data['req_id']) {
+        if (empty($data['req_id']) === false && $data['user_id'] !== $data['req_id']) {
             $requestor = User::find($data['req_id']);
         } else {
             $requestor = $user;
@@ -63,7 +63,7 @@ class UserChangeRequestController extends \BaseController
 
         // Branch Change
 
-        if (empty( $data['branch'] ) === false) {
+        if (empty($data['branch']) === false) {
             $record['req_type'] = 'branch';
             $record['old_value'] = $data['old_branch'];
             $record['new_value'] = $data['branch'];
@@ -80,7 +80,7 @@ class UserChangeRequestController extends \BaseController
             ChangeRequest::create($record);
         }
 
-        if (empty( $data['primary_billet'] ) === false) {
+        if (empty($data['primary_billet']) === false) {
             $record['req_type'] = 'assignment.billet';
             $record['old_value'] = $data['old_billet'];
             $record['new_value'] = $data['primary_billet'];
@@ -97,7 +97,7 @@ class UserChangeRequestController extends \BaseController
             ChangeRequest::create($record);
         }
 
-        if (empty( $data['primary_assignment'] ) === false) {
+        if (empty($data['primary_assignment']) === false) {
             $record['req_type'] = 'assignment.chapter';
             $record['old_value'] = $data['old_assignment'];
             $record['new_value'] = $data['primary_assignment'];
@@ -171,7 +171,7 @@ class UserChangeRequestController extends \BaseController
                 // CO's email
                 $co = Chapter::find($user->getAssignedShip())->getCO();
 
-                if (empty( $co ) === false) {
+                if (empty($co) === false) {
                     $cc = [$co->email_address];
                 } else {
                     $cc = [];
@@ -190,7 +190,7 @@ class UserChangeRequestController extends \BaseController
                 $cc = [Chapter::find($user->getAssignedShip())->getCO()->email_address];
 
                 // Is this a MARDET?
-                switch(Chapter::find($user->getAssignedShip())->chapter_type) {
+                switch (Chapter::find($user->getAssignedShip())->chapter_type) {
                     case 'shuttle':
                     case 'section':
                     case 'squad':
@@ -225,7 +225,7 @@ class UserChangeRequestController extends \BaseController
 
 
                 // Is this a MARDET?
-                switch(Chapter::find($request->new_value)->chapter_type) {
+                switch (Chapter::find($request->new_value)->chapter_type) {
                     case 'shuttle':
                     case 'section':
                     case 'squad':
@@ -253,11 +253,11 @@ class UserChangeRequestController extends \BaseController
                 $message = '<li>This was a transfer from another military branch to the RMN.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
             }
 
-            if (in_array($oldValue,['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($newValue, ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
+            if (in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($newValue, ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
                 $message = '<li>This was a transfer from a military branch to a civilian branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
             }
 
-            if (in_array($newValue,['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($oldValue, ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
+            if (in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($oldValue, ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
                 $message = '<li>This was a transfer from a civilian branch to a military branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
             }
 
@@ -286,7 +286,6 @@ class UserChangeRequestController extends \BaseController
             $rank = $user->rank;
             $rank['grade'] = $newRank;
             $user->rank = $rank;
-
         }
 
         if (empty($message) === false) {
@@ -394,5 +393,4 @@ class UserChangeRequestController extends \BaseController
 
         return Redirect::route('user.change.review');
     }
-
 }

@@ -101,22 +101,20 @@ class ImportUsers extends Command
         $results = Countries::getList();
         $countries = [];
 
-        foreach ( $results as $country )
-        {
+        foreach ($results as $country) {
             $countries[$country['name']] = $country['iso_3166_3'];
         }
 
         // Get the users
 
         $this->comment('Reading user file');
-        $users = Excel::load( app_path() . '/database/users.xlsx' )->formatDates( true, 'Y-m-d' )->toArray();
+        $users = Excel::load(app_path() . '/database/users.xlsx')->formatDates(true, 'Y-m-d')->toArray();
         $this->comment('User file loaded, started to process');
 
-        foreach ( $users as $user )
-        {
+        foreach ($users as $user) {
             $user['rank']['grade'] = $user['grade'];
             $user['rank']['date_of_rank'] = '';
-            unset( $user['grade'] );
+            unset($user['grade']);
 
             if ($user['ship_name'] != "NULL") {
                 if ($user['ship_name'] === 'HMS Charon') {
@@ -153,8 +151,7 @@ class ImportUsers extends Command
             ];
 
             if ($user['primary_billet'] == "Commanding Officer") {
-
-                $user['permissions'] = array_merge($user['permissions'],[
+                $user['permissions'] = array_merge($user['permissions'], [
                     'DUTY_ROSTER',
                     'EXPORT_ROSTER',
                     'EDIT_WEBSITE',
@@ -167,10 +164,11 @@ class ImportUsers extends Command
                 $user['duty_roster'] = $user['assignment'][0]['chapter_id'];
             }
 
-            if (( empty( $user['secondary_billet'] ) === false ) &&
+            if (( empty($user['secondary_billet']) === false ) &&
                   $user['secondary_billet'] == "Commanding Officer") {
-                      $user['permissions'] = array_merge($user['permissions'],
-                        [
+                      $user['permissions'] = array_merge(
+                          $user['permissions'],
+                          [
                             'DUTY_ROSTER',
                             'EXPORT_ROSTER',
                             'EDIT_WEBSITE',
@@ -178,25 +176,23 @@ class ImportUsers extends Command
                             'PROMOTE_E601',
                             'REQUEST_PROMOTION',
                             'CHAPTER_REPORT'
-                        ]
-                    );
+                          ]
+                      );
             }
 
             $user['permissions'] = array_unique($user['permissions']);
 
-            unset( $user['ship_name'], $user['primary_billet'], $user['secondary_billet'] );
+            unset($user['ship_name'], $user['primary_billet'], $user['secondary_billet']);
 
             if ($user['registration_status'] === 'NULL') {
                 $user['registration_status'] = 'Active';
             }
 
-            if ( $user['registration_date'] === 'NULL' )
-            {
+            if ($user['registration_date'] === 'NULL') {
                 $user['registration_date'] = $user['application_date'];
             }
 
-            if ( $user['application_date'] === 'NULL' )
-            {
+            if ($user['application_date'] === 'NULL') {
                 $user['application_date'] = $user['registration_date'];
             }
 
@@ -216,11 +212,9 @@ class ImportUsers extends Command
             $user['state_province'] = User::normalizeStateProvince($user['state_province']);
             $user['awards'] = [];
 
-            foreach ( $user as $key => $value )
-            {
-                if ( is_null( $value ) === true || $value === 'NULL' )
-                {
-                    unset( $user[$key] );
+            foreach ($user as $key => $value) {
+                if (is_null($value) === true || $value === 'NULL') {
+                    unset($user[$key]);
                 }
             }
 
@@ -232,10 +226,9 @@ class ImportUsers extends Command
 
             // Make sure this is not a duplicate user
             if (count(User::where('member_id', '=', $user['member_id'])->get()) === 0) {
-
                 $this->writeAuditTrail('import', 'create', 'users', null, json_encode($user), 'import.user');
 
-                $result = User::create( $user );
+                $result = User::create($user);
 
                 $u = User::find($result['_id']);
 
@@ -270,14 +263,14 @@ class ImportUsers extends Command
         return [];
     }
 
-    protected function getChapterByName( $name )
+    protected function getChapterByName($name)
     {
 
-        foreach(['-One' => '01', '-Two' => '02', ' One' => '01', ' Two' => '02'] as $pnum => $pid) {
+        foreach (['-One' => '01', '-Two' => '02', ' One' => '01', ' Two' => '02'] as $pnum => $pid) {
             $name = $this->normalizePinnaceName($name, $pnum, $pid);
         }
 
-        $results = Chapter::where( 'chapter_name', '=', $name )->get();
+        $results = Chapter::where('chapter_name', '=', $name)->get();
         if (count($results) > 0) {
             return $results;
         } else {
@@ -287,7 +280,7 @@ class ImportUsers extends Command
 
             $tmp = substr($name, 0, 3);
 
-            switch($tmp) {
+            switch ($tmp) {
                 case 'GNS':
                     $branch = 'GSN';
                     break;
@@ -312,9 +305,10 @@ class ImportUsers extends Command
             }
 
             $this->writeAuditTrail('import', 'create', 'chapters', null, json_encode(
-                ['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch]), 'import.user');
-            Chapter::create( ['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch] );
-            return Chapter::where( 'chapter_name', '=', $name )->get();
+                ['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch]
+            ), 'import.user');
+            Chapter::create(['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch]);
+            return Chapter::where('chapter_name', '=', $name)->get();
         }
     }
 

@@ -15,13 +15,16 @@ class ReportController extends \BaseController
         }
 
         return Response::view(
-          'report.index',
-          [
-            'reports' => Report::where('chapter_id', '=',
-              Auth::user()->getAssignedShip())->orderBy(
-              'report_date'
+            'report.index',
+            [
+            'reports' => Report::where(
+                'chapter_id',
+                '=',
+                Auth::user()->getAssignedShip()
+            )->orderBy(
+                'report_date'
             )->get()
-          ]
+            ]
         );
     }
 
@@ -52,8 +55,8 @@ class ReportController extends \BaseController
 
         if (in_array($chapter->chapter_type, ['ship', 'station']) === false) {
             return \Redirect::to(\URL::previous())->with(
-              'message',
-              'I was unable to find an appropriate command for this report.'
+                'message',
+                'I was unable to find an appropriate command for this report.'
             );
         }
 
@@ -62,8 +65,10 @@ class ReportController extends \BaseController
         if (date('n') & 1 == 1) {
             $ts = strtotime('-1 month', $first);
             $month =
-              date('F, Y',
-                strtotime(date('Y') . '-' . (date('n') + 1) . '-01'));
+              date(
+                  'F, Y',
+                  strtotime(date('Y') . '-' . (date('n') + 1) . '-01')
+              );
         } else {
             $ts = strtotime('-2 month', $first);
             $month = date('F, Y');
@@ -76,11 +81,14 @@ class ReportController extends \BaseController
           date('Y-m');
 
         $report =
-          Report::where('chapter_id', '=',
-            Auth::user()->getPrimaryAssignmentId())->where(
-            'report_date',
-            '=',
-            $reportDate
+          Report::where(
+              'chapter_id',
+              '=',
+              Auth::user()->getPrimaryAssignmentId()
+          )->where(
+              'report_date',
+              '=',
+              $reportDate
           )->first();
 
         if (count($report) === 1 && empty($report->report_sent) === true) {
@@ -89,8 +97,10 @@ class ReportController extends \BaseController
         } elseif (count($report) === 1 && empty($report->report_sent) === false) {
             // The current report has been sent and they want to start the next one
             $month =
-              date('F, Y',
-                strtotime('+2 months', strtotime($report->report_date)));
+              date(
+                  'F, Y',
+                  strtotime('+2 months', strtotime($report->report_date))
+              );
             $ts = strtotime('-2 months', strtotime($month));
         }
 
@@ -117,12 +127,16 @@ class ReportController extends \BaseController
         if (is_null($ts) === true) {
             if (date('n') & 1 == 1) {
                 $ts =
-                  strtotime('-1 month',
-                    strtotime(date('Y') . '-' . date('m') . '-01'));
+                  strtotime(
+                      '-1 month',
+                      strtotime(date('Y') . '-' . date('m') . '-01')
+                  );
             } else {
                 $ts =
-                  strtotime('-2 month',
-                    strtotime(date('Y') . '-' . date('m') . '-01'));
+                  strtotime(
+                      '-2 month',
+                      strtotime(date('Y') . '-' . date('m') . '-01')
+                  );
             }
         }
 
@@ -162,8 +176,8 @@ class ReportController extends \BaseController
             $member->last_course = $member->getHighestMainLineExamForBranch();
             $data['command_crew'][$billetInfo['display']] =
               array_only(
-                $member->toArray(),
-                [
+                  $member->toArray(),
+                  [
                   'branch',
                   'member_id',
                   'first_name',
@@ -177,7 +191,7 @@ class ReportController extends \BaseController
                   'state_province',
                   'phone_number',
                   'rank'
-                ]
+                  ]
               );
         }
 
@@ -201,12 +215,12 @@ class ReportController extends \BaseController
         }
 
         $this->writeAuditTrail(
-          Auth::user()->id,
-          'create',
-          'reports',
-          null,
-          json_encode($data),
-          'ReportController@store'
+            Auth::user()->id,
+            'create',
+            'reports',
+            null,
+            json_encode($data),
+            'ReportController@store'
         );
 
         $report = Report::create($data);
@@ -218,30 +232,33 @@ class ReportController extends \BaseController
             $report->report_sent = date('Y-m-d');
 
             $this->writeAuditTrail(
-              Auth::user()->id,
-              'update',
-              'reports',
-              $report->id,
-              $report->toJson(),
-              'ReportController@store'
+                Auth::user()->id,
+                'update',
+                'reports',
+                $report->id,
+                $report->toJson(),
+                'ReportController@store'
             );
 
             $report->save();
 
             return Redirect::route('report.index')->with(
-              'message',
-              date('F, Y', strtotime($report->report_date)) . ' Report Sent'
+                'message',
+                date('F, Y', strtotime($report->report_date)) . ' Report Sent'
             );
         }
 
         return Response::view(
-          'report.index',
-          [
-            'reports' => Report::where('chapter_id', '=',
-              Auth::user()->getPrimaryAssignmentId())->orderBy(
-              'report_date'
+            'report.index',
+            [
+            'reports' => Report::where(
+                'chapter_id',
+                '=',
+                Auth::user()->getPrimaryAssignmentId()
+            )->orderBy(
+                'report_date'
             )->get()
-          ]
+            ]
         );
     }
 
@@ -337,12 +354,12 @@ class ReportController extends \BaseController
         $report->new_crew = $new_crew;
 
         $this->writeAuditTrail(
-          Auth::user()->id,
-          'update',
-          'reports',
-          null,
-          $report->toJson(),
-          'ReportController@edit'
+            Auth::user()->id,
+            'update',
+            'reports',
+            null,
+            $report->toJson(),
+            'ReportController@edit'
         );
 
         $report->save();
@@ -384,12 +401,12 @@ class ReportController extends \BaseController
         }
 
         $this->writeAuditTrail(
-          Auth::user()->id,
-          'update',
-          'reports',
-          $report->id,
-          $report->toJson(),
-          'ReportController@update'
+            Auth::user()->id,
+            'update',
+            'reports',
+            $report->id,
+            $report->toJson(),
+            'ReportController@update'
         );
 
         $report->save();
@@ -425,19 +442,19 @@ class ReportController extends \BaseController
         $report->report_sent = date('Y-m-d');
 
         $this->writeAuditTrail(
-          Auth::user()->id,
-          'update',
-          'reports',
-          $report->id,
-          $report->toJson(),
-          'ReportController@sendReport'
+            Auth::user()->id,
+            'update',
+            'reports',
+            $report->id,
+            $report->toJson(),
+            'ReportController@sendReport'
         );
 
         $report->save();
 
         return Redirect::route('report.index')->with(
-          'message',
-          date('F, Y', strtotime($report->report_date)) . ' Report Sent'
+            'message',
+            date('F, Y', strtotime($report->report_date)) . ' Report Sent'
         );
     }
 
@@ -477,7 +494,7 @@ class ReportController extends \BaseController
                   'fleet',
                   'station'
                 ]
-              ) === true
+            ) === true
             ) {
                 if ($chapter->id != $tmpChapter->id) {
                     if (empty($tmpChapter->getCO()) === false) {
@@ -488,35 +505,35 @@ class ReportController extends \BaseController
         }
 
         Mail::send(
-          'report.chapter-email',
-          [
+            'report.chapter-email',
+            [
             'report' => $report
-          ],
-          function ($message) use ($report, $echelonEmails) {
+            ],
+            function ($message) use ($report, $echelonEmails) {
 
-              $message->from('bucomm@trmn.org',
-                'On behalf of CO, ' . $report['chapter_info']['chapter_name']
-              );
+                $message->from(
+                    'bucomm@trmn.org',
+                    'On behalf of CO, ' . $report['chapter_info']['chapter_name']
+                );
 
-              $message->to($report->command_crew['Commanding Officer']['email_address']);
+                $message->to($report->command_crew['Commanding Officer']['email_address']);
 
-              $message->cc('cno@trmn.org')
+                $message->cc('cno@trmn.org')
                       ->cc('buplan@trmn.org')
                       ->cc('buships@trmn.org')
                       ->cc('bupers@trmn.org');
 
-              foreach ($echelonEmails as $echelon) {
-                  $message->cc($echelon);
-              }
+                foreach ($echelonEmails as $echelon) {
+                    $message->cc($echelon);
+                }
 
-              $message->subject(
-                date(
-                  'F, Y',
-                  strtotime($report->report_date)
-                ) . ' Chapter Report for ' . $report['chapter_info']['chapter_name']
-              );
-          }
+                $message->subject(
+                    date(
+                        'F, Y',
+                        strtotime($report->report_date)
+                    ) . ' Chapter Report for ' . $report['chapter_info']['chapter_name']
+                );
+            }
         );
     }
-
 }

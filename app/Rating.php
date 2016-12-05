@@ -8,7 +8,8 @@
 
 use Jenssegers\Mongodb\Model as Eloquent;
 
-class Rating extends Eloquent {
+class Rating extends Eloquent
+{
 
     protected $fillable = [ 'rate_code', 'rate' ];
 
@@ -33,5 +34,4 @@ class Rating extends Eloquent {
 
         return $ratings;
     }
-
-} 
+}
