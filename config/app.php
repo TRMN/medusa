@@ -144,7 +144,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        'MedusaHasherServiceProvider',
+        'App\Libraries\MedusaHasherServiceProvider',
         'Jenssegers\Mongodb\MongodbServiceProvider',
 //        'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
