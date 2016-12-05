@@ -33,14 +33,14 @@ class OAuthService
      */
     public function __construct($app)
     {
-        $_hosts = \Config::get('database.connections.mongodb.host');
+        $_hosts = \config('database.connections.mongodb.host');
         $_hosts = is_array($_hosts) ? $_hosts : [$_hosts];
 
         $this->mongo =
           new \MongoClient(
               'mongodb://' . implode(',', $_hosts) . '/' .
-              ($_dbName = \Config::get('database.connections.mongodb.database')),
-              \Config::get('database.connections.mongodb.options', [])
+              ($_dbName = \config('database.connections.mongodb.database')),
+              \config('database.connections.mongodb.options', [])
           );
 
         $_store = new Mongo($this->mongo->{$_dbName});
@@ -90,7 +90,7 @@ class OAuthService
         $_client =
           \OauthClient::where('client_id', '=', $_params['client_id'])->first();
 
-        return \View::make(
+        return \view(
             'oauth.authorization-form',
             [
             'client'   => $_client,
@@ -344,7 +344,7 @@ class OAuthService
 
             $_user->peerages = $_peerages;
 
-            $_schools = \MedusaConfig::get('exam.regex');
+            $_schools = \Medusaconfig('exam.regex');
             foreach ($_schools as $_label => $_regex) {
                 $_examList = $_user->getExamList(['pattern' => $_regex]);
                 $_newExams = false;
@@ -390,7 +390,7 @@ class OAuthService
             if (!empty($_user->awards)) {
                 $_user->leftRibbonCount = count($_user->getRibbons('L'));
                 $_user->leftRibbons = $_user->getRibbons('L');
-                $_user->ribbonrack = \View::make('partials.leftribbons', ['user' => $_user])->render();
+                $_user->ribbonrack = \view('partials.leftribbons', ['user' => $_user])->render();
             } else {
                 $_user->ribbonrack = null;
             }

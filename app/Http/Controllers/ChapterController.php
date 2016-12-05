@@ -12,7 +12,7 @@ class ChapterController extends Controller
         $chapters =
           Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get();
 
-        return View::make('chapter.index', ['chapters' => $chapters]);
+        return view('chapter.index', ['chapters' => $chapters]);
     }
 
     public function show($chapter)
@@ -37,7 +37,7 @@ class ChapterController extends Controller
 
         $crew = $chapter->getAllCrew();
 
-        return View::make(
+        return view(
             'chapter.show',
             [
             'detail'   => $chapter,
@@ -79,7 +79,7 @@ class ChapterController extends Controller
 
         asort($chapters);
 
-        return View::make(
+        return view(
             'chapter.create',
             [
             'chapterTypes' => $chapterTypes,
@@ -127,7 +127,7 @@ class ChapterController extends Controller
           User::where('assignment.chapter_id', '=', (string)$chapter->_id)
               ->get();
 
-        return View::make(
+        return view(
             'chapter.edit',
             [
             'chapterTypes' => $chapterTypes,
@@ -242,7 +242,7 @@ class ChapterController extends Controller
           User::where('assignment.chapter_id', '=', (string)$chapter->_id)
               ->get();
 
-        return View::make(
+        return view(
             'chapter.confirm-decommission',
             ['chapter' => $chapter, 'numCrew' => count($crew),]
         );

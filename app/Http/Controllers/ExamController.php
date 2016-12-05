@@ -15,7 +15,7 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        return View::make(
+        return view(
             'exams.index',
             ['messages' => Message::where('source', '=', 'import_grades')->orderBy('created_at', 'asc')->get()]
         );
@@ -27,7 +27,7 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        return View::make('exams.list');
+        return view('exams.list');
     }
 
     public function find($user = null, $message = null)
@@ -36,7 +36,7 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        return View::make('exams.find', ['user' => $user, 'message' => $message]);
+        return view('exams.find', ['user' => $user, 'message' => $message]);
     }
 
     public function manageExamPerms($user = null)
@@ -45,7 +45,7 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        return View::make('user.find', ['user' => $user]);
+        return view('user.find', ['user' => $user]);
     }
 
     public function edit(ExamList $exam)
@@ -55,7 +55,7 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        return View::make('exams.edit', ['exam' => $exam]);
+        return view('exams.edit', ['exam' => $exam]);
     }
 
     public function create()
@@ -64,7 +64,7 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        return View::make('exams.create');
+        return view('exams.create');
     }
 
     public function updateExam()
@@ -85,7 +85,7 @@ class ExamController extends Controller
 
         $exam->save();
 
-        return View::make('exams.list');
+        return view('exams.list');
     }
 
     public function update()
@@ -129,7 +129,7 @@ class ExamController extends Controller
         $validator = Validator::make($data, $rules, $errorMessages);
 
         if ($validator->fails()) {
-            return Redirect::to(URL::previous())->withErrors($validator)->withInput();
+            return redirect(URL::previous())->withErrors($validator)->withInput();
         }
 
         if (preg_match('/^\d*$/', trim($data['score'])) === 1) {
@@ -268,7 +268,7 @@ class ExamController extends Controller
         $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
-            return Redirect::to(URL::previous())->withErrors($validator)->withInput();
+            return redirect(URL::previous())->withErrors($validator)->withInput();
         }
 
         // updated with the correct collection name.  make sure the field names in the form match up with the names in

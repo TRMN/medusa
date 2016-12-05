@@ -34,18 +34,18 @@ class HomeController extends Controller
             $viewData['korders'] = $orders;
 
             if (empty($user->osa) === true) {
-                return View::make('osa', array_merge($viewData, ['showform' => true]));
+                return view('osa', array_merge($viewData, ['showform' => true]));
             } elseif ($user->tos === true) {
-                return View::make('home', $viewData);
+                return view('home', $viewData);
             }
-            return View::make('terms', $viewData);
+            return view('terms', $viewData);
         } else {
-            return View::make('login');
+            return view('login');
         }
     }
 
     public function osa()
     {
-        return View::make('osa', ['showform' => false]);
+        return view('osa', ['showform' => false]);
     }
 }
