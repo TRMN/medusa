@@ -3,7 +3,7 @@
 /**
  * Class EchelonController
  */
-class EchelonController extends \BaseController
+class EchelonController extends Controller
 {
 
     private $chapterTypes = ['district', 'fleet', 'task_force', 'task_group', 'squadron', 'division'];

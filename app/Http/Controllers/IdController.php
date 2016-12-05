@@ -1,6 +1,6 @@
 <?php
 
-class IdController extends \BaseController
+class IdController extends Controller
 {
 
     /**

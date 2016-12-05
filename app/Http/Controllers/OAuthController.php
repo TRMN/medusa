@@ -1,6 +1,6 @@
 <?php
 
-class OAuthController extends BaseController
+class OAuthController extends Controller
 {
     public function index()
     {

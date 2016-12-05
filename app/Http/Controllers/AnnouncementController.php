@@ -1,6 +1,6 @@
 <?php
 
-class AnnouncementController extends BaseController
+class AnnouncementController extends Controller
 {
 
     public function index()

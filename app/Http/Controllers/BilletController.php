@@ -1,6 +1,6 @@
 <?php
 
-class BilletController extends \BaseController
+class BilletController extends Controller
 {
 
     /**

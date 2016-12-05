@@ -1,6 +1,6 @@
 <?php
 
-class AnyUnitController extends \BaseController
+class AnyUnitController extends Controller
 {
 
     private $chapterTypes = [

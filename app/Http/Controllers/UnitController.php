@@ -1,6 +1,6 @@
 <?php
 
-class UnitController extends \BaseController
+class UnitController extends Controller
 {
 
     private $chapterTypes = ['bivouac', 'barracks', 'outpost', 'fort', 'planetary', 'theater'];

@@ -1,6 +1,6 @@
 <?php
 
-class EventController extends \BaseController
+class EventController extends Controller
 {
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-class TypeController extends \BaseController
+class TypeController extends Controller
 {
 
     /**

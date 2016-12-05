@@ -1,6 +1,6 @@
 <?php
 
-class ApiController extends BaseController
+class ApiController extends Controller
 {
 
     public function getBranchList()

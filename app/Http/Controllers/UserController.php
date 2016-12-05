@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends \BaseController
+class UserController extends Controller
 {
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-class ExamController extends \BaseController
+class ExamController extends Controller
 {
 
     /**
