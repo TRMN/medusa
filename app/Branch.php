@@ -10,7 +10,7 @@ class Branch extends Eloquent
 
     static function getBranchList()
     {
-        foreach (Branch::all(array('branch', 'branch_name')) as $branch) {
+        foreach (Branch::all(['branch', 'branch_name']) as $branch) {
             $branches[$branch['branch']] = $branch['branch_name'];
         }
 

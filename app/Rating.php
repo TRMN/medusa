@@ -16,7 +16,7 @@ class Rating extends Eloquent
     static function getRatingsForBranch($branchID)
     {
         $results = Rating::all();
-        $ratings = array();
+        $ratings = [];
 
         foreach ($results as $rating) {
             if (isset($rating->rate[$branchID]) == true && empty($rating->rate[$branchID]) === false) {

@@ -13,7 +13,7 @@ class MedusaServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->validator->resolver(
-            function ($translator, $data, $rules, $messages = array(), $customAttributes = array()) {
+            function ($translator, $data, $rules, $messages = [], $customAttributes = []) {
                 return new MedusaValidators($translator, $data, $rules, $messages, $customAttributes);
             }
         );

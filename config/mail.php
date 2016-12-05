@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-    'from' => array('address' => 'membership@trmn.org', 'name' => 'TRMN Membership'),
+    'from' => ['address' => 'membership@trmn.org', 'name' => 'TRMN Membership'],
 
     /*
 	|--------------------------------------------------------------------------
@@ -121,4 +121,4 @@ return array(
 
     'pretend' => false,
 
-);
+];

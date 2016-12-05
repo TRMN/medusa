@@ -746,7 +746,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      */
     public function getHighestEnlistedExam()
     {
-        $exams = $this->getExamList(array('class' => 'enlisted'));
+        $exams = $this->getExamList(['class' => 'enlisted']);
 
         $results = $this->getHighestExamFromList($exams);
 
@@ -755,7 +755,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getHighestWarrantExam()
     {
-        $exams = $this->getExamList(array('class' => 'warrant'));
+        $exams = $this->getExamList(['class' => 'warrant']);
 
         $results = $this->getHighestExamFromList($exams);
 
@@ -764,7 +764,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getHighestOfficerExam()
     {
-        $exams = $this->getExamList(array('class' => 'officer+flag'));
+        $exams = $this->getExamList(['class' => 'officer+flag']);
 
         $results = $this->getHighestExamFromList($exams);
 
@@ -773,7 +773,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function getHighestFlagExam()
     {
-        $exams = $this->getExamList(array('class' => 'flag'));
+        $exams = $this->getExamList(['class' => 'flag']);
 
         $results = $this->getHighestExamFromList($exams);
 

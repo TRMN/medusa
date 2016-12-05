@@ -26,7 +26,7 @@ class CountriesSeeder extends Seeder
                 \Config::get('laravel-countries::table_name'),
                 null,
                 json_encode(
-                    array(
+                    [
                         'id'                => $countryId,
                         'capital'           => ( ( isset($country['capital']) ) ? $country['capital'] : null ),
                         'citizenship'       => ( ( isset($country['citizenship']) ) ? $country['citizenship'] : null ),
@@ -41,12 +41,12 @@ class CountriesSeeder extends Seeder
                         'region_code'       => $country['region-code'],
                         'sub_region_code'   => $country['sub-region-code'],
                         'eea'               => (bool)$country['eea']
-                    )
+                    ]
                 ),
                 'contries'
             );
 
-            DB::table(\Config::get('laravel-countries::table_name'))->insert(array(
+            DB::table(\Config::get('laravel-countries::table_name'))->insert([
                 'id' => $countryId,
                 'capital' => ((isset($country['capital'])) ? $country['capital'] : null),
                 'citizenship' => ((isset($country['citizenship'])) ? $country['citizenship'] : null),
@@ -61,7 +61,7 @@ class CountriesSeeder extends Seeder
                 'region_code' => $country['region-code'],
                 'sub_region_code' => $country['sub-region-code'],
                 'eea' => (bool)$country['eea']
-            ));
+            ]);
         }
     }
 }
