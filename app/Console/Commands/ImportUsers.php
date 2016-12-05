@@ -6,10 +6,7 @@ use App\Chapter;
 use App\User;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
-use Medusa\Enums\MedusaDefaults;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Webpatser\Countries\CountriesFacade;
+use Webpatser\Countries\Countries;
 
 /*
  * Query to export member database

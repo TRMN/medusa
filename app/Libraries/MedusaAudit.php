@@ -2,6 +2,8 @@
 
 namespace Medusa\Audit;
 
+use App\Audit;
+
 trait MedusaAudit
 {
 
@@ -27,7 +29,7 @@ trait MedusaAudit
           'from_where' => $from_where,
         ];
 
-        \Audit::create($auditRecord);
+        Audit::create($auditRecord);
 
         return true;
     }

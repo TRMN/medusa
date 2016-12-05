@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Smalldogs\Html5inputs\Html5InputsFacade;
+use App\Chapter;
+use Medusa\Echelons\MedusaEchelons;
 
 class UnitController extends Controller
 {
@@ -15,17 +16,17 @@ class UnitController extends Controller
     private $branch = 'RMA';
     private $routePrefix = 'unit';
 
-    use Medusa\Echelons\MedusaEchelons;
+    use MedusaEchelons;
 
     private function getCommands()
     {
         $chapters = [];
 
         foreach ($this->chapterTypes as $type) {
-            $chapters = array_merge($chapters, \Chapter::getChaptersByType($type));
+            $chapters = array_merge($chapters, Chapter::getChaptersByType($type));
         }
 
-        $hq = \Chapter::where('chapter_name', '=', "King William's Tower")->first();
+        $hq = Chapter::where('chapter_name', '=', "King William's Tower")->first();
 
         $chapters[$hq->id] = $hq->chapter_name . ' (' . $hq->branch . ')';
 

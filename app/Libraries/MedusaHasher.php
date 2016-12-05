@@ -2,7 +2,9 @@
 
 namespace App\Libraries;
 
-class MedusaHasher implements Illuminate\Hashing\HasherInterface
+use Illuminate\Contracts\Hashing\Hasher;
+
+class MedusaHasher implements Hasher
 {
 
     public function make($value, array $options = [])

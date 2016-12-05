@@ -6,13 +6,18 @@
 
 namespace Medusa\Permissions;
 
+use App\Chapter;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+
 trait MedusaPermissions
 {
 
     public function checkPermissions($permissions)
     {
         if ($this->hasPermissions($permissions) === false) {
-            return \redirect(\URL::previous())->with('message', 'You do not have permission to view that page');
+            return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
         return true;
@@ -20,8 +25,8 @@ trait MedusaPermissions
 
     public function loginValid()
     {
-        if (\Auth::check() === false) {
-            return \redirect(\URL::previous())->with('message', 'You do not have permission to view that page');
+        if (Auth::check() === false) {
+            return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
         return true;
@@ -29,11 +34,11 @@ trait MedusaPermissions
 
     public function hasPermissions($permissions, $skipAll = false)
     {
-        if (empty(\Auth::user()) === true) {
+        if (empty(Auth::user()) === true) {
             return false; // Not logged in, don't waste time
         }
 
-        if (in_array('ALL_PERMS', \Auth::user()->permissions) === true && $skipAll === false) {
+        if (in_array('ALL_PERMS', Auth::user()->permissions) === true && $skipAll === false) {
             return true; // Don't waste time :)
         }
 
@@ -42,7 +47,7 @@ trait MedusaPermissions
         }
 
         foreach ($permissions as $permission) {
-            if (in_array($permission, \Auth::user()->permissions) === true) {
+            if (in_array($permission, Auth::user()->permissions) === true) {
                 return true; // Found at least one of the provided permissions the user's permission's array
             }
         }
@@ -52,11 +57,11 @@ trait MedusaPermissions
 
     public function hasAllPermissions()
     {
-        if (empty(\Auth::user()) === true) {
+        if (empty(Auth::user()) === true) {
             return false; // Not logged in, don't waste time
         }
 
-        if (in_array('ALL_PERMS', \Auth::user()->permissions) === true) {
+        if (in_array('ALL_PERMS', Auth::user()->permissions) === true) {
             return true; // Don't waste time :)
         }
 
@@ -73,7 +78,7 @@ trait MedusaPermissions
     public function isInChainOfCommand($param)
     {
 
-        if ($param instanceof \User) {
+        if ($param instanceof User) {
             //called with a user object, get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
             $chapterIds = [];
             foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
@@ -88,7 +93,7 @@ trait MedusaPermissions
             foreach ($chapterIds as $chapterId) {
                 if ($chapterId !== false) {
                     $echelonIdsToCheck =
-                        array_merge($echelonIdsToCheck, \Chapter::find($chapterId)->getChapterIdWithParents());
+                        array_merge($echelonIdsToCheck, Chapter::find($chapterId)->getChapterIdWithParents());
                 }
             }
         } elseif (is_array($param)) {
@@ -101,7 +106,7 @@ trait MedusaPermissions
         // the array of chapter ids passed in
 
         if ($this->hasPermissions(['DUTY_ROSTER']) === true) {
-            $rosters = ( \Auth::user()->duty_roster );
+            $rosters = ( Auth::user()->duty_roster );
             if (is_array($rosters) === false) {
                 $rosters = explode(',', trim($rosters, ','));
             }

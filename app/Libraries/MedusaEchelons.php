@@ -2,6 +2,15 @@
 
 namespace Medusa\Echelons;
 
+use App\Chapter;
+use App\Type;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+
 trait MedusaEchelons
 {
 
@@ -13,9 +22,9 @@ trait MedusaEchelons
      */
     public function index()
     {
-        $chapters = \Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get();
+        $chapters = Chapter::orderBy('chapter_type')->orderBy('chapter_name')->get();
 
-        return \view('chapter.index', ['chapters' => $chapters]);
+        return view('chapter.index', ['chapters' => $chapters]);
     }
 
     /**
@@ -31,7 +40,7 @@ trait MedusaEchelons
         }
 
         $types =
-            \Type::whereIn('chapter_type', $this->chapterTypes)
+            Type::whereIn('chapter_type', $this->chapterTypes)
                  ->orderBy('chapter_description')
                  ->get(
                      ['chapter_type', 'chapter_description']
@@ -44,11 +53,11 @@ trait MedusaEchelons
 
         $chapterTypes = ['0' => $this->select] + $chapterTypes;
 
-        return \view(
+        return view(
             'unit.create',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => new \Chapter,
+                'chapter'      => new Chapter,
                 'commands'     => ['0' => 'Select a Command/Unit'] + $this->getCommands(),
                 'title'        => $this->title,
                 'route'        => $this->routePrefix,
@@ -69,10 +78,10 @@ trait MedusaEchelons
             return $redirect;
         }
 
-        $validator = \Validator::make($data = \Input::all(), \Chapter::$rules);
+        $validator = Validator::make($data = Input::all(), Chapter::$rules);
 
         if ($validator->fails()) {
-            return \Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::back()->withErrors($validator)->withInput();
         }
 
         foreach ($data as $k => $v) {
@@ -86,7 +95,7 @@ trait MedusaEchelons
         }
 
         $this->writeAuditTrail(
-            (string)\Auth::user()->_id,
+            (string)Auth::user()->_id,
             'create',
             'chapters',
             null,
@@ -94,9 +103,9 @@ trait MedusaEchelons
             $this->auditName . '@store'
         );
 
-        \Chapter::create($data);
+        Chapter::create($data);
 
-        return \Redirect::route('chapter.index');
+        return Redirect::route('chapter.index');
     }
 
     /**
@@ -107,21 +116,21 @@ trait MedusaEchelons
      *
      * @return Response
      */
-    public function show(\Chapter $chapter)
+    public function show(Chapter $chapter)
     {
         if (isset($chapter->assigned_to)) {
-            $parentChapter = \Chapter::find($chapter->assigned_to);
+            $parentChapter = Chapter::find($chapter->assigned_to);
         } else {
             $parentChapter = false;
         }
 
-        $includes = \Chapter::where('assigned_to', '=', $chapter->_id)->orderBy('chapter_name')->get()->toArray();
+        $includes = Chapter::where('assigned_to', '=', $chapter->_id)->orderBy('chapter_name')->get()->toArray();
 
         $commandCrew = $chapter->getCommandCrew();
 
         $crew = $chapter->getCrew();
 
-        return \view(
+        return view(
             'chapter.show',
             [
                 'detail'   => $chapter,
@@ -141,14 +150,14 @@ trait MedusaEchelons
      *
      * @return Response
      */
-    public function edit(\Chapter $chapter)
+    public function edit(Chapter $chapter)
     {
         if ($redirect = $this->checkPermissions($this->permissions['EDIT']) !== true) {
             return $redirect;
         }
 
         $types =
-            \Type::whereIn('chapter_type', $this->chapterTypes)
+            Type::whereIn('chapter_type', $this->chapterTypes)
                  ->orderBy('chapter_description')
                  ->get(
                      ['chapter_type', 'chapter_description']
@@ -161,11 +170,11 @@ trait MedusaEchelons
 
         $chapterTypes = ['' => $this->select] + $chapterTypes;
 
-        $crew = \User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
 
-        $childUnits = \Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
 
-        return \view(
+        return view(
             'unit.edit',
             [
                 'chapterTypes' => $chapterTypes,
@@ -187,16 +196,16 @@ trait MedusaEchelons
      *
      * @return Response
      */
-    public function update(\Chapter $chapter)
+    public function update(Chapter $chapter)
     {
         if ($redirect = $this->checkPermissions($this->permissions['EDIT']) !== true) {
             return $redirect;
         }
 
-        $validator = \Validator::make($data = \Input::all(), \Chapter::$updateRules);
+        $validator = Validator::make($data = Input::all(), Chapter::$updateRules);
 
         if ($validator->fails()) {
-            return \Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::back()->withErrors($validator)->withInput();
         }
 
         unset($data['_method'], $data['_token']);
@@ -228,7 +237,7 @@ trait MedusaEchelons
         }
 
         $this->writeAuditTrail(
-            (string)\Auth::user()->_id,
+            (string)Auth::user()->_id,
             'update',
             'chapters',
             (string)$chapter->_id,
@@ -239,9 +248,9 @@ trait MedusaEchelons
         $chapter->save();
         ;
 
-        \Cache::flush();
+        Cache::flush();
 
-        return \Redirect::route('chapter.index');
+        return Redirect::route('chapter.index');
     }
 
     /**
@@ -252,7 +261,7 @@ trait MedusaEchelons
      *
      * @return Response
      */
-    public function destroy(\Chapter $chapter)
+    public function destroy(Chapter $chapter)
     {
         if ($redirect = $this->checkPermissions($this->permissions['DELETE']) !== true) {
             return $redirect;
@@ -262,7 +271,7 @@ trait MedusaEchelons
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string)\Auth::user()->_id,
+            (string)Auth::user()->_id,
             'update',
             'chapters',
             (string)$chapter->_id,
@@ -272,20 +281,20 @@ trait MedusaEchelons
 
         $chapter->save();
 
-        return \Redirect::route('chapter.index');
+        return Redirect::route('chapter.index');
     }
 
-    public function deactivate(\Chapter $chapter)
+    public function deactivate(Chapter $chapter)
     {
         if ($redirect = $this->checkPermissions($this->permissions['DELETE']) !== true) {
             return $redirect;
         }
 
-        $crew = \User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
 
-        $childUnits = \Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
 
-        return \view(
+        return view(
             'unit.confirm-deactivate',
             ['chapter' => $chapter, 'numCrew' => count($crew) + count($childUnits), 'title' => $this->title,]
         );

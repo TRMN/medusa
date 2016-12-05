@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Jenssegers\Mongodb\Model as Eloquent;
+use Illuminate\Support\Facades\Log;
 
 class MedusaConfig extends Model
 {
@@ -26,8 +26,8 @@ class MedusaConfig extends Model
                 $item->save();
             }
             return $item->id;
-        } catch (Exception $e) {
-            \Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+        } catch (\Exception $e) {
+            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
             return false;
         }
     }
@@ -37,8 +37,8 @@ class MedusaConfig extends Model
         try {
             $item = self::where('key', '=', $key)->first();
             return isset($item->value) === true ? $item->value : $default;
-        } catch (Exception $e) {
-            \Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+        } catch (\Exception $e) {
+            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
             return false;
         }
     }
@@ -48,8 +48,8 @@ class MedusaConfig extends Model
         try {
             self::where('key', '=', $key)->delete();
             return true;
-        } catch (Exception $e) {
-            \Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+        } catch (\Exception $e) {
+            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
             return false;
         }
     }
@@ -63,8 +63,8 @@ class MedusaConfig extends Model
         try {
             $value = self::_get($key, $default);
             return isset($value[$subkey]) === true? $value[$subkey]: $default;
-        } catch (Exception $e) {
-            \Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+        } catch (\Exception $e) {
+            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
             return false;
         }
     }

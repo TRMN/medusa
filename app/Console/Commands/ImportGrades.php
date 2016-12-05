@@ -7,8 +7,6 @@ use App\Message;
 use App\User;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 
 class ImportGrades extends Command
 {
@@ -103,7 +101,7 @@ class ImportGrades extends Command
 
                 try {
                     $res->save();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $details =
                         [
                             'severity' => 'warning',
@@ -125,7 +123,7 @@ class ImportGrades extends Command
 
                 try {
                     Exam::create($examRecord);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $details =
                         [
                             'severity' => 'warning',

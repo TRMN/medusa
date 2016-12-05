@@ -7,6 +7,7 @@ use App\Events;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller
@@ -90,10 +91,10 @@ class EventController extends Controller
             $this->_updateUsers($event);
 
             $msg = 'Your event "' . $event->event_name . '" has been scheduled';
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $msg =
               'There was a problem scheduling "' . $data['event_name'] . '"';
-            log::error($e->getTraceAsString());
+            Log::error($e->getTraceAsString());
         }
 
         return Redirect::route('events.show', [$event->id])->with(
@@ -104,7 +105,7 @@ class EventController extends Controller
 
     private function _updateUsers(Events $event)
     {
-        log::debug('Updating requestor and registrars of ' . $event->event_name);
+        Log::debug('Updating requestor and registrars of ' . $event->event_name);
         try {
             // Flag the record of the requestor and any registrars so the mobile app
             // knows to ask for the list of events
@@ -112,15 +113,15 @@ class EventController extends Controller
             if ($this->_setEventFlag($event->requestor) === true) {
                 foreach ($event->registrars as $registrar) {
                     if ($this->_setEventFlag($registrar) === false) {
-                        throw new Exception('Unable to update registrar');
+                        throw new \Exception('Unable to update registrar');
                     }
                 }
             } else {
-                throw new Exception('Unable to update requestor');
+                throw new \Exception('Unable to update requestor');
             }
-        } catch (Exception $e) {
-            log::error($e->getTraceAsString());
-            throw new Exception('Unable to update requestor or registrars');
+        } catch (\Exception $e) {
+            Log::error($e->getTraceAsString());
+            throw new \Exception('Unable to update requestor or registrars');
         }
     }
 
@@ -142,7 +143,7 @@ class EventController extends Controller
             );
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -236,10 +237,10 @@ class EventController extends Controller
             $msg = 'Your event "' . $event->event_name . '" has been updated';
 
             $this->_updateUsers($event);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $msg =
               'There was a problem saving the update to "' . $event->event_name . '"';
-            log::error($e->getTraceAsString());
+            Log::error($e->getTraceAsString());
         }
 
         return Redirect::route('events.index')->with('message', $msg);

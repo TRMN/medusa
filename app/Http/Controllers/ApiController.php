@@ -12,7 +12,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
-use Webpatser\Countries\CountriesFacade;
+use Webpatser\Countries\Countries;
 
 class ApiController extends Controller
 {

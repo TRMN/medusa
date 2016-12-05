@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Jenssegers\Mongodb\Model as Eloquent;
+use NumberFormatter;
 
 class Chapter extends Model
 {
@@ -588,7 +588,7 @@ class Chapter extends Model
 
         try {
             $crew = $this->getCrewWithChildren($id);
-        } catch (Exception $d) {
+        } catch (\Exception $d) {
             return false;
         }
 
