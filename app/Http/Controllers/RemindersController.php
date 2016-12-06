@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
+
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
@@ -30,7 +30,7 @@ class RemindersController extends Controller
      */
     public function postRemind()
     {
-        $in = Input::only('email_address');
+        $in = Request::only('email_address');
         $in['email_address'] = strtolower($in['email_address']);
 
         $response = Password::remind(
@@ -71,7 +71,7 @@ class RemindersController extends Controller
      */
     public function postReset()
     {
-        $credentials = Input::only(
+        $credentials = Request::only(
             'email_address',
             'password',
             'password_confirmation',

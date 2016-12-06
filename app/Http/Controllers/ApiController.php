@@ -10,7 +10,7 @@ use App\Korders;
 use App\Rating;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Webpatser\Countries\Countries;
 
@@ -151,16 +151,16 @@ class ApiController extends Controller
 
     public function savePhoto()
     {
-        if (Input::file('file')->isValid() === true) {
+        if (Request::file('file')->isValid() === true) {
             $res =
-              User::where('member_id', '=', Input::get('member_id'))->get();
+              User::where('member_id', '=', Request::get('member_id'))->get();
 
-            if (count($res) === 1 && $res[0]->member_id == Input::get('member_id')) {
+            if (count($res) === 1 && $res[0]->member_id == Request::get('member_id')) {
                 $user = $res[0];
-                $ext = Input::file('file')->getClientOriginalExtension();
+                $ext = Request::file('file')->getClientOriginalExtension();
                 $fileName = $user->member_id . '.' . $ext;
 
-                Input::file('file')->move(public_path() . '/images', $fileName);
+                Request::file('file')->move(public_path() . '/images', $fileName);
 
                 // File uploaded, add filename to user record
                 $user->filePhoto = '/images/' . $fileName;
@@ -195,7 +195,7 @@ class ApiController extends Controller
     public function findMember($query = null)
     {
         if (empty($query) === true) {
-            $query = Input::get('query', null);
+            $query = Request::get('query', null);
         }
 
         if (is_null($query) === true) {
@@ -252,7 +252,7 @@ class ApiController extends Controller
     public function findChapter($query = null)
     {
         if (empty($query) === true) {
-            $query = Input::get('query', null);
+            $query = Request::get('query', null);
         }
 
         if (is_null($query) === true) {
@@ -280,7 +280,7 @@ class ApiController extends Controller
 
     public function findExam()
     {
-        $query = Input::get('query', null);
+        $query = Request::get('query', null);
 
         if (is_null($query) === true) {
             return Response::json(['suggestions' => []]);
@@ -339,7 +339,7 @@ class ApiController extends Controller
             $user->leftRibbonCount = count($user->getRibbons('L'));
             $user->leftRibbons = $user->getRibbons('L');
 
-            if (Input::get('mobile', 'false') === 'true') {
+            if (Request::get('mobile', 'false') === 'true') {
                 return view('partials.leftribbons', ['user' => $user]);
             } else {
                 return view('ribbonrack', ['user' => $user]);

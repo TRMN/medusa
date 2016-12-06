@@ -7,7 +7,7 @@ use App\Type;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -78,7 +78,7 @@ trait MedusaEchelons
             return $redirect;
         }
 
-        $validator = Validator::make($data = Input::all(), Chapter::$rules);
+        $validator = Validator::make($data = Request::all(), Chapter::$rules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
@@ -202,7 +202,7 @@ trait MedusaEchelons
             return $redirect;
         }
 
-        $validator = Validator::make($data = Input::all(), Chapter::$updateRules);
+        $validator = Validator::make($data = Request::all(), Chapter::$updateRules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();

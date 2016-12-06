@@ -5,7 +5,7 @@ use App\Korders;
 use App\OauthClient;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Log;
 use App\Audit\MedusaAudit;
 use App\Oauth\Storage\MedusaUserCredentials;
@@ -237,7 +237,7 @@ class OAuthService
                   strtolower(str_replace(' ', '+', $_token['user_id']))
               )->first();
 
-            $_data = Input::all();
+            $_data = Request::all();
 
             foreach ($_data as $k => $v) {
                 $_user->$k = $v;
@@ -486,7 +486,7 @@ class OAuthService
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
-            $_tz = Input::get('tz', null);
+            $_tz = Request::get('tz', null);
 
             Log::info('TZ=' . $_tz);
 
@@ -518,7 +518,7 @@ class OAuthService
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
 
-            $_data = Input::all();
+            $_data = Request::all();
 
             Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
 

@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
+
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -154,7 +154,7 @@ class UserController extends Controller
     public function postReset(User $user)
     {
         $in =
-          Input::only([
+          Request::only([
             'current_password',
             'password',
             'password_confirmation'
@@ -414,7 +414,7 @@ class UserController extends Controller
         $errMsg['password.required'] = 'You must set a password for the user';
         $errMsg['password.min'] =
           'The password must be at least 8 characters long';
-        $validator = Validator::make($data = Input::all(), $rules, $errMsg);
+        $validator = Validator::make($data = Request::all(), $rules, $errMsg);
 
         if ($validator->fails()) {
             return Redirect::route('user.create')
@@ -592,7 +592,7 @@ class UserController extends Controller
           'tos.required'                => 'You must agree to the Terms of Service to apply',
         ];
 
-        $data = Input::all();
+        $data = Request::all();
 
         if (isset($data['mobile']) === false) {
             $validator = Validator::make($data, $rules, $error_message);
@@ -605,7 +605,7 @@ class UserController extends Controller
 
             // Check Captcha
             $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
-            $captcha = Input::get('g-recaptcha-response', null);
+            $captcha = Request::get('g-recaptcha-response', null);
 
             if (empty($captcha) === false) {
                 $recaptcha = new \ReCaptcha\ReCaptcha($secret);
@@ -889,7 +889,7 @@ class UserController extends Controller
 
         $validator =
           Validator::make(
-              $data = Input::all(),
+              $data = Request::all(),
               User::$updateRules,
               User::$error_message
           );
@@ -1067,7 +1067,7 @@ class UserController extends Controller
     {
         $this->loginValid();
 
-        $data = Input::all();
+        $data = Request::all();
 
         if (empty($data['tos']) === false) {
             $user = User::find($data['id']);
@@ -1094,7 +1094,7 @@ class UserController extends Controller
     {
         $this->loginValid();
 
-        $data = Input::all();
+        $data = Request::all();
 
         if (empty($data['osa']) === false) {
             $user = User::find($data['id']);
@@ -1241,15 +1241,15 @@ class UserController extends Controller
             $peerage['precedence'] = $pTitleInfo->precedence;
             $peerage['generation'] = $data['generation'];
             $peerage['lands'] = $data['lands'];
-            if (Input::hasFile('arms') === true && Input::file('arms')
+            if (Request::hasFile('arms') === true && Request::file('arms')
                                                         ->isValid() === true
             ) {
-                Input::file('arms')->move(
+                Request::file('arms')->move(
                     public_path() . '/arms/peerage',
-                    Input::file('arms')->getClientOriginalName()
+                    Request::file('arms')->getClientOriginalName()
                 );
                 $peerage['filename'] =
-                  Input::file('arms')->getClientOriginalName();
+                  Request::file('arms')->getClientOriginalName();
             }
         }
 
@@ -1270,7 +1270,7 @@ class UserController extends Controller
 
     public function addOrEditPeerage(User $user)
     {
-        $data = Input::all();
+        $data = Request::all();
 
         $msg = "Peerage added";
 
@@ -1315,7 +1315,7 @@ class UserController extends Controller
 
     public function addOrEditNote(User $user)
     {
-        $data = Input::all();
+        $data = Request::all();
 
         $msg = "Note added";
 
@@ -1437,7 +1437,7 @@ class UserController extends Controller
         ) {
             return $redirect;
         }
-        $data = Input::all();
+        $data = Request::all();
 
 
         $groups = array_where($data, function ($key, $value) {

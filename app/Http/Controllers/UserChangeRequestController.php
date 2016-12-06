@@ -8,7 +8,7 @@ use App\ChangeRequest;
 use App\Chapter;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
@@ -55,7 +55,7 @@ class UserChangeRequestController extends Controller
      */
     public function store()
     {
-        $data = Input::all();
+        $data = Request::all();
 
         $user = User::find($data['user_id']);
         if (empty($data['req_id']) === false && $data['user_id'] !== $data['req_id']) {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Announcement;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
@@ -70,7 +70,7 @@ class AnnouncementController extends Controller
     public function update($id)
     {
 
-        $data = Input::all();
+        $data = Request::all();
 
         $announcement = Announcement::with('user')->find($id);
 
@@ -89,7 +89,7 @@ class AnnouncementController extends Controller
     public function store()
     {
 
-        $data = Input::all();
+        $data = Request::all();
 
         $announcement = Announcement::create($data);
 
