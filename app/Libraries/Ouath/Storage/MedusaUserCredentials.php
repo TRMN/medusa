@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dweiner
- * Date: 8/16/16
- * Time: 10:05 PM
- */
 
 namespace Medusa\Oauth\Storage;
 

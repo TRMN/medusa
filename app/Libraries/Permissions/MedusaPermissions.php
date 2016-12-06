@@ -1,9 +1,5 @@
 <?php
 
-/*
- * Medusa Permission helpers
- */
-
 namespace Medusa\Permissions;
 
 use App\Chapter;
