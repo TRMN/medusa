@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-use Notifiable;
+    use Notifiable;
     use \App\Audit\MedusaAudit;
     use \App\Permissions\MedusaPermissions;
 
