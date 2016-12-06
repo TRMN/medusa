@@ -1,6 +1,6 @@
 <?php
 
-namespace Medusa\Oauth\Storage;
+namespace App\Oauth\Storage;
 
 use Illuminate\Support\Facades\Auth;
 use OAuth2\Storage\UserCredentialsInterface;

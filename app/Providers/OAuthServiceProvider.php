@@ -1,7 +1,7 @@
-<?php namespace Medusa\Providers;
+<?php namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Medusa\Services\OAuthService;
+use App\Services\OAuthService;
 
 class OAuthServiceProvider extends ServiceProvider
 {

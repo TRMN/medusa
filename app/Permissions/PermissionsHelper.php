@@ -1,6 +1,6 @@
 <?php
 
-namespace Medusa\Permissions;
+namespace App\Permissions;
 
 class PermissionsHelper
 {

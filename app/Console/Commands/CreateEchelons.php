@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 class CreateEchelons extends Command
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * The console command name.

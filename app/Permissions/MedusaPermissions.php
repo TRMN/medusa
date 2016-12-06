@@ -1,6 +1,6 @@
 <?php
 
-namespace Medusa\Permissions;
+namespace App\Permissions;
 
 use App\Chapter;
 use App\User;

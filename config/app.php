@@ -153,8 +153,8 @@ return [
         'Maatwebsite\Excel\ExcelServiceProvider',
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
-        'Medusa\Services\MedusaServiceProvider',
-        'Medusa\Providers\OAuthServiceProvider',
+        'App\Services\MedusaServiceProvider',
+        'App\Providers\OAuthServiceProvider',
 
     ],
 

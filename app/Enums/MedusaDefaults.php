@@ -1,9 +1,9 @@
-<?php namespace Medusa\Enums;
+<?php namespace App\Enums;
 
 /**
  * Class Constants for Medusa
  *
- * @package Medusa\Enums
+ * @package App\Enums
  */
 class MedusaDefaults
 {

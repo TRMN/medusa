@@ -6,8 +6,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-use Medusa\Audit\MedusaAudit;
-use Medusa\Permissions\MedusaPermissions;
+use App\Audit\MedusaAudit;
+use App\Permissions\MedusaPermissions;
 
 abstract class Controller extends BaseController
 {

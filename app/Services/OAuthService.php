@@ -1,4 +1,4 @@
-<?php namespace Medusa\Services;
+<?php namespace App\Services;
 
 use App\ExamList;
 use App\Korders;
@@ -7,9 +7,9 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
-use Medusa\Audit\MedusaAudit;
-use Medusa\Oauth\Storage\MedusaUserCredentials;
-use Medusa\Permissions\PermissionsHelper;
+use App\Audit\MedusaAudit;
+use App\Oauth\Storage\MedusaUserCredentials;
+use App\Permissions\PermissionsHelper;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
 use OAuth2\GrantType\RefreshToken;
