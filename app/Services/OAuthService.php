@@ -5,7 +5,6 @@ use App\Korders;
 use App\OauthClient;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Log;
 use App\Audit\MedusaAudit;
 use App\Oauth\Storage\MedusaUserCredentials;
