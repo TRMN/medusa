@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\OauthClient;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -48,7 +48,7 @@ class OAuthController extends Controller
             return $redirect;
         }
 
-        $validator = Validator::make($data = Input::all(), OauthClient::$rules);
+        $validator = Validator::make($data = Request::all(), OauthClient::$rules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
@@ -109,7 +109,7 @@ class OAuthController extends Controller
             return $redirect;
         }
 
-        $validator = Validator::make($data = Input::all(), OauthClient::$updateRules);
+        $validator = Validator::make($data = Request::all(), OauthClient::$updateRules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Chapter;
 use App\Report;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -177,7 +177,7 @@ class ReportController extends Controller
             return $redirect;
         }
 
-        $data = Input::all();
+        $data = Request::all();
         $chapter = Chapter::findOrFail($data['chapter_id']);
         $commandCrew = $chapter->getCommandCrew();
 
@@ -393,7 +393,7 @@ class ReportController extends Controller
 
         $report = Report::find($id);
 
-        $data = Input::all();
+        $data = Request::all();
 
         $msg = date('F, Y', strtotime($report->report_date)) . ' Report Saved';
 

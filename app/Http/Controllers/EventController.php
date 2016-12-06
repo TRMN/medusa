@@ -6,7 +6,7 @@ use App\Country;
 use App\Events;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -65,7 +65,7 @@ class EventController extends Controller
             return $redirect;
         }
 
-        $data = Input::all();
+        $data = Request::all();
         $data['requestor'] = Auth::user()->_id;
 
         if (empty($data['end_date']) === true) {
@@ -223,14 +223,14 @@ class EventController extends Controller
                 $event->registrars = [];
             }
 
-            $event->update(Input::all());
+            $event->update(Request::all());
 
             $this->writeAuditTrail(
                 (string)Auth::user()->_id,
                 'update',
                 'events',
                 $event->id,
-                json_encode(Input::all()),
+                json_encode(Request::all()),
                 'EventController@update'
             );
 

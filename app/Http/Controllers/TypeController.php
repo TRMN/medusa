@@ -6,7 +6,7 @@ use App\Chapter;
 use App\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class TypeController extends Controller
@@ -54,7 +54,7 @@ class TypeController extends Controller
             return $redirect;
         }
 
-        $data = Input::all();
+        $data = Request::all();
 
         $this->writeAuditTrail(
             Auth::user()->id,
@@ -116,7 +116,7 @@ class TypeController extends Controller
 
         $oldValue = null;
 
-        $data = Input::all();
+        $data = Request::all();
 
         if ($data['chapter_type'] !== $type->chapter_type) {
             $oldValue = $type->chapter_type;

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\MedusaConfig;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -60,7 +60,7 @@ class ConfigController extends Controller
             return $redirect;
         }
 
-        $data = Input::all();
+        $data = Request::all();
 
         $config = new MedusaConfig();
 
@@ -146,7 +146,7 @@ class ConfigController extends Controller
             return $redirect;
         }
 
-        $data = Input::all();
+        $data = Request::all();
 
         $config->key = $data['key'];
         $config->value = $data['value'];

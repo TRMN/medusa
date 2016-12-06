@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -18,14 +18,14 @@ class AuthController extends Controller
             'password' => 'required',
         ];
 
-        $validator = Validator::make(Input::all(), $rules);
+        $validator = Validator::make(Request::all(), $rules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator);
         }
 
-        $email = Input::get('email');
-        $password = Input::get('password');
+        $email = Request::get('email');
+        $password = Request::get('password');
 
         if (Auth::attempt(['email_address' => strtolower($email), 'password' => $password, 'active' => 1])) {
             User::find(Auth::user()->id)->updateLastLogin();

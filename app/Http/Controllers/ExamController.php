@@ -9,7 +9,7 @@ use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
@@ -88,7 +88,7 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        $data = Input::all();
+        $data = Request::all();
 
         $exam = ExamList::find($data['id']);
         $exam->name = $data['name'];
@@ -129,7 +129,7 @@ class ExamController extends Controller
             'score.max'          => 'Score can not be more than 100',
         ];
 
-        $data = Input::all();
+        $data = Request::all();
 
         // Do we have a numeric score?
 
@@ -237,17 +237,17 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        if (Input::file('file')->isValid() === true) {
+        if (Request::file('file')->isValid() === true) {
             // Delete any records in the messages collection, this is a fresh run
             Message::where('source', '=', 'import_grades')->delete();
 
-            $ext = Input::file('file')->getClientOriginalExtension();
+            $ext = Request::file('file')->getClientOriginalExtension();
 
             if ($ext != 'xlsx' && $ext != 'ods') {
                 return Redirect::route('exam.index')->with('message', 'Only .xlsx files will be accepted');
             }
 
-            Input::file('file')->move(app_path() . '/database', 'TRMN Exam grading spreadsheet.xlsx');
+            Request::file('file')->move(app_path() . '/database', 'TRMN Exam grading spreadsheet.xlsx');
 
             $max_execution_time = ini_get('max_execution_time');
             set_time_limit(0);
@@ -277,7 +277,7 @@ class ExamController extends Controller
             'name'    => 'required',
         ];
 
-        $data = Input::all();
+        $data = Request::all();
         $data['enabled'] = true;
 
         $validator = Validator::make($data, $rules);
@@ -311,8 +311,8 @@ class ExamController extends Controller
             return $redirect;
         }
 
-        $examId = Input::get('examID');
-        $memberNumber = Input::get('memberNumber');
+        $examId = Request::get('examID');
+        $memberNumber = Request::get('memberNumber');
 
         try {
             $examRecord = Exam::where('member_id', '=', $memberNumber)->first();
