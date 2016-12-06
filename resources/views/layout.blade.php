@@ -56,13 +56,7 @@
                     'user.apply',
                     'register',
                     'osa',
-                ]) ||
-                in_array(Route::currentRouteAction(), [
-                    'RemindersController@getRemind',
-                    'RemindersController@postRemind',
-                    'RemindersController@getReset',
-                    'RemindersController@postReset'
-                ]))
+                ]) )
                 @yield('content')
             @else
                 <div class="login-form row">
@@ -75,12 +69,7 @@
                         {!! Form::close() !!}
                     </div>
                 </div>
-                <div class="row">
-                    <div class="small-6 small-centered columns">
-                        <a href="{!! action('RemindersController@getRemind') !!}" class="right"><p
-                                    style="font-style: italic">Forgot your password?</p></a>
-                    </div>
-                </div>
+
 
                 <div class="row">
                     <div class="small-6 small-centered columns">

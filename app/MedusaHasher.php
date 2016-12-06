@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Libraries;
+namespace App;
 
 use Illuminate\Contracts\Hashing\Hasher;
 

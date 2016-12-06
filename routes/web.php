@@ -295,7 +295,7 @@ Route::get(
     'middleware' => 'auth'
     ]
 );
-Route::resource('announcement', 'AnnouncementController', ['middleware' => 'auth']);
+//Route::resource('announcement', 'AnnouncementController', ['middleware' => 'auth']);
 Route::resource('report', 'ReportController', ['middleware' => 'auth']);
 
 Route::get(
@@ -350,7 +350,7 @@ Route::get(
 Route::model('type', 'Type');
 Route::resource('type', 'TypeController', ['middleware' => 'auth']);
 
-Route::controller('password', 'RemindersController');
+//Route::controller('password', 'RemindersController');
 
 Route::get(
     '/exam',
@@ -404,7 +404,7 @@ Route::post(
 Route::model('billet', 'Billet');
 Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
 
-Route::controller('id', 'IdController', ['middleware' => 'auth']);
+//Route::controller('id', 'IdController', ['middleware' => 'auth']);
 
 Route::model('events', 'Events');
 Route::resource('events', 'EventController', ['middleware' => 'auth']);
