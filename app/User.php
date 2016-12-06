@@ -9,9 +9,11 @@ use Intervention\Image\Facades\Image;
 use App\Enums\MedusaDefaults;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+use Notifiable;
     use \App\Audit\MedusaAudit;
     use \App\Permissions\MedusaPermissions;
 
