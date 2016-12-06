@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class ConfigController extends Controller
 {
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Display a listing of the resource.

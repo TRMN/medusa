@@ -1,6 +1,6 @@
 <?php
 
-namespace Medusa\Echelons;
+namespace App\Echelons;
 
 use App\Chapter;
 use App\Type;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Medusa\Utility;
+namespace App\Utility;
 
 class MedusaUtility
 {

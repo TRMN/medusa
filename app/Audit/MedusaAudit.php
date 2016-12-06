@@ -1,6 +1,6 @@
 <?php
 
-namespace Medusa\Audit;
+namespace App\Audit;
 
 use App\Audit;
 

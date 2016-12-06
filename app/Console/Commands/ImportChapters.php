@@ -23,7 +23,7 @@ class ImportChapters extends Command
      */
     protected $description = 'Import chapters from the old system';
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Create a new command instance.

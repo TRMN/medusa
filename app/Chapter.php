@@ -438,7 +438,7 @@ class Chapter extends Model
         }', true);
 
         $search = ['%ordinal%'];
-        $replace = [\Medusa\Utility\MedusaUtility::ordinal($this->hull_number)];
+        $replace = [\App\Utility\MedusaUtility::ordinal($this->hull_number)];
 
         $billets = Medusaconfig('chapter.show', $default, $this->chapter_type);
 
@@ -553,7 +553,7 @@ class Chapter extends Model
 
     static function getChapterLocations()
     {
-        $states = \Medusa\Enums\MedusaDefaults::STATES_BY_ABREVIATION;
+        $states = \App\Enums\MedusaDefaults::STATES_BY_ABREVIATION;
 
         $results =
           User::where('assignment.billet', '=', 'Commanding Officer')

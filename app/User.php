@@ -13,15 +13,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use Medusa\Enums\MedusaDefaults;
+use App\Enums\MedusaDefaults;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
 
     use Authenticatable, Authorizable, CanResetPassword;
-    use \Medusa\Audit\MedusaAudit;
-    use \Medusa\Permissions\MedusaPermissions;
+    use \App\Audit\MedusaAudit;
+    use \App\Permissions\MedusaPermissions;
 
     public static $rules = [
         'first_name' => 'required|min:2',

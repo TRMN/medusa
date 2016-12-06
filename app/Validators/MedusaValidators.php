@@ -1,11 +1,11 @@
 <?php
-namespace Medusa\Validators;
+namespace App\Validators;
 
 use App\Exam;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
-use Medusa\Permissions\MedusaPermissions;
+use App\Permissions\MedusaPermissions;
 
 class MedusaValidators extends Validator
 {

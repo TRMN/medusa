@@ -1,8 +1,8 @@
 <?php
-namespace Medusa\Services;
+namespace App\Services;
 
 use Illuminate\Support\ServiceProvider;
-use Medusa\Validators\MedusaValidators;
+use App\Validators\MedusaValidators;
 
 class MedusaServiceProvider extends ServiceProvider
 {
