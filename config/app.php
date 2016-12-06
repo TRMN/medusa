@@ -216,5 +216,5 @@ return [
 
     ],
 
-    'version' => "Trevor's Star (Project MEDUSA v1.3.16)",
+        'version' => "Trevor's Star (Project MEDUSA v1.3.16)",
 ];
