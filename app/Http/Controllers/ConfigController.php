@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\MedusaConfig;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class ConfigController extends Controller
@@ -84,10 +85,10 @@ class ConfigController extends Controller
             );
 
             $msg = '"' . $config->key . '" has been added';
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $msg =
               'There was a problem saving "' . $config->key . '"';
-            log::error($e->getTraceAsString());
+            Log::error($e->getTraceAsString());
         }
 
         return Redirect::route('config.index')->with('message', $msg);
@@ -168,10 +169,10 @@ class ConfigController extends Controller
             );
 
             $msg = '"' . $config->key . '" has been updated';
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $msg =
               'There was a problem saving the update to "' . $config->key . '"';
-            log::error($e->getTraceAsString());
+            Log::error($e->getTraceAsString());
         }
 
         return Redirect::route('config.index')->with('message', $msg);
@@ -204,8 +205,8 @@ class ConfigController extends Controller
             );
 
             return 1;
-        } catch (Exception $e) {
-            log::error($e->getTraceAsString());
+        } catch (\Exception $e) {
+            Log::error($e->getTraceAsString());
             return 0;
         }
     }

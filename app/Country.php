@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Webpatser\Countries\CountriesFacade;
+use Webpatser\Countries\Countries;
 
 class Country extends Model
 {

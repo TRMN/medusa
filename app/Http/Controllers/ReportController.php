@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\URL;
 
 class ReportController extends Controller
 {
@@ -64,7 +65,7 @@ class ReportController extends Controller
         }
 
         if (in_array($chapter->chapter_type, ['ship', 'station']) === false) {
-            return \redirect(\URL::previous())->with(
+            return redirect(URL::previous())->with(
                 'message',
                 'I was unable to find an appropriate command for this report.'
             );

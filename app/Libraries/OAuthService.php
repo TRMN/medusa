@@ -1,5 +1,12 @@
 <?php namespace Medusa\Services;
 
+use App\ExamList;
+use App\Korders;
+use App\OauthClient;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 use Medusa\Audit\MedusaAudit;
 use Medusa\Oauth\Storage\MedusaUserCredentials;
 use Medusa\Permissions\PermissionsHelper;
@@ -33,14 +40,14 @@ class OAuthService
      */
     public function __construct($app)
     {
-        $_hosts = \config('database.connections.mongodb.host');
+        $_hosts = config('database.connections.mongodb.host');
         $_hosts = is_array($_hosts) ? $_hosts : [$_hosts];
 
         $this->mongo =
           new \MongoClient(
               'mongodb://' . implode(',', $_hosts) . '/' .
-              ($_dbName = \config('database.connections.mongodb.database')),
-              \config('database.connections.mongodb.options', [])
+              ($_dbName = config('database.connections.mongodb.database')),
+              config('database.connections.mongodb.options', [])
           );
 
         $_store = new Mongo($this->mongo->{$_dbName});
@@ -76,7 +83,7 @@ class OAuthService
     public function authorize()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
         $this->server->validateAuthorizeRequest($_request, $_response);
@@ -88,9 +95,9 @@ class OAuthService
         $_params = $_request->getAllQueryParameters();
         /** @noinspection PhpUndefinedMethodInspection */
         $_client =
-          \OauthClient::where('client_id', '=', $_params['client_id'])->first();
+          OauthClient::where('client_id', '=', $_params['client_id'])->first();
 
-        return \view(
+        return view(
             'oauth.authorization-form',
             [
             'client'   => $_client,
@@ -106,7 +113,7 @@ class OAuthService
     public function authorizePost()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
         /** @noinspection PhpUndefinedFieldInspection */
@@ -114,7 +121,7 @@ class OAuthService
             $_request,
             $_response,
             ('Approve' === $_request->get('authorized')),
-            \Auth::user()->id
+            Auth::user()->id
         );
 
         return $_response;
@@ -126,12 +133,12 @@ class OAuthService
     public function token()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
         $_response = $this->server->handleTokenRequest($_request, $_response);
 
-        \Log::info('Token request');
+        Log::info('Token request');
 
         return $_response;
     }
@@ -142,18 +149,18 @@ class OAuthService
     public function profile()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
 
             /** @var \User $_user */
-            $_user = \User::find($_token['user_id']);
+            $_user = User::find($_token['user_id']);
 
-            \Log::info('Profile request');
+            Log::info('Profile request');
 
-            return \Response::json(
+            return Response::json(
                 [
                 'uid'            => $_token['user_id'],
                 'email'          => $_user->email_address,
@@ -170,7 +177,7 @@ class OAuthService
             );
         }
 
-        return \Response::json(
+        return Response::json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -179,10 +186,10 @@ class OAuthService
     public function getTisTig()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
-        \Log::info('Time in Service / Time in Grade request');
+        Log::info('Time in Service / Time in Grade request');
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
@@ -190,13 +197,13 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              \User::where(
+              User::where(
                   'email_address',
                   '=',
                   strtolower(str_replace(' ', '+', $_token['user_id']))
               )->first();
 
-            return \Response::json(
+            return Response::json(
                 [
                 'tig' => $_user->getTimeInGrade(true),
                 'tis' => $_user->getTimeInService(true),
@@ -204,7 +211,7 @@ class OAuthService
             );
         }
 
-        return \Response::json(
+        return Response::json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -213,10 +220,10 @@ class OAuthService
     public function updateUser()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
-        \Log::info('User Update Request');
+        Log::info('User Update Request');
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
@@ -224,13 +231,13 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              \User::where(
+              User::where(
                   'email_address',
                   '=',
                   strtolower(str_replace(' ', '+', $_token['user_id']))
               )->first();
 
-            $_data = \Input::all();
+            $_data = Input::all();
 
             foreach ($_data as $k => $v) {
                 $_user->$k = $v;
@@ -246,18 +253,18 @@ class OAuthService
                     'OAuthService@updateUser'
                 );
 
-                \Log::info('User profile updated');
+                Log::info('User profile updated');
 
-                return \Response::json(
+                return Response::json(
                     [
                     'status'  => 'success',
                     'message' => 'Profile updated',
                     ]
                 );
-                \Log::info('We should never get here');
+                Log::info('We should never get here');
             } else {
-                \Log::info('There was some sort of problem');
-                return \Response::json(
+                Log::info('There was some sort of problem');
+                return Response::json(
                     [
                     'status'  => 'error',
                     'message' => 'Unable to update profile',
@@ -274,10 +281,10 @@ class OAuthService
     public function user()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
-        \Log::info('User Info Request');
+        Log::info('User Info Request');
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
@@ -285,7 +292,7 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              \User::where(
+              User::where(
                   'email_address',
                   '=',
                   strtolower(str_replace(' ', '+', $_token['user_id']))
@@ -320,7 +327,7 @@ class OAuthService
                     /** @noinspection PhpUndefinedMethodInspection */
                     /** @var \Korders $orderInfo */
                     $orderInfo =
-                      \Korders::where(
+                      Korders::where(
                           'classes.postnominal',
                           '=',
                           $_peerage['postnominal']
@@ -356,7 +363,7 @@ class OAuthService
                     }
 
                     /** @noinspection PhpUndefinedMethodInspection */
-                    $_exam = \ExamList::where('exam_id', '=', $_id)->first();
+                    $_exam = ExamList::where('exam_id', '=', $_id)->first();
 
                     if (!is_null($_exam)) {
                         $_examList[$_id]['name'] = $_exam->name;
@@ -390,7 +397,7 @@ class OAuthService
             if (!empty($_user->awards)) {
                 $_user->leftRibbonCount = count($_user->getRibbons('L'));
                 $_user->leftRibbons = $_user->getRibbons('L');
-                $_user->ribbonrack = \view('partials.leftribbons', ['user' => $_user])->render();
+                $_user->ribbonrack = view('partials.leftribbons', ['user' => $_user])->render();
             } else {
                 $_user->ribbonrack = null;
             }
@@ -400,10 +407,10 @@ class OAuthService
                   strtotime($_user->updated_at->toDateTimeString());
             }
 
-            return \Response::json($_user);
+            return Response::json($_user);
         }
 
-        return \Response::json(
+        return Response::json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -412,10 +419,10 @@ class OAuthService
     public function lastUpdated()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
-        \Log::info('Last Updated request');
+        Log::info('Last Updated request');
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
@@ -423,7 +430,7 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_lastUpdated =
-              \User::where(
+              User::where(
                   'email_address',
                   '=',
                   strtolower(str_replace(' ', '+', $_token['user_id']))
@@ -431,10 +438,10 @@ class OAuthService
                    ->first()
                    ->getLastUpdated();
 
-            return \Response::json(['lastUpdate' => $_lastUpdated]);
+            return Response::json(['lastUpdate' => $_lastUpdated]);
         }
 
-        return \Response::json(
+        return Response::json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -443,16 +450,16 @@ class OAuthService
     public function getIdCard()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
-        \Log::info('ID card requested');
+        Log::info('ID card requested');
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
 
             $_idCard =
-              \User::where(
+              User::where(
                   'email_address',
                   '=',
                   strtolower(str_replace(' ', '+', $_token['user_id']))
@@ -463,7 +470,7 @@ class OAuthService
             return $_idCard->response('png');
         }
 
-        return \Response::json(
+        return Response::json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -472,19 +479,19 @@ class OAuthService
     public function getScheduledEvents()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
-        \Log::info('List of scheduled events requested');
+        Log::info('List of scheduled events requested');
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
-            $_tz = \Input::get('tz', null);
+            $_tz = Input::get('tz', null);
 
-            \Log::info('TZ=' . $_tz);
+            Log::info('TZ=' . $_tz);
 
-            return \Response::json([
-              'events' => \User::where(
+            return Response::json([
+              'events' => User::where(
                   'email_address',
                   '=',
                   strtolower(str_replace(' ', '+', $_token['user_id']))
@@ -494,7 +501,7 @@ class OAuthService
             ]);
         }
 
-        return \Response::json(
+        return Response::json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -505,17 +512,17 @@ class OAuthService
     public function checkMemberIn()
     {
         /** @noinspection PhpParamsInspection */
-        $_request = Request::createFromRequest(\Request::instance());
+        $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
         if ($this->server->verifyResourceRequest($_request, $_response)) {
             $_token = $this->server->getAccessTokenData($_request);
 
-            $_data = \Input::all();
+            $_data = Input::all();
 
-            \Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
+            Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
 
-            return \Response::json(\User::where(
+            return Response::json(User::where(
                 'email_address',
                 '=',
                 strtolower(str_replace(' ', '+', $_token['user_id']))
@@ -528,7 +535,7 @@ class OAuthService
                                         ));
         }
 
-        return \Response::json(
+        return Response::json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );

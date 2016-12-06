@@ -1,4 +1,10 @@
 <?php
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
+
 $protocol = (Request::secure()) ? "https:" : "http:";
 
 $host = Request::server('HTTP_HOST');

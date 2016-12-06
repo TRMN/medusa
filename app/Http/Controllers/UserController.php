@@ -7,7 +7,6 @@ use App\Billet;
 use App\Branch;
 use App\Chapter;
 use App\Country;
-use App\Events\Event;
 use App\Grade;
 use App\Korders;
 use App\Ptitles;
@@ -16,14 +15,16 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
-use Webpatser\Countries\CountriesFacade;
+use Webpatser\Countries\Countries;
 
 class UserController extends Controller
 {
@@ -246,8 +247,8 @@ class UserController extends Controller
             case 'IAN':
                 $billet = 'Crewman';
 
-                $dob = new DateTime($user->dob);
-                $ageCutOff = new DateTime('now');
+                $dob = new \DateTime($user->dob);
+                $ageCutOff = new \DateTime('now');
                 $ageCutOff->modify('-18 year');
 
                 if ($ageCutOff < $dob) {
@@ -695,7 +696,7 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-            'Guest from ' . \Request::getClientIp(),
+            'Guest from ' . Request::getClientIp(),
             'create',
             'users',
             null,

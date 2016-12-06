@@ -145,7 +145,7 @@ class OAuthController extends Controller
         try {
             $oauthClient->delete();
             return 1;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return 0;
         }
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Chapter;
-use Smalldogs\Html5inputs\Html5InputsFacade;
+use Medusa\Echelons\MedusaEchelons;
 
 class MardetController extends Controller
 {
@@ -16,7 +16,7 @@ class MardetController extends Controller
     private $branch = 'RMMC';
     private $routePrefix = 'mardet';
 
-    use Medusa\Echelons\MedusaEchelons;
+    use MedusaEchelons;
 
     private function getCommands()
     {

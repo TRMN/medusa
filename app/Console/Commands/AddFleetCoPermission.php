@@ -6,7 +6,6 @@ use App\Chapter;
 use App\User;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 
 class AddFleetCoPermission extends Command
 {

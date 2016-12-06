@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Jenssegers\Mongodb\Model as Eloquent;
 
 class Announcement extends Model
 {
@@ -17,7 +16,7 @@ class Announcement extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(\App\User::class);
     }
 
     public function getPublishLabels()

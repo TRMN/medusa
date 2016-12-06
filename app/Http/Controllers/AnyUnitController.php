@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Branch;
 use App\Chapter;
-use Smalldogs\Html5inputs\Html5InputsFacade;
+use Medusa\Echelons\MedusaEchelons;
 
 class AnyUnitController extends Controller
 {
@@ -51,7 +51,7 @@ class AnyUnitController extends Controller
     private $branch = 'RMMC';
     private $routePrefix = 'anyunit';
 
-    use Medusa\Echelons\MedusaEchelons;
+    use MedusaEchelons;
 
     private function getCommands()
     {

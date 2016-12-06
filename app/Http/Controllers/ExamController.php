@@ -333,7 +333,7 @@ class ExamController extends Controller
             $examRecord->save();
 
             return Response::json(['success' => 'true']);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return Response::json(['success' => 'false']);
         }
     }

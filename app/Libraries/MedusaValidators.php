@@ -1,8 +1,9 @@
 <?php
 namespace Medusa\Validators;
 
+use App\Exam;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 use Medusa\Permissions\MedusaPermissions;
 
@@ -42,7 +43,7 @@ class MedusaValidators extends Validator
             return true;
         }
 
-        if ($exams = \Exam::where('member_id', '=', $this->data['member_id'])->first()) {
+        if ($exams = Exam::where('member_id', '=', $this->data['member_id'])->first()) {
             if (empty($exams->exams[$value]) === true) {
                 return true; // Exam not present, it's a new entry, allow it
             }
@@ -54,18 +55,18 @@ class MedusaValidators extends Validator
             return true; // No exams found, this is a new entry, allow it.
         }
 
-        return ( $exams->exams[$value]['entered_by'] == \Auth::user()->id );
+        return ( $exams->exams[$value]['entered_by'] == Auth::user()->id );
     }
 
     protected function validateNotSelf($attribute, $value, $param)
     {
-        return ($value != \Auth::user()->member_id);
+        return ($value != Auth::user()->member_id);
     }
 
     protected function validatePostDated($attribute, $value, $param)
     {
         $value = date('Y-m-d', strtotime($value));
-        
+
         return Carbon::createFromFormat('Y-m-d', $value)->lte(Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->toDateString()));
     }
 }

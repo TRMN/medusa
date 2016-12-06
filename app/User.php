@@ -2,21 +2,24 @@
 
 namespace App;
 
+use DateTime;
+use Exception;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use Jenssegers\Mongodb\Model as Eloquent;
 use Medusa\Enums\MedusaDefaults;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
 
-    use Authenticatable, CanResetPassword;
+    use Authenticatable, Authorizable, CanResetPassword;
     use \Medusa\Audit\MedusaAudit;
     use \Medusa\Permissions\MedusaPermissions;
 
@@ -101,7 +104,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function announcements()
     {
-        return $this->hasMany('App\Announcement');
+        return $this->hasMany(\App\Announcement::class);
     }
 
     public function getFullName()
