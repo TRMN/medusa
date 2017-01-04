@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Award extends Model
+class Award extends Eloquent
 {
     protected $fillable = [
       'display_order',

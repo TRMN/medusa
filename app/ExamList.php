@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class ExamList extends Model
+class ExamList extends Eloquent
 {
     protected $fillable = [ 'exam_id', 'name', 'enabled'];
 

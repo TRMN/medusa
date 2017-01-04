@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class OauthClient extends Model
+class OauthClient extends Eloquent
 {
     protected $fillable = ['client_id', 'client_secret', 'redirect_url', 'client_name'];
 

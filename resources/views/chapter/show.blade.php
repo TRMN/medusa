@@ -40,7 +40,7 @@
             Chapter Type:
         </div>
         <div class="small-10 columns Incised901Light ninety">
-            {!!Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
+            {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
             @if(in_array($detail->chapter_type, ['ship', 'station']) === true)
                 @if(empty($detail->decommission_date) === true)
                     (Commissoned {!!date('F jS, Y', strtotime($detail->commission_date))!!})
@@ -75,6 +75,7 @@
             </div>
         </div>
     @endif
+    <!-- {!! print_r($command, true) !!}-->
     @if (count($command) > 0)
         <br />
         <div class="row">

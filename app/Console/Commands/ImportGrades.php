@@ -604,7 +604,7 @@ class ImportGrades extends Command
 
     protected function importLandingUExams(array $record)
     {
-        $landingUExams = array_where($record, function ($key, $value) {
+        $landingUExams = array_where($record, function ($value, $key) {
             return strtoupper(substr($key, 0, 2)) == 'LU';
         });
 
@@ -622,7 +622,7 @@ class ImportGrades extends Command
 
     protected function importGsnSpecialityExams(array $record)
     {
-        $exams = array_where($record, function ($key, $value) {
+        $exams = array_where($record, function ($value, $key) {
             return preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/', strtoupper($key));
         });
 

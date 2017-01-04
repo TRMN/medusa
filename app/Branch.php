@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Branch extends Model
+class Branch extends Eloquent
 {
 
     protected $fillable = [ 'branch', 'branch_name' ];

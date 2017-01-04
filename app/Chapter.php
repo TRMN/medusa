@@ -2,11 +2,12 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Auth;
 use NumberFormatter;
+use App\MedusaConfig;
 
-class Chapter extends Model
+class Chapter extends Eloquent
 {
 
     protected $fillable = [
@@ -440,7 +441,7 @@ class Chapter extends Model
         $search = ['%ordinal%'];
         $replace = [\App\Utility\MedusaUtility::ordinal($this->hull_number)];
 
-        $billets = Medusaconfig('chapter.show', $default, $this->chapter_type);
+        $billets = MedusaConfig::get('chapter.show', $default, $this->chapter_type);
 
         $commandCrew = [];
 
@@ -454,7 +455,8 @@ class Chapter extends Model
                   $billetInfo['billet'],
                   isset($billetInfo['exact']) === true ? $billetInfo['exact'] : true
               );
-            if (is_a($user, 'User') === true) {
+
+            if (is_a($user, 'App\User') === true) {
                 $commandCrew[(int)$billetInfo['display_order']] = [
                   'display' => $position,
                   'user'    => $user,
@@ -511,7 +513,7 @@ class Chapter extends Model
 
         return array_where(
             $this->getChapterIdWithChildren(),
-            function ($key, $value) {
+            function ($value, $key) {
                 if ($value != $this->id) {
                     return $value;
                 }

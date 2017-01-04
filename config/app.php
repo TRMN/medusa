@@ -162,8 +162,8 @@ return [
 
         'App\Services\MedusaHasherServiceProvider',
         'Jenssegers\Mongodb\MongodbServiceProvider',
-        //        'Jenssegers\Mongodb\Auth\ReminderServiceProvider',
-        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Jenssegers\Mongodb\Auth\PasswordResetServiceProvider',
+         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         'Webpatser\Countries\CountriesServiceProvider',
         //        'mnshankar\CSV\CSVServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',

@@ -677,7 +677,7 @@ div.filePhoto {
   color: #ee3300; }
 
 .ofpt {
-  position: relative;
+  position: absolute;
   top: 50%;
   left: 50%;
   height: 100%;

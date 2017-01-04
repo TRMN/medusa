@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportUsers::class,
         \App\Console\Commands\assignAHPerms::class,
         \App\Console\Commands\AddFleetCoPermission::class,
+        \Themsaid\RoutesPublisher\RoutesPublisherCommand::class
     ];
 
     /**

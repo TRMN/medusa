@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Audit extends Model
+class Audit extends Eloquent
 {
     protected $fillable = ['member_id', 'action', 'collection_name', 'document_id', 'document_values', 'from_where' ];
 

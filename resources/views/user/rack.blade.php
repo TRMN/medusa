@@ -25,7 +25,7 @@
     </div>
 
     {!! Form::open(array('route' => 'saverack')) !!}
-    @foreach(Award::getLeftSleeve() as $badge)
+    @foreach(App\Award::getLeftSleeve() as $badge)
         @if(file_exists(public_path('images/' . $badge->code . '.svg')))
             <div class="row ribbon-row">
                 <div class="columns small-1">
@@ -65,7 +65,7 @@
 
     <div class="row text-center"><h3>Award Stripes</h3></div>
     <div class="ribbon-group">
-        @foreach(Award::getRightSleeve() as $badge)
+        @foreach(App\Award::getRightSleeve() as $badge)
             @if(file_exists(public_path('awards/stripes/' . $badge->code . '-1.svg')))
                 <div class="row ribbon-group-row">
                     <div class="columns small-1">
@@ -89,7 +89,7 @@
     </div>
 
     <div class="row text-center"><h3>Qualification Badges</h3></div>
-    @foreach(Award::getTopBadges() as $index => $badge)
+    @foreach(App\Award::getTopBadges() as $index => $badge)
         @if(is_object($badge))
             @if(file_exists(public_path('awards/badges/' . $badge->code . '-1.svg')))
                 <div class="row ribbon-row">
@@ -143,7 +143,7 @@
     @endforeach
 
     <div class="row text-center"><h3>Individual Awards</h3></div>
-    @foreach(Award::getLeftRibbons() as $index => $ribbon)
+    @foreach(App\Award::getLeftRibbons() as $index => $ribbon)
         @if(is_object($ribbon))
             @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
                 <div class="row ribbon-row">

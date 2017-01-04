@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Billet extends Model
+class Billet extends Eloquent
 {
     protected $fillable = ['billet_name'];
 

@@ -101,7 +101,7 @@
                                     $toolTip = 'Arms for ' . $fullTitle;
                                 } else {
                                     $orderInfo =
-                                            Korders::where('classes.postnominal', '=', $peerage['postnominal'])
+                                            \App\Korders::where('classes.postnominal', '=', $peerage['postnominal'])
                                                    ->first();
                                     $path = '/awards/orders/medals/' . $orderInfo->filename;
                                     $fullTitle =
@@ -262,8 +262,8 @@
                 @if($user->registration_status != "Pending" && (($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || ($permsObj->hasPermissions(['EDIT_MEMBER']))))
                     <a href="{!!route('user.edit', [$user->_id])!!}" class="editButton Incised901Black margin-5">EDIT</a>
                 @elseif($permsObj->hasPermissions(['PROC_APPLICATIONS']))
-                    <a href="{!!action('user.approve', [$user->_id])!!}" class="editButton Incised901Black margin-5">Approve</a>
-                    <a href="{!!action('user.deny', [$user->_id])!!}" class="editButton
+                    <a href="{!!route('user.approve', [$user->_id])!!}" class="editButton Incised901Black margin-5">Approve</a>
+                    <a href="{!!route('user.deny', [$user->_id])!!}" class="editButton
                         Incised901Black margin-5">DENY</a>
                 @endif
             </div>

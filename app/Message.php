@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Message extends Model
+class Message extends Eloquent
 {
     protected $fillable = ['source', 'severity', 'msg'];
 }

@@ -47,7 +47,7 @@
     "doctrine/dbal": "~2.3",
     "barryvdh/laravel-ide-helper": "^2.2",
     "webpatser/laravel-countries": "dev-master",
-    "jenssegers/mongodb": "~2.0",
+    "jenssegers/mongodb": "3.1.*",
     "mnshankar/CSV": "*",
     "maatwebsite/excel": "~2.1.0",
     "simplesoftwareio/simple-qrcode": "~1",
@@ -55,7 +55,8 @@
     "google/recaptcha": "~1.1",
     "bshaffer/oauth2-server-httpfoundation-bridge": "^1.1",
     "league/csv": "^8.1",
-    "laravelcollective/html": "5.3.*"
+    "laravelcollective/html": "5.3.*",
+    "themsaid/laravel-routes-publisher": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

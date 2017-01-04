@@ -8,14 +8,18 @@ use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Enums\MedusaDefaults;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class User extends Authenticatable
+class User extends Eloquent implements AuthenticatableContract
 {
     use Notifiable;
     use \App\Audit\MedusaAudit;
     use \App\Permissions\MedusaPermissions;
+    use Authenticatable;
 
     public static $rules = [
         'first_name' => 'required|min:2',
@@ -594,7 +598,7 @@ class User extends Authenticatable
                 // filter by branch
                 $list = array_where(
                     $exams->exams,
-                    function ($key, $value) use ($pattern) {
+                    function ($value, $key) use ($pattern) {
                         if (preg_match($pattern, $key) === 1) {
                             return true;
                         }
@@ -606,7 +610,7 @@ class User extends Authenticatable
                 // filter by date
                 $list = array_where(
                     $list,
-                    function ($key, $value) use ($after) {
+                    function ($value, $key) use ($after) {
                         if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime(
                             '+2 month',
                             $after
@@ -622,7 +626,7 @@ class User extends Authenticatable
                 // Filter by date entered
                 $list = array_where(
                     $list,
-                    function ($key, $value) use ($since) {
+                    function ($value, $key) use ($since) {
                         if (empty($value['date_entered']) === true) {
                             return false;
                         }
@@ -712,7 +716,7 @@ class User extends Authenticatable
     {
         $list = array_where(
             $exams,
-            function ($key, $value) use ($search) {
+            function ($value, $key) use ($search) {
                 if (preg_match($search, $key) === 1) {
                     return true;
                 }
@@ -789,7 +793,7 @@ class User extends Authenticatable
 
         $list = array_where(
             $exams,
-            function ($key, $value) use ($after) {
+            function ($value, $key) use ($after) {
                 if (intval($value['score']) > 70 || strtoupper($value['score'] == 'PASS')) {
                     return $value;
                 }
@@ -924,7 +928,7 @@ class User extends Authenticatable
     {
         $this->permissions = array_where(
             $this->permissions,
-            function ($key, $value) use ($perm) {
+            function ($value, $key) use ($perm) {
                 return $value != $perm;
             }
         );
@@ -956,7 +960,7 @@ class User extends Authenticatable
     {
         $peerages = array_where(
             $this->peerages,
-            function ($key, $value) use ($peerageId) {
+            function ($value, $key) use ($peerageId) {
                 if ($value['peerage_id'] != $peerageId) {
                     return true;
                 }

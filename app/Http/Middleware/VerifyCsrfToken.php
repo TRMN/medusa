@@ -6,6 +6,13 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 class VerifyCsrfToken extends BaseVerifier
 {
 
+    protected $except = [
+        'user/*/peerage',
+        '/exam/user/delete',
+        '/api/*',
+        '/billet/*',
+    ];
+
     /**
      * Handle an incoming request.
      *

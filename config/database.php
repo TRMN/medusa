@@ -54,12 +54,12 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'host' => ['172.31.9.142', '172.31.51.196', '172.31.55.151'],
-            'port' => env('DB_PORT'),
+            'host' => json_decode(env('DB_HOST', '["localhost"]')),
+            'port' => env('DB_PORT', 27017),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'database' => env('DB_DATABASE', 'forge'),
-            'options' => ['replicaSet' => 'rs0'],
+            'options' => json_decode(env('DB_OPTIONS', '[]')),
         ],
 
         'mysql' => [

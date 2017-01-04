@@ -310,7 +310,7 @@ class ChapterController extends Controller
             $commandTriad = $chapter->getCommandCrew();
 
             foreach ($commandTriad as $billetInfo) {
-                if (is_object($billetInfo['user']) && get_class($billetInfo['user']) == 'User') {
+                if (is_object($billetInfo['user']) && get_class($billetInfo['user']) == 'App\User') {
                     $user = $billetInfo['user'];
                     switch (substr($user->rank['grade'], 0, 1)) {
                         case 'E':

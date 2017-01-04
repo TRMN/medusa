@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Ptitles extends Model
+class Ptitles extends Eloquent
 {
     protected $fillable = ['title', 'code', 'precedence'];
 

@@ -21,7 +21,7 @@
 @endif
 @endforeach
 </div>
-@if($user->getRibbons('RS'))
+@if($user->getRibbons('RS') && in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
 <div class="stripes">
 @if(file_exists(public_path('patches/' . $user->branch . '.svg')))
 <img src="{!!asset('patches/' . $user->branch . '.svg')!!}" alt="{!!$user->branch!!}" title="{!!$user->branch!!}" class="branch">

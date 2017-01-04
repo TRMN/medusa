@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    @if(count(MedusaConfig::all()))
+    @if(count(\App\MedusaConfig::all()))
         <table class="trmnTableWithActions compact row-border" id="config-table">
             <thead>
             <tr>
@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach(MedusaConfig::all() as $item)
+            @foreach(\App\MedusaConfig::all() as $item)
                 <tr>
                     <td class="border-right">{!! $item->key !!}</td>
                     <td class="border-right">@if(is_array($item->value)) <pre class="json"> @endif

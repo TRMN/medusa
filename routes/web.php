@@ -113,7 +113,7 @@ Route::get(
 Route::post('/apply', ['as' => 'user.apply', 'uses' => 'UserController@apply']);
 
 // Users
-Route::model('user', 'User');
+Route::model('user', 'App\User');
 Route::get(
     '/user/finddups/{billet2check}',
     ['as'     => 'user.dups',
@@ -223,7 +223,7 @@ Route::post('/user/{user}/reset', [
 ]);
 
 // Assignment Change Requests
-Route::model('request', 'ChangeRequest');
+Route::model('request', 'App\ChangeRequest');
 Route::get(
     '/user_request/{user}/create',
     ['as'     => 'user.change.request',
@@ -261,11 +261,11 @@ Route::get(
 );
 
 // Other Routes
-Route::model('chapter', 'Chapter');
-Route::model('echelon', 'Chapter');
-Route::model('mardet', 'Chapter');
-Route::model('unit', 'Chapter');
-Route::model('anyunit', 'Chapter');
+Route::model('chapter', 'App\Chapter');
+Route::model('echelon', 'App\Chapter');
+Route::model('mardet', 'App\Chapter');
+Route::model('unit', 'App\Chapter');
+Route::model('anyunit', 'App\Chapter');
 
 Route::get(
     '/home/{message?}',
@@ -320,7 +320,7 @@ Route::get(
 );
 Route::resource('echelon', 'EchelonController', ['middleware' => 'auth']);
 
-Route::model('unit', 'Chapter');
+Route::model('unit', 'App\Chapter');
 Route::get(
     '/unit/{unit}/deactivate',
     ['as'     => 'unit.deactivate',
@@ -347,10 +347,14 @@ Route::get(
     ]
 );
 
-Route::model('type', 'Type');
+Route::model('type', 'App\Type');
 Route::resource('type', 'TypeController', ['middleware' => 'auth']);
 
-//Route::controller('password', 'RemindersController');
+// RemindersController
+Route::get('password/remind', 'RemindersController@getRemind');
+Route::post('password/remind', 'RemindersController@postRemind');
+Route::get('password/reset/{token?}', 'RemindersController@getReset');
+Route::post('password/reset', 'RemindersController@postReset');
 
 Route::get(
     '/exam',
@@ -386,7 +390,7 @@ Route::get('/exam/create', [
   'middleware' => 'auth'
 ]);
 
-Route::model('exam', 'ExamList');
+Route::model('exam', 'App\ExamList');
 Route::get(
     '/exam/edit/{exam}',
     ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'middleware' => 'auth']
@@ -401,12 +405,17 @@ Route::post(
     ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']
 );
 
-Route::model('billet', 'Billet');
+Route::model('billet', 'App\Billet');
 Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
 
-//Route::controller('id', 'IdController', ['middleware' => 'auth']);
+// IdController
+Route::get('id/qrcode/{id}', 'IdController@getQrcode');
+Route::get('id/card/{id}', 'IdController@getCard');
+Route::get('id/bulk/{id}', 'IdController@getBulk');
+Route::get('id/markbulk/{id}', 'IdController@getMarkbulk');
+Route::get('id/mark/{id}', 'IdController@getMark');
 
-Route::model('events', 'Events');
+Route::model('events', 'App\Events');
 Route::resource('events', 'EventController', ['middleware' => 'auth']);
 Route::get('/events/export/{events}', [
   'as'     => 'event.export',
@@ -414,7 +423,7 @@ Route::get('/events/export/{events}', [
   'middleware' => 'auth'
 ]);
 
-Route::model('config', 'MedusaConfig');
+Route::model('config', 'App\MedusaConfig');
 Route::resource('config', 'ConfigController', ['middleware' => 'auth']);
 
 // API calls
