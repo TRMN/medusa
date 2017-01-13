@@ -11,6 +11,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/exam/user/delete',
         '/api/*',
         '/billet/*',
+        '/oauth/*',
     ];
 
     /**

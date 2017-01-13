@@ -734,7 +734,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function show(User $user)
+    public function show(User $user, $message = null)
     {
         if ($this->isInChainOfCommand($user) === false &&
           Auth::user()->id != $user->id &&
@@ -773,6 +773,7 @@ class UserController extends Controller
             'branches'  => Branch::getBranchList(),
             'ptitles'   => $titles,
             'korders'   => $orders,
+            'message'   => $message,
             ]
         );
     }

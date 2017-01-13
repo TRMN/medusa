@@ -20,7 +20,7 @@
     <header class="row trmn-width">
 
         <div class="small-2 columns trmn-width">
-            <p></p><a href="{!!$serverUrl!!}"><img src="{!! asset('seals/RMN.png') !!}" alt="TRMN Seal" width="150px"
+            <p></p><a href="{!!$serverUrl!!}"><img src="http://www.trmn.org/portal/images/logos/trmnseal.png" alt="TRMN Seal" width="150px"
                                                  height="150px"></a>
         </div>
         <div class="small-10 columns trmn-width end">

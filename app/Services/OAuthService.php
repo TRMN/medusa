@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\Log;
 use App\Audit\MedusaAudit;
 use App\Oauth\Storage\MedusaUserCredentials;
 use App\Permissions\PermissionsHelper;
-use OAuth2\GrantType\AuthorizationCode;
-use OAuth2\GrantType\ClientCredentials;
-use OAuth2\GrantType\RefreshToken;
-use OAuth2\GrantType\UserCredentials;
-use OAuth2\HttpFoundationBridge\Request;
-use OAuth2\HttpFoundationBridge\Response;
-use OAuth2\Server;
-use OAuth2\Storage\Mongo;
+use \OAuth2\GrantType\AuthorizationCode;
+use \OAuth2\GrantType\ClientCredentials;
+use \OAuth2\GrantType\RefreshToken;
+use \OAuth2\GrantType\UserCredentials;
+use \OAuth2\HttpFoundationBridge\Request;
+use \OAuth2\HttpFoundationBridge\Response;
+use \OAuth2\Server;
+use \OAuth2\Storage\Mongo;
+use MongoDB\Client;
 
 /**
  * OAuth2 wrapper service
@@ -41,16 +42,16 @@ class OAuthService
     {
         $_hosts = config('database.connections.mongodb.host');
         $_hosts = is_array($_hosts) ? $_hosts : [$_hosts];
+        $_dbName = config('database.connections.mongodb.database');
 
         $this->mongo =
-          new \MongoClient(
-              'mongodb://' . implode(',', $_hosts) . '/' .
-              ($_dbName = config('database.connections.mongodb.database')),
+          new Client(
+              'mongodb://' . implode(',', $_hosts),
               config('database.connections.mongodb.options', [])
           );
 
-        $_store = new Mongo($this->mongo->{$_dbName});
-
+//        $_store = new Mongo($this->mongo->{$_dbName});
+        $_store = $this->mongo->selectDatabase($_dbName);
         $this->server = new Server(
             $_store,
             [

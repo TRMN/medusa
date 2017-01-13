@@ -54,24 +54,26 @@
                             ?>
                         @endif
 
-                        <div class='content'>
-                            {!! Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) !!}
-                            <div class="row">
-                                <div class="columns small-10 end Incised901Light end">
-                                    {!! Form::textarea('note_text', $currentNote, $options) !!}
-                                </div>
-                            </div>
-                            @if ($permsObj->hasPermissions(['EDIT_NOTE']))
+                        @if (!empty($user->note) OR $permsObj->hasPermissions(['EDIT_NOTE']))
+                            <div class='content'>
+                                {!! Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) !!}
                                 <div class="row">
                                     <div class="columns small-10 end Incised901Light end">
-                                        <button class="button round" id="note_clear">Delete</button>
-                                        <button class="button round" id="note_cancel">Cancel
-                                        </button> {!!Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])!!}
+                                        {!! Form::textarea('note_text', $currentNote, $options) !!}
                                     </div>
                                 </div>
-                            @endif
-                            {!! Form::close() !!}
-                        </div>
+                                @if ($permsObj->hasPermissions(['EDIT_NOTE']))
+                                    <div class="row">
+                                        <div class="columns small-10 end Incised901Light end">
+                                            <button class="button round" id="note_clear">Delete</button>
+                                            <button class="button round" id="note_cancel">Cancel
+                                            </button> {!!Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])!!}
+                                        </div>
+                                    </div>
+                                @endif
+                                {!! Form::close() !!}
+                            </div>
+                        @endif
                     </div>
                 @endif
 
@@ -87,7 +89,7 @@
                     </h5>
                     @foreach($user->getPeerages() as $peerage)
                         <div class="row">
-                            <div class="small-1 columns text-left">
+                            <div class="small-2 medium-2 large-2 columns text-left">
                                 <?php
                                 $path = '';
 
@@ -97,15 +99,15 @@
                                         $path = '/arms/peerage/' . $peerage['filename'];
                                     }
                                     $fullTitle =
-                                            $peerage['generation'] . ' ' . $peerage['title'] . ' of ' . $peerage['lands'];
+                                      $peerage['generation'] . ' ' . $peerage['title'] . ' of ' . $peerage['lands'];
                                     $toolTip = 'Arms for ' . $fullTitle;
                                 } else {
                                     $orderInfo =
-                                            \App\Korders::where('classes.postnominal', '=', $peerage['postnominal'])
-                                                   ->first();
+                                      \App\Korders::where('classes.postnominal', '=', $peerage['postnominal'])
+                                                  ->first();
                                     $path = '/awards/orders/medals/' . $orderInfo->filename;
                                     $fullTitle =
-                                            $orderInfo->getClassName($peerage['postnominal']) . ', ' . $orderInfo->order;
+                                      $orderInfo->getClassName($peerage['postnominal']) . ', ' . $orderInfo->order;
                                     $toolTip = $orderInfo->order;
                                 }
                                 ?>
@@ -117,7 +119,7 @@
                                     &nbsp;
                                 @endif
                             </div>
-                            <div class="small-9 columns Incised901Light ninety text-left vertical-center-50px">
+                            <div class="small-8 medium-8 large-8 columns Incised901Light ninety text-left vertical-center-50px">
                                 @if(empty($peerage['courtesy']) === false)
                                     <em>
                                         @endif
@@ -127,7 +129,7 @@
                                 @endif
                             </div>
 
-                            <div class="small-2 columns end text-left vertical-center-50px">
+                            <div class="small-2 medium-2 large-2 columns end text-left vertical-center-50px">
                                 @if($permsObj->hasPermissions(['EDIT_PEERAGE', 'DEL_PEERAGE']))
                                     @if($permsObj->hasPermissions(['EDIT_PEERAGE']))
                                         <a href="#" data-peerage-id="{!!$peerage['peerage_id']!!}"
@@ -142,7 +144,8 @@
                                     @endif
                                     @if($permsObj->hasPermissions(['DEL_PEERAGE']))
                                         <a href="#" data-peerage-text="{!!$fullTitle!!}" data-user-id="{!!$user->id!!}"
-                                           data-peerage-id="{!!$peerage['peerage_id']!!}" class="delete_peerage fi-x red">
+                                           data-peerage-id="{!!$peerage['peerage_id']!!}"
+                                           class="delete_peerage fi-x red">
                                             &nbsp;</a>
                                     @endif
                                 @else
@@ -260,7 +263,8 @@
             <div class="small-10 columns Incised901Light ninety textLeft end">
                 <br/>
                 @if($user->registration_status != "Pending" && (($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || ($permsObj->hasPermissions(['EDIT_MEMBER']))))
-                    <a href="{!!route('user.edit', [$user->_id])!!}" class="editButton Incised901Black margin-5">EDIT</a>
+                    <a href="{!!route('user.edit', [$user->_id])!!}"
+                       class="editButton Incised901Black margin-5">EDIT</a>
                 @elseif($permsObj->hasPermissions(['PROC_APPLICATIONS']))
                     <a href="{!!route('user.approve', [$user->_id])!!}" class="editButton Incised901Black margin-5">Approve</a>
                     <a href="{!!route('user.deny', [$user->_id])!!}" class="editButton
