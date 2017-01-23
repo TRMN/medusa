@@ -734,6 +734,14 @@ div.filePhoto {
   width: 100%;
   margin: -12.5% 0 0 -50%; }
 
+.ofpt-rel {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  margin: -12.5% 0 0 -50%; }
+
 .container {
   background: transparent;
   margin: 0 auto;

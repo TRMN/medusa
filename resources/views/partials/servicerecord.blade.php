@@ -198,27 +198,35 @@
                     @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
                         <img src="{!!$user->filePhoto!!}" alt="Official File Photo">
                     @else
-                        <div class="ofpt">Official<br/>File<br/>Photo</div>
-                    @endif
+                        @if($user->hasAwards())
+                            <div class="ofpt-rel">
+                                @else
+                                    <div class="ofpt">
+                                        @endif
+                                        Official<br/>File<br/>Photo
+                                    </div>
+                                @endif
 
+                            </div>
+                            {!!$user->getPrimaryBillet()!!}<br/>
+
+                            <div class="Incised901Light seventy-five">
+                                Assigned: {!!$user->getPrimaryDateAssigned()!!}</div>
+                            @include('partials.leftribbons', ['user' => $user])
+
+                            @if($user->leftRibbonCount)
+
+                                <a data-dropdown="embeding" data-options="align:top">Embeding Instructions</a>
+                                <div id="embeding" data-dropdown-content class="f-dropdown large content text-left"
+                                     tabindex="-1">
+                                    To embed your ribbon rack in other websites, use the following code:<br/>
+
+                                    &lt;iframe src="{!!url('api/ribbonrack/' . $user->member_id)!!}"&gt;&lt;/iframe&gt;
+
+                                </div>
+
+                            @endif
                 </div>
-                {!!$user->getPrimaryBillet()!!}<br/>
-
-                <div class="Incised901Light seventy-five">Assigned: {!!$user->getPrimaryDateAssigned()!!}</div>
-                @include('partials.leftribbons', ['user' => $user])
-
-                @if($user->leftRibbonCount)
-
-                        <a data-dropdown="embeding" data-options="align:top">Embeding Instructions</a>
-                        <div id="embeding" data-dropdown-content class="f-dropdown large content text-left" tabindex="-1">
-                            To embed your ribbon rack in other websites, use the following code:<br/>
-
-                            &lt;iframe src="{!!url('api/ribbonrack/' . $user->member_id)!!}"&gt;&lt;/iframe&gt;
-
-                        </div>
-
-                @endif
-            </div>
         </li>
     </ul>
     @endif

@@ -24,8 +24,11 @@
 <br />
 @endif
 @endforeach
+
+@if($user->hasAwards())
 <br /><br />
 <div class="name-badge-wrapper"><div class="name-badge-spacer">&nbsp;</div><div class="name-badge">{{$user->last_name}}, {{substr($user->first_name, 0 , 1)}}</div><div class="name-badge-spacer">&nbsp;</div></div>
+@endif
 
 @foreach($user->getRibbons('R') as $index => $ribbon)
 <img src="{!!asset('ribbons/' . $ribbon['code'] . '-' . $ribbon['count'] . '.svg')!!}" alt="{!!$ribbon['name']!!}" title="{!!$ribbon['name']!!}" class="citation">

@@ -56,60 +56,60 @@ class UserController extends Controller
         $usersOtherThanActive = [];
 
         foreach (User::whereIn(
-            'registration_status',
-            ['Inactive', 'Suspended', 'Expelled']
+          'registration_status',
+          ['Inactive', 'Suspended', 'Expelled']
         )->get() as $user) {
             $usersOtherThanActive[$user->registration_status][] = $user;
         }
 
         return view(
-            'user.index',
-            [
+          'user.index',
+          [
             'users'            => $usersByBranch,
             'title'            => 'Membership List',
             'otherThanActive'  => $usersOtherThanActive,
             'totalMembers'     => User::where(
-                'registration_status',
-                '=',
-                'Active'
+              'registration_status',
+              '=',
+              'Active'
             )->where('active', '=', 1)->count(),
             'totalEnlisted'    => User::where(
-                'registration_status',
-                '=',
-                'Active'
+              'registration_status',
+              '=',
+              'Active'
             )->where('active', '=', 1)->where(
-                'rank.grade',
-                'like',
-                'E%'
+              'rank.grade',
+              'like',
+              'E%'
             )->count(),
             'totalOfficer'     => User::where(
-                'registration_status',
-                '=',
-                'Active'
+              'registration_status',
+              '=',
+              'Active'
             )->where('active', '=', 1)->where(
-                'rank.grade',
-                'like',
-                'O%'
+              'rank.grade',
+              'like',
+              'O%'
             )->count(),
             'totalFlagOfficer' => User::where(
-                'registration_status',
-                '=',
-                'Active'
+              'registration_status',
+              '=',
+              'Active'
             )->where('active', '=', 1)->where(
-                'rank.grade',
-                'like',
-                'F%'
+              'rank.grade',
+              'like',
+              'F%'
             )->count(),
             'totalCivilian'    => User::where(
-                'registration_status',
-                '=',
-                'Active'
+              'registration_status',
+              '=',
+              'Active'
             )->where('active', '=', 1)->where(
-                'rank.grade',
-                'like',
-                'C%'
+              'rank.grade',
+              'like',
+              'C%'
             )->count()
-            ]
+          ]
         );
     }
 
@@ -135,15 +135,15 @@ class UserController extends Controller
           User::where('active', '=', 1)
               ->where('registration_status', '=', 'Active')
               ->where(
-                  'assignment.billet',
-                  '=',
-                  $billet
+                'assignment.billet',
+                '=',
+                $billet
               )
               ->get();
 
         return view(
-            'user.duplicates',
-            ['users' => $users, 'title' => 'Show ' . $billet]
+          'user.duplicates',
+          ['users' => $users, 'title' => 'Show ' . $billet]
         );
     }
 
@@ -165,8 +165,8 @@ class UserController extends Controller
 
         if (Hash::make($in['current_password']) !== $user->getAuthPassword()) {
             return Redirect::route('user.getReset', [$user->id])->with(
-                'message',
-                'Please re-enter your current password'
+              'message',
+              'Please re-enter your current password'
             );
         }
 
@@ -181,8 +181,8 @@ class UserController extends Controller
 
             if ($validator->fails()) {
                 return Redirect::route('user.getReset', [$user->id])->with(
-                    'message',
-                    'The password must be at least 8 characters long'
+                  'message',
+                  'The password must be at least 8 characters long'
                 );
             }
 
@@ -190,12 +190,12 @@ class UserController extends Controller
             $user->password = Hash::make($in['password']);
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
-                'update',
-                'users',
-                (string)$user->_id,
-                'Password Change',
-                'UserController@postReset'
+              (string)Auth::user()->_id,
+              'update',
+              'users',
+              (string)$user->_id,
+              'Password Change',
+              'UserController@postReset'
             );
             $user->save();
 
@@ -221,11 +221,11 @@ class UserController extends Controller
               ->get();
 
         return view(
-            'user.review',
-            [
+          'user.review',
+          [
             'users' => $users,
             'title' => 'Approve Membership Applications',
-            ]
+          ]
         );
     }
 
@@ -313,12 +313,12 @@ class UserController extends Controller
         $user->lastUpdate = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
-            'update',
-            'users',
-            (string)$user->_id,
-            $user->toJson(),
-            'UserController@approveApplication'
+          (string)Auth::user()->_id,
+          'update',
+          'users',
+          (string)$user->_id,
+          $user->toJson(),
+          'UserController@approveApplication'
         );
 
         $user->save();
@@ -330,15 +330,15 @@ class UserController extends Controller
 
         // Send welcome email
         Mail::send(
-            'emails.welcome',
-            ['user' => $user],
-            function ($message) use ($user) {
-                $message->from('membership@trmn.org', 'TRMN Membership');
+          'emails.welcome',
+          ['user' => $user],
+          function ($message) use ($user) {
+              $message->from('membership@trmn.org', 'TRMN Membership');
 
-                $message->to($user->email_address)->bcc($user->co_email);
+              $message->to($user->email_address)->bcc($user->co_email);
 
-                $message->subject('TRMN Membership');
-            }
+              $message->subject('TRMN Membership');
+          }
         );
 
         return Redirect::route('user.review');
@@ -358,12 +358,12 @@ class UserController extends Controller
         $user->lastUpdate = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
-            'update',
-            'users',
-            (string)$user->_id,
-            $user->toJson(),
-            'UserController@denyApplication'
+          (string)Auth::user()->_id,
+          'update',
+          'users',
+          (string)$user->_id,
+          $user->toJson(),
+          'UserController@denyApplication'
         );
 
         $user->save();
@@ -382,8 +382,8 @@ class UserController extends Controller
             return $redirect;
         }
         return view(
-            'user.create',
-            [
+          'user.create',
+          [
             'user'      => new User,
             'countries' => Country::getCountries(),
             'branches'  => Branch::getBranchList(),
@@ -393,7 +393,7 @@ class UserController extends Controller
             'billets'   => ['0' => 'Select a Billet'] + Billet::getBillets(),
             'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
 
-            ]
+          ]
         );
     }
 
@@ -428,8 +428,8 @@ class UserController extends Controller
         $data['rank'] = [
           'grade'        => $data['display_rank'],
           'date_of_rank' => date(
-              'Y-m-d',
-              strtotime($data['dor'])
+            'Y-m-d',
+            strtotime($data['dor'])
           )
         ];
         unset($data['display_rank'], $data['dor']);
@@ -442,8 +442,8 @@ class UserController extends Controller
           'chapter_id'    => $data['primary_assignment'],
           'chapter_name'  => $chapterName,
           'date_assigned' => date(
-              'Y-m-d',
-              strtotime($data['primary_date_assigned'])
+            'Y-m-d',
+            strtotime($data['primary_date_assigned'])
           ),
           'billet'        => $data['primary_billet'],
           'primary'       => true
@@ -459,8 +459,8 @@ class UserController extends Controller
               'chapter_id'    => $data['secondary_assignment'],
               'chapter_name'  => $chapterName,
               'date_assigned' => date(
-                  'Y-m-d',
-                  strtotime($data['secondary_date_assigned'])
+                'Y-m-d',
+                strtotime($data['secondary_date_assigned'])
               ),
               'billet'        => $data['secondary_billet'],
               'secondary'     => true
@@ -519,12 +519,12 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
-            'create',
-            'users',
-            null,
-            json_encode($data),
-            'UserController@store'
+          (string)Auth::user()->_id,
+          'create',
+          'users',
+          null,
+          json_encode($data),
+          'UserController@store'
         );
 
         $user = User::create($data);
@@ -600,8 +600,8 @@ class UserController extends Controller
 
             if ($validator->fails()) {
                 return redirect('register')
-                               ->withErrors($validator)
-                               ->withInput();
+                  ->withErrors($validator)
+                  ->withInput();
             }
 
             // Check Captcha
@@ -615,13 +615,13 @@ class UserController extends Controller
 
                 if ($resp->isSuccess() === false) {
                     return redirect('register')
-                                   ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
-                                   ->withInput();
+                      ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
+                      ->withInput();
                 }
             } else {
                 return redirect('register')
-                               ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
-                               ->withInput();
+                  ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
+                  ->withInput();
             }
         }
 
@@ -697,12 +697,12 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-            'Guest from ' . \Request::getClientIp(),
-            'create',
-            'users',
-            null,
-            json_encode($data),
-            'UserController@apply'
+          'Guest from ' . \Request::getClientIp(),
+          'create',
+          'users',
+          null,
+          json_encode($data),
+          'UserController@apply'
         );
 
         $user = User::create($data);
@@ -736,6 +736,10 @@ class UserController extends Controller
      */
     public function show(User $user, $message = null)
     {
+        if (Auth::check() === false) {
+            return redirect('/login');
+        }
+
         if ($this->isInChainOfCommand($user) === false &&
           Auth::user()->id != $user->id &&
           $this->hasPermissions([
@@ -744,10 +748,10 @@ class UserController extends Controller
           ]) === false
         ) {
             return redirect(URL::previous())
-                           ->with(
-                               'message',
-                               'You do not have permission to view that page'
-                           );
+              ->with(
+                'message',
+                'You do not have permission to view that page'
+              );
         }
 
         $titles[''] = 'Select Peerage Title';
@@ -766,15 +770,15 @@ class UserController extends Controller
         $user->leftRibbons = $user->getRibbons('L');
 
         return view(
-            'user.show',
-            [
+          'user.show',
+          [
             'user'      => $user,
             'countries' => Country::getCountries(),
             'branches'  => Branch::getBranchList(),
             'ptitles'   => $titles,
             'korders'   => $orders,
             'message'   => $message,
-            ]
+          ]
         );
     }
 
@@ -811,21 +815,21 @@ class UserController extends Controller
     {
         if (($this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id) || $this->hasPermissions(
             ['EDIT_MEMBER']
-        ) === true
+          ) === true
         ) {
             $greeting = $user->getGreetingArray();
 
             if (isset($user->rating) === true && empty($user->rating) === false && is_array(
                 $user->rating
-            ) === false
+              ) === false
             ) {
                 $user->rating =
                   [
                     'rate'        => $user->rating,
                     'description' => Rating::where(
-                        'rate_code',
-                        '=',
-                        $user->rating
+                      'rate_code',
+                      '=',
+                      $user->rating
                     )->get()[0]->rate['description']
                   ];
             }
@@ -866,8 +870,8 @@ class UserController extends Controller
             }
 
             return view(
-                'user.edit',
-                [
+              'user.edit',
+              [
                 'user'        => $user,
                 'greeting'    => $greeting,
                 'countries'   => Country::getCountries(),
@@ -875,9 +879,9 @@ class UserController extends Controller
                 'grades'      => Grade::getGradesForBranch($user->branch),
                 'ratings'     => Rating::getRatingsForBranch($user->branch),
                 'chapters'    => array_merge(Chapter::getChapters(
-                    null,
-                    0,
-                    false
+                  null,
+                  0,
+                  false
                 ), Chapter::getHoldingChapters()),
                 'billets'     => ['0' => 'Select a billet'] + Billet::getBillets(),
                 'locations'   => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
@@ -885,14 +889,14 @@ class UserController extends Controller
                                    ->orderBy('name', 'asc')
                                    ->get(),
 
-                ]
+              ]
             );
         } else {
             return redirect(URL::previous())
-                           ->with(
-                               'message',
-                               'You do not have permission to view that page'
-                           );
+              ->with(
+                'message',
+                'You do not have permission to view that page'
+              );
         }
     }
 
@@ -913,15 +917,15 @@ class UserController extends Controller
 
         $validator =
           Validator::make(
-              $data = \Request::all(),
-              User::$updateRules,
-              User::$error_message
+            $data = \Request::all(),
+            User::$updateRules,
+            User::$error_message
           );
 
         if ($validator->fails()) {
             return redirect(URL::previous())
-                           ->withErrors($validator)
-                           ->withInput();
+              ->withErrors($validator)
+              ->withInput();
         }
 
         // Massage the data a little bit.  First, build up the rank array
@@ -948,8 +952,8 @@ class UserController extends Controller
           'chapter_id'    => $data['primary_assignment'],
           'chapter_name'  => $chapterName,
           'date_assigned' => date(
-              'Y-m-d',
-              strtotime($data['primary_date_assigned'])
+            'Y-m-d',
+            strtotime($data['primary_date_assigned'])
           ),
           'billet'        => $data['primary_billet'],
           'primary'       => true
@@ -965,8 +969,8 @@ class UserController extends Controller
               'chapter_id'    => $data['secondary_assignment'],
               'chapter_name'  => $chapterName,
               'date_assigned' => date(
-                  'Y-m-d',
-                  strtotime($data['secondary_date_assigned'])
+                'Y-m-d',
+                strtotime($data['secondary_date_assigned'])
               ),
               'billet'        => $data['secondary_billet'],
               'secondary'     => true
@@ -983,8 +987,8 @@ class UserController extends Controller
               'chapter_id'    => $data['additional_assignment'],
               'chapter_name'  => $chapterName,
               'date_assigned' => date(
-                  'Y-m-d',
-                  strtotime($data['additional_date_assigned'])
+                'Y-m-d',
+                strtotime($data['additional_date_assigned'])
               ),
               'billet'        => $data['additional_billet'],
               'additional'    => true
@@ -1001,8 +1005,8 @@ class UserController extends Controller
               'chapter_id'    => $data['extra_assignment'],
               'chapter_name'  => $chapterName,
               'date_assigned' => date(
-                  'Y-m-d',
-                  strtotime($data['extra_date_assigned'])
+                'Y-m-d',
+                strtotime($data['extra_date_assigned'])
               ),
               'billet'        => $data['extra_billet'],
               'extra'         => true
@@ -1066,12 +1070,12 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
-            'update',
-            'users',
-            (string)$user->_id,
-            json_encode($data),
-            'UserController@update'
+          (string)Auth::user()->_id,
+          'update',
+          'users',
+          (string)$user->_id,
+          json_encode($data),
+          'UserController@update'
         );
 
         $data['awards'] = $user->awards;
@@ -1098,12 +1102,12 @@ class UserController extends Controller
             $user->tos = true;
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
-                'update',
-                'users',
-                (string)$user->_id,
-                $user->toJson(),
-                'UserController@tos'
+              (string)Auth::user()->_id,
+              'update',
+              'users',
+              (string)$user->_id,
+              $user->toJson(),
+              'UserController@tos'
             );
 
             $user->save();
@@ -1125,12 +1129,12 @@ class UserController extends Controller
             $user->osa = date('Y-m-d');
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
-                'update',
-                'users',
-                (string)$user->_id,
-                $user->toJson(),
-                'UserController@osa'
+              (string)Auth::user()->_id,
+              'update',
+              'users',
+              (string)$user->_id,
+              $user->toJson(),
+              'UserController@osa'
             );
 
             $user->save();
@@ -1171,12 +1175,12 @@ class UserController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
-            'hard delete',
-            'users',
-            (string)$user->_id,
-            $user->toJson(),
-            'UserController@destroy'
+          (string)Auth::user()->_id,
+          'hard delete',
+          'users',
+          (string)$user->_id,
+          $user->toJson(),
+          'UserController@destroy'
         );
 
         User::destroy($user->_id);
@@ -1257,7 +1261,7 @@ class UserController extends Controller
                 $kOrder->getClassName($data['class']),
                 0,
                 6
-            ) != 'Knight'
+              ) != 'Knight'
             ) {
                 $peerage['code'] = '';
             }
@@ -1267,9 +1271,10 @@ class UserController extends Controller
             $peerage['lands'] = $data['lands'];
 
             if (\Request::hasFile('arms') === true && \Request::file('arms')
-                                                        ->isValid() === true
+                                                              ->isValid() === true
             ) {
-                $peerage['filename'] = basename(\Request::file('arms')->store('peerage', 'arms'));
+                $peerage['filename'] =
+                  basename(\Request::file('arms')->store('peerage', 'arms'));
             }
         }
 
@@ -1313,12 +1318,12 @@ class UserController extends Controller
         $user->peerages = $currentPeerages;
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
-            'update',
-            'users',
-            (string)$user->_id,
-            $user->toJson(),
-            'UserController@addOrEditPeerage'
+          (string)Auth::user()->_id,
+          'update',
+          'users',
+          (string)$user->_id,
+          $user->toJson(),
+          'UserController@addOrEditPeerage'
         );
 
         $user->save();
@@ -1342,12 +1347,12 @@ class UserController extends Controller
         $user->note = $data['note_text'];
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
-            'update',
-            'users',
-            (string)$user->_id,
-            $user->toJson(),
-            'UserController@addOrEditNote'
+          (string)Auth::user()->_id,
+          'update',
+          'users',
+          (string)$user->_id,
+          $user->toJson(),
+          'UserController@addOrEditNote'
         );
 
         $user->save();
@@ -1383,8 +1388,8 @@ class UserController extends Controller
         Cache::flush();
 
         return redirect(URL::previous())->with(
-            'message',
-            $perm . ' permission has been given to ' . $user->getFullName()
+          'message',
+          $perm . ' permission has been given to ' . $user->getFullName()
         );
     }
 
@@ -1401,8 +1406,8 @@ class UserController extends Controller
         Cache::flush();
 
         return redirect(URL::previous())->with(
-            'message',
-            $perm . ' permission has been removed from ' . $user->getFullName()
+          'message',
+          $perm . ' permission has been removed from ' . $user->getFullName()
         );
     }
 
@@ -1420,12 +1425,12 @@ class UserController extends Controller
         $usersByBranch[$branch] = $users;
 
         return view(
-            'user.byBranch',
-            [
+          'user.byBranch',
+          [
             'users'  => $usersByBranch,
             'title'  => $branch . " Members",
             'branch' => $branch
-            ]
+          ]
         );
     }
 
@@ -1447,7 +1452,8 @@ class UserController extends Controller
             }
         }
 
-        return view('user.rack', ['user' => Auth::user(), 'unitPatchPaths' => $unitPatchPaths]);
+        return view('user.rack',
+          ['user' => Auth::user(), 'unitPatchPaths' => $unitPatchPaths]);
     }
 
     public function saveRibbonRack()
@@ -1458,7 +1464,6 @@ class UserController extends Controller
             return $redirect;
         }
         $data = \Request::all();
-
 
         $groups = array_where($data, function ($value, $key) {
             return substr($key, 0, 5) == 'group';
@@ -1472,13 +1477,15 @@ class UserController extends Controller
 
         $awards = [];
 
-        foreach ($data['ribbon'] as $award) {
-            $awards[$award] =
-              [
-                'count'    => $data[$award . '_quantity'],
-                'location' => Award::where('code', '=', $award)
-                                   ->first()->location
-              ];
+        if (isset($data['ribbon']) === true) {
+            foreach ($data['ribbon'] as $award) {
+                $awards[$award] =
+                  [
+                    'count'    => $data[$award . '_quantity'],
+                    'location' => Award::where('code', '=', $award)
+                                       ->first()->location
+                  ];
+            }
         }
 
         Auth::user()->awards = $awards;

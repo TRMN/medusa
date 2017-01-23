@@ -1507,6 +1507,15 @@ class User extends Eloquent implements AuthenticatableContract
         return $awards;
     }
 
+    public function hasAwards()
+    {
+        if (count($this->awards) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getUnitPatchPath($assignment = 'primary')
     {
 

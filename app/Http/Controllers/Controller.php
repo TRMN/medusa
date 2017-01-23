@@ -18,6 +18,9 @@ class Controller extends BaseController
 
     public function __construct()
     {
+        if (\Auth::check() !== true) {
+            redirect()->action('HomeController@index');
+        }
         View::share('permsObj', $this);
         View::share('user', Auth::user());
     }

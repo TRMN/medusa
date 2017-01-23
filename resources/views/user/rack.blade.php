@@ -177,7 +177,7 @@
                         {!!Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null)!!}
                     </div>
                     <div class="columns small-2 text-center">
-                        <img src="{!!asset('ribbons/' . $ribbon->code . '-1.svg')!!}" alt="{!!$ribbon->name!!}" class="ribbons">
+                        <img src="{!!asset('ribbons/' . $ribbon->code . '-1.svg')!!}" alt="{!!$ribbon->name!!}" class="ribbon">
                     </div>
                     <div class="columns small-4">{!!$ribbon->name!!}</div>
                     <div class="columns small-1 end">
@@ -198,7 +198,7 @@
                                 {!!Form::radio('group' . $index, $group->code, isset($user->awards[$group->code])?true:null)!!}
                             </div>
                             <div class="columns small-2 text-center">
-                                <img src="{!!asset('ribbons/' . $group->code . '-1.svg')!!}" alt="{!!$group->name!!}" class="ribbons">
+                                <img src="{!!asset('ribbons/' . $group->code . '-1.svg')!!}" alt="{!!$group->name!!}" class="ribbon">
                             </div>
                             <div class="columns small-4">{!!$group->name!!}</div>
                             <div class="columns small-1 end">
