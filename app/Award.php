@@ -56,6 +56,11 @@ class Award extends Eloquent
         return self::_getAwards('L');
     }
 
+    public static function getRightRibbons()
+    {
+        return self::_getAwards('R');
+    }
+
     public static function getTopBadges()
     {
         return self::_getAwards('TL');

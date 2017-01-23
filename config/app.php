@@ -170,8 +170,9 @@ return [
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
         'App\Services\MedusaServiceProvider',
-        'App\Providers\OAuthServiceProvider',
+//        'App\Providers\OAuthServiceProvider',
         Collective\Html\HtmlServiceProvider::class,
+//        Laravel\Passport\PassportServiceProvider::class,
 
     ],
 

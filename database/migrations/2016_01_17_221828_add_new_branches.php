@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 class AddNewBranches extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.

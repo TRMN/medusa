@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class FixEmptyAssignments extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class FixEmptyAssignments extends Migration
     {
         $users = User::where('registration_status', '=', 'Pending')->get();
 
-        $hmssGreenwich = Chapter::where('hull_number', '=', 'SS-001')->first();
+        $hmssGreenwich = \App\Chapter::where('hull_number', '=', 'SS-001')->first();
 
         $assignment[] = [
             'chapter_id'    => $hmssGreenwich->id,

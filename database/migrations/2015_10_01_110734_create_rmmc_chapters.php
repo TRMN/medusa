@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateRmmcChapters extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -56,7 +56,7 @@ class CreateRmmcChapters extends Migration
 
         // Assign London Point to the Fussiliers
 
-        $lp = Chapter::where('hull_number', '=', 'RMOP-01')->first();
+        $lp = \App\Chapter::where('hull_number', '=', 'RMOP-01')->first();
 
         $lp->assigned_to = $fussiliers->id;
 
@@ -110,7 +110,7 @@ class CreateRmmcChapters extends Migration
 
         foreach ($mardets as $mardet) {
             // Look up the ship
-            $ship = Chapter::where('chapter_name', '=', 'HMS ' . $mardet[0])->firstOrFail();
+            $ship = \App\Chapter::where('chapter_name', '=', 'HMS ' . $mardet[0])->firstOrFail();
 
             $mardet[1] = date('Y-m-d', strtotime($mardet[1]));
 
@@ -127,7 +127,7 @@ class CreateRmmcChapters extends Migration
 
         // Create the assult shuttle
 
-        $ship = Chapter::where('chapter_name', '=', 'HMS Invictus')->firstOrFail();
+        $ship = \App\Chapter::where('chapter_name', '=', 'HMS Invictus')->firstOrFail();
 
         $this->createChapter('AS Invictus-01', 'shuttle', '', 'RMMC', $ship->id, true, '2014-08-10');
     }
@@ -151,7 +151,7 @@ class CreateRmmcChapters extends Migration
         $joinable = true,
         $commisionDate = null
     ) {
-        $query = \Chapter::where('chapter_name', '=', $name)->first();
+        $query = \App\Chapter::where('chapter_name', '=', $name)->first();
 
         if (empty($query->id) === true) {
             $record =
@@ -179,7 +179,7 @@ class CreateRmmcChapters extends Migration
                 json_encode($record),
                 'create rmmc chapters'
             );
-            return \Chapter::create($record);
+            return \App\Chapter::create($record);
         } else {
             echo "Skipping " . $name . ", unit already exists.\n";
             return $query;

@@ -12,6 +12,10 @@ class Divorcestripes extends Migration
      */
     public function up()
     {
+        // Clear out the bad entries
+        \App\Award::whereIn('code', ['MT', 'WS', 'MID'])->delete();
+
+        // Now add the good ones
         $awards = json_decode('[
     {
         "display_order":  26,
@@ -23,7 +27,7 @@ class Divorcestripes extends Migration
         "multiple": true
     },
     {
-        "display_order":  30,
+        "display_order":  35,
         "name": "Wound Stripe",
         "code": "WS",
         "post_nominal": "",
@@ -43,7 +47,7 @@ class Divorcestripes extends Migration
     ]', true);
 
         foreach ($awards as $award) {
-            Award::create($award);
+            \App\Award::create($award);
         }
     }
 
@@ -54,6 +58,6 @@ class Divorcestripes extends Migration
      */
     public function down()
     {
-        //
+        \App\Award::whereIn('code', ['MT', 'WS', 'MID'])->delete();
     }
 }

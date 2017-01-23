@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddUploadExams extends Migration
 {
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.

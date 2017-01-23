@@ -778,6 +778,28 @@ class UserController extends Controller
         );
     }
 
+    public function fullRibbonDisplay(User $user)
+    {
+        if ($this->isInChainOfCommand($user) === false &&
+          Auth::user()->id != $user->id &&
+          $this->hasPermissions([
+            'VIEW_MEMBERS',
+            'VIEW_' . $user->branch
+          ]) === false
+        ) {
+            return redirect(URL::previous())
+              ->with(
+                'message',
+                'You do not have permission to view that page'
+              );
+        }
+
+        $user->leftRibbonCount = count($user->getRibbons('L'));
+        $user->leftRibbons = $user->getRibbons('L');
+
+        return view('user.bib', ['user' => $user,]);
+    }
+
     /**
      * Show the form for editing the specified user.
      *

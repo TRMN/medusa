@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 class NewChapterTypes extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -21,13 +21,13 @@ class NewChapterTypes extends Migration
         // Update Pinnace's and LAC's to the new types
 
         $small_craft =
-          \Chapter::where('chapter_name', 'like', 'Pinnace%')->get();
+          \App\Chapter::where('chapter_name', 'like', 'Pinnace%')->get();
 
         foreach ($small_craft as $pinnace) {
             $this->updateChapter($pinnace, 'small_craft');
         }
 
-        $lacs = \Chapter::where('chapter_name', 'like', 'HMLAC%')
+        $lacs = \App\Chapter::where('chapter_name', 'like', 'HMLAC%')
               ->orWhere('chapter_name', 'like', 'GSNLAC%')
               ->get();
 
@@ -43,10 +43,10 @@ class NewChapterTypes extends Migration
      */
     public function down()
     {
-        //
+        \App\Type::whereIn('chapter_type', ['small_craft', 'lac'])->delete();
     }
 
-    function updateChapter(Chapter $chapter, $type)
+    function updateChapter(App\Chapter $chapter, $type)
     {
         $chapter->chapter_type = $type;
 
@@ -78,7 +78,7 @@ class NewChapterTypes extends Migration
             'new_chapter_types'
         );
 
-        \Type::create([
+        \App\Type::create([
           'chapter_type'        => $type,
           'chapter_description' => $description,
           'can_have'            => $can_have

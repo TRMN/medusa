@@ -56,6 +56,7 @@ $(document).ready(function ($) {
 
     $(document).tooltip({
         items: "[data-src], [title]",
+        position: {my: "left bottom", at: 'left top'},
         content: function () {
             var element = $(this);
             if (element.is("[data-src")) {

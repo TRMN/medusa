@@ -206,16 +206,17 @@
 
                 <div class="Incised901Light seventy-five">Assigned: {!!$user->getPrimaryDateAssigned()!!}</div>
                 @include('partials.leftribbons', ['user' => $user])
+
                 @if($user->leftRibbonCount)
-                    <div class="sbAccordian text-left">
-                        <h5>Embeding Instructions</h5>
-                        <div class="text-left">
+
+                        <a data-dropdown="embeding" data-options="align:top">Embeding Instructions</a>
+                        <div id="embeding" data-dropdown-content class="f-dropdown large content text-left" tabindex="-1">
                             To embed your ribbon rack in other websites, use the following code:<br/>
 
                             &lt;iframe src="{!!url('api/ribbonrack/' . $user->member_id)!!}"&gt;&lt;/iframe&gt;
 
                         </div>
-                    </div>
+
                 @endif
             </div>
         </li>

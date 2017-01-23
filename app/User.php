@@ -263,7 +263,7 @@ class User extends Eloquent implements AuthenticatableContract
         }
     }
 
-    public function getPeerages()
+    public function getPeerages($detail = false)
     {
         $landed = [];
         $knighthoods = [];
@@ -279,6 +279,10 @@ class User extends Eloquent implements AuthenticatableContract
 
             ksort($landed);
             ksort($knighthoods);
+
+            if ($detail === true) {
+                return ['landed' => $landed, 'knighhoods' => $knighthoods];
+            }
 
             return array_merge($landed, $knighthoods);
         }

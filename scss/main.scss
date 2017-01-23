@@ -132,24 +132,84 @@ $medusa-yellow: #ffee00;
   text-decoration: underline;
 }
 
-ø
+.plastron {
+  width: 750px !important;
+  background: black;
+}
+
 .ribbons {
   padding-top: 5px;
   padding-bottom: 10px;
   text-align: center !important;
+  width: 315px;
+  float: left;
 }
 
 .ribbons img {
   padding-bottom: 1px;
 }
 
+.ribbon {
+  width: 105px;
+  //height: 27px;
+}
+
+.citation {
+  width: 105px;
+  margin-right: -6px;
+}
+
 div.stripes {
   padding-top: 20px !important;
-  padding-bottom: 160px !important;
+  padding-bottom: 200px !important;
   border: 1px solid white;
   border-top-left-radius: 125px;
   border-top-right-radius: 125px;
   margin-top: 20px;
+  width: 315px;
+  float: left;
+}
+
+div.unit {
+  border: 1px solid white;
+  border-top-left-radius: 125px;
+  border-top-right-radius: 125px;
+  margin-top: 10px;
+  width: 315px;
+  float: left;
+}
+
+div.name-badge {
+  background: #edde9b;
+  border: #a08242 2px solid;
+  width: 200px;
+  height: 50px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin: 0 auto;
+  font-family: Optima, Arial, Helvetica, Verdana, Sans Serif;
+  font-weight: bold;
+  font-size: 24px;
+  display: table-cell;
+  color: #000000;
+  line-height: 1;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+div.name-badge-wrapper {
+  display: table;
+  margin: 0 auto;
+  float: left;
+  width: 316px;
+  padding-bottom: 10px;
+}
+
+div.name-badge-spacer {
+  display: table-cell;
+  width: 58px !important;
+  height: 50px;
 }
 
 .ESWP, .OSWP {
@@ -157,8 +217,7 @@ div.stripes {
 }
 
 .MT, .MID, .WS {
-  width: 262px;
-  margin-bottom: -150px;
+  margin-bottom: -170px;
 }
 
 .HS {
@@ -198,12 +257,12 @@ div.stripes {
 }
 
 .ribbon-row {
-  height: 53px;
+  height: 54px;
   padding-left: 20px;
 }
 
 .ribbon-group-row {
-  height: 53px;
+  height: 54px;
   padding-top: 5px;
   padding-left: 10px;
   padding-bottom: 5px;
@@ -777,4 +836,9 @@ tr:nth-of-type(even) {
 
 .zebra-odd:nth-of-type(odd) {
   background: #4c4c4c;
+}
+
+.f-dropdown.content {
+  background: #000 !important;
+  word-wrap: break-word;
 }

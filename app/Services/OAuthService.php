@@ -50,8 +50,8 @@ class OAuthService
               config('database.connections.mongodb.options', [])
           );
 
-//        $_store = new Mongo($this->mongo->{$_dbName});
-        $_store = $this->mongo->selectDatabase($_dbName);
+        $_store = new Mongo($this->mongo->selectDatabase($_dbName));
+
         $this->server = new Server(
             $_store,
             [

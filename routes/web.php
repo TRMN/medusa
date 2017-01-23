@@ -23,82 +23,82 @@ View::share('authUser', $authUser);
 Route::get('/osa', ['as' => 'osa', 'uses' => 'HomeController@osa']);
 
 // OAuth2 routes
-Route::get(
-  'oauth/authorize',
-  function () {
-      return app('oauth2')->authorize();
-  }
-);
-
-Route::post(
-  'oauth/authorize',
-  function () {
-      return app('oauth2')->authorizePost();
-  }
-);
-
-Route::post(
-  'oauth/token',
-  function () {
-      return app('oauth2')->token();
-  }
-);
-
-Route::post(
-  'oauth/updateuser',
-  function () {
-      return app('oauth2')->updateUser();
-  }
-);
-
-Route::get(
-  'oauth/profile',
-  function () {
-      return app('oauth2')->profile();
-  }
-);
-
-Route::get(
-  'oauth/user',
-  function () {
-      return app('oauth2')->user();
-  }
-);
-
-Route::get(
-  'oauth/lastupdate',
-  function () {
-      return app('oauth2')->lastUpdated();
-  }
-);
-
-Route::get(
-  'oauth/tistig',
-  function () {
-      return app('oauth2')->getTisTig();
-  }
-);
-
-Route::get(
-  'oauth/idcard',
-  function () {
-      return app('oauth2')->getIdCard();
-  }
-);
-
-Route::get(
-  'oauth/events',
-  function () {
-      return app('oauth2')->getScheduledEvents();
-  }
-);
-
-Route::get(
-  'oauth/checkin',
-  function () {
-      return app('oauth2')->checkMemberIn();
-  }
-);
+//Route::get(
+//  'oauth/authorize',
+//  function () {
+//      return app('oauth2')->authorize();
+//  }
+//);
+//
+//Route::post(
+//  'oauth/authorize',
+//  function () {
+//      return app('oauth2')->authorizePost();
+//  }
+//);
+//
+//Route::post(
+//  'oauth/token',
+//  function () {
+//      return app('oauth2')->token();
+//  }
+//);
+//
+//Route::post(
+//  'oauth/updateuser',
+//  function () {
+//      return app('oauth2')->updateUser();
+//  }
+//);
+//
+//Route::get(
+//  'oauth/profile',
+//  function () {
+//      return app('oauth2')->profile();
+//  }
+//);
+//
+//Route::get(
+//  'oauth/user',
+//  function () {
+//      return app('oauth2')->user();
+//  }
+//);
+//
+//Route::get(
+//  'oauth/lastupdate',
+//  function () {
+//      return app('oauth2')->lastUpdated();
+//  }
+//);
+//
+//Route::get(
+//  'oauth/tistig',
+//  function () {
+//      return app('oauth2')->getTisTig();
+//  }
+//);
+//
+//Route::get(
+//  'oauth/idcard',
+//  function () {
+//      return app('oauth2')->getIdCard();
+//  }
+//);
+//
+//Route::get(
+//  'oauth/events',
+//  function () {
+//      return app('oauth2')->getScheduledEvents();
+//  }
+//);
+//
+//Route::get(
+//  'oauth/checkin',
+//  function () {
+//      return app('oauth2')->checkMemberIn();
+//  }
+//);
 
 Route::model('oauthclient', 'App\OAuthClient');
 Route::resource('oauthclient', 'OAuthController', ['middleware' => 'auth']);
@@ -200,6 +200,12 @@ Route::get('/user/rack', [
 Route::post('/user/rack/save', [
   'as'         => 'saverack',
   'uses'       => 'UserController@saveRibbonRack',
+  'middleware' => 'auth'
+]);
+
+Route::get('/user/{user}/ribbons', [
+  'as' => 'userRibbons',
+  'uses' => 'UserController@fullRibbonDisplay',
   'middleware' => 'auth'
 ]);
 

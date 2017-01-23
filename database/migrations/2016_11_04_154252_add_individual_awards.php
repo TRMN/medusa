@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class AddIndividualAwards extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -695,7 +695,7 @@ class AddIndividualAwards extends Migration
 ]', true);
 
         foreach ($awards as $award) {
-            Award::create($award);
+            \App\Award::create($award);
         }
     }
 
@@ -706,6 +706,6 @@ class AddIndividualAwards extends Migration
      */
     public function down()
     {
-//		Award::all()->destroy();
+//		\App\Award::all()->destroy();
     }
 }

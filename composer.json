@@ -56,7 +56,8 @@
     "bshaffer/oauth2-server-httpfoundation-bridge": "^1.1",
     "league/csv": "^8.1",
     "laravelcollective/html": "5.3.*",
-    "themsaid/laravel-routes-publisher": "^1.0"
+    "themsaid/laravel-routes-publisher": "^1.0",
+    "laravel/passport": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
