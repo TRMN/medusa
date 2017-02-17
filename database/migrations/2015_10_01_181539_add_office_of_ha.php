@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class AddOfficeOfHa extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -37,7 +37,7 @@ class AddOfficeOfHa extends Migration
         $joinable = true,
         $commisionDate = null
     ) {
-        $query = \Chapter::where('chapter_name', '=', $name)->first();
+        $query = \App\Chapter::where('chapter_name', '=', $name)->first();
 
         if (empty($query->id) === true) {
             $record =
@@ -65,7 +65,7 @@ class AddOfficeOfHa extends Migration
                 json_encode($record),
                 'create rmmc chapters'
             );
-            return \Chapter::create($record);
+            return \App\Chapter::create($record);
         } else {
             echo "Skipping " . $name . ", unit already exists.\n";
             return $query;

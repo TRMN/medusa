@@ -40,8 +40,17 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        $this->info('Attemping to retrieve a user');
-        var_dump(User::where('member_id', '=', 'RMN-1094-12')->first());
+        $exams = \App\Exam::where('member_id', '=', 'RMN-1094-12')->first();
+                $list = array_where(
+                    $exams->exams,
+                    function ($value, $key) {
+                        if (preg_match( '/^SIA-RMN-.*/', $value) === 1) {
+                            return true;
+                        }
+                    }
+                );
+
+                print_r($list);
     }
 
     /**

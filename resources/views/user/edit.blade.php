@@ -116,7 +116,7 @@
         @if($permsObj->hasPermissions(['EDIT_USER']) === true)
             <div class="row">
                 <div class="end small-6 columns ninety Incised901Light">
-                    {!!Form::label('registration_status', 'Registration Status', ['class' => 'my'])!!} {!!Form::select('registration_status', RegStatus::getRegStatuses(), $user->registration_status) !!}
+                    {!!Form::label('registration_status', 'Registration Status', ['class' => 'my'])!!} {!!Form::select('registration_status', App\RegStatus::getRegStatuses(), $user->registration_status) !!}
                 </div>
             </div>
         @else
@@ -422,7 +422,7 @@
                 @foreach(explode(',', $user->duty_roster) as $roster)
                     self.addOption({
                     data: '{!!$roster!!}',
-                    value: '{!!Chapter::find($roster)->chapter_name!!}'
+                    value: '{!!\App\Chapter::find($roster)->chapter_name!!}'
                 });
                 self.addItem('{!!$roster!!}');
                 @endforeach

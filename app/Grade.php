@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
 /**
  * Grade Model
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 
 
-class Grade extends Model
+class Grade extends Eloquent
 {
 
     protected $fillable = [ 'grade', 'rank' ];

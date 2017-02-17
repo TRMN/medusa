@@ -8,12 +8,12 @@ trait MedusaAudit
 {
 
     /**
-     * @param $memberId RMN number of the person making the change
-     * @param $action What Action did they take (Update, Create, etc)
-     * @param $collection What collection was this against
-     * @param $docId MongoID of the document in the collection being changed.  Will be blank for create
-     * @param $values JSON data being inserted or updated
-     * @param $from_where What part of the app did the change
+     * @param $memberId string RMN number of the person making the change
+     * @param $action string What Action did they take (Update, Create, etc)
+     * @param $collection string What collection was this against
+     * @param $docId string MongoID of the document in the collection being changed.  Will be blank for create
+     * @param $values string JSON data being inserted or updated
+     * @param $from_where string What part of the app did the change
      *
      * @return bool
      */

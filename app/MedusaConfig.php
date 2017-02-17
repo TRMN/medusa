@@ -2,10 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Log;
 
-class MedusaConfig extends Model
+class MedusaConfig extends Eloquent
 {
     protected $fillable = [
       'key',

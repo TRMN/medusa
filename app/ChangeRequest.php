@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class ChangeRequest extends Model
+class ChangeRequest extends Eloquent
 {
 
     use \Jenssegers\Mongodb\Eloquent\SoftDeletes;

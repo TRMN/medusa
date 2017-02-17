@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
 /**
  * Rating Model
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 
 
-class Rating extends Model
+class Rating extends Eloquent
 {
 
     protected $fillable = [ 'rate_code', 'rate' ];

@@ -10,11 +10,11 @@
             <a href="{!! route('chapter.index') !!}">Ship/Unit List</a><br/>
             <a href="{!!route('user.getReset', [Auth::user()->id])!!}">Change Password</a>
         </div>
-        @if(!is_null(MedusaConfig::get('show.events')))
+        @if(!is_null(\App\MedusaConfig::get('show.events')))
             <h3 class="nav-header lnav">Events</h3>
             <div class="rnav">
                 <a href="{!!route('events.create')!!}">Schedule an Event</a>
-                @if (count(Events::where('requestor', '=', Auth::user()->id)->get()))
+                @if (count(\App\Events::where('requestor', '=', Auth::user()->id)->get()))
                     <br/><a href="{!!route('events.index')!!}">View Scheduled Events</a>
                 @endif
             </div>

@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class Type extends Model
+class Type extends Eloquent
 {
 
     protected $fillable = [ 'chapter_type', 'chapter_description', 'can_have'];

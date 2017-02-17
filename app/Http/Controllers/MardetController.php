@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Chapter;
 use App\Echelons\MedusaEchelons;
 
+
 class MardetController extends Controller
 {
 
@@ -37,6 +38,6 @@ class MardetController extends Controller
 
     private function getBranches()
     {
-        return Form::hidden('branch', $this->branch);
+        return \Form::hidden('branch', $this->branch);
     }
 }

@@ -7,7 +7,7 @@
 @section('content')
     @include('partials.tos')
     {!! Form::open(['route' => 'tos', 'method' => 'post']) !!}
-    {!! Form::hidden('id', $user->id) !!}
+    {!! Form::hidden('id', Auth::user()->id) !!}
     {!! Form::hidden('tos',1) !!}
     <div>By clicking "I Agree", you agree that you have read and understand the Terms of Service</div>
     <div>

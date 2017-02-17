@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach(Billet::all() as $billet)
+        @foreach(\App\Billet::all() as $billet)
             <?php
             $count = $billet->getAssignedCount();
             ?>

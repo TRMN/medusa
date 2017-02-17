@@ -15,7 +15,7 @@
             {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name'])!!}
         </div>
     </div>
-    @if(!is_null($user))
+    @if(!empty($user->first_name))
         <div id="member">
             @include('partials.greeting', ['user' => $user])
             @include('partials.assignments', ['user' => $user])

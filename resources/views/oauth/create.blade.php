@@ -15,17 +15,17 @@
     </div>
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
-            {!! Form::label('client_secret', 'Client Key/Secret') !!} {!! Form::text('client_secret') !!}
+            {!! Form::label('secret', 'Client Key/Secret') !!} {!! Form::text('secret') !!}
         </div>
     </div>
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
-            {!! Form::label('client_name', 'Client Name') !!} {!! Form::text('client_name') !!}
+            {!! Form::label('name', 'Client Name') !!} {!! Form::text('name') !!}
         </div>
     </div>
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
-            {!! Form::label('redirect_url', 'Redirect URL') !!} {!! Form::text('redirect_url') !!}
+            {!! Form::label('redirect', 'Redirect URL') !!} {!! Form::text('redirect') !!}
         </div>
     </div>
     <div class="row">

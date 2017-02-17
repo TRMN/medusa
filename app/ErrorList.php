@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class ErrorList extends Model
+class ErrorList extends Eloquent
 {
     protected $fillable = [ 'severity', 'source', 'msg' ];
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateRmmcEchelonTypes extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -29,7 +29,7 @@ class CreateRmmcEchelonTypes extends Migration
 
         // Remove MARDET type
 
-        $mardet = \Type::where('chapter_type', '=', 'mardet')->first();
+        $mardet = \App\Type::where('chapter_type', '=', 'mardet')->first();
 
         if (empty($mardet->id) === false) {
                    $this->writeAuditTrail(
@@ -67,6 +67,6 @@ class CreateRmmcEchelonTypes extends Migration
             'create_rmmc_echelon_types'
         );
 
-        \Type::create(['chapter_type' => $type, 'chapter_description' => $description, 'can_have' => $can_have]);
+        \App\Type::create(['chapter_type' => $type, 'chapter_description' => $description, 'can_have' => $can_have]);
     }
 }

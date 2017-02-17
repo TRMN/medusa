@@ -18,8 +18,7 @@
         </div>
         <div class="row">
             <div class="small-6 small-centered columns">
-                <a href="{!! action('RemindersController@getRemind') !!}" class="right"><p
-                            style="font-style: italic">Forgot your password?</p></a>
+
             </div>
         </div>
 

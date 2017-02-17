@@ -66,7 +66,7 @@ class AnyUnitController extends Controller
     {
         return '<div class="row">
     <div class="end small-6 columns ninety Incised901Light end">' .
-        Form::label('branch', "Branch") . ' ' . Form::select('branch', Branch::getBranchList()) . '
+        \Form::label('branch', "Branch") . ' ' . \Form::select('branch', Branch::getBranchList()) . '
     </div>
 </div>';
     }

@@ -25,7 +25,7 @@ class Unconquered extends Migration
     ]', true);
 
         foreach ($awards as $award) {
-            Award::create($award);
+            \App\Award::create($award);
         }
     }
 
@@ -36,6 +36,6 @@ class Unconquered extends Migration
      */
     public function down()
     {
-        //
+        \App\Award::whereIn('code', ['UNC'])->delete();
     }
 }

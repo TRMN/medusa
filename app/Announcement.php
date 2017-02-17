@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class Announcement extends Model
+class Announcement extends Eloquent
 {
 
     public $fillable = [

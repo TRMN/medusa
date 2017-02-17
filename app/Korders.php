@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class Korders extends Model
+class Korders extends Eloquent
 {
     protected $fillable = ['order', 'filename', 'classes'];
 

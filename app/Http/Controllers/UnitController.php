@@ -37,6 +37,6 @@ class UnitController extends Controller
 
     private function getBranches()
     {
-        return Form::hidden('branch', $this->branch);
+        return \Form::hidden('branch', $this->branch);
     }
 }

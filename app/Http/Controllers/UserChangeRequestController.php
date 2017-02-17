@@ -32,7 +32,7 @@ class UserChangeRequestController extends Controller
      *
      * @return Response
      */
-    public function create(User $user)
+    public function create(\App\User $user)
     {
         return view(
             "user.requests.index",

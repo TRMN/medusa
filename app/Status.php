@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class Status extends Model
+class Status extends Eloquent
 {
     protected $fillable = [
         'status',

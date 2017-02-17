@@ -3,7 +3,7 @@
         <a href="{!!route('chapter.show',$user->getPrimaryAssignmentId())!!}">
             {!!$user->getPrimaryAssignmentName()!!}
             <?php
-            $chapterType = Chapter::getChapterType($user->getPrimaryAssignmentId());
+            $chapterType = \App\Chapter::getChapterType($user->getPrimaryAssignmentId());
             ?>
             @if($chapterType == "ship" || $chapterType == "station")
                 {!!$user->getPrimaryAssignmentDesignation()!!}

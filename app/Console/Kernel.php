@@ -16,7 +16,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\CreateEchelons::class,
         \App\Console\Commands\ImportGrades::class,
         \App\Console\Commands\AddPermission::class,
-        \App\Console\Commands\ViewsCommand::class,
         \App\Console\Commands\ImportChapters::class,
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\ChangePassword::class,
@@ -37,5 +36,14 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')
                  ->hourly();
+    }
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        require base_path('routes/console.php');
     }
 }

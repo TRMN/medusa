@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class AddSMCPON extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class AddSMCPON extends Migration
      */
     public function up()
     {
-        $firstSL = Chapter::where('chapter_name', '=', 'Office of the First Space Lord')->first();
+        $firstSL = \App\Chapter::where('chapter_name', '=', 'Office of the First Space Lord')->first();
 
         $this->createChapter('Office of the Senior Master Chief Petty Officer of the Navy', 'bureau', '', 'RMN', $firstSL->id, false);
     }
@@ -39,7 +39,7 @@ class AddSMCPON extends Migration
         $joinable = true,
         $commisionDate = null
     ) {
-        $query = \Chapter::where('chapter_name', '=', $name)->first();
+        $query = \App\Chapter::where('chapter_name', '=', $name)->first();
 
         if (empty($query->id) === true) {
             $record =
@@ -67,7 +67,7 @@ class AddSMCPON extends Migration
                 json_encode($record),
                 'create rmmc chapters'
             );
-            return \Chapter::create($record);
+            return \App\Chapter::create($record);
         } else {
             echo "Skipping " . $name . ", unit already exists.\n";
             return $query;

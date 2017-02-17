@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+//use Moloquent\Eloquent\Model as Eloquent;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class Award extends Model
+class Award extends Eloquent
 {
     protected $fillable = [
       'display_order',
@@ -22,8 +23,8 @@ class Award extends Model
         $awards = [];
 
         foreach (self::where('location', '=', $location)
-                      ->orderBy('display_order')
-                      ->get() as $ribbon) {
+                     ->orderBy('display_order')
+                     ->get() as $ribbon) {
             $awards[$ribbon->code] = $ribbon;
         }
 
@@ -36,13 +37,24 @@ class Award extends Model
                 } else {
                     // Only one of these ribbons are allowed
                     $tmp = [$ribbon];
+                    $multiple = false;
+
                     foreach (explode(',', $ribbon->replaces) as $item) {
                         $tmp[] = $awards[$item];
+
+                        if ($awards[$item]->multiple === true) {
+                            $multiple = true;
+                        }
+
                         unset($awards[$item]);
                     }
-                    $ribbons[] = ['group' => [
-                      'label' => $ribbon->group_label,
-                      'awards' => $tmp]
+
+                    $ribbons[] = [
+                      'group' => [
+                        'label'  => $ribbon->group_label,
+                        'awards' => $tmp,
+                        'multiple' => $multiple,
+                      ]
                     ];
                 }
             }
@@ -54,6 +66,11 @@ class Award extends Model
     public static function getLeftRibbons()
     {
         return self::_getAwards('L');
+    }
+
+    public static function getRightRibbons()
+    {
+        return self::_getAwards('R');
     }
 
     public static function getTopBadges()
@@ -78,6 +95,8 @@ class Award extends Model
 
     public static function getAwardByCode($code)
     {
-        return self::where('code', '=', $code)->orderBy('display_order')->first();
+        return self::where('code', '=', $code)
+                   ->orderBy('display_order')
+                   ->first();
     }
 }

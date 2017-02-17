@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 class NormalizeEmail extends Migration
 {
 
-    use \Medusa\Audit\MedusaAudit;
+    use \App\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class NormalizeEmail extends Migration
      */
     public function up()
     {
-        $users = User::all();
+        $users = \App\User::all();
 
         foreach ($users as $user) {
             $user->email_address = strtolower($user->email_address);

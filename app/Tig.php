@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class Tig extends Model
+class Tig extends Eloquent
 {
 
     protected $collection = "tig";

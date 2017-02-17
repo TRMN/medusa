@@ -2,16 +2,17 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 use Webpatser\Countries\Countries;
 
-class Country extends Model
+class Country extends Eloquent
 {
     protected $fillable = [];
 
     public static function getCountries()
     {
-        $results = Countries::getList();
+        $contries = new Countries();
+        $results = $contries->getList();
         $countries = [];
 
         foreach ($results as $country) {

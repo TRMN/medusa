@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Enums\MedusaDefaults;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Moloquent\Eloquent\Model as Eloquent;
+use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Eloquent implements AuthenticatableContract
 {
-    use \App\Audit\MedusaAudit;
-    use \App\Permissions\MedusaPermissions;
+    use Notifiable, \App\Audit\MedusaAudit, \App\Permissions\MedusaPermissions, Authenticatable, HasApiTokens;
 
     public static $rules = [
         'first_name' => 'required|min:2',
@@ -257,7 +261,7 @@ class User extends Authenticatable
         }
     }
 
-    public function getPeerages()
+    public function getPeerages($detail = false)
     {
         $landed = [];
         $knighthoods = [];
@@ -273,6 +277,10 @@ class User extends Authenticatable
 
             ksort($landed);
             ksort($knighthoods);
+
+            if ($detail === true) {
+                return ['landed' => $landed, 'knighhoods' => $knighthoods];
+            }
 
             return array_merge($landed, $knighthoods);
         }
@@ -592,7 +600,7 @@ class User extends Authenticatable
                 // filter by branch
                 $list = array_where(
                     $exams->exams,
-                    function ($key, $value) use ($pattern) {
+                    function ($value, $key) use ($pattern) {
                         if (preg_match($pattern, $key) === 1) {
                             return true;
                         }
@@ -604,7 +612,7 @@ class User extends Authenticatable
                 // filter by date
                 $list = array_where(
                     $list,
-                    function ($key, $value) use ($after) {
+                    function ($value, $key) use ($after) {
                         if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime(
                             '+2 month',
                             $after
@@ -620,7 +628,7 @@ class User extends Authenticatable
                 // Filter by date entered
                 $list = array_where(
                     $list,
-                    function ($key, $value) use ($since) {
+                    function ($value, $key) use ($since) {
                         if (empty($value['date_entered']) === true) {
                             return false;
                         }
@@ -710,7 +718,7 @@ class User extends Authenticatable
     {
         $list = array_where(
             $exams,
-            function ($key, $value) use ($search) {
+            function ($value, $key) use ($search) {
                 if (preg_match($search, $key) === 1) {
                     return true;
                 }
@@ -787,7 +795,7 @@ class User extends Authenticatable
 
         $list = array_where(
             $exams,
-            function ($key, $value) use ($after) {
+            function ($value, $key) use ($after) {
                 if (intval($value['score']) > 70 || strtoupper($value['score'] == 'PASS')) {
                     return $value;
                 }
@@ -922,7 +930,7 @@ class User extends Authenticatable
     {
         $this->permissions = array_where(
             $this->permissions,
-            function ($key, $value) use ($perm) {
+            function ($value, $key) use ($perm) {
                 return $value != $perm;
             }
         );
@@ -954,7 +962,7 @@ class User extends Authenticatable
     {
         $peerages = array_where(
             $this->peerages,
-            function ($key, $value) use ($peerageId) {
+            function ($value, $key) use ($peerageId) {
                 if ($value['peerage_id'] != $peerageId) {
                     return true;
                 }
@@ -1384,7 +1392,7 @@ class User extends Authenticatable
             }
         }
 
-        if (is_a($event, 'Events') === false) {
+        if (is_a($event, 'App\Events') === false) {
             // Not the correct object, return an error
             $this->setTimeZone($currentTz);
             return ['error' => 'Invalid Event object'];
@@ -1497,6 +1505,15 @@ class User extends Authenticatable
         return $awards;
     }
 
+    public function hasAwards()
+    {
+        if (count($this->awards) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getUnitPatchPath($assignment = 'primary')
     {
 
@@ -1553,5 +1570,10 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    public function findForPassport($username)
+    {
+        return self::where('email_address', '=', $username)->first();
     }
 }

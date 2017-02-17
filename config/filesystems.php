@@ -54,6 +54,12 @@ return [
             'visibility' => 'public',
         ],
 
+        'arms' => [
+            'driver' => 'local',
+            'root' => public_path() . '/arms',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => 'your-key',

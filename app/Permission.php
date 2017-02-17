@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Moloquent\Eloquent\Model as Eloquent;
 
-class Permission extends Model
+class Permission extends Eloquent
 {
     protected $fillable = ['name', 'description'];
 }
