@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'log' => 'daily',
+    'log' => 'single',
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
@@ -161,9 +161,12 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         'App\Services\MedusaHasherServiceProvider',
-        'Jenssegers\Mongodb\MongodbServiceProvider',
-        'Jenssegers\Mongodb\Auth\PasswordResetServiceProvider',
-         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+//        'Jenssegers\Mongodb\MongodbServiceProvider',
+//        'Jenssegers\Mongodb\Auth\PasswordResetServiceProvider',
+        Moloquent\MongodbServiceProvider::class,
+        Moloquent\Auth\PasswordResetServiceProvider::class,
+        Moloquent\Passport\PassportServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         'Webpatser\Countries\CountriesServiceProvider',
         //        'mnshankar\CSV\CSVServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
@@ -172,8 +175,8 @@ return [
         'App\Services\MedusaServiceProvider',
 //        'App\Providers\OAuthServiceProvider',
         Collective\Html\HtmlServiceProvider::class,
-//        Laravel\Passport\PassportServiceProvider::class,
-
+        Laravel\Passport\PassportServiceProvider::class,
+        App\Providers\PassportServiceProvider::class,
     ],
 
     /*
@@ -220,8 +223,8 @@ return [
       'URL'          => Illuminate\Support\Facades\URL::class,
       'Validator'    => Illuminate\Support\Facades\Validator::class,
       'View'         => Illuminate\Support\Facades\View::class,
-
-      'Moloquent' => 'Jenssegers\Mongodb\Model',
+      'Moloquent'       => 'Moloquent\Eloquent\Model',
+//      'Moloquent' => 'Jenssegers\Mongodb\Model',
       'Countries' => 'Webpatser\Countries\CountriesFacade',
       'CSV'       => 'mnshankar\CSV\CSVFacade',
       'Excel'     => 'Maatwebsite\Excel\Facades\Excel',

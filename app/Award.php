@@ -2,7 +2,8 @@
 
 namespace App;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+//use Moloquent\Eloquent\Model as Eloquent;
+use Moloquent\Eloquent\Model as Eloquent;
 
 class Award extends Eloquent
 {
@@ -22,8 +23,8 @@ class Award extends Eloquent
         $awards = [];
 
         foreach (self::where('location', '=', $location)
-                      ->orderBy('display_order')
-                      ->get() as $ribbon) {
+                     ->orderBy('display_order')
+                     ->get() as $ribbon) {
             $awards[$ribbon->code] = $ribbon;
         }
 
@@ -36,13 +37,24 @@ class Award extends Eloquent
                 } else {
                     // Only one of these ribbons are allowed
                     $tmp = [$ribbon];
+                    $multiple = false;
+
                     foreach (explode(',', $ribbon->replaces) as $item) {
                         $tmp[] = $awards[$item];
+
+                        if ($awards[$item]->multiple === true) {
+                            $multiple = true;
+                        }
+
                         unset($awards[$item]);
                     }
-                    $ribbons[] = ['group' => [
-                      'label' => $ribbon->group_label,
-                      'awards' => $tmp]
+
+                    $ribbons[] = [
+                      'group' => [
+                        'label'  => $ribbon->group_label,
+                        'awards' => $tmp,
+                        'multiple' => $multiple,
+                      ]
                     ];
                 }
             }
@@ -83,6 +95,8 @@ class Award extends Eloquent
 
     public static function getAwardByCode($code)
     {
-        return self::where('code', '=', $code)->orderBy('display_order')->first();
+        return self::where('code', '=', $code)
+                   ->orderBy('display_order')
+                   ->first();
     }
 }

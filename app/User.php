@@ -12,14 +12,12 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Moloquent\Eloquent\Model as Eloquent;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Eloquent implements AuthenticatableContract
 {
-    use Notifiable;
-    use \App\Audit\MedusaAudit;
-    use \App\Permissions\MedusaPermissions;
-    use Authenticatable;
+    use Notifiable, \App\Audit\MedusaAudit, \App\Permissions\MedusaPermissions, Authenticatable, HasApiTokens;
 
     public static $rules = [
         'first_name' => 'required|min:2',
@@ -1394,7 +1392,7 @@ class User extends Eloquent implements AuthenticatableContract
             }
         }
 
-        if (is_a($event, 'Events') === false) {
+        if (is_a($event, 'App\Events') === false) {
             // Not the correct object, return an error
             $this->setTimeZone($currentTz);
             return ['error' => 'Invalid Event object'];
@@ -1572,5 +1570,10 @@ class User extends Eloquent implements AuthenticatableContract
         }
 
         return false;
+    }
+
+    public function findForPassport($username)
+    {
+        return self::where('email_address', '=', $username)->first();
     }
 }

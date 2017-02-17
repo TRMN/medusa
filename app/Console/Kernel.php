@@ -16,7 +16,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\CreateEchelons::class,
         \App\Console\Commands\ImportGrades::class,
         \App\Console\Commands\AddPermission::class,
-        \App\Console\Commands\ViewsCommand::class,
         \App\Console\Commands\ImportChapters::class,
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\ChangePassword::class,
@@ -25,7 +24,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportUsers::class,
         \App\Console\Commands\assignAHPerms::class,
         \App\Console\Commands\AddFleetCoPermission::class,
-        \Themsaid\RoutesPublisher\RoutesPublisherCommand::class
     ];
 
     /**

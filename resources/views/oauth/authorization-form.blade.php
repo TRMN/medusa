@@ -27,16 +27,22 @@
     </div>
     <div class="row">
         <div class="columns small-6 end Incised901Light text-center">
-            {!!Form::open(['url' => '/oauth/authorize', 'method' => 'post'])!!}
-            {!!Form::token()!!}
-            {!!Form::hidden('client_id', $params['client_id'])!!}
-            {!!Form::hidden('redirect_uri', $params['redirect_uri'])!!}
-            {!!Form::hidden('response_type', $params['response_type'])!!}
-            {!!Form::hidden('state', empty($params['state'])?'basic':$params['state'])!!}
+            <form method="post" action="/oauth/authorize">
+                {{ csrf_field() }}
 
-            {!!Form::submit('Approve', ['name' => 'authorized', 'class' => 'button'])!!}
-            {!!Form::submit('Deny', ['name' => 'authorized', 'class' => 'button'])!!}
-            {!!Form::close()!!}
+                <input type="hidden" name="state" value="{{ $request->state }}">
+                <input type="hidden" name="client_id" value="{{ $client->id }}">
+                <button type="submit" class="button">Approve</button>
+            </form>
+
+            <form method="post" action="/oauth/authorize">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+
+                <input type="hidden" name="state" value="{{ $request->state }}">
+                <input type="hidden" name="client_id" value="{{ $client->id }}">
+                <button class="button">Deny</button>
+            </form>
         </div>
     </div>
 @stop

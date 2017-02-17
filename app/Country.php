@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Moloquent\Eloquent\Model as Eloquent;
 use Webpatser\Countries\Countries;
 
 class Country extends Eloquent

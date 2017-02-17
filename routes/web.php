@@ -1,13 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+//use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Illuminate\Http\Request;
 
-$protocol = (Request::secure()) ? "https:" : "http:";
+$request = Request::capture();
 
-$host = Request::server('HTTP_HOST');
+$protocol = ($request->secure() ) ? "https:" : "http:";
+
+$host = $request->server('HTTP_HOST');
 
 $hostFull = $protocol . "//" . $host;
 
@@ -23,82 +26,15 @@ View::share('authUser', $authUser);
 Route::get('/osa', ['as' => 'osa', 'uses' => 'HomeController@osa']);
 
 // OAuth2 routes
-//Route::get(
-//  'oauth/authorize',
-//  function () {
-//      return app('oauth2')->authorize();
-//  }
-//);
-//
-//Route::post(
-//  'oauth/authorize',
-//  function () {
-//      return app('oauth2')->authorizePost();
-//  }
-//);
-//
-//Route::post(
-//  'oauth/token',
-//  function () {
-//      return app('oauth2')->token();
-//  }
-//);
-//
-//Route::post(
-//  'oauth/updateuser',
-//  function () {
-//      return app('oauth2')->updateUser();
-//  }
-//);
-//
-//Route::get(
-//  'oauth/profile',
-//  function () {
-//      return app('oauth2')->profile();
-//  }
-//);
-//
-//Route::get(
-//  'oauth/user',
-//  function () {
-//      return app('oauth2')->user();
-//  }
-//);
-//
-//Route::get(
-//  'oauth/lastupdate',
-//  function () {
-//      return app('oauth2')->lastUpdated();
-//  }
-//);
-//
-//Route::get(
-//  'oauth/tistig',
-//  function () {
-//      return app('oauth2')->getTisTig();
-//  }
-//);
-//
-//Route::get(
-//  'oauth/idcard',
-//  function () {
-//      return app('oauth2')->getIdCard();
-//  }
-//);
-//
-//Route::get(
-//  'oauth/events',
-//  function () {
-//      return app('oauth2')->getScheduledEvents();
-//  }
-//);
-//
-//Route::get(
-//  'oauth/checkin',
-//  function () {
-//      return app('oauth2')->checkMemberIn();
-//  }
-//);
+
+Route::post('/oauth/updateuser', 'OAuthController@updateUser')->middleware('auth:api');
+Route::get('/oauth/profile', 'OAuthController@profile')->middleware('auth:api');
+Route::get('oauth/user', 'OAuthController@user')->middleware('auth:api');
+Route::get('oauth/lastupdate', 'OAuthController@lastUpdated')->middleware('auth:api');
+Route::get('oauth/tistig', 'OAuthController@getTisTig')->middleware('auth:api');
+Route::get('oauth/idcard', 'OAuthController@getIdCard')->middleware('auth:api');
+Route::get('oauth/events', 'OAuthController@getScheduledEvents')->middleware('auth:api');
+Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth:api');
 
 Route::model('oauthclient', 'App\OAuthClient');
 Route::resource('oauthclient', 'OAuthController', ['middleware' => 'auth']);
@@ -204,8 +140,8 @@ Route::post('/user/rack/save', [
 ]);
 
 Route::get('/user/{user}/ribbons', [
-  'as' => 'userRibbons',
-  'uses' => 'UserController@fullRibbonDisplay',
+  'as'         => 'userRibbons',
+  'uses'       => 'UserController@fullRibbonDisplay',
   'middleware' => 'auth'
 ]);
 
@@ -387,9 +323,10 @@ Route::post('password/reset', 'RemindersController@postReset');
 
 Route::get(
   '/exam',
-  ['as'         => 'exam.index',
-   'uses'       => 'ExamController@index',
-   'middleware' => 'auth'
+  [
+    'as'         => 'exam.index',
+    'uses'       => 'ExamController@index',
+    'middleware' => 'auth'
   ]
 );
 Route::post('/exam/upload', [
@@ -409,9 +346,10 @@ Route::get(
 #Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'middleware' => 'auth']);
 Route::post(
   '/exam/store',
-  ['as'         => 'exam.store',
-   'uses'       => 'ExamController@store',
-   'middleware' => 'auth'
+  [
+    'as'         => 'exam.store',
+    'uses'       => 'ExamController@store',
+    'middleware' => 'auth'
   ]
 );
 Route::get('/exam/list', [

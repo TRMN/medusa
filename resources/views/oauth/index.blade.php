@@ -19,10 +19,10 @@
         @foreach($clients as $client)
             <tr>
                 <td>{!! $client->client_id !!}</td>
-                <td>{!! $client->client_name !!}</td>
+                <td>{!! $client->name !!}</td>
                 <td><a href="{!!route('oauthclient.edit', [$client->id])!!}" class="tiny fi-pencil green size-24"
                        title="Edit OAuth Client"></a>
-                    <a href="javascript:deleteClient('{!!$client->id!!}','{!!$client->client_name!!}');"
+                    <a href="javascript:deleteClient('{!!$client->id!!}','{!!$client->name!!}');"
                        class="tiny fi-x red size-24"></a>
                 </td>
             </tr>
@@ -45,6 +45,9 @@
                 jQuery.ajax({
                     method: "DELETE",
                     url: '/oauthclient/' + id,
+                    headers: {
+                      'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
                 }).done(function (affectedRows) {
                     //if something was deleted, we redirect the user to the users page, and automatically the user that he deleted will disappear
                     if (affectedRows > 0) {

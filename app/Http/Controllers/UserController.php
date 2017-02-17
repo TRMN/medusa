@@ -1448,7 +1448,7 @@ class UserController extends Controller
             $path = Auth::user()->getUnitPatchPath($position);
 
             if ($path !== false) {
-                $unitPatchPaths[] = $path;
+                $unitPatchPaths[$path] = Auth::user()->getAssignmentName($position);
             }
         }
 
