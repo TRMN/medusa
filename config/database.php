@@ -59,7 +59,7 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'database' => env('DB_DATABASE', 'forge'),
-            'options' => json_decode(env('DB_OPTIONS', '[]'), true),
+            'options' => json_decode(env('DB_OPTIONS', '{}'), true),
         ],
 
         'mysql' => [
