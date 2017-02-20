@@ -18,7 +18,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AddPermission::class,
         \App\Console\Commands\ImportChapters::class,
         \App\Console\Commands\Inspire::class,
-        \App\Console\Commands\ChangePassword::class,
         \App\Console\Commands\DelPermission::class,
         \App\Console\Commands\MemberExport::class,
         \App\Console\Commands\ImportUsers::class,
