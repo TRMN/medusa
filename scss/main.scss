@@ -141,7 +141,7 @@ $medusa-yellow: #ffee00;
   padding-top: 5px;
   padding-bottom: 10px;
   text-align: center !important;
-  width: 315px;
+  //width: 315px;
   float: left;
 }
 
@@ -166,7 +166,7 @@ div.stripes {
   border-top-left-radius: 125px;
   border-top-right-radius: 125px;
   margin-top: 20px;
-  width: 315px;
+  //width: 315px;
   float: left;
 }
 
@@ -175,7 +175,7 @@ div.unit {
   border-top-left-radius: 125px;
   border-top-right-radius: 125px;
   margin-top: 10px;
-  width: 315px;
+  //width: 315px;
   float: left;
 }
 
@@ -287,10 +287,10 @@ div.name-badge-spacer {
 }
 
 div.filePhoto {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 315px;
+  //position: absolute;
+  //top: 0;
+  //right: 0;
+  //width: 315px;
   text-align: center;
   z-index: 9999;
 }
@@ -672,10 +672,6 @@ footer {
 
 .ui-widget-header {
   border: none;
-}
-
-#user fieldset {
-  width: 75%;
 }
 
 .size-12 {

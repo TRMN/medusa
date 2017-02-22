@@ -36,7 +36,7 @@
                 @include( 'nav', ['permsObj' => $permsObj] )
             </div>
         @endif
-        <div class="small-9 columns trmn-width content end">
+        <div class="small-10 columns trmn-width content">
             @if( $errors->any() )
                 <ul class="medusa-error">
                     @foreach( $errors->all() as $error )
@@ -80,28 +80,28 @@
             @endif
         </div>
     </div>
-
-    <footer class="row">
-        <p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington Fan
-            Association,
-            Inc. Some Rights Reserved.
-            Honor Harrington and all related materials are &copy; David Weber.</p>
-        <span class="text-center"><img src="{!!asset('images/project-medusa.svg')!!}" width="150px" height="150px"
-                                       data-src="{!!asset('images/project-medusa.svg')!!}"></span>
-        <p>{!! Config::get('app.version') !!}</p>
-        @if($_SERVER['SERVER_NAME'] == "medusa.dev" || $_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
-            <p class="alert-box">
-                @if($_SERVER['SERVER_NAME'] == "medusa.dev")
-                    LOCAL SANDBOX SERVER
-                @else
-                    DEVELOPMENT / TEST SERVER
-                @endif
-            </p>
-        @endif
-        <span id="siteseal"><script type="text/javascript"
-                                    src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
-    </footer>
 </div>
+<footer>
+    <p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington Fan
+        Association,
+        Inc. Some Rights Reserved.
+        Honor Harrington and all related materials are &copy; David Weber.</p>
+    <span class="text-center"><img src="{!!asset('images/project-medusa.svg')!!}" width="150px" height="150px"
+                                   data-src="{!!asset('images/project-medusa.svg')!!}"></span>
+    <p>{!! Config::get('app.version') !!}</p>
+    @if($_SERVER['SERVER_NAME'] == "medusa.dev" || $_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
+        <p class="alert-box">
+            @if($_SERVER['SERVER_NAME'] == "medusa.dev")
+                LOCAL SANDBOX SERVER
+            @else
+                DEVELOPMENT / TEST SERVER
+            @endif
+        </p>
+    @endif
+    <span id="siteseal"><script type="text/javascript"
+                                src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
+</footer>
+
 <script type="text/javascript" src="{!! asset('js/jquery.min.js')!!}"></script>
 <script type="text/javascript" src="{!! asset('js/foundation.min.js')!!}"></script>
 <script type="text/javascript" src="{!! asset('js/foundation.topbar.min.js')!!}"></script>

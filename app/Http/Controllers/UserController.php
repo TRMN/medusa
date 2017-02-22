@@ -1469,9 +1469,21 @@ class UserController extends Controller
             return substr($key, 0, 5) == 'group';
         });
 
+        $selects = array_where($data, function ($value, $key) {
+            return substr($key, -4) == '_chk';
+        });
+
         foreach ($groups as $award) {
             if (empty($data[$award . '_quantity']) === false) {
                 $data['ribbon'][] = $award;
+            }
+        }
+
+        foreach ($selects as $key => $value) {
+            if ($value == 1) {
+                $award = json_decode($data[substr($key, 0, -4)]);
+                $data['ribbon'][] = $award->code;
+                $data[$award->code . '_quantity'] = 1;
             }
         }
 

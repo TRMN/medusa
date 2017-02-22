@@ -217,7 +217,7 @@
                 </div>
             @else
                 <div class="row ribbon-row">
-                    <div class="columns small-1">{{Form::checkbox('select' . $index . '_chk', '', false, ['id' => 'select' . $index . '_chk'])}}</div>
+                    <div class="columns small-1">{{Form::checkbox('select' . $index . '_chk', 1, false, ['id' => 'select' . $index . '_chk'])}}</div>
                     <div class="columns small-2 text-center">
                         <img id="select{{$index}}_img" class="ribbon"/>
                     </div>
