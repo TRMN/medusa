@@ -40,17 +40,8 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        $exams = \App\Exam::where('member_id', '=', 'RMN-1094-12')->first();
-                $list = array_where(
-                    $exams->exams,
-                    function ($value, $key) {
-                        if (preg_match( '/^SIA-RMN-.*/', $value) === 1) {
-                            return true;
-                        }
-                    }
-                );
 
-                print_r($list);
+        print_r(\App\Award::getTopBadges(['SAW','EAW','OAW','ESAW','OSAW','EMAW','OMAW','ENW','ONW','ESNW','OSNW','EMNW','OMNW','EOW','OOW','ESOW','OSOW','EMOW','OMOW','ESW','OSW','ESSW','OSSW','EMSW','OMSW']));
     }
 
     /**

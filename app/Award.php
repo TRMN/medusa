@@ -8,23 +8,29 @@ use Moloquent\Eloquent\Model as Eloquent;
 class Award extends Eloquent
 {
     protected $fillable = [
-      'display_order',
-      'name',
-      'code',
-      'post_nominal',
-      'replaces',
-      'location',
-      'multiple',
-      'group_label',
+        'display_order',
+        'name',
+        'code',
+        'post_nominal',
+        'replaces',
+        'location',
+        'multiple',
+        'group_label',
     ];
 
-    public static function _getAwards($location)
+    public static function _getAwards($location, array $limit = [])
     {
         $awards = [];
 
-        foreach (self::where('location', '=', $location)
-                     ->orderBy('display_order')
-                     ->get() as $ribbon) {
+        $query = self::where('location', '=', $location);
+
+        if (count($limit) > 0) {
+            $query = $query->whereIn('code', $limit);
+        }
+
+        $query = $query->get();
+
+        foreach ($query as $ribbon) {
             $awards[$ribbon->code] = $ribbon;
         }
 
@@ -40,27 +46,60 @@ class Award extends Eloquent
                     $multiple = false;
 
                     foreach (explode(',', $ribbon->replaces) as $item) {
-                        $tmp[] = $awards[$item];
+                        if (empty($awards[$item]) === false) {
+                            $tmp[] = $awards[$item];
 
-                        if ($awards[$item]->multiple === true) {
-                            $multiple = true;
+                            if ($awards[$item]->multiple === true) {
+                                $multiple = true;
+                            }
+
+                            unset($awards[$item]);
                         }
-
-                        unset($awards[$item]);
                     }
 
                     $ribbons[] = [
-                      'group' => [
-                        'label'  => $ribbon->group_label,
-                        'awards' => $tmp,
-                        'multiple' => $multiple,
-                      ]
+                        'group' => [
+                            'label' => $ribbon->group_label,
+                            'awards' => $tmp,
+                            'multiple' => $multiple,
+                        ]
                     ];
                 }
             }
         }
 
         return $ribbons;
+    }
+
+    public static function getAerospaceWings()
+    {
+        return self::_getAwards('TL', [
+            'SAW',
+            'EAW',
+            'OAW',
+            'ESAW',
+            'OSAW',
+            'EMAW',
+            'OMAW',
+            'ENW',
+            'ONW',
+            'ESNW',
+            'OSNW',
+            'EMNW',
+            'OMNW',
+            'EOW',
+            'OOW',
+            'ESOW',
+            'OSOW',
+            'EMOW',
+            'OMOW',
+            'ESW',
+            'OSW',
+            'ESSW',
+            'OSSW',
+            'EMSW',
+            'OMSW'
+        ]);
     }
 
     public static function getLeftRibbons()
@@ -73,9 +112,9 @@ class Award extends Eloquent
         return self::_getAwards('R');
     }
 
-    public static function getTopBadges()
+    public static function getTopBadges(array $limit = [])
     {
-        return self::_getAwards('TL');
+        return self::_getAwards('TL', $limit);
     }
 
     public static function getLeftSleeve()
@@ -96,7 +135,7 @@ class Award extends Eloquent
     public static function getAwardByCode($code)
     {
         return self::where('code', '=', $code)
-                   ->orderBy('display_order')
-                   ->first();
+            ->orderBy('display_order')
+            ->first();
     }
 }
