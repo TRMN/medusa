@@ -17,3 +17,11 @@ tmp
 .vagrant
 /vendor
 composer.lock
+.env
+public/awards
+public/crests
+public/images/RMN*
+public/ribbons
+public/patches
+storage/
+app/storage/
