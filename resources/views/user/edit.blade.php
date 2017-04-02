@@ -316,7 +316,7 @@
                     <div class="end small-4 columns ninety Incised901Light">
                         {!! Form::label('rating', "Rating (if any)", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('rating', $ratings) !!}
                         @else
-                            {!!Form::hidden('rating', $user->rating)!!} @if(empty($user->rating)===true)
+                            {!!Form::hidden('rating', empty($user->rating['rate']) ? $user->rating : $user->rating['rate'])!!} @if(empty($user->rating)===true)
                                 None @else {!!$user->rating['description']!!} @endif
                         @endif
                     </div>

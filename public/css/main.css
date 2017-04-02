@@ -607,7 +607,6 @@ div.name-badge {
 div.name-badge-wrapper {
   display: table;
   margin: 0 auto;
-  float: left;
   width: 316px;
   padding-bottom: 10px; }
 
