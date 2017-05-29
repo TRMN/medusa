@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LoginComplete;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -29,7 +30,10 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email_address' => strtolower($email), 'password' => $password, 'active' => 1])) {
             User::find(Auth::user()->id)->updateLastLogin();
-            return Redirect::back();
+
+            event(new LoginComplete(Auth::user()));
+
+            return Redirect::to('/user/' . Auth::user()->id);
         } else {
             return Redirect::back()->with('message', 'Your username/password combination was incorrect')
                 ->withInput();

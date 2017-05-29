@@ -151,31 +151,31 @@ class ApiController extends Controller
 
     public function savePhoto()
     {
-        if (Request::file('file')->isValid() === true) {
-            $res =
-              User::where('member_id', '=', Request::get('member_id'))->get();
+        if (\Request::file('file')->isValid() === true) {
+            $user =
+                User::where('member_id', '=', \Request::get('member_id'))->first();
 
-            if (count($res) === 1 && $res[0]->member_id == Request::get('member_id')) {
-                $user = $res[0];
-                $ext = Request::file('file')->getClientOriginalExtension();
-                $fileName = $user->member_id . '.' . $ext;
+            $ext = \Request::file('file')->getClientOriginalExtension();
+            $fileName = $user->member_id . '.' . $ext;
 
-                Request::file('file')->move(public_path() . '/images', $fileName);
+            \Request::file('file')->move(public_path() . '/images', $fileName);
 
-                // File uploaded, add filename to user record
-                $user->filePhoto = '/images/' . $fileName;
+            // File uploaded, add filename to user record
+            $user->filePhoto = '/images/' . $fileName;
 
-                $this->writeAuditTrail(
-                    (string)Auth::user()->_id,
-                    'update',
-                    'users',
-                    (string)$user->_id,
-                    $user->toJson(),
-                    'ApiController@savePhoto'
-                );
+            $this->writeAuditTrail(
+                (string)\Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                $user->toJson(),
+                'ApiController@savePhoto'
+            );
 
-                $user->save();
-            }
+            $user->save();
+
+            \Artisan::call('view:clear');
+
         }
     }
 
@@ -207,29 +207,29 @@ class ApiController extends Controller
         switch (count($terms)) {
             case 1:
                 $query =
-                  User::where('registration_status', '=', 'Active')
-                      ->where(function ($query) use ($terms) {
-                          $query->where(
-                              'member_id',
-                              'like',
-                              '%' . $terms[0] . '%'
-                          )
+                    User::where('registration_status', '=', 'Active')
+                        ->where(function ($query) use ($terms) {
+                            $query->where(
+                                'member_id',
+                                'like',
+                                '%' . $terms[0] . '%'
+                            )
                                 ->orWhere('first_name', 'like', $terms[0] . '%')
                                 ->orWhere('last_name', 'like', $terms[0] . '%');
-                      });
+                        });
                 break;
             case 2:
                 $query =
-                  User::where('first_name', 'like', $terms[0] . '%')
-                      ->where('last_name', 'like', $terms[1] . '%')
-                      ->where('registration_status', '=', 'Active');
+                    User::where('first_name', 'like', $terms[0] . '%')
+                        ->where('last_name', 'like', $terms[1] . '%')
+                        ->where('registration_status', '=', 'Active');
                 break;
             default:
                 $query =
-                  User::where('first_name', 'like', $terms[0] . '%')
-                      ->where('middle_name', 'like', $terms[1] . '%')
-                      ->where('last_name', 'like', $terms[2] . '%')
-                      ->where('registration_status', '=', 'Active');
+                    User::where('first_name', 'like', $terms[0] . '%')
+                        ->where('middle_name', 'like', $terms[1] . '%')
+                        ->where('last_name', 'like', $terms[2] . '%')
+                        ->where('registration_status', '=', 'Active');
         }
 
         $results = $query->get();
@@ -238,12 +238,12 @@ class ApiController extends Controller
 
         foreach ($results as $member) {
             $suggestions[] =
-              [
-                'value' => $member->member_id . ' ' . $member->first_name . ' ' . (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name . (!empty($member->suffix) ? ' ' . $member->suffix : '') . ' (' . $member->getAssignmentName(
-                    'primary'
-                ) . ')',
-                'data'  => $member->id
-              ];
+                [
+                    'value' => $member->member_id . ' ' . $member->first_name . ' ' . (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name . (!empty($member->suffix) ? ' ' . $member->suffix : '') . ' (' . $member->getAssignmentName(
+                            'primary'
+                        ) . ')',
+                    'data' => $member->id
+                ];
         }
 
         return Response::json(['suggestions' => $suggestions]);
@@ -260,19 +260,19 @@ class ApiController extends Controller
         }
 
         $results =
-          Chapter::orderBy('chapter_name', 'asc')
-                 ->where('chapter_name', 'like', '%' . $query . '%')
-                 ->whereNull('decommission_date')
-                 ->get();
+            Chapter::orderBy('chapter_name', 'asc')
+                ->where('chapter_name', 'like', '%' . $query . '%')
+                ->whereNull('decommission_date')
+                ->get();
 
         $suggestions = [];
 
         foreach ($results as $chapter) {
             $suggestions[] =
-              [
-                'value' => $chapter->chapter_name,
-                'data'  => $chapter->id,
-              ];
+                [
+                    'value' => $chapter->chapter_name,
+                    'data' => $chapter->id,
+                ];
         }
 
         return Response::json(['suggestions' => $suggestions]);
@@ -287,19 +287,19 @@ class ApiController extends Controller
         }
 
         $results =
-          ExamList::where('name', 'like', '%' . $query . '%')
-                  ->orWhere('exam_id', 'like', '%' . $query . '%')
-                  ->get();
+            ExamList::where('name', 'like', '%' . $query . '%')
+                ->orWhere('exam_id', 'like', '%' . $query . '%')
+                ->get();
 
         $suggestions = [];
 
         foreach ($results as $exam) {
             if ($exam->enabled === true) {
                 $suggestions[] =
-                  [
-                    'value' => $exam->name . ' (' . $exam->exam_id . ')',
-                    'data'  => $exam->exam_id
-                  ];
+                    [
+                        'value' => $exam->name . ' (' . $exam->exam_id . ')',
+                        'data' => $exam->exam_id
+                    ];
             }
         }
 
@@ -309,7 +309,7 @@ class ApiController extends Controller
     public function getScheduledEvents($user, $continent = null, $city = null)
     {
         return Response::json([
-          'events' => $user->getScheduledEvents($continent, $city)
+            'events' => $user->getScheduledEvents($continent, $city)
         ]);
     }
 

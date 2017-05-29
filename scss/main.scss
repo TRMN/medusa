@@ -179,7 +179,7 @@ div.unit {
   float: left;
 }
 
-div.name-badge {
+div.name-badge-RMN {
   background: #edde9b;
   border: #a08242 2px solid;
   width: 200px;
@@ -196,6 +196,25 @@ div.name-badge {
   line-height: 1;
   text-transform: uppercase;
   vertical-align: middle;
+}
+
+div.name-badge-GSN {
+  background: #000000;
+  border: #ffffff 2px solid;
+  width: 200px;
+  height: 50px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin: 0 auto;
+  font-weight: bold;
+  font-size: 24px;
+  display: table-cell;
+  line-height: 1;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: #ffffff;
+  font-family: Optima, Arial, Helvetica, Verdana, Sans Serif;
 }
 
 div.name-badge-wrapper {
@@ -216,7 +235,7 @@ div.name-badge-spacer {
 }
 
 .MT, .MID, .WS {
-  margin-bottom: -170px;
+  margin-bottom: -180px;
 }
 
 .HS {

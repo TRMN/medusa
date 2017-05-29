@@ -1576,4 +1576,9 @@ class User extends Eloquent implements AuthenticatableContract
     {
         return self::where('email_address', '=', $username)->first();
     }
+
+    public function hasAward(string $awardAbbr)
+    {
+        return isset($this->awards[$awardAbbr]);
+    }
 }

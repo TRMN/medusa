@@ -142,6 +142,15 @@
             </div>
         @endif
 
+        @if($permsObj->hasPermissions(['VIEW_SFS']) === true)
+            <h3 class="nav-header lnav">SFS</h3>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_SFS']) === true)
+                    <a href="{!!route('showBranch', ['branch' => 'SFS'])!!}">Show SFS members</a><br/>
+                @endif
+            </div>
+        @endif
+
 
         @if($permsObj->hasPermissions(['ALL_PERMS']) === true)
             <h3 class="nav-header lnav">System</h3>
