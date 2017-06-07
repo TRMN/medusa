@@ -1,4 +1,4 @@
-var ManticoreAuth = require('./ManticoreAuth.js');
+// var ManticoreAuth = require('./ManticoreAuth.js');
 var ManticoreUser = require('./ManticoreUser.js');
 var ManticoreChapter = require('./ManticoreChapter.js');
 var ManticoreRegister = require('./ManticoreRegister.js');
@@ -6,7 +6,7 @@ var Dropzone = require('./dropzone.js');
 
 $(document).ready(function ($) {
 
-    var authController = new ManticoreAuth();
+    // var authController = new ManticoreAuth();
     var userController = new ManticoreUser();
     var chapterController = new ManticoreChapter();
     var registerController = new ManticoreRegister();

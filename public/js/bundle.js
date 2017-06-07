@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var ManticoreAuth = require('./ManticoreAuth.js');
+// var ManticoreAuth = require('./ManticoreAuth.js');
 var ManticoreUser = require('./ManticoreUser.js');
 var ManticoreChapter = require('./ManticoreChapter.js');
 var ManticoreRegister = require('./ManticoreRegister.js');
@@ -7,7 +7,7 @@ var Dropzone = require('./dropzone.js');
 
 $(document).ready(function ($) {
 
-    var authController = new ManticoreAuth();
+    // var authController = new ManticoreAuth();
     var userController = new ManticoreUser();
     var chapterController = new ManticoreChapter();
     var registerController = new ManticoreRegister();
@@ -681,34 +681,7 @@ jQuery.extend( jQuery.fn.dataTableExt.oSort, {
 }());
 });
 
-},{"./ManticoreAuth.js":2,"./ManticoreChapter.js":3,"./ManticoreRegister.js":4,"./ManticoreUser.js":5,"./dropzone.js":6}],2:[function(require,module,exports){
-module.exports = function () {
-
-    this.doLogin = function ( email, password ) {
-
-        var data = { email: '', password: '' };
-        data.email = email;
-        data.password = password;
-
-        jQuery( '.error-message' ).html( '' );
-
-        jQuery.post( '/signin', data, function ( result ) {
-
-            if ( result.status == 'success' ) {
-                window.location = '/dashboard';
-            } else {
-                jQuery( '.error-message' ).html( 'There was a problem logging you in. Please check your email and password and try again.' );
-                jQuery( '#signin-btn' ).prop( 'disabled', false );
-            }
-
-        }, 'json' );
-
-    };
-
-};
-
-
-},{}],3:[function(require,module,exports){
+},{"./ManticoreChapter.js":2,"./ManticoreRegister.js":3,"./ManticoreUser.js":4,"./dropzone.js":5}],2:[function(require,module,exports){
 module.exports = function() {
     this.initList = function () {
         jQuery( '.delete-chapter' ).click( function () {
@@ -728,7 +701,7 @@ module.exports = function() {
     };
 };
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 module.exports = function() {
     this.initRegisterForm = function () {
 
@@ -772,7 +745,7 @@ module.exports = function() {
         }
     };
 };
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = function () {
     this.initMemberForm = function () {
 
@@ -822,40 +795,29 @@ module.exports = function () {
         }
 
         function buildChapterList(assignment) {
-            jQuery('#' + assignment + '_assignment').empty();
-            jQuery('#' + assignment + '_assignment').append('<option value="0">Select a Chapter');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="Holding Chapters">' + getURI('holding', assignment.charAt(0) + 'assignment') + '</optgroup>');
-            if (jQuery('#showUnjoinable').val() == 'true') {
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Headquarters">' + getURI('hq', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Bureaus">' + getURI('bureau', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Offices">' + getURI('office', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Academies">' + getURI('academy', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Institutes">' + getURI('institute', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Universities">' + getURI('university', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Colleges">' + getURI('college', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Training Centers">' + getURI('center', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Fleets">' + getURI('fleet', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Forces">' + getURI('tf', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Groups">' + getURI('tg', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Squadrons">' + getURI('squadron', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Divisions">' + getURI('division', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Separation Units">' + getURI('su', assignment.charAt(0) + 'assignment') + '</optgroup>');
-            }
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMN">' + getURI('chapter/RMN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMMC">' + getURI('chapter/RMMC/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMA">' + getURI('chapter/RMA/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="GSN">' + getURI('chapter/GSN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="IAN">' + getURI('chapter/IAN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RHN">' + getURI('chapter/RHN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="SFS">' + getURI('chapter/SFS/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="CIVIL">' + getURI('chapter/CIVIL/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="INTEL">' + getURI('chapter/INTEL/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery.ajax({
+                url: '/api/chapterselection',
+                dataType: 'json',
+                success: function (result) {
+                    jQuery('#' + assignment + '_assignment').empty();
+                    jQuery('#' + assignment + '_assignment').append('<option value="0">Select a Chapter');
+                    jQuery.each(result, function(key, chapterType) {
+                        if ((jQuery('#showUnjoinable').val() === "true" && chapterType.unjoinable === true) || chapterType.unjoinable === false) {
+                            jQuery('#' + assignment + '_assignment').append('<optgroup label="' + chapterType.label + '">' + getURI(chapterType.url, assignment.charAt(0) + 'assignment') + '</optgroup>');
+                        }
+                    })
+
+                    jQuery('#' + assignment + '_assignment').selectize({
+                        sortField: 'text'
+                    });
+                }
+            })
         }
 
         function getURI(url, sel) {
             var options = '';
             jQuery.ajax({
-                url: '/api/' + url,
+                url: url,
                 dataType: 'json',
                 async: false,
                 success: function (result) {
@@ -879,7 +841,7 @@ module.exports = function () {
 
     };
 };
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 
 /*
  *

@@ -418,7 +418,7 @@ Route::get(
   'ApiController@getChapters'
 ); // Get a list of all the chapters
 Route::get(
-  '/api/chapter/{branchID}/{location}',
+  '/api/chapter/{branchID}/{location?}',
   'ApiController@getChaptersByBranch'
 );
 Route::get('/api/locations', 'ApiController@getChapterLocations');
@@ -470,6 +470,7 @@ Route::get(
 );
 Route::get('/api/ribbonrack/{memberid}',
   ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);
+Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 
 // This MUST be the last route
 Route::get(

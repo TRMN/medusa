@@ -14,6 +14,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\LoginComplete' => [
             'App\Listeners\QE3CM',
+            'App\Listeners\KR3CM',
+            'App\Listeners\QE3SJM',
+            'App\Listeners\QE3GJM'
         ],
     ];
 

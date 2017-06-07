@@ -47,40 +47,29 @@ module.exports = function () {
         }
 
         function buildChapterList(assignment) {
-            jQuery('#' + assignment + '_assignment').empty();
-            jQuery('#' + assignment + '_assignment').append('<option value="0">Select a Chapter');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="Holding Chapters">' + getURI('holding', assignment.charAt(0) + 'assignment') + '</optgroup>');
-            if (jQuery('#showUnjoinable').val() == 'true') {
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Headquarters">' + getURI('hq', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Bureaus">' + getURI('bureau', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Offices">' + getURI('office', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Academies">' + getURI('academy', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Institutes">' + getURI('institute', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Universities">' + getURI('university', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Colleges">' + getURI('college', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Training Centers">' + getURI('center', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Fleets">' + getURI('fleet', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Forces">' + getURI('tf', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Task Groups">' + getURI('tg', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Squadrons">' + getURI('squadron', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Divisions">' + getURI('division', assignment.charAt(0) + 'assignment') + '</optgroup>');
-                jQuery('#' + assignment + '_assignment').append('<optgroup label="Separation Units">' + getURI('su', assignment.charAt(0) + 'assignment') + '</optgroup>');
-            }
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMN">' + getURI('chapter/RMN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMMC">' + getURI('chapter/RMMC/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RMA">' + getURI('chapter/RMA/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="GSN">' + getURI('chapter/GSN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="IAN">' + getURI('chapter/IAN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="RHN">' + getURI('chapter/RHN/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="SFS">' + getURI('chapter/SFS/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="CIVIL">' + getURI('chapter/CIVIL/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
-            jQuery('#' + assignment + '_assignment').append('<optgroup label="INTEL">' + getURI('chapter/INTEL/' + jQuery('#' + assignment.charAt(0) + 'location').val(), assignment.charAt(0) + 'assignment') + '</optgroup>');
+            jQuery.ajax({
+                url: '/api/chapterselection',
+                dataType: 'json',
+                success: function (result) {
+                    jQuery('#' + assignment + '_assignment').empty();
+                    jQuery('#' + assignment + '_assignment').append('<option value="0">Select a Chapter');
+                    jQuery.each(result, function(key, chapterType) {
+                        if ((jQuery('#showUnjoinable').val() === "true" && chapterType.unjoinable === true) || chapterType.unjoinable === false) {
+                            jQuery('#' + assignment + '_assignment').append('<optgroup label="' + chapterType.label + '">' + getURI(chapterType.url, assignment.charAt(0) + 'assignment') + '</optgroup>');
+                        }
+                    })
+
+                    jQuery('#' + assignment + '_assignment').selectize({
+                        sortField: 'text'
+                    });
+                }
+            })
         }
 
         function getURI(url, sel) {
             var options = '';
             jQuery.ajax({
-                url: '/api/' + url,
+                url: url,
                 dataType: 'json',
                 async: false,
                 success: function (result) {

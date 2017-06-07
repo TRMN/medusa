@@ -4,6 +4,73 @@
     Editing User {!! $user->getGreeting() !!} {!! $user->first_name !!}{{ isset( $user->middle_name ) ? ' ' . $user->middle_name : '' }} {!! $user->last_name !!}{{ isset( $user->suffix ) ? ' ' . $user->suffix : '' }}
 @stop
 
+@section('dochead')
+<style>
+    ::-webkit-input-placeholder {
+        color: #66b2c9;
+    }
+
+    :-moz-placeholder {
+        color: #66b2c9;
+    }
+
+    ::-moz-placeholdermoz-placeholder {
+        color: #66b2c9;
+    }
+
+    ::-ms-input-placeholder {
+        color: #66b2c9;
+    }
+
+    ::placeholder {
+        color: #66b2c9;
+    }
+
+    .selectize-input,
+    .selectize-input input {
+        color: whitesmoke;
+    }
+
+    .selectize-dropdown,
+    .selectize-input,
+    .selectize-control.single .selectize-input,
+    .selectize-control.single .selectize-input.input-active {
+        background: #1c1c1d;
+        color:  whitesmoke;
+    }
+
+    .selectize-control.single .selectize-input,
+    .selectize-dropdown.single {
+        border-color: #29292a;
+    }
+
+    .selectize-control.single .selectize-input {
+        padding: 2px 30px 2px 5px;
+    }
+
+    .selectize-control.single .selectize-input:after {
+        border-top-color: whitesmoke;
+    }
+
+    .selectize-dropdown .active {
+        color: #1c1c1d;
+        background-color: #66b2c9;
+    }
+
+    .selectize-input .item {
+        max-width: 95%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-top: 0.60rem;
+    }
+
+    .selectize-input {
+        min-height: 2.6875rem;
+    }
+</style>
+@stop
+
 @section('bodyclasses')
     userform
 @stop
@@ -115,13 +182,6 @@
 
             <fieldset>
                 <legend>Primary Assignment Information</legend>
-                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                    <div class="row">
-                        <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label( 'plocation', 'Filter Chapter list by Location', ['class' => 'my']) !!} {!! Form::select('plocation', $locations) !!}
-                        </div>
-                    </div>
-                @endif
 
                 <div class="row">
                     <div class="end small-6 columns ninety Incised901Light">
@@ -136,7 +196,7 @@
                 </div>
                 <div class="row">
                     <div class="end small-6 columns ninety Incised901Light">
-                        {!! Form::label('primary_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('primary_billet', $billets) !!}
+                        {!! Form::label('primary_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('primary_billet', $billets, $user->primary_billet, ['class' => 'billet']) !!}
                         @else
                             {!!Form::hidden('primary_billet', $user->primary_billet)!!} {!!$user->primary_billet!!}<br/>
                             <br/>
@@ -156,13 +216,7 @@
 
             <fieldset>
                 <legend>Secondary Assignment Information</legend>
-                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                    <div class="row">
-                        <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label( 'slocation', 'Filter Chapter List by Location', ['class' => 'my']) !!} {!! Form::select('slocation', $locations) !!}
-                        </div>
-                    </div>
-                @endif
+
                 @if(empty($user->secondary_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
@@ -176,7 +230,7 @@
                     </div>
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label('secondary_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('secondary_billet', $billets) !!}
+                            {!! Form::label('secondary_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('secondary_billet', $billets, $user->secondary_billet, ['class' => 'billet']) !!}
                             @else
                                 {!!Form::hidden('secondary_billet', $user->secondary_billet)!!} {!!$user->secondary_billet!!}
                                 <br/>
@@ -202,13 +256,7 @@
 
             <fieldset>
                 <legend>Additional Assignment Information</legend>
-                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                    <div class="row">
-                        <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label( 'alocation', 'Filter Chapter List by Location', ['class' => 'my']) !!} {!! Form::select('alocation', $locations) !!}
-                        </div>
-                    </div>
-                @endif
+
                 @if(empty($user->additional_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
@@ -222,7 +270,7 @@
                     </div>
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label('additional_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('additional_billet', $billets) !!}
+                            {!! Form::label('additional_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('additional_billet', $billets, $user->additional_billet, ['class' => 'billet']) !!}
                             @else
                                 {!!Form::hidden('additional_billet', $user->additional_billet)!!} {!!$user->additional_billet!!}
                                 <br/>
@@ -248,13 +296,7 @@
 
             <fieldset>
                 <legend>Supplemental Assignment Information</legend>
-                @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
-                    <div class="row">
-                        <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label( 'elocation', 'Filter Chapter List by Location', ['class' => 'my']) !!} {!! Form::select('elocation', $locations) !!}
-                        </div>
-                    </div>
-                @endif
+
                 @if(empty($user->extra_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
@@ -268,7 +310,7 @@
                     </div>
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label('extra_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('extra_billet', $billets) !!}
+                            {!! Form::label('extra_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('extra_billet', $billets, $user->extra_billet, ['class' => 'billet']) !!}
                             @else
                                 {!!Form::hidden('extra_billet', $user->extra_billet)!!} {!!$user->extra_billet!!}<br/>
                                 <br/>
@@ -439,6 +481,10 @@
                 @endforeach
             }
             @endif
+        });
+
+        $('.billet').selectize({
+            sortField: 'text'
         });
     </script>
 @stop

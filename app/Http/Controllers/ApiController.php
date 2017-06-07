@@ -7,6 +7,7 @@ use App\Chapter;
 use App\ExamList;
 use App\Grade;
 use App\Korders;
+use App\MedusaConfig;
 use App\Rating;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,7 @@ class ApiController extends Controller
         return Response::json(Chapter::getChapters());
     }
 
-    public function getChaptersByBranch($branchID, $location)
+    public function getChaptersByBranch($branchID, $location = 0)
     {
         return Response::json(Chapter::getChapters($branchID, $location));
     }
@@ -348,5 +349,10 @@ class ApiController extends Controller
             }
             return '';
         }
+    }
+
+    public function getChapterSelections()
+    {
+        return MedusaConfig::get('chapter.selection', '[]');
     }
 }
