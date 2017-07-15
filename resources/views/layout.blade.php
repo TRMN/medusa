@@ -56,7 +56,7 @@
                     'user.apply',
                     'register',
                     'osa',
-                ]) )
+                ]) || \Request::is('password/*') )
                 @yield('content')
             @else
                 <div class="login-form row">
@@ -70,6 +70,12 @@
                     </div>
                 </div>
 
+                    <div class="row">
+                        <div class="small-6 small-centered columns">
+                            <a href="{{ url('/password/reset') }}" class="right"><p
+                                        style="font-style: italic">Forgot your password?</p></a>
+                        </div>
+                    </div>
 
                 <div class="row">
                     <div class="small-6 small-centered columns">

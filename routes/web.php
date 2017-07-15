@@ -316,10 +316,10 @@ Route::model('type', 'App\Type');
 Route::resource('type', 'TypeController', ['middleware' => 'auth']);
 
 // RemindersController
-Route::get('password/remind', 'RemindersController@getRemind');
-Route::post('password/remind', 'RemindersController@postRemind');
-Route::get('password/reset/{token?}', 'RemindersController@getReset');
-Route::post('password/reset', 'RemindersController@postReset');
+//Route::get('password/remind', 'RemindersController@getRemind');
+//Route::post('password/remind', 'RemindersController@postRemind');
+//Route::get('password/reset/{token?}', 'RemindersController@getReset');
+//Route::post('password/reset', 'RemindersController@postReset');
 
 Route::get(
   '/exam',
@@ -481,3 +481,6 @@ Route::get(
     'middlware' => 'auth'
   ]
 );
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

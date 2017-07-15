@@ -16,6 +16,7 @@ class Award extends Eloquent
         'location',
         'multiple',
         'group_label',
+        'branch',
     ];
 
     public static function _getAwards($location, array $limit = [])

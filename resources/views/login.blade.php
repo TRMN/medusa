@@ -12,13 +12,14 @@
                 {!! Form::open( [ 'route' => 'signin' ] ) !!}
                 {!! Form::label( 'email', 'Email' ) !!} {!! Form::email( 'email' ) !!}
                 {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password' ) !!}
-                {!! Form::submit( 'Sign in', [ 'class' => 'button right reg-button' ] ) !!}
+                {!! Form::submit( 'Sign in now', [ 'class' => 'button right reg-button' ] ) !!}
                 {!! Form::close() !!}
             </div>
         </div>
         <div class="row">
             <div class="small-6 small-centered columns">
-
+                <a href="{!! action('RemindersController@getRemind') !!}" class="right"><p
+                            style="font-style: italic">Forgot your password?</p></a>
             </div>
         </div>
 

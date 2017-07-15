@@ -333,21 +333,21 @@ class UserChangeRequestController extends Controller
         }
 
         // Send approved email
-//        Mail::send(
-//            $email,
-//            ['user' => $user, 'fromValue' => $oldValue, 'toValue' => $newValue],
-//            function ($message) use ($user, $cc, $subject) {
-//                $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
-//
-//                $message->to($user->email_address);
-//
-//                foreach ($cc as $address) {
-//                    $message->cc($address);
-//                }
-//
-//                $message->subject($subject);
-//            }
-//        );
+        Mail::send(
+            $email,
+            ['user' => $user, 'fromValue' => $oldValue, 'toValue' => $newValue],
+            function ($message) use ($user, $cc, $subject) {
+                $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
+
+                $message->to($user->email_address);
+
+                foreach ($cc as $address) {
+                    $message->cc($address);
+                }
+
+                $message->subject($subject);
+            }
+        );
 
         return Redirect::route('user.change.review')->with('message', $message);
     }

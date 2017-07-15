@@ -13,6 +13,7 @@
                 password. Be sure to check your SPAM folder if you do not receive it within the next hour.</p>
 
             <form action="{!! action('RemindersController@postRemind') !!}" method="POST">
+                {{ Form::token() }}
                 <input type="email" name="email_address">
                 <input type="submit" value="Send Reminder" class="button">
             </form>

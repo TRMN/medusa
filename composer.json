@@ -57,7 +57,7 @@
     "laravelcollective/html": "5.3.*",
     "themsaid/laravel-routes-publisher": "^1.0",
     "laravel/passport": "^1.0",
-    "moloquent/moloquent": "^0.3.0"
+    "moloquent/moloquent": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
@@ -98,5 +98,11 @@
   },
   "config": {
     "preferred-install": "dist"
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/dweinerATL/moloquent"
+    }
+  ]
 }
