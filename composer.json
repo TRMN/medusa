@@ -55,7 +55,7 @@
     "league/csv": "^8.1",
     "laravelcollective/html": "5.4.*",
     "themsaid/laravel-routes-publisher": "^1.0",
-    "laravel/passport": "^2.0",
+    "laravel/passport": "^3.0",
     "moloquent/moloquent": "dev-master"
   },
   "require-dev": {

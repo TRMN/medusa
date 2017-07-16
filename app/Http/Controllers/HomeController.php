@@ -2,27 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Chapter;
+use App\Korders;
+use App\Ptitles;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+
+    public function index($message = null)
     {
-        $this->middleware('auth');
+        if (\Auth::check()) {
+            $user = \Auth::user();
+
+            if (empty($user->osa) === true) {
+                return view('osa', ['showform' => true, 'greeting' => $user->getGreetingArray()]);
+            } elseif ($user->tos === true) {
+                return redirect()->route('user.show', ['user' => $user->id, 'message' => $message]);
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+            return view('terms');
+        } else {
+            return view('login');
+        }
+    }
+
+    public function osa()
     {
-        return view('home');
+        return view('osa', ['showform' => false]);
     }
 }

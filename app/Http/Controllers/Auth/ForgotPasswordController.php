@@ -51,7 +51,7 @@ class ForgotPasswordController extends BaseController
         $response = $this->broker()->sendResetLink(
             $request->only('email_address')
         );
-
+die(get_class($this->broker()));
         return $response == Password::RESET_LINK_SENT
             ? $this->sendResetLinkResponse($response)
             : $this->sendResetLinkFailedResponse($request, $response);
