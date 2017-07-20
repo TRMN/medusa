@@ -54,7 +54,10 @@ return [
     |
     */
 
-    'from' => ['address' => 'membership@trmn.org', 'name' => 'TRMN Membership'],
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'membership@trmn.org'),
+        'name' => env('MAIL_FROM_NAME', 'TRMN Membership'),
+    ],
 
     /*
     |--------------------------------------------------------------------------
