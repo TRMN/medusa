@@ -5,6 +5,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+//use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
 use App\Audit\MedusaAudit;
 use App\Permissions\MedusaPermissions;
@@ -23,6 +24,8 @@ class Controller extends BaseController
         }
         View::share('permsObj', $this);
         View::share('user', Auth::user());
+
+//        $this->middleware('osatos');
     }
 
     /**

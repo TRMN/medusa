@@ -51,14 +51,14 @@ trait MedusaEchelons
             $chapterTypes[$chapterType->chapter_type] = $chapterType->chapter_description;
         }
 
-        $chapterTypes = ['0' => $this->select] + $chapterTypes;
+        $chapterTypes = ['' => $this->select] + $chapterTypes;
 
         return view(
             'unit.create',
             [
                 'chapterTypes' => $chapterTypes,
                 'chapter'      => new Chapter,
-                'commands'     => ['0' => 'Select a Command/Unit'] + $this->getCommands(),
+                'commands'     => ['' => 'Select a Command/Unit'] + $this->getCommands(),
                 'title'        => $this->title,
                 'route'        => $this->routePrefix,
                 'branches'     => $this->getBranches(),
@@ -179,7 +179,7 @@ trait MedusaEchelons
             [
                 'chapterTypes' => $chapterTypes,
                 'chapter'      => $chapter,
-                'chapterList'  => ['0' => 'Select a Command/Unit'] + $this->getCommands(),
+                'chapterList'  => ['' => 'Select a Command/Unit'] + $this->getCommands(),
                 'numCrew'      => count($crew) + count($childUnits),
                 'title'        => $this->title,
                 'route'        => $this->routePrefix,

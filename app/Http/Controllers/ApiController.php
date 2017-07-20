@@ -353,6 +353,6 @@ class ApiController extends Controller
 
     public function getChapterSelections()
     {
-        return MedusaConfig::get('chapter.selection', '[]');
+        return MedusaConfig::get('chapter.selection', '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
     }
 }

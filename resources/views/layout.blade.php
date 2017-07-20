@@ -13,6 +13,72 @@
     <link rel="stylesheet" type="text/css" href="{!! asset('css/selectize.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/main.css') !!}">
     <link rel="shortcut icon" href="{!! asset('favicon.ico') !!}">
+
+        <style>
+            ::-webkit-input-placeholder {
+                color: #66b2c9;
+            }
+
+            :-moz-placeholder {
+                color: #66b2c9;
+            }
+
+            ::-moz-placeholdermoz-placeholder {
+                color: #66b2c9;
+            }
+
+            ::-ms-input-placeholder {
+                color: #66b2c9;
+            }
+
+            ::placeholder {
+                color: #66b2c9;
+            }
+
+            .selectize-input,
+            .selectize-input input {
+                color: whitesmoke;
+            }
+
+            .selectize-dropdown,
+            .selectize-input,
+            .selectize-control.single .selectize-input,
+            .selectize-control.single .selectize-input.input-active {
+                background: #1c1c1d;
+                color:  whitesmoke;
+            }
+
+            .selectize-control.single .selectize-input,
+            .selectize-dropdown.single {
+                border-color: #29292a;
+            }
+
+            .selectize-control.single .selectize-input {
+                padding: 2px 30px 2px 5px;
+            }
+
+            .selectize-control.single .selectize-input:after {
+                border-top-color: whitesmoke;
+            }
+
+            .selectize-dropdown .active {
+                color: #1c1c1d;
+                background-color: #66b2c9;
+            }
+
+            .selectize-input .item {
+                max-width: 95%;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                margin-top: 0.60rem;
+            }
+
+            .selectize-input {
+                min-height: 2.6875rem;
+            }
+        </style>
+
     @yield('dochead')
 </head>
 <body class="@yield('bodyclasses')">
@@ -21,7 +87,7 @@
 
         <div class="small-2 columns trmn-width">
             <p></p><a href="{!!$serverUrl!!}"><img src="/images/trmnseal.png" alt="TRMN Seal" width="150px"
-                                                 height="150px"></a>
+                                                   height="150px"></a>
         </div>
         <div class="small-10 columns trmn-width end">
             <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
@@ -31,7 +97,7 @@
     </header>
 
     <div class="row trmn-width">
-        @if(empty(Auth::user()->tos) === FALSE && empty(Auth::user()->osa) === FALSE)
+        @if(empty(Auth::user()->tos) === false && empty(Auth::user()->osa) === false)
             <div class="small-2 columns trmn-width">
                 @include( 'nav', ['permsObj' => $permsObj] )
             </div>
@@ -48,6 +114,11 @@
             @if(Session::has('message'))
                 <p>{!!Session::get('message')!!}</p>
             @endif
+
+            @if(Session::has('status'))
+                <p>{!!Session::get('status')!!}</p>
+            @endif
+
             @if(!empty($message))
                 <p>{!!$message!!}</p>
             @endif
@@ -70,12 +141,12 @@
                     </div>
                 </div>
 
-                    <div class="row">
-                        <div class="small-6 small-centered columns">
-                            <a href="{{ url('/password/reset') }}" class="right"><p
-                                        style="font-style: italic">Forgot your password?</p></a>
-                        </div>
+                <div class="row">
+                    <div class="small-6 small-centered columns">
+                        <a href="{{ url('/password/reset') }}" class="right"><p
+                                    style="font-style: italic">Forgot your password?</p></a>
                     </div>
+                </div>
 
                 <div class="row">
                     <div class="small-6 small-centered columns">

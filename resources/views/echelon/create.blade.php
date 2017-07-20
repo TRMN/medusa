@@ -15,12 +15,12 @@ Create an Echelon
 </div>
 <div class="row">
     <div class="end small-6 columns ninety Incised901Light end">
-        {!! Form::label('branch', "Branch") !!} {!! Form::select('branch', $branches) !!}
+        {!! Form::label('branch', "Branch") !!} {!! Form::select('branch', $branches, null, ['class' => 'selectize']) !!}
     </div>
 </div>
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
-    {!! Form::label('chapter_type', 'Echelon Type') !!} {!! Form::select('chapter_type', $chapterTypes) !!}
+    {!! Form::label('chapter_type', 'Echelon Type') !!} {!! Form::select('chapter_type', $chapterTypes, null, ['class' => 'selectize']) !!}
         </div>
 </div>
 <div class="row">
@@ -30,7 +30,7 @@ Create an Echelon
     </div>
 <div class="row">
     <div class="small-6 columns ninety Incised901Light end">
-        {!! Form::label('assigned_to', 'Assigned To') !!} {!! Form::select('assigned_to', $fleets) !!}
+        {!! Form::label('assigned_to', 'Assigned To') !!} {!! Form::select('assigned_to', $fleets, null, ['class' => 'selectize']) !!}
     </div>
 </div>
 

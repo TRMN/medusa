@@ -102,6 +102,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'unitPatchPath',
     ];
 
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @return string
+     */
+    public function routeNotificationForMail()
+    {
+        return $this->email_address;
+    }
+
     public function getEmailForPasswordReset()
     {
         return $this->email_address;

@@ -23,6 +23,8 @@ if (Auth::check()) {
 View::share('serverUrl', $hostFull);
 View::share('authUser', $authUser);
 
+Auth::routes();
+
 Route::get('/osa', ['as' => 'osa', 'uses' => 'HomeController@osa']);
 
 // OAuth2 routes
@@ -481,6 +483,5 @@ Route::get(
     'middlware' => 'auth'
   ]
 );
-Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+

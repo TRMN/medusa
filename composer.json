@@ -56,7 +56,8 @@
     "laravelcollective/html": "5.4.*",
     "themsaid/laravel-routes-publisher": "^1.0",
     "laravel/passport": "^3.0",
-    "moloquent/moloquent": "dev-master"
+    "moloquent/moloquent": "dev-master",
+    "laravel/tinker": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

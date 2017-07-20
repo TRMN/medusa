@@ -19,7 +19,7 @@
         <div class="row">
             <div class="small-6 small-centered columns">
                 <a href="{{ route('password.request') }}" class="right"><p
-                            style="font-style: italic">Forgot your password?</p></a>
+                            style="font-style: italic">Forgot your password dummy?</p></a>
             </div>
         </div>
 

@@ -5,45 +5,12 @@ namespace App\Http\Controllers;
 use App\Branch;
 use App\Chapter;
 use App\Echelons\MedusaEchelons;
+use App\MedusaConfig;
 
 class AnyUnitController extends Controller
 {
 
-    private $chapterTypes = [
-        'district',
-        'fleet',
-        'task_force',
-        'task_group',
-        'squadron',
-        'division',
-        'ship',
-        'station',
-        'headquarters',
-        'bivouac',
-        'barracks',
-        'outpost',
-        'fort',
-        'planetary',
-        'theater',
-        'bureau',
-        'office',
-        'academy',
-        'school',
-        'corps',
-        'exp_force',
-        'regiment',
-        'shuttle',
-        'section',
-        'squad',
-        'platoon',
-        'company',
-        'battalion',
-        'college',
-        'institute',
-        'center',
-        'university',
-        'university_system'
-    ];
+    private $chapterTypes = [];
     private $permissions = ['ADD' => 'ALL_PERMS', 'EDIT' => 'ALL_PERMS', 'DELETE' => 'ALL_PERMS'];
     private $auditName = 'AnyUnitController';
     private $select = 'Select a Unit Type';
@@ -52,6 +19,47 @@ class AnyUnitController extends Controller
     private $routePrefix = 'anyunit';
 
     use MedusaEchelons;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->chapterTypes = MedusaConfig::get('anyunit.types', [
+            'district',
+            'fleet',
+            'task_force',
+            'task_group',
+            'squadron',
+            'division',
+            'ship',
+            'station',
+            'headquarters',
+            'bivouac',
+            'barracks',
+            'outpost',
+            'fort',
+            'planetary',
+            'theater',
+            'bureau',
+            'office',
+            'academy',
+            'school',
+            'corps',
+            'exp_force',
+            'regiment',
+            'shuttle',
+            'section',
+            'squad',
+            'platoon',
+            'company',
+            'battalion',
+            'college',
+            'institute',
+            'center',
+            'university',
+            'university_system'
+        ]);
+    }
 
     private function getCommands()
     {

@@ -9,6 +9,7 @@ use App\Chapter;
 use App\Country;
 use App\Grade;
 use App\Korders;
+use App\MedusaConfig;
 use App\Ptitles;
 use App\Rating;
 use App\User;
@@ -389,9 +390,9 @@ class UserController extends Controller
             'branches'  => Branch::getBranchList(),
             'grades'    => Grade::getGradesForBranch('RMN'),
             'ratings'   => Rating::getRatingsForBranch('RMN'),
-            'chapters'  => ['0' => 'Select a Chapter'],
-            'billets'   => ['0' => 'Select a Billet'] + Billet::getBillets(),
-            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+            'chapters'  => ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList(),
+            'billets'   => ['' => 'Select a Billet'] + Billet::getBillets(),
+//            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
 
           ]
         );
@@ -878,13 +879,9 @@ class UserController extends Controller
                 'branches'    => Branch::getBranchList(),
                 'grades'      => Grade::getGradesForBranch($user->branch),
                 'ratings'     => Rating::getRatingsForBranch($user->branch),
-                'chapters'    => array_merge(Chapter::getChapters(
-                  null,
-                  0,
-                  false
-                ), Chapter::getHoldingChapters()),
-                'billets'     => ['0' => 'Select a billet'] + Billet::getBillets(),
-                'locations'   => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+                'chapters'    => ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList(),
+                'billets'     => ['' => 'Select a billet'] + Billet::getBillets(),
+                'locations'   => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
                 'permissions' => DB::table('permissions')
                                    ->orderBy('name', 'asc')
                                    ->get(),
@@ -1112,10 +1109,10 @@ class UserController extends Controller
 
             $user->save();
 
-            return redirect('home');
+            return redirect()->to(session('url.intended'));
         }
 
-        return redirect('signout');
+        return redirect()->to('signout');
     }
 
     public function osa()
@@ -1139,10 +1136,10 @@ class UserController extends Controller
 
             $user->save();
 
-            return redirect('home');
+            return redirect()->to(session('url.intended'));
         }
 
-        return redirect('signout');
+        return redirect()->to('signout');
     }
 
     /**
@@ -1192,15 +1189,6 @@ class UserController extends Controller
 
     public function register()
     {
-        $fullCountryList = Countries::getList();
-        $countries = [];
-
-        foreach ($fullCountryList as $country) {
-            $countries[$country['iso_3166_3']] = $country['name'];
-        }
-
-        asort($countries);
-
         $fullBranchList = Branch::all();
         $branches = [];
 
@@ -1214,8 +1202,8 @@ class UserController extends Controller
           'user'      => new User,
           'countries' => Country::getCountries(),
           'branches'  => $branches,
-          'chapters'  => ['' => 'Select a Chapter'],
-          'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+          'chapters'  => ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList(),
+          'locations' => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
           'register'  => true,
         ];
 
@@ -1328,7 +1316,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect(URL::previous())->with('message', $msg);
+        return redirect()->to(URL::previous())->with('message', $msg);
     }
 
     public function deletePeerage(User $user, $peerageId)
@@ -1357,7 +1345,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect(URL::previous())->with('message', $msg);
+        return redirect()->to(URL::previous())->with('message', $msg);
     }
 
     public function find(User $user = null)
@@ -1387,7 +1375,7 @@ class UserController extends Controller
 
         Cache::flush();
 
-        return redirect(URL::previous())->with(
+        return redirect()->to(URL::previous())->with(
           'message',
           $perm . ' permission has been given to ' . $user->getFullName()
         );
@@ -1405,7 +1393,7 @@ class UserController extends Controller
 
         Cache::flush();
 
-        return redirect(URL::previous())->with(
+        return redirect()->to(URL::previous())->with(
           'message',
           $perm . ' permission has been removed from ' . $user->getFullName()
         );
@@ -1508,6 +1496,6 @@ class UserController extends Controller
 
         Auth::user()->save();
 
-        return redirect('home');
+        return redirect()->to('home');
     }
 }

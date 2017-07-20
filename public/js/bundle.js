@@ -596,6 +596,11 @@ $(document).ready(function ($) {
         });
     });
 
+    jQuery('.selectize').selectize({
+        sortField: 'text',
+        lockOptgroupOrder: true
+    });
+
 (function() {
 
 /*
@@ -704,45 +709,12 @@ module.exports = function() {
 },{}],3:[function(require,module,exports){
 module.exports = function() {
     this.initRegisterForm = function () {
-
-        jQuery('#register #location').change(buildChapterList);
-
-        buildChapterList();
-
-        function buildChapterList() {
-            jQuery('#register #primary_assignment').empty();
-            jQuery('#register #primary_assignment').append('<option value="0">Select a Chapter');
-            jQuery('#register #primary_assignment').append('<optgroup label="Holding Chapters">' + getURI('holding') + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="RMN">' + getURI('chapter/RMN/' + jQuery('#register #location').val()) + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="RMMC">' + getURI('chapter/RMMC/' + jQuery('#register #location').val()) + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="RMA">' + getURI('chapter/RMA/' + jQuery('#register #location').val()) + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="GSN">' + getURI('chapter/GSN/' + jQuery('#register #location').val()) + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="IAN">' + getURI('chapter/IAN/' + jQuery('#register #location').val()) + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="RHN">' + getURI('chapter/RHN/' + jQuery('#register #location').val()) + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="SFS">' + getURI('chapter/SFS/' + jQuery('#register #location').val()) + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="CIVIL">' + getURI('chapter/CIVIL/' + jQuery('#register #location').val()) + '</optgroup>');
-            jQuery('#register #primary_assignment').append('<optgroup label="INTEL">' + getURI('chapter/INTEL/' + jQuery('#register #location').val()) + '</optgroup>');
-        }
-
-        function getURI(url) {
-            var options = '';
-            jQuery.ajax({
-                url: '/api/' + url,
-                dataType: 'json',
-                async: false,
-                success: function (result) {
-                    jQuery.each(result, function (key, value) {
-                        options += '<option value="' + key + '">' + value + '</option>';
-
-                    });
-                }
+        jQuery.each(['country', 'branch', 'primary_assignment'], function (key, control) {
+            jQuery('#' + control).selectize({
+                sortField: 'text',
+                lockOptgroupOrder: true
             });
-
-            if (options == '') {
-                options = '<option disabled>No Chapters Found</option>';
-            }
-            return options;
-        }
+        });
     };
 };
 },{}],4:[function(require,module,exports){
@@ -779,40 +751,12 @@ module.exports = function () {
 
         });
 
-        jQuery('#plocation').change({assignment: 'primary'}, getChapterList);
-        jQuery('#slocation').change({assignment: 'secondary'}, getChapterList);
-        jQuery('#alocation').change({assignment: 'additional'}, getChapterList);
-        jQuery('#elocation').change({assignment: 'extra'}, getChapterList);
-
-        buildChapterList('primary');
-        buildChapterList('secondary');
-        buildChapterList('additional');
-        buildChapterList('extra');
-
-        function getChapterList(event) {
-            var assignemnt = event.data.assignment;
-            buildChapterList(assignemnt);
-        }
-
-        function buildChapterList(assignment) {
-            jQuery.ajax({
-                url: '/api/chapterselection',
-                dataType: 'json',
-                success: function (result) {
-                    jQuery('#' + assignment + '_assignment').empty();
-                    jQuery('#' + assignment + '_assignment').append('<option value="0">Select a Chapter');
-                    jQuery.each(result, function(key, chapterType) {
-                        if ((jQuery('#showUnjoinable').val() === "true" && chapterType.unjoinable === true) || chapterType.unjoinable === false) {
-                            jQuery('#' + assignment + '_assignment').append('<optgroup label="' + chapterType.label + '">' + getURI(chapterType.url, assignment.charAt(0) + 'assignment') + '</optgroup>');
-                        }
-                    })
-
-                    jQuery('#' + assignment + '_assignment').selectize({
-                        sortField: 'text'
-                    });
-                }
-            })
-        }
+        jQuery.each(['primary', 'secondary', 'additional', 'extra'], function (key, assignment) {
+            jQuery('#' + assignment + '_assignment').selectize({
+                sortField: 'text',
+                lockOptgroupOrder: true
+            });
+        });
 
         function getURI(url, sel) {
             var options = '';

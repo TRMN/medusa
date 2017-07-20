@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function signin()
+    public function signin(Request $request)
     {
         $rules = [
             'email' => 'required|email',
@@ -33,7 +33,7 @@ class AuthController extends Controller
 
             event(new LoginComplete(Auth::user()));
 
-            return Redirect::to('/user/' . Auth::user()->id);
+            return Redirect::to(session('url.intended'));
         } else {
             return Redirect::back()->with('message', 'Your username/password combination was incorrect')
                 ->withInput();

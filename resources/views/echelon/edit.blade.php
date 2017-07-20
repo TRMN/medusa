@@ -16,7 +16,7 @@
     </div>
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
-            {!! Form::label('Chapter Type', 'Echelon Type') !!} {!! Form::select('chapter_type', $chapterTypes, $chapter->chapter_type) !!}
+            {!! Form::label('Chapter Type', 'Echelon Type') !!} {!! Form::select('chapter_type', $chapterTypes, $chapter->chapter_type, ['class' => 'selectize']) !!}
         </div>
     </div>
     <div class="row">
@@ -26,7 +26,7 @@
     </div>
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
-            {!! Form::label('Assigned To', 'Assigned To') !!} {!! Form::select('assigned_to', $chapterList, $chapter->assigned_to) !!}
+            {!! Form::label('Assigned To', 'Assigned To') !!} {!! Form::select('assigned_to', $chapterList, $chapter->assigned_to, ['class' => 'selectize']) !!}
         </div>
     </div>
 

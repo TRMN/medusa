@@ -4,6 +4,73 @@
     Add a member
 @stop
 
+@section('dochead')
+    <style>
+        ::-webkit-input-placeholder {
+            color: #66b2c9;
+        }
+
+        :-moz-placeholder {
+            color: #66b2c9;
+        }
+
+        ::-moz-placeholdermoz-placeholder {
+            color: #66b2c9;
+        }
+
+        ::-ms-input-placeholder {
+            color: #66b2c9;
+        }
+
+        ::placeholder {
+            color: #66b2c9;
+        }
+
+        .selectize-input,
+        .selectize-input input {
+            color: whitesmoke;
+        }
+
+        .selectize-dropdown,
+        .selectize-input,
+        .selectize-control.single .selectize-input,
+        .selectize-control.single .selectize-input.input-active {
+            background: #1c1c1d;
+            color:  whitesmoke;
+        }
+
+        .selectize-control.single .selectize-input,
+        .selectize-dropdown.single {
+            border-color: #29292a;
+        }
+
+        .selectize-control.single .selectize-input {
+            padding: 2px 30px 2px 5px;
+        }
+
+        .selectize-control.single .selectize-input:after {
+            border-top-color: whitesmoke;
+        }
+
+        .selectize-dropdown .active {
+            color: #1c1c1d;
+            background-color: #66b2c9;
+        }
+
+        .selectize-input .item {
+            max-width: 95%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            margin-top: 0.60rem;
+        }
+
+        .selectize-input {
+            min-height: 2.6875rem;
+        }
+    </style>
+@stop
+
 @section('bodyclasses')
     userform
 @stop
@@ -76,7 +143,7 @@
                 {!! Form::label('postal_code', 'Postal Code', ['class' => 'my']) !!} {!! Form::text('postal_code') !!}
             </div>
             <div class="end small-3 columns ninety Incised901Light">
-                {!! Form::label('country', 'Country', ['class' => 'my']) !!} {!! Form::select('country', $countries, $user->country) !!}
+                {!! Form::label('country', 'Country', ['class' => 'my']) !!} {!! Form::select('country', $countries, $user->country, ['class' => 'selectize']) !!}
             </div>
         </div>
 
@@ -101,16 +168,16 @@
         <legend class="seventy-five Incised901Light">&nbsp;Service Information&nbsp;</legend>
         <div class="row">
             <div class="end small-4 columns ninety Incised901Light end">
-                {!! Form::label('branch', "Branch", ['class' => 'my']) !!} {!! Form::select('branch', $branches) !!}
+                {!! Form::label('branch', "Branch", ['class' => 'my']) !!} {!! Form::select('branch', $branches, null, ['class' => 'selectize']) !!}
             </div>
             <div class="end small-4 columns ninety Incised901Light end">
-                {!! Form::label('display_rank', "Rank", ['class' => 'my']) !!} {!! Form::select('display_rank', $grades) !!}
+                {!! Form::label('display_rank', "Rank", ['class' => 'my']) !!} {!! Form::select('display_rank', $grades, null, ['class' => 'selectize']) !!}
             </div>
         </div>
 
         <div class="row">
             <div class="end small-4 columns ninety Incised901Light end">
-                {!! Form::label('rating', "Rating (if any)", ['class' => 'my']) !!} {!! Form::select('rating', $ratings) !!}
+                {!! Form::label('rating', "Rating (if any)", ['class' => 'my']) !!} {!! Form::select('rating', $ratings, null, ['class' => 'selectize']) !!}
             </div>
             <div class="end small-4 columns ninety Incised901Light end">
                 {!! Form::label('dor', "Date of Rank", ['class' => 'my']) !!} {!! Form::date('dor') !!}
@@ -122,20 +189,14 @@
         <div class="row">
             <div class="end small-6 columns ninety Incised901Light end">
                 <div class="row">
-                    <div class="small-4 columns ninety Incised901Light">
-                        {!! Form::label( 'plocation', 'Filter by Location', ['class' => 'my']) !!} {!! Form::select('plocation', $locations) !!}
-                    </div>
-                    <div class="small-8 columns ninety Incised901Light end">
+                    <div class="small-12 columns ninety Incised901Light end">
                         {!! Form::label('primary_assignment', "Primary Assignment", ['class' => 'my']) !!} {!! Form::select('primary_assignment', $chapters) !!}
                     </div>
                 </div>
             </div>
             <div class="end small-6 columns ninety Incised901Light end">
                 <div class="row">
-                    <div class="small-4 columns ninety Incised901Light">
-                        {!! Form::label( 'slocation', 'Filter by Location', ['class' => 'my']) !!} {!! Form::select('slocation', $locations) !!}
-                    </div>
-                    <div class="small-8 columns ninety Incised901Light end">
+                    <div class="small-12 columns ninety Incised901Light end">
                         {!! Form::label('secondary_assignment', "Secondary Assignment", ['class' => 'my']) !!} {!! Form::select('secondary_assignment', $chapters) !!}
                     </div>
                 </div>
@@ -144,10 +205,10 @@
 
         <div class="row">
             <div class="end small-6 columns ninety Incised901Light end">
-                {!! Form::label('primary_billet', 'Billet', ['class' => 'my']) !!} {!! Form::select('primary_billet', $billets) !!}
+                {!! Form::label('primary_billet', 'Billet', ['class' => 'my']) !!} {!! Form::select('primary_billet', $billets, null, ['class' => 'selectize']) !!}
             </div>
             <div class="end small-6 columns ninety Incised901Light end">
-                {!! Form::label('secondary_billet', 'Billet', ['class' => 'my']) !!} {!! Form::select('secondary_billet', $billets) !!}
+                {!! Form::label('secondary_billet', 'Billet', ['class' => 'my']) !!} {!! Form::select('secondary_billet', $billets, null, ['class' => 'selectize']) !!}
             </div>
         </div>
 

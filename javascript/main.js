@@ -595,6 +595,11 @@ $(document).ready(function ($) {
         });
     });
 
+    jQuery('.selectize').selectize({
+        sortField: 'text',
+        lockOptgroupOrder: true
+    });
+
 (function() {
 
 /*
