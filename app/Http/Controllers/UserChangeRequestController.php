@@ -40,9 +40,8 @@ class UserChangeRequestController extends Controller
                 'user'      => $user,
                 'req'       => Auth::user(),
                 'branches'  => Branch::getBranchList(),
-                'chapters'  => Chapter::getChapters(null, 0, false),
-                'billets'   => ['0' => 'Select a Billet'] + Billet::getBillets(),
-                'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+                'chapters'  => Chapter::getFullChapterList(false),
+                'allchapters' => Chapter::getChapters(null, 0, false),
             ]
         );
     }
@@ -75,10 +74,10 @@ class UserChangeRequestController extends Controller
 
         // Branch Change
 
-        if (empty($data['branch']) === false) {
+        if (empty($data['new_branch']) === false) {
             $record['req_type'] = 'branch';
             $record['old_value'] = $data['old_branch'];
-            $record['new_value'] = $data['branch'];
+            $record['new_value'] = $data['new_branch'];
 
             $this->writeAuditTrail(
                 (string)Auth::user()->_id,

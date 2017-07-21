@@ -80,14 +80,14 @@ class AddPeerageLandChapters extends Migration
         foreach($data as $type => $lands) {
             foreach ($lands as $land) {
                 try {
-                    Chapter::create(['chapter_type' => $type, 'chapter_name' => $land]);
+                    Chapter::create(['chapter_type' => $type, 'chapter_name' => $land, 'joinable' => false]);
 
                     $this->writeAuditTrail(
                         'migration',
                         'create',
                         'chapter',
                         null,
-                        json_encode(['chapter_type' => $type, 'chapter_name' => $land]),
+                        json_encode(['chapter_type' => $type, 'chapter_name' => $land, 'joinable' => false]),
                         'AddPeerageLandChapters Migration'
                     );
                 } catch (Exception $e) {

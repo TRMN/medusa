@@ -29,7 +29,7 @@
             <legend>Branch Change Request</legend>
             <p>Only use this option if you are requesting a branch change.  If you are only requesting a chapter change, you do not need to select a branch.</p>
             <p>Change Branch From {!!$branches[$user->branch]!!} to</p>
-            {!! Form::select('branch', $branches, '') !!}
+            {!! Form::select('new_branch', $branches, null, ['class' => 'selectize']) !!}
             {!! Form::hidden('old_branch', $user->branch) !!}
         </fieldset>
 
@@ -40,17 +40,12 @@
                 @if($user->getAssignmentName('primary') == 'HMS Charon')
                     HMS Charon
                 @else
-                    {!!$chapters[$user->getAssignedShip()]!!}
+                    {!!$allchapters[$user->getAssignedShip()]!!}
                 @endif
                 to</p>
             <div class="row">
                 <div class="end small-6 columns ninety Incised901Light">
-                    {!! Form::label( 'plocation', 'Filter Chapters by Location', ['class' => 'my']) !!} {!! Form::select('plocation', $locations) !!}
-                </div>
-            </div>
-            <div class="row">
-                <div class="end small-6 columns ninety Incised901Light">
-                    {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!} {!! Form::select('primary_assignment', $chapters) !!}
+                    {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!} {!! Form::select('primary_assignment', $chapters, null, ['placeholder' => 'Start typing to search for a chapter']) !!}
                     {!! Form::hidden('old_assignment', $user->getAssignedShip()) !!}
                 </div>
             </div>

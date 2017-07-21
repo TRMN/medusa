@@ -174,11 +174,11 @@ class ChapterController extends Controller
             if (strtotime($data['commission_date']) > strtotime($data['decommission_date'])) {
                 // Commission date is newer than decommission date
                 unset($data['decommission_date']);
-                $chapter->decommission_date = '';
+                $chapter->unset('decommission_date');
             } else {
                 // Decommission date is newer
                 unset($data['commission_date']);
-                $chapter->commission_date = '';
+                $chapter->unset('commission_date');
             }
         }
 
