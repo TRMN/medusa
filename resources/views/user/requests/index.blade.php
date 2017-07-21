@@ -45,7 +45,7 @@
                 to</p>
             <div class="row">
                 <div class="end small-6 columns ninety Incised901Light">
-                    {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!} {!! Form::select('primary_assignment', $chapters, null, ['placeholder' => 'Start typing to search for a chapter']) !!}
+                    {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!} {!! Form::select('primary_assignment', $chapters, null, ['placeholder' => 'Start typing to search for a chapter', 'class' => 'selectize']) !!}
                     {!! Form::hidden('old_assignment', $user->getAssignedShip()) !!}
                 </div>
             </div>

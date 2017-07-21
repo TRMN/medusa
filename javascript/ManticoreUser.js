@@ -31,12 +31,12 @@ module.exports = function () {
 
         });
 
-        jQuery.each(['primary', 'secondary', 'additional', 'extra'], function (key, assignment) {
-            jQuery('#' + assignment + '_assignment').selectize({
-                sortField: 'text',
-                lockOptgroupOrder: true
-            });
-        });
+        // jQuery.each(['primary', 'secondary', 'additional', 'extra'], function (key, assignment) {
+        //     jQuery('#' + assignment + '_assignment').selectize({
+        //         sortField: 'text',
+        //         lockOptgroupOrder: true
+        //     });
+        // });
 
         function getURI(url, sel) {
             var options = '';

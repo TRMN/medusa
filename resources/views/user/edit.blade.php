@@ -5,70 +5,7 @@
 @stop
 
 @section('dochead')
-<style>
-    ::-webkit-input-placeholder {
-        color: #66b2c9;
-    }
 
-    :-moz-placeholder {
-        color: #66b2c9;
-    }
-
-    ::-moz-placeholdermoz-placeholder {
-        color: #66b2c9;
-    }
-
-    ::-ms-input-placeholder {
-        color: #66b2c9;
-    }
-
-    ::placeholder {
-        color: #66b2c9;
-    }
-
-    .selectize-input,
-    .selectize-input input {
-        color: whitesmoke;
-    }
-
-    .selectize-dropdown,
-    .selectize-input,
-    .selectize-control.single .selectize-input,
-    .selectize-control.single .selectize-input.input-active {
-        background: #1c1c1d;
-        color:  whitesmoke;
-    }
-
-    .selectize-control.single .selectize-input,
-    .selectize-dropdown.single {
-        border-color: #29292a;
-    }
-
-    .selectize-control.single .selectize-input {
-        padding: 2px 30px 2px 5px;
-    }
-
-    .selectize-control.single .selectize-input:after {
-        border-top-color: whitesmoke;
-    }
-
-    .selectize-dropdown .active {
-        color: #1c1c1d;
-        background-color: #66b2c9;
-    }
-
-    .selectize-input .item {
-        max-width: 95%;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        margin-top: 0.60rem;
-    }
-
-    .selectize-input {
-        min-height: 2.6875rem;
-    }
-</style>
 @stop
 
 @section('bodyclasses')
@@ -185,7 +122,7 @@
 
                 <div class="row">
                     <div class="end small-6 columns ninety Incised901Light">
-                        {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('primary_assignment', $chapters) !!}
+                        {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('primary_assignment', $chapters, $user->primary_assignment, ['class' => 'selectize']) !!}
                         {!! Form::hidden('passignment', $user->primary_assignment, ['id' => 'passignment']) !!}
                         @else
                             {!!Form::hidden('primary_assignment', $user->primary_assignment)!!} {!!$chapters[$user->primary_assignment]!!}
@@ -220,7 +157,7 @@
                 @if(empty($user->secondary_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label('secondary_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('secondary_assignment', $chapters) !!}
+                            {!! Form::label('secondary_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('secondary_assignment', $chapters, $user->secondary_assignment, ['class' => 'selectize']) !!}
                             {!! Form::hidden('sassignment', $user->secondary_assignment, ['id' => 'sassignment']) !!}
                             @else
                                 {!!Form::hidden('secondary_assignment', $user->secondary_assignment)!!} {!!$chapters[$user->secondary_assignment]!!}
@@ -260,7 +197,7 @@
                 @if(empty($user->additional_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label('additional_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('additional_assignment', $chapters) !!}
+                            {!! Form::label('additional_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('additional_assignment', $chapters, $user->additional_assignment, ['class' => 'selectize']) !!}
                             {!! Form::hidden('aassignment', $user->additional_assignment, ['id' => 'aassignment']) !!}
                             @else
                                 {!!Form::hidden('additional_assignment', $user->additional_assignment)!!} {!!$chapters[$user->additional_assignment]!!}
@@ -300,7 +237,7 @@
                 @if(empty($user->extra_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
                         <div class="end small-6 columns ninety Incised901Light">
-                            {!! Form::label('extra_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('extra_assignment', $chapters) !!}
+                            {!! Form::label('extra_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('extra_assignment', $chapters, $user->extra_assignment, ['class' => 'selectize']) !!}
                             {!! Form::hidden('eassignment', $user->extra_assignment, ['id' => 'eassignment']) !!}
                             @else
                                 {!!Form::hidden('extra_assignment', $user->extra_assignment)!!} {!!$chapters[$user->extra_assignment]!!}
