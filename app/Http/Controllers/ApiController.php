@@ -339,12 +339,13 @@ class ApiController extends Controller
         if (isset($user->awards) === true) {
             $user->leftRibbonCount = count($user->getRibbons('L'));
             $user->leftRibbons = $user->getRibbons('L');
+            $user->numAcross = 3;
 
             if ($user->leftRibbonCount > 0) {
-                if (Input::get('mobile', 'false') === 'true') {
-                    return View::make('partials.leftribbons', ['user' => $user]);
+                if (Request::get('mobile', 'false') === 'true') {
+                    return view('partials.leftribbons', ['user' => $user]);
                 } else {
-                    return View::make('ribbonrack', ['user' => $user]);
+                    return view('ribbonrack', ['user' => $user]);
                 }
             }
             return '';
@@ -353,6 +354,7 @@ class ApiController extends Controller
 
     public function getChapterSelections()
     {
-        return MedusaConfig::get('chapter.selection', '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
+        return MedusaConfig::get('chapter.selection',
+            '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
     }
 }

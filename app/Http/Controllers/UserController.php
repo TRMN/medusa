@@ -769,6 +769,7 @@ class UserController extends Controller
 
         $user->leftRibbonCount = count($user->getRibbons('L'));
         $user->leftRibbons = $user->getRibbons('L');
+        $user->numAcross = 3;
 
         return view(
             'user.show',
