@@ -1,4 +1,4 @@
-@if(!empty($user->assignment))
+@if(!empty($user->assignment) && !empty($user->getPrimaryAssignmentId()))
     <div class="NordItalic ninety padding-5">
         <a href="{!!route('chapter.show',$user->getPrimaryAssignmentId())!!}">
             {!!$user->getPrimaryAssignmentName()!!}
