@@ -484,4 +484,6 @@ Route::get(
   ]
 );
 
-
+Route::any( '{catchall}', function ( $url ) {
+    return response()->view('errors.404');
+} )->where('catchall', '(.*)');
