@@ -1464,13 +1464,15 @@ class UserController extends Controller
         });
 
         foreach ($groups as $award) {
-            if (empty($data[$award . '_quantity']) === false) {
-                $data['ribbon'][] = $award;
+            $data['ribbon'][] = $award;
+
+            if (key_exists($award . '_quantity', $data) === false) {
+                $data[$award . '_quantity'] = 1;
             }
         }
 
         foreach ($selects as $key => $value) {
-            if ($value == 1) {
+            if (is_string($value) === true && is_numeric($value) === false) {
                 $award = json_decode($data[substr($key, 0, -4)]);
                 $data['ribbon'][] = $award->code;
                 $data[$award->code . '_quantity'] = 1;
