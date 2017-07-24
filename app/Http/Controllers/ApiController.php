@@ -176,6 +176,8 @@ class ApiController extends Controller
             $user->save();
 
             \Artisan::call('view:clear');
+            \Artisan::call('cache:clear');
+            \Artisan::call('route:clear');
 
         }
     }

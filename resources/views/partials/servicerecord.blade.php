@@ -252,7 +252,7 @@
             <div class="filePhotoBox">
 
                 @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
-                    <img src="{!!$user->filePhoto!!}" alt="Official File Photo">
+                    <img src="{!!$user->filePhoto!!}?{{time()}}" alt="Official File Photo">
                 @else
                     @if($user->hasAwards())
                         <div class="ofpt-rel">
