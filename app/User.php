@@ -103,6 +103,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'lastUpdate',
         'hasEvents',
         'unitPatchPath',
+        'usePeerageLands',
+        'extraPadding',
     ];
 
     /**
@@ -313,6 +315,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
 
         return [];
+    }
+
+    public function getNameofLands()
+    {
+        $land = array_pop($this->getPeerages(true)['landed']);
+
+        return $land['lands'];
     }
 
     /**

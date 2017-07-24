@@ -9,7 +9,7 @@
 
 @section('content')
     @php
-        $groupCount = 0;
+    $groupCount = 0;
     @endphp
     <div class="row">
         <h1 class="text-center">Ribbon Rack Builder
@@ -27,6 +27,29 @@
     </div>
 
     {!! Form::open(array('route' => 'saverack')) !!}
+    <div class="row text-center"><h3>Name Badge</h3></div>
+    <div class="ribbon-group">
+        @if(count($user->getPeerages(true)['landed']) > 0 && in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
+            <br />
+            <div class="row ribbon-row">
+                <div class="columns small-1">
+                    {!!Form::checkbox('usePeerageLands', 1, isset($user->usePeerageLands)?true:null)!!}
+                </div>
+                <div class="small-7 end">
+                    Use <strong><em>{{$user->getNameofLands()}}</em></strong> on name badge
+                </div>
+            </div>
+        @endif
+        <div class="row ribbon-row">
+            <div class="columns small-1">
+                {!!Form::checkbox('extraPadding', 1, isset($user->extraPadding)?true:null)!!}
+            </div>
+            <div class="small-7 end">
+                Use extra padding on name badge for long names
+            </div>
+        </div>
+    </div>
+    <br clear="both"/>
     @foreach(App\Award::getLeftSleeve() as $badge)
         @if(file_exists(public_path('images/' . $badge->code . '.svg')))
             <div class="row ribbon-row">
@@ -166,7 +189,7 @@
     </div>
 
     @php
-        $groupCount++;
+    $groupCount++;
     @endphp
 
     <div class="row text-center"><h3>Individual Awards</h3></div>
@@ -244,7 +267,7 @@
         @endif
 
         @php
-            $groupCount++;
+        $groupCount++;
         @endphp
     @endforeach
     <div class="row text-left">

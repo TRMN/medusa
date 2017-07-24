@@ -36,10 +36,14 @@ class="ribbon">@if($user->leftRibbonCount % $user->numAcross == $index % $user->
 <div class="name-badge-wrapper">
 <div class="name-badge-spacer">&nbsp;</div>
 @if($user->branch === 'RMN')
-<div class="name-badge-RMN">{{$user->last_name}}, {{substr($user->first_name, 0 , 1)}}</div>
+@if($user->usePeerageLands)
+<div class="name-badge-RMN">{{$user->extraPadding?'&nbsp;':''}}{{$user->getNameofLands()}}{{$user->extraPadding?'&nbsp;':''}}</div>
+@else
+<div class="name-badge-RMN">{{$user->extraPadding?'&nbsp;':''}}{{$user->last_name}}, {{substr($user->first_name, 0 , 1)}}{{$user->extraPadding?'&nbsp;':''}}</div>
+@endif
 <div class="name-badge-spacer">&nbsp;</div>
 @elseif($user->branch === 'GSN')
-<div class="name-badge-GSN">{{$user->last_name}}</div>
+<div class="name-badge-GSN">{{$user->extraPadding?'&nbsp;':''}}{{$user->last_name}}{{$user->extraPadding?'&nbsp;':''}}</div>
 <div class="name-badge-spacer">&nbsp;</div>
 @endif
 </div>

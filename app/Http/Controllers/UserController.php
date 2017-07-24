@@ -1499,6 +1499,14 @@ class UserController extends Controller
             Auth::user()->unitPatchPath = $data['unitPatch'];
         }
 
+        if (empty($data['usePeerageLands']) === false) {
+            Auth::user()->usePeerageLands = true;
+        }
+
+        if (empty($data['extraPadding']) === false) {
+            Auth::user()->extraPadding = true;
+        }
+
         Auth::user()->save();
 
         return redirect()->to('home');
