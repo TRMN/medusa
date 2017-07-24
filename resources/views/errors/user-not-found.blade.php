@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <title>Dutchman! (Page not found) | Royal Manticoran Navy Database</title>
+    <title>User or Chapter not found | Royal Manticoran Navy Database</title>
     <link rel="stylesheet" type="text/css" href="{!! asset('css/normalize.min.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/foundation.min.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/jquery.ui.datepicker.min.css') !!}">

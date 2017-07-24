@@ -601,7 +601,8 @@ div.name-badge-RMN {
   color: #000000;
   line-height: 1;
   text-transform: uppercase;
-  vertical-align: middle; }
+  vertical-align: middle;
+  white-space: nowrap; }
 
 div.name-badge-GSN {
   background: #000000;
@@ -619,7 +620,8 @@ div.name-badge-GSN {
   text-transform: uppercase;
   vertical-align: middle;
   color: #ffffff;
-  font-family: Optima, Arial, Helvetica, Verdana, Sans Serif; }
+  font-family: Optima, Arial, Helvetica, Verdana, Sans Serif;
+  white-space: nowrap; }
 
 div.name-badge-wrapper {
   display: table;
