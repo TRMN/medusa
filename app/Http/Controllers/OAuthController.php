@@ -284,6 +284,7 @@ class OAuthController extends Controller
         if (!empty($_user->awards)) {
             $_user->leftRibbonCount = count($_user->getRibbons('L'));
             $_user->leftRibbons = $_user->getRibbons('L');
+            $_user->numAcross = 3;
             $_user->ribbonrack =
               view('partials.leftribbons', ['user' => $_user])->render();
         } else {
