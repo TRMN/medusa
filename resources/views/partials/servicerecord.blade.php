@@ -194,6 +194,7 @@
         @endif
         <br/>
         @if($permsObj->hasPermissions(['DOB']) || ($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id))
+            <div class="Incised901Light ninety">Join Date: {{ date('d M Y', strtotime($user->registration_date)) }}</div>
             <div class="Incised901Light ninety">Date of Birth: {!!date('d M Y', strtotime($user->dob))!!}</div>
             <br/>
         @endif

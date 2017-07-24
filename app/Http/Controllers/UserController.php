@@ -881,7 +881,8 @@ class UserController extends Controller
                     'branches' => Branch::getBranchList(),
                     'grades' => Grade::getGradesForBranch($user->branch),
                     'ratings' => Rating::getRatingsForBranch($user->branch),
-                    'chapters' => $user->hasPermissions(['EDIT_MEMBER']) === true ? ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList() : Chapter::getChapters(null, 0, false),
+                    'chapters' => $user->hasPermissions(['EDIT_MEMBER']) === true ? ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList() : Chapter::getChapters(null,
+                        0, false),
                     'billets' => ['' => 'Select a billet'] + Billet::getBillets(),
                     'locations' => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
                     'permissions' => DB::table('permissions')

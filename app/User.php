@@ -35,6 +35,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'password' => 'confirmed',
         'branch' => 'required',
         'primary_assignment' => 'required',
+        'phone_number' => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/'
     ];
 
     public static $updateRules = [
@@ -48,6 +49,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'email_address' => 'required|email',
         'password' => 'confirmed',
         'branch' => 'required',
+        'phone_number' => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/'
     ];
 
     public static $error_message = [
@@ -60,7 +62,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'date_format' => 'Please enter a date in the format YYYY-MM-DD',
         'branch.required' => "Please select the members branch",
         'email_address.unique' => 'That email address is already in use',
-        'primary_assignment.required' => 'Please select a chapter'
+        'primary_assignment.required' => 'Please select a chapter',
+        'phone_number' => 'Please enter a valid telephone number',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -120,6 +123,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     public function announcements()
     {
         return $this->hasMany(\App\Announcement::class);
+    }
+
+    public function getGreetingAndName()
+    {
+        return $this->getGreeting() . ' ' . $this->getFullName();
     }
 
     public function getFullName()

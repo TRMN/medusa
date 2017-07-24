@@ -31,6 +31,9 @@
         </div>
     </div>
 
+    <h5><em>Note:</em> To recommission a ship, set the commission date to newer than the decommission date. When the
+        form is submitted, the decommission date will be removed from the record</h5>
+
     <div class="row">
         <div class="small-6 columns ninety Incised901Light end">
             {!! Form::label('commission_date', 'Commission Date (if appropriate') !!}  {!!Form::date('commission_date')!!}
@@ -49,6 +52,7 @@
 
         </div>
     </div>
+
 
     <a class="button" href="{!! URL::previous() !!}">Cancel</a> {!! Form::submit( 'Save', [ 'class' => 'button' ] ) !!}
     {!! Form::close() !!}
