@@ -110,14 +110,14 @@ class OAuthController extends Controller
      *
      * @return Response
      */
-    public function update(\App\OauthClient $oauthClient)
+    public function update(Request $request, \App\OauthClient $oauthClient)
     {
         if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
         }
 
         $validator =
-          Validator::make($data = Request::all(), OauthClient::$updateRules);
+          Validator::make($data = $request->all(), OauthClient::$updateRules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();

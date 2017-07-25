@@ -33,7 +33,11 @@ class AuthController extends Controller
 
             event(new LoginComplete(Auth::user()));
 
-            return Redirect::to(session('url.intended'));
+            if (is_null($redirect = session('url.intended')) === true) {
+                $redirect = session('_previous.url');
+            }
+
+            return Redirect::to($redirect);
         } else {
             return Redirect::back()->with('message', 'Your username/password combination was incorrect')
                 ->withInput();

@@ -27,5 +27,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
+
+        Passport::tokensCan([
+           'profile' => 'Request User Profile',
+           'email' => 'Request User email',
+        ]);
     }
 }
