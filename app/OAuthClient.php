@@ -4,7 +4,7 @@ namespace App;
 
 use Moloquent\Eloquent\Model as Eloquent;
 
-class OauthClient extends Eloquent
+class OAuthClient extends Eloquent
 {
     protected $fillable = ['client_id', 'secret', 'redirect', 'name', 'personal_access_client', 'password_client', 'revoked'];
 

@@ -13,7 +13,7 @@ class AddOauthClients extends Migration
      */
     public function up()
     {
-        $client = new \App\OauthClient;
+        $client = new \App\OAuthClient;
         $client->client_id = 'butrainmoodle';
         $client->secret = 'KcPNE5NvDSbFztgOWn9gYvF4iEw8yHNPH0HrYK4W';
         $client->name = 'BuTrain Testing';
@@ -21,7 +21,7 @@ class AddOauthClients extends Migration
         $client->revoked = false;
         $client->save();
 
-        $client = new \App\OauthClient;
+        $client = new \App\OAuthClient;
         $client->user_id = null;
         $client->name = 'MEDUSA Mobile';
         $client->secret = '';

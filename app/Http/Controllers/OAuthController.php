@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\OauthClient;
+use App\OAuthClient;
 use Illuminate\Support\Facades\Auth;
 //use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -19,7 +19,7 @@ class OAuthController extends Controller
             return $redirect;
         }
 
-        $clients = OauthClient::orderBy('client_name')->get();
+        $clients = OAuthClient::orderBy('client_name')->get();
 
         return view('oauth.index', ['clients' => $clients]);
     }
@@ -52,7 +52,7 @@ class OAuthController extends Controller
         }
 
         $validator =
-          Validator::make($data = Request::all(), OauthClient::$rules);
+          Validator::make($data = Request::all(), OAuthClient::$rules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
@@ -67,7 +67,7 @@ class OAuthController extends Controller
           'OauthController@store'
         );
 
-        OauthClient::create($data);
+        OAuthClient::create($data);
 
         return Redirect::route('oauthclient.index');
     }
@@ -93,7 +93,7 @@ class OAuthController extends Controller
      *
      * @return Response
      */
-    public function edit(OauthClient $oauthClient)
+    public function edit(OAuthClient $oauthClient)
     {
         if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
@@ -110,14 +110,14 @@ class OAuthController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, \App\OauthClient $oauthClient)
+    public function update(Request $request, \App\OAuthClient $oauthClient)
     {
         if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
         }
 
         $validator =
-          Validator::make($data = $request->all(), OauthClient::$updateRules);
+          Validator::make($data = $request->all(), OAuthClient::$updateRules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
@@ -149,7 +149,7 @@ class OAuthController extends Controller
      *
      * @return Response
      */
-    public function destroy(\App\OauthClient $oauthClient)
+    public function destroy(\App\OAuthClient $oauthClient)
     {
         try {
             $oauthClient->delete();
