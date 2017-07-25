@@ -45,14 +45,14 @@ class OAuthController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
         if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
         }
 
         $validator =
-          Validator::make($data = Request::all(), OAuthClient::$rules);
+          Validator::make($data = $request->all(), OAuthClient::$rules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
