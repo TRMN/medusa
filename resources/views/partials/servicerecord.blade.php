@@ -228,9 +228,6 @@
 
                 </div>
             @endif
-            @if($forumUser = App\ForumUser::where('user_email', $user->email_address))
-                <!-- {{ print_r($forumUser, true) }}-->
-            @endif
 
             <div class="row">
                 <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
