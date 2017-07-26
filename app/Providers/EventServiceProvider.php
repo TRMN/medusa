@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\QE3SJM',
             'App\Listeners\QE3GJM'
         ],
+        'App\Events\EmailChanged' => [
+            'App\Listeners\UpdateForumEmail',
+        ],
     ];
 
     /**
