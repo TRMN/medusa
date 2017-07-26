@@ -9,4 +9,6 @@ class ForumUser extends Model
     protected $fillable = ['user_email'];
 
     protected $connection = 'mysql';
+
+    protected $table = 'phpbb_users';
 }
