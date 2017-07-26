@@ -229,7 +229,7 @@
                 </div>
             @endif
             @if($forumUser = App\ForumUser::where('user_email', $user->email_address))
-                <!-- {{ $forumUser->user_sig }}-->
+                <!-- {{ print_r($forumUser, true) }}-->
             @endif
 
             <div class="row">
