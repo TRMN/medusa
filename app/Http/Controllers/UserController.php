@@ -7,6 +7,7 @@ use App\Billet;
 use App\Branch;
 use App\Chapter;
 use App\Country;
+use App\Events\EmailChanged;
 use App\Grade;
 use App\Korders;
 use App\MedusaConfig;
@@ -1065,30 +1066,45 @@ class UserController extends Controller
 
         $data['email_address'] = strtolower($data['email_address']);
 
+        // Check for email address.  If it's changed, fire the EmailChanged event
+
+        if ($user->email_address != $data['email_address']) {
+            $oldEmail = $user->email_address;
+        }
+
         $data['duty_roster'] = trim($data['duty_roster'], ',');
 
         $data['lastUpdate'] = time();
 
-        $this->writeAuditTrail(
-            (string)Auth::user()->_id,
-            'update',
-            'users',
-            (string)$user->_id,
-            json_encode($data),
-            'UserController@update'
-        );
+
 
         $data['awards'] = $user->awards;
 
-        $user->update($data);
+        try {
+            $user->update($data);
 
-        if ($data['reload_form'] === "yes") {
-            return Redirect::route('user.edit', [$user->_id]);
+            if ($data['reload_form'] === "yes") {
+                return Redirect::route('user.edit', [$user->_id]);
+            }
+
+            Cache::flush();
+
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                json_encode($data),
+                'UserController@update'
+            );
+
+            event(new EmailChanged($oldEmail, $data['email_address']));
+
+            return redirect($data['redirectTo']);
+        } catch (\Exception $d) {
+            return redirect()->to('/user/' . $user->id)->with('error', 'There was a problem saving your changes.');
         }
 
-        Cache::flush();
-
-        return redirect($data['redirectTo']);
     }
 
     public function tos()
