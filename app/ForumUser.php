@@ -13,4 +13,6 @@ class ForumUser extends Model
     protected $table = 'phpbb_users';
 
     protected $primaryKey = 'user_id';
+
+    public $timestamps = false;
 }
