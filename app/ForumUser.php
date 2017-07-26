@@ -11,4 +11,6 @@ class ForumUser extends Model
     protected $connection = 'mysql';
 
     protected $table = 'phpbb_users';
+
+    protected $primaryKey = 'user_id';
 }
