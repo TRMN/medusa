@@ -161,19 +161,15 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         'App\Services\MedusaHasherServiceProvider',
-//        'Jenssegers\Mongodb\MongodbServiceProvider',
-//        'Jenssegers\Mongodb\Auth\PasswordResetServiceProvider',
         Moloquent\MongodbServiceProvider::class,
         Moloquent\Auth\PasswordResetServiceProvider::class,
         Moloquent\Passport\PassportServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         'Webpatser\Countries\CountriesServiceProvider',
-        //        'mnshankar\CSV\CSVServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
         'App\Services\MedusaServiceProvider',
-//        'App\Providers\OAuthServiceProvider',
         Collective\Html\HtmlServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         App\Providers\PassportServiceProvider::class,
@@ -225,7 +221,6 @@ return [
       'Validator'    => Illuminate\Support\Facades\Validator::class,
       'View'         => Illuminate\Support\Facades\View::class,
       'Moloquent'       => 'Moloquent\Eloquent\Model',
-//      'Moloquent' => 'Jenssegers\Mongodb\Model',
       'Countries' => 'Webpatser\Countries\CountriesFacade',
       'CSV'       => 'mnshankar\CSV\CSVFacade',
       'Excel'     => 'Maatwebsite\Excel\Facades\Excel',
@@ -236,5 +231,13 @@ return [
 
     ],
 
-    'version' => "Trevor's Star (Project MEDUSA v1.3.16)",
+    /**
+     * Upcoming Minor releases
+     *
+     * Troubadour 1.5.x
+     * Hancock 1.6.x
+     * Barnett 1.7.x
+     *
+     */
+    'version' => "Yeltsin's Star (Project MEDUSA v1.4.0)",
 ];

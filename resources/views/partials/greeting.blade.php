@@ -10,4 +10,6 @@
         <a class="fi-print size-24" href="/id/card/{!!$user->id!!}"
            title="ID Card printed, click to reprint"></a>
     @endif
+        <br />
+        <span class="Incised901Light"><em>Date of Rank: {{ date('d M Y', strtotime($user->getDateOfRank())) }}</em></span>
 </div>

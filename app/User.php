@@ -241,6 +241,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return false;
     }
 
+    public function getDateOfRank()
+    {
+        return $this->rank['date_of_rank'];
+    }
+
     public function getPostnominals()
     {
 
