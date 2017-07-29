@@ -4,7 +4,9 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Facades\Auth;
 
 class Handler extends ExceptionHandler
 {
@@ -45,9 +47,19 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if (Auth::check() === true &&  in_array(Auth::user()->member_id, config('errors.custom_error_pages'))) {
+
+            if (View::exists('errors.' . Auth::user()->member_id)) {
+                return response()->view('errors.' . Auth::user()->member_id, ['e' => $e]);
+            }
+
+        }
+
         if ($e instanceof ModelNotFoundException) {
             return response()->view('errors.user-not-found');
         }
+
+
         return response()->view('errors.error', ['e' => $e]);
     }
 
