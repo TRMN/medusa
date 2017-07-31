@@ -332,9 +332,9 @@ class ExamController extends Controller
 
             $examRecord->save();
 
-            return Response::json(['success' => 'true']);
+            return back()->with('status', $examId . ' has been removed from the members academic record.');
         } catch (\Exception $e) {
-            return Response::json(['success' => 'false']);
+            return back()->with('status', "There was a problem removing " . $examId . " from the members academic record");
         }
     }
 }

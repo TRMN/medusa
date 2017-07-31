@@ -45,7 +45,9 @@
 
         </div>
         <div class="row">
-            <br /><button class="button" id="examDeleteYes">Yes</button> <button class="button" onclick="$('#confirmExamDelete').foundation('reveal', 'close');">No</button>
+            <form action="/exam/user/delete" method="post">
+                <div id="delete-exam-form"></div>
+                <br /><button class="button" type="submit" id="examDeleteYes">Yes</button> <button class="button" onclick="$('#confirmExamDelete').foundation('reveal', 'close');">No</button></form>
         </div>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     </div>

@@ -324,7 +324,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function getNameofLands()
     {
-        $land = array_pop($this->getPeerages(true)['landed']);
+        $peerages = $this->getPeerages(true);
+
+        $land = empty($peerages) ? null : array_pop($this->getPeerages(true)['landed']);
 
         return isset($land['lands'])? $land['lands']: null;
     }
