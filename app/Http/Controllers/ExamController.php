@@ -183,7 +183,7 @@ class ExamController extends Controller
                 ( !empty($member->suffix) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
         } else {
-            if (empty($record->exams) === false) {
+            if (empty($record) === false) {
                 $exams = $record->exams;
             } else {
                 $this->writeAuditTrail(

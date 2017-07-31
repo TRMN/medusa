@@ -29,7 +29,7 @@
     {!! Form::open(array('route' => 'saverack')) !!}
     <div class="row text-center"><h3>Name Badge</h3></div>
     <div class="ribbon-group">
-        @if(count($user->getPeerages(true)['landed']) > 0 && in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
+        @if(!is_null($user->getNameofLands())) && in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
             <br />
             <div class="row ribbon-row">
                 <div class="columns small-1">
