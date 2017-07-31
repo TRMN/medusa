@@ -115,13 +115,14 @@ class ExamController extends Controller
 
         $rules = [
             'member_id' => 'required|size:11|not_self',
-            'exam'      => 'required|is_grader',
+            'exam'      => 'required|is_grader|exists:exam_list,exam_id',
             'date'      => 'required|date|date_format:Y-m-d|post_dated'
         ];
 
         $errorMessages = [
             'member_id.required' => "The member's RMN number is required",
             'exam.required'      => 'The Exam ID is required',
+            'exam.exits'         => 'You have entered an invalid exam id',
             'date.required'      => 'You must provide the date the exam was graded',
             'date_format'        => 'Dates must be formated Y-M-D',
             'score.in'           => 'Score must be PASS, BETA or CREATE',
