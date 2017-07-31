@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Branch;
 use App\Chapter;
+use App\MedusaConfig;
 use App\Type;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +74,7 @@ class ChapterController extends Controller
         }
 
         $types =
-          Type::whereIn('chapter_type', ['ship', 'station'])
+          Type::whereIn('chapter_type', MedusaConfig::get('chapter.types', "['ship', 'station']"))
               ->orderBy('chapter_description')
               ->get(
                   ['chapter_type', 'chapter_description']
