@@ -1480,11 +1480,13 @@ class UserController extends Controller
             return substr($key, -4) == '_chk';
         });
 
-        foreach ($groups as $award) {
-            $data['ribbon'][] = $award;
+        foreach ($groups as $index => $award) {
+            if ($index != $award) {
+                $data['ribbon'][] = $award;
 
-            if (key_exists($award . '_quantity', $data) === false) {
-                $data[$award . '_quantity'] = 1;
+                if (key_exists($award . '_quantity', $data) === false) {
+                    $data[$award . '_quantity'] = 1;
+                }
             }
         }
 

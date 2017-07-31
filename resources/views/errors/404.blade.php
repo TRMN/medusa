@@ -37,8 +37,7 @@
             <p>Listen up! I've got a Dutchman headed away from the ship at thirty-five gees. I painted the trace on your
                 plot
                 three minutes ago. Tie in to the ready pinnace and guide them in on it &mdash; and for God's sake, don't
-                loose
-                it!</p>
+                lose it!</p>
 
             <p><em>Acknowledged!</em></p>
 
