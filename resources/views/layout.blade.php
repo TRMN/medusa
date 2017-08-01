@@ -3,6 +3,7 @@
 <head>
 
     <title>@yield('pageTitle') | Royal Manticoran Navy Database</title>
+    <META HTTP-EQUIV="cache-control" CONTENT="no-cache">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/normalize.min.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/foundation.min.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/jquery.ui.datepicker.min.css') !!}">
@@ -11,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{!! asset('css/dataTables.jqueryui.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/jquery-ui.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/selectize.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/main.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('css/main.css') !!}?{{ time() }}">
     <link rel="shortcut icon" href="{!! asset('favicon.ico') !!}">
 
         <style>
@@ -195,8 +196,8 @@
 <script>
     jQuery(document).foundation();
 </script>
-<script src="{!! asset('js/rcswitcher.js')!!}"></script>
-<script src="{!! asset('js/bundle.js')!!}"></script>
+<script src="{!! asset('js/rcswitcher.js')!!}?{{ time() }}"></script>
+<script src="{!! asset('js/bundle.js')!!}?{{ time() }}"></script>
 @yield( 'scriptFooter' )
 </body>
 </html>

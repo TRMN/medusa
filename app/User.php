@@ -1580,7 +1580,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $chapters = [$chapter->assigned_to];
                 break;
             case 'lac':
-                $chapters = $chapter->getChapterIdWithParents('fleet');
+                $chapters = $chapter->getChapterIdWithParents('district');
                 break;
             case 'fleet':
             case 'ship':
