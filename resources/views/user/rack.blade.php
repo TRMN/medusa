@@ -30,7 +30,7 @@
     <div class="row text-center"><h3>Name Badge</h3></div>
     <div class="ribbon-group">
         @if(!is_null($user->getNameofLands()) && in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
-            <br />
+            <br/>
             <div class="row ribbon-row">
                 <div class="columns small-1">
                     {!!Form::checkbox('usePeerageLands', 1, isset($user->usePeerageLands)?true:null)!!}
@@ -69,19 +69,31 @@
             </div>
         @endif
     @endforeach
+
     <br clear="both"/>
     <div class="row text-center"><h3>Unit Patch</h3></div>
-    <div class="ribbon-group">
-        <div class="row patch-row">
-            <div class="columns small-1">&nbsp;</div>
-            <div class="columns small-2 text-center">
-                <img src="{{ empty($user->unitPatchPath)? '/' . current(array_flip(array_slice($unitPatchPaths, 0, 1))) : '/' . $user->unitPatchPath}}"
-                     id="patchImage"/><br/>
-                {!! Form::select('unitPatch', $unitPatchPaths, empty($user->unitPatchPath)? null : $user->unitPatchPath, ['id' => 'unitPatch']) !!}
+    @if(!empty($unitPatchPaths))
+        <div class="ribbon-group">
+            <div class="row patch-row">
+                <div class="columns small-1">&nbsp;</div>
+                <div class="columns small-2 text-center">
+                    <img src="{{ empty($user->unitPatchPath)? '/' . current(array_flip(array_slice($unitPatchPaths, 0, 1))) : '/' . $user->unitPatchPath}}"
+                         id="patchImage"/><br/>
+                    {!! Form::select('unitPatch', $unitPatchPaths, empty($user->unitPatchPath)? null : $user->unitPatchPath, ['id' => 'unitPatch']) !!}
+                </div>
+                <div class="columns small-5 end"></div>
             </div>
-            <div class="columns small-5 end"></div>
         </div>
-    </div>
+    @else
+        <div class="ribbon-group">
+            <div class="row patch-row">
+                <div class="column small-8 end">
+                    No artwork is currently available for any of your current assignments.  Please check back as new artwork is being added all the time.
+                </div>
+            </div>
+        </div>
+
+    @endif
     <br clear="both"/>
 
     <div class="row text-center"><h3>Award Stripes</h3></div>
