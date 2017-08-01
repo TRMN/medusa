@@ -35,7 +35,7 @@ class="ribbon">@if($user->leftRibbonCount % $user->numAcross == $index % $user->
 <br/><br/>
 <div class="name-badge-wrapper">
 <div class="name-badge-spacer">&nbsp;</div>
-@if($user->branch === 'RMN')
+@if(in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
 @if($user->usePeerageLands)
 <div class="name-badge-RMN">{{$user->extraPadding?'&nbsp;':''}}{{$user->getNameofLands()}}{{$user->extraPadding?'&nbsp;':''}}</div>
 @else
