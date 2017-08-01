@@ -557,7 +557,8 @@ table.dataTable.display tbody tr:first-child td {
 .ribbons {
   padding-top: 5px;
   padding-bottom: 10px;
-  text-align: center !important; }
+  text-align: center !important;
+  white-space: nowrap; }
 
 .ribbons img {
   padding-bottom: 1px; }
