@@ -354,6 +354,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     case 'barracks':
                     case 'outpost':
                     case 'fort':
+                    case 'small_craft':
                         return $assignment['chapter_id'];
                         break;
                 }
