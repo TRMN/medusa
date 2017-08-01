@@ -557,8 +557,7 @@ table.dataTable.display tbody tr:first-child td {
 .ribbons {
   padding-top: 5px;
   padding-bottom: 10px;
-  text-align: center !important;
-  float: left; }
+  text-align: center !important; }
 
 .ribbons img {
   padding-bottom: 1px; }
@@ -649,9 +648,11 @@ div.name-badge-spacer {
   margin-bottom: 10px; }
 
 .UNC {
-  width: 262px;
+  width: 266px;
   margin-top: 20px;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  margin-right: 1px;
+  transform: rotate(1deg); }
 
 .patch {
   width: 220px;
