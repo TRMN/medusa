@@ -8,8 +8,6 @@
             padding-top: 5px;
             padding-bottom: 10px;
             text-align: center !important;
-        //width: 315px;
-            float: left;
         }
 
         div.ribbons img {
@@ -18,7 +16,6 @@
 
         .ribbon {
             width: 105px;
-        //height: 27px;
         }
 
         .citation {
@@ -33,8 +30,6 @@
             border-top-left-radius: 125px;
             border-top-right-radius: 125px;
             margin-top: 20px;
-        //width: 315px;
-            float: left;
         }
 
         div.unit {
@@ -42,8 +37,6 @@
             border-top-left-radius: 125px;
             border-top-right-radius: 125px;
             margin-top: 10px;
-        //width: 315px;
-            float: left;
         }
 
         div.name-badge-RMN {
@@ -63,6 +56,7 @@
             line-height: 1;
             text-transform: uppercase;
             vertical-align: middle;
+            white-space: nowrap;
         }
 
         div.name-badge-GSN {
@@ -82,6 +76,7 @@
             vertical-align: middle;
             color: #ffffff;
             font-family: Optima, Arial, Helvetica, Verdana, Sans Serif;
+            white-space: nowrap;
         }
 
         div.name-badge-wrapper {
@@ -116,9 +111,11 @@
         }
 
         .UNC {
-            width: 262px;
+            width: 266px;
             margin-top: 20px;
             margin-bottom: 10px;
+            margin-right: 1px;
+            transform: rotate(1deg);
         }
 
         .patch {
@@ -134,6 +131,10 @@
 
         .branch {
             width: 75%;
+        }
+
+        body {
+            width: 325px;
         }
     </style>
 </head>
