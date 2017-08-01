@@ -59,12 +59,12 @@ class ReportController extends Controller
             $chapter =
               Chapter::find(Auth::user()->getAssignmentId($assignment));
 
-            if (empty($chapter->chapter_type) === false && ($chapter->chapter_type == 'ship' || $chapter->chapter_type == 'station')) {
+            if (empty($chapter->chapter_type) === false && in_array($chapter->chapter_type, ['ship', 'station', 'small_craft']) === true) {
                 break;
             }
         }
 
-        if (in_array($chapter->chapter_type, ['ship', 'station']) === false) {
+        if (in_array($chapter->chapter_type, ['ship', 'station', 'small_craft']) === false) {
             return redirect(URL::previous())->with(
                 'message',
                 'I was unable to find an appropriate command for this report.'
