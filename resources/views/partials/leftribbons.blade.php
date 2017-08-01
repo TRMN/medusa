@@ -59,11 +59,11 @@ title="{!!$ribbon['name']!!}" class="citation">
 <div class="stripes">
 @if(file_exists(public_path('patches/' . $user->branch . '.svg')))
 <img src="{!!asset('patches/' . $user->branch . '.svg')!!}" alt="{!!$user->branch!!}"
-title="{!!$user->branch!!}" class="branch">
+title="{!!$user->branch!!}" class="branch"><br />
 @endif
 @foreach($user->getRibbons('RS') as $ribbon)
 <img src="{!!asset('awards/stripes/' . $ribbon['code'] . '-' . $ribbon['count'] . '.svg')!!}"
-alt="{!!$ribbon['name']!!}" title="{!!$ribbon['name']!!}" class="{!!$ribbon['code']!!}">
+alt="{!!$ribbon['name']!!}" title="{!!$ribbon['name']!!}" class="{!!$ribbon['code']!!}"><br />
 @endforeach
 </div>
 @endif

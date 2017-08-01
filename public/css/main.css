@@ -572,7 +572,7 @@ table.dataTable.display tbody tr:first-child td {
 
 div.stripes {
   padding-top: 20px !important;
-  padding-bottom: 200px !important;
+  padding-bottom: 240px !important;
   border: 1px solid white;
   border-top-left-radius: 125px;
   border-top-right-radius: 125px;
@@ -638,7 +638,7 @@ div.name-badge-spacer {
   width: 262px; }
 
 .MT, .MID, .WS {
-  margin-bottom: -182px; }
+  margin-bottom: -215px; }
 
 .HS {
   width: 55px;

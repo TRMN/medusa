@@ -8,6 +8,7 @@
             padding-top: 5px;
             padding-bottom: 10px;
             text-align: center !important;
+            white-space: nowrap;
         }
 
         div.ribbons img {
@@ -25,7 +26,7 @@
 
         div.stripes {
             padding-top: 20px !important;
-            padding-bottom: 200px !important;
+            padding-bottom: 240px !important;
             border: 1px solid white;
             border-top-left-radius: 125px;
             border-top-right-radius: 125px;
@@ -97,7 +98,7 @@
         }
 
         .MT, .MID, .WS {
-            margin-bottom: -170px;
+            margin-bottom: -175px;
         }
 
         .HS {
