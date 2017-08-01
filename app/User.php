@@ -1605,7 +1605,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         // Check to see if we have a patch for this chapter
         foreach ($chapters as $item) {
             $chapter = Chapter::find($item);
-            $path = 'patches/' . $chapter->chapter_type . '/' . (empty($chapter->branch) ? '' : $chapter->branch . '/') . $chapter->hull_number . '.svg';
+            $path = 'patches/' . $chapter->chapter_type . '/' . (empty($chapter->branch) || $chapter->chapter_type == 'bureau' ? '' : $chapter->branch . '/') . $chapter->hull_number . '.svg';
 
             if (file_exists(public_path($path)) === true) {
                 return $path;
