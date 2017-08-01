@@ -159,10 +159,10 @@ class ApiController extends Controller
             $ext = \Request::file('file')->getClientOriginalExtension();
             $fileName = $user->member_id . '.' . $ext;
 
-            \Request::file('file')->move(public_path() . '/images', $fileName);
+            \Request::file('file')->move(public_path() . '/photos', $fileName);
 
             // File uploaded, add filename to user record
-            $user->filePhoto = '/images/' . $fileName;
+            $user->filePhoto = '/photos/' . $fileName;
 
             $this->writeAuditTrail(
                 (string)\Auth::user()->_id,
