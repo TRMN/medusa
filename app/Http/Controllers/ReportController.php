@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Audit\MedusaAudit;
 use App\Chapter;
+use App\MedusaConfig;
 use App\Report;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -50,6 +52,8 @@ class ReportController extends Controller
             return $redirect;
         }
 
+        $validTypes = MedusaConfig::get('report.valid_types', ['ship', 'station', 'small_craft', 'lac']);
+
         foreach ([
                    'primary',
                    'secondary',
@@ -59,12 +63,12 @@ class ReportController extends Controller
             $chapter =
               Chapter::find(Auth::user()->getAssignmentId($assignment));
 
-            if (empty($chapter->chapter_type) === false && in_array($chapter->chapter_type, ['ship', 'station', 'small_craft']) === true) {
+            if (empty($chapter->chapter_type) === false && in_array($chapter->chapter_type, $validTypes) === true) {
                 break;
             }
         }
 
-        if (in_array($chapter->chapter_type, ['ship', 'station', 'small_craft']) === false) {
+        if (is_null($chapter) === false && in_array($chapter->chapter_type, $validTypes) === false) {
             return redirect(URL::previous())->with(
                 'message',
                 'I was unable to find an appropriate command for this report.'
