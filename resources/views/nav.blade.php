@@ -4,11 +4,14 @@
         <div class="rnav">
 
             <a href="/home">Service Record</a><br/>
-            <a href="{!!route('ribbonRack')!!}">Ribbon Rack</a><br />
+            <a href="{!!route('ribbonRack')!!}">Ribbon Rack</a><br/>
             <a href="/id/card/{!!Auth::user()->id!!}">ID Card</a><br/>
             <a href="{!!route('user.change.request', [Auth::user()->id])!!}">Branch/Chapter Change</a><br/>
             <a href="{!! route('chapter.index') !!}">Ship/Unit List</a><br/>
             <a href="{!!route('user.getReset', [Auth::user()->id])!!}">Change Password</a>
+            @if(session('orig_user'))
+                <br /><a href="{{route('switch.stop')}}">Return to Original User</a>
+            @endif
         </div>
         @if(!is_null(\App\MedusaConfig::get('show.events')))
             <h3 class="nav-header lnav">Events</h3>
@@ -176,8 +179,9 @@
                 alt='Get it on Google Play'
                 src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="175px"/></a><br/>
     <small class="Incised901Light">Google Play and the Google Play logo are trademarks of Google Inc.</small>
-    <br /><br />
-    <a href="https://itunes.apple.com/us/app/medusa-mobile/id1153191437?ls=1&mt=8"><img src="{!!asset('images/appstore.svg')!!}" alt="Download on the App Store" width="151px"/></a>
+    <br/><br/>
+    <a href="https://itunes.apple.com/us/app/medusa-mobile/id1153191437?ls=1&mt=8"><img
+                src="{!!asset('images/appstore.svg')!!}" alt="Download on the App Store" width="151px"/></a>
 </div>
 
 

@@ -25,7 +25,7 @@ View::share('authUser', $authUser);
 
 Auth::routes();
 
-Route::get('/osa', ['as' => 'osa', 'uses' => 'HomeController@osa']);
+Route::get('/osa', 'HomeController@osa')->name('osa')->middleware('auth');
 
 // OAuth2 routes
 
@@ -42,81 +42,25 @@ Route::model('oauthclient', 'App\OAuthClient');
 Route::resource('oauthclient', 'OAuthController', ['middleware' => 'auth']);
 
 // Authentication
-Route::get('/signout', ['as' => 'signout', 'uses' => 'AuthController@signout']);
-Route::post('/signin', ['as' => 'signin', 'uses' => 'AuthController@signin']);
-Route::get(
-  '/register',
-  ['as' => 'register', 'uses' => 'UserController@register']
-);
+Route::get('/signout', 'AuthController@signout')->name('signout');
+Route::post('/signin', 'AuthController@signin')->name('signin');
+Route::get('/register', 'UserController@register')->name('register')->middleware('auth');
 Route::post('/apply', ['as' => 'user.apply', 'uses' => 'UserController@apply']);
 
 // Users
 Route::model('user', 'App\User');
-Route::get(
-  '/user/finddups/{billet2check}',
-  [
-    'as'         => 'user.dups',
-    'uses'       => 'UserController@findDuplicateAssignment',
-    'middleware' => 'auth'
-  ]
-);
-Route::get(
-  '/user/find/{user?}',
-  ['as' => 'user.find', 'uses' => 'UserController@find', 'middleware' => 'auth']
-);
-Route::get('/user/review', [
-  'as'         => 'user.review',
-  'uses'       => 'UserController@reviewApplications',
-  'middleware' => 'auth'
-]);
-Route::get(
-  '/user/{user}/confirmdelete',
-  [
-    'as'         => 'user.confirmdelete',
-    'uses'       => 'UserController@confirmDelete',
-    'middleware' => 'auth'
-  ]
-);
-Route::post(
-  '/user/tos',
-  ['as' => 'tos', 'uses' => 'UserController@tos', 'middleware' => 'auth']
-);
-Route::post(
-  '/user/osa',
-  ['as' => 'osa', 'uses' => 'UserController@osa', 'middleware' => 'auth']
-);
-Route::post(
-  '/user/{user}/peerage',
-  [
-    'as'         => 'addOrEditPeerage',
-    'uses'       => 'UserController@addOrEditPeerage',
-    'middleware' => 'auth'
-  ]
-);
-Route::get(
-  '/user/{user}/peerage/{peerageId}',
-  [
-    'as'         => 'delete_peerage',
-    'uses'       => 'UserController@deletePeerage',
-    'middleware' => 'auth'
-  ]
-);
-Route::post(
-  '/user/{user}/note',
-  [
-    'as'         => 'addOrEditNote',
-    'uses'       => 'UserController@addOrEditNote',
-    'middleware' => 'auth'
-  ]
-);
-Route::get(
-  '/user/{user}/perm/{perm}/add',
-  [
-    'as'         => 'user.perm.add',
-    'uses'       => 'UserController@addPerm',
-    'middleware' => 'auth'
-  ]
-);
+Route::get('/user/switch/start/{user}', 'UserController@userSwitchStart')->name('switch.start')->middleware('auth');
+Route::get('/user/switch/stop/', 'UserController@userSwitchStop')->name('switch.stop')->middleware('auth');
+Route::get('/user/finddups/{billet2check}', 'UserController@findDuplicateAssignment')->name('user.dups')->middleware('auth');
+Route::get('/user/find/{user?}', 'UserController@find')->name('user.find')->middleware('auth');
+Route::get('/user/review', 'UserController@reviewApplications')->name('user.review')->middleware('auth');
+Route::get('/user/{user}/confirmdelete', 'UserController@confirmDelete')->name('user.confirmdelete')->middleware('auth');
+Route::post('/user/tos', 'UserController@tos')->name('tos')->middleware('auth');
+Route::post('/user/osa', 'UserController@osa')->name('osa')->middleware('auth');
+Route::post('/user/{user}/peerage', 'UserController@addOrEditPeerage')->name('addOrEditPeerage')->middleware('auth');
+Route::get('/user/{user}/peerage/{peerageId}', 'UserController@deletePeerage')->name('delete_peerage')->middleware('auth');
+Route::post('/user/{user}/note', 'UserController@addOrEditNote')->name('addOrEditNote')->middleware('auth');
+Route::get('/user/{user}/perm/{perm}/add', 'UserController@addPerm')->name('user.perm.add')->middleware('auth');
 Route::get(
   '/user/{user}/perm/{perm}/delete',
   [

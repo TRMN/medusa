@@ -115,4 +115,28 @@ trait MedusaPermissions
 
         return false;
     }
+
+    /**
+     * Check if the user has one of the specified permissions (config:permissions.restricted) AND the specified permission
+     * ($permName) is in config:permissions.restricted
+     *
+     * @param string $permName
+     * @return boolean
+     */
+    public function checkRestrictedAccess(string $permName)
+    {
+
+        $restrictedPerms = config('permissions.restricted');
+
+        if (in_array($permName, $restrictedPerms) === false) {
+            return false; // Short circut the checks if the perm being checked for is not in the restricted list
+        }
+
+        if (in_array($permName, $restrictedPerms) === true && in_array($permName, Auth::user()->permissions)) {
+            return true;
+        }
+
+        return false;
+
+    }
 }

@@ -318,10 +318,10 @@
                     </div>
                     <ul class="small-block-grid-3 ninety">
                         @foreach(DB::table('permissions')->orderBy('name', 'asc')->get() as $permission)
-                            @if(($permission['name'] != 'CONFIG') || ($permission['name'] == 'CONFIG' && in_array('CONFIG', Auth::user()->permissions)))
+                            @if(!in_array($permission['name'], config('permissions.restricted')) || $permsObj->checkRestrictedAccess($permission['name']))
                                 <li>{!! Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions']) !!}
                                     <span title="{!!$permission['description']!!}">{!!$permission['name']!!}</span></li>
-                            @elseif($permission['name'] == 'CONFIG' && !in_array('CONFIG', Auth::user()->permissions) && in_array('CONFIG', $user->permissions))
+                            @elseif(in_array($permission['name'], config('permissions.restricted')) && !$permsObj->checkRestrictedAccess($permission['name']))
                                 {!! Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions', 'style' => 'display: none !important']) !!}
                             @endif
                         @endforeach

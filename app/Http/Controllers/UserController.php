@@ -11,6 +11,7 @@ use App\Events\EmailChanged;
 use App\Grade;
 use App\Korders;
 use App\MedusaConfig;
+use App\Permissions\MedusaPermissions;
 use App\Ptitles;
 use App\Rating;
 use App\User;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,6 +33,7 @@ use Webpatser\Countries\Countries;
 
 class UserController extends Controller
 {
+    use MedusaPermissions;
 
     /**
      * Display a listing of users
@@ -754,6 +757,10 @@ class UserController extends Controller
                     'message',
                     'You do not have permission to view that page'
                 );
+        }
+
+        if (empty($user->osa) === true) {
+            return view('osa', ['showform' => true, 'greeting' => $user->getGreetingArray()]);
         }
 
         $titles[''] = 'Select Peerage Title';
@@ -1528,5 +1535,19 @@ class UserController extends Controller
         Auth::user()->save();
 
         return redirect()->to('home');
+    }
+
+    public function userSwitchStart(User $user)
+    {
+        Session::put('orig_user', Auth::id());
+        Auth::login($user);
+        return back();
+    }
+
+    public function userSwitchStop()
+    {
+        $id = Session::pull('orig_user');
+        Auth::login(User::find($id));
+        return back();
     }
 }
