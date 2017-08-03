@@ -44,8 +44,8 @@ Route::resource('oauthclient', 'OAuthController', ['middleware' => 'auth']);
 // Authentication
 Route::get('/signout', 'AuthController@signout')->name('signout');
 Route::post('/signin', 'AuthController@signin')->name('signin');
-Route::get('/register', 'UserController@register')->name('register')->middleware('auth');
-Route::post('/apply', ['as' => 'user.apply', 'uses' => 'UserController@apply']);
+Route::get('/register', 'UserController@register')->name('register');
+Route::post('/apply', 'UserController@apply')->name('user.apply');
 
 // Users
 Route::model('user', 'App\User');
