@@ -759,8 +759,8 @@ class UserController extends Controller
                 );
         }
 
-        if (empty($user->osa) === true) {
-            return view('osa', ['showform' => true, 'greeting' => $user->getGreetingArray()]);
+        if (empty(Auth::user()->osa) === true) {
+            return view('osa', ['showform' => true, 'greeting' => Auth::user()->getGreetingArray()]);
         }
 
         $titles[''] = 'Select Peerage Title';
