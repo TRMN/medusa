@@ -29,6 +29,7 @@
 <p>In order to create an account you must be over the age of 13.</p>
 <p>You agree that you are responsible for keeping your password safe.</p>
 <p>You agree to not disclose your password to any third party.</p>
+<p>You agree to receive occasional emails related to your membership.</p>
 <p>If at any time you believe your password has become compromised you must contact the Fourth Space Lord’s Director of Web Services (<a href="mailto:webservices@bucomm.trmn.org">webservices@bucomm.trmn.org</a>) and inform them of such. Absent such a notification you are responsible for any activity committed under your username and password.</p>
 
 <h2>V.    Behavior</h2>

@@ -26,6 +26,7 @@ View::share('authUser', $authUser);
 Auth::routes();
 
 Route::get('/osa', 'HomeController@osa')->name('osa')->middleware('auth');
+Route::get('/tos', 'HomeController@tos')->name('tos.noauth')->middleware('guest');
 
 // OAuth2 routes
 

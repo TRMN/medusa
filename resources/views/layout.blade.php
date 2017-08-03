@@ -128,6 +128,7 @@
                     'user.apply',
                     'register',
                     'osa',
+                    'tos.noauth',
                 ]) || \Request::is('password/*') )
                 @yield('content')
             @else
