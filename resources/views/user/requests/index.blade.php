@@ -40,13 +40,13 @@
                 @if($user->getAssignmentName('primary') == 'HMS Charon')
                     HMS Charon
                 @else
-                    {!!$allchapters[$user->getAssignedShip()]!!}
+                    {!!$allchapters[$user->getAssignmentId('primary')]!!}
                 @endif
                 to</p>
             <div class="row">
                 <div class="end small-6 columns ninety Incised901Light">
                     {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!} {!! Form::select('primary_assignment', $chapters, null, ['placeholder' => 'Start typing to search for a chapter', 'class' => 'selectize']) !!}
-                    {!! Form::hidden('old_assignment', $user->getAssignedShip()) !!}
+                    {!! Form::hidden('old_assignment', $user->getAssignmentId('primary')) !!}
                 </div>
             </div>
         </fieldset>
