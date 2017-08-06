@@ -27,16 +27,14 @@ class ReportController extends Controller
             return $redirect;
         }
 
-        return Response::view(
+        if (Auth::user()->isCoAssignedShip() === false) {
+            return $redirect;
+        }
+
+        return view(
             'report.index',
             [
-            'reports' => Report::where(
-                'chapter_id',
-                '=',
-                Auth::user()->getAssignedShip()
-            )->orderBy(
-                'report_date'
-            )->get()
+            'reports' => Report::where('chapter_id', '=', Auth::user()->getAssignedShip())->orderBy('report_date')->get()
             ]
         );
     }
