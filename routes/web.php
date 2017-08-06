@@ -30,14 +30,14 @@ Route::get('/tos', 'HomeController@tos')->name('tos.noauth')->middleware('guest'
 
 // OAuth2 routes
 
-Route::post('/oauth/updateuser', 'OAuthController@updateUser')->middleware('auth');
-Route::get('/oauth/profile', 'OAuthController@profile')->middleware('auth');
-Route::get('oauth/user', 'OAuthController@user')->middleware('auth');
-Route::get('oauth/lastupdate', 'OAuthController@lastUpdated')->middleware('auth');
-Route::get('oauth/tistig', 'OAuthController@getTisTig')->middleware('auth');
-Route::get('oauth/idcard', 'OAuthController@getIdCard')->middleware('auth');
-Route::get('oauth/events', 'OAuthController@getScheduledEvents')->middleware('auth');
-Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth');
+Route::post('/oauth/updateuser', 'OAuthController@updateUser')->middleware('auth:api');
+Route::get('/oauth/profile', 'OAuthController@profile')->middleware('auth:api');
+Route::get('oauth/user', 'OAuthController@user')->middleware('auth:api');
+Route::get('oauth/lastupdate', 'OAuthController@lastUpdated')->middleware('auth:api');
+Route::get('oauth/tistig', 'OAuthController@getTisTig')->middleware('auth:api');
+Route::get('oauth/idcard', 'OAuthController@getIdCard')->middleware('auth:api');
+Route::get('oauth/events', 'OAuthController@getScheduledEvents')->middleware('auth:api');
+Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth:api');
 
 Route::model('oauthclient', 'App\OAuthClient');
 Route::resource('oauthclient', 'OAuthController', ['middleware' => 'auth']);
