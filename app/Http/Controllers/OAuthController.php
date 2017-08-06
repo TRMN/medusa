@@ -182,9 +182,9 @@ class OAuthController extends Controller
 
     public function user(Request $request)
     {
-        Log::info('User Info Request');
-
         $_user = $this->getUserFromRequest($request);
+
+        Log::info('User Info Request for ' . $_user->member_id);
 
         unset($_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos);
 
