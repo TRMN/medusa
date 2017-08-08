@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class SWP
 {
     /**
-     * Create the event listener.
+     * Determine if a member qualifies for a SWP
      *
      * @return void
      */
