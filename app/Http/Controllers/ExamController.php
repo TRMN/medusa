@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\GradeEntered;
 use App\Exam;
 use App\ExamList;
 use App\Message;
@@ -228,6 +229,8 @@ class ExamController extends Controller
         $record->save();
 
         $member->updateLastUpdated();
+
+        event(new GradeEntered(User::where('member_id', $data['member_id'])->first()));
 
         return Redirect::route('exam.find', ['user' => $member->id])->with('message', $message);
     }
