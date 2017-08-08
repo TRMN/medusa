@@ -515,7 +515,10 @@ class ReportController extends Controller
                     }
 
                     if ($tmpChapter->chapter_type === 'fleet') {
-                        $echelonEmails[] = $tmpChapter->getXO()->email_address;
+                        if (is_object($xo = $tmpChapter->getXO())) {
+                            $echelonEmails[] = $xo->email_address;
+                        }
+
                     }
                 }
             }
