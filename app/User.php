@@ -1645,4 +1645,18 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         return isset($this->awards[$awardAbbr]);
     }
+
+    public function addAward(array $award) {
+        foreach($award as $awardCode => $awardInfo) {
+            // Check that we have all the required fields in the info
+            if (isset($awardInfo['count']) === false || isset($awardInfo['location']) === false || isset($awardInfo['award_date']) === false) {
+                return false; // Invalid
+            }
+
+            $awards = $this->awards;
+            $awards[$awardCode] = $awardInfo;
+            $this->awards = $awards;
+            return $this->save();
+        }
+    }
 }

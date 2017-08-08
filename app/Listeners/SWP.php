@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\GradeEntered;
 use App\MedusaConfig;
+use Carbon\Carbon;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -88,6 +89,16 @@ class SWP
 
             if ($required === true && count($departments) == $swpQual['NumDepts']) {
                 // Yes they do, add it.
+
+                $event->user->addAward([
+                    substr($swpType, 0, 1) . 'SWP' => [
+                        'count' => 1,
+                        'location' => 'TL',
+                        'award_date' => [
+                            Carbon::create()->firstOfMonth()->addMonth()->toDateString(),
+                        ],
+                    ]
+                ]);
 
             }
         }
