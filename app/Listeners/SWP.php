@@ -22,7 +22,8 @@ class SWP
     /**
      * Handle the event.
      *
-     * @param  GradeEntered  $event
+     * @param  GradeEntered $event
+     *
      * @return void
      */
     public function handle(GradeEntered $event)
@@ -39,12 +40,15 @@ class SWP
 
         $swpBranches = MedusaConfig::get('awards.swp.branches', ['RMN', 'RMMC']);
 
-        if (is_null($swpQual) === false && in_array($event->user->branch, $swpBranches) === true) {
-            // Only process if the qualifications are defined and it's a branch we check
+        if (is_null($swpQual) === false &&
+            in_array($event->user->branch, $swpBranches) === true &&
+            $event->user->hasAward('ESWP') === false &&
+            $event->user->hasAward('OSWP') === false) {
+            // Only process if the qualifications are defined,  it's a branch we check and they don't have an E|O SWP
 
             $swpType = null;
 
-            switch(substr($event->user->rank['grade'], 0, 1)) {
+            switch (substr($event->user->rank['grade'], 0, 1)) {
                 case 'E':
                 case 'W':
                     $swpType = 'Enlisted';
@@ -63,7 +67,7 @@ class SWP
 
             $required = null;
 
-            foreach($swpQual['Required'] as $exam) {
+            foreach ($swpQual['Required'] as $exam) {
                 $required = isset($exams[$exam]);
             }
 
@@ -71,8 +75,8 @@ class SWP
 
             $departments = [];
 
-            foreach($swpQual['Departments'] as $dept) {
-                foreach($dept as $exam) {
+            foreach ($swpQual['Departments'] as $dept) {
+                foreach ($dept as $exam) {
                     if (isset($exams[$exam])) {
                         $departments[$exam] = true;
                         break;
