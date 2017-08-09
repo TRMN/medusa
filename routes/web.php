@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 $request = Request::capture();
 
-$protocol = ($request->secure() ) ? "https:" : "http:";
+$protocol = ($request->secure()) ? "https:" : "http:";
 
 $host = $request->server('HTTP_HOST');
 
@@ -38,6 +38,14 @@ Route::get('oauth/tistig', 'OAuthController@getTisTig')->middleware('auth:api');
 Route::get('oauth/idcard', 'OAuthController@getIdCard')->middleware('auth:api');
 Route::get('oauth/events', 'OAuthController@getScheduledEvents')->middleware('auth:api');
 Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth:api');
+Route::get('/.well-known/openid-configuration', function () {
+    return response()->json(\App\MedusaConfig::get('openid-configuration', [
+        "issuer" => "https://medusa.trmn.org",
+        "authorization_endpoint" => "https://medusa.trmn.org/oauth/authorize",
+        "token_endpoint" => "https://medusa.trmn.org/oauth/token",
+        "userinfo_endpoint" => "https://medusa.trmn.org/oauth/profile"
+    ]));
+});
 
 Route::model('oauthclient', 'App\OAuthClient');
 Route::resource('oauthclient', 'OAuthController', ['middleware' => 'auth']);
@@ -52,116 +60,119 @@ Route::post('/apply', 'UserController@apply')->name('user.apply');
 Route::model('user', 'App\User');
 Route::get('/user/switch/start/{user}', 'UserController@userSwitchStart')->name('switch.start')->middleware('auth');
 Route::get('/user/switch/stop/', 'UserController@userSwitchStop')->name('switch.stop')->middleware('auth');
-Route::get('/user/finddups/{billet2check}', 'UserController@findDuplicateAssignment')->name('user.dups')->middleware('auth');
+Route::get('/user/finddups/{billet2check}',
+    'UserController@findDuplicateAssignment')->name('user.dups')->middleware('auth');
 Route::get('/user/find/{user?}', 'UserController@find')->name('user.find')->middleware('auth');
 Route::get('/user/review', 'UserController@reviewApplications')->name('user.review')->middleware('auth');
-Route::get('/user/{user}/confirmdelete', 'UserController@confirmDelete')->name('user.confirmdelete')->middleware('auth');
+Route::get('/user/{user}/confirmdelete',
+    'UserController@confirmDelete')->name('user.confirmdelete')->middleware('auth');
 Route::post('/user/tos', 'UserController@tos')->name('tos')->middleware('auth');
 Route::post('/user/osa', 'UserController@osa')->name('osa')->middleware('auth');
 Route::post('/user/{user}/peerage', 'UserController@addOrEditPeerage')->name('addOrEditPeerage')->middleware('auth');
-Route::get('/user/{user}/peerage/{peerageId}', 'UserController@deletePeerage')->name('delete_peerage')->middleware('auth');
+Route::get('/user/{user}/peerage/{peerageId}',
+    'UserController@deletePeerage')->name('delete_peerage')->middleware('auth');
 Route::post('/user/{user}/note', 'UserController@addOrEditNote')->name('addOrEditNote')->middleware('auth');
 Route::get('/user/{user}/perm/{perm}/add', 'UserController@addPerm')->name('user.perm.add')->middleware('auth');
 Route::get(
-  '/user/{user}/perm/{perm}/delete',
-  [
-    'as'         => 'user.perm.del',
-    'uses'       => 'UserController@deletePerm',
-    'middleware' => 'auth'
-  ]
+    '/user/{user}/perm/{perm}/delete',
+    [
+        'as' => 'user.perm.del',
+        'uses' => 'UserController@deletePerm',
+        'middleware' => 'auth'
+    ]
 );
 Route::get('/users/{branch}', [
-  'as'         => 'showBranch',
-  'uses'       => 'UserController@showBranch',
-  'middleware' => 'auth'
+    'as' => 'showBranch',
+    'uses' => 'UserController@showBranch',
+    'middleware' => 'auth'
 ]);
 Route::get('/user/rack', [
-  'as'         => 'ribbonRack',
-  'uses'       => 'UserController@buildRibbonRack',
-  'middleware' => 'auth'
+    'as' => 'ribbonRack',
+    'uses' => 'UserController@buildRibbonRack',
+    'middleware' => 'auth'
 ]);
 Route::post('/user/rack/save', [
-  'as'         => 'saverack',
-  'uses'       => 'UserController@saveRibbonRack',
-  'middleware' => 'auth'
+    'as' => 'saverack',
+    'uses' => 'UserController@saveRibbonRack',
+    'middleware' => 'auth'
 ]);
 
 Route::get('/user/{user}/ribbons', [
-  'as'         => 'userRibbons',
-  'uses'       => 'UserController@fullRibbonDisplay',
-  'middleware' => 'auth'
+    'as' => 'userRibbons',
+    'uses' => 'UserController@fullRibbonDisplay',
+    'middleware' => 'auth'
 ]);
 
 Route::resource('user', 'UserController', ['middleware' => 'auth']);
 
 Route::get(
-  '/user/{user}/approve',
-  [
-    'as'         => 'user.approve',
-    'uses'       => 'UserController@approveApplication',
-    'middleware' => 'auth'
-  ]
+    '/user/{user}/approve',
+    [
+        'as' => 'user.approve',
+        'uses' => 'UserController@approveApplication',
+        'middleware' => 'auth'
+    ]
 );
 Route::get(
-  '/user/{user}/deny',
-  [
-    'as'         => 'user.deny',
-    'uses'       => 'UserController@denyApplication',
-    'middleware' => 'auth'
-  ]
+    '/user/{user}/deny',
+    [
+        'as' => 'user.deny',
+        'uses' => 'UserController@denyApplication',
+        'middleware' => 'auth'
+    ]
 );
 Route::get('/user/{user}/reset', [
-  'as'         => 'user.getReset',
-  'uses'       => 'UserController@getReset',
-  'middleware' => 'auth'
+    'as' => 'user.getReset',
+    'uses' => 'UserController@getReset',
+    'middleware' => 'auth'
 ]);
 Route::post('/user/{user}/reset', [
-  'as'         => 'user.postReset',
-  'uses'       => 'UserController@postReset',
-  'middleware' => 'auth'
+    'as' => 'user.postReset',
+    'uses' => 'UserController@postReset',
+    'middleware' => 'auth'
 ]);
 
 // Assignment Change Requests
 Route::model('request', 'App\ChangeRequest');
 Route::get(
-  '/user_request/{user}/create',
-  [
-    'as'         => 'user.change.request',
-    'uses'       => 'UserChangeRequestController@create',
-    'middleware' => 'auth'
-  ]
+    '/user_request/{user}/create',
+    [
+        'as' => 'user.change.request',
+        'uses' => 'UserChangeRequestController@create',
+        'middleware' => 'auth'
+    ]
 );
 Route::post(
-  '/user_request',
-  [
-    'as'         => 'user.change.store',
-    'uses'       => 'UserChangeRequestController@store',
-    'middleware' => 'auth'
-  ]
+    '/user_request',
+    [
+        'as' => 'user.change.store',
+        'uses' => 'UserChangeRequestController@store',
+        'middleware' => 'auth'
+    ]
 );
 Route::get(
-  '/user_request/review',
-  [
-    'as'         => 'user.change.review',
-    'uses'       => 'UserChangeRequestController@review',
-    'middleware' => 'auth'
-  ]
+    '/user_request/review',
+    [
+        'as' => 'user.change.review',
+        'uses' => 'UserChangeRequestController@review',
+        'middleware' => 'auth'
+    ]
 );
 Route::get(
-  '/user_request/approve/{request}',
-  [
-    'as'         => 'user.change.approve',
-    'uses'       => 'UserChangeRequestController@approve',
-    'middleware' => 'auth'
-  ]
+    '/user_request/approve/{request}',
+    [
+        'as' => 'user.change.approve',
+        'uses' => 'UserChangeRequestController@approve',
+        'middleware' => 'auth'
+    ]
 );
 Route::get(
-  '/user_request/deny/{request}',
-  [
-    'as'         => 'user.change.deny',
-    'uses'       => 'UserChangeRequestController@deny',
-    'middleware' => 'auth'
-  ]
+    '/user_request/deny/{request}',
+    [
+        'as' => 'user.change.deny',
+        'uses' => 'UserChangeRequestController@deny',
+        'middleware' => 'auth'
+    ]
 );
 
 // Other Routes
@@ -172,91 +183,91 @@ Route::model('unit', 'App\Chapter');
 Route::model('anyunit', 'App\Chapter');
 
 Route::get(
-  '/home/{message?}',
-  ['as' => 'home', 'uses' => 'HomeController@index']
+    '/home/{message?}',
+    ['as' => 'home', 'uses' => 'HomeController@index']
 );
 Route::get('/', ['as' => 'root', 'uses' => 'HomeController@index']);
 Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
 Route::get(
-  '/chapter/{chapter}/decommission',
-  [
-    'as'         => 'chapter.decommission',
-    'uses'       => 'ChapterController@decommission',
-    'middleware' => 'auth'
-  ]
+    '/chapter/{chapter}/decommission',
+    [
+        'as' => 'chapter.decommission',
+        'uses' => 'ChapterController@decommission',
+        'middleware' => 'auth'
+    ]
 );
 Route::resource('chapter', 'ChapterController', ['middleware' => 'auth']);
 Route::get(
-  '/triadreport',
-  [
-    'as'         => 'chapter.triadreport',
-    'uses'       => 'ChapterController@commandTriadReport',
-    'middleware' => 'auth'
-  ]
+    '/triadreport',
+    [
+        'as' => 'chapter.triadreport',
+        'uses' => 'ChapterController@commandTriadReport',
+        'middleware' => 'auth'
+    ]
 );
 Route::get(
-  '/export/{chapter}',
-  [
-    'as'         => 'roster.export',
-    'uses'       => 'ChapterController@exportRoster',
-    'middleware' => 'auth'
-  ]
+    '/export/{chapter}',
+    [
+        'as' => 'roster.export',
+        'uses' => 'ChapterController@exportRoster',
+        'middleware' => 'auth'
+    ]
 );
 //Route::resource('announcement', 'AnnouncementController', ['middleware' => 'auth']);
 Route::resource('report', 'ReportController', ['middleware' => 'auth']);
 
 Route::get(
-  '/report/getexams/{id}',
-  [
-    'as'         => 'report.getexams',
-    'uses'       => 'ReportController@getCompletedExamsForCrew',
-    'middleware' => 'auth'
-  ]
+    '/report/getexams/{id}',
+    [
+        'as' => 'report.getexams',
+        'uses' => 'ReportController@getCompletedExamsForCrew',
+        'middleware' => 'auth'
+    ]
 );
 Route::get('/report/send/{id}', [
-  'as'         => 'report.send',
-  'uses'       => 'ReportController@sendReport',
-  'middleware' => 'auth'
+    'as' => 'report.send',
+    'uses' => 'ReportController@sendReport',
+    'middleware' => 'auth'
 ]);
 
 Route::get(
-  '/echelon/{echelon}/deactivate',
-  [
-    'as'         => 'echelon.deactivate',
-    'uses'       => 'EchelonController@deactivate',
-    'middleware' => 'auth'
-  ]
+    '/echelon/{echelon}/deactivate',
+    [
+        'as' => 'echelon.deactivate',
+        'uses' => 'EchelonController@deactivate',
+        'middleware' => 'auth'
+    ]
 );
 Route::resource('echelon', 'EchelonController', ['middleware' => 'auth']);
 
 Route::model('unit', 'App\Chapter');
 Route::get(
-  '/unit/{unit}/deactivate',
-  [
-    'as'         => 'unit.deactivate',
-    'uses'       => 'UnitController@deactivate',
-    'middleware' => 'auth'
-  ]
+    '/unit/{unit}/deactivate',
+    [
+        'as' => 'unit.deactivate',
+        'uses' => 'UnitController@deactivate',
+        'middleware' => 'auth'
+    ]
 );
 
 Route::resource('unit', 'UnitController', ['middleware' => 'auth']);
 Route::resource('mardet', 'MardetController', ['middleware' => 'auth']);
 Route::get(
-  '/mardet/{unit}/deactivate',
-  [
-    'as'         => 'mardet.deactivate',
-    'uses'       => 'MardetController@deactivate',
-    'middleware' => 'auth'
-  ]
+    '/mardet/{unit}/deactivate',
+    [
+        'as' => 'mardet.deactivate',
+        'uses' => 'MardetController@deactivate',
+        'middleware' => 'auth'
+    ]
 );
 Route::resource('anyunit', 'AnyUnitController', ['middleware' => 'auth']);
 Route::get(
-  '/anyunit/{unit}/deactivate',
-  [
-    'as'         => 'anyunit.deactivate',
-    'uses'       => 'AnyUnitController@deactivate',
-    'middleware' => 'auth'
-  ]
+    '/anyunit/{unit}/deactivate',
+    [
+        'as' => 'anyunit.deactivate',
+        'uses' => 'AnyUnitController@deactivate',
+        'middleware' => 'auth'
+    ]
 );
 
 Route::model('type', 'App\Type');
@@ -269,60 +280,60 @@ Route::resource('type', 'TypeController', ['middleware' => 'auth']);
 //Route::post('password/reset', 'RemindersController@postReset');
 
 Route::get(
-  '/exam',
-  [
-    'as'         => 'exam.index',
-    'uses'       => 'ExamController@index',
-    'middleware' => 'auth'
-  ]
+    '/exam',
+    [
+        'as' => 'exam.index',
+        'uses' => 'ExamController@index',
+        'middleware' => 'auth'
+    ]
 );
 Route::post('/exam/upload', [
-  'as'         => 'exam.upload',
-  'uses'       => 'ExamController@upload',
-  'middleware' => 'auth'
+    'as' => 'exam.upload',
+    'uses' => 'ExamController@upload',
+    'middleware' => 'auth'
 ]);
 Route::post('/exam/update', [
-  'as'         => 'exam.update',
-  'uses'       => 'ExamController@update',
-  'middleware' => 'auth'
+    'as' => 'exam.update',
+    'uses' => 'ExamController@update',
+    'middleware' => 'auth'
 ]);
 Route::get(
-  '/exam/find/{user?}/{message?}',
-  ['as' => 'exam.find', 'uses' => 'ExamController@find', 'middleware' => 'auth']
+    '/exam/find/{user?}/{message?}',
+    ['as' => 'exam.find', 'uses' => 'ExamController@find', 'middleware' => 'auth']
 );
 #Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'middleware' => 'auth']);
 Route::post(
-  '/exam/store',
-  [
-    'as'         => 'exam.store',
-    'uses'       => 'ExamController@store',
-    'middleware' => 'auth'
-  ]
+    '/exam/store',
+    [
+        'as' => 'exam.store',
+        'uses' => 'ExamController@store',
+        'middleware' => 'auth'
+    ]
 );
 Route::get('/exam/list', [
-  'as'         => 'exam.list',
-  'uses'       => 'ExamController@examList',
-  'middleware' => 'auth'
+    'as' => 'exam.list',
+    'uses' => 'ExamController@examList',
+    'middleware' => 'auth'
 ]);
 Route::get('/exam/create', [
-  'as'         => 'exam.create',
-  'uses'       => 'ExamController@create',
-  'middleware' => 'auth'
+    'as' => 'exam.create',
+    'uses' => 'ExamController@create',
+    'middleware' => 'auth'
 ]);
 
 Route::model('exam', 'App\ExamList');
 Route::get(
-  '/exam/edit/{exam}',
-  ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'middleware' => 'auth']
+    '/exam/edit/{exam}',
+    ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'middleware' => 'auth']
 );
 Route::post('/exam/updateExam', [
-  'as'         => 'exam.updateExam',
-  'uses'       => 'ExamController@updateExam',
-  'middleware' => 'auth'
+    'as' => 'exam.updateExam',
+    'uses' => 'ExamController@updateExam',
+    'middleware' => 'auth'
 ]);
 Route::post(
-  '/exam/user/delete',
-  ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']
+    '/exam/user/delete',
+    ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']
 );
 
 Route::model('billet', 'App\Billet');
@@ -338,9 +349,9 @@ Route::get('id/mark/{id}', 'IdController@getMark');
 Route::model('events', 'App\Events');
 Route::resource('events', 'EventController', ['middleware' => 'auth']);
 Route::get('/events/export/{events}', [
-  'as'         => 'event.export',
-  'uses'       => 'EventController@export',
-  'middleware' => 'auth'
+    'as' => 'event.export',
+    'uses' => 'EventController@export',
+    'middleware' => 'auth'
 ]);
 
 Route::model('config', 'App\MedusaConfig');
@@ -349,24 +360,24 @@ Route::resource('config', 'ConfigController', ['middleware' => 'auth']);
 // API calls
 
 Route::get(
-  '/api/branch',
-  'ApiController@getBranchList'
+    '/api/branch',
+    'ApiController@getBranchList'
 ); // Get a list of all the tRMN branches
 Route::get(
-  '/api/country',
-  'ApiController@getCountries'
+    '/api/country',
+    'ApiController@getCountries'
 ); // Get a list of Countries and Country Codes
 Route::get(
-  '/api/branch/{branchID}/grade',
-  'ApiController@getGradesForBranch'
+    '/api/branch/{branchID}/grade',
+    'ApiController@getGradesForBranch'
 ); // Get a list of pay grades for that branch
 Route::get(
-  '/api/chapter',
-  'ApiController@getChapters'
+    '/api/chapter',
+    'ApiController@getChapters'
 ); // Get a list of all the chapters
 Route::get(
-  '/api/chapter/{branchID}/{location?}',
-  'ApiController@getChaptersByBranch'
+    '/api/chapter/{branchID}/{location?}',
+    'ApiController@getChaptersByBranch'
 );
 Route::get('/api/locations', 'ApiController@getChapterLocations');
 Route::get('/api/holding', 'ApiController@getHoldingChapters');
@@ -385,50 +396,50 @@ Route::get('/api/center', 'ApiController@getCenters');
 Route::get('/api/institute', 'ApiController@getInstitutes');
 Route::get('/api/university', 'ApiController@getUniversities');
 Route::get(
-  '/api/branch/{branchID}/rate',
-  'ApiController@getRatingsForBranch'
+    '/api/branch/{branchID}/rate',
+    'ApiController@getRatingsForBranch'
 ); // Get a list of all the ratings
 Route::get(
-  '/api/korder/{orderid}',
-  'ApiController@getKnightClasses'
+    '/api/korder/{orderid}',
+    'ApiController@getKnightClasses'
 ); // Get the classes for a Knightly Order
 Route::post(
-  '/api/photo',
-  'ApiController@savePhoto',
-  ['middleware' => 'auth']
+    '/api/photo',
+    'ApiController@savePhoto',
+    ['middleware' => 'auth']
 ); // File Photo upload
 Route::get('/api/find/{query?}', [
-  'as'         => 'user.find.api',
-  'uses'       => 'ApiController@findMember',
-  'middleware' => 'auth'
+    'as' => 'user.find.api',
+    'uses' => 'ApiController@findMember',
+    'middleware' => 'auth'
 ]); // search for a member
 Route::get(
-  '/api/exam',
-  'ApiController@findExam',
-  ['middleware' => 'auth']
+    '/api/exam',
+    'ApiController@findExam',
+    ['middleware' => 'auth']
 ); // search for an exam
 Route::get(
-  '/api/checkemail/{email}',
-  'ApiController@checkAddress'
+    '/api/checkemail/{email}',
+    'ApiController@checkAddress'
 ); // Check that an email address is available
 Route::get(
-  '/api/findchapter/{query?}',
-  ['as' => 'chapter.find.api', 'uses' => 'ApiController@findChapter']
+    '/api/findchapter/{query?}',
+    ['as' => 'chapter.find.api', 'uses' => 'ApiController@findChapter']
 );
 Route::get('/api/ribbonrack/{memberid}',
-  ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);
+    ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 
 // This MUST be the last route
 Route::get(
-  '/user/{user}/{message?}',
-  [
-    'as'        => 'user.show',
-    'uses'      => 'UserController@show',
-    'middlware' => 'auth'
-  ]
+    '/user/{user}/{message?}',
+    [
+        'as' => 'user.show',
+        'uses' => 'UserController@show',
+        'middlware' => 'auth'
+    ]
 );
 
-Route::any( '{catchall}', function ( $url ) {
+Route::any('{catchall}', function ($url) {
     return response()->view('errors.404');
-} )->where('catchall', '(.*)');
+})->where('catchall', '(.*)');
