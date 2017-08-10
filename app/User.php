@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use DateTime;
 use Exception;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -1543,12 +1544,26 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $tmp = [];
 
+        $today = Carbon::today('America/New_York');
+
         foreach ($this->awards as $code => $award) {
             if ($award['location'] === $location) {
+                // Check for awards that haven't been given yet, adjust count as needed
+
+                foreach ($award['award_date'] as $date) {
+                    $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2);
+
+                    if ($awardDate->gt($today)) {
+                        $award['count']--; // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                    }
+                }
+
                 $award['code'] = $code;
-                $award['name'] =
-                    Award::where('code', '=', $code)->first()->name;
-                $tmp[Award::getDisplayOrder($code)] = $award;
+                $award['name'] = Award::where('code', '=', $code)->first()->name;
+
+                if ($award['count'] > 0)  {
+                    $tmp[Award::getDisplayOrder($code)] = $award;
+                }
             }
         }
 
@@ -1642,7 +1657,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return isset($this->awards[$awardAbbr]);
     }
 
-    public function addAward(array $award) {
+    public function addUpdateAward(array $award) {
         foreach($award as $awardCode => $awardInfo) {
             // Check that we have all the required fields in the info
             if (isset($awardInfo['count']) === false || isset($awardInfo['location']) === false || isset($awardInfo['award_date']) === false) {

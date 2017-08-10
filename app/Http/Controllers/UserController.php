@@ -15,6 +15,7 @@ use App\Permissions\MedusaPermissions;
 use App\Ptitles;
 use App\Rating;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -775,8 +776,8 @@ class UserController extends Controller
             $orders[$order->id] = $order->order;
         }
 
-        $user->leftRibbonCount = count($user->getRibbons('L'));
         $user->leftRibbons = $user->getRibbons('L');
+        $user->leftRibbonCount = count($user->leftRibbons);
         $user->numAcross = 3;
 
         return view(
@@ -1506,14 +1507,60 @@ class UserController extends Controller
         }
 
         $awards = [];
+        $curAwards = Auth::user()->awards;
 
         if (isset($data['ribbon']) === true) {
             foreach ($data['ribbon'] as $award) {
+
+                if (empty($curAwards[$award]) === false) {
+                    // Preserve all the valid dates, taking no more than the quantity specified in the form submission
+                    $awardDates = array_where($curAwards[$award]['award_date'], function($value, $key) {
+                        return $value != '1970-01-01';
+                    });
+
+                    asort($awardDates);
+
+                    $numPending = 0;
+                    $today = Carbon::today('America/New_York');
+
+                    // Count the number of awards that are in the future
+                    foreach($awardDates as $date) {
+                        if (Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2)->gt($today)) {
+                            $numPending++;
+                        }
+                    }
+
+                    // If the number of awards specified is less than the current count, add in the number pending
+                    if ($data[$award . '_quantity'] < $curAwards[$award]['count']) {
+                        $data[$award . '_quantity'] += $numPending;
+                    }
+
+                    // If we have more valid dates than the quantity, only take as many dates as we have awards
+                    if (count($awardDates) > $data[$award . '_quantity']) {
+                        $awardDates = array_slice($awardDates, $data[$award . '_quantity']);
+                    }
+
+                    if ($data[$award . '_quantity'] > $curAwards[$award]['count']) {
+                        // Number of award instances specified is greater than the current value
+                        // Fill out the start of the array as needed
+                        $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - $curAwards[$award]['count'], '1970-01-01'), $awardDates);
+                    } elseif ($data[$award . '_quantity'] < $curAwards[$award]['count']) {
+                        // The number of award instances has been reduced
+                        // Fill out the start of the array as needed
+                        $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - count($awardDates), '1970-01-01'), $awardDates);
+                    } elseif (count($awardDates) === 0) {
+                        $awardDates = array_fill(0, $data[$award . '_quantity'], '1970-01-01');
+                    }
+                } else {
+                    $awardDates = array_fill(0, $data[$award . '_quantity'], '1970-01-01');
+                }
+
                 $awards[$award] =
                     [
                         'count' => $data[$award . '_quantity'],
                         'location' => Award::where('code', '=', $award)
-                            ->first()->location
+                            ->first()->location,
+                        'award_date' => $awardDates,
                     ];
             }
         }
