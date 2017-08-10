@@ -90,7 +90,7 @@ class SWP
             if ($required === true && count($departments) == $swpQual['NumDepts']) {
                 // Yes they do, add it.
 
-                $event->user->addAward([
+                $event->user->addUpdateAward([
                     substr($swpType, 0, 1) . 'SWP' => [
                         'count' => 1,
                         'location' => 'TL',
