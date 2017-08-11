@@ -235,8 +235,32 @@ div.name-badge-spacer {
   width: 262px;
 }
 
-.MT, .MID, .WS {
-  margin-bottom: -215px;
+.ribbons .stripes img {
+  margin-bottom: 0px;
+}
+
+/* Narrow screens <= 680px wide */
+div.stripes {
+  width: 170px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.MT ~ .MID, .MT ~ .WS {
+  margin-top: -92px;
+}
+
+/* Regular screens >= 681px wide */
+@media screen and (min-width: 42.5625em) {
+  div.stripes {
+    width: 226px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .MT ~ .MID, .MT ~ .WS {
+    margin-top: -123px;
+  }
 }
 
 .HS {
