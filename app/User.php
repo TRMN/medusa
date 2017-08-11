@@ -1544,6 +1544,30 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return self::where('member_id', '=', $memberId)->firstOrFail();
     }
 
+    public function getCurrentAwards()
+    {
+        $awards = [];
+
+        $today = Carbon::today('America/New_York');
+
+        foreach($this->awards as $code => $award) {
+            foreach ($award['award_date'] as $date) {
+                $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2);
+
+                if ($awardDate->gt($today)) {
+                    $award['count']--; // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                }
+            }
+
+            if ($award['count'] > 0) {
+                $award['award_date'] = array_slice($award['award_date'], 0, $award['count']);
+                $awards[$code] = $award;
+            }
+        }
+
+        return $awards;
+    }
+
     public function getRibbons($location = 'L')
     {
         $tmp = [];

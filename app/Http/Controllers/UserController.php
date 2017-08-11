@@ -1467,6 +1467,8 @@ class UserController extends Controller
             }
         }
 
+        Auth::user()->awards = Auth::user()->getCurrentAwards();
+
         return view('user.rack',
             ['user' => Auth::user(), 'unitPatchPaths' => $unitPatchPaths]);
     }
@@ -1506,7 +1508,6 @@ class UserController extends Controller
             }
         }
 
-        $awards = [];
         $curAwards = Auth::user()->awards;
 
         if (isset($data['ribbon']) === true) {
@@ -1531,8 +1532,10 @@ class UserController extends Controller
                     }
 
                     // If the number of awards specified is less than the current count, add in the number pending
-                    if ($data[$award . '_quantity'] < $curAwards[$award]['count']) {
+                    if ($data[$award . '_quantity'] + $numPending <= $curAwards[$award]['count']) {
                         $data[$award . '_quantity'] += $numPending;
+                    } else {
+                        $data[$award . '_quantity'] = $curAwards[$award]['count'];
                     }
 
                     // If we have more valid dates than the quantity, only take as many dates as we have awards
@@ -1548,14 +1551,14 @@ class UserController extends Controller
                         // The number of award instances has been reduced
                         // Fill out the start of the array as needed
                         $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - count($awardDates), '1970-01-01'), $awardDates);
-                    } elseif (count($awardDates) === 0) {
-                        $awardDates = array_fill(0, $data[$award . '_quantity'], '1970-01-01');
+                    } elseif (count($awardDates) < $data[$award . '_quantity']) {
+                        $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - count($awardDates), '1970-01-01'), $awardDates);
                     }
                 } else {
                     $awardDates = array_fill(0, $data[$award . '_quantity'], '1970-01-01');
                 }
 
-                $awards[$award] =
+                $curAwards[$award] =
                     [
                         'count' => $data[$award . '_quantity'],
                         'location' => Award::where('code', '=', $award)
@@ -1565,7 +1568,7 @@ class UserController extends Controller
             }
         }
 
-        Auth::user()->awards = $awards;
+        Auth::user()->awards = $curAwards;
 
         if (empty($data['unitPatch']) === false) {
             Auth::user()->unitPatchPath = $data['unitPatch'];
