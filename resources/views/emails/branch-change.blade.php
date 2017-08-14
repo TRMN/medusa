@@ -27,9 +27,7 @@
 
 <p>In Service,</p>
 
-<p>Rear Admiral of the Red<br>
-    Stephanie Taylor SC GS<br>
-    5th Space Lord, BuPersonnel - TRMN<br/>
+<p>{{App\MedusaConfig::get('bupers.sig')}}
     <a href="mailto:bupers@trmn.org">bupers@trmn.org</a></p>
 
 <p><em>-- <br>

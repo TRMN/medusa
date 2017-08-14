@@ -53,9 +53,7 @@ the organization, your journey has just begun.</p>
 
 <p>In Service,</p>
 
-<p>Kim Niemeyer, KDE, SC<br />
-Rear Admiral of the Red, RMN<br />
-5th Space Lord, Bureau of Personnel<br />
+<p>{{App\MedusaConfig::get('bupers.sig')}}
 <a href="mailto:bupers@trmn.org">bupers@trmn.org</a></p>
 </body>
 </html>
