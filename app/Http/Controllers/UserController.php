@@ -1085,7 +1085,6 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
 
-
         $data['awards'] = $user->awards;
 
         try {
@@ -1470,7 +1469,45 @@ class UserController extends Controller
         Auth::user()->awards = Auth::user()->getCurrentAwards();
 
         return view('user.rack',
-            ['user' => Auth::user(), 'unitPatchPaths' => $unitPatchPaths]);
+            [
+                'user' => Auth::user(),
+                'unitPatchPaths' => $unitPatchPaths,
+                'restricted' => MedusaConfig::get('awards.restricted', ['OSWP', 'ESWP', 'MCAM']),
+                'wings' => MedusaConfig::get('awards.wings', [
+                    "Aerospace Wings" => [
+                        "EAW",
+                        "OAW",
+                        "ESAW",
+                        "OSAW",
+                        "EMAW",
+                        "OMAW"
+                    ],
+                    "Navigator Wings" => [
+                        "ENW",
+                        "ONW",
+                        "ESNW",
+                        "OSNW",
+                        "EMNW",
+                        "OMNW"
+                    ],
+                    "Observer Wings" => [
+                        "EOW",
+                        "OOW",
+                        "ESOW",
+                        "OSOW",
+                        "EMOW",
+                        "OMOW"
+                    ],
+                    "Simulator Wings" => [
+                        "ESW",
+                        "OSW",
+                        "ESSW",
+                        "OSSW",
+                        "EMSW",
+                        "OMSW"
+                    ]
+                ]),
+            ]);
     }
 
     public function saveRibbonRack()
@@ -1482,9 +1519,52 @@ class UserController extends Controller
         }
         $data = \Request::all();
 
+        // Process the display choice for qualification badges
+
+        $displayChoice = MedusaConfig::get('awards.display', [
+            "OSWP",
+            "ESWP",
+            "SAW",
+            "EAW",
+            "OAW",
+            "ESAW",
+            "OSAW",
+            "EMAW",
+            "OMAW",
+            "ENW",
+            "ONW",
+            "ESNW",
+            "OSNW",
+            "EMNW",
+            "OMNW",
+            "EOW",
+            "OOW",
+            "ESOW",
+            "OSOW",
+            "EMOW",
+            "OMOW",
+            "ESW",
+            "OSW",
+            "ESSW",
+            "OSSW",
+            "EMSW",
+            "OMSW",
+            "HS"
+        ]);
+
+        foreach($displayChoice as $qualBadge) {
+            $data[$qualBadge . '_display'] = false;
+        }
+
+        $data[$data['qualbadge_display'] . '_display'] = true;
+
+        // Process the groups
+
         $groups = array_where($data, function ($value, $key) {
             return substr($key, 0, 5) == 'group';
         });
+
+        // Process the selects
 
         $selects = array_where($data, function ($value, $key) {
             return substr($key, -4) == '_chk';
@@ -1509,33 +1589,22 @@ class UserController extends Controller
         }
 
         $curAwards = Auth::user()->awards;
+        $awards = [];
 
         if (isset($data['ribbon']) === true) {
             foreach ($data['ribbon'] as $award) {
 
                 if (empty($curAwards[$award]) === false) {
-                    // Preserve all the valid dates, taking no more than the quantity specified in the form submission
-                    $awardDates = array_where($curAwards[$award]['award_date'], function($value, $key) {
-                        return $value != '1970-01-01';
-                    });
+                    // Preserve all the valid dates
+                    $awardDates = $this->_preserveValidDates($curAwards[$award]['award_date']);
 
                     asort($awardDates);
 
-                    $numPending = 0;
-                    $today = Carbon::today('America/New_York');
-
-                    // Count the number of awards that are in the future
-                    foreach($awardDates as $date) {
-                        if (Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2)->gt($today)) {
-                            $numPending++;
-                        }
-                    }
+                    $numPending = $this->_countPendingAwards($awardDates);
 
                     // If the number of awards specified is less than the current count, add in the number pending
                     if ($data[$award . '_quantity'] + $numPending <= $curAwards[$award]['count']) {
                         $data[$award . '_quantity'] += $numPending;
-                    } else {
-                        $data[$award . '_quantity'] = $curAwards[$award]['count'];
                     }
 
                     // If we have more valid dates than the quantity, only take as many dates as we have awards
@@ -1546,29 +1615,49 @@ class UserController extends Controller
                     if ($data[$award . '_quantity'] > $curAwards[$award]['count']) {
                         // Number of award instances specified is greater than the current value
                         // Fill out the start of the array as needed
-                        $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - $curAwards[$award]['count'], '1970-01-01'), $awardDates);
+                        $awardDates = array_merge(array_fill(0,
+                            $data[$award . '_quantity'] - $curAwards[$award]['count'], '1970-01-01'), $awardDates);
                     } elseif ($data[$award . '_quantity'] < $curAwards[$award]['count']) {
                         // The number of award instances has been reduced
                         // Fill out the start of the array as needed
-                        $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - count($awardDates), '1970-01-01'), $awardDates);
+                        $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - count($awardDates),
+                            '1970-01-01'), $awardDates);
                     } elseif (count($awardDates) < $data[$award . '_quantity']) {
-                        $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - count($awardDates), '1970-01-01'), $awardDates);
+                        $awardDates = array_merge(array_fill(0, $data[$award . '_quantity'] - count($awardDates),
+                            '1970-01-01'), $awardDates);
                     }
                 } else {
                     $awardDates = array_fill(0, $data[$award . '_quantity'], '1970-01-01');
                 }
 
-                $curAwards[$award] =
+                $awards[$award] =
                     [
                         'count' => $data[$award . '_quantity'],
                         'location' => Award::where('code', '=', $award)
                             ->first()->location,
                         'award_date' => $awardDates,
+                        'display' => isset($data[$award . '_display']) ? $data[$award . '_display'] : true,
                     ];
             }
         }
 
-        Auth::user()->awards = $curAwards;
+        // Find out what awards are not present in the new list
+
+        $notPresent = array_diff_key($curAwards, $awards);
+
+        // Iterate through the not presents and see if we have any pending awards
+
+        foreach ($notPresent as $code => $award) {
+            $award['award_date'] = (array)$this->_preserveFutureDates($award['award_date']);
+            $award['count'] = $this->_countPendingAwards($award['award_date']);
+
+            if ($award['count'] > 0) {
+                // We have a pending award, add it to the new list
+                $awards[$code] = $award;
+            }
+        }
+
+        Auth::user()->awards = $awards;
 
         if (empty($data['unitPatch']) === false) {
             Auth::user()->unitPatchPath = $data['unitPatch'];
@@ -1599,5 +1688,36 @@ class UserController extends Controller
         $id = Session::pull('orig_user');
         Auth::login(User::find($id));
         return back();
+    }
+
+    private function _preserveValidDates(array $dates)
+    {
+        return array_where($dates, function ($value, $key) {
+            return $value != '1970-01-01';
+        });
+    }
+
+    private function _preserveFutureDates(array $dates)
+    {
+        $today = Carbon::today('America/New_York');
+
+        return array_where($dates, function ($value, $key) use ($today) {
+            return Carbon::createFromFormat('Y-m-d H', $value . ' 0')->addDays(2)->gt($today);
+        });
+    }
+
+    private function _countPendingAwards(array $awardDates)
+    {
+        $numPending = 0;
+        $today = Carbon::today('America/New_York');
+
+        // Count the number of awards that are in the future
+        foreach ($awardDates as $date) {
+            if (Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2)->gt($today)) {
+                $numPending++;
+            }
+        }
+
+        return $numPending;
     }
 }

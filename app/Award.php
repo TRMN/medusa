@@ -73,9 +73,8 @@ class Award extends Eloquent
         return $ribbons;
     }
 
-    public static function getAerospaceWings()
-    {
-        return self::_getAwards('TL', [
+    public static function getAerospaceWings(
+        array $limit = [
             'SAW',
             'EAW',
             'OAW',
@@ -101,7 +100,10 @@ class Award extends Eloquent
             'OSSW',
             'EMSW',
             'OMSW'
-        ]);
+        ]
+    )
+    {
+        return self::_getAwards('TL', $limit);
     }
 
     public static function getLeftRibbons()
