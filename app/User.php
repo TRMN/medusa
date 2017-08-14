@@ -1571,7 +1571,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $today = Carbon::today('America/New_York');
 
         foreach ($this->awards as $code => $award) {
-            if ($award['location'] === $location) {
+            if ($award['location'] === $location && $award['display'] === true) {
                 // Check for awards that haven't been given yet, adjust count as needed
 
                 foreach ($award['award_date'] as $date) {

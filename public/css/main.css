@@ -700,6 +700,16 @@ div.stripes {
   padding-bottom: 5px;
   clear: both; }
 
+.qual-badges {
+  height: 75px; }
+
+.vertical-center-qual-badges {
+  top: 50%;
+  margin-top: -5px; }
+
+.top-15 {
+  top: 15%; }
+
 .ribbon_group_select {
   background: black !important;
   color: whitesmoke !important; }
