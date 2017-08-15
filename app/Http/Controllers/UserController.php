@@ -1587,7 +1587,7 @@ class UserController extends Controller
                 $data[$award->code . '_quantity'] = 1;
             }
         }
-
+//die('<pre>' . print_r($data, true));
         $curAwards = Auth::user()->awards;
         $awards = [];
 

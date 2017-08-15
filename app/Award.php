@@ -29,7 +29,7 @@ class Award extends Eloquent
             $query = $query->whereIn('code', $limit);
         }
 
-        $query = $query->get();
+        $query = $query->orderBy('display_order')->get();
 
         foreach ($query as $ribbon) {
             $awards[$ribbon->code] = $ribbon;
