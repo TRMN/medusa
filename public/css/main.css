@@ -1186,3 +1186,18 @@ tr:nth-of-type(even) {
 .f-dropdown.content {
   background: #000 !important;
   word-wrap: break-word; }
+
+.tabs .tab-title > a, .tabs dd > a {
+  display: block;
+  color: lightgoldenrodyellow;
+  font-family: "Incised 901 W01 Light";
+  font-size: 1rem;
+  padding: .5rem;
+  border: 2px inset whitesmoke;
+  background: none; }
+
+.tabs .tab-title.active > a, .tabs dd.active > a {
+  border-bottom: none;
+  color: #ffee00;
+  background: none;
+  font-weight: bold; }

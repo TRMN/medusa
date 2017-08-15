@@ -1,5 +1,9 @@
 <div id="user-profile" class="row">
     <div class="columns small-8">
+        <ul class="tabs" data-tab>
+            <li class="tab-title active"><a href="#">Service Record</a></li>
+            <li class="tab-title"><a href="#">Promotion Points</a></li>
+        </ul>
         <h4 class="trmn my">
             @if($user->registration_status != "Pending")
                 Service Record
