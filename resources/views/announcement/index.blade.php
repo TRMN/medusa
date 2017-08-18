@@ -46,7 +46,7 @@ Announcements
     </tbody>
 </table>
 
-<a href="{!! route('announcement.create') !!}" class="button">Create New</a>
+<a href="{!! route('announcement.create') !!}" class="btn">Create New</a>
 
 @stop
 
@@ -63,7 +63,7 @@ Announcements
       }
 
     jQuery('#announcementList').DataTable({
-        "columns": [
+        "": [
             null,
             null,
             null,

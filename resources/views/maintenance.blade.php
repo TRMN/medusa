@@ -32,17 +32,17 @@
 <body id="down">
 <div style="width: 100%; float: left">
     <div class="row">
-        <div class="columns small-12 Incised901Black"><br />"Oops!"</div>
+        <div class=" col-sm-12 Incised901Black"><br />"Oops!"</div>
     </div>
     <div class="row">
-        <div class="columns small-1">&nbsp;</div>
-        <div class="columns small-11 Incised901Light">Commander Shannon Foraker, <em>Ashes of Victory</em><br /><br /></div>
+        <div class=" col-sm-1">&nbsp;</div>
+        <div class=" col-sm-11 Incised901Light">Commander Shannon Foraker, <em>Ashes of Victory</em><br /><br /></div>
     </div>
     <div class="row">
-        <div class="columns small-12 text-center"><img src="{!!asset('seals/RMN.svg')!!}" width="50%" height="50%"/></div>
+        <div class=" col-sm-12 text-center"><img src="{!!asset('seals/RMN.svg')!!}" width="50%" height="50%"/></div>
     </div>
     <div class="row">
-        <div class="columns small-12 Incised901Bold"><br /><em>Actually, Sir Horace and his team of crackerjack cyberneticists are busy installing new molycircs.  Please be patient while they finish and return MEDUSA to full operation.</em></div>
+        <div class=" col-sm-12 Incised901Bold"><br /><em>Actually, Sir Horace and his team of crackerjack cyberneticists are busy installing new molycircs.  Please be patient while they finish and return MEDUSA to full operation.</em></div>
     </div>
 </div>
 @if(App::environment('local') === true)

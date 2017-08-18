@@ -10,22 +10,22 @@
     {!! Form::model( $exam, [ 'route' => 'exam.updateExam'] ) !!}
     {!! Form::hidden('id', $exam->id) !!}
     <div class="row">
-        <div class="small-2 columns ninety Incised901Light">
+        <div class="col-sm-2  ninety Incised901Light">
             {!! Form::label('name', 'Exam Description') !!}
         </div>
-        <div class="small-4 columns ninety Incised901Light end">
+        <div class="col-sm-4  ninety Incised901Light ">
             {!! Form::text('name') !!}
         </div>
     </div>
 
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
+        <div class="col-sm-6  ninety Incised901Light ">
             {!! Form::checkbox('enabled') !!} Exam Enabled
         </div>
     </div>
 
 
-    <a class="button round"
-       href="{!! URL::previous() !!}">Cancel</a> {!! Form::submit( 'Save', [ 'class' => 'button round' ] ) !!}
+    <a class="btn round"
+       href="{!! URL::previous() !!}">Cancel</a> {!! Form::submit( 'Save', [ 'class' => 'btn round' ] ) !!}
     {!! Form::close() !!}
 @stop

@@ -19,7 +19,7 @@ gulp.task('sass:watch', function () {
 });
 
 gulp.task( 'browserify', function() {
-    return browserify( './javascript/main.js')
+    return browserify( './js/app.js')
         .bundle()
         .on( 'error', function ( err ) {
             console.log( err.toString() );
@@ -36,7 +36,7 @@ gulp.task( 'browserify', function() {
 
 // Watch Files For Changes
 gulp.task( 'watch', function() {
-    gulp.watch( 'javascript/*.js', [ 'browserify' ] );
+    gulp.watch( 'js/*.js', [ 'browserify' ] );
 });
 
 // Default Task

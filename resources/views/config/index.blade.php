@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="row">
-        <div class="column small-12 Incised901Light">
+        <div class=" col-sm-12 Incised901Light">
             <h1>Configuration Settings</h1>
         </div>
     </div>
@@ -29,7 +29,7 @@
                         @if(is_array($item->value)) </pre> @endif
                     </td>
                     <td><a href="{!!route('config.edit', [$item->id])!!}" class="tiny fi-pencil green size-24"
-                           title="Edit Config"></a>
+                           data-toggle="tooltip" title="Edit Config"></a>
                         <a href="javascript:deleteConfig('{!!$item->id!!}','{!!$item->key!!}');"
                            class="tiny fi-x red size-24"></a>
                     </td>
@@ -46,7 +46,7 @@
         </table>
     @else
         <div class="row">
-            <div class="column small-12 Incised901Light"><h3>There are no configuration settings stored in the
+            <div class=" col-sm-12 Incised901Light"><h3>There are no configuration settings stored in the
                     database.</h3></div>
         </div>
     @endif

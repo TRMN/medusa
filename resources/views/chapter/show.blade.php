@@ -15,13 +15,13 @@
         }
         ?>
         @if(file_exists(public_path() . $path . $detail->hull_number . '.svg') === true)
-            <div class="columns small-2">
+            <div class=" col-sm-2">
                 <img class='crest' src="{!!asset($path . $detail->hull_number . '.svg')!!}"
                      alt="{!!$detail->chapter_name!!} Crest"
                      width="100px" data-src="{!!asset($path . $detail->hull_number . '.svg')!!}">
             </div>
         @endif
-        <div class="columns small-10 end">
+        <div class=" col-sm-10 ">
             <h2 class="Incised901Bold padding-5">
                 @if(in_array($detail->chapter_type, ['barony', 'county', 'duchy', 'grand_duchy']))
                     {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!} of
@@ -30,12 +30,12 @@
         isset($detail->hull_number) === true) ({!!$detail->hull_number!!}
                 ) @endif @if(empty($detail->idcards_printed) && $permsObj->hasPermissions(['ID_CARD']))
                     <a class="fi-credit-card green size-24" href="/id/bulk/{!!$detail->id!!}"
-                       title="Print ID Cards"></a>
+                       data-toggle="tooltip" title="Print ID Cards"></a>
                     <a class="fi-check green size-24" href="/id/markbulk/{!!$detail->id!!}"
-                       title="Mark ID Cards as printed"
+                       data-toggle="tooltip" title="Mark ID Cards as printed"
                        onclick="return confirm('Mark ID cards as printed for this chapter?')"></a>
                 @elseif(!empty($detail->idcards_printed) && $permsObj->hasPermissions(['ID_CARD']))
-                    <span class="fi-print size-24" title="ID Cards printed"></span> @endif
+                    <span class="fi-print size-24" data-toggle="tooltip" title="ID Cards printed"></span> @endif
             </h2>
 
             <h3 class="Incised901Bold padding-5">{!! isset($detail->ship_class) ? $detail->ship_class . ' Class' : '' !!}</h3>
@@ -44,10 +44,10 @@
 
     @if(!in_array($detail->chapter_type, ['keep', 'barony', 'county', 'duchy', 'grand_duchy', 'steading']))
         <div class="row padding-5">
-            <div class="small-2 columns Incised901Light ninety text-right">
+            <div class="col-sm-2  Incised901Light ninety text-right">
                 Chapter Type:
             </div>
-            <div class="small-10 columns Incised901Light ninety">
+            <div class="col-sm-10  Incised901Light ninety">
                 {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
                 @if(in_array($detail->chapter_type, ['ship', 'station']) === true)
                     @if(empty($detail->decommission_date) === true)
@@ -62,10 +62,10 @@
 
     @if($higher)
         <div class="row padding-5">
-            <div class="small-2 columns Incised901Light ninety text-right">
+            <div class="col-sm-2  Incised901Light ninety text-right">
                 Component of:
             </div>
-            <div class="small-10 columns Incised901Light ninety">
+            <div class="col-sm-10  Incised901Light ninety">
                 <a href="{!!route('chapter.show', $higher->_id)!!}">{!!$higher->chapter_name!!}@if((in_array($higher->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
         isset($higher->hull_number) === true) ({!!$higher->hull_number!!})@endif</a>
             </div>
@@ -73,10 +73,10 @@
     @endif
     @if (count($includes) > 0)
         <div class="row padding-5">
-            <div class="small-2 columns Incised901Light ninety text-right">
+            <div class="col-sm-2  Incised901Light ninety text-right">
                 Elements:
             </div>
-            <div class="small-10 columns Incised901Light ninety">
+            <div class="col-sm-10  Incised901Light ninety">
                 @foreach($includes as $chapter)
                     <a href="{!!route('chapter.show', [$chapter->id])!!}">{!! $chapter->chapter_name !!}@if((in_array($chapter->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
         isset($chapter->hull_number) === true) ({!!$chapter->hull_number!!}) @endif</a>
@@ -89,7 +89,7 @@
     @if (count($command) > 0)
         <br/>
         <div class="row">
-            <div class="columns small-7 end text-center">
+            <div class=" col-sm-7 " text-center">
                 <h3 class="Incised901Light">
                     @if(in_array($detail->chapter_type, ['keep', 'barony', 'county', 'duchy', 'grand_duchy', 'steading']))
                         {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
@@ -101,10 +101,10 @@
         </div>
         @foreach($command as $info)
             <div class="row">
-                <div class="columns small-2 Incised901Light text-right">
+                <div class=" col-sm-2 Incised901Light text-right">
                     {!!$info['display']!!}:
                 </div>
-                <div class="columns small-5 end Incised901Light">
+                <div class=" col-sm-5 " Incised901Light">
                     @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                         <a href="{!! route('user.show' , [$info['user']->id]) !!}">
                             @endif
@@ -115,7 +115,7 @@
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                         </a>
                         @if($info['user']->hasNewExams())
-                            <span class="fi-star red" title="New Exams Posted">&nbsp</span>
+                            <span class="fi-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp</span>
                         @endif
                     @endif
                 </div>
@@ -126,7 +126,7 @@
     @if (count($crew) > 0 && (Auth::user()->getAssignedShip() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true))
         <br/>
         <div class="row padding-5">
-            <div class="columns small-10 text-center end">
+            <div class=" col-sm-10 text-center ">
                 <h3 class="Incised901Light">
                     @if(in_array($detail->chapter_type, ['keep', 'barony', 'county', 'duchy', 'grand_duchy', 'steading']))
                         {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
@@ -137,20 +137,20 @@
             </div>
         </div>
         <div class="row padding-5">
-            <div class="small-10 end columns Incised901Light ninety">
+            <div class="col-sm-10 "  Incised901Light ninety">
                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                     <br/><a href="{!!route('roster.export', [$detail->id])!!}">Download Roster</a>
                 @endif
             </div>
         </div>
         <div class="row">
-            <div class="small-10 columns Incised901Light end">
+            <div class="col-sm-10  Incised901Light ">
                 <table id="crewRoster" class="compact row-border">
                     <thead>
                         <tr>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                                 <th class="center" width="20"><span class="fi-star red"
-                                                                    title="New Exams Posted">&nbsp;</span></th>
+                                                                    data-toggle="tooltip" title="New Exams Posted">&nbsp;</span></th>
                             @endif
                             <th>Name</th>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
@@ -171,7 +171,7 @@
                             <tr class="zebra-odd">
                                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                                     <td class="center">@if($member->hasNewExams()) <span class="fi-star red"
-                                                                                         title="New Exams Posted">&nbsp;</span> @endif
+                                                                                         data-toggle="tooltip" title="New Exams Posted">&nbsp;</span> @endif
                                     </td>
                                 @endif
                                 <td>
@@ -202,7 +202,7 @@
                     <tfoot>
                         <tr>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                <th class="center"><span class="fi-star red" title="New Exams Posted">&nbsp;</span></th>
+                                <th class="center"><span class="fi-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp;</span></th>
                             @endif
                             <th>Name</th>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)

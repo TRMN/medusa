@@ -21,7 +21,7 @@
                 <td>{!! $client->client_id !!}</td>
                 <td>{!! $client->name !!}</td>
                 <td><a href="{!!route('oauthclient.edit', [$client->id])!!}" class="tiny fi-pencil green size-24"
-                       title="Edit OAuth Client"></a>
+                       data-toggle="tooltip" title="Edit OAuth Client"></a>
                     <a href="javascript:deleteClient('{!!$client->id!!}','{!!$client->name!!}');"
                        class="tiny fi-x red size-24"></a>
                 </td>

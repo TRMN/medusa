@@ -1,5 +1,5 @@
 <div id="user-profile" class="row">
-    <div class="columns small-8">
+    <div class=" col-sm-8">
         <ul class="tabs" data-tab>
             <li class="tab-title active"><a href="#">Service Record</a></li>
             <li class="tab-title"><a href="#">Promotion Points</a></li>
@@ -63,16 +63,16 @@
                         <div class='content'>
                             {!! Form::open(['route' => ['addOrEditNote', $user->id], 'method' => 'post', 'id'=>'note_form']) !!}
                             <div class="row">
-                                <div class="columns small-10 Incised901Light end">
+                                <div class=" col-sm-10 Incised901Light ">
                                     {!! Form::textarea('note_text', $currentNote, $options) !!}
                                 </div>
                             </div>
                             @if ($permsObj->hasPermissions(['EDIT_NOTE']))
                                 <div class="row">
-                                    <div class="columns small-10 Incised901Light end">
-                                        <button class="button round" id="note_clear">Delete</button>
-                                        <button class="button round" id="note_cancel">Cancel
-                                        </button> {!!Form::submit('Save', ['id' => 'save_note', 'class' => 'button round'])!!}
+                                    <div class=" col-sm-10 Incised901Light ">
+                                        <button class="btn btn-primary" id="note_clear">Delete</button>
+                                        <button class="btn btn-primary" id="note_cancel">Cancel</button>
+                                        {!!Form::submit('Save', ['id' => 'save_note', 'class' => 'btn btn-primary'])!!}
                                     </div>
                                 </div>
                             @endif
@@ -94,7 +94,7 @@
                 </h5>
                 @foreach($user->getPeerages() as $peerage)
                     <div class="row">
-                        <div class="small-2 medium-2 large-2 columns text-left">
+                        <div class="col-sm-2 medium-2 large-2  text-left">
                             <?php
                             $path = '';
 
@@ -119,12 +119,12 @@
                             @if(file_exists(public_path() . $path) === true && empty($path) === false)
                                 <img class='crest' src="{!!asset($path)!!}"
                                      alt="{!!$fullTitle!!}"
-                                     width="50px" title="{!!$toolTip!!}">
+                                     width="50px" data-toggle="tooltip" title="{!!$toolTip!!}">
                             @else
                                 &nbsp;
                             @endif
                         </div>
-                        <div class="small-8 medium-8 large-8 columns Incised901Light ninety text-left vertical-center-50px">
+                        <div class="col-sm-8 medium-8 large-8  Incised901Light ninety text-left vertical-center-50px">
                             @if(empty($peerage['courtesy']) === false)
                                 <em>
                                     @endif
@@ -134,7 +134,7 @@
                             @endif
                         </div>
 
-                        <div class="small-2 medium-2 large-2 columns end text-left vertical-center-50px">
+                        <div class="col-sm-2 medium-2 large-2  " text-left vertical-center-50px">
                             @if($permsObj->hasPermissions(['EDIT_PEERAGE', 'DEL_PEERAGE']))
                                 @if($permsObj->hasPermissions(['EDIT_PEERAGE']))
                                     <a href="#" data-peerage-id="{!!$peerage['peerage_id']!!}"
@@ -167,27 +167,32 @@
                     <div class="content">
                         {!! Form::open(['route' => ['addOrEditPeerage', $user->id], 'method' => 'post', 'files' => true, 'id'=>'peerage_form']) !!}
                         <div class="row">
-                            <div class="small-4 columns Incised901Light ninety text-left">{!!Form::select('ptitle', $ptitles, '', ['id' => 'ptitle'])!!}{{Form::checkbox('courtesy', 1, null, ['id' => 'courtesy'])}}
-                                <label for="courtesy" id="courtesy_label">Courtesy Title</label></div>
-                            <div class="small-4 columns Incised901Light ninety text-left">
+                            <div class="col-sm-3  Incised901Light ninety text-left">
+                                {!!Form::select('ptitle', $ptitles, '', ['id' => 'ptitle', 'class' => 'selectize'])!!}
+                            </div>
+                            <div class="col-sm-2 Incised901Light ninety text-left">
+                                {{Form::checkbox('courtesy', 1, null, ['id' => 'courtesy'])}}
+                                <label for="courtesy" id="courtesy_label">Courtesy Title</label>
+                            </div>
+                            <div class="col-sm-3  Incised901Light ninety text-left">
                                 {!!Form::select('generation',
                                 ['' => 'Select Peerage Generation', 'First' => 'First', 'Second' => 'Second', 'Third' => 'Third', 'Fourth' => 'Fourth', 'Fifth'=> 'Fifth'], '',
                                 ['id' => 'generation'])!!}
                                 {!!Form::select('order', $korders, '',['id' => 'order'])!!}
                             </div>
-                            <div class="small-4 columns Incised901Light ninety text-left end">
+                            <div class="col-sm-4  Incised901Light ninety text-left ">
                                 {!!Form::text('lands', null, ['placeholder' => 'Name of Peerage Lands', 'id' => 'lands'])!!}
                                 {!!Form::select('class', ['' => 'Select Class'], null, ['id' => 'class'])!!}
                             </div>
                         </div>
                         <div class="row">
-                            <div class="small-4 columns incised901light ninety text-left">
+                            <div class="col-sm-4  incised901light ninety text-left">
                                 {!!Form::label('arms','Upload Peerage Arms', ['id'=>'arms-label'])!!}
                                 {!!Form::file('arms', ['id' => 'arms'])!!}
                             </div>
-                            <div class="small-8 columns Incised901Light ninety text-left end">
-                                <button class="button round" id="cancel">Cancel
-                                </button> {!!Form::submit('Save Peerage', ['id' => 'save_peerage', 'class' => 'button round'])!!}
+                            <div class="col-sm-8  Incised901Light ninety text-left ">
+                                <button class="btn round" id="cancel">Cancel
+                                </button> {!!Form::submit('Save Peerage', ['id' => 'save_peerage', 'class' => 'btn round'])!!}
                             </div>
                         </div>
                         {!! Form::close() !!}
@@ -206,8 +211,8 @@
         <div class="Incised901Black ninety">
             Contact:
             <div class="row">
-                <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
-                <div class="small-10 columns Incised901Light ninety textLeft end">
+                <div class="col-sm-1  Incised901Light ninety">&nbsp;</div>
+                <div class="col-sm-10  Incised901Light ninety textLeft ">
                     {!! $user->address1 !!}<br/>
                     @if(!empty($user->address2))
                         {!! $user->address2 !!}<br/>
@@ -221,8 +226,8 @@
             @if($permsObj->hasPermissions(['ASSIGN_PERMS'])  && !empty($user->permissions))
                 <br/>
                 <div class="row Incised901Light">
-                    <div class="columns small-2">Permissions:</div>
-                    <div class="columns small-10">
+                    <div class=" col-sm-2">Permissions:</div>
+                    <div class=" col-sm-10">
                         <ul class="small-block-grid-3 ninety">
                             @foreach($user->permissions as $permmission)
                                 <li>{!!$permmission!!}</li>
@@ -234,8 +239,8 @@
             @endif
 
             <div class="row">
-                <div class="small-1 columns Incised901Light ninety">&nbsp;</div>
-                <div class="small-10 columns Incised901Light ninety textLeft end">
+                <div class="col-sm-1  Incised901Light ninety">&nbsp;</div>
+                <div class="col-sm-10  Incised901Light ninety textLeft ">
                     <br/>
                     @if($user->registration_status != "Pending" && (($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || ($permsObj->hasPermissions(['EDIT_MEMBER']))))
                         <a href="{!!route('user.edit', [$user->_id])!!}"
@@ -249,7 +254,7 @@
             </div>
         </div>
     </div>
-    <div class="columns small-4">
+    <div class=" col-sm-4">
         <div class="Incised901Light filePhoto">
             <a href="/id/qrcode/{!!$user->id!!}">{!!$user->member_id!!}</a>
             <div class="filePhotoBox">

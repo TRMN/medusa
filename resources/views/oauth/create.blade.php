@@ -9,28 +9,28 @@
 
     {!! Form::open( [ 'route' => 'oauthclient.store' ] ) !!}
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
+        <div class="col-sm-6  ninety Incised901Light ">
             {!! Form::label('client_id', 'Client ID') !!} {!! Form::text('client_id') !!}
         </div>
     </div>
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
+        <div class="col-sm-6  ninety Incised901Light ">
             {!! Form::label('secret', 'Client Key/Secret') !!} {!! Form::text('secret') !!}
         </div>
     </div>
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
+        <div class="col-sm-6  ninety Incised901Light ">
             {!! Form::label('name', 'Client Name') !!} {!! Form::text('name') !!}
         </div>
     </div>
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
+        <div class="col-sm-6  ninety Incised901Light ">
             {!! Form::label('redirect', 'Redirect URL') !!} {!! Form::text('redirect') !!}
         </div>
     </div>
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
-            {!! Form::submit( 'Save', [ 'class' => 'button round'] ) !!}
+        <div class="col-sm-6  ninety Incised901Light ">
+            {!! Form::submit( 'Save', [ 'class' => 'btn round'] ) !!}
             {!! Form::close() !!}
         </div>
     </div>

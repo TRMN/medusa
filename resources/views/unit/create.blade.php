@@ -76,39 +76,39 @@
 
 {!! Form::model( $chapter, [ 'route' => [ $route . '.store' ] ] ) !!}
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('chapter_name', 'Command or Unit Name') !!} {!! Form::text('chapter_name') !!}
         </div>
 </div>
 {!! $branches !!}
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('chapter_type', 'Command/Unit Type') !!} {!! Form::select('chapter_type', $chapterTypes, null, ['class' => 'selectize']) !!}
         </div>
 </div>
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('hull_number', 'Command/Unit Designation') !!} {!! Form::text('hull_number') !!}
         </div>
     </div>
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
         {!! Form::label('assigned_to', 'Assigned To') !!} {!! Form::select('assigned_to', $commands, null, ['class' => 'selectize']) !!}
     </div>
 </div>
 
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
         {!! Form::label('commission_date', 'Stand-up Date (if appropriate') !!}  {!!Form::date('commission_date')!!}
     </div>
 </div>
 
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
         {!!Form::checkbox('joinable', true, true) !!} New members and transfers may select this unit
     </div>
 </div>
 
-{!! Form::submit( 'Save', [ 'class' => 'button round'] ) !!}
+{!! Form::submit( 'Save', [ 'class' => 'btn round'] ) !!}
 {!! Form::close() !!}
 @stop

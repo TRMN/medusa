@@ -9,17 +9,17 @@ Create a Chapter Type
 
 {!! Form::open( [ 'route' => [ 'type.store' ] ] ) !!}
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('chapter_type', 'Chapter Type') !!} {!! Form::text('chapter_type') !!}
     </div>
 </div>
 
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('chapter_description', 'Chapter Description') !!} {!! Form::text('chapter_description') !!}
     </div>
 </div>
 
-{!! Form::submit( 'Save', [ 'class' => 'button round'] ) !!}
+{!! Form::submit( 'Save', [ 'class' => 'btn round'] ) !!}
 {!! Form::close() !!}
 @stop

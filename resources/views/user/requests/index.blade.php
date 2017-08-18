@@ -44,14 +44,14 @@
                 @endif
                 to</p>
             <div class="row">
-                <div class="end small-6 columns ninety Incised901Light">
+                <div class=" col-sm-6  ninety Incised901Light">
                     {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!} {!! Form::select('primary_assignment', $chapters, null, ['placeholder' => 'Start typing to search for a chapter', 'class' => 'selectize']) !!}
                     {!! Form::hidden('old_assignment', $user->getAssignmentId('primary')) !!}
                 </div>
             </div>
         </fieldset>
     </div>
-    {!! Form::submit('Save', [ 'class' => 'button' ] ) !!}
+    {!! Form::submit('Save', [ 'class' => 'btn' ] ) !!}
 
     {!! Form::close() !!}
 @stop
