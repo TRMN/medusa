@@ -44,9 +44,9 @@
                     <td>
                         @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                             <a class="fi-torso my size-24" href="{!! route('user.show' , [$user->_id]) !!}"
-                               title="View User"></a>
+                               data-toggle="tooltip" title="View User"></a>
                             <a class="tiny fi-pencil green size-24" href="{!! route('user.edit', [ $user->_id ]) !!}"
-                               title="Edit User"></a>
+                               data-toggle="tooltip" title="Edit User"></a>
                         @endif
                     </td>
                 </tr>

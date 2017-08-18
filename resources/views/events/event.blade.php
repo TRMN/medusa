@@ -77,12 +77,12 @@
 
 @section('content')
     <div class="row">
-        <div class="columns small-12 Incised901Light">
+        <div class=" col-sm-12 Incised901Light">
             <h1>{!!$action == "add"? "Schedule": "Edit"!!} an Event</h1>
         </div>
     </div>
     <div class="row">
-        <div class="colums small-12 Incised901Light">
+        <div class="colums col-sm-12 Incised901Light">
             <p>This is MEDUSA Event Scheduler. All events are created here in the web application. Events can be
                 scheduled to track who volunteered and worked at a convention or recruiting table, attended a gaming
                 session or some other chapter activity. Using the MEDUSA Mobile app, you and individuals you designate
@@ -118,46 +118,46 @@
         {!! Form::model( $event, [ 'route' => [ 'events.update', $event->_id ], 'method' => 'put', 'data-abide' => '', 'id' => 'event_form' ] ) !!}
     @endif
     <div class="row">
-        <div class="columns small-10 end">
+        <div class=" col-sm-10 ">
             <fieldset id="location">
                 <legend>Event Name and Location</legend>
                 <div class="row">
-                    <div class="columns small-12 Incised901Light">
+                    <div class=" col-sm-12 Incised901Light">
                         <label for="event_name">Name of the event <span class="yellow">(required)</span></label>
                         {!! Form::text('event_name', empty($event->event_name)? null : $event->event_name, ['placeholder' => 'Name of the event', 'id' => 'event_name', 'required' => '']) !!}
                         <small class="error">The name of the event is required</small>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="column small-12 Incised901Light">
+                    <div class=" col-sm-12 Incised901Light">
                         <label for="address1">Address Line 1 <span class="yellow">(required)</span></label>
                         {!! Form::text('address1', empty($event->address1)? null : $event->address1, ['placeholder' => 'Address line 1', 'id' => 'address1', 'required' => '']) !!}
                         <small class="error">You must provide a location</small>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="columns small=12 Incised901Light">
+                    <div class=" small=12 Incised901Light">
                         {!!Form::label('address2', 'Address Line 2')!!}
                         {!!Form::text('address2', empty($event->address2)? null : $event->address2, ['placeholder' => 'Address line 2', 'id' => 'address2'])!!}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="small-3 columns Incised901Light">
+                    <div class="col-sm-3  Incised901Light">
                         <label for="city">City <span class="yellow">(required)</span></label>
                         {!! Form::text('city', empty($event->city)? null : $event->city, ['placeholder' => 'City', 'id' => 'city', 'required' => '']) !!}
                         <small class="error">City is required</small>
                     </div>
-                    <div class="small-3 columns Incised901Light">
+                    <div class="col-sm-3  Incised901Light">
                         <label for="state_province">State/Province <span class="yellow">(required)</span></label>
                         {!! Form::text('state_province', empty($event->state_province)? null : $event->state_province, ['placeholder' => 'State / Province', 'id' => 'state_province', 'required' => '']) !!}
                         <small class="error">State/Province is required</small>
                     </div>
-                    <div class="small-3 columns Incised901Light">
+                    <div class="col-sm-3  Incised901Light">
                         <label for="postal_code">Zip/Postal Code <span class="yellow">(required)</span></label>
                         {!! Form::text('postal_code', empty($event->postal_code)? null : $event->postal_code, ['placeholder' => 'Zip / Postal Code', 'id' => 'postal_code', 'required' => '']) !!}
                         <small class="error">Zip/Postal Code is required</small>
                     </div>
-                    <div class="small-3 columns Incised901Light">
+                    <div class="col-sm-3  Incised901Light">
                         <label for="country">Country <span class="yellow">(required)</span></label>
                         {!! Form::select('country', $countries, empty($event->country)? '' : $event->country, ['id' => 'country', 'required' => '']) !!}
                         <small class="error">Country is required</small>
@@ -167,12 +167,12 @@
             <fieldset id="dates">
                 <legend>Dates and Event Registrars</legend>
                 <div class="row">
-                    <div class="columns small-6 Incised901Light">
+                    <div class=" col-sm-6 Incised901Light">
                         <label for="start_date">Start Date <span class="yellow">(required)</span></label>
                         {!! Form::date('start_date', empty($event->start_date)? null : $event->start_date, ['id' => 'start_date', 'required' => '', 'placeholder' => 'YYYY-MM-DD']) !!}
                         <small class="error">Start date is required</small>
                     </div>
-                    <div class="columns small-6 Incised901Light">
+                    <div class=" col-sm-6 Incised901Light">
                         <label for="end_date">End Date <span
                                     class="alert">(Leave blank for a single day event)</span></label>
                         {!! Form::date('end_date', empty($event->end_date)? null : $event->end_date, ['id' => 'end_date', 'data-compare' => 'start_date', 'data-abide-validator' => 'greaterThanOrEqual', 'placeholder' => 'YYYY-MM-DD']) !!}
@@ -180,13 +180,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="columns small=12 Incised901Light">
+                    <div class=" small=12 Incised901Light">
                         <label for="registrars">Event Registrars <span class="alert">(optional)</span></label>
                         {!!Form::select('registrars[]', [], null, ['id' => 'registrars'])!!}
                     </div>
                 </div>
             </fieldset>
-            <div class="text-center"><input type="submit" class="button" value="Save"></div>
+            <div class="text-center"><input type="submit" class="btn" value="Save"></div>
         </div>
     </div>
 

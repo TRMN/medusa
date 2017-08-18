@@ -9,48 +9,48 @@ Create an Echelon
 
 {!! Form::model( $chapter, [ 'route' => [ 'echelon.store' ] ] ) !!}
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('chapter_name', 'Echelon Name') !!} {!! Form::text('chapter_name') !!}
         </div>
 </div>
 <div class="row">
-    <div class="end small-6 columns ninety Incised901Light end">
+    <div class=" col-sm-6  ninety Incised901Light ">
         {!! Form::label('branch', "Branch") !!} {!! Form::select('branch', $branches, null, ['class' => 'selectize']) !!}
     </div>
 </div>
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('chapter_type', 'Echelon Type') !!} {!! Form::select('chapter_type', $chapterTypes, null, ['class' => 'selectize']) !!}
         </div>
 </div>
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('hull_number', 'Echelon Designation') !!} {!! Form::text('hull_number') !!}
         </div>
     </div>
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
         {!! Form::label('assigned_to', 'Assigned To') !!} {!! Form::select('assigned_to', $fleets, null, ['class' => 'selectize']) !!}
     </div>
 </div>
 
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
         {!! Form::label('commission_date', 'Creation Date (if appropriate)') !!}  {!!Form::date('commission_date')!!}
     </div>
 </div>
 
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
         {!! Form::label('decommision_date', 'Deactivation Date (if appropriate)') !!}  {!!Form::date('decomission_date')!!}
     </div>
 </div>
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
         {!!Form::checkbox('joinable', true) !!} New members and transfers may select this unit
     </div>
 </div>
 
-{!! Form::submit( 'Save', [ 'class' => 'button round'] ) !!}
+{!! Form::submit( 'Save', [ 'class' => 'btn round'] ) !!}
 {!! Form::close() !!}
 @stop

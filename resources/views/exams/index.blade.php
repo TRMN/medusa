@@ -12,13 +12,13 @@
     <div class="text-center">
         {!! Form::open(['route' => 'exam.upload', 'method' => 'post', 'files' => true]) !!}
         {!!Form::file('file')!!}
-        {!!Form::submit('Upload Grades', ['class' => 'button round', 'id' => 'uploadGrades'])!!}
+        {!!Form::submit('Upload Grades', ['class' => 'btn round', 'id' => 'uploadGrades'])!!}
         {!! Form::close() !!}
     </div>
     @if(count($messages) > 0)
         @foreach($messages as $line)
             <div class="row">
-                <div class="columns small-12 @if($line->severity == 'info') green @else red @endif">
+                <div class=" col-sm-12 @if($line->severity == 'info') green @else red @endif">
                     {!!$line->msg!!}
                 </div>
             </div>

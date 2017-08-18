@@ -9,14 +9,14 @@
 
     {!! Form::model( $billet, [ 'route' => [ 'billet.update', $billet->_id ], 'method' => 'put' ] ) !!}
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
+        <div class="col-sm-6  ninety Incised901Light ">
             {!! Form::label('billet_name', 'Billet Name') !!} {!! Form::text('billet_name') !!}
             {!!Form::hidden('old_name', $billet->billet_name)!!}
         </div>
     </div>
 
 
-    <a class="button round"
-       href="{!! URL::previous() !!}">Cancel</a> {!! Form::submit( 'Save', [ 'class' => 'button round' ] ) !!}
+    <a class="btn round"
+       href="{!! URL::previous() !!}">Cancel</a> {!! Form::submit( 'Save', [ 'class' => 'btn round' ] ) !!}
     {!! Form::close() !!}
 @stop

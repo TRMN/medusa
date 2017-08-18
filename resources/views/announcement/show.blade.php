@@ -6,7 +6,7 @@
 
 @section('content')
 <h1>{!! $announcement->summary !!}</h1>
-<div class="meta"><a href="{!! route( 'announcement.index') !!}" title="Back to Announcement List">Back to Announcement List</a></div>
+<div class="meta"><a href="{!! route( 'announcement.index') !!}" data-toggle="tooltip" title="Back to Announcement List">Back to Announcement List</a></div>
 <div class="meta">
     @if( $announcement->user )
     <div class="author">
@@ -22,6 +22,6 @@
     {!! $announcement->body !!}
 </article>
 @if( Auth::id() == $announcement->user->id)
-    <a class="button" href="{!! route( 'announcement.edit' , $announcement->id ) !!}">Edit</a>
+    <a class="btn" href="{!! route( 'announcement.edit' , $announcement->id ) !!}">Edit</a>
 @endif
 @stop

@@ -171,10 +171,10 @@
         @endif
     @endif
 </div>
-<div style="width: 175px" class="text-center">
-    <a href="/signout"><h3 class="lnav nav-header whitesmoke">Logout</h3></a>
-    <br/>
-    <h5 class="whitesmoke Incised901Light">MEDUSA Mobile</h5>
+<div class="text-center logout">
+    <a href="/signout"><h3 class="lnav nav-header whitesmoke margin-5">Logout</h3></a>
+    <br class="margin-5"/><br clear="both"/>
+    <h4 class="whitesmoke Incised901Light">MEDUSA Mobile</h4>
     <a href='https://play.google.com/store/apps/details?id=org.trmn.medusa&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img
                 alt='Get it on Google Play'
                 src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="175px"/></a><br/>

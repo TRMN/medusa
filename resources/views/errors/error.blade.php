@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="row">
-    <div class="columns small-12">
+    <div class=" col-sm-12">
         <h2>Paging Sir Horace! We've encountered a bug in the Medusa-class database. Say again, we've encountered a bug in the Medusa-class database.</h2>
 
         <p>Please report this error via email (<a href="mailto:bolthole@trmn.org">bolthole@trmn.org</a>) or the <a href="https://bolthole.trmn.org">Web Portal</a>.
@@ -18,7 +18,7 @@
 </div>
 
 <div class="row">
-    <div class="alert-box" data-alert>
+    <div class="alert" data-alert>
         <p>{!! $e->getMessage() !!}</p>
         <p>Stack Trace:</p>
         <p class="small">{!! nl2br($e->getTraceAsString()) !!}</p>

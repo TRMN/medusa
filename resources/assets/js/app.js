@@ -22,7 +22,7 @@ $(document).ready(function ($) {
     var MTIProjectId = '5c059f73-3466-4691-8b9a-27e7d9c1a9c7';
     (function () {
         var mtiTracking = document.createElement('script');
-        mtiTracking.type = 'text/javascript';
+        mtiTracking.type = 'text/js';
         mtiTracking.async = 'true';
         mtiTracking.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + '//fast.fonts.net/t/trackingCode.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(mtiTracking);
@@ -54,20 +54,22 @@ $(document).ready(function ($) {
         }
     };
 
-    $(document).tooltip({
-        items: "[data-src], [title]",
-        position: {my: "left bottom", at: 'left top'},
-        content: function () {
-            var element = $(this);
-            if (element.is("[data-src")) {
-                var source = element.attr("data-src");
-                return "<img src='" + source + "'>";
-            }
-            if (element.is("[title]")) {
-                return element.attr("title");
-            }
-        }
-    });
+    // $(document).tooltip({
+    //     items: "[data-src], [title]",
+    //     position: {my: "left bottom", at: 'left top'},
+    //     content: function () {
+    //         var element = $(this);
+    //         if (element.is("[data-src")) {
+    //             var source = element.attr("data-src");
+    //             return "<img src='" + source + "'>";
+    //         }
+    //         if (element.is("[title]")) {
+    //             return element.attr("title");
+    //         }
+    //     }
+    // });
+
+    $('[data-toggle="tooltip"]').tooltip();
 
     $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
         imageHeight = $('#pm1').height();
@@ -321,7 +323,7 @@ $(document).ready(function ($) {
             collapsible: true,
             header: "h5",
             heightStyle: "content",
-            icons: {"header": "ui-icon-triangle-1-e", "activeHeader": "ui-icon-triangle-1-s"}
+            icons: {"header": "ui-icon-plusthick", "activeHeader": "ui-icon-minusthick"}
         });
     });
 

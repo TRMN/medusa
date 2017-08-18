@@ -11,7 +11,7 @@
     <h1>Manage / Enter Grades</h1>
 
     <div class="row">
-        <div class="columns small-6 ninety Incised901Light end">
+        <div class=" col-sm-6 ninety Incised901Light ">
             {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name'])!!}
         </div>
     </div>
@@ -24,14 +24,14 @@
             <div class="row">
                 {!!Form::open(['route' => 'exam.update', 'id' => 'exam_form'])!!}
                 {!! Form::hidden('member_id', $user->member_id) !!}
-                <div class="columns small-3 ninety Incised901Light">{!!Form::text('exam', '', ['id' => 'exam', 'placeholder' => 'Start typing Exam ID'])!!}</div>
-                <div class="columns small-3 ninety Incised901Light">{!!Form::text('score', '', ['id' => 'score', 'placeholder' => 'Exam Score'])!!}</div>
-                <div class="columns small-3 ninety Incised901Light end">{!!Form::date('date', '', ['id' => 'date', 'placeholder' => 'Exam Date (YYYY-MM-DD)'])!!}</div>
+                <div class=" col-sm-3 ninety Incised901Light">{!!Form::text('exam', '', ['id' => 'exam', 'placeholder' => 'Start typing Exam ID'])!!}</div>
+                <div class=" col-sm-3 ninety Incised901Light">{!!Form::text('score', '', ['id' => 'score', 'placeholder' => 'Exam Score'])!!}</div>
+                <div class=" col-sm-3 ninety Incised901Light ">{!!Form::date('date', '', ['id' => 'date', 'placeholder' => 'Exam Date (YYYY-MM-DD)'])!!}</div>
             </div>
             <div class="row">
-                <div class="columns small-3 ninety Incised901Light end">
-                    <a class="button"
-                       href="{!! URL::route('exam.find', ['user' => $user->id]) !!}">Cancel</a> {!! Form::submit('Save', [ 'class' => 'button' ] ) !!}
+                <div class=" col-sm-3 ninety Incised901Light ">
+                    <a class="btn"
+                       href="{!! URL::route('exam.find', ['user' => $user->id]) !!}">Cancel</a> {!! Form::submit('Save', [ 'class' => 'btn' ] ) !!}
                 </div>
                 {!!Form::close()!!}
             </div>

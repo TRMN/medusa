@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="login-form row">
-        <div class="small-6 small-centered columns">
+        <div class="col-sm-6 small-centered ">
             <h4 class="NordItalic">Reset Your Password</h4>
 
             <form action="{{url('/password/reset')}}" method="POST">
@@ -18,7 +18,7 @@
                 <input type="password" name="password">
                 {!!Form::label('password_confirmation', 'Renter your password')!!}
                 <input type="password" name="password_confirmation">
-                <input type="submit" value="Reset Password" class="button">
+                <input type="submit" value="Reset Password" class="btn">
             </form>
         </div>
     </div>

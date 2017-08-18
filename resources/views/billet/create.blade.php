@@ -9,12 +9,12 @@ Create a Billet
 
 {!! Form::open( [ 'route' => [ 'billet.store' ] ] ) !!}
 <div class="row">
-    <div class="small-6 columns ninety Incised901Light end">
+    <div class="col-sm-6  ninety Incised901Light ">
     {!! Form::label('billet_name', 'Billet Name') !!} {!! Form::text('billet_name') !!}
     </div>
 </div>
 
 
-{!! Form::submit( 'Save', [ 'class' => 'button round'] ) !!}
+{!! Form::submit( 'Save', [ 'class' => 'btn round'] ) !!}
 {!! Form::close() !!}
 @stop

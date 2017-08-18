@@ -88,16 +88,16 @@ registerform
         <legend>You'll use your email address and password to log in to the site</legend>
 
         <div class="row">
-            <div class="small-6 columns">
+            <div class="col-sm-6 ">
                 {!! Form::label( 'email_address', 'Email' ) !!} {!! Form::email( 'email_address' ) !!}
             </div>
         </div>
 
         <div class="row">
-            <div class="small-6 columns">
+            <div class="col-sm-6 ">
                 {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password' ) !!}
             </div>
-            <div class="small-6 columns">
+            <div class="col-sm-6 ">
                 {!! Form::label( 'password_confirmation', 'Confirm Password' ) !!} {!! Form::password( 'password_confirmation' ) !!}
             </div>
         </div>
@@ -108,16 +108,16 @@ registerform
         <legend>We need to know what to call you</legend>
 
         <div class="row">
-            <div class="small-4 columns">
+            <div class="col-sm-4 ">
                 {!! Form::label( 'first_name', 'First Name' ) !!} {!! Form::text( 'first_name' ) !!}
             </div>
-            <div class="small-3 columns">
+            <div class="col-sm-3 ">
                 {!! Form::label( 'middle_name', 'Middle Name' ) !!} {!! Form::text( 'middle_name' ) !!}
             </div>
-            <div class="small-4 columns">
+            <div class="col-sm-4 ">
                 {!! Form::label( 'last_name', 'Last Name' ) !!} {!! Form::text( 'last_name' ) !!}
             </div>
-            <div class="small-1 columns">
+            <div class="col-sm-1 ">
                 {!! Form::label( 'suffix', 'Suffix' ) !!} {!! Form::select('suffix', ['' => 'None', 'Jr' => 'Jr', 'Sr' => 'Sr', 'II' => 'II', 'III' => 'III', 'IV' => 'IV', 'V' => 'V']) !!}
             </div>
         </div>
@@ -131,25 +131,25 @@ registerform
         </legend>
 
         <div class="row">
-            <div class="small-6 columns">
+            <div class="col-sm-6 ">
                 {!! Form::label( 'address1', 'Street Address' ) !!} {!! Form::text( 'address1' ) !!}
             </div>
-            <div class="small-6 columns">
+            <div class="col-sm-6 ">
                 {!! Form::label( 'address2', 'Address Line 2' ) !!} {!! Form::text( 'address2' ) !!}
             </div>
         </div>
 
         <div class="row">
-            <div class="small-3 columns">
+            <div class="col-sm-3 ">
                 {!! Form::label( 'city', 'City' ) !!} {!! Form::text( 'city' ) !!}
             </div>
-            <div class="small-3 columns">
+            <div class="col-sm-3 ">
                 {!! Form::label( 'state_province', 'State/Province' ) !!} {!! Form::text( 'state_province' ) !!}
             </div>
-            <div class="small-3 columns">
+            <div class="col-sm-3 ">
                 {!! Form::label( 'postal_code', 'Zip/Postal Code' ) !!} {!! Form::text( 'postal_code' ) !!}
             </div>
-            <div class="small-3 columns">
+            <div class="col-sm-3 ">
                 {!! Form::label( 'country', 'Country' ) !!} {!! Form::select( 'country', $countries, 'USA' ) !!}
             </div>
         </div>
@@ -158,7 +158,7 @@ registerform
     <h2>Age Verification</h2>
     <fieldset>
         <legend>We only use this to verify your eligibility for certain leadership positions</legend>
-        <div class="small-6 columns end">
+        <div class="col-sm-6  ">
             {!! Form::label('dob', 'Date of Birth') !!} {!!Form::date('dob', $user->dob)!!}
         </div>
     </fieldset>
@@ -168,7 +168,7 @@ registerform
     <fieldset>
         <legend>Please choose which branch you would like to be part of</legend>
         <div class="row">
-            <div class="small-6 columns end">
+            <div class="col-sm-6  ">
                 {!! Form::label( 'branch', "Branch") !!} {!! Form::select( 'branch', $branches, 'RMN' ) !!}
             </div>
         </div>
@@ -178,13 +178,13 @@ registerform
     <fieldset>
         <legend>Please choose what chapter you would like to join</legend>
         <div class="row">
-            <div class="small-12 columns">
+            <div class="col-sm-12 ">
                 <p>If you're not sure, choose one of the holding
                     chapters. You may join any chapter, regardless of your branch</p>
             </div>
         </div>
         <div class="row">
-            <div class="small-6 columns end">
+            <div class="col-sm-6  ">
                 {!! Form::label( 'primary_assignment', "Chapter") !!} {!! Form::select( 'primary_assignment', $chapters ) !!}
             </div>
         </div>
@@ -200,12 +200,12 @@ registerform
     <fieldset>
         <legend>Please prove that you're a sentient being</legend>
         <div class="row">
-            <div class="small-4 columns end">
+            <div class="col-sm-4  ">
                 <div class="g-recaptcha" data-sitekey="6LdcghoTAAAAAKKj3XEL4KMPcUJMUjigT-qwcRvQ"></div>
             </div>
         </div>
     </fieldset>
-    {!! Form::submit( 'Sign me up!', [ 'class' => 'button' ] ) !!}
+    {!! Form::submit( 'Sign me up!', [ 'class' => 'btn' ] ) !!}
 
     {!! Form::close() !!}
 

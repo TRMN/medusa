@@ -9,18 +9,18 @@
 
     {!! Form::open( [ 'route' => 'exam.store' ] ) !!}
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
+        <div class="col-sm-6  ninety Incised901Light ">
             {!! Form::label('name', 'Exam Name') !!} {!! Form::text('name') !!}
         </div>
     </div>
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
+        <div class="col-sm-6  ninety Incised901Light ">
             {!! Form::label('exam_id', 'Exam ID') !!} {!! Form::text('exam_id') !!}
         </div>
     </div>
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
-            {!! Form::submit( 'Save', [ 'class' => 'button round'] ) !!}
+        <div class="col-sm-6  ninety Incised901Light ">
+            {!! Form::submit( 'Save', [ 'class' => 'btn round'] ) !!}
             {!! Form::close() !!}
         </div>
     </div>

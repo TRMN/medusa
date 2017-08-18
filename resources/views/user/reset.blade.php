@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="login-form row">
-        <div class="small-6 small-centered columns">
+        <div class="col-sm-6 small-centered ">
             <h4 class="NordItalic">Change Your Password</h4>
 
             {!!Form::model($user, ['route' => ['user.postReset', $user->id]])!!}
@@ -19,7 +19,7 @@
                 {!!Form::label('password_confirmation', 'Renter your password')!!}
                 {!!Form::password('password_confirmation')!!}
 
-                {!! Form::submit( 'Reset Password', [ 'class' => 'button' ] ) !!}
+                {!! Form::submit( 'Reset Password', [ 'class' => 'btn' ] ) !!}
 
             {!!Form::close()!!}
         </div>
