@@ -32,6 +32,7 @@ mix.js('resources/assets/js/app.js', 'public/js/')
     'resources/assets/js/rcswitcher.min.js',
     'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js'
 ], 'public/js/vendor.js')
+    .sourceMaps()
     .mix.sass('resources/assets/scss/app.scss', 'public/css/app.css')
     .mix.sass('resources/assets/scss/overrides.scss', 'public/css/overrides.css')
     .mix.styles([

@@ -12,7 +12,7 @@
            data-toggle="tooltip" title="ID Card printed, click to reprint"></a>
     @endif
     @if($permsObj->hasPermissions(['USER_MASQ'], true) && $user->id != Auth::id())
-            <a class="fi-torso size-24" href="{{route('switch.start', [$user->id])}}" data-toggle="tooltip" title="Login as this user"></a>
+            <a class="fa fa-user-secret size-24" href="{{route('switch.start', [$user->id])}}" data-toggle="tooltip" title="Login as this user"></a>
     @endif
     <br/>
     <span class="Incised901Light"><em>Date of Rank: {{ date('d M Y', strtotime($user->getDateOfRank())) }}</em></span>

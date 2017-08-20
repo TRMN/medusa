@@ -239,5 +239,5 @@ return [
      * Barnett 1.7.x
      *
      */
-    'version' => "Yeltsin's Star (Project MEDUSA v1.4.0)",
+    'version' => "Yeltsin's Star (Project MEDUSA v1.4.1)",
 ];

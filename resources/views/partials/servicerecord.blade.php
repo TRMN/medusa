@@ -77,9 +77,9 @@
                             @if ($permsObj->hasPermissions(['EDIT_NOTE']))
                                 <div class="row">
                                     <div class=" col-sm-10 Incised901Light ">
-                                        <button class="btn btn-primary" id="note_clear">Delete</button>
-                                        <button class="btn btn-primary" id="note_cancel">Cancel</button>
-                                        {!!Form::submit('Save', ['id' => 'save_note', 'class' => 'btn btn-primary'])!!}
+                                        <button class="btn btn-danger" id="note_clear">Delete</button>
+                                        <button class="btn btn-warning" id="note_cancel">Cancel</button>
+                                        {!!Form::submit('Save', ['id' => 'save_note', 'class' => 'btn btn-success'])!!}
                                     </div>
                                 </div>
                             @endif
@@ -141,7 +141,7 @@
                             @endif
                         </div>
 
-                        <div class="col-sm-2 medium-2 large-2  " text-left vertical-center-50px">
+                        <div class="col-sm-2 medium-2 large-2  text-left vertical-center-50px">
                             @if($permsObj->hasPermissions(['EDIT_PEERAGE', 'DEL_PEERAGE']))
                                 @if($permsObj->hasPermissions(['EDIT_PEERAGE']))
                                     <a href="#" data-peerage-id="{!!$peerage['peerage_id']!!}"
@@ -152,12 +152,12 @@
                                        data-peerage-class="{!!$peerage['postnominal'] or ''!!}"
                                        data-peerage-courtesy="{!!$peerage['courtesy'] or "0"!!}"
                                        data-peerage-filename="{!!$peerage['filename'] or ''!!}"
-                                       class="edit_peerage fi-pencil green">&nbsp;</a>
+                                       class="edit_peerage fa fa-pencil green">&nbsp;</a>
                                 @endif
                                 @if($permsObj->hasPermissions(['DEL_PEERAGE']))
                                     <a href="#" data-peerage-text="{!!$fullTitle!!}" data-user-id="{!!$user->id!!}"
                                        data-peerage-id="{!!$peerage['peerage_id']!!}"
-                                       class="delete_peerage fi-x red">
+                                       class="delete_peerage fa fa-trash red">
                                         &nbsp;</a>
                                 @endif
                             @else
@@ -171,35 +171,35 @@
             @if($permsObj->hasPermissions(['ADD_PEERAGE']))
                 <div class="sbAccordian">
                     <h5 id="peerage-container">Add Peerage</h5>
-                    <div class="content">
+                    <div>
                         {!! Form::open(['route' => ['addOrEditPeerage', $user->id], 'method' => 'post', 'files' => true, 'id'=>'peerage_form']) !!}
                         <div class="row">
-                            <div class="col-sm-3  Incised901Light ninety text-left">
-                                {!!Form::select('ptitle', $ptitles, '', ['id' => 'ptitle', 'class' => 'selectize'])!!}
+                            <div class="col-sm-2 Incised901Light ninety text-left">
+                                {!!Form::select('ptitle', $ptitles, '', ['id' => 'ptitle'])!!}
                             </div>
                             <div class="col-sm-2 Incised901Light ninety text-left">
                                 {{Form::checkbox('courtesy', 1, null, ['id' => 'courtesy'])}}
                                 <label for="courtesy" id="courtesy_label">Courtesy Title</label>
                             </div>
-                            <div class="col-sm-3  Incised901Light ninety text-left">
+                            <div class="col-sm-2  Incised901Light ninety text-left">
                                 {!!Form::select('generation',
-                                ['' => 'Select Peerage Generation', 'First' => 'First', 'Second' => 'Second', 'Third' => 'Third', 'Fourth' => 'Fourth', 'Fifth'=> 'Fifth'], '',
+                                ['' => 'Peerage Generation', 'First' => 'First', 'Second' => 'Second', 'Third' => 'Third', 'Fourth' => 'Fourth', 'Fifth'=> 'Fifth'], '',
                                 ['id' => 'generation'])!!}
                                 {!!Form::select('order', $korders, '',['id' => 'order'])!!}
                             </div>
-                            <div class="col-sm-4  Incised901Light ninety text-left ">
-                                {!!Form::text('lands', null, ['placeholder' => 'Name of Peerage Lands', 'id' => 'lands'])!!}
+                            <div class="col-sm-6 Incised901Light ninety text-left">
+                                {!!Form::text('lands', null, ['placeholder' => 'Peerage Lands', 'id' => 'lands'])!!}
                                 {!!Form::select('class', ['' => 'Select Class'], null, ['id' => 'class'])!!}
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-4  incised901light ninety text-left">
+                            <div class="col-sm-4 incised901light ninety text-left">
                                 {!!Form::label('arms','Upload Peerage Arms', ['id'=>'arms-label'])!!}
-                                {!!Form::file('arms', ['id' => 'arms'])!!}
+                                <input type="file" id="arms" name="arms">
                             </div>
                             <div class="col-sm-8  Incised901Light ninety text-left ">
-                                <button class="btn round" id="cancel">Cancel
-                                </button> {!!Form::submit('Save Peerage', ['id' => 'save_peerage', 'class' => 'btn round'])!!}
+                                <button class="btn btn-danger" id="cancel">Cancel</button>
+                                <button class="btn btn-success" type="submit">Save Peerage <span class="fa fa-save"></span></button>
                             </div>
                         </div>
                         {!! Form::close() !!}
@@ -235,11 +235,14 @@
                 <div class="row Incised901Light">
                     <div class=" col-sm-2">Permissions:</div>
                     <div class=" col-sm-10">
-                        <ul class="small-block-grid-3 ninety">
+                        <ul class="ninety two-col-grid">
                             @foreach($user->permissions as $permmission)
                                 <li>{!!$permmission!!}</li>
                             @endforeach
                         </ul>
+                        @for ($i = 0; $i < count($user->permissions); $i += 2 )
+
+                        @endfor
                     </div>
 
                 </div>
@@ -286,15 +289,14 @@
                         @include('partials.leftribbons', ['user' => $user])
 
                         @if($user->leftRibbonCount)
+                            <div id="embeding">
+                                <a style="white-space: nowrap;" class="btn btn-danger btn-sm" role="button" data-trigger="click" data-container="#embeding" data-toggle="popover" data-placement="left" data-content="To embed your ribbon rack in other websites, use the following code:
 
-                            <a data-dropdown="embeding" data-options="align:top">Embeding Instructions</a>
-                            <div id="embeding" data-dropdown-content class="f-dropdown large content text-left"
-                                 tabindex="-1">
-                                To embed your ribbon rack in other websites, use the following code:<br/>
+                                &lt;iframe src=&quot;{!!url('api/ribbonrack/' . $user->member_id)!!}&quot;&gt;&lt;/iframe&gt;
 
-                                &lt;iframe src="{!!url('api/ribbonrack/' . $user->member_id)!!}"&gt;&lt;/iframe&gt;
-
+Click again to close" title="How to embed your ribbon rack"><span class="fa fa-external-link"></span> Embeding Instructions</a>
                             </div>
+
 
                         @endif
             </div>
