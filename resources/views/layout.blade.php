@@ -13,25 +13,29 @@
 <body class="@yield('bodyclasses')">
 <div class="container-fluid">
 
-        <div class="row margin-5">
-            <div class="col-sm-2">
-                <p></p><a href="{!!$serverUrl!!}"><img src="/images/trmnseal.png" alt="TRMN Seal" width="150px"
-                                                       height="150px"></a>
-            </div>
-            <div class="col-sm-10">
-                <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
-
-                <h3 class="trmn">Membership Database</h3>
-            </div>
+    <div class="row margin-5">
+        <div class="col-sm-2">
+            <p></p><a href="{!!$serverUrl!!}"><img src="/images/trmnseal.png" alt="TRMN Seal" width="150px"
+                                                   height="150px"></a>
         </div>
+        <div class="col-sm-10">
+            <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
+
+            <h3 class="trmn">Membership Database</h3>
+        </div>
+    </div>
 
 
     <div class="row">
-        @if(empty(Auth::user()->tos) === false && empty(Auth::user()->osa) === false)
-            <div class="col-sm-2">
+
+        <div class="col-sm-2">
+            @if(empty(Auth::user()->tos) === false && empty(Auth::user()->osa) === false)
                 @include( 'nav', ['permsObj' => $permsObj] )
-            </div>
-        @endif
+            @else
+                &nbsp;
+            @endif
+        </div>
+
         <div class="col-sm-10 content">
             @if( $errors->any() )
                 <ul class="medusa-error">
@@ -61,33 +65,47 @@
                 ]) || \Request::is('password/*') )
                 @yield('content')
             @else
-                <div class="login-form row">
-                    <div class="col-sm-6 small-centered ">
-                        <h4 class="NordItalic">Sign In</h4>
-                        {!! Form::open( [ 'route' => 'signin' ] ) !!}
-                        {!! Form::label( 'email', 'Email' ) !!} {!! Form::email( 'email' ) !!}
-                        {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password' ) !!}
-                        {!! Form::submit( 'Sign in', [ 'class' => 'btn right reg-button' ] ) !!}
-                        {!! Form::close() !!}
+
+                <div class="row">
+                    <div class="col-sm-6 text-center">
+                        <h3 class="NordItalic yellow">Sign In</h3>
                     </div>
                 </div>
 
+                {!! Form::open( [ 'route' => 'signin' ] ) !!}
                 <div class="row">
-                    <div class="col-sm-6 small-centered ">
-                        <a href="{{ url('/password/reset') }}" class="right"><p
+                    <div class="form-group col-sm-6">
+                        {!! Form::label( 'email', 'Email' ) !!} {!! Form::email( 'email', old('email'), ['id' => 'email', 'class'=>'form-control', 'placeholder' => 'Email Address'] ) !!}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password', ['id' => 'password', 'class' => 'form-control', 'placeholder' => 'Password'] ) !!}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 text-right">
+                        <button class="btn btn-success btn-lg text-right Incised901Light" type="submit">Sign In <span
+                                    class="fa fa-sign-in"></span></button>
+                    </div>
+                </div>
+                {!! Form::close() !!}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a href="{{ url('/password/reset') }}" class="text-right"><p
                                     style="font-style: italic">Forgot your password?</p></a>
                     </div>
                 </div>
-
                 <div class="row">
-                    <div class="col-sm-6 small-centered ">
-                        <p style="font-style: italic" class="right">Not a member? Register here!</p><br clear="right">
-                        <a href="{!! URL::route( 'register' ) !!}" class="btn right reg-button">Register</a>
+                    <div class="col-sm-6 text-right">
+                        <br clear="right"><p class="text-right"><em>Not a member? Register here!</em></p>
+                        <a href="{!! URL::route( 'register' ) !!}" class="btn btn-lg btn-primary text-right">Register <span class="fa fa-pencil"></span></a>
                     </div>
                 </div>
-            @endif
         </div>
+        @endif
     </div>
+</div>
 </div>
 <footer>
     <p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington Fan
@@ -98,13 +116,13 @@
                                    data-src="{!!asset('images/project-medusa.svg')!!}"></span>
     <p>{!! Config::get('app.version') !!}</p>
     @if($_SERVER['SERVER_NAME'] == "medusa.dev" || $_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
-        <p class="alert">
+        <div class="alert alert-info text-center alert-text">
             @if($_SERVER['SERVER_NAME'] == "medusa.dev")
                 LOCAL SANDBOX SERVER
             @else
                 DEVELOPMENT / TEST SERVER
             @endif
-        </p>
+        </div>
     @endif
     <span id="siteseal"><script type="text/javascript"
                                 src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>

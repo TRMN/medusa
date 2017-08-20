@@ -49,7 +49,7 @@ $medusa-yellow: #ffee00;
   color: mediumblue !important;
 }
 
-.alert {
+.alert-text {
   color: #ff1fdb !important;
 }
 
@@ -332,7 +332,7 @@ div.stripes {
   color: whitesmoke !important;
 }
 
-.selectize-input {
+.selectize-input, select {
   background: black !important;
   color: whitesmoke !important;
   border: none;
@@ -342,6 +342,10 @@ div.stripes {
   padding-top: 5px;
   padding-left: 10px;
   clear: both;
+}
+
+input {
+  color: black;
 }
 
 div.filePhoto {
@@ -427,12 +431,12 @@ div.filePhoto {
   margin: -12.5% 0 0 -50%;
 }
 
-.container {
-  background: transparent;
-
-  margin: 0 auto;
-  padding: 0.75rem 1rem;
-}
+//.container {
+//  background: transparent;
+//
+//  margin: 0 auto;
+//  padding: 0.75rem 1rem;
+//}
 
 th.actions {
   width: 175px;
@@ -455,7 +459,8 @@ body, html {
   color: $text-primary;
   background-color: #000000;
   background-repeat: no-repeat;
-  background-position: center bottom;
+  background-position: center top;
+  background-attachment: fixed;
   font-family: "Incised 901 W01 Light";
   line-height: 100%;
   font-size: 1em;
@@ -941,8 +946,7 @@ tr:nth-of-type(even) {
   word-wrap: break-word;
 }
 
-
-.tabs .tab-title>a,.tabs dd>a {
+.tabs .tab-title > a, .tabs dd > a {
   display: block;
   color: lightgoldenrodyellow;
   font-family: "Incised 901 W01 Light";
@@ -952,9 +956,37 @@ tr:nth-of-type(even) {
   background: none;
 }
 
-.tabs .tab-title.active>a,.tabs dd.active>a {
+.tabs .tab-title.active > a, .tabs dd.active > a {
   border-bottom: none;
   color: $medusa-yellow;
   background: none;
   font-weight: bold;
+}
+
+.popover-content {
+  background-color: black;
+  white-space: pre-line;
+  border-radius: 16px;
+  font-family: "Incised 901 W01 Light";
+}
+
+.popover-title {
+  background-color: lightgrey;
+  border-radius: 14px 14px 0 0;
+  color: black;
+  text-align: center;
+  font-weight: 900;
+  font-family: "Incised 901 W01 Light";
+}
+
+.popover {
+  max-width: 600px;
+  background-color: black;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  font-family: "Incised 901 W01 Light";
+}
+
+.popover.left {
+  margin-left: -50px;
 }

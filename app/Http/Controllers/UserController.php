@@ -764,7 +764,7 @@ class UserController extends Controller
             return view('osa', ['showform' => true, 'greeting' => Auth::user()->getGreetingArray()]);
         }
 
-        $titles[''] = 'Select Peerage Title';
+        $titles[''] = 'Select Peerage';
 
         foreach (Ptitles::orderBy('precedence')->get() as $title) {
             $titles[$title->title] = $title->title;
