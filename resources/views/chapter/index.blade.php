@@ -41,7 +41,11 @@
                             @if(in_array($chapter->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true)
                                 {!! isset($chapter->hull_number) ? ' (' . $chapter->hull_number . ')' : '' !!}
                             @endif
-                        </a> @if(empty($chapter->decommission_date) === false)
+                        </a>
+                        @if(file_exists(public_path('patches/' . $chapter->chapter_type . '/' . (empty($chapter->branch) || $chapter->chapter_type == 'bureau' ? '' : $chapter->branch . '/') . trim($chapter->hull_number) . '.svg')))
+                            &nbsp;<img style="height:40px;" src="{{asset('patches/' . $chapter->chapter_type . '/' . (empty($chapter->branch) || $chapter->chapter_type == 'bureau' ? '' : $chapter->branch . '/') . trim($chapter->hull_number) . '.svg')}}">
+                        @endif
+                        @if(empty($chapter->decommission_date) === false)
                             <i class='fi-anchor' title='Reserve Fleet / Decomissioned'
                                alt="Reserve Fleet / Decommissioned" title="Reserve Fleet / Decommissioned"></i>
                         @endif
