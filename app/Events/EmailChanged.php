@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Queue\SerializesModels;
 
 

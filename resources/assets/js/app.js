@@ -172,7 +172,7 @@ $(document).ready(function ($) {
     $('#DUTY_ROSTER').on('click', function () {
         if ($("#DUTY_ROSTER").is(':checked')) {
             buildDutyRosterSelection();
-            $('#chooseShip').foundation('reveal', 'open');
+            $('#chooseShip').modal('show');
         }
     });
 

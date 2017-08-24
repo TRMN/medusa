@@ -40,7 +40,7 @@
             @if( $errors->any() )
                 <ul class="medusa-error">
                     @foreach( $errors->all() as $error )
-                        <li class="fi-alert alert">{!! $error !!}</li>
+                        <li class="fa fa-exclamation-triangle alert">{!! $error !!}</li>
                     @endforeach
                 </ul>
             @endif

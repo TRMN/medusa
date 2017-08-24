@@ -476,11 +476,18 @@ body, html {
   line-height: 100%;
 }
 
-#tos, #chooseShip, #examList, #confirmExamDelete {
+#tos .modal-content, #chooseShip .modal-content, #examList .modal-content, #confirmExamDelete .modal-content {
   color: $text-primary;
   background-color: #000000;
   background-repeat: no-repeat;
   background-position: center bottom;
+  border: 1px whitesmoke solid;
+  padding: .5rem;
+  border-radius: 1.25rem;
+}
+
+#tos .modal-title, #chooseShip .modal-title, #examList .modal-title, #confirmExamDelete .modal-title {
+  border-bottom: 1px whitesmoke solid;
 }
 
 #photoModal {
@@ -683,10 +690,18 @@ footer {
 
 #user fieldset, #register fieldset, #changeRequest fieldset {
   width: auto;
+  margin: 1.125rem 0;
+  padding: 1.125rem;
 }
 
 #user legend, #register legend, #changeRequest legend {
   background: none;
+  font-weight: bolder;
+  margin: 0 0 0 -.1875rem;
+  padding: .4rem;
+  color: whitesmoke;
+  border: 1px solid whitesmoke;
+  width: auto;
 }
 
 .actionButtons {
@@ -989,4 +1004,29 @@ tr:nth-of-type(even) {
 
 .popover.left {
   margin-left: -50px;
+}
+
+.two-col-grid {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
+table.dataTable thead, tfoot {
+  background-color: whitesmoke;
+  color: black;
+}
+
+table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting:after {
+  content: normal;
+}
+
+table.dataTable thead th:nth-of-type(even), table.dataTable tfoot th:nth-of-type(even) {
+  border-left: darkgray 1px solid;
+  border-right: darkgray 1px solid;
+}
+
+.dataTables_wrapper .dataTables_paginate .fg-button {
+  padding: 0;
+  margin-left: -1px;
 }

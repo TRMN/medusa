@@ -28,10 +28,10 @@
                         {!! is_array($item->value)?json_encode($item->value):$item->value !!}
                         @if(is_array($item->value)) </pre> @endif
                     </td>
-                    <td><a href="{!!route('config.edit', [$item->id])!!}" class="tiny fi-pencil green size-24"
+                    <td><a href="{!!route('config.edit', [$item->id])!!}" class="tiny fa fa-pencil green size-24"
                            data-toggle="tooltip" title="Edit Config"></a>
                         <a href="javascript:deleteConfig('{!!$item->id!!}','{!!$item->key!!}');"
-                           class="tiny fi-x red size-24"></a>
+                           class="tiny fa fa-close red size-24"></a>
                     </td>
                 </tr>
             @endforeach

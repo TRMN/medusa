@@ -20,19 +20,18 @@ let mix = require('laravel-mix');
 // mix.extract(vendorLibs);
 mix.js('resources/assets/js/app.js', 'public/js/')
     .mix.scripts([
-    'resources/assets/js/jquery.min.js',
-    'resources/assets/js/reveal.min.js',
-    'resources/assets/js/jquery-ui.js',
-    'resources/assets/js/jquery.dataTables.min.js',
-    'resources/assets/js/dataTables.jqueryui.js',
-    'resources/assets/js/jquery.autocomplete.min.js',
-    'resources/assets/js/selectize.min.js',
-    'resources/assets/js/jquery.multipage.js',
-    'resources/assets/js/js.cookie.js',
-    'resources/assets/js/rcswitcher.min.js',
-    'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js'
-], 'public/js/vendor.js')
-    .sourceMaps()
+        'resources/assets/js/jquery.min.js',
+        'resources/assets/js/reveal.min.js',
+        'resources/assets/js/jquery-ui.min.js',
+        'resources/assets/js/jquery.dataTables.min.js',
+        'resources/assets/js/dataTables.bootstrap.min.js',
+        'resources/assets/js/jquery.autocomplete.min.js',
+        'resources/assets/js/selectize.min.js',
+        'resources/assets/js/js.cookie.min.js',
+        'resources/assets/js/rcswitcher.min.js',
+        'node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js'
+], 'public/vendor.js')
+//    .sourceMaps()
     .mix.sass('resources/assets/scss/app.scss', 'public/css/app.css')
     .mix.sass('resources/assets/scss/overrides.scss', 'public/css/overrides.css')
     .mix.styles([
@@ -41,10 +40,12 @@ mix.js('resources/assets/js/app.js', 'public/js/')
         'resources/assets/scss/jquery.ui.datepicker.min.css',
         'resources/assets/scss/jquery.dataTables.min.css',
         'resources/assets/scss/dataTables.jqueryui.css',
+        'resources/assets/scss/dataTables.bootstrap.css',
         'resources/assets/scss/jquery-ui.css',
         'resources/assets/scss/selectize.css',
-        'resources/assets/scss/font-awesome.css'
-    ], 'public/css/vendor.css');
+        'resources/assets/scss/font-awesome.css',
+        'node_modules/bootstrap-block-grid/dist/bootstrap3-block-grid.min.css'
+], 'public/css/vendor.css');
 // mix.standaloneSass('src', output); <-- Faster, but isolated from Webpack.
 // mix.fastSass('src', output); <-- Alias for mix.standaloneSass().
 // mix.less(src, output);

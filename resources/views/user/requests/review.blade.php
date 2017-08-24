@@ -44,8 +44,8 @@ Assignment Change Requests
             </td>
             <td>@if($record->req_type == 'assignment.chapter'){!!$record->old_chapter!!} @else {!!$record->old_value!!} @endif</td>
             <td>@if($record->req_type == 'assignment.chapter'){!!$record->new_chapter!!} @else {!!$record->new_value!!} @endif</td>
-            <td><a href="{!!route('user.change.approve', [$record->id])!!}" class="fi-check green size-36" onclick="return confirm('Approve {!!$msg!!} {!! $record->user->getGreeting() !!} {!!$record->user->first_name!!} {!!$record->user->last_name!!}?');"></a>&nbsp;
-                <a href="{!!route('user.change.deny', [$record->id])!!}" class="fi-x red size-36" onclick="return confirm('Deny {!!$msg!!} {!! $record->user->getGreeting() !!} {!!$record->user->first_name!!} {!!$record->user->last_name!!}?');"></a></td>
+            <td><a href="{!!route('user.change.approve', [$record->id])!!}" class="fa fa-check green size-36" onclick="return confirm('Approve {!!$msg!!} {!! $record->user->getGreeting() !!} {!!$record->user->first_name!!} {!!$record->user->last_name!!}?');"></a>&nbsp;
+                <a href="{!!route('user.change.deny', [$record->id])!!}" class="fa fa-close red size-36" onclick="return confirm('Deny {!!$msg!!} {!! $record->user->getGreeting() !!} {!!$record->user->first_name!!} {!!$record->user->last_name!!}?');"></a></td>
         </tr>
     @endforeach
     <tfoot>

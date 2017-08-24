@@ -29,7 +29,7 @@
                             </div>
                             <div class="col-sm-2  ">
                                 @if($permsObj->hasPermissions(['EDIT_GRADE']) === true)
-                                    <a href="javascript:void(0);" class="fi-trash red delete-exam"
+                                    <a href="javascript:void(0);" class="fa fa-trash red delete-exam"
                                        data-fullName="{!!$user->getFullName()!!}" data-examID="{!!$exam!!}"
                                        data-memberNumber="{!!$user->member_id!!}" data-toggle="tooltip"
                                        title="Delete exam from members record">&nbsp;</a>
