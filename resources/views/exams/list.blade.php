@@ -20,7 +20,7 @@
             <tr>
                 <td>{!! $exam->exam_id !!} @if($exam->enabled === false) (Disabled) @endif</td>
                 <td>{!! $exam->name !!}</td>
-                <td><a href="{!!route('exam.edit', [$exam->id])!!}" class="tiny fi-pencil green size-24"
+                <td><a href="{!!route('exam.edit', [$exam->id])!!}" class="tiny fa fa-pencil green size-24"
                        data-toggle="tooltip" title="Edit Exam"></a>
                 </td>
             </tr>

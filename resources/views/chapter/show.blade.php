@@ -29,13 +29,13 @@
                 {!! $detail->chapter_name !!} @if((in_array($detail->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
         isset($detail->hull_number) === true) ({!!$detail->hull_number!!}
                 ) @endif @if(empty($detail->idcards_printed) && $permsObj->hasPermissions(['ID_CARD']))
-                    <a class="fi-credit-card green size-24" href="/id/bulk/{!!$detail->id!!}"
+                    <a class="fa fa-credit-card green size-24" href="/id/bulk/{!!$detail->id!!}"
                        data-toggle="tooltip" title="Print ID Cards"></a>
-                    <a class="fi-check green size-24" href="/id/markbulk/{!!$detail->id!!}"
+                    <a class="fa fa-check green size-24" href="/id/markbulk/{!!$detail->id!!}"
                        data-toggle="tooltip" title="Mark ID Cards as printed"
                        onclick="return confirm('Mark ID cards as printed for this chapter?')"></a>
                 @elseif(!empty($detail->idcards_printed) && $permsObj->hasPermissions(['ID_CARD']))
-                    <span class="fi-print size-24" data-toggle="tooltip" title="ID Cards printed"></span> @endif
+                    <span class="fa fa-print size-24" data-toggle="tooltip" title="ID Cards printed"></span> @endif
             </h2>
 
             <h3 class="Incised901Bold padding-5">{!! isset($detail->ship_class) ? $detail->ship_class . ' Class' : '' !!}</h3>
@@ -115,7 +115,7 @@
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                         </a>
                         @if($info['user']->hasNewExams())
-                            <span class="fi-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp</span>
+                            <span class="fa fa-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp</span>
                         @endif
                     @endif
                 </div>
@@ -149,7 +149,7 @@
                     <thead>
                         <tr>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                <th class="center" width="20"><span class="fi-star red"
+                                <th class="center" width="20"><span class="fa fa-star red"
                                                                     data-toggle="tooltip" title="New Exams Posted">&nbsp;</span></th>
                             @endif
                             <th>Name</th>
@@ -170,7 +170,7 @@
                         @foreach($crew as $member)
                             <tr class="zebra-odd">
                                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                    <td class="center">@if($member->hasNewExams()) <span class="fi-star red"
+                                    <td class="center">@if($member->hasNewExams()) <span class="fa fa-star red"
                                                                                          data-toggle="tooltip" title="New Exams Posted">&nbsp;</span> @endif
                                     </td>
                                 @endif
@@ -202,7 +202,7 @@
                     <tfoot>
                         <tr>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                <th class="center"><span class="fi-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp;</span></th>
+                                <th class="center"><span class="fa fa-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp;</span></th>
                             @endif
                             <th>Name</th>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)

@@ -228,13 +228,15 @@
                 <div class="row Incised901Light">
                     <div class=" col-sm-2">Permissions:</div>
                     <div class=" col-sm-10">
-                        <ul class="ninety two-col-grid">
-                            @foreach($user->permissions as $permmission)
-                                <li>{!!$permmission!!}</li>
-                            @endforeach
-                        </ul>
                         @for ($i = 0; $i < count($user->permissions); $i += 2 )
-
+                            <div class="row">
+                                <div class="col-sm-6 ninety">
+                                    {{isset($user->permissions[$i]) ? $user->permissions[$i] : ''}}
+                                </div>
+                                <div class="col-sm-6 ninety">
+                                    {{isset($user->permissions[$i+1]) ? $user->permissions[$i+1] : ''}}
+                                </div>
+                            </div>
                         @endfor
                     </div>
 

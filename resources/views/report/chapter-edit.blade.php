@@ -345,7 +345,7 @@
     <div class="row">
         <div class=" col-sm-3">
             {!!Form::hidden('chapter_id',$report->chapter_id, ['id' => 'chapter_id'])!!}
-            <a href="#" data-reveal-id="examList" class="fi-refresh green size-21" id="refreshExamList"
+            <a href="#" data-reveal-id="examList" class="fa fa-refresh green size-21" id="refreshExamList"
                data-toggle="tooltip" title="Refresh Course List"></a> Courses Completed:
         </div>
         <div class=" col-sm-9">

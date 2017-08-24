@@ -1090,12 +1090,6 @@ class UserController extends Controller
         try {
             $user->update($data);
 
-            if ($data['reload_form'] === "yes") {
-                return Redirect::route('user.edit', [$user->_id]);
-            }
-
-            Cache::flush();
-
             $this->writeAuditTrail(
                 (string)Auth::user()->_id,
                 'update',
@@ -1105,13 +1099,29 @@ class UserController extends Controller
                 'UserController@update'
             );
 
-            event(new EmailChanged($oldEmail, $data['email_address']));
+            //
+            //die(event(new EmailChanged($oldEmail, $data['email_address'])));
 
-            return redirect($data['redirectTo']);
+
+            if ($data['reload_form'] === "yes") {
+                $redirect = Response::redirectToRoute('user.edit', [$user->id]);
+                //return Redirect::route('user.edit', [$user->_id]);
+            } else {
+                //return redirect($data['redirectTo']);
+                $redirect = Response::redirectTo($data['redirectTo']);
+            }
+
+            if (isset($oldEmail) === true) {
+                event(new EmailChanged($oldEmail, $data['email_address']));
+            }
+
         } catch (\Exception $d) {
             return redirect()->to('/user/' . $user->id)->with('error', 'There was a problem saving your changes.');
         }
 
+        Cache::flush();
+
+        return $redirect;
     }
 
     public function tos()
