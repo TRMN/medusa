@@ -23,10 +23,10 @@
             </div>
         @endif
 
-        @if($permsObj->hasPermissions(['DUTY_ROSTER',]) === true && Auth::user()->isCoAssignedShip() === true)
+        @if($permsObj->hasPermissions(['DUTY_ROSTER','CHAPTER_REPORT',]) === true)
             <h3 class="nav-header lnav">CO Tools</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true)
+                @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true && $permsObj->hasDutyRosterForAssignedShip() === true)
                     <a href="{!!route('report.index')!!}">Chapter Reports</a><br/>
                 @endif
             </div>

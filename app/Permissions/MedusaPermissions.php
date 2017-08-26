@@ -19,6 +19,11 @@ trait MedusaPermissions
         return true;
     }
 
+    public function hasDutyRosterForAssignedShip()
+    {
+        return in_array(Auth::user()->getAssignedShip(), explode(',', Auth::user()->duty_roster));
+    }
+
     public function loginValid()
     {
         if (Auth::check() === false) {
