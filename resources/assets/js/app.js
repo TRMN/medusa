@@ -582,6 +582,23 @@ $(document).ready(function ($) {
 
     $('[data-toggle="popover"]').popover();
 
+    $('.toggle-nav').on('click', function() {
+       $('#left').toggle();
+
+       var toggleState = $('#toggle-btn').hasClass('fa-angle-double-left');
+
+       if (toggleState === true) {
+           // Change to a right arrow
+           $('#toggle-btn').removeClass('fa-angle-double-left');
+           $('#toggle-btn').addClass('fa-angle-double-right');
+       } else {
+           // Change to a left arrow
+           $('#toggle-btn').removeClass('fa-angle-double-right');
+           $('#toggle-btn').addClass('fa-angle-double-left');
+       }
+
+    });
+
     (function () {
 
         /*

@@ -12,100 +12,101 @@
 </head>
 <body class="@yield('bodyclasses')">
 <div class="container-fluid">
-
-    <div class="row margin-5">
-        <div class="col-sm-2">
-            <p></p><a href="{!!$serverUrl!!}"><img src="/images/trmnseal.png" alt="TRMN Seal" width="150px"
-                                                   height="150px"></a>
-        </div>
-        <div class="col-sm-10">
-            <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
-
-            <h3 class="trmn">Membership Database</h3>
-        </div>
-    </div>
-
-
     <div class="row">
-
-        <div class="col-sm-2">
-            @if(empty(Auth::user()->tos) === false && empty(Auth::user()->osa) === false)
-                @include( 'nav', ['permsObj' => $permsObj] )
-            @else
-                &nbsp;
-            @endif
+        <div class="col-sm-2" id="left">
+            <div class="margin-5">
+                <a href="{!!$serverUrl!!}"><img src="/images/trmnseal.png" alt="TRMN Seal" width="150px"
+                                                height="150px"></a>
+            </div>
+            <div>
+                @if(empty(Auth::user()->tos) === false && empty(Auth::user()->osa) === false)
+                    @include( 'nav', ['permsObj' => $permsObj] )
+                @endif
+            </div>
         </div>
 
-        <div class="col-sm-10 content">
-            @if( $errors->any() )
-                <ul class="medusa-error">
-                    @foreach( $errors->all() as $error )
-                        <li class="fa fa-exclamation-triangle alert">{!! $error !!}</li>
-                    @endforeach
-                </ul>
-            @endif
+            <div class="float-left btn btn-primary btn-sm toggle-nav"><strong><span class="fa fa-angle-double-left size-21" id="toggle-btn"></span></strong></div>
 
-            @if(Session::has('message'))
-                <p>{!!Session::get('message')!!}</p>
-            @endif
+        <div class="col-sm-10" id="right">
+            <div class="margin-5">
+                <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
 
-            @if(Session::has('status'))
-                <p>{!!Session::get('status')!!}</p>
-            @endif
+                <h3 class="trmn">Membership Database</h3>
+            </div>
 
-            @if(!empty($message))
-                <p>{!!$message!!}</p>
-            @endif
-            @if(Auth::check() ||
-                in_array(\Route::currentRouteName(),[
-                    'user.apply',
-                    'register',
-                    'osa',
-                    'tos.noauth',
-                ]) || \Request::is('password/*') )
-                @yield('content')
-            @else
+            <div>
+                @if( $errors->any() )
+                    <ul class="medusa-error">
+                        @foreach( $errors->all() as $error )
+                            <li class="fa fa-exclamation-triangle alert">{!! $error !!}</li>
+                        @endforeach
+                    </ul>
+                @endif
 
-                <div class="row">
-                    <div class="col-sm-6 text-center">
-                        <h3 class="NordItalic yellow">Sign In</h3>
-                    </div>
-                </div>
+                @if(Session::has('message'))
+                    <p>{!!Session::get('message')!!}</p>
+                @endif
 
-                {!! Form::open( [ 'route' => 'signin' ] ) !!}
-                <div class="row">
-                    <div class="form-group col-sm-6">
-                        {!! Form::label( 'email', 'Email' ) !!} {!! Form::email( 'email', old('email'), ['id' => 'email', 'class'=>'form-control', 'placeholder' => 'Email Address'] ) !!}
+                @if(Session::has('status'))
+                    <p>{!!Session::get('status')!!}</p>
+                @endif
+
+                @if(!empty($message))
+                    <p>{!!$message!!}</p>
+                @endif
+                @if(Auth::check() ||
+                    in_array(\Route::currentRouteName(),[
+                        'user.apply',
+                        'register',
+                        'osa',
+                        'tos.noauth',
+                    ]) || \Request::is('password/*') )
+                    @yield('content')
+                @else
+
+                    <div class="row">
+                        <div class="col-sm-6 text-center">
+                            <h3 class="NordItalic yellow">Sign In</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6">
-                        {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password', ['id' => 'password', 'class' => 'form-control', 'placeholder' => 'Password'] ) !!}
+
+                    {!! Form::open( [ 'route' => 'signin' ] ) !!}
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            {!! Form::label( 'email', 'Email' ) !!} {!! Form::email( 'email', old('email'), ['id' => 'email', 'class'=>'form-control', 'placeholder' => 'Email Address'] ) !!}
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6 text-right">
-                        <button class="btn btn-success btn-lg text-right Incised901Light" type="submit">Sign In <span
-                                    class="fa fa-sign-in"></span></button>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password', ['id' => 'password', 'class' => 'form-control', 'placeholder' => 'Password'] ) !!}
+                        </div>
                     </div>
-                </div>
-                {!! Form::close() !!}
-                <div class="row">
-                    <div class="col-sm-6">
-                        <a href="{{ url('/password/reset') }}" class="text-right"><p
-                                    style="font-style: italic">Forgot your password?</p></a>
+                    <div class="row">
+                        <div class="form-group col-sm-6 text-right">
+                            <button class="btn btn-success btn-lg text-right Incised901Light" type="submit">Sign In
+                                <span
+                                        class="fa fa-sign-in"></span></button>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6 text-right">
-                        <br clear="right"><p class="text-right"><em>Not a member? Register here!</em></p>
-                        <a href="{!! URL::route( 'register' ) !!}" class="btn btn-lg btn-primary text-right">Register <span class="fa fa-pencil"></span></a>
+                    {!! Form::close() !!}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="{{ url('/password/reset') }}" class="text-right"><p
+                                        style="font-style: italic">Forgot your password?</p></a>
+                        </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <br clear="right">
+                            <p class="text-right"><em>Not a member? Register here!</em></p>
+                            <a href="{!! URL::route( 'register' ) !!}" class="btn btn-lg btn-primary text-right">Register
+                                <span class="fa fa-pencil"></span></a>
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
-        @endif
     </div>
-</div>
 </div>
 <footer>
     <p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington Fan

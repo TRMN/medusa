@@ -756,7 +756,7 @@ footer {
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  content: "\f055" !important;
+  content: "\f0da" !important;
   padding-right: 0.25em;
 }
 
@@ -768,7 +768,7 @@ footer {
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  content: "\f056" !important;
+  content: "\f0d7" !important;
   padding-right: 0.25em;
 }
 
@@ -1026,7 +1026,28 @@ table.dataTable thead th:nth-of-type(even), table.dataTable tfoot th:nth-of-type
   border-right: darkgray 1px solid;
 }
 
+table.dataTable tr td {
+  border-right: darkgray 1px solid;
+}
+
+table.dataTable tr td:nth-child(1) {
+  border-left: darkgray 1px solid;
+}
+
 .dataTables_wrapper .dataTables_paginate .fg-button {
   padding: 0;
   margin-left: -1px;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.toggle-nav {
+  border-radius: 10px 0px 0px 10px;
+  margin-top: 5px;
 }
