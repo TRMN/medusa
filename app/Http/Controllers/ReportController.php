@@ -27,9 +27,9 @@ class ReportController extends Controller
             return $redirect;
         }
 
-        if (Auth::user()->isCoAssignedShip() === false) {
-            return $redirect;
-        }
+        if ($this->hasDutyRosterForAssignedShip() === false) {
+        return redirect(URL::previous())->with('message', 'None of your assignments are required to report');
+    }
 
         return view(
             'report.index',
