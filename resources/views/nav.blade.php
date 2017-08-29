@@ -172,7 +172,7 @@
     @endif
 </div>
 <div class="text-center logout">
-    <a href="/signout"><h3 class="lnav nav-header whitesmoke margin-5">Logout</h3></a>
+    <a href="/signout" class="lnav nav-header whitesmoke margin-5">Logout <span class="fa fa-sign-out"></span></a>
     <br class="margin-5"/><br clear="both"/>
     <h4 class="whitesmoke Incised901Light">MEDUSA Mobile</h4>
     <a href='https://play.google.com/store/apps/details?id=org.trmn.medusa&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img

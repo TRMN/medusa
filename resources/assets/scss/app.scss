@@ -120,6 +120,14 @@ $medusa-yellow: #ffee00;
   padding: 2px;
 }
 
+.padding-top-10 {
+  padding-top: 10px;
+}
+
+.padding-bottom-10 {
+  padding-bottom: 10px;
+}
+
 .margin-5 {
   margin: 5px;
 }
@@ -352,7 +360,7 @@ div.filePhoto {
   //position: absolute;
   //top: 0;
   //right: 0;
-  //width: 315px;
+  width: 150px;
   text-align: center;
   z-index: 9999;
 }
@@ -369,8 +377,9 @@ div.filePhoto {
   height: 200px;
   background-color: #4D4D4D;
   border: solid 1px #CCCCCC;
-  margin: auto;
-  margin-bottom: 10px;
+  //margin: auto;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .reportHeader {
@@ -607,6 +616,7 @@ table {
 
 #left-nav {
   width: 175px;
+  padding-top: 10px !important;
 }
 
 .rnav {
@@ -1050,4 +1060,32 @@ table.dataTable tr td:nth-child(1) {
 .toggle-nav {
   border-radius: 10px 0px 0px 10px;
   margin-top: 5px;
+}
+
+.inset-bottom {
+  border-bottom: 1px solid #3f3f3f;
+}
+
+.inset-top {
+  border-top: 1px solid #3f3f3f;
+}
+
+.inset-right {
+  border-right: 1px solid #3f3f3f;
+}
+
+.inset-left {
+  border-left: 1px solid #3f3f3f;
+}
+
+#right {
+  margin-left: 33px;
+  padding-left: 20px;
+  margin-top: -50px;
+  margin-bottom: -9px;
+}
+
+.flex-vert-center {
+  display: flex;
+  align-items: center;
 }
