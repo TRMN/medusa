@@ -11,6 +11,13 @@
         <h5 class="Incised901Light ninety">Last
             Login: {!!date('d M Y @ g:i A T', strtotime($user->getLastLogin()))!!}</h5>
 
+        <h5 class="Incised901Light ninety">Last Forum Login:
+        @if(session('forum_last_login'))
+             {{date('d M Y @ g:i A T', session('forum_last_login'))}}
+        @else
+            Never
+        @endif
+        </h5>
 
         @include('partials.greeting', ['user' => $user])
         @include('partials.assignments', ['user' => $user])
