@@ -1,27 +1,25 @@
 <div id="user-profile" class="row">
-    <div class=" col-sm-8">
-        <ul class="tabs" data-tab>
-            <li class="tab-title active"><a href="#">Service Record</a></li>
-            <li class="tab-title"><a href="#">Promotion Points</a></li>
-        </ul>
-        <h4 class="trmn my">
-            @if($user->registration_status != "Pending")
-                Service Record
-            @else
-                Member Application
-            @endif
-        </h4>
+    <div class=" col-sm-12">
+        <div class="float-right">
+            <div class="Incised901Light filePhoto">
+                <a href="/id/qrcode/{!!$user->id!!}">{!!$user->member_id!!}</a>
+                <div class="filePhotoBox">
 
-        <h5 class="Incised901Light ninety">Last
-            Login: {!!date('d M Y @ g:i A T', strtotime($user->getLastLogin()))!!}</h5>
+                    @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
+                        <img src="{!!$user->filePhoto!!}?{{time()}}" alt="Official File Photo">
+                    @else
+                        <div class="ofpt">
+                            Official<br/>File<br/>Photo
+                        </div>
+                    @endif
 
-        <h5 class="Incised901Light ninety" title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums">Last Forum Login:
-        @if($user->forum_last_login)
-             {{date('d M Y @ g:i A T', $user->forum_last_login)}}
-        @else
-            Never
-        @endif
-        </h5>
+                    {!!$user->getPrimaryBillet()!!}<br/>
+
+                    <div class="Incised901Light seventy-five">
+                        Assigned: {!!$user->getPrimaryDateAssigned()!!}</div>
+                </div>
+            </div>
+        </div>
 
         @include('partials.greeting', ['user' => $user])
         @include('partials.assignments', ['user' => $user])
@@ -199,7 +197,8 @@
                             </div>
                             <div class="col-sm-8  Incised901Light ninety text-left ">
                                 <button class="btn btn-danger" id="cancel">Cancel</button>
-                                <button class="btn btn-success" type="submit">Save Peerage <span class="fa fa-save"></span></button>
+                                <button class="btn btn-success" type="submit">Save Peerage <span
+                                            class="fa fa-save"></span></button>
                             </div>
                         </div>
                         {!! Form::close() !!}
@@ -263,44 +262,6 @@
                         Incised901Black margin-5">DENY</a>
                     @endif
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class=" col-sm-4">
-        <div class="Incised901Light filePhoto">
-            <a href="/id/qrcode/{!!$user->id!!}">{!!$user->member_id!!}</a>
-            <div class="filePhotoBox">
-
-                @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
-                    <img src="{!!$user->filePhoto!!}?{{time()}}" alt="Official File Photo">
-                @else
-                    @if($user->hasAwards())
-                        <div class="ofpt-rel">
-                            @else
-                                <div class="ofpt">
-                                    @endif
-                                    Official<br/>File<br/>Photo
-                                </div>
-                            @endif
-
-                        </div>
-                        {!!$user->getPrimaryBillet()!!}<br/>
-
-                        <div class="Incised901Light seventy-five">
-                            Assigned: {!!$user->getPrimaryDateAssigned()!!}</div>
-                        @include('partials.leftribbons', ['user' => $user])
-
-                        @if($user->leftRibbonCount)
-                            <div id="embeding">
-                                <a style="white-space: nowrap;" class="btn btn-danger btn-sm" role="button" data-trigger="click" data-container="#embeding" data-toggle="popover" data-placement="left" data-content="To embed your ribbon rack in other websites, use the following code:
-
-                                &lt;iframe src=&quot;{!!url('api/ribbonrack/' . $user->member_id)!!}&quot;&gt;&lt;/iframe&gt;
-
-Click again to close" title="How to embed your ribbon rack"><span class="fa fa-external-link"></span> Embeding Instructions</a>
-                            </div>
-
-
-                        @endif
             </div>
         </div>
     </div>

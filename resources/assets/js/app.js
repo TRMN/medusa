@@ -591,10 +591,14 @@ $(document).ready(function ($) {
            // Change to a right arrow
            $('#toggle-btn').removeClass('fa-angle-double-left');
            $('#toggle-btn').addClass('fa-angle-double-right');
+           $('#right-wrapper').removeClass('col-sm-10');
+           $('#right-wrapper').addClass('col-sm-12');
        } else {
            // Change to a left arrow
            $('#toggle-btn').removeClass('fa-angle-double-right');
            $('#toggle-btn').addClass('fa-angle-double-left');
+           $('#right-wrapper').removeClass('col-sm-12');
+           $('#right-wrapper').addClass('col-sm-10');
        }
 
     });
