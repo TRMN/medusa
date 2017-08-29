@@ -11,9 +11,9 @@
         <h5 class="Incised901Light ninety">Last
             Login: {!!date('d M Y @ g:i A T', strtotime($user->getLastLogin()))!!}</h5>
 
-        <h5 class="Incised901Light ninety">Last Forum Login:
-        @if(session('forum_last_login'))
-             {{date('d M Y @ g:i A T', session('forum_last_login'))}}
+        <h5 class="Incised901Light ninety" title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums">Last Forum Login:
+        @if($user->forum_last_login)
+             {{date('d M Y @ g:i A T', $user->forum_last_login)}}
         @else
             Never
         @endif

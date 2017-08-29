@@ -39,12 +39,15 @@ class AuthController extends Controller
             try {
               $lastForumLogin = ForumUser::where('user_email', strtolower($email))->firstOrFail(['user_lastvisit'])->toArray();
 
-              session(['forum_last_login' => $lastForumLogin['user_lastvisit']]);
+              Auth::user()->forum_last_login = $lastForumLogin['user_lastvisit'];
 
             } catch (Exception $e) {
 
-              session(['forum_last_login' => false]);
+              Auth::user()->forum_last_login = false;
+
             }
+
+            Auth::user()->save();
 
             if (is_null($redirect = session('url.intended')) === true) {
                 $redirect = session('_previous.url');
