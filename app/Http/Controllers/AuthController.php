@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\LoginComplete;
+use App\ForumUser;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -32,6 +33,18 @@ class AuthController extends Controller
             User::find(Auth::user()->id)->updateLastLogin();
 
             event(new LoginComplete(Auth::user()));
+
+            // Get last forum login
+
+            try {
+              $lastForumLogin = ForumUser::where('user_email', strtolower($email))->firstOrFail(['user_lastvisit'])->toArray();
+
+              session(['forum_last_login' => $lastForumLogin['user_lastvisit']]);
+
+            } catch (Exception $e) {
+
+              session(['forum_last_login' => false]);
+            }
 
             if (is_null($redirect = session('url.intended')) === true) {
                 $redirect = session('_previous.url');
