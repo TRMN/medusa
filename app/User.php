@@ -105,6 +105,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'unitPatchPath',
         'usePeerageLands',
         'extraPadding',
+        'last_forum_login',
     ];
 
     /**
