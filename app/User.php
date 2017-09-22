@@ -1635,7 +1635,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function findForPassport($username)
     {
-        return self::where('email_address', '=', strtolower($username))->first();
+	return self::where('email_address', '=', str_replace(' ', '+', strtolower($username)))->first();
     }
 
     public function hasAward(string $awardAbbr)
