@@ -82,6 +82,8 @@ Route::get(
         'middleware' => 'auth'
     ]
 );
+Route::post('/user/{user}/points', 'UserController@updatePoints')->name('user.points')->middleware('auth');
+
 Route::get('/users/{branch}', [
     'as' => 'showBranch',
     'uses' => 'UserController@showBranch',
@@ -450,6 +452,15 @@ Route::get(
         'middlware' => 'auth'
     ]
 );
+
+Route::get('/getRoutes', function() {
+    foreach(app()->router->getRoutes() as $route) {
+        if (in_array('GET', $route->methods()) === true) {
+            print dirname($route->uri()) . "<br />\n";
+        }
+
+    }
+});
 
 Route::any('{catchall}', function ($url) {
     return response()->view('errors.404');

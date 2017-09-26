@@ -1,27 +1,40 @@
-<br/>
-<h5 class="Incised901Black ninety">
+<h4 class="Incised901Black">
     Academy Coursework: @if($user->getExamLastUpdated() !== false)
-        <span class="Incised901Light ninety">( Last
-                        Updated: {!! date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) !!} )</span>
+        <span class="Incised901Light">Last
+                        Updated: {!! date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) !!}</span>
     @endif
-</h5>
+    <br/>
+    Overall GPA: {{ $user->getGPA('/.*/') }}%
+</h4>
 
-<div class="whitesmoke">
+<h4>Space Warfare Pin earned: {{($user->hasAward('ESWP') || $user->hasAward('OSWP')) ? 'Yes': 'No'}}<br/>
+    Manticoran Combat Action Medals earned: {{$user->hasAward('MCAM') ? $user->awards['MCAM']['count'] : '0'}}<br/>(<em>May
+        include additional awards that have not been issued yet</em>)</h4>
 
-    <div class="sbAccordian">
+<div>
+    <ul class="nav nav-tabs" role="tablist">
         @foreach(\App\MedusaConfig::get('exam.regex') as $school => $regex)
             @if(count($user->getExamList(['pattern' => $regex])) > 0)
-                <h5 class="Incised901Light ninety" data-toggle="tooltip" title="Click to expand/collapse" data-placement="left">{!!$school!!}
-                    @if($user->hasNewExams($regex))
-                        &nbsp;<strong class="yellow">(New exams posted)</strong>
+                <li role="presentation"{!! $loop->first ? ' class="active"' : '' !!}><a
+                            href="#{{str_replace(' ', '', $school)}}" aria-controls="{{str_replace(' ', '', $school)}}"
+                            role="tab" data-toggle="tab">{{$school}}</a>@if($user->hasNewExams($regex))
+                        <span class="fa fa-star red"></span>
                     @endif
-                </h5>
-                <div>
+                </li>
+            @endif
+        @endforeach
+    </ul>
+
+    <div class="tab-content">
+        @foreach(\App\MedusaConfig::get('exam.regex') as $school => $regex)
+            @if(count($user->getExamList(['pattern' => $regex])) > 0)
+                <div role="tabpanel" class="tab-pane padding-top-10{{$loop->first ? ' active' : ''}}"
+                     id="{{str_replace(' ', '', $school)}}">
                     @foreach($user->getExamList(['pattern' => $regex]) as $exam => $gradeInfo)
-                        <div class="row">
-                            <div class="col-sm-6  Incised901Light ninety textLeft @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) >= strtotime(Auth::user()->getLastLogin())))yellow @endif">{!!$exam!!} @if (!is_null(App\ExamList::where('exam_id','=',$exam)->first())){!!App\ExamList::where('exam_id','=',$exam)->first()->name!!}@endif</div>
-                            <div class="col-sm-1  Incised901Light ninety textRight">{!!$gradeInfo['score']!!}</div>
-                            <div class="col-sm-3  Incised901Light ninety textRight">@if($gradeInfo['date'] != 'UNKNOWN')
+                        <div class="row zebra-odd">
+                            <div class="col-sm-6  Incised901Light text-left @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) >= strtotime(Auth::user()->getLastLogin())))yellow @endif">{!!$exam!!} @if (!is_null(App\ExamList::where('exam_id','=',$exam)->first())){!!App\ExamList::where('exam_id','=',$exam)->first()->name!!}@endif</div>
+                            <div class="col-sm-1  Incised901Light text-right">{!!$gradeInfo['score']!!}</div>
+                            <div class="col-sm-3  Incised901Light text-right">@if($gradeInfo['date'] != 'UNKNOWN')
                                     {!!date('d M Y', strtotime($gradeInfo['date']))!!}
                                 @else
                                     {!!$gradeInfo['date']!!}
@@ -37,6 +50,27 @@
                             </div>
                         </div>
                     @endforeach
+                    <div class="row zebra-odd">
+                        <div class="col-sm-6">&nbsp;</div>
+                        <div class="col-sm-1 top-border-double text-right padding-top-10">
+                            GPA: {{ $user->getGPA($regex) }}%
+                        </div>
+                    </div>
+
+                    @if(str_replace(' ', '', $school) === $school)
+                        <div class="row padding-top-10 padding-bottom-10">
+                            <div class="col-sm-12 text-center bottom-border-double">
+                                GPA Breakdown
+                            </div>
+                        </div>
+                        <div class="row">
+                            @foreach($user->getGpaBySchool($school) as $course => $gpa)
+                                <div class="col-sm-3 text-center">
+                                    {{ucfirst($course)}}<br />{{$gpa}}%
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             @endif
         @endforeach

@@ -12,7 +12,7 @@
 </head>
 <body class="@yield('bodyclasses')">
 <div class="container-fluid">
-    <div class="row inset-bottom flex-vert-center">
+    <div class="row inset-bottom flex-vert-center navbar-fixed-top black-background">
         <div class="col-sm-4">
             <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
         </div>
@@ -24,11 +24,19 @@
 
         <div class="col-sm-4 text-right">
             @if(Auth::check())
-                <strong>{{ $user->getGreeting() }}
-                    {{ substr($user->first_name, 0, 1) }}
-                    .{{ strlen($user->middle_name) ? ' ' . substr($user->middle_name, 0, 1) . '. ' : ' ' }} {{ $user->last_name }}</strong>
+                <strong>{{ Auth::user()->getGreeting() }}
+                    {{ substr(Auth::user()->first_name, 0, 1) }}
+                    .{{ strlen(Auth::user()->middle_name) ? ' ' . substr(Auth::user()->middle_name, 0, 1) . '. ' : ' ' }} {{ Auth::user()->last_name }}</strong>
                 <h5 class="Incised901Light ninety">Last
-                    Login: {!!date('d M Y @ g:i A T', strtotime($user->getLastLogin()))!!}</h5>
+                    Login: {!!date('d M Y @ g:i A T', strtotime(Auth::user()->getLastLogin()))!!}</h5>
+
+                <h5 class="Incised901Light ninety" title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums">Last Forum Login:
+                    @if(Auth::user()->forum_last_login)
+                        {{date('d M Y @ g:i A T', Auth::user()->forum_last_login)}}
+                    @else
+                        Never
+                    @endif
+                </h5>
             @endif
         </div>
 

@@ -23,11 +23,11 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="ar">
-                <h3>Academics</h3>
+                @include('partials.coursework', ['user' => $user])
             </div>
 
             <div role="tabpanel" class="tab-pane" id="pp">
-                <h3>Promotion Points</h3>
+                @include('partials.points', ['user' => $user])
             </div>
 
         </div>
