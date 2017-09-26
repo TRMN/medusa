@@ -1,6 +1,6 @@
 <div id="user-profile" class="row">
     <div class=" col-sm-12">
-        <div class="float-right">
+        <div class="float-left">
             <div class="Incised901Light filePhoto">
                 <a href="/id/qrcode/{!!$user->id!!}">{!!$user->member_id!!}</a>
                 <div class="filePhotoBox">
@@ -205,7 +205,6 @@
                     </div>
                 </div>
             @endif
-            @include('partials.coursework', ['user' => $user])
         @endif
         <br/>
         <div class="Incised901Light ninety">Join Date: {{ date('d M Y', strtotime($user->registration_date)) }}</div>

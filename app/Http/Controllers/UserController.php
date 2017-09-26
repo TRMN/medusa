@@ -1730,4 +1730,35 @@ class UserController extends Controller
 
         return $numPending;
     }
+
+    public function updatePoints(\Illuminate\Http\Request $request, $user)
+    {
+        if (($redirect =
+                $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF'])) !== true
+        ) {
+            return $redirect;
+        }
+
+        $user->points = $request->points;
+
+        try {
+            $user->save();
+
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$user->_id,
+                json_encode($user->points),
+                'UserController@updatePoints'
+            );
+
+        } catch (\Exception $d) {
+            return redirect()->to('/user/' . $user->id)->with('error', 'There was a problem saving your changes.');
+        }
+
+        Cache::flush();
+
+        return redirect()->to('/user/' . $user->id)->with('status', 'Your promotion points have been updated.');
+    }
 }

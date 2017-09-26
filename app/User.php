@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Awards\AwardQualification;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
@@ -22,7 +23,8 @@ use App\Permissions\MedusaPermissions;
 
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Notifiable, MedusaAudit, MedusaPermissions, Authenticatable, HasApiTokens, CanResetPassword;
+
+    use Notifiable, MedusaAudit, MedusaPermissions, Authenticatable, HasApiTokens, CanResetPassword, AwardQualification;
 
     public static $rules = [
         'first_name' => 'required|min:2',
@@ -36,7 +38,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'password' => 'confirmed',
         'branch' => 'required',
         'primary_assignment' => 'required',
-        'phone_number' => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/'
+        'phone_number' => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
     ];
 
     public static $updateRules = [
@@ -50,7 +52,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'email_address' => 'required|email',
         'password' => 'confirmed',
         'branch' => 'required',
-        'phone_number' => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/'
+        'phone_number' => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
     ];
 
     public static $error_message = [
@@ -107,6 +109,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'usePeerageLands',
         'extraPadding',
         'last_forum_login',
+        'points',
     ];
 
     /**
@@ -215,7 +218,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->rating =
                 [
                     'rate' => $currentRating,
-                    'description' => $rate->rate['description']
+                    'description' => $rate->rate['description'],
                 ];
         }
     }
@@ -330,7 +333,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $land = empty($peerages['landed']) ? null : array_shift($peerages['landed']);
 
-        return isset($land['lands'])? $land['lands']: null;
+        return isset($land['lands']) ? $land['lands'] : null;
     }
 
     /**
@@ -371,7 +374,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $assignedShip = $this->getAssignedShip();
 
         if ($assignedShip !== false) {
-            foreach($this->assignment as $assignment) {
+            foreach ($this->assignment as $assignment) {
                 if ($assignment['chapter_id'] == $assignedShip && $assignment['billet'] === 'Commanding Officer') {
                     return true;
                 }
@@ -592,14 +595,21 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
-    public function getTimeInService($short = false)
+    // TODO: Refactor this to use Carbon
+    public function getTimeInService($options = null)
     {
-        if (empty($this->registration_date) === false) {
-            $regDateObj = new DateTime();
-            list($year, $month, $day) = explode('-', $this->registration_date);
-            $regDateObj->setDate($year, $month, $day);
+        $short = false;
 
-            $timeInService = $regDateObj->diff(new DateTime("now"));
+        if (isset($options) === true && is_array($options) === false) {
+            $short = $options;
+        }
+
+        if (empty($this->registration_date) === false) {
+            $today = Carbon::today('America/New_York');
+
+            $join = Carbon::createFromFormat('Y-m-d', $this->registration_date);
+
+            $timeInService = $join->diff($today);
 
             if ($short === true) {
                 $years = $timeInService->format('%y');
@@ -612,6 +622,26 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     }
                 }
                 return $years . ' Yr ' . $months . ' Mo';
+            }
+
+            if (isset($options['format']) === true) {
+                switch ($options['format']) {
+                    case 'M':
+                        return $join->diffInMonths($today);
+                        break;
+                    case 'Y':
+                        return $join->diffInYears($today);
+                        break;
+                    case 'D':
+                        return $join->diffInDays($today);
+                        break;
+                    case 'H':
+                        return $join->diffInHours($today);
+                        break;
+                    case 'm':
+                        return $join->diffInMinutes($today);
+                        break;
+                }
             }
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
@@ -659,15 +689,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             if (is_null($pattern) === true) {
                 $list = $exams->exams;
             } else {
-                // filter by branch
-                $list = array_where(
-                    $exams->exams,
-                    function ($value, $key) use ($pattern) {
-                        if (preg_match($pattern, $key) === 1) {
-                            return true;
-                        }
-                    }
-                );
+                // filter by pattern
+                $list = $this->filterExams($exams->exams, $pattern);
             }
 
             if (empty($after) === false) {
@@ -704,6 +727,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             if (empty($class) === false) {
                 //filter by class of exams
+                // TODO: Put these patterns in the config table
                 switch ($class) {
                     case "enlisted":
                         //handle enlisted exams
@@ -770,7 +794,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     /**
      * Function filterExams
      *
-     * @param array  $exams
+     * @param array $exams
      * @param string $search
      *
      * @return array $list
@@ -1547,9 +1571,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $today = Carbon::today('America/New_York');
 
-        foreach($this->awards as $code => $award) {
+        foreach ($this->awards as $code => $award) {
             foreach ($award['award_date'] as $date) {
-                $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2);
+                $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')
+                    ->addDays(2);
 
                 if ($awardDate->gt($today)) {
                     $award['count']--; // Reduce the count by one, the date of this award instance + 2 days is still in the future
@@ -1557,7 +1582,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             }
 
             if ($award['count'] > 0) {
-                $award['award_date'] = array_slice($award['award_date'], 0, $award['count']);
+                $award['award_date'] = array_slice($award['award_date'], 0,
+                    $award['count']);
                 $awards[$code] = $award;
             }
         }
@@ -1576,7 +1602,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 // Check for awards that haven't been given yet, adjust count as needed
 
                 foreach ($award['award_date'] as $date) {
-                    $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2);
+                    $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')
+                        ->addDays(2);
 
                     if ($awardDate->gt($today)) {
                         $award['count']--; // Reduce the count by one, the date of this award instance + 2 days is still in the future
@@ -1586,7 +1613,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $award['code'] = $code;
                 $award['name'] = Award::where('code', '=', $code)->first()->name;
 
-                if ($award['count'] > 0)  {
+                if ($award['count'] > 0) {
                     $tmp[Award::getDisplayOrder($code)] = $award;
                 }
             }
@@ -1674,7 +1701,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     public function findForPassport($username)
     {
-        return self::where('email_address', '=', strtolower($username))->first();
+        return self::where('email_address', '=', str_replace(' ', '+', strtolower($username)))->first();
     }
 
     public function hasAward(string $awardAbbr)
@@ -1682,8 +1709,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return isset($this->awards[$awardAbbr]);
     }
 
-    public function addUpdateAward(array $award) {
-        foreach($award as $awardCode => $awardInfo) {
+    public function addUpdateAward(array $award)
+    {
+        foreach ($award as $awardCode => $awardInfo) {
             // Check that we have all the required fields in the info
             if (isset($awardInfo['count']) === false || isset($awardInfo['location']) === false || isset($awardInfo['award_date']) === false) {
                 return false; // Invalid
@@ -1694,5 +1722,108 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->awards = $awards;
             return $this->save();
         }
+    }
+
+    public function getPointsFromAwards()
+    {
+        $points = 0;
+        $today = Carbon::today('America/New_York');
+
+
+        if (empty($this->awards) === false) {
+            foreach ($this->awards as $code => $award) {
+                $awardInfo = Award::where('code', $code)->first(['points']);
+
+                if ($awardInfo->points > 0) {
+                    foreach ($award['award_date'] as $date) {
+                        $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')
+                            ->addDays(2);
+
+                        if ($awardDate->gt($today)) {
+                            $award['count']--; // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                        }
+                    }
+
+                    $points += ($award['count'] * $awardInfo->points);
+                }
+            }
+        }
+
+        return $points;
+    }
+
+    public function getPointsFromTimeInService()
+    {
+        $today = Carbon::today('America/New_York');
+
+        $join = Carbon::createFromFormat('Y-m-d', $this->registration_date);
+
+        return intval($today->diffInMonths($join) / 3);
+    }
+
+    public function getPointsFromExams()
+    {
+        $numCompletedExams = count($this->getExamList());
+
+        $examConfig = MedusaConfig::get('pp.exams', []);
+
+        $pointsEarned = 0;
+
+        foreach($examConfig as $points => $patterns) {
+            foreach($patterns as $pattern) {
+                $res = count($this->getExamList(['pattern' => $pattern]));
+
+                if ($res > 0) {
+                    $pointsForPattern =  $res * $points;
+
+                    $pointsEarned += $pointsForPattern;
+                    $numCompletedExams -= $res;
+                }
+
+            }
+        }
+        $pointsEarned += $numCompletedExams;
+
+        return $pointsEarned;
+    }
+
+    public function getGPA($pattern = '/.*/')
+    {
+        $exams = $this->getExamList(['pattern' => $pattern]);
+
+        $numExams = count($exams);
+
+        $sum = 0;
+
+        foreach($exams as $exam) {
+            $score = rtrim(substr(strtoupper($exam['score']), 0, 4),'%');
+
+            if ($score === "PASS" || $score === "BETA" || $score === "CREA") {
+                $score = '100';
+            }
+
+            $sum += $score;
+        }
+
+        return number_format($sum / $numExams, 2);
+    }
+
+    public function getGpaBySchool($service)
+    {
+        $servicePatterns = MedusaConfig::get('gpa.patterns', [], 'services');
+        $coursePatterns = MedusaConfig::get('gpa.patterns', [], 'courses');
+
+        $servicePattern = $servicePatterns[$service];
+        $results = [];
+
+        foreach($coursePatterns as $course => $pattern) {
+            $results[$course] = $this->getGPA($servicePattern . $pattern);
+
+            if ($results[$course] === 0) {
+                unset($results[$course]);
+            }
+        }
+
+        return $results;
     }
 }

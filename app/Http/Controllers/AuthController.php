@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+
     public function signin(Request $request)
     {
         $rules = [
@@ -29,23 +30,31 @@ class AuthController extends Controller
         $email = Request::get('email');
         $password = Request::get('password');
 
-        if (Auth::attempt(['email_address' => strtolower($email), 'password' => $password, 'active' => 1])) {
+        if (Auth::attempt([
+            'email_address' => strtolower($email),
+            'password' => $password,
+            'active' => 1,
+        ])) {
             User::find(Auth::user()->id)->updateLastLogin();
 
             event(new LoginComplete(Auth::user()));
 
             // Get last forum login
+            if ($_SERVER['SERVER_NAME'] == "medusa.trmn.org") {
+                try {
+                    $lastForumLogin = ForumUser::where('user_email', strtolower($email))
+                        ->firstOrFail(['user_lastvisit'])
+                        ->toArray();
 
-            try {
-              $lastForumLogin = ForumUser::where('user_email', strtolower($email))->firstOrFail(['user_lastvisit'])->toArray();
+                    Auth::user()->forum_last_login = $lastForumLogin['user_lastvisit'];
 
-              Auth::user()->forum_last_login = $lastForumLogin['user_lastvisit'];
+                } catch (Exception $e) {
 
-            } catch (Exception $e) {
+                    Auth::user()->forum_last_login = false;
 
-              Auth::user()->forum_last_login = false;
-
+                }
             }
+
 
             Auth::user()->save();
 
@@ -53,9 +62,16 @@ class AuthController extends Controller
                 $redirect = session('_previous.url');
             }
 
+            die('<pre>' . print_r(session('url'), true));
+
+            if (basename($redirect) === 'datatables.css.map' || basename($redirect) === 'signin') {
+                $redirect = "/";
+            }
+
             return Redirect::to($redirect);
         } else {
-            return Redirect::back()->with('message', 'Your username/password combination was incorrect')
+            return Redirect::back()
+                ->with('message', 'Your username/password combination was incorrect')
                 ->withInput();
         }
     }
@@ -66,5 +82,19 @@ class AuthController extends Controller
         Session::flush();
 
         return Redirect::intended('/');
+    }
+
+    private function redirectValid($redirect)
+    {
+        foreach (app()->router->getRoutes() as $route) {
+            if (in_array('GET', $route->methods()) === true) {
+                if (dirname($redirect) === dirname($route->uri)) {
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
     }
 }

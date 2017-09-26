@@ -582,26 +582,119 @@ $(document).ready(function ($) {
 
     $('[data-toggle="popover"]').popover();
 
-    $('.toggle-nav').on('click', function() {
-       $('#left').toggle();
+    $('.toggle-nav').on('click', function () {
+        $('#left').toggle();
 
-       var toggleState = $('#toggle-btn').hasClass('fa-angle-double-left');
+        var toggleState = $('#toggle-btn').hasClass('fa-angle-double-left');
 
-       if (toggleState === true) {
-           // Change to a right arrow
-           $('#toggle-btn').removeClass('fa-angle-double-left');
-           $('#toggle-btn').addClass('fa-angle-double-right');
-           $('#right-wrapper').removeClass('col-sm-10');
-           $('#right-wrapper').addClass('col-sm-12');
-       } else {
-           // Change to a left arrow
-           $('#toggle-btn').removeClass('fa-angle-double-right');
-           $('#toggle-btn').addClass('fa-angle-double-left');
-           $('#right-wrapper').removeClass('col-sm-12');
-           $('#right-wrapper').addClass('col-sm-10');
-       }
+        if (toggleState === true) {
+            // Change to a right arrow
+            $('#toggle-btn').removeClass('fa-angle-double-left');
+            $('#toggle-btn').addClass('fa-angle-double-right');
+            $('#right-wrapper').removeClass('col-sm-10');
+            $('#right-wrapper').addClass('col-sm-12');
+        } else {
+            // Change to a left arrow
+            $('#toggle-btn').removeClass('fa-angle-double-right');
+            $('#toggle-btn').addClass('fa-angle-double-left');
+            $('#right-wrapper').removeClass('col-sm-12');
+            $('#right-wrapper').addClass('col-sm-10');
+        }
 
     });
+
+    $('.pp-calc').on('keyup change', function () {
+        calcPoints($(this), false);
+    });
+
+    $('.pp-calc-3').on('keyup change', function () {
+        calcPoints($(this), true);
+    });
+
+    $('.pp-calc-select').on('change', function () {
+        calcPointsSelect($(this));
+    });
+
+    function calcPoints(el, monthCalc = false) {
+        var target = '#' + el.data('target');
+        var points = el.data('points');
+
+        if (monthCalc === true) {
+            var quantity = parseInt(el.val() / 3);
+        } else {
+            var quantity = el.val();
+        }
+
+        $(target).text(quantity * points);
+        $('#total-pp').text(calcTotalPromotionPoints());
+    }
+
+    function calcPointsSelect(el) {
+        var target = '#' + el.data('target');
+        var points = 0;
+        var select = el.find(':selected').val();
+
+        switch (select) {
+            case 'B':
+                points = 1;
+                break;
+            case 'E':
+                points = 1;
+                break;
+            case 'S':
+                points = 2;
+                break;
+            case 'D':
+                points = 2;
+                break;
+            case 'G':
+                points = 3;
+                beak;
+            default:
+                points = 0;
+                break;
+        }
+
+        $(target).text(points);
+        $('#total-pp').text(calcTotalPromotionPoints());
+    }
+
+    $('#total-pp').text(calcTotalPromotionPoints());
+
+    $('.pp-calc').each(function() {
+        calcPoints($(this), false);
+    })
+
+    $('.pp-calc-3').each(function() {
+        calcPoints($(this), true);
+    })
+
+    $('.pp-calc-select').each(function() {
+        calcPointsSelect($(this));
+    })
+
+    function calcTotalPromotionPoints() {
+        var sum = 0;
+
+        $.each([ 'service', 'events', 'parliament', 'peerages', 'awards' ], function( index, value ) {
+            sum += calcSectionPromotionPoints(value);
+        });
+
+        return sum;
+    }
+
+    function calcSectionPromotionPoints(target) {
+        var sum = 0;
+        $('#' + target +' .pp').each(function () {
+            if (parseInt($(this).text()) > 0) {
+                sum += parseInt($(this).text());
+            }
+        });
+
+        $('#' + target + '-pp').text(sum);
+
+        return sum;
+    }
 
     (function () {
 
