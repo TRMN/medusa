@@ -105,6 +105,7 @@
                         </div>
 
                         {!! Form::open( [ 'route' => 'signin' ] ) !!}
+                        {{ Form::hidden('redirect_to', Request::url()) }}
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 {!! Form::label( 'email', 'Email' ) !!} {!! Form::email( 'email', old('email'), ['id' => 'email', 'class'=>'form-control', 'placeholder' => 'Email Address'] ) !!}

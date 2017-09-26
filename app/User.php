@@ -1079,13 +1079,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $idCard =
             Image::make(public_path() . '/images/TRMN-membership-card.png');
 
+        $name = $this->getFullName();
+        $fontSize = strlen($name) < 28 ? 48 : 38;
+
         $idCard->text(
-            $this->getFullName(),
+            $name,
             382,
-            317,
-            function ($font) {
+            330,
+            function ($font) use ($fontSize) {
                 $font->file(public_path() . "/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf");
-                $font->size(48);
+                $font->size($fontSize);
                 $font->align('center');
             }
         );
@@ -1805,7 +1808,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $sum += $score;
         }
 
-        return number_format($sum / $numExams, 2);
+        return $numExams !== 0 ? number_format($sum / $numExams, 2) : 'N/A';
     }
 
     public function getGpaBySchool($service)
