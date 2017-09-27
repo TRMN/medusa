@@ -136,6 +136,7 @@
                     <div class="small-6 small-centered columns">
                         <h4 class="NordItalic">Sign In</h4>
                         {!! Form::open( [ 'route' => 'signin' ] ) !!}
+                        {{ Form::hidden('redirect_to', Request::url()) }}
                         {!! Form::label( 'email', 'Email' ) !!} {!! Form::email( 'email' ) !!}
                         {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password' ) !!}
                         {!! Form::submit( 'Sign in', [ 'class' => 'button right reg-button' ] ) !!}

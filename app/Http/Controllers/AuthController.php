@@ -28,6 +28,7 @@ class AuthController extends Controller
 
         $email = Request::get('email');
         $password = Request::get('password');
+        $redirect = Request::get('redirect_to');
 
         if (Auth::attempt(['email_address' => strtolower($email), 'password' => $password, 'active' => 1])) {
             User::find(Auth::user()->id)->updateLastLogin();
@@ -48,10 +49,6 @@ class AuthController extends Controller
             }
 
             Auth::user()->save();
-
-            if (is_null($redirect = session('url.intended')) === true) {
-                $redirect = session('_previous.url');
-            }
 
             return Redirect::to($redirect);
         } else {
