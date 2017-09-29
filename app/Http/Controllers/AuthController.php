@@ -59,16 +59,6 @@ class AuthController extends Controller
 
             Auth::user()->save();
 
-//            if (is_null($redirect = session('url.intended')) === true) {
-//                $redirect = session('_previous.url');
-//            }
-//
-//            die('<pre>' . print_r(basename(Request::url()), true));
-//
-//            if (basename($redirect) === 'datatables.css.map' || basename($redirect) === 'signin') {
-//                $redirect = "/";
-//            }
-
             return Redirect::to($redirect);
         } else {
             return Redirect::back()

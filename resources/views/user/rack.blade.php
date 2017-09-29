@@ -172,7 +172,7 @@
                         </div>
                         <div class=" col-sm-2 text-center">
                             <img src="{!!asset('awards/badges/' . $group->code . '-1.svg')!!}"
-                                 alt="{!!$group->name!!}" class="qual-badges">
+                                 alt="{!!$group->name!!}" class="qual-badge">
                         </div>
                         <div class=" col-sm-4 vertical-center-qual-badges">{!!$group->name!!}</div>
                         <div class=" col-sm-1 vertical-center-qual-badges">
@@ -202,7 +202,7 @@
             <div class=" col-sm-1 vertical-center-qual-badges">{{Form::checkbox('ribbon[]', 'SAW', isset($user->awards['SAW'])?true:null)}}</div>
             <div class=" col-sm-2 text-center">
                 <img src="{!!asset('awards/badges/SAW-1.svg')!!}"
-                     alt="Solo Aerospace Wings" class="qual-badges">
+                     alt="Solo Aerospace Wings" class="qual-badge">
             </div>
             <div class=" col-sm-5 vertical-center-qual-badges">Solo Aerospace Wings</div>
             <div class=" col-sm-1 vertical-center-qual-badges">{!!Form::hidden('SAW_quantity', '1')!!}</div>
@@ -216,7 +216,7 @@
                 <div class="row ribbon-group-row qual-badges">
                     <div class=" col-sm-1 vertical-center-qual-badges">{{Form::checkbox('select' . $groupCount . '_chk', 1, false, ['id' => 'select' . $groupCount . '_chk'])}}</div>
                     <div class=" col-sm-2 text-center">
-                        <img id="select{{$groupCount}}_img" class="qual-badges"/>
+                        <img id="select{{$groupCount}}_img" class="qual-badge"/>
                     </div>
                     <div class=" col-sm-5 top-15"><select name="select{{$groupCount}}" id="select{{$groupCount}}"
                                                                 class="ribbon_group_select">

@@ -12,7 +12,7 @@
 </head>
 <body class="@yield('bodyclasses')">
 <div class="container-fluid">
-    <div class="row inset-bottom flex-vert-center navbar-fixed-top black-background">
+    <div class="row inset-bottom flex-vert-center navbar-fixed-top black-background header">
         <div class="col-sm-4">
             <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
         </div>

@@ -13,14 +13,14 @@ use App\User;
  */
 trait AwardQualification
 {
-    public function mcamQual(User $user)
+    public function mcamQual()
     {
         $numMCAM = 0;
 
-        if ($user->hasAward('ESWP') === true || $user->hasAward('OSWP') === true) {
+        if ($this->hasAward('ESWP') === true || $this->hasAward('OSWP') === true) {
             // If they're not qualified for a SWP, they can't qual for a MCAM
 
-            $numExams = count($user->getExamList());
+            $numExams = count($this->getExamList());
 
 
             if ($numExams > 40) {
@@ -37,5 +37,27 @@ trait AwardQualification
         }
 
         return $numMCAM;
+    }
+
+    public function numToNextMcam()
+    {
+        if ($this->hasAward('MCAM')) {
+            $numMcams = $this->awards['MCAM']['count'];
+
+            return count($this->getExamList()) - (($numMcams * 35) + 5);
+
+        }
+
+        return null;
+    }
+
+    public function percentNextMcamLeft()
+    {
+        return floor($this->numToNextMcam() * 2.86);
+    }
+
+    public function percentNextMcamDone()
+    {
+        return 100-$this->percentNextMcamLeft();
     }
 }
