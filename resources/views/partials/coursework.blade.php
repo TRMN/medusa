@@ -3,13 +3,23 @@
         <span class="Incised901Light">Last
                         Updated: {!! date('d M Y @ g:i A T', strtotime($user->getExamLastUpdated())) !!}</span>
     @endif
-    <br/>
-    Overall GPA: {{ $user->getGPA('/.*/') }}%
+    @if($permsObj->hasPermissions(['ADD_GRADE']))
+        <br/>
+        Overall GPA: {{ $user->getGPA('/.*/') }}%
+    @endif
 </h4>
 
 <h4>Space Warfare Pin earned: {{($user->hasAward('ESWP') || $user->hasAward('OSWP')) ? 'Yes': 'No'}}<br/>
-    Manticoran Combat Action Medals earned: {{$user->hasAward('MCAM') ? $user->awards['MCAM']['count'] : '0'}}<br/>(<em>May
-        include additional awards that have not been issued yet</em>)</h4>
+    Manticoran Combat Action Medals earned: {!! $user->hasAward('MCAM') ? $user->awards['MCAM']['count'] .
+    '<br />Number of courses need for next MCAM:&nbsp;<div class="progress" style="width: 25%; height: 25px">
+  <div class="progress-bar progress-bar-success progress-bar-striped" style="width: ' . $user->percentNextMcamDone() .'%">
+  </div>
+  <div class="progress-bar progress-bar-danger progress-bar-striped" style="font-size: 18px; padding-top: 2px; width: ' . $user->percentNextMcamLeft() . '%">
+<strong>' . $user->numToNextMcam() . '</strong>
+  </div>
+</div>' : '0' !!}<br/>
+
+    (<em>May include additional awards that have not been issued yet</em>)</h4>
 
 <div>
     <ul class="nav nav-tabs" role="tablist">
@@ -50,26 +60,28 @@
                             </div>
                         </div>
                     @endforeach
-                    <div class="row zebra-odd">
-                        <div class="col-sm-6">&nbsp;</div>
-                        <div class="col-sm-1 top-border-double text-right padding-top-10">
-                            GPA: {{ $user->getGPA($regex) }}%
-                        </div>
-                    </div>
-
-                    @if(str_replace(' ', '', $school) === $school)
-                        <div class="row padding-top-10 padding-bottom-10">
-                            <div class="col-sm-12 text-center bottom-border-double">
-                                GPA Breakdown
+                    @if($permsObj->hasPermissions(['ADD_GRADE']))
+                        <div class="row zebra-odd">
+                            <div class="col-sm-6">&nbsp;</div>
+                            <div class="col-sm-1 top-border-double text-right padding-top-10">
+                                GPA: {{ $user->getGPA($regex) }}%
                             </div>
                         </div>
-                        <div class="row">
-                            @foreach($user->getGpaBySchool($school) as $course => $gpa)
-                                <div class="col-sm-3 text-center">
-                                    {{ucfirst($course)}}<br />{{$gpa}}%
+
+                        @if(str_replace(' ', '', $school) === $school)
+                            <div class="row padding-top-10 padding-bottom-10">
+                                <div class="col-sm-12 text-center bottom-border-double">
+                                    GPA Breakdown
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                            <div class="row">
+                                @foreach($user->getGpaBySchool($school) as $course => $gpa)
+                                    <div class="col-sm-3 text-center">
+                                        {{ucfirst($course)}}<br/>{{$gpa}}%
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     @endif
                 </div>
             @endif

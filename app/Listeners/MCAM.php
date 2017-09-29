@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Awards\AwardQualification;
 use App\Events\GradeEntered;
 use Carbon\Carbon;
 use Illuminate\Queue\InteractsWithQueue;
@@ -10,8 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MCAM
 {
-    use AwardQualification;
-
     /**
      * Create the event listener.
      *
@@ -32,7 +29,7 @@ class MCAM
     public function handle(GradeEntered $event)
     {
 
-        $numMCAM = $this->mcamQual($event->user);
+        $numMCAM = $event->user->mcamQual();
 
         if ($numMCAM > 0) {
             // Qualified for at least 1 MCAM, update their ribbon rack

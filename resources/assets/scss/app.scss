@@ -132,6 +132,11 @@ $medusa-yellow: #ffee00;
   margin: 5px;
 }
 
+.header {
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
 .margin-bottom-10 {
   margin-bottom: 10px;
 }
@@ -328,6 +333,10 @@ div.stripes {
 
 .qual-badges {
   height: 75px;
+}
+
+.qual-badge {
+  width: 200px;
 }
 
 .vertical-center-qual-badges {
