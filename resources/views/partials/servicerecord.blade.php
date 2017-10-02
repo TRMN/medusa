@@ -172,30 +172,29 @@
                     <div>
                         {!! Form::open(['route' => ['addOrEditPeerage', $user->id], 'method' => 'post', 'files' => true, 'id'=>'peerage_form']) !!}
                         <div class="row">
-                            <div class="col-sm-2 Incised901Light ninety text-left">
-                                {!!Form::select('ptitle', $ptitles, '', ['id' => 'ptitle'])!!}
-                            </div>
-                            <div class="col-sm-2 Incised901Light ninety text-left">
+                            <div class="col-sm-2 Incised901Light text-left">
+                                {!!Form::select('ptitle', $ptitles, '', ['id' => 'ptitle', 'class' => 'white-border'])!!}
+                                <br />
                                 {{Form::checkbox('courtesy', 1, null, ['id' => 'courtesy'])}}
                                 <label for="courtesy" id="courtesy_label">Courtesy Title</label>
                             </div>
-                            <div class="col-sm-2  Incised901Light ninety text-left">
+                            <div class="col-sm-2  Incised901Light text-left">
                                 {!!Form::select('generation',
                                 ['' => 'Peerage Generation', 'First' => 'First', 'Second' => 'Second', 'Third' => 'Third', 'Fourth' => 'Fourth', 'Fifth'=> 'Fifth'], '',
-                                ['id' => 'generation'])!!}
-                                {!!Form::select('order', $korders, '',['id' => 'order'])!!}
+                                ['id' => 'generation', 'class' => 'white-border'])!!}
+                                {!!Form::select('order', $korders, '',['id' => 'order', 'class' => 'white-border'])!!}
                             </div>
-                            <div class="col-sm-6 Incised901Light ninety text-left">
+                            <div class="col-sm-6 Incised901Light text-left padding-left-5em">
                                 {!!Form::text('lands', null, ['placeholder' => 'Peerage Lands', 'id' => 'lands'])!!}
-                                {!!Form::select('class', ['' => 'Select Class'], null, ['id' => 'class'])!!}
+                                {!!Form::select('class', ['' => 'Select Class'], null, ['id' => 'class', 'class' => 'white-border'])!!}
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-4 incised901light ninety text-left">
+                        <div class="row padding-top-10">
+                            <div class="col-sm-4 incised901light text-left">
                                 {!!Form::label('arms','Upload Peerage Arms', ['id'=>'arms-label'])!!}
                                 <input type="file" id="arms" name="arms">
                             </div>
-                            <div class="col-sm-8  Incised901Light ninety text-left ">
+                            <div class="col-sm-8  Incised901Light text-left ">
                                 <button class="btn btn-danger" id="cancel">Cancel</button>
                                 <button class="btn btn-success" type="submit">Save Peerage <span
                                             class="fa fa-save"></span></button>
