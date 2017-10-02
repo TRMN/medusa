@@ -21,7 +21,7 @@ Chapter Reports
     </div>
 @else
     @foreach($reports as $report)
-        <div class="row">
+        <div class="row zebra-even">
             <div class=" col-sm-2">
                 @if(empty($report['report_sent']) === true)
                     Pending
@@ -33,20 +33,19 @@ Chapter Reports
                 {!!date('F, Y', strtotime($report['report_date']))!!}
             </div>
             <div class=" col-sm-2 ">
-                <a class="fa fa-eye my size-24" href="{!! route('report.show', [ $report->id ]) !!}" data-toggle="tooltip" title="View Report"></a>&nbsp;
+                <a class="fa fa-eye my" href="{!! route('report.show', [ $report->id ]) !!}" data-toggle="tooltip" title="View Report"></a>&nbsp;
                 @if(empty($report['report_sent']) === true)
-                    <a class="fa fa-envelope my size-24" href="{!! route('report.send', [$report->id]) !!}" data-toggle="tooltip" title="Send Report"></a>&nbsp;
-                    <a class="fa fa-file-o-edit green size-24" href="{!! route('report.edit', [ $report->id ]) !!}" data-toggle="tooltip" title="Edit Report"></a>
+                    <a class="fa fa-envelope my" href="{!! route('report.send', [$report->id]) !!}" data-toggle="tooltip" title="Send Report"></a>&nbsp;
+                    <a class="fa fa-file-o-edit green" href="{!! route('report.edit', [ $report->id ]) !!}" data-toggle="tooltip" title="Edit Report"></a>
                 @endif
             </div>
         </div>
-        <br>
     @endforeach
 @endif
 <br><br>
 <div class="row">
     <div class=" col-sm-6 " text-center">
-        <a href="{!! route('report.create')!!}" class="btn round">Create New</a>
+        <a href="{!! route('report.create')!!}" class="btn btn-success">Create New</a>
     </div>
 </div>
 

@@ -4213,6 +4213,10 @@ table.dataTable.display tbody tr:first-child td {
   padding-bottom: 10px !important;
 }
 
+.padding-left-5em {
+  padding-left: 5em;
+}
+
 .margin-5 {
   margin: 5px;
 }
@@ -4446,6 +4450,10 @@ div.stripes {
   width: 200px;
 }
 
+.qual-badge-hs {
+  height: 55px;
+}
+
 .vertical-center-qual-badges {
   top: 50%;
   margin-top: -5px;
@@ -4471,6 +4479,10 @@ select {
   padding-top: 5px;
   padding-left: 10px;
   clear: both;
+}
+
+#note_text {
+  color: black;
 }
 
 input {
@@ -4556,6 +4568,10 @@ div.filePhoto {
   height: 100%;
   width: 100%;
   margin: -12.5% 0 0 -50%;
+}
+
+.white-border {
+  border: 1px whitesmoke solid;
 }
 
 th.actions {
@@ -4837,7 +4853,8 @@ footer p {
 
 #user legend,
 #register legend,
-#changeRequest legend {
+#changeRequest legend,
+#event_form legend {
   background: none;
   font-weight: bolder;
   margin: 0 0 0 -.1875rem;
@@ -5196,6 +5213,12 @@ table.dataTable tr td:nth-child(1) {
 .dataTables_wrapper .dataTables_paginate .fg-button {
   padding: 0;
   margin-left: -1px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0;
+  margin-left: 0px;
+  border: none;
 }
 
 .float-right {

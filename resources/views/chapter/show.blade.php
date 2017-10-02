@@ -144,7 +144,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-10  Incised901Light ">
+            <div class="col-sm-12  Incised901Light ">
                 <table id="crewRoster" class="compact row-border">
                     <thead>
                         <tr>

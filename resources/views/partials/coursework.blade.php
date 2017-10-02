@@ -43,7 +43,7 @@
                     @foreach($user->getExamList(['pattern' => $regex]) as $exam => $gradeInfo)
                         <div class="row zebra-odd">
                             <div class="col-sm-6  Incised901Light text-left @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) >= strtotime(Auth::user()->getLastLogin())))yellow @endif">{!!$exam!!} @if (!is_null(App\ExamList::where('exam_id','=',$exam)->first())){!!App\ExamList::where('exam_id','=',$exam)->first()->name!!}@endif</div>
-                            <div class="col-sm-1  Incised901Light text-right">{!!$gradeInfo['score']!!}</div>
+                            <div class="col-sm-1  Incised901Light text-right">{{is_numeric($gradeInfo['score'])? $gradeInfo['score']: '100%'}}</div>
                             <div class="col-sm-3  Incised901Light text-right">@if($gradeInfo['date'] != 'UNKNOWN')
                                     {!!date('d M Y', strtotime($gradeInfo['date']))!!}
                                 @else

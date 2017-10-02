@@ -1805,7 +1805,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $score = '100';
             }
 
-            $sum += $score;
+            $sum += is_numeric($score)? $score : 100;
         }
 
         return $numExams !== 0 ? number_format($sum / $numExams, 2) : 'N/A';
