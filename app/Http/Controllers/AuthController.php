@@ -59,6 +59,11 @@ class AuthController extends Controller
 
             Auth::user()->save();
 
+            // Don't redirect back to the signin page
+            if (basename($redirect) === 'signin') {
+                $redirect = '/';
+            }
+
             return Redirect::to($redirect);
         } else {
             return Redirect::back()

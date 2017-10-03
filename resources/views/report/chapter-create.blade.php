@@ -18,7 +18,7 @@
     </div>
 
     <div class="row">
-        <div class=" col-sm-12 small-text-center my reportSubHeader">
+        <div class=" col-sm-12 small-text-center black-text reportSubHeader">
             <br>COMMANDING OFFICER<br><br>
         </div>
     </div>
@@ -85,7 +85,7 @@
     <br>
 
     <div class="row">
-        <div class=" col-sm-12 small-text-center my reportSubHeader">
+        <div class=" col-sm-12 small-text-center black-text reportSubHeader">
             <br>EXECUTIVE OFFICER<br><br>
         </div>
     </div>
@@ -160,8 +160,8 @@
 
 
     <div class="row">
-        <div class=" col-sm-12 small-text-center my reportSubHeader">
-            <br>CHIEF PETTY OFFICER<br><br>
+        <div class=" col-sm-12 small-text-center black-text reportSubHeader">
+            <br>BOSUN<br><br>
         </div>
     </div>
     <br>
@@ -327,64 +327,64 @@
         </div>
     </div>
     <br>
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Promotions Awarded/Requested:
         </div>
         <div class=" col-sm-9">
-            {!!Form::text('promotion_actions')!!}
+            {!!Form::textarea('promotion_actions', null, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Awards Given/Requested:
         </div>
         <div class=" col-sm-9">
-            {!!Form::text('award_actions')!!}
+            {!!Form::textarea('award_actions', null, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Courses Completed:
         </div>
         <div class=" col-sm-9">
-            {!!Form::textarea('courses', $completed)!!}
+            {!!Form::textarea('courses', $completed, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Chapter Activites, Last 60 Days:
         </div>
         <div class=" col-sm-9">
-            {!!Form::textarea('activities')!!}
+            {!!Form::textarea('activities', null, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Problems:
         </div>
         <div class=" col-sm-9">
-            {!!Form::textarea('problems')!!}
+            {!!Form::textarea('problems', null, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             General Questions:
         </div>
         <div class=" col-sm-9">
-            {!!Form::textarea('questions')!!}
+            {!!Form::textarea('questions', null, ['class' => 'form-control'])!!}
         </div>
     </div>
 
     <div class="text-center button-bar">
-        <a href="{!! URL::previous() !!}" class="btn round"> Cancel </a>&nbsp;
-        {!! Form::submit('Save', [ 'class' => 'btn round' ] ) !!}&nbsp;
-        {!! Form::submit('Send', [ 'class' => 'btn round', 'name' => 'send_report']) !!}
+        <a href="{!! URL::previous() !!}" class="btn btn-warning"><span class="fa fa-times"></span> Cancel </a>
+        <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button>
+        <button type="submit" class="btn btn-primary" name="send_report" value="send_report"><span class="fa fa-envelope"></span> Send </button>
     </div>
 
 

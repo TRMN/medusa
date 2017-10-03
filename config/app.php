@@ -174,6 +174,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         App\Providers\PassportServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
+        GeneaLabs\LaravelCaffeine\Providers\LaravelCaffeineService::class,
     ],
 
     /*
