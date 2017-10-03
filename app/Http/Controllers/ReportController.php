@@ -403,6 +403,8 @@ class ReportController extends Controller
             $report->$key = $value;
         }
 
+        $report->save();
+
         if (empty($data['send_report']) === false) {
             // email the report
             $this->emailReport($report->id);

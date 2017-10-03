@@ -28,7 +28,7 @@ class ChapterController extends Controller
         return view('chapter.index', ['chapters' => $chapters]);
     }
 
-    public function show($chapter)
+    public function show(Chapter $chapter)
     {
         if (($redirect = $this->loginValid()) !== true) {
             return $redirect;

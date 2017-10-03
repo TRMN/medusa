@@ -159,7 +159,7 @@
     <br>
     <div class="row">
         <div class=" col-sm-12 small-text-center my reportSubHeader">
-            <br>CHIEF PETTY OFFICER<br><br>
+            <br>BOSUN<br><br>
         </div>
     </div>
     <br>
@@ -299,7 +299,8 @@
             Location:
         </div>
         <div class=" col-sm-4">
-            {!!$report->command_crew['Commanding Officer']['city']!!}, {!!$report->command_crew['Commanding Officer']['state_province']!!}
+            {!!$report->command_crew['Commanding Officer']['city']!!}
+            , {!!$report->command_crew['Commanding Officer']['state_province']!!}
         </div>
     </div>
 
@@ -328,70 +329,71 @@
         </div>
         <div class=" col-sm-9">
             @if(empty($report->promotion_actions) === false)
-                {!!$report->promotion_actions!!}
+                {!!nl2br($report->promotion_actions)!!}
             @endif
         </div>
     </div>
-
+    <br/>
     <div class="row">
         <div class=" col-sm-3">
             Awards Given/Requested:
         </div>
         <div class=" col-sm-9">
             @if(empty($report->award_actions) === false)
-                {!!$report->award_actions!!}
+                {!!nl2br($report->award_actions)!!}
             @endif
         </div>
     </div>
-
+    <br/>
     <div class="row">
         <div class=" col-sm-3">
             Courses Completed:
         </div>
         <div class=" col-sm-9">
             @if(empty($report->courses) === false)
-                {!!$report->courses!!}
+                {!!nl2br($report->courses)!!}
             @endif
         </div>
     </div>
-
+    <br/>
     <div class="row">
         <div class=" col-sm-3">
             Chapter Activites, Last 60 Days:
         </div>
         <div class=" col-sm-9">
             @if(empty($report->activities) === false)
-                {!!$report->activities!!}
+                {!!nl2br($report->activities)!!}
             @endif
         </div>
     </div>
-
+    <br/>
     <div class="row">
         <div class=" col-sm-3">
             Problems:
         </div>
         <div class=" col-sm-9">
             @if(empty($report->problems) === false)
-                {!!$report->problems!!}
+                {!!nl2br($report->problems)!!}
             @endif
         </div>
     </div>
-
+    <br/>
     <div class="row">
         <div class=" col-sm-3">
             General Questions:
         </div>
         <div class=" col-sm-9">
             @if(empty($report->questions) === false)
-                {!!$report->questions!!}
+                {!!nl2br($report->questions)!!}
             @endif
         </div>
     </div>
     <br>
     <div class="text-center button-bar">
-        <a href="{!! URL::previous() !!}" class="btn round"> Back </a>
+        <a href="{!! URL::previous() !!}" class="btn btn-primary"><span class="fa fa-backward"></span> Back </a>
         @if(empty($report['report_sent']) === true)
-            &nbsp;<a href="{!!route('report.edit', $report->id)!!}" class="btn round"> Edit </a>
+            &nbsp;<a href="{!!route('report.edit', $report->id)!!}" class="btn btn-success"><span
+                        class="fa fa-edit"></span> Edit </a>
         @endif
     </div>
 @stop

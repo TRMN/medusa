@@ -19,7 +19,7 @@
     </div>
 
     <div class="row">
-        <div class=" col-sm-12 small-text-center my reportSubHeader">
+        <div class=" col-sm-12 small-text-center black-text reportSubHeader">
             <br>COMMANDING OFFICER<br><br>
         </div>
     </div>
@@ -86,7 +86,7 @@
     </div>
     <br>
     <div class="row">
-        <div class=" col-sm-12 small-text-center my reportSubHeader">
+        <div class=" col-sm-12 small-text-center black-text reportSubHeader">
             <br>EXECUTIVE OFFICER<br><br>
         </div>
     </div>
@@ -160,8 +160,8 @@
 
     <br>
     <div class="row">
-        <div class=" col-sm-12 small-text-center my reportSubHeader">
-            <br>CHIEF PETTY OFFICER<br><br>
+        <div class=" col-sm-12 small-text-center black-text reportSubHeader">
+            <br>BOSUN<br><br>
         </div>
     </div>
     <br>
@@ -324,87 +324,94 @@
         </div>
     </div>
     <br>
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Promotions Awarded/Requested:
         </div>
         <div class=" col-sm-9">
-            {!!Form::text('promotion_actions')!!}
+            {!!Form::textarea('promotion_actions', $report->promotion_actions, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Awards Given/Requested:
         </div>
         <div class=" col-sm-9">
-            {!!Form::text('award_actions')!!}
+            {!!Form::textarea('award_actions', $report->award_actions, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             {!!Form::hidden('chapter_id',$report->chapter_id, ['id' => 'chapter_id'])!!}
-            <a href="#" data-reveal-id="examList" class="fa fa-refresh green size-21" id="refreshExamList"
-               data-toggle="tooltip" title="Refresh Course List"></a> Courses Completed:
+            <a href="#" data-toggle="tooltip" class="fa fa-refresh green size-21" id="refreshExamList"
+               title="Refresh Course List"></a>&nbsp;Courses Completed:
         </div>
         <div class=" col-sm-9">
-            {!!Form::textarea('courses', $report->courses, ['id' => 'courses'])!!}
+            {!!Form::textarea('courses', $report->courses, ['id' => 'courses', 'class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Chapter Activites, Last 60 Days:
         </div>
         <div class=" col-sm-9">
-            {!!Form::textarea('activities')!!}
+            {!!Form::textarea('activities', $report->activities, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             Problems:
         </div>
         <div class=" col-sm-9">
-            {!!Form::textarea('problems')!!}
+            {!!Form::textarea('problems', $report->problems, ['class' => 'form-control'])!!}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class=" col-sm-3">
             General Questions:
         </div>
         <div class=" col-sm-9">
-            {!!Form::textarea('questions')!!}
+            {!!Form::textarea('questions', $report->questions, ['class' => 'form-control'])!!}
         </div>
     </div>
 
     <div class="text-center button-bar">
-        <a href="{!! URL::previous() !!}" class="btn round"> Cancel </a>&nbsp;
-        {!! Form::submit('Save', [ 'class' => 'btn round' ] ) !!}&nbsp;
-        {!! Form::submit('Send', [ 'class' => 'btn round', 'name' => 'send_report']) !!}
+        <a href="{!! URL::previous() !!}" class="btn btn-warning"><span class="fa fa-times"></span> Cancel </a>
+        <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button>
+        <button type="submit" class="btn btn-primary" name="send_report" value="send_report"><span class="fa fa-envelope"></span> Send </button>
     </div>
 
 
     {!!Form::close()!!}
 
-    <div id="examList" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-        <h4 class="text-center">Current Completed Exams</h4>
+    <div id="examList" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-title">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="text-center">Current Completed Exams</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You may copy and paste select elements from this or click the 'Append to Report' button to add it to the end
+                        of what is already in the input box.</p>
 
-        <p>You may copy and paste select elements from this or click the 'Append to Report' button to add it to the end
-            of what is already in the input box.</p>
-
-        <div class="row">
-            <div>
-                {!!Form::textarea('results', null, ['id' => 'results', 'disabled'])!!}
+                    <div class="row">
+                        <div>
+                            {!!Form::textarea('results', null, ['id' => 'results', 'disabled' => '', 'class' => 'black-text'])!!}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="button" id="copyExams">Append to Report</button>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <button class="btn round" id="copyExams">Append to Report</button>
-        </div>
-
-        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     </div>
 
 @stop

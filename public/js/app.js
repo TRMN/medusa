@@ -295,13 +295,14 @@ $(document).ready(function ($) {
 
     $('#refreshExamList').on('click', function () {
         $.get('/report/getexams/' + $('#chapter_id').val(), function (data) {
-            $('#results').html(data);
+            $('#results').val(data);
         });
+        $('#examList').modal('show');
     });
 
     $('#copyExams').on('click', function () {
         $('#courses').val($('#courses').val() + $('#results').val());
-        $('#examList').foundation('reveal', 'close');
+        $('#examList').modal('hide');
     });
 
     $('#coPerms').on('click', function () {
