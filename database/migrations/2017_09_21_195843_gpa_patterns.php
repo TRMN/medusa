@@ -21,6 +21,7 @@ class GpaPatterns extends Migration
                 'GSN' => '/^IMNA-GSN-',
                 'RMACS' => '/^SIA-RMACS-',
                 'IAN' => '/^PAA-IAN-',
+                'RMMM' => '/^SIA-RMMM-',
             ],
             "courses" => [
                 'enlisted' => '000[1-9]/',
