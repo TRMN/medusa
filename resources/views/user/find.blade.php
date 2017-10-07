@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class=" col-sm-6 ninety Incised901Light ">
-            {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name'])!!}
+            {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name', 'class' => 'form-control'])!!}
         </div>
     </div>
 

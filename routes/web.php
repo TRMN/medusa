@@ -106,6 +106,8 @@ Route::get('/user/{user}/ribbons', [
     'middleware' => 'auth'
 ]);
 
+Route::post('/users/list/{branch}', 'UserController@getUserList');
+
 Route::resource('user', 'UserController', ['middleware' => 'auth']);
 
 Route::get(

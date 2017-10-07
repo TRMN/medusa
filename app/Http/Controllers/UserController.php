@@ -36,6 +36,121 @@ class UserController extends Controller
 {
     use MedusaPermissions;
 
+    public function getUserList($branch, \Illuminate\Http\Request $request)
+    {
+        $order = $request->input('order');
+
+        /*
+         * Branch is used two different ways to avoid having two nearly identical methods and a second route,
+         * so check it and do the right thing based on it's value
+         *
+         */
+        switch ($branch) {
+            case 'Inactive':
+            case 'Suspended':
+            case 'Expelled':
+                $query = User::where('registration_status', $branch);
+                break;
+            default:
+                $query = User::where('active', 1)->where('registration_status', 'Active')->where('branch', $branch);
+        }
+
+        $totalRecords = $filteredRecords = $query->count();
+
+        // Need to do any filtering before sort order
+
+        $search = $request->input('search');
+
+
+        if (empty($search['value']) === false) {
+
+            $searchTerm = '%' . $search['value'] . '%';
+
+            \Log::debug('Search: ' . print_r($search, true) . "\nSearch Term: " . $searchTerm);
+
+            $query = $query->where(function ($query) use ($searchTerm) {
+                $query->where('last_name', 'like', $searchTerm)
+                    ->orWhere('first_name', 'like', $searchTerm)
+                    ->orWhere('rank.grade', 'like', $searchTerm)
+                    ->orWhere('member_id', 'like', $searchTerm)
+                    ->orWhere('email_address', 'like', $searchTerm)
+                    ->orWhere('registration_date', 'like', $searchTerm)
+                    ->orWhere('assignment.chapter_name', 'like', $searchTerm);
+            });
+
+            $filteredRecords = $query->count();
+        }
+
+        $sortOrder = $order[0]['dir'];
+
+        switch ($order[0]['column']) {
+            case 1:
+                $query = $query->orderBy('rank.grade', $sortOrder);
+                break;
+            case 3:
+                $query = $query->orderBy('last_name', $sortOrder)->orderBy('first_name', $sortOrder);
+                break;
+            case 4:
+                $query = $query->orderBy('member_id', $sortOrder);
+                break;
+            case 5:
+                $query = $query->orderBy('email_address', $sortOrder);
+                break;
+            case 7:
+                $query = $query->orderBy('registration_date', $sortOrder);
+                break;
+        }
+
+
+        $users = $query->skip(intval($request->input('start')))->take(intval($request->input('length')))->get();
+
+        $ret['draw'] = intval($request->draw);
+        $ret['recordsTotal'] = $totalRecords;
+        $ret['recordsFiltered'] = $filteredRecords;
+        $ret['data'] = [];
+
+        /* @var $user User */
+        foreach ($users as $user) {
+            $actions = '&nbsp;<a class="fa fa-user my" href="' . route("user.show",
+                    [$user->id]) . '" data-toggle="tooltip" title="View User"></a>';
+
+            if (Auth::user()->hasPermissions(['EDIT_MEMBER']) === true) {
+                $actions .= '&nbsp;<a class="tiny fa fa-pencil green" href="' . route("user.edit",
+                        [$user->id]) . '" data-toggle="tooltip" title="Edit User"></a>';
+            }
+
+            if (Auth::user()->hasPermissions(["DEL_MEMBER"]) === true) {
+                $actions .= '&nbsp;<a class="fa fa-close red" href="' . route("user.confirmdelete",
+                        [$user->id]) . '" data-toggle="tooltip" title="Delete User"></a>';
+            }
+
+            if (Auth::user()->hasPermissions(["ID_CARD"]) === true) {
+                $actions .= '&nbsp;<a class="fa fa-credit-card';
+
+                $actions .= $user->idcard_printed === true ? ' yellow' : ' green';
+
+                $actions .= '" href="/id/card/' . $user->id . '" data-toggle="tooltip" title="ID Card"></a>&nbsp;';
+
+                $actions .= $user->idcard_printed === true ? '' : '<a class="fa fa-check green idcard-confrim" href="/id/mark/' . $user->id . '" data-toggle="tooltip" title="Mark ID Card as printed" onclick="return confirm(\'Mark ID card as printed for this member?\')"></a>';
+            }
+
+            $ret['data'][] = [
+                $user->hasNewExams() === true ? '<span class="fa fa-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp;</span>' : '',
+                $user->rank['grade'],
+                is_null($user->getTimeInGrade(true)) === false ? $user->getTimeInGrade(true) : 'N/A',
+                $user->getFullName(true),
+                $user->member_id,
+                $user->email_address,
+                $user->getPrimaryAssignmentName() !== false ? '<a href="/chapter/' . $user->getPrimaryAssignmentId() . '">' . $user->getPrimaryAssignmentName() . '</a>' : 'N/A',
+                $user->registration_date,
+                $actions
+            ];
+        }
+
+
+        return \response()->json($ret);
+    }
+
     /**
      * Display a listing of users
      *
@@ -47,33 +162,10 @@ class UserController extends Controller
             return $redirect;
         }
 
-        $branches =
-            ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN', 'SFS', 'CIVIL', 'INTEL'];
-
-        foreach ($branches as $branch) {
-            $users = User::where('active', '=', 1)
-                ->where('registration_status', '=', 'Active')
-                ->where('branch', '=', $branch)
-                ->get();
-
-            $usersByBranch[$branch] = $users;
-        }
-
-        $usersOtherThanActive = [];
-
-        foreach (User::whereIn(
-            'registration_status',
-            ['Inactive', 'Suspended', 'Expelled']
-        )->get() as $user) {
-            $usersOtherThanActive[$user->registration_status][] = $user;
-        }
-
         return view(
             'user.index',
             [
-                'users' => $usersByBranch,
                 'title' => 'Membership List',
-                'otherThanActive' => $usersOtherThanActive,
                 'totalMembers' => User::where(
                     'registration_status',
                     '=',
@@ -1562,7 +1654,7 @@ class UserController extends Controller
             "HS"
         ]);
 
-        foreach($displayChoice as $qualBadge) {
+        foreach ($displayChoice as $qualBadge) {
             $data[$qualBadge . '_display'] = false;
         }
 

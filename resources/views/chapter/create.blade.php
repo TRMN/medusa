@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="row">
-        <div class=" col-sm-6  ninety Incised901Light ">
+        <div class=" col-sm-6 Incised901Light form-group">
             {!! Form::label('branch', "Branch") !!} {!! Form::select('branch', $branches, null, ['class' => 'selectize']) !!}
         </div>
     </div>
@@ -56,7 +56,6 @@
             <button type="submit" class="btn btn-success"><span class="fa fa-save"><span
                             class="Incised901Light"> Save </span></span></button>
         </div>
-
     </div>
 
 
