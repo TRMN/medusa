@@ -137,14 +137,23 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $this->getGreeting() . ' ' . $this->getFullName();
     }
 
-    public function getFullName()
+    public function getFullName($lastFirst = false)
     {
-        return trim(
-            ucfirst($this->first_name) . ' ' .
-            (empty($this->middle_name) ? '' : ucfirst($this->middle_name) . ' ') .
-            ucfirst($this->last_name) . ' ' .
-            (empty($this->suffix) ? '' : $this->suffix)
-        );
+        if ($lastFirst === true) {
+            return trim(
+                ucfirst($this->last_name) . (empty($this->suffix) ? '' : $this->suffix) . ', ' .
+                ucfirst($this->first_name) . ' ' .
+                (empty($this->middle_name) ? '' : ucfirst($this->middle_name) . ' ')
+            );
+        } else {
+            return trim(
+                ucfirst($this->first_name) . ' ' .
+                (empty($this->middle_name) ? '' : ucfirst($this->middle_name) . ' ') .
+                ucfirst($this->last_name) . ' ' .
+                (empty($this->suffix) ? '' : $this->suffix)
+            );
+        }
+
     }
 
     /**

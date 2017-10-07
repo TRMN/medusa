@@ -4612,6 +4612,16 @@ html {
   color: black;
 }
 
+.memberlist-tab {
+  border: 1px whitesmoke solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.memberlist-tab :hover {
+  color: black;
+}
+
 #down {
   background: #000000 !important;
   color: WhiteSmoke;
