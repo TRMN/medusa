@@ -353,8 +353,7 @@
                 </div>
             </div>
 
-            <a class="btn btn-danger"
-               href="{!! URL::previous() !!}">Cancel</a> {!! Form::submit('Save', [ 'class' => 'btn btn-success' ] ) !!}
+            <a class="btn btn-danger" href="{!! URL::previous() !!}"><span class="fa fa-times"></span> Cancel </a> <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save </button>
 
             {!! Form::close() !!}
         </div>
