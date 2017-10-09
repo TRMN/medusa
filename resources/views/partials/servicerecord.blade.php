@@ -13,13 +13,19 @@
                         </div>
                     @endif
 
-                    
+
                 </div>
                 <div class="clear-both">
                     {{$user->getPrimaryBillet()}}<br/>
 
                     <div class="Incised901Light seventy-five">
-                        Assigned: {{$user->getPrimaryDateAssigned()}}</div>
+                        Assigned: {{$user->getPrimaryDateAssigned()}}
+                    </div>
+                    @if(($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || ($permsObj->hasPermissions(['EDIT_MEMBER'])))
+                        <div class="Incised901Light seventy-five">
+                            Path: {{Form::select('path', ['service' => 'Service', 'staff' => 'Staff', 'line' => 'Line'], $user->path, ['id' => 'path', 'data-id' => $user->id])}}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

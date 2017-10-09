@@ -601,6 +601,13 @@ $(document).ready(function ($) {
 
     $('[data-toggle="popover"]').popover();
 
+    $('#path').on('change', function () {
+        var path = $('#path :selected').val();
+        var user_id = $('#path').data('id');
+
+        $.post("/api/path", { user_id: user_id, path: path });
+    });
+
     $('.toggle-nav').on('click', function () {
         $('#left').toggle();
 
@@ -669,7 +676,7 @@ $(document).ready(function ($) {
                 break;
             case 'G':
                 points = 3;
-                beak;
+                break;
             default:
                 points = 0;
                 break;

@@ -407,6 +407,9 @@ Route::post(
     'ApiController@savePhoto',
     ['middleware' => 'auth']
 ); // File Photo upload
+
+Route::post('/api/path', 'ApiController@setPath', ['middleware' => 'auth']);
+
 Route::get('/api/find/{query?}', [
     'as' => 'user.find.api',
     'uses' => 'ApiController@findMember',
