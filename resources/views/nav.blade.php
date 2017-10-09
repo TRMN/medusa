@@ -83,8 +83,8 @@
             <h3 class="nav-header lnav">BuTrain (6SL)</h3>
             <div class="rnav">
                 @if($permsObj->hasPermissions(['EDIT_GRADE']) === true)
-                    <a href="{!!route('exam.list')!!}">Master Exam List</a><br/>
-                    <a href="{!!route('exam.create')!!}">Add Exam</a><br/>
+                    <a href="{!!route('exam.list')!!}">Master Course List</a><br/>
+                    <a href="{!!route('exam.create')!!}">Add Course</a><br/>
                     <a href="{!!route('user.find')!!}">Find a Member</a><br/>
                 @endif
                 @if($permsObj->hasPermissions(['ADD_GRADE', 'EDIT_GRADE']) === true)
@@ -165,7 +165,7 @@
                 <a href="{!! route('oauthclient.create') !!}">Add OAuth Client</a>
                 @if($permsObj->hasPermissions('CONFIG', true))<br/>
                 <a href="{!! route('config.index') !!}">Configuration Settings</a><br/>
-                <a href="{!!route('config.create')!!}">Add Configuration Setting</a>
+                <a href="{!!route('config.create')!!}">Add Setting</a>
                 @endif
             </div>
         @endif

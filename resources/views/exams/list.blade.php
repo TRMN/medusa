@@ -1,17 +1,17 @@
 @extends('layout')
 
 @section('pageTitle')
-    Exam List
+    Course List
 @stop
 
 @section('content')
-    <div><h3 class="trmn">Exam List</h3></div>
+    <div><h3 class="trmn">Course List</h3></div>
 
     <table class="trmnTableWithActions compact row-border">
         <thead>
         <tr>
-            <th>Exam ID</th>
-            <th>Exam Description</th>
+            <th>Course ID</th>
+            <th>Course Description</th>
             <th></th>
         </tr>
         </thead>
@@ -28,8 +28,8 @@
         </tbody>
         <tfoot>
         <tr>
-            <th>Exam ID</th>
-            <th>Exam Description</th>
+            <th>Course ID</th>
+            <th>Course Description</th>
             <th></th>
         </tr>
         </tfoot>

@@ -1533,17 +1533,9 @@ class UserController extends Controller
             return $redirect;
         }
 
-        $users = User::where('active', '=', 1)
-            ->where('registration_status', '=', 'Active')
-            ->where('branch', '=', $branch)
-            ->get();
-
-        $usersByBranch[$branch] = $users;
-
         return view(
             'user.byBranch',
             [
-                'users' => $usersByBranch,
                 'title' => $branch . " Members",
                 'branch' => $branch
             ]

@@ -278,12 +278,6 @@ Route::get(
 Route::model('type', 'App\Type');
 Route::resource('type', 'TypeController', ['middleware' => 'auth']);
 
-// RemindersController
-//Route::get('password/remind', 'RemindersController@getRemind');
-//Route::post('password/remind', 'RemindersController@postRemind');
-//Route::get('password/reset/{token?}', 'RemindersController@getReset');
-//Route::post('password/reset', 'RemindersController@postReset');
-
 Route::get(
     '/exam',
     [
@@ -306,7 +300,7 @@ Route::get(
     '/exam/find/{user?}/{message?}',
     ['as' => 'exam.find', 'uses' => 'ExamController@find', 'middleware' => 'auth']
 );
-#Route::get('/exam/user/{user}', ['as' => 'exam.show', 'uses' => 'ExamController@showUser', 'middleware' => 'auth']);
+
 Route::post(
     '/exam/store',
     [
