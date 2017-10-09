@@ -37,7 +37,7 @@
     </div>
     <div class="row">
         <div class="col-sm-8  text-center">
-            <input type="submit" class="btn btn-success" value="Save">
+            <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> <strong>Save</strong> </button>
         </div>
     </div>
 @stop

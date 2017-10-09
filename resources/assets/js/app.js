@@ -54,29 +54,7 @@ $(document).ready(function ($) {
         }
     };
 
-    // $(document).tooltip({
-    //     items: "[data-src], [title]",
-    //     position: {my: "left bottom", at: 'left top'},
-    //     content: function () {
-    //         var element = $(this);
-    //         if (element.is("[data-src")) {
-    //             var source = element.attr("data-src");
-    //             return "<img src='" + source + "'>";
-    //         }
-    //         if (element.is("[title]")) {
-    //             return element.attr("title");
-    //         }
-    //     }
-    // });
-
     $('[data-toggle="tooltip"]').tooltip();
-
-    $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
-        imageHeight = $('#pm1').height();
-        textHeight = $('#pm2 p').height();
-        vMargin = ((imageHeight - textHeight) / 2) + 'px';
-        $('#pm2').css('margin-top', vMargin);
-    });
 
     $('#chapterList').DataTable({
         "autoWidth": true,
@@ -549,14 +527,18 @@ $(document).ready(function ($) {
         var memberNumber = item.attr('data-memberNumber');
         var fullName = item.attr('data-fullName');
 
-        // $('#examDeleteYes').attr('data-examID', examID).attr('data-memberNumber', memberNumber);
         $('#confirmMessage').html('Delete exam ' + examID + " from " + fullName + "'s record?");
         $('#delete-exam-form').html('<input type="hidden" name="examID" value="' + examID + '">' +
             '<input type="hidden" name="memberNumber" value="' + memberNumber + '">');
-        $('#confirmExamDelete').foundation('reveal', 'open')
+        $('#confirmExamDelete').modal('show');
     });
 
-    jQuery('.selectize').selectize({
+    $('#examDeleteYes').on('click', function() {
+        $('#confirmExamDelete').modal('hide');
+        $('#examDeleteForm').submit();
+    });
+
+    $('.selectize').selectize({
         sortField: 'text',
         lockOptgroupOrder: true
     });

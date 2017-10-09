@@ -4489,6 +4489,10 @@ input {
   color: black;
 }
 
+.mouse-pointer {
+  cursor: pointer;
+}
+
 div.filePhoto {
   width: 152px;
   text-align: center;
@@ -4508,7 +4512,7 @@ div.filePhoto {
   height: 200px;
   background-color: #4D4D4D;
   border: solid 1px #CCCCCC;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
@@ -4553,20 +4557,20 @@ div.filePhoto {
 }
 
 .ofpt {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  height: 100%;
-  width: 100%;
+  height: 200px;
+  width: 150px;
   margin: -12.5% 0 0 -50%;
+}
+
+.clear-both {
+  clear: both;
 }
 
 .ofpt-rel {
   position: relative;
   top: 50%;
   left: 50%;
-  height: 100%;
-  width: 100%;
+  width: 150px;
   margin: -12.5% 0 0 -50%;
 }
 

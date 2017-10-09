@@ -77,7 +77,7 @@
                             <div class="row">
                                 @foreach($user->getGpaBySchool($school) as $course => $gpa)
                                     <div class="col-sm-3 text-center">
-                                        {{ucfirst($course)}}<br/>{{$gpa}}%
+                                        {{ucfirst($course)}}<br/>{{is_numeric($gpa)? $gpa . '%' : $gpa}}
                                     </div>
                                 @endforeach
                             </div>
@@ -89,29 +89,29 @@
     </div>
 </div>
 
-<div id="confirmExamDelete" class="modal fade" aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-    <div class="modal-dialog modal-sm" role="document">
+<div id="confirmExamDelete" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="modalTitle">Delete Exam</h4>
+            <div class="modal-title">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="text-center">Delete Exam</h4>
             </div>
             <div class="modal-body">
                 <div class="row" id="confirmMessage">
 
                 </div>
                 <div class="row">
-                    <form action="/exam/user/delete" method="post">
+                    <form action="/exam/user/delete" method="post" id="examDeleteForm">
                         <div id="delete-exam-form"></div>
                         <br/>
-                        <button class="btn btn-success" type="submit" id="examDeleteYes">Yes</button>
-                        <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">No</button>
+
                     </form>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"></span> <storng>No</storng> </button>
+                <button class="btn btn-success" type="submit" id="examDeleteYes"><span class="fa fa-save"></span> <strong>Yes</strong> </button>
+            </div>
         </div>
     </div>
-
-    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
