@@ -11,7 +11,7 @@ use App\MedusaConfig;
 use App\Rating;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Webpatser\Countries\Countries;
 
@@ -358,5 +358,16 @@ class ApiController extends Controller
     {
         return MedusaConfig::get('chapter.selection',
             '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
+    }
+
+    public function setPath(Request $request)
+    {
+        $user = User::find($request->input('user_id'));
+
+        $user->path = $request->input('path');
+
+        $user->save();
+
+        return Response::json(['status' => 'ok']);
     }
 }

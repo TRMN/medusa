@@ -1799,6 +1799,47 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $pointsEarned;
     }
 
+    public function getTotalPromotionPoints()
+    {
+        $points = 0;
+
+        if(empty($this->points) === false) {
+            // Points stored on their record
+            foreach($this->points as $k => $v) {
+                // Need to handle the points for peerages a little different
+                if ($k === 'peerage') {
+                    switch ($v) {
+                        case 'B':
+                            $points += 1;
+                            break;
+                        case 'E':
+                            $points += 1;
+                            break;
+                        case 'S':
+                            $points += 2;
+                            break;
+                        case 'D':
+                            $points += 2;
+                            break;
+                        case 'G':
+                            $points += 3;
+                            break;
+
+                    }
+                } else {
+                    $points += $v;
+                }
+            }
+        }
+
+        // Points from exams, awards and Tig
+        $points += $this->getPointsFromAwards();
+        $points += $this->getPointsFromExams();
+        $points += $this->getPointsFromTimeInService();
+
+        return $points;
+    }
+
     public function getGPA($pattern = '/.*/')
     {
         $exams = $this->getExamList(['pattern' => $pattern]);
