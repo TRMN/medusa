@@ -5303,3 +5303,14 @@ table.dataTable tr td:nth-child(1) {
   border-top: 4px whitesmoke double;
 }
 
+input:disabled {
+  background-color: lightgrey;
+  cursor: not-allowed !important;
+  opacity: 0.5;
+}
+
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+

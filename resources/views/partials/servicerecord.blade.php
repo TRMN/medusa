@@ -21,7 +21,7 @@
                     <div class="Incised901Light seventy-five">
                         Assigned: {{$user->getPrimaryDateAssigned()}}
                     </div>
-                    @if(($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || ($permsObj->hasPermissions(['EDIT_MEMBER'])))
+                    @if(($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || $permsObj->hasPermissions(['EDIT_MEMBER']) || $permsObj->isInChainOfCommand($user))
                         <div class="Incised901Light seventy-five">
                             Path: {{Form::select('path', ['service' => 'Service', 'staff' => 'Staff', 'line' => 'Line'], $user->path, ['id' => 'path', 'data-id' => $user->id])}}
                         </div>
@@ -232,7 +232,7 @@
                             @endif
                             {{ $user->city }}, {{ $user->state_province }} {{ $user->postal_code }}<br/>
                             {{ $user->email_address }}<br/>
-                            {{ isset($user->phone_number) ? $user->phone_number . '<br />' : '' }}
+                            {!! isset($user->phone_number) ? $user->phone_number . '<br />' : '' !!}
                         </div>
                     </div>
 

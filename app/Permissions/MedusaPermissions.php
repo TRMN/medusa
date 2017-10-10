@@ -80,7 +80,7 @@ trait MedusaPermissions
     {
 
         if ($param instanceof User) {
-            //called with a user object, get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
+            //called with a user object, get the id's of all ships/echelons above the users ship/echelon
             $chapterIds = [];
             foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
                 $chapterIds[] = $param->getAssignmentId($position);
@@ -107,7 +107,7 @@ trait MedusaPermissions
         // the array of chapter ids passed in
 
         if ($this->hasPermissions(['DUTY_ROSTER']) === true) {
-            $rosters = ( Auth::user()->duty_roster );
+            $rosters = (Auth::user()->duty_roster);
             if (is_array($rosters) === false) {
                 $rosters = explode(',', trim($rosters, ','));
             }
@@ -143,5 +143,14 @@ trait MedusaPermissions
 
         return false;
 
+    }
+
+    public function promotionPointsEditAccess(User $user)
+    {
+        if (($this->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || $this->hasPermissions(['EDIT_MEMBER']) || $this->isInChainOfCommand($user) === true) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -7,10 +7,15 @@
 @section('content')
     <div>
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#sr" aria-controls="sr" role="tab" data-toggle="tab">Service Record</a></li>
+            <li role="presentation" class="active"><a href="#sr" aria-controls="sr" role="tab" data-toggle="tab">Service
+                    Record</a></li>
             <li role="presentation"><a href="#rr" aria-controls="rr" role="tab" data-toggle="tab">Ribbon Rack</a></li>
-            <li role="presentation"><a href="#ar" aria-controls="ar" role="tab" data-toggle="tab">Academic Record</a></li>
-            <li role="presentation"><a href="#pp" aria-controls="pp" role="tab" data-toggle="tab">Promotion Points</a></li>
+            <li role="presentation"><a href="#ar" aria-controls="ar" role="tab" data-toggle="tab">Academic Record</a>
+            </li>
+            @if(($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || $permsObj->hasPermissions(['EDIT_MEMBER']) || $permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($user) === true)
+                <li role="presentation"><a href="#pp" aria-controls="pp" role="tab" data-toggle="tab">Promotion
+                        Points</a></li>
+            @endif
         </ul>
 
         <div class="tab-content">
@@ -25,11 +30,11 @@
             <div role="tabpanel" class="tab-pane" id="ar">
                 @include('partials.coursework', ['user' => $user])
             </div>
-
-            <div role="tabpanel" class="tab-pane" id="pp">
-                @include('partials.points', ['user' => $user])
-            </div>
-
+            @if(($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || $permsObj->hasPermissions(['EDIT_MEMBER']) || $permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($user) === true)
+                <div role="tabpanel" class="tab-pane" id="pp">
+                    @include('partials.points', ['user' => $user])
+                </div>
+            @endif
         </div>
     </div>
 @stop
