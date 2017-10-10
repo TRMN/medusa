@@ -19,8 +19,8 @@
     @foreach(App\MedusaConfig::get('pp.form-config', [], 'service') as $item)
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
-            <div class="col-sm-4 text-right">
-                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points']])}}
+            <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">
+                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->promotionPointsEditAccess($user)])}}
             </div>
             <div class="col-sm-4 text-right"><span class="pp" id="{{$item['target']}}"></span></div>
         </div>
@@ -45,8 +45,8 @@
     @foreach(App\MedusaConfig::get('pp.form-config', [], 'events') as $item)
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
-            <div class="col-sm-4 text-right">
-                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points']])}}
+            <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">
+                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->promotionPointsEditAccess($user)])}}
             </div>
             <div class="col-sm-4 text-right"><span class="pp" id="{{$item['target']}}"></span></div>
         </div>
@@ -71,8 +71,8 @@
     @foreach(App\MedusaConfig::get('pp.form-config', [], 'parliament') as $item)
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
-            <div class="col-sm-4 text-right">
-                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points']])}}
+            <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">
+                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->hasPermissions(['EDIT_MEMBER'])])}}
             </div>
             <div class="col-sm-4 text-right"><span class="pp" id="{{$item['target']}}"></span></div>
         </div>
@@ -96,7 +96,7 @@
     <div class="row pp-row margin-bottom-10 padding-bottom-10">
         <div class="col-sm-4">Investiture as a</div>
         <div class="col-sm-4 text-right">
-        {{Form::select('points[peerage]', ['B' => 'Baron/Baroness', 'E' => 'Earl/Countess', 'S' => 'Steadholder', 'D' => 'Duke/Duchess', 'G' => 'Grand Duke/Grand Duchess'], empty($user->points['peerage']) ? null : $user->points['peerage'], ['placeholder' => 'Select Peerage', 'class' => 'pp-calc-select', 'data-target' => 'peerage'])}}
+        {{Form::select('points[peerage]', ['B' => 'Baron/Baroness', 'E' => 'Earl/Countess', 'S' => 'Steadholder', 'D' => 'Duke/Duchess', 'G' => 'Grand Duke/Grand Duchess'], empty($user->points['peerage']) ? null : $user->points['peerage'], ['placeholder' => 'Select Peerage', 'class' => 'pp-calc-select', 'data-target' => 'peerage', 'disabled' => !$permsObj->hasPermissions(['EDIT_MEMBER'])])}}
         </div>
         <div class="col-sm-4 text-right"><span class="pp" id="peerage"></span></div>
     </div>

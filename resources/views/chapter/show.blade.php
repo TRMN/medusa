@@ -89,38 +89,36 @@
     @if (count($command) > 0)
         <br/>
         <div class="row">
-            <div class=" col-sm-7 " text-center
-            ">
-            <h3 class="Incised901Light">
-                @if(in_array($detail->chapter_type, ['keep', 'barony', 'county', 'duchy', 'grand_duchy', 'steading']))
-                    {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
-                @else
-                    Command
-                @endif
-                Staff</h3>
-        </div>
+            <div class="col-sm-7 text-center">
+                <h3 class="Incised901Light">
+                    @if(in_array($detail->chapter_type, ['keep', 'barony', 'county', 'duchy', 'grand_duchy', 'steading']))
+                        {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
+                    @else
+                        Command
+                    @endif
+                    Staff</h3>
+            </div>
         </div>
         @foreach($command as $info)
             <div class="row">
                 <div class=" col-sm-2 Incised901Light text-right">
                     {!!$info['display']!!}:
                 </div>
-                <div class=" col-sm-5 " Incised901Light
-                ">
-                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                    <a href="{!! route('user.show' , [$info['user']->id]) !!}">
+                <div class=" col-sm-5 Incised901Light">
+                    @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        <a href="{!! route('user.show' , [$info['user']->id]) !!}">
+                            @endif
+
+                            {!! trim($info['user']->getGreeting()) !!} {!! $info['user']->first_name !!}{{ isset($info['user']->middle_name) ? ' ' . $info['user']->middle_name : '' }} {!! $info['user']->last_name !!}{{ !empty($info['user']->suffix) ? ' ' . $info['user']->suffix : '' }}
+                            , {!!$info['user']->branch!!}
+
+                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        </a>
+                        @if($info['user']->hasNewExams())
+                            <span class="fa fa-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp</span>
                         @endif
-
-                        {!! trim($info['user']->getGreeting()) !!} {!! $info['user']->first_name !!}{{ isset($info['user']->middle_name) ? ' ' . $info['user']->middle_name : '' }} {!! $info['user']->last_name !!}{{ !empty($info['user']->suffix) ? ' ' . $info['user']->suffix : '' }}
-                        , {!!$info['user']->branch!!}
-
-                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                    </a>
-                    @if($info['user']->hasNewExams())
-                        <span class="fa fa-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp</span>
                     @endif
-                @endif
-            </div>
+                </div>
             </div>
         @endforeach
     @endif
@@ -139,8 +137,7 @@
             </div>
         </div>
         <div class="row padding-5">
-            <div class="col-sm-10 " Incised901Light ninety
-            ">
+            <div class="col-sm-10 Incised901Light ninety">
             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                 <br/><a href="{!!route('roster.export', [$detail->id])!!}">Download Roster</a>
             @endif
