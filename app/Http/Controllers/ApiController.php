@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Webpatser\Countries\Countries;
+use \Log;
 
 class ApiController extends Controller
 {
@@ -364,7 +365,7 @@ class ApiController extends Controller
     {
         Log::info('ID card requested');
 
-        $_idCard = $this->getUserFromRequest($request)->buildIdCard(true);
+        $_idCard = \App\User::find(json_decode($request->user())->_id)->buildIdCard(true);
 
         return $_idCard->response('png');
     }
