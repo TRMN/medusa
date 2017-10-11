@@ -359,4 +359,13 @@ class ApiController extends Controller
         return MedusaConfig::get('chapter.selection',
             '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
     }
+
+    public function getIdCard(Request $request)
+    {
+        Log::info('ID card requested');
+
+        $_idCard = $this->getUserFromRequest($request)->buildIdCard(true);
+
+        return $_idCard->response('png');
+    }
 }
