@@ -40,6 +40,9 @@
             <div class="Incised901Black ninety">
                 Time In Service: {{$user->getTimeInService()}}
             </div>
+        <div class="Incised901Black ninety">
+            Highest Main Line Exam for Branch: <span class="Incised901Light">{{$user->getHighestMainLineExamForBranch() ?  $user->getHighestMainLineExamForBranch() : "None"}}</span>
+        </div>
 
 
             @if($permsObj->hasPermissions(['VIEW_NOTE']))

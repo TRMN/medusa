@@ -138,10 +138,10 @@
         </div>
         <div class="row padding-5">
             <div class="col-sm-10 Incised901Light ninety">
-            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                <br/><a href="{!!route('roster.export', [$detail->id])!!}">Download Roster</a>
-            @endif
-        </div>
+                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                    <br/><a href="{!!route('roster.export', [$detail->id])!!}">Download Roster</a>
+                @endif
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-12  Incised901Light ">
@@ -158,6 +158,7 @@
                             <th>ID #</th>
                             <th>Path</th>
                             <th>Points</th>
+                            <th class="text-center">Highest<br/>Courses</th>
                         @endif
                         <th>Rank</th>
                         <th class="text-center">Time in Grade</th>
@@ -190,9 +191,14 @@
 
                             </td>
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                <td>{!!$member->member_id!!}</td>
+                                <td class="nowrap">{!!$member->member_id!!}</td>
                                 <td>{{$member->path ? ucfirst($member->path) : 'Service'}}</td>
-                                <td class="text-right">{{ $member->getTotalPromotionPoints() }}</td>
+                                <td class="text-right">{{ number_format((float)$member->getTotalPromotionPoints(), 2) }}</td>
+                                <td class="nowrap">
+                                    @foreach($member->getHighestExams() as $class => $exam)
+                                        {{$class}}: {{$exam}}<br/>
+                                    @endforeach
+                                </td>
                             @endif
                             <td>{!!$member->rank['grade']!!} <br/>{!! $member->getGreeting() !!} </td>
                             <td>{!!is_null($tig = $member->getTimeInGrade(true))?'N/A':$tig!!}</td>
@@ -217,6 +223,7 @@
                             <th>ID #</th>
                             <th>Path</th>
                             <th>Points</th>
+                            <th class="text-center">Highest<br/>Courses</th>
                         @endif
                         <th>Rank</th>
                         <th class="text-center">Time in Grade</th>
