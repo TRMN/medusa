@@ -364,7 +364,7 @@ class ApiController extends Controller
     public function getIdCard(Request $request)
     {
         Log::info('ID card requested');
-        Log::debug(print_r(Auth::user()));
+        Log::debug(print_r(Auth::user(), true));
 
 //        $_idCard = \App\User::find(json_decode($request->user())->_id)->buildIdCard(true);
 //
