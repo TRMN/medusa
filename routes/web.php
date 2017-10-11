@@ -35,6 +35,7 @@ Route::get('/oauth/profile', 'OAuthController@profile')->middleware('auth:api');
 Route::get('oauth/user', 'OAuthController@user')->middleware('auth:api');
 Route::get('oauth/lastupdate', 'OAuthController@lastUpdated')->middleware('auth:api');
 Route::get('oauth/tistig', 'OAuthController@getTisTig')->middleware('auth:api');
+Route::get('oauth/idcard', 'OAuthController@getIdCard')->middleware('auth:api');
 Route::get('oauth/events', 'OAuthController@getScheduledEvents')->middleware('auth:api');
 Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth:api');
 Route::get('/.well-known/openid-configuration', function () {
@@ -429,7 +430,6 @@ Route::get(
 Route::get('/api/ribbonrack/{memberid}',
     ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
-Route::get('/oauth/idcard', 'ApiController@getIdCard');
 
 // This MUST be the last route
 Route::get(

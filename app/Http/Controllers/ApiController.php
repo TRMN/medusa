@@ -11,7 +11,7 @@ use App\MedusaConfig;
 use App\Rating;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Webpatser\Countries\Countries;
 use \Log;
@@ -359,15 +359,5 @@ class ApiController extends Controller
     {
         return MedusaConfig::get('chapter.selection',
             '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
-    }
-
-    public function getIdCard(Request $request)
-    {
-        Log::info('ID card requested');
-        Log::debug(print_r($request->all(), true));
-
-//        $_idCard = \App\User::find(json_decode($request->user())->_id)->buildIdCard(true);
-//
-//        return $_idCard->response('png');
     }
 }
