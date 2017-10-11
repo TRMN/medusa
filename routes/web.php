@@ -429,7 +429,7 @@ Route::get(
 Route::get('/api/ribbonrack/{memberid}',
     ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
-Route::get('/api/idcard', 'ApiController@getIdCard');
+Route::get('/oauth/idcard', 'ApiController@getIdCard');
 
 // This MUST be the last route
 Route::get(
