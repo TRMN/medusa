@@ -884,6 +884,21 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $results;
     }
 
+    public function getHighestExams()
+    {
+        $classes = ['enlisted', 'warrant', 'officer+flag'];
+
+        $results = [];
+
+        foreach($classes as $class) {
+            foreach($this->getHighestExamFromList($this->getExamList(['class' => $class])) as $exam => $examData) {
+                $results[ucfirst(substr($class, 0, 1))] = $exam;
+            }
+        }
+
+        return $results;
+    }
+
     public function getCompletedExams($after)
     {
         $exams = $this->getExamList(['after' => $after]);
