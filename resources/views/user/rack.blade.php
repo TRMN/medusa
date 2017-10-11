@@ -123,19 +123,21 @@
     </div>
 
     <div class="row text-center"><h3>Unit Citations</h3></div>
-    <div class="ribbon-group">
+    <div class="ribbon-group padding-top-10">
         @foreach(App\Award::getRightRibbons() as $ribbon)
-            @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
+            @if(is_object($ribbon))
                 <div class="row ribbon-group-row">
-                    <div class=" col-sm-1">
+                    <div class="col-sm-1">
                         {!!Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null)!!}
                     </div>
-                    <div class=" col-sm-2 text-center">
-                        <img src="{!!asset('ribbons/' . $ribbon->code . '-1.svg')!!}" alt="{!!$ribbon->name!!}"
-                             class="ribbon">
+                    <div class="col-sm-2 text-center">
+                        @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
+                            <img src="{!!asset('ribbons/' . $ribbon->code . '-1.svg')!!}" alt="{!!$ribbon->name!!}"
+                                 class="ribbon">
+                        @endif
                     </div>
-                    <div class=" col-sm-4">{!!$ribbon->name!!}</div>
-                    <div class=" col-sm-1 ">
+                    <div class="col-sm-4">{!!$ribbon->name!!}</div>
+                    <div class="col-sm-1 ">
                         @if($ribbon->multiple)
                             {!!Form::select($ribbon->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:1)!!}
                         @else
@@ -143,8 +145,65 @@
                         @endif
                     </div>
                 </div>
-                <br clear="both"/>
+            @else
+                @if($ribbon['group']['multiple'])
+                    <div class="ribbon-group">
+                        @foreach($ribbon['group']['awards'] as $group)
+
+                            <div class="row ribbon-group-row">
+                                <div class="col-sm-1">
+                                    {!!Form::radio('group' . $groupCount, $group->code, isset($user->awards[$group->code])?true:null)!!}
+                                </div>
+                                <div class="col-sm-2 text-center">
+                                    @if(file_exists(public_path('ribbons/' . $group->code . '-1.svg')))
+                                        <img src="{!!asset('ribbons/' . $group->code . '-1.svg')!!}"
+                                             alt="{!!$group->name!!}" class="ribbon">
+                                    @endif
+                                </div>
+                                <div class="col-sm-4">{!!$group->name!!}</div>
+                                <div class="col-sm-1 ">
+                                    @if($group->multiple)
+                                        {!!Form::select($group->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$group->code])?$user->awards[$group->code]['count']:1)!!}
+                                    @else
+                                        {!!Form::hidden($group->code . '_quantity', '1')!!}
+                                    @endif
+                                </div>
+                            </div>
+
+                        @endforeach
+                        <div class="row ribbon-group-row">
+                            <div class="col-sm-1">
+                                {!!Form::radio('group' . $groupCount, null)!!}
+                            </div>
+                            <div class="col-sm-2 text-center">&nbsp;</div>
+                            <div class="col-sm-4 ">None of the above</div>
+                        </div>
+                    </div>
+                @else
+                    <div class="row ribbon-group-row">
+                        <div class="col-sm-1">
+                            {{Form::checkbox('select' . $groupCount . '_chk', 1, false, ['id' => 'select' . $groupCount . '_chk'])}}
+                        </div>
+                        <div class="col-sm-2 text-center">
+                            <img id="select{{$groupCount}}_img" class="ribbon"/>
+                        </div>
+                        <div class="col-sm-5 "><select name="select{{$groupCount}}" id="select{{$groupCount}}"
+                                                        class="ribbon_group_select">
+                                <option value="">{{$ribbon['group']['label']}}</option>
+                                @foreach($ribbon['group']['awards'] as $item)
+                                    {{--                                    @if(file_exists(public_path('ribbons/' . $item->code . '-1.svg')))--}}
+                                    <option value='{"code": "{{$item->code}}", "img": "select{{$groupCount}}_img", "chk":  "select{{$groupCount}}_chk", "imgbase": "/ribbons/"}'{{isset($user->awards[$item->code])?' selected':''}}>{{$item->name}}</option>
+                                    {{--@endif--}}
+                                @endforeach
+                            </select></div>
+                    </div>
+
+                @endif
             @endif
+            <br clear="both"/>
+            @php
+            $groupCount++;
+            @endphp
         @endforeach
     </div>
 
@@ -152,7 +211,8 @@
     <div class="ribbon-group">
         <div class="row ribbon-group-row">
             <div class=" col-sm-8">&nbsp;</div>
-            <div class=" col-sm-2 " text-center">Badge to display</div>
+            <div class=" col-sm-2 text-center">Badge to display
+            </div>
         </div>
 
         @foreach(App\Award::getTopBadges(['HS', 'OSWP', 'ESWP']) as $index => $badge)
@@ -172,7 +232,8 @@
                         </div>
                         <div class=" col-sm-2 text-center">
                             <img src="{!!asset('awards/badges/' . $group->code . '-1.svg')!!}"
-                                 alt="{!!$group->name!!}" class="{{$group->code === 'HS'? 'qual-badge-hs' : 'qual-badge'}}">
+                                 alt="{!!$group->name!!}"
+                                 class="{{$group->code === 'HS'? 'qual-badge-hs' : 'qual-badge'}}">
                         </div>
                         <div class=" col-sm-4 vertical-center-qual-badges">{!!$group->name!!}</div>
                         <div class=" col-sm-1 vertical-center-qual-badges">
@@ -186,7 +247,7 @@
                                 {!!Form::hidden($group->code . '_quantity', '1')!!}&nbsp;
                             @endif
                         </div>
-                        <div class=" col-sm-2 " vertical-center-qual-badges qual-badges text-center">
+                        <div class=" col-sm-2 vertical-center-qual-badges qual-badges text-center">
                             @if(in_array($group->code, $restricted) && !isset($user->awards[$group->code]))
                                 &nbsp;
                             @else
@@ -206,7 +267,7 @@
             </div>
             <div class=" col-sm-5 vertical-center-qual-badges">Solo Aerospace Wings</div>
             <div class=" col-sm-1 vertical-center-qual-badges">{!!Form::hidden('SAW_quantity', '1')!!}</div>
-            <div class=" col-sm-2 " vertical-center-qual-badges qual-badges text-center">
+            <div class=" col-sm-2 vertical-center-qual-badges qual-badges text-center">
                 {{Form::radio('qualbadge_display', 'SAW', isset($user->awards['SAV']['display'])?$user->awards['SAW']['display']:false)}}
             </div>
         </div>
@@ -219,7 +280,7 @@
                         <img id="select{{$groupCount}}_img" class="qual-badge"/>
                     </div>
                     <div class=" col-sm-5 top-15"><select name="select{{$groupCount}}" id="select{{$groupCount}}"
-                                                                class="ribbon_group_select">
+                                                          class="ribbon_group_select">
                             <option value="">Choose your {{$desc}}</option>
                             @foreach($ribbon['group']['awards'] as $item)
                                 @if(file_exists(public_path('awards/badges/' . $item->code . '-1.svg')))
@@ -228,7 +289,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class=" col-sm-2 " vertical-center-qual-badges qual-badges text-center">
+                    <div class=" col-sm-2 vertical-center-qual-badges qual-badges text-center">
                         {{Form::radio('qualbadge_display', '', isset($user->awards[$group->code]['display'])?$user->awards[$group->code]['display']:false, ['id' => 'display_' . $groupCount])}}
                     </div>
                 </div>
@@ -245,59 +306,62 @@
     <div class="row text-center"><h3>Individual Awards</h3></div>
     @foreach(App\Award::getLeftRibbons() as $index => $ribbon)
         @if(is_object($ribbon))
-            @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
-                <div class="row ribbon-row">
-                    <div class=" col-sm-1">
-                        @if(in_array($ribbon->code, $restricted))
-                            @if(isset($user->awards[$ribbon->code]))
-                                {{Form::hidden('ribbon[]', $ribbon->code)}}
-                            @endif
-                            &nbsp;
-                        @else
-                            {!!Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null)!!}
+            <div class="row ribbon-row">
+                <div class=" col-sm-1">
+                    @if(in_array($ribbon->code, $restricted))
+                        @if(isset($user->awards[$ribbon->code]))
+                            {{Form::hidden('ribbon[]', $ribbon->code)}}
                         @endif
-                    </div>
-                    <div class=" col-sm-2 text-center">
+                        &nbsp;
+                    @else
+                        {!!Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null)!!}
+                    @endif
+                </div>
+                <div class=" col-sm-2 text-center">
+                    @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
                         <img src="{!!asset('ribbons/' . $ribbon->code . '-1.svg')!!}" alt="{!!$ribbon->name!!}"
                              class="ribbon">
-                    </div>
-                    <div class=" col-sm-4">{!!$ribbon->name!!}</div>
-                    <div class=" col-sm-1 ">
-                        @if($ribbon->multiple)
-                            @if(in_array($ribbon->code, $restricted))
-                                {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
-                            @else
-                                {!!Form::select($ribbon->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:1)!!}
-                            @endif
-                        @else
-                            {!!Form::hidden($ribbon->code . '_quantity', '1')!!}
-                        @endif
-                    </div>
+                    @endif
                 </div>
-            @endif
+                <div class=" col-sm-4">{!!$ribbon->name!!}</div>
+                <div class=" col-sm-1 ">
+                    @if($ribbon->multiple)
+                        @if(in_array($ribbon->code, $restricted))
+                            {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
+                        @else
+                            {!!Form::select($ribbon->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:1)!!}
+                        @endif
+                    @else
+                        {!!Form::hidden($ribbon->code . '_quantity', '1')!!}
+                    @endif
+                </div>
+            </div>
+
         @else
             @if($ribbon['group']['multiple'])
                 <div class="ribbon-group">
                     @foreach($ribbon['group']['awards'] as $group)
-                        @if(file_exists(public_path('ribbons/' . $group->code . '-1.svg')))
-                            <div class="row ribbon-group-row">
-                                <div class=" col-sm-1">
-                                    {!!Form::radio('group' . $groupCount, $group->code, isset($user->awards[$group->code])?true:null)!!}
-                                </div>
-                                <div class=" col-sm-2 text-center">
+
+                        <div class="row ribbon-group-row">
+                            <div class=" col-sm-1">
+                                {!!Form::radio('group' . $groupCount, $group->code, isset($user->awards[$group->code])?true:null)!!}
+                            </div>
+                            <div class=" col-sm-2 text-center">
+                                @if(file_exists(public_path('ribbons/' . $group->code . '-1.svg')))
                                     <img src="{!!asset('ribbons/' . $group->code . '-1.svg')!!}"
                                          alt="{!!$group->name!!}" class="ribbon">
-                                </div>
-                                <div class=" col-sm-4">{!!$group->name!!}</div>
-                                <div class=" col-sm-1 ">
-                                    @if($group->multiple)
-                                        {!!Form::select($group->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$group->code])?$user->awards[$group->code]['count']:1)!!}
-                                    @else
-                                        {!!Form::hidden($group->code . '_quantity', '1')!!}
-                                    @endif
-                                </div>
+                                @endif
                             </div>
-                        @endif
+                            <div class=" col-sm-4">{!!$group->name!!}</div>
+                            <div class=" col-sm-1 ">
+                                @if($group->multiple)
+                                    {!!Form::select($group->code . '_quantity', [1=>'1', 2=>'2', 3=>'3', 4=>'4', 5=>'5'], isset($user->awards[$group->code])?$user->awards[$group->code]['count']:1)!!}
+                                @else
+                                    {!!Form::hidden($group->code . '_quantity', '1')!!}
+                                @endif
+                            </div>
+                        </div>
+
                     @endforeach
                     <div class="row ribbon-group-row">
                         <div class=" col-sm-1">
@@ -314,12 +378,12 @@
                         <img id="select{{$groupCount}}_img" class="ribbon"/>
                     </div>
                     <div class=" col-sm-5 "><select name="select{{$groupCount}}" id="select{{$groupCount}}"
-                                                             class="ribbon_group_select">
+                                                    class="ribbon_group_select">
                             <option value="">{{$ribbon['group']['label']}}</option>
                             @foreach($ribbon['group']['awards'] as $item)
-                                @if(file_exists(public_path('ribbons/' . $item->code . '-1.svg')))
-                                    <option value='{"code": "{{$item->code}}", "img": "select{{$groupCount}}_img", "chk":  "select{{$groupCount}}_chk", "imgbase": "/ribbons/"}'{{isset($user->awards[$item->code])?' selected':''}}>{{$item->name}}</option>
-                                @endif
+                                {{--                                    @if(file_exists(public_path('ribbons/' . $item->code . '-1.svg')))--}}
+                                <option value='{"code": "{{$item->code}}", "img": "select{{$groupCount}}_img", "chk":  "select{{$groupCount}}_chk", "imgbase": "/ribbons/"}'{{isset($user->awards[$item->code])?' selected':''}}>{{$item->name}}</option>
+                                {{--@endif--}}
                             @endforeach
                         </select></div>
                 </div>
@@ -332,9 +396,11 @@
         @endphp
     @endforeach
     <div class="row text-left">
-        <p><input type="checkbox" id="ack"> I acknowledge that awards entered into the MEDUSA System are not private,
+        <p><input type="checkbox" id="ack"> I acknowledge that awards entered into the MEDUSA System are not
+            private,
             and are subject to review. Members knowingly holding themselves out as having awards they have not been
-            given may be subject to discipline. Use of the award system is considered acknowledgment of this notice.</p>
+            given may be subject to discipline. Use of the award system is considered acknowledgment of this notice.
+        </p>
         {!!Form::submit('Save', ['class' => 'btn btn-success', 'disabled' => true])!!}
     </div>
     {!!Form::close()!!}

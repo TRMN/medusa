@@ -167,7 +167,7 @@ class AdditionalAwards extends Migration
         foreach ($renumber as $code => $display_order) {
             $award = Award::where('code', $code)->first();
             $award->display_order = $display_order;
-            if ($code !== 'NRMC' && $code !== 'NPMC') {
+            if ($display_order < 115) {
                 $award->replaces = $award->replaces . ',' . substr($code, 0, 2) . 'MC';
             }
             $award->save();
