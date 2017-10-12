@@ -15,8 +15,12 @@
         <h1 class="text-center">Ribbon Rack Builder
             for {!!  $user->getGreeting() !!} {!! $user->first_name !!}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {!! $user->last_name !!}{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}</h1>
 
-        <p>Currently, the Ribbon Rack Builder only supports RMN/RMMC ribbons. As the artwork becomes
-            available for RMA, GSN, RHN and IAN ribbons, they will be added.</p>
+        <p>Currently, the Ribbon Rack Builder supports RMN/RMMC and a few RMA ribbons & badges. As the artwork becomes
+            available, they will be added. You many notice that some ribbons or badges don't have any artwork
+            shown. These items were added to allow the selection of them for promotion point calculations, they will be
+            saved to your record, but currently won't show up in your ribbon rack. Once the artwork is available they
+            willautomatically show up in your ribbon rack.
+        </p>
 
         <p>Once you save your ribbon rack, it will be record in your MEDUSA record and displayed on your Service Record.
             There will be a link under your ribbon rack that will show you the HTML required to embed your ribbon rack
@@ -188,7 +192,7 @@
                             <img id="select{{$groupCount}}_img" class="ribbon"/>
                         </div>
                         <div class="col-sm-5 "><select name="select{{$groupCount}}" id="select{{$groupCount}}"
-                                                        class="ribbon_group_select">
+                                                       class="ribbon_group_select">
                                 <option value="">{{$ribbon['group']['label']}}</option>
                                 @foreach($ribbon['group']['awards'] as $item)
                                     {{--                                    @if(file_exists(public_path('ribbons/' . $item->code . '-1.svg')))--}}
@@ -294,6 +298,35 @@
                     </div>
                 </div>
             @endforeach
+
+            @php
+            $groupCount++;
+            @endphp
+
+        @endforeach
+
+        <div class="row ribbon-group-row qual-badges">
+            <div class="col-sm-7">
+                <h4><em>Note: RMA Weapon Qualification Badges currently do not show up on your Ribbon Rack</em></h4>
+            </div>
+        </div>
+
+        @foreach(App\Award::getArmyWeaponQualificationBadges() as $index => $ribbon)
+            <div class="row ribbon-group-row qual-badges">
+                <div class=" col-sm-1 vertical-center-qual-badges">{{Form::checkbox('select' . $groupCount . '_chk', 1, false, ['id' => 'select' . $groupCount . '_chk'])}}</div>
+                <div class=" col-sm-2 text-center">
+                    <img id="select{{$groupCount}}_img" class="qual-badge-hs"/>
+                </div>
+                <div class=" col-sm-5 "><select name="select{{$groupCount}}" id="select{{$groupCount}}"
+                                                class="awq_group_select">
+                        <option value="">{{$ribbon['group']['label']}}</option>
+                        @foreach($ribbon['group']['awards'] as $item)
+
+                            <option value='{"code": "{{$item->code}}", "img": "select{{$groupCount}}_img", "chk":  "select{{$groupCount}}_chk", "badge": "/awards/badges/{{$item->image}}"}'{{isset($user->awards[$item->code])?' selected':''}}>{{$item->name}}</option>
+
+                        @endforeach
+                    </select></div>
+            </div>
 
             @php
             $groupCount++;
@@ -454,6 +487,29 @@
                 }
             });
 
+            $('.awq_group_select').selectize({
+                create: false,
+                hideSelected: true,
+                closeAfterSelect: true,
+                render: {
+                    option: function (item, escape) {
+                        var ribbon = JSON.parse(item.value);
+
+                        return '<div class="ribbon-dropdown"><span><img src="' + ribbon.badge + '"></span><span> ' + item.text + '</span></div>';
+                    },
+                },
+                onChange: function (value) {
+                    var ribbon = JSON.parse(value);
+
+                    $('#' + ribbon.img).attr('src', ribbon.badge);
+                    $('#' + ribbon.chk).val(ribbon.code);
+
+                    if (typeof ribbon.display !== 'undefined') {
+                        $('#' + ribbon.display).val(ribbon.code);
+                    }
+                }
+            });
+
             var ids = [];
             $('.ribbon_group_select').each(function () {
                 var $this = $(this);
@@ -482,6 +538,38 @@
                     var options = control.options;
                     var ribbon = JSON.parse(options[Object.keys(options)[Object.keys(options).length - 1]]['value']);
                     $('#' + ribbon.img).attr('src', ribbon.imgbase + ribbon.code + '-1.svg');
+                }
+
+            });
+
+            var ids = [];
+            $('.awq_group_select').each(function () {
+                var $this = $(this);
+                var id = $this.attr('id');
+                if (typeof id !== 'undefined') {
+                    ids.push(id);
+                }
+            })
+
+            $.each(ids, function (i, id) {
+                var $select = $('#' + id).selectize();
+                var control = $select[0].selectize;
+                if (control.getValue() !== '') {
+                    var ribbon = JSON.parse(control.getValue());
+
+                    if (typeof ribbon.img !== 'undefined') {
+                        $('#' + ribbon.img).attr('src', ribbon.badge);
+                        $('#' + ribbon.chk).attr('checked', true);
+                        $('#' + ribbon.chk).val(ribbon.code);
+
+                        if (typeof ribbon.display !== 'undefined') {
+                            $('#' + ribbon.display).val(ribbon.code);
+                        }
+                    }
+                } else {
+                    var options = control.options;
+                    var ribbon = JSON.parse(options[Object.keys(options)[Object.keys(options).length - 1]]['value']);
+                    $('#' + ribbon.img).attr('src', ribbon.badge);
                 }
 
             });

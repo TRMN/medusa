@@ -16,6 +16,7 @@ class Award extends Eloquent
         'location',
         'multiple',
         'group_label',
+        'image',
         'branch',
         'code',
     ];
@@ -129,6 +130,11 @@ class Award extends Eloquent
     public static function getRightSleeve()
     {
         return self::_getAwards('RS');
+    }
+
+    public static function getArmyWeaponQualificationBadges()
+    {
+        return self::_getAwards('AWQ');
     }
 
     public static function getDisplayOrder($code)
