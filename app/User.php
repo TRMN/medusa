@@ -890,8 +890,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $results = [];
 
-        foreach($classes as $class) {
-            foreach($this->getHighestExamFromList($this->getExamList(['class' => $class])) as $exam => $examData) {
+        foreach ($classes as $class) {
+            foreach ($this->getHighestExamFromList($this->getExamList(['class' => $class])) as $exam => $examData) {
                 $results[ucfirst(substr($class, 0, 1))] = $exam;
             }
         }
@@ -1625,7 +1625,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $today = Carbon::today('America/New_York');
 
         foreach ($this->awards as $code => $award) {
-            if ($award['location'] === $location && $award['display'] === true) {
+            $onDisk = true;
+
+            if (($location == 'L' || $location == 'R') && file_exists(public_path('/ribbons/' . $code . '-1.svg')) === false) {
+                $onDisk = false;
+            }
+
+            if ($award['location'] === $location && $award['display'] === true && $onDisk === true) {
                 // Check for awards that haven't been given yet, adjust count as needed
 
                 foreach ($award['award_date'] as $date) {
@@ -1796,12 +1802,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $pointsEarned = 0;
 
-        foreach($examConfig as $points => $patterns) {
-            foreach($patterns as $pattern) {
+        foreach ($examConfig as $points => $patterns) {
+            foreach ($patterns as $pattern) {
                 $res = count($this->getExamList(['pattern' => $pattern]));
 
                 if ($res > 0) {
-                    $pointsForPattern =  $res * $points;
+                    $pointsForPattern = $res * $points;
 
                     $pointsEarned += $pointsForPattern;
                     $numCompletedExams -= $res;
@@ -1818,9 +1824,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $points = 0;
 
-        if(empty($this->points) === false) {
+        if (empty($this->points) === false) {
             // Points stored on their record
-            foreach($this->points as $k => $v) {
+            foreach ($this->points as $k => $v) {
                 // Need to handle the points for peerages a little different
                 if ($k === 'peerage') {
                     switch ($v) {
@@ -1863,14 +1869,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $sum = 0;
 
-        foreach($exams as $exam) {
-            $score = rtrim(substr(strtoupper($exam['score']), 0, 4),'%');
+        foreach ($exams as $exam) {
+            $score = rtrim(substr(strtoupper($exam['score']), 0, 4), '%');
 
             if ($score === "PASS" || $score === "BETA" || $score === "CREA") {
                 $score = '100';
             }
 
-            $sum += is_numeric($score)? $score : 100;
+            $sum += is_numeric($score) ? $score : 100;
         }
 
         return $numExams !== 0 ? number_format($sum / $numExams, 2) : 'N/A';
@@ -1884,7 +1890,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $servicePattern = $servicePatterns[$service];
         $results = [];
 
-        foreach($coursePatterns as $course => $pattern) {
+        foreach ($coursePatterns as $course => $pattern) {
             $results[$course] = $this->getGPA($servicePattern . $pattern);
 
             if ($results[$course] === 0) {
