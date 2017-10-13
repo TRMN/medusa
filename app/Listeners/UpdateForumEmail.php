@@ -34,7 +34,7 @@ class UpdateForumEmail
      */
     public function handle(EmailChanged $event)
     {
-        if($_SERVER['SERVER_NAME'] != "medusa.trmn.org") {
+        if($_SERVER['HTTP_HOST'] != "medusa.trmn.org") {
             // Local sandbox or test server, we don't want to change the forum
             return;
         }
