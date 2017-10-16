@@ -173,10 +173,10 @@ class AdditionalAwards extends Migration
         // Add the Army weapons qualifications/rating
 
         $quals = [
-            'HER' => ['start' => 84, 'suffix' => 'High Expert Rating', 'points' => 4, 'replaces' => '@ER,@SR,@MR', 'image' => 'AHER.png'],
-            'ER' => ['start' => 95, 'suffix' => 'Expert Rating', 'points' => 3, 'replaces' => '@SR,@MR', 'image' => 'AER.png'],
-            'SR' => ['start' => 106, 'suffix' => 'Sharpshooter Rating', 'points' => 2, 'replaces' => '@MR', 'image' => 'ASR.png'],
-            'MR' => ['start' => 117, 'suffix' => 'Marksmanship Rating', 'points' => 1, 'replaces' => '', 'image' => 'AMR.png'],
+            'HER' => ['start' => 4000, 'suffix' => 'High Expert Rating', 'points' => 4, 'replaces' => '@ER,@SR,@MR', 'image' => 'AHER.png'],
+            'ER' => ['start' => 4009, 'suffix' => 'Expert Rating', 'points' => 3, 'replaces' => '@SR,@MR', 'image' => 'AER.png'],
+            'SR' => ['start' => 4018, 'suffix' => 'Sharpshooter Rating', 'points' => 2, 'replaces' => '@MR', 'image' => 'ASR.png'],
+            'MR' => ['start' => 4027, 'suffix' => 'Marksmanship Rating', 'points' => 1, 'replaces' => '', 'image' => 'AMR.png'],
         ];
 
         $weapons = [

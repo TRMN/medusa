@@ -233,12 +233,11 @@ return [
     ],
 
     /**
-     * Upcoming Minor releases
+     * Upcoming releases
      *
-     * Troubadour 1.5.x
      * Hancock 1.6.x
      * Barnett 1.7.x
      *
      */
-    'version' => "Yeltsin's Star (Project MEDUSA v1.4.1)",
+    'version' => "Troubadour (Project MEDUSA v1.5.0)",
 ];

@@ -10,7 +10,7 @@
             <a href="{!! route('chapter.index') !!}">Ship/Unit List</a><br/>
             <a href="{!!route('user.getReset', [Auth::user()->id])!!}">Change Password</a>
             @if(session('orig_user'))
-                <br /><a href="{{route('switch.stop')}}">Return to Original User</a>
+                <br/><a href="{{route('switch.stop')}}">Return to Original User</a>
             @endif
         </div>
         @if(!is_null(\App\MedusaConfig::get('show.events')))
@@ -59,23 +59,31 @@
         @if($permsObj->hasPermissions(['ADD_MEMBER','DEL_MEMBER','EDIT_MEMBER','VIEW_MEMBERS','PROC_APPLICATIONS','PROC_XFERS','ADD_BILLET','DEL_BILLET','EDIT_BILLET',]) === true)
             <h3 class="nav-header lnav">BuPers (5SL)</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) === true)<a href="{!! route('user.index') !!}">List
-                    Members</a><br/>
-                <a href="{!!route('user.find')!!}">Find a Member</a><br/>
-                <a href="{!!route('user.dups', 'CO')!!}">Show COs</a><br/>
-                <a href="{!!route('user.dups', 'XO')!!}">Show XOs</a><br/>
-                <a href="{!!route('user.dups', 'BOSUN')!!}">Show Bosuns</a><br/>
+                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) === true)
+                    <a href="{!! route('user.index') !!}">List Members</a><br/>
+                    <a href="{!!route('user.find')!!}">Find a Member</a><br/>
+                    <a href="{!!route('user.dups', 'CO')!!}">Show COs</a><br/>
+                    <a href="{!!route('user.dups', 'XO')!!}">Show XOs</a><br/>
+                    <a href="{!!route('user.dups', 'BOSUN')!!}">Show Bosuns</a><br/>
                 @endif
-                @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) === true)<a href="{!! route('user.review') !!}">Approve
-                    Applications</a><br/>@endif
-                @if($permsObj->hasPermissions(['ADD_MEMBER']) === true)<a href="{!! route('user.create') !!}">Add
-                    Member</a><br/>@endif
-                @if($permsObj->hasPermissions(['PROC_XFERS']) === true)<a href="{!! route('user.change.review') !!}">Review
-                    Change Requests</a><br/>@endif
-                @if($permsObj->hasPermissions(['ADD_BILLET']) === true) <a href="{!! route('billet.create') !!}">Add
-                    Billet</a><br/> @endif
-                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true) <a
-                        href="{!! route('billet.index') !!}">Billet List</a><br/> @endif
+                @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) === true)
+                    <a href="{!! route('user.review') !!}">Approve Applications</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['ADD_MEMBER']) === true)
+                    <a href="{!! route('user.create') !!}">Add Member</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['PROC_XFERS']) === true)
+                    <a href="{!! route('user.change.review') !!}">Review Change Requests</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['ADD_BILLET']) === true)
+                    <a href="{!! route('billet.create') !!}">Add Billet</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true)
+                    <a href="{!! route('billet.index') !!}">Billet List</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['MANAGE_AWARDS']) === true)
+                    <a href="{{ route('awards.index') }}">Manage Awards</a>
+                @endif
             </div>
         @endif
 

@@ -3,6 +3,7 @@
 namespace App;
 
 //use Moloquent\Eloquent\Model as Eloquent;
+use Mockery\Exception;
 use Moloquent\Eloquent\Model as Eloquent;
 
 class Award extends Eloquent
@@ -147,5 +148,17 @@ class Award extends Eloquent
         return self::where('code', '=', $code)
             ->orderBy('display_order')
             ->first();
+    }
+
+    public static function updateDisplayOrder($code, $display_order)
+    {
+        $award = self::where('code', $code)->first();
+        $award->display_order = $display_order;
+        try {
+            $award->save();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
