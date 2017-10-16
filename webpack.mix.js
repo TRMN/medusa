@@ -29,7 +29,8 @@ mix.js('resources/assets/js/app.js', 'public/js/')
         'resources/assets/js/jquery.autocomplete.min.js',
         'resources/assets/js/selectize.min.js',
         'resources/assets/js/js.cookie.min.js',
-        'resources/assets/js/rcswitcher.min.js'
+        'resources/assets/js/rcswitcher.min.js',
+        // 'resources/assets/js/jquery.sortable.js'
 ], 'public/vendor.js')
 //    .sourceMaps()
     .mix.sass('resources/assets/scss/app.scss', 'public/css/app.css')

@@ -4639,7 +4639,8 @@ html {
 #tos .modal-content,
 #chooseShip .modal-content,
 #examList .modal-content,
-#confirmExamDelete .modal-content {
+#confirmExamDelete .modal-content,
+#awardForm .modal-content {
   color: WhiteSmoke;
   background-color: #000000;
   background-repeat: no-repeat;
@@ -4652,8 +4653,13 @@ html {
 #tos .modal-title,
 #chooseShip .modal-title,
 #examList .modal-title,
-#confirmExamDelete .modal-title {
+#confirmExamDelete .modal-title,
+#awardForm .modal-title {
   border-bottom: 1px whitesmoke solid;
+}
+
+#awardForm .modal-dialog {
+  width: 50%;
 }
 
 #photoModal {
@@ -5316,5 +5322,14 @@ select:disabled {
 
 .nowrap {
   white-space: nowrap;
+}
+
+.nobackground {
+  background: none;
+}
+
+.mimg {
+  padding: 10px;
+  width: 125px;
 }
 

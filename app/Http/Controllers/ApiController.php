@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Award;
 use App\Branch;
 use App\Chapter;
 use App\ExamList;
@@ -11,7 +12,7 @@ use App\MedusaConfig;
 use App\Rating;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use \Illuminate\Http\Request;
+use \Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Webpatser\Countries\Countries;
 use \Log;
@@ -371,5 +372,26 @@ class ApiController extends Controller
         $user->save();
 
         return Response::json(['status' => 'ok']);
+    }
+
+    public function updateAwardDisplayOrder(\Illuminate\Http\Request $request)
+    {
+        $awards = $request->all();
+
+        $errors = 0;
+
+        foreach($awards as $award) {
+            $res = Award::updateDisplayOrder($award['code'], $award['display_order']);
+
+            if ($res === false) {
+                $errors++;
+            }
+        }
+
+        if ($errors > 0) {
+            return Response::json(['status' => 'error', 'msg' => 'There was a problem updating one or more awards']);
+        } else {
+            return Response::json(['status' => 'ok']);
+        }
     }
 }

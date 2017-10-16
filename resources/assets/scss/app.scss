@@ -527,7 +527,7 @@ body, html {
   line-height: 100%;
 }
 
-#tos .modal-content, #chooseShip .modal-content, #examList .modal-content, #confirmExamDelete .modal-content {
+#tos .modal-content, #chooseShip .modal-content, #examList .modal-content, #confirmExamDelete .modal-content, #awardForm .modal-content {
   color: $text-primary;
   background-color: #000000;
   background-repeat: no-repeat;
@@ -537,8 +537,12 @@ body, html {
   border-radius: 1.25rem;
 }
 
-#tos .modal-title, #chooseShip .modal-title, #examList .modal-title, #confirmExamDelete .modal-title {
+#tos .modal-title, #chooseShip .modal-title, #examList .modal-title, #confirmExamDelete .modal-title, #awardForm .modal-title {
   border-bottom: 1px whitesmoke solid;
+}
+
+#awardForm .modal-dialog {
+  width: 50%;
 }
 
 #photoModal {
@@ -1174,4 +1178,13 @@ select:disabled {
 
 .nowrap {
   white-space: nowrap;
+}
+
+.nobackground {
+  background: none;
+}
+
+.mimg {
+  padding: 10px;
+  width: 125px;
 }

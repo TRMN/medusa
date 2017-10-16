@@ -338,6 +338,10 @@ Route::post(
 Route::model('billet', 'App\Billet');
 Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
 
+// Awards
+
+Route::get('award', 'AwardController@index')->name('awards.index')->middleware('auth');
+
 // IdController
 Route::get('id/qrcode/{id}', 'IdController@getQrcode');
 Route::get('id/card/{id}', 'IdController@getCard');
@@ -432,15 +436,8 @@ Route::get('/api/ribbonrack/{memberid}',
     ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 
-Route::get('/api/lastexam/{memberid}', function($memberid) {
-        $exams = \App\Exam::where('member_id', '=', $memberid)->first();
-
-        if (isset($exams) === true) {
-            return $exams['updated_at'];
-        } else {
-            return false;
-	} 
-});
+// Update award display order
+Route::post('/api/awards/updateOrder', 'ApiController@updateAwardDisplayOrder');
 
 // This MUST be the last route
 Route::get(
