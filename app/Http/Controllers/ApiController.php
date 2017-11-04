@@ -26,7 +26,8 @@ class ApiController extends Controller
 
     public function getCountries()
     {
-        $results = Countries::getList();
+        $countryModel = new Countries();
+        $results = $countryModel->getList();
         $countries = [];
 
         foreach ($results as $country) {
