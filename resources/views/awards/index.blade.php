@@ -26,13 +26,13 @@
                         @endif
                         {{$award->name}}<br/>
                         <div class="padding-top-10 btn-group-xs">
-                            <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#awardForm"
+                            <button id="editBtn" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#awardForm"
                                     data-code="{{$award->code}}" data-name="{{$award->name}}"
                                     data-postnom="{{$award->post_nominal}}" data-location="{{$award->location}}"
                                     data-replaces="{{$award->replaces}}" data-multiple="{{$award->multiple}}"
-                                    data-points="{{$award->points}}"><span class="fa fa-edit"></span> Edit
+                                    data-points="{{$award->points}}" data-nation="{{$award->star_nation}}"><span class="fa fa-edit"></span> Edit
                             </button>
-                            <button class="btn btn-xs btn-success"> Insert award below <span
+                            <button id="addBtn" class="btn btn-xs btn-success"> Insert award below <span
                                         class="fa fa-arrow-down"></span></button>
                         </div>
 
@@ -109,19 +109,28 @@
                                        max="5">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="starNation" class="control-label col-sm-5">Issuing Star Nation</label>
+                            <div class="col-sm-7">
+                                <select id="starNation" class="form-control" required>
+                                    <option value="">Choose a Star Nation</option>
+                                    @foreach(\App\MedusaConfig::get('starnations') as $key => $value)
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
-                        <div class="text-center">
+                        <div class="text-center hidden" id="fifteen">
                             <div class="row">
                                 <div class="col-sm-4 text-center">First Award</div>
                                 <div class="col-sm-4 text-center">Second Award</div>
                                 <div class="col-sm-4 text-center">Third Award</div>
-
                             </div>
                             <div class="row">
-                                <div class="col-sm-4 text-center"><img id="img1" class="mimg"></div>
-                                <div class="col-sm-4 text-center"><img id="img2" class="mimg"></div>
-                                <div class="col-sm-4 text-center"><img id="img3" class="mimg"></div>
-
+                                <div class="col-sm-4 text-center"><img class="mimg img1"></div>
+                                <div class="col-sm-4 text-center"><img class="mimg img2"></div>
+                                <div class="col-sm-4 text-center"><img class="mimg img3"></div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-3 text-center">Fourth Award</div>
@@ -130,11 +139,38 @@
                                 <div class="col-sm-3 text-center">Fifteenth Award</div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3 text-center"><img id="img4" class="mimg"></div>
-                                <div class="col-sm-3 text-center"><img id="img5" class="mimg"></div>
-                                <div class="col-sm-3 text-center"><img id="img10" class="mimg"></div>
-                                <div class="col-sm-3 text-center"><img id="img15" class="mimg"></div>
+                                <div class="col-sm-3 text-center"><img class="mimg img4"></div>
+                                <div class="col-sm-3 text-center"><img class="mimg img5"></div>
+                                <div class="col-sm-3 text-center"><img class="mimg img10"></div>
+                                <div class="col-sm-3 text-center"><img class="mimg img15"></div>
                             </div>
+                        </div>
+                        <div class="text-center hidden" id="five">
+                            <div class="row">
+                                <div class="col-sm-3">&nbsp;</div>
+                                <div class="col-sm-3 text-center">First Award</div>
+                                <div class="col-sm-3 text-center">Second Award</div>
+                                <div class="col-sm-3">&nbsp;</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">&nbsp;</div>
+                                <div class="col-sm-3 text-center"><img class="mimg img1"></div>
+                                <div class="col-sm-3 text-center"><img class="mimg img2"></div>
+                                <div class="col-sm-3">&nbsp;</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 text-center">Third Award</div>
+                                <div class="col-sm-4 text-center">Fourth Award</div>
+                                <div class="col-sm-4 text-center">Fifth Award</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 text-center"><img class="mimg img3"></div>
+                                <div class="col-sm-4 text-center"><img class="mimg img4"></div>
+                                <div class="col-sm-4 text-center"><img class="mimg img5"></div>
+                            </div>
+                        </div>
+                        <div class="text-center hidden" id="one">
+                            <img class="mimg img1">
                         </div>
                     </div>
                 </div>
@@ -192,46 +228,75 @@
 
             $('#awardForm').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget); // Button that triggered the modal
-                var awardCode = button.data('code');
-                var awardName = button.data('name');
-                var awardPostnom = button.data('postnom');
-                var location = button.data('location');
-                var replaces = button.data('replaces').split(',');
-                var multiple = button.data('multiple');
-                var points = button.data('points');
 
-                var modal = $(this);
                 if (typeof awardCode !== 'undefined') {
                     $('#formType').text('Edit');
                 } else {
                     $('#formType').text('Add');
                 }
 
-                $('#awardCode').val(awardCode);
-                $('#awardName').val(awardName);
-                $('#postNominals').val(awardPostnom);
-                $('#ppoints').val(points);
-                $('#awardMultiple').prop('checked', multiple);
-                $('#awardLocation').val(location);
-
                 var $select = $('#awardReplaces').selectize();
                 var selectize = $select[0].selectize;
                 selectize.clear();
 
-                $.each(replaces, function (key, value) {
-                    selectize.addItem(value);
+                if (button.attr('id') === 'editBtn') {
+                    var awardCode = button.data('code');
+                    var awardName = button.data('name');
+                    var awardPostnom = button.data('postnom');
+                    var location = button.data('location');
+                    var replaces = button.data('replaces').split(',');
+                    var multiple = button.data('multiple');
+                    var points = button.data('points');
+                    var nation = button.data('nation');
+                    $('#awardCode').val(awardCode);
+                    $('#awardCode').attr('disabled', true);
+                    $('#awardName').val(awardName);
+                    $('#postNominals').val(awardPostnom);
+                    $('#ppoints').val(points);
+                    $('#awardMultiple').prop('checked', multiple);
+                    $('#awardLocation').val(location);
+                    $('#starNation').val(nation);
+
+                    $.each(replaces, function (key, value) {
+                        selectize.addItem(value);
+                    });
+
+                    selectize.refreshItems();
+
+                    if (multiple) {
+                        $.get('/ribbons/' + awardCode + '-15.svg')
+                            .done(function (data, textStatus, jqXHR) {
+                                getRibbons([1, 2, 3, 4, 5, 10, 15], awardCode);
+                                $('#fifteen').removeClass('hidden');
+                            })
+                            .fail(function (jqXHR, textStatus, errorThrown) {
+                                getRibbons([1, 2, 3, 4, 5], awardCode);
+                                $('#five').removeClass('hidden');
+                            })
+                    } else {
+                        $('.img1').attr('src', '/ribbons/' + awardCode + '-1.svg');
+                        $('#one').removeClass('hidden');
+                    }
+                }
+            });
+
+            $('#awardForm').on('hide.bs.modal', function (event) {
+                $.each(['#one', '#five', '#fifteen'], function (key, value) {
+                    if (!$(value).hasClass('hidden')) {
+                        $(value).addClass('hidden')
+                    }
                 });
+            });
 
-                selectize.refreshItems();
-
-                $.each([1, 2, 3, 4, 5, 10, 15], function (key, value) {
+            function getRibbons(ribbonList, awardCode) {
+                $.each(ribbonList, function (key, value) {
                     var image_url = '/ribbons/' + awardCode + '-' + value + '.svg';
                     $.get(image_url)
                         .done(function () {
-                            $('#img' + value).attr('src', image_url);
+                            $('.img' + value).attr('src', image_url);
                         })
                 });
-            });
+            }
         });
     </script>
 @endsection

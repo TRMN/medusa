@@ -15,7 +15,7 @@
 <body class="@yield('bodyclasses')">
 <div class="container-fluid">
     <div class="row inset-bottom flex-vert-center navbar-fixed-top black-background header">
-        <div class="col-sm-4">
+        <div class="col-sm-4 text-nowrap">
             <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
         </div>
 
@@ -24,11 +24,12 @@
             <h3 class="trmn">Membership Database</h3>
         </div>
 
-        <div class="col-sm-4 text-right">
+        <div class="col-sm-4 text-right text-nowrap">
             @if(Auth::check())
+                <a href="/home" title="Return to your Service Record">
                 <strong>{{ Auth::user()->getGreeting() }}
                     {{ substr(Auth::user()->first_name, 0, 1) }}
-                    .{{ strlen(Auth::user()->middle_name) ? ' ' . substr(Auth::user()->middle_name, 0, 1) . '. ' : ' ' }} {{ Auth::user()->last_name }}</strong>
+                    .{{ strlen(Auth::user()->middle_name) ? ' ' . substr(Auth::user()->middle_name, 0, 1) . '. ' : ' ' }} {{ Auth::user()->last_name }}</strong></a>
                 <h5 class="Incised901Light ninety">Last
                     Login: {!!date('d M Y @ g:i A T', strtotime(Auth::user()->getLastLogin()))!!}</h5>
 

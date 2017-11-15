@@ -110,6 +110,8 @@ Route::post('/users/list/{branch}', 'UserController@getUserList');
 
 Route::resource('user', 'UserController', ['middleware' => 'auth']);
 
+Route::get('/user/{user}/edit/rank', 'UserController@editRank')->name('edit.rank')->middleware('auth');
+
 Route::get(
     '/user/{user}/approve',
     [
@@ -459,5 +461,5 @@ Route::get('/getRoutes', function() {
 });
 
 Route::any('{catchall}', function ($url) {
-    return response()->view('errors.404');
+    return response()->view('errors.404', [], 404);
 })->where('catchall', '(.*)');

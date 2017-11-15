@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddBranchToAwards extends Migration
+class AddNationToAwards extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,13 @@ class AddBranchToAwards extends Migration
      */
     public function up()
     {
-        DB::collection('awards')->update(['branch' => 'RMN,RMMC'], ['upsert' => true]);
+        $awards = \App\Award::all();
+
+        foreach($awards as $award) {
+            $award->star_nation = 'manticore';
+            $award->save();
+        }
+
     }
 
     /**
@@ -23,6 +29,11 @@ class AddBranchToAwards extends Migration
      */
     public function down()
     {
-        DB::collection('awards')->unset('branch');
+        $awards = \App\Award::all();
+
+        foreach($awards as $award) {
+            $award->unset('star_nation');
+            $award->save();
+        }
     }
 }

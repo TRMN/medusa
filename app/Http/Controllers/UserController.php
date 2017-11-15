@@ -8,6 +8,7 @@ use App\Branch;
 use App\Chapter;
 use App\Country;
 use App\Events\EmailChanged;
+use App\Events\LoginComplete;
 use App\Grade;
 use App\Korders;
 use App\MedusaConfig;
@@ -703,7 +704,7 @@ class UserController extends Controller
             }
 
             // Check Captcha
-            $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
+            $secret = config('recaptcha.secret');
             $captcha = \Request::get('g-recaptcha-response', null);
 
             if (empty($captcha) === false) {
@@ -999,6 +1000,33 @@ class UserController extends Controller
                     'You do not have permission to view that page'
                 );
         }
+    }
+
+    public function editRank(User $user)
+    {
+        if (($redirect =
+                $this->checkPermissions(['EDIT_MEMBER'])) !== true
+        ) {
+            return $redirect;
+        }
+
+        $user->display_rank = $user->rank['grade'];
+
+        if (isset($user->rank['date_of_rank'])) {
+            $user->dor = $user->rank['date_of_rank'];
+        } else {
+            $user->dor = '';
+        }
+
+        return view('user.rank.edit', [
+            'user' => $user,
+            'grades' => Grade::getGradesForBranch($user->branch),
+        ]);
+    }
+
+    public function updateRank(User $user)
+    {
+
     }
 
     /**
@@ -1330,8 +1358,7 @@ class UserController extends Controller
             'user' => new User,
             'countries' => Country::getCountries(),
             'branches' => $branches,
-            'chapters' => ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList(),
-            'locations' => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
+            'chapters' => ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList(false),
             'register' => true,
         ];
 
@@ -1650,7 +1677,9 @@ class UserController extends Controller
             $data[$qualBadge . '_display'] = false;
         }
 
-        $data[$data['qualbadge_display'] . '_display'] = true;
+        if (empty($data['qualbadge_display']) === false) {
+            $data[$data['qualbadge_display'] . '_display'] = true;
+        }
 
         // Process the groups
 
@@ -1774,6 +1803,7 @@ class UserController extends Controller
     {
         Session::put('orig_user', Auth::id());
         Auth::login($user);
+        event(new LoginComplete(Auth::user()));
         return back();
     }
 

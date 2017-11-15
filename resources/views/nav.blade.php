@@ -162,6 +162,15 @@
             </div>
         @endif
 
+        @if($permsObj->hasPermissions(['VIEW_RMMM']) === true)
+            <h3 class="nav-header lnav">RMMM</h3>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_RMMM']) === true)
+                    <a href="{!!route('showBranch', ['branch' => 'RMMM'])!!}">Show RMMM members</a><br/>
+                @endif
+            </div>
+        @endif
+
 
         @if($permsObj->hasPermissions(['ALL_PERMS']) === true)
             <h3 class="nav-header lnav">System</h3>

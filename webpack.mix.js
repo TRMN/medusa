@@ -44,6 +44,7 @@ mix.js('resources/assets/js/app.js', 'public/js/')
         // 'resources/assets/scss/dataTables.jqueryui.css',
         // 'resources/assets/scss/dataTables.bootstrap.css',
         'resources/assets/scss/selectize.css',
+        'resources/assets/scss/selectize.bootstrap3.css',
         'resources/assets/scss/font-awesome.css',
         'node_modules/bootstrap-block-grid/dist/bootstrap3-block-grid.min.css'
 ], 'public/css/vendor.css');

@@ -26,7 +26,9 @@ class ApiController extends Controller
 
     public function getCountries()
     {
-        $results = Countries::getList();
+        $countryModel = new Countries();
+        $results = $countryModel->getList();
+
         $countries = [];
 
         foreach ($results as $country) {
@@ -361,7 +363,7 @@ class ApiController extends Controller
             '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
     }
 
-    public function setPath(Request $request)
+    public function setPath(\Illuminate\Http\Request $request)
     {
         $user = User::find($request->input('user_id'));
 

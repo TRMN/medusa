@@ -181,11 +181,16 @@
                             @endif
                             <td>
                                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                    <a href="{!! route('user.show', [$member->_id]) !!}">
+                                    <a href="{!! route('user.show', [$member->_id]) !!}"@if($member->isPromotable() || $member->isPromotableEarly()) class="promotable" @endif >
                                         @endif
                                         {!! $member->last_name !!}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
                                         , {!! $member->first_name !!}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}
                                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                                            @if(!is_null($member->isPromotable()))
+                                                    <strong>(P [ {{implode(', ', $member->isPromotable())}} ])</strong>
+                                                @elseif(!is_null($member->isPromotableEarly()))
+                                                    <strong>(P-E [ {{implode(', ', $member->isPromotableEarly())}} ])</strong>
+                                                @endif
                                     </a>
                                 @endif
 

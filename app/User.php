@@ -110,7 +110,21 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'extraPadding',
         'last_forum_login',
         'points',
+        'path',
     ];
+
+    private $_promotionRequirements;
+
+    private $_nextGrade;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->_promotionRequirements = MedusaConfig::get('pp.requirements');
+
+        $this->_nextGrade = MedusaConfig::get('pp.nextGrade');
+    }
 
     /**
      * Route notifications for the mail channel.
@@ -195,7 +209,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     public function getDisplayRank()
     {
         $gradeDetails =
-            Grade::where('grade', '=', $this->rank['grade'])->First();
+            Grade::where('grade', '=', $this->rank['grade'])->first();
 
         if (empty($this->branch) === true) {
             $this->branch = 'RMN';
@@ -573,7 +587,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
-    public function getTimeInGrade($short = false)
+    public function getTimeInGrade($short = null)
     {
         if (empty($this->rank['date_of_rank']) === false) {
             $dorObj = new DateTime();
@@ -583,7 +597,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             $timeInGrade = $dorObj->diff(new DateTime("now"));
 
-            if ($short === true) {
+            if (is_null($short) === false) {
                 $years = $timeInGrade->format('%y');
                 $months = $timeInGrade->format('%m');
 
@@ -594,8 +608,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         $months = 0;
                     }
                 }
-
-                return $years < 1 ? $months . ' Mo' : $years . ' Yr ' . $months . ' Mo';
+                if ($short === true) {
+                    return $years < 1 ? $months . ' Mo' : $years . ' Yr ' . $months . ' Mo';
+                } elseif ($short === 'months') {
+                    return ($years * 12) + $months;
+                }
             } else {
                 return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
             }
@@ -1899,5 +1916,172 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
 
         return $results;
+    }
+
+    public function getPath()
+    {
+        return empty($this->path) === true ? 'service' : $this->path;
+    }
+
+    private function _getPromotableInfo()
+    {
+        $flags = [
+            'tig' => false,
+            'points' => false,
+            'exams' => false,
+            'early' => false,
+        ];
+
+        // Check for special promotion capabilities
+        switch ($this->rank['grade']) {
+            case 'E-4':
+            case 'E-5':
+            case 'E-6':
+            case 'E-7':
+            case 'E-8':
+            case 'E-9':
+            case 'E-10':
+                // Check for promotion to WO-1 and O-1
+                $special = $this->_specialPromotionCheck(['WO-1', 'O-1']);
+                if (count($special) > 0) {
+                    $flags['next'] = $special;
+                    $flags['exams']=$flags['points']=$flags['tig'] = true;
+                }
+                break;
+            case 'C-4':
+            case 'C-5':
+            case 'C-6':
+            case 'C-7':
+            case 'C-8':
+            case 'C-9':
+            case 'C-10':
+                // Check for promotion to C-12
+                $special = $this->_specialPromotionCheck(['C-12']);
+                if (count($special) > 0) {
+                    $flags['next'] = $special;
+                    $flags['exams']=$flags['points']=$flags['tig'] = true;
+                }
+                break;
+        }
+
+        if (empty($this->_nextGrade[$this->rank['grade']]) === false) {
+
+            $requirements = $this->_promotionRequirements[$this->_nextGrade[$this->rank['grade']]['next'][0]];
+
+            $path = $this->getPath();
+
+            // Check TiG requirements.
+            $flags['tig'] = empty($requirements['tig']) ? true : ($this->getTimeInGrade('months') >= $requirements['tig']);
+
+            // They are at least an E-3/C-3 and their last promotion was not an early one, check if they are promotable early
+            if (in_array($this->rank['grade'], ['E-1', 'E-2', 'C-1', 'C-2']) === false &&
+                empty($this->rank['early']) === true &&
+                $flags['tig'] === false) {
+                $flags['tig'] = $flags['early'] = ($this->getTimeInGrade('months') >= ($requirements['tig'] - 3));
+            }
+
+            // If they have TiG, check other requirements.  No requirements for a members path == not eligible
+            if ($flags['tig'] === true && empty($requirements[$path]) === false) {
+                $flags['points'] = ($this->getTotalPromotionPoints() >= $requirements[$path]['points']);
+
+                // Check exams
+                if (empty($requirements[$path]['exam']) === false) {
+                    $flags['exams'] = $this->_hasRequiredExams($requirements[$path]['exam']);
+                } else {
+                    // No exam requirement
+                    $flags['exams'] = true;
+                }
+
+            }
+
+            // Include what the next paygrade is
+
+            $flags['next'][] = $this->_nextGrade[$this->rank['grade']]['next'][0];
+
+            if (count($this->_nextGrade[$this->rank['grade']]['next']) > 1) {
+                $flags['next'][] = $this->_nextGrade[$this->rank['grade']]['next'][1];
+            }
+        }
+
+        return $flags;
+    }
+
+    private function _specialPromotionCheck(array $grades)
+    {
+        $path = $this->getPath();
+        $ret = [];
+
+        foreach ($grades as $grade) {
+            $specialReq = $this->_promotionRequirements[$grade];
+
+            if ($this->getTotalPromotionPoints() >= $specialReq[$path]['points'] &&
+                $this->_hasRequiredExams($specialReq[$path]['exam']) === true &&
+                $this->getTimeInGrade('months') >= $specialReq['tig']) {
+                $ret[] = $grade;
+            }
+        }
+
+        return $ret;
+    }
+
+    private function _hasRequiredExams(array $exams)
+    {
+        $flag = false;
+        foreach ($exams as $exam) {
+            $flag = !empty($this->getExamList(['pattern' => '/^.*-' . $exam . '$/']));
+        }
+
+        return $flag;
+    }
+
+    private function _sfsIsPromotable()
+    {
+        $age = Carbon::now()->diffInYears(Carbon::parse($this->dob));
+
+        switch ($age) {
+            case ($age < 9):
+                return ['C-1'];
+                break;
+            case ($age < 13):
+                return ['C-2'];
+                break;
+            case ($age < 17):
+                return ['C-3'];
+                break;
+            case ($age < 18):
+                return ['C-6'];
+                break;
+        }
+
+        return null;
+    }
+
+    public function isPromotableEarly()
+    {
+        switch ($this->branch) {
+            case 'SFS':
+                return $this->_sfsIsPromotable();
+                break;
+            default:
+                $flags = $this->_getPromotableInfo();
+                return ($flags['tig'] && $flags['points'] && $flags['exams'] && $flags['early']) === true ? $flags['next'] : null;
+        }
+    }
+
+    public function isPromotable($tigCheck = true)
+    {
+        switch ($this->branch) {
+            case 'SFS':
+                return $this->_sfsIsPromotable();
+                break;
+            default:
+                $flags = $this->_getPromotableInfo();
+
+                if ($tigCheck === true) {
+                    return ($flags['tig'] && $flags['points'] && $flags['exams']) === true ? $flags['next'] : null;
+                } else {
+                    return ($flags['points'] && $flags['exams']) === true ? $flags['next'] : null;
+                }
+        }
     }
 }

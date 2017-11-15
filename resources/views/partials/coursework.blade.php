@@ -9,7 +9,7 @@
     @endif
 </h4>
 
-<h4>Space Warfare Pin earned: {{($user->hasAward('ESWP') || $user->hasAward('OSWP')) ? 'Yes': 'No'}}<br/>
+<h4>Space Warfare Pin earned: {!!  ($user->hasAward('ESWP') || $user->hasAward('OSWP')) ? 'Yes <span class="fa fa-check green"></span>': 'No' !!}<br/>
     Manticoran Combat Action Medals earned: {!! $user->hasAward('MCAM') ? $user->awards['MCAM']['count'] .
     '<br />Number of courses need for next MCAM:&nbsp;<div class="progress" style="width: 25%; height: 25px">
   <div class="progress-bar progress-bar-success progress-bar-striped" style="width: ' . $user->percentNextMcamDone() .'%">
@@ -43,7 +43,7 @@
                     @foreach($user->getExamList(['pattern' => $regex]) as $exam => $gradeInfo)
                         <div class="row zebra-odd">
                             <div class="col-sm-6  Incised901Light text-left @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) >= strtotime(Auth::user()->getLastLogin())))yellow @endif">{!!$exam!!} @if (!is_null(App\ExamList::where('exam_id','=',$exam)->first())){!!App\ExamList::where('exam_id','=',$exam)->first()->name!!}@endif</div>
-                            <div class="col-sm-1  Incised901Light text-right">{{is_numeric($gradeInfo['score'])? $gradeInfo['score']: '100%'}}</div>
+                            <div class="col-sm-1  Incised901Light text-right">{{is_numeric(rtrim($gradeInfo['score'], '%'))? $gradeInfo['score']: '100%'}}</div>
                             <div class="col-sm-3  Incised901Light text-right">@if($gradeInfo['date'] != 'UNKNOWN')
                                     {!!date('d M Y', strtotime($gradeInfo['date']))!!}
                                 @else

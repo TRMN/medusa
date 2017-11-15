@@ -1,7 +1,11 @@
 <div class="Incised901Bold">
     {!! $user->getGreeting() !!}
     {!! $user->first_name !!}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {!! $user->last_name !!}{{ !empty($user->suffix) ? ' ' . $user->suffix : '' }}{!!$user->getPostnominals()!!}
-    , {!!$user->branch!!} @if($permsObj->hasPermissions(['ID_CARD']) === true && empty($user->idcard_printed))
+    , {!!$user->branch!!}
+    @if($permsObj->hasPermissions(['EDIT_MEMBER', 'PROMOTE_E6O1']))
+        <a class="fa fa-sort size-24" data-toggle="tooltip" title="Promote/Demote User"></a>
+    @endif
+    @if($permsObj->hasPermissions(['ID_CARD']) === true && empty($user->idcard_printed))
         <a class="fa fa-credit-card green size-24" href="/id/card/{!!$user->id!!}"
            data-toggle="tooltip" title="ID Card"></a>
         <a class="fa fa-check green size-24" href="/id/mark/{!!$user->id!!}"
