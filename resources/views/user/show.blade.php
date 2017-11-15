@@ -16,6 +16,10 @@
                 <li role="presentation"><a href="#pp" aria-controls="pp" role="tab" data-toggle="tab">Promotion
                         Points</a></li>
             @endif
+            @if(count($user->history))
+                <li role="presentation"><a href="#sh" aria-controls="sh" role="tab" data-toggle="tab">Service
+                        History</a></li>
+            @endif
         </ul>
 
         <div class="tab-content">
@@ -33,6 +37,18 @@
             @if(($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || $permsObj->hasPermissions(['EDIT_MEMBER']) || $permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($user) === true)
                 <div role="tabpanel" class="tab-pane" id="pp">
                     @include('partials.points', ['user' => $user])
+                </div>
+            @endif
+            @if(count($user->history))
+                <div role="tabpanel" class="tab-pane" id="sh">
+                    <h3>Service History</h3><br />
+                    @foreach($user->history as $item)
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {{$item['description']}} on {{date('d M Y', strtotime($item['date']))}}
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             @endif
         </div>

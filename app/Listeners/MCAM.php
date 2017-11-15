@@ -26,7 +26,7 @@ class MCAM
      *
      * @return void
      */
-    public function handle(GradeEntered $event)
+    public function handle($event)
     {
 
         $numMCAM = $event->user->mcamQual();
@@ -52,6 +52,7 @@ class MCAM
                     'count' => $numMCAM,
                     'location' => 'L',
                     'award_date' => $awardDates,
+                    'display' => true,
                 ]
             ]);
         }

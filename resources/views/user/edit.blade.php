@@ -97,7 +97,7 @@
 
                 <div class="row">
                     <div class=" col-sm-6  ninety Incised901Light form-group">
-                        {!! Form::label('branch', "Branch", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_USER']) === true){!! Form::select('branch', $branches, $user->branch) !!}
+                        {!! Form::label('branch', "Branch", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_USER']) === true){!! Form::select('branch', $branches, $user->branch, ['class' => 'form-control']) !!}
                         @else
                             {!!Form::hidden('branch', $user->branch)!!} {!!$branches[$user->branch]!!}
                         @endif
@@ -110,8 +110,18 @@
                             {!!Form::label('registration_status', 'Registration Status', ['class' => 'my'])!!} {!!Form::select('registration_status', App\RegStatus::getRegStatuses(), $user->registration_status, ['class' => 'form-control']) !!}
                         </div>
                     </div>
+                    <div class="row">
+                        <div class=" col-sm-4  ninety Incised901Light form-group">
+                            {!! Form::label('application_date', 'Application Date', ['class' => 'my']) !!} {!!Form::date('application_date', $user->application_date, ['class' => 'form-control'])!!}
+                        </div>
+                        <div class=" col-sm-4  ninety Incised901Light form-group">
+                            {!! Form::label('registration_date', 'Registration Date', ['class' => 'my']) !!} {!!Form::date('registration_date', $user->registration_date, ['class' => 'form-control'])!!}
+                        </div>
+                    </div>
                 @else
                     {!!Form::hidden('registration_status', $user->registration_status)!!}
+                    {{ Form::hidden('application_date', $user->application_date) }}
+                    {{ Form::hidden('registration_date', $user->registration_date) }}
                 @endif
 
 

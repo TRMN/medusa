@@ -9,15 +9,15 @@ $(document).ready(function ($) {
     // var authController = new ManticoreAuth();
     var userController = new ManticoreUser();
     var chapterController = new ManticoreChapter();
-    var registerController = new ManticoreRegister();
+    // var registerController = new ManticoreRegister();
 
     if ($('.userform').length > 0) {
         userController.initMemberForm();
     }
 
-    if ($('.registerform').length > 0) {
-        registerController.initRegisterForm();
-    }
+    // if ($('.registerform').length > 0) {
+    //     registerController.initRegisterForm();
+    // }
 
     var MTIProjectId = '5c059f73-3466-4691-8b9a-27e7d9c1a9c7';
     (function () {

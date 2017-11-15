@@ -27,7 +27,7 @@ class SWP
      *
      * @return void
      */
-    public function handle(GradeEntered $event)
+    public function handle($event)
     {
         // Get the users exams
 
@@ -97,6 +97,7 @@ class SWP
                         'award_date' => [
                             Carbon::create()->firstOfMonth()->addMonth()->toDateString(),
                         ],
+                        'display' => false,
                     ]
                 ]);
 
