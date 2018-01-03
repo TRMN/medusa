@@ -138,9 +138,14 @@
         </div>
         <div class="row padding-5">
             <div class="col-sm-10 Incised901Light ninety">
-                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                    <br/><a href="{!!route('roster.export', [$detail->id])!!}">Download Roster</a>
-                @endif
+                <div class="btn-group text-center padding-bottom-10 btn-group-sm" role="group">
+                    @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        <br/><a href="{!!route('roster.export', [$detail->id])!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Download Roster</button></a>
+                    @endif
+                    @if($permsObj->canPromote())
+                            <a href="{{ route('promotions', [$detail->id]) }}"><button class="btn btn-sm btn-success"><span class="fa fa-thumbs-up"></span> Promotions</button></a>
+                    @endif
+                </div>
             </div>
         </div>
         <div class="row">
@@ -149,9 +154,7 @@
                     <thead>
                     <tr>
                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                            <th class="center" width="20"><span class="fa fa-star red"
-                                                                data-toggle="tooltip"
-                                                                title="New Exams Posted">&nbsp;</span></th>
+                            <th class="text-center green nowrap">P/P-E</th>
                         @endif
                         <th>Name</th>
                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
@@ -174,23 +177,22 @@
                     @foreach($crew as $member)
                         <tr class="zebra-odd">
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                <td class="center">@if($member->hasNewExams()) <span class="fa fa-star red"
-                                                                                     data-toggle="tooltip"
-                                                                                     title="New Exams Posted">&nbsp;</span> @endif
+                                <td class="nowrap @if($member->isPromotable() || $member->isPromotableEarly()) promotable @endif ">
+                                    @if(!is_null($member->isPromotable()))
+                                        <strong>P [ {{implode(', ', $member->isPromotable())}} ]</strong>
+                                    @elseif(!is_null($member->isPromotableEarly()))
+                                        <strong>P-E [ {{implode(', ', $member->isPromotableEarly())}} ]</strong>
+                                    @endif
                                 </td>
                             @endif
                             <td>
                                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                    <a href="{!! route('user.show', [$member->_id]) !!}"@if($member->isPromotable() || $member->isPromotableEarly()) class="promotable" @endif >
+                                    <a href="{!! route('user.show', [$member->_id]) !!}"
+                                       @if($member->isPromotable() || $member->isPromotableEarly()) class="promotable" @endif>
                                         @endif
                                         {!! $member->last_name !!}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
                                         , {!! $member->first_name !!}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}
                                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                            @if(!is_null($member->isPromotable()))
-                                                    <strong>(P [ {{implode(', ', $member->isPromotable())}} ])</strong>
-                                                @elseif(!is_null($member->isPromotableEarly()))
-                                                    <strong>(P-E [ {{implode(', ', $member->isPromotableEarly())}} ])</strong>
-                                                @endif
                                     </a>
                                 @endif
 
@@ -219,9 +221,7 @@
                     <tfoot>
                     <tr>
                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                            <th class="center" width="20"><span class="fa fa-star red"
-                                                                data-toggle="tooltip"
-                                                                title="New Exams Posted">&nbsp;</span></th>
+                            <th class="text-center green">P/P-E</th>
                         @endif
                         <th>Name</th>
                         @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)

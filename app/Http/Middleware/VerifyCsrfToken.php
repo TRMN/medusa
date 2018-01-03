@@ -13,6 +13,8 @@ class VerifyCsrfToken extends BaseVerifier
         '/billet/*',
         '/oauth/*',
         '/users/list/*',
+        '/config',
+        '/config/*',
     ];
 
     /**

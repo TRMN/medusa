@@ -67,7 +67,7 @@
                             @endif
                             @if($permsObj->hasPermissions(['DECOMMISSION_SHIP']) === true)
                                 <a href="{!!route('chapter.decommission', [$chapter->id])!!}"
-                                   class="fa fa-x red delete-chapter"
+                                   class="fa fa-times red delete-chapter"
                                    title="Decommission Ship"></a>
                             @endif
 
@@ -79,7 +79,7 @@
                             @endif
                             @if($permsObj->hasPermissions(['DEL_ECHELON']) === true)
                                 <a href="{!!route('echelon.deactivate', [$chapter->id])!!}"
-                                   class="fa fa-x red delete-chapter"
+                                   class="fa fa-times red delete-chapter"
                                    title="Deactivate Echelon"></a>
                             @endif
 
@@ -90,7 +90,7 @@
                             @endif
                             @if($permsObj->hasPermissions(['DELETE_MARDET']) === true)
                                 <a href="{!!route('mardet.deactivate', [$chapter->id])!!}"
-                                   class="fa fa-x red delete-chapter"
+                                   class="fa fa-times red delete-chapter"
                                    title="Deactivate MARDET"></a>
                             @endif
 
@@ -101,7 +101,7 @@
                             @endif
                             @if($permsObj->hasPermissions(['DELETE_UNIT']) === true)
                                 <a href="{!!route('unit.deactivate', [$chapter->id])!!}"
-                                   class="fa fa-x red delete-chapter"
+                                   class="fa fa-times red delete-chapter"
                                    title="Stand-down Command/Unit"></a>
                             @endif
                         @else
@@ -111,7 +111,7 @@
                             @endif
                             @if($permsObj->hasPermissions(['ALL_PERMS']) === true)
                                 <a href="{!!route('anyunit.deactivate', [$chapter->id])!!}"
-                                   class="fa fa-x red delete-chapter"
+                                   class="fa fa-times red delete-chapter"
                                    title="Deactivate Command/Unit"></a>
                             @endif
                         @endif

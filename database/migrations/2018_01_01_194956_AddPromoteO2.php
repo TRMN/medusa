@@ -1,12 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Permission;
 
-class AddDobPerms extends Migration
+class AddPromoteO2 extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -17,7 +17,7 @@ class AddDobPerms extends Migration
     public function up()
     {
         $newPerms = [
-            'DOB'  => 'See Date of Birth',
+            'PROMOTE_E6O2'  => 'Promote to E6/O2',
         ];
 
         foreach ($newPerms as $perm => $desc) {
@@ -40,6 +40,6 @@ class AddDobPerms extends Migration
      */
     public function down()
     {
-        //
+        Permission::where('name', 'PROMOTE_E6O2')->first()->delete();
     }
 }

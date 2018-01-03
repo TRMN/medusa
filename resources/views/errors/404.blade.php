@@ -19,7 +19,7 @@
     <header class="row trmn-width">
 
         <div class="col-sm-2  trmn-width">
-            <p></p><a href="{!!$serverUrl!!}"><img src="/images/trmnseal.png" alt="TRMN Seal" width="150px"
+            <p></p><a href="{!!$serverUrl!!}"><img src="/images/trmn-seal.png" alt="TRMN Seal" width="150px"
                                                    height="150px"></a>
         </div>
         <div class="col-sm-10  trmn-width ">

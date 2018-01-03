@@ -336,6 +336,8 @@ class UserController extends Controller
             return $redirect;
         }
 
+        $events[] = 'Applied to ' . Branch::getBranchName($user->branch) . ' on ' . date('d M Y', strtotime($user->application_date));
+
         $user->registration_status = 'Active';
         $user->registration_date = date('Y-m-d');
         $user->active = 1;
@@ -401,6 +403,8 @@ class UserController extends Controller
         $user->rank = $rank;
         $user->member_id = 'RMN' . User::getFirstAvailableMemberId();
 
+        $events[] = 'Application approved by BuPers; Enlisted at rank of ' . Grade::getRankTitle($user->rank['grade'], null, $user->branch) . ' (' . $user->rank['grade'] . ') and assigned to ' . $user->getPrimaryAssignmentName() . ' on ' . date('d M Y');
+
         $user->permissions = [
             'LOGOUT',
             'CHANGE_PWD',
@@ -421,6 +425,12 @@ class UserController extends Controller
         );
 
         $user->save();
+
+        // Update the service history
+
+        foreach ($events as $event) {
+            $user->addServiceHistoryEntry(['timestamp' => time(), 'event' => $event]);
+        }
 
         // Get Chapter CO's email
         $user->co_email =
@@ -703,24 +713,26 @@ class UserController extends Controller
                     ->withInput();
             }
 
-            // Check Captcha
-            $secret = config('recaptcha.secret');
-            $captcha = \Request::get('g-recaptcha-response', null);
+            if(in_array($_SERVER['SERVER_NAME'],  ["medusa.dev", "medusa-dev.trmn.org", "medusa.local", "localhost"]) === false) {
+                // Check Captcha
+                $secret = config('recaptcha.secret');
+                $captcha = \Request::get('g-recaptcha-response', null);
 
-            if (empty($captcha) === false) {
-                $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+                if (empty($captcha) === false) {
+                    $recaptcha = new \ReCaptcha\ReCaptcha($secret);
 
-                $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
+                    $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
 
-                if ($resp->isSuccess() === false) {
+                    if ($resp->isSuccess() === false) {
+                        return redirect('register')
+                            ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
+                            ->withInput();
+                    }
+                } else {
                     return redirect('register')
                         ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
                         ->withInput();
                 }
-            } else {
-                return redirect('register')
-                    ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
-                    ->withInput();
             }
         }
 
@@ -781,8 +793,7 @@ class UserController extends Controller
 
         // For future use
 
-        $data['peerage_record'] = [];
-        $data['awards'] = [];
+        $data['peerage_record'] = $data['history'] = $data['awards'] = [];
         $data['active'] = 0;
         $data['application_date'] = date('Y-m-d');
         $data['registration_status'] = 'Pending';
@@ -1057,19 +1068,79 @@ class UserController extends Controller
                 ->withInput();
         }
 
+        $rank = $history = [];
+
+        $transfer = 0; // Flag for this being a transfer
+
+        // Branch change?
+        if ($user->branch != $data['branch']) {
+            $transfer = time();
+
+            $history[] = [
+                'timestamp' => $transfer,
+                'event' => 'Transferred from ' . Branch::getBranchName($user->branch) . ' to ' . Branch::getBranchName($data['branch']) . ' on ' . date('d M Y'),
+            ];
+        }
+
         // Massage the data a little bit.  First, build up the rank array
 
-        $rank = [];
-
-        if (isset($data['display_rank']) === true && empty($data['display_rank']) === false) {
+        if (empty($data['display_rank']) === false || empty($data['rating']) === false) {
             $data['rank'] = ['grade' => $data['display_rank']];
 
             if (empty($data['dor']) === true) {
                 $data['rank']['date_of_rank'] = '';
             } else {
                 $data['rank']['date_of_rank'] =
-                    date('Y-m-d', strtotime($data['dor']));
+                    date('Y-m-d', $transfer == 0 ? strtotime($data['dor']): $transfer);
             }
+
+            // Check and see if there is a change in rank
+            if ($user->rank['grade'] != $data['display_rank']) {
+                $history[] = [
+                    'timestamp' => $transfer == 0 ? strtotime($data['dor']): $transfer + 1,
+                    'event' => 'Rank changed from ' .
+                        Grade::getRankTitle($user->rank['grade'], $user->getRate(), $user->branch) . ' (' .
+                        $user->rank['grade'] . ') to ' .
+                        Grade::getRankTitle($data['display_rank'], !empty($data['rating']) ? $data['rating'] : null, $data['branch']) .
+                        ' (' . $data['display_rank'] . ') on ' . date('d M Y', $transfer == 0 ? strtotime($data['dor']): $transfer),
+                ];
+
+                // Is this an early promotion?
+
+                if ($data['ep'] == "1") {
+                    // Get TiG requirement of new grade
+                    $requirements = Grade::getRequirements($data['display_rank']);
+
+                    // Calculate how many months early the promotion is and update the number of points
+                    $data['points'] = $user->points;
+
+                    if (empty($data['points']['ep']) === true) {
+                        $data['points']['ep'] = 0;
+                    }
+
+                    $data['points']['ep'] -= $requirements['tig'] - $user->getTimeInGrade('months');
+                    $data['rank']['early'] = $data['rank']['date_of_rank'];
+                }
+            }
+
+            // Check for a change in rating
+
+            if ($user->getRate() != $data['rating']) {
+                $event = 'Rating changed ';
+
+                if (empty($user->getRate()) === false) {
+                    $event .= 'from ' . Rating::getRateName($user->getRate()) . ' (' . $user->getRate() . ') ';
+                }
+
+                $event .= 'to ' . Rating::getRateName($data['rating']) . ' (' . $data['rating'] . ') on ' . date('d M Y');
+
+                $history[] = [
+                    'timestamp' => time(),
+                    'event' => $event,
+                ];
+
+            }
+
             unset($data['display_rank'], $data['dor']);
         }
 
@@ -1146,6 +1217,52 @@ class UserController extends Controller
 
         $data['assignment'] = $assignment;
 
+        // Check for changes in billets or assignments
+
+        foreach ($assignment as $item) {
+            $position = 'primary';
+
+            if (empty($item['secondary']) === false) {
+                $position = 'secondary';
+            } elseif (empty($item['additional']) === false) {
+                $position = 'additional';
+            } elseif (empty($item['extra']) === false) {
+                $position = 'extra';
+            }
+
+            $currentValue = $user->getFullAssignmentInfo($position);
+
+            // Did this assignment change?
+            if ($item['chapter_id'] !== $currentValue['chapter_id']) {
+                $history[] = [
+                    'timestamp' => strtotime($item['date_assigned']),
+                    'event' => ucfirst($position) . ' assignment changed to ' . $item['chapter_name'] . ' and assigned as ' . $item['billet'] . ' on ' . date('d M Y',
+                            strtotime($item['date_assigned'])),
+                ];
+            } elseif ($item['billet'] !== $currentValue['billet']) {
+                // Only the billet changed
+                $history[] = [
+                    'timestamp' => strtotime($item['date_assigned']),
+                    'event' => ucfirst($position) . ' billet changed from ' . $currentValue['billet'] . ' to ' . $item['billet'] . ' on ' . date('d M Y',
+                            strtotime($item['date_assigned'])),
+                ];
+            }
+        }
+
+        // Merge new history with existing history
+
+        if (empty($user->history) === false && empty($history) === false) {
+            $history = array_merge($user->history, $history);
+        }
+
+        if (empty($history) === false) {
+            $history = array_values(array_sort($history, function ($value) {
+                return $value['timestamp'];
+            }));
+
+            $data['history'] = $history;
+        }
+
         if (isset($data['password']) === true && empty($data['password']) === false) {
             // Hash the password
 
@@ -1219,15 +1336,9 @@ class UserController extends Controller
                 'UserController@update'
             );
 
-            //
-            //die(event(new EmailChanged($oldEmail, $data['email_address'])));
-
-
             if ($data['reload_form'] === "yes") {
                 $redirect = Response::redirectToRoute('user.edit', [$user->id]);
-                //return Redirect::route('user.edit', [$user->_id]);
             } else {
-                //return redirect($data['redirectTo']);
                 $redirect = Response::redirectTo($data['redirectTo']);
             }
 

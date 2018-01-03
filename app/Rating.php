@@ -38,4 +38,11 @@ class Rating extends Eloquent
 
         return $ratings;
     }
+
+    static function getRateName($rateCode)
+    {
+        $rating = self::where('rate_code', '=', $rateCode)->first();
+
+        return $rating->rate['description'];
+    }
 }

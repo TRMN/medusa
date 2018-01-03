@@ -362,6 +362,11 @@ Route::get('/events/export/{events}', [
 Route::model('config', 'App\MedusaConfig');
 Route::resource('config', 'ConfigController', ['middleware' => 'auth']);
 
+// Promotion routes
+
+Route::get('/chapter/{chapter}/promotions', 'PromotionController@index')->middleware('auth')->name('promotions');
+Route::post('/bulkpromote', 'PromotionController@promote')->middleware('auth');
+
 // API calls
 
 Route::get(
@@ -440,6 +445,8 @@ Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 
 // Update award display order
 Route::post('/api/awards/updateOrder', 'ApiController@updateAwardDisplayOrder');
+
+Route::post('/api/rankcheck', ['uses' => 'ApiController@checkRankQual']); //->middleware('auth');
 
 // This MUST be the last route
 Route::get(

@@ -29,13 +29,20 @@
                 @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true && $permsObj->hasDutyRosterForAssignedShip() === true)
                     <a href="{!!route('report.index')!!}">Chapter Reports</a><br/>
                 @endif
+
+                @if($permsObj->canPromote())
+                    <br /><span class="float-left">Promotions For:</span><br/>
+                    @foreach(explode(',', Auth::user()->duty_roster) as $chapter)
+                        <a href="{{route('promotions', [$chapter])}}">{{\App\Chapter::getName($chapter)}}</a><br/>
+                    @endforeach
+                @endif
             </div>
         @endif
         @if($permsObj->hasPermissions(['CREATE_ECHELON',
-            'EDIT_ECHELON',
-            'DEL_ECHELON',
-            'ASSIGN_SHIP',
-            'CHANGE_ASSIGNMENT','TRIAD_REPORT']) === true)
+        'EDIT_ECHELON',
+        'DEL_ECHELON',
+        'ASSIGN_SHIP',
+        'CHANGE_ASSIGNMENT','TRIAD_REPORT']) === true)
             <h3 class="nav-header lnav">First Space Lord</h3>
             <div class="rnav">
 

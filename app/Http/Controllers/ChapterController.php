@@ -251,13 +251,11 @@ class ChapterController extends Controller
             return $redirect;
         }
 
-        $crew =
-          User::where('assignment.chapter_id', '=', (string)$chapter->_id)
-              ->get();
+        $crew = $chapter->getActiveCrewCount();
 
         return view(
             'chapter.confirm-decommission',
-            ['chapter' => $chapter, 'numCrew' => count($crew),]
+            ['chapter' => $chapter, 'numCrew' => $crew,]
         );
     }
 

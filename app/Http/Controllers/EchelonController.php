@@ -309,10 +309,10 @@ class EchelonController extends Controller
             return $redirect;
         }
 
-        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = $chapter->getActiveCrewCount();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = count($chapter->getChapterIdWithChildren()) - 1;
 
-        return view('echelon.confirm-deactivate', ['chapter' => $chapter, 'numCrew' => count($crew) + count($childUnits),]);
+        return view('echelon.confirm-deactivate', ['chapter' => $chapter, 'numCrew' => $crew + $childUnits,]);
     }
 }

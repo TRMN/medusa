@@ -22,7 +22,7 @@
 
 
             {!! Form::model( $user, [ 'route' => [ 'user.update', $user->id ], 'method' => 'put', 'id' => 'user' ] ) !!}
-            {!! Form::hidden('member_id', $user->member_id) !!}
+            {!! Form::hidden('member_id', $user->member_id, ['id' => 'member_id']) !!}
             {!! Form::hidden('reload_form', 'no', ['id' => 'reload-form']) !!}
             {!! Form::hidden('showUnjoinable', 'true', ['id' => 'showUnjoinable']) !!}
             {!! Form::hidden('redirectTo', URL::previous()) !!}
@@ -285,7 +285,7 @@
 
                 <div class="row">
                     <div class=" col-sm-4  ninety Incised901Light form-group">
-                        {!! Form::label('display_rank', "Rank", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('display_rank', $grades, $user->display_rank, ['class' => 'form-control']) !!}
+                        {!! Form::label('display_rank', "Rank", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('display_rank', $grades, $user->display_rank, ['class' => 'form-control', 'id' => 'rank']) !!} {{Form::hidden('current_rank', $user->display_rank, ['id' => 'current_rank'])}}
                         @else
                             {!!Form::hidden('display_rank', $user->display_rank)!!} {!!$grades[$user->display_rank]!!}
                             <br/><br/>
@@ -310,6 +310,25 @@
                         @endif
                     </div>
                 </div>
+                @if($permsObj->hasPermissions(['EDIT_MEMBER']))
+                    <div>
+                        <label>
+                            <input type="checkbox" checked name="tigCheck" id="tigCheck" value="1"> Check Time in Grade
+                        </label>
+                    </div>
+
+                    <div>
+                        <label>
+                            <input type="checkbox" checked name="ppCheck" id="ppCheck" value="1"> Check Promotion Points
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="checkbox" name="ep" id="ep" value="1"> Early Promotion
+                        </label>
+                    </div>
+                @endif
+
             </fieldset>
             @if($permsObj->hasPermissions(['ASSIGN_PERMS']) === true)
                 <fieldset>
@@ -330,7 +349,8 @@
                         @foreach(DB::table('permissions')->orderBy('name', 'asc')->get() as $permission)
                             @if(!in_array($permission['name'], config('permissions.restricted')) || $permsObj->checkRestrictedAccess($permission['name']))
                                 <li>{!! Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions']) !!}
-                                    <span data-toggle="tooltip" title="{!!$permission['description']!!}">{!!$permission['name']!!}</span></li>
+                                    <span data-toggle="tooltip"
+                                          title="{!!$permission['description']!!}">{!!$permission['name']!!}</span></li>
                             @elseif(in_array($permission['name'], config('permissions.restricted')) && !$permsObj->checkRestrictedAccess($permission['name']))
                                 {!! Form::checkbox('permissions[]', $permission['name'], in_array($permission['name'], $user->permissions), ['id' => $permission['name'], 'class' => 'permissions', 'style' => 'display: none !important']) !!}
                             @endif
@@ -346,7 +366,8 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-title">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
                             <h4 class="text-center">Select the Chapter(s) the DUTY_ROSTER permission is for</h4>
                         </div>
                         <div class="modal-body">
@@ -363,7 +384,8 @@
                 </div>
             </div>
 
-            <a class="btn btn-danger" href="{!! URL::previous() !!}"><span class="fa fa-times"></span> Cancel </a> <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save </button>
+            <a class="btn btn-danger" href="{!! URL::previous() !!}"><span class="fa fa-times"></span> Cancel </a>
+            <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button>
 
             {!! Form::close() !!}
         </div>
@@ -378,7 +400,8 @@
                     @endif
                     <div class="ofpt">
                         <form action='/api/photo' class='dropzone' id='trmnDropzone' method='post'
-                              data-toggle="tooltip" title="Drag and drop image files here or click.  Only .png, .gif and .jpg files will be accepted.  All images uploaded will be scaled to 150 pixels wide by 200 pixels tall.  After the image has been dropped, the form will be submitted and processed.">
+                              data-toggle="tooltip"
+                              title="Drag and drop image files here or click.  Only .png, .gif and .jpg files will be accepted.  All images uploaded will be scaled to 150 pixels wide by 200 pixels tall.  After the image has been dropped, the form will be submitted and processed.">
                             {!! Form::hidden('member_id', $user->member_id) !!}
                         </form>
                     </div>
@@ -412,7 +435,7 @@
             onInitialize: function () {
                 var self = this;
                 @foreach(explode(',', $user->duty_roster) as $roster)
-                    self.addOption({
+                self.addOption({
                     data: '{!!$roster!!}',
                     value: '{!!\App\Chapter::find($roster)->chapter_name!!}'
                 });
@@ -425,5 +448,52 @@
         $('.billet').selectize({
             sortField: 'text'
         });
+
+        $('#rank').on('change', function () {
+            let payload = {
+                "member_id": $('#member_id').val(),
+                "tigCheck": $('#tigCheck').prop('checked')? true: false,
+                "ppCheck": $('#ppCheck').prop('checked')? true: false,
+                "ep": $('#ep').prop('checked')? true: false,
+                "payGrade": $('#rank').val()
+            };
+
+            $.ajax({
+                method: "POST",
+                url: "/api/rankcheck",
+                data: JSON.stringify(payload),
+                contentType: 'application/json',
+                dataType: 'json'
+            })
+                .done(function( data ) {
+                    console.log(data);
+                    if (data.valid === false) {
+                        let msg = 'INVALID RANK' + "\n";
+
+                        if (data.msg) {
+                            $.each(data.msg, function(index, value) {
+                                msg += "\n* " + value;
+                            });
+                        }
+
+                        alert(msg);
+
+                        $('#rank').val($('#current_rank').val());
+
+                    }
+                });
+        });
+
+        $('#tigCheck').on('change', function () {
+            if ($('#tigCheck').prop('checked')) {
+                $('#ep').prop('checked', false);
+            }
+        })
+
+        $('#ep').on('change', function() {
+            if ($('#ep').prop('checked')) {
+                $('#tigCheck').prop('checked', false);
+            }
+        })
     </script>
 @stop

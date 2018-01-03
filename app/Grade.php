@@ -25,6 +25,32 @@ class Grade extends Eloquent
     ];
 
 
+    public static function getRequirements($paygrade2check)
+    {
+        $requirements = MedusaConfig::get('pp.requirements');
+        return $requirements[$paygrade2check];
+    }
+
+
+    public static function getRankTitle($grade, $rate = null, $branch = 'RMN')
+    {
+        $gradeDetails = self::where('grade', '=', $grade)->first();
+
+        $rateDetail = Rating::where('rate_code', '=', $rate)->first();
+
+        if (empty($gradeDetails->rank[$branch]) === false) {
+            $rank_title = self::mb_trim($gradeDetails->rank[$branch]);
+        } else {
+            $rank_title = $grade;
+        }
+
+        if (empty($rateDetail->rate[$branch][$grade]) === false) {
+            $rank_title = $rateDetail->rate[$branch][$grade];
+        }
+
+        return $rank_title;
+    }
+
     /**
      * Get the paygrades for a branch
      *
@@ -34,7 +60,7 @@ class Grade extends Eloquent
      */
     public static function getGradesForBranch($branchID)
     {
-        $grades[''] = 'Select a rank';
+        //$grades[''] = 'Select a rank';
 
         foreach(self::$gradeFilters as $filter => $filterName) {
             $tmp = self::_gradesForBranchForSelect($branchID, $filter);

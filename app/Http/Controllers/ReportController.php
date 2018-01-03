@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Session;
 
 class ReportController extends Controller
 {
@@ -97,7 +98,7 @@ class ReportController extends Controller
           Report::where(
               'chapter_id',
               '=',
-              Auth::user()->getPrimaryAssignmentId()
+              Auth::user()->getAssignmentId('primary')
           )->where(
               'report_date',
               '=',
@@ -110,10 +111,7 @@ class ReportController extends Controller
         } elseif (count($report) === 1 && empty($report->report_sent) === false) {
             // The current report has been sent and they want to start the next one
             $month =
-              date(
-                  'F, Y',
-                  strtotime('+2 months', strtotime($report->report_date))
-              );
+              date('F, Y', strtotime('+2 months', strtotime($report->report_date)));
             $ts = strtotime('-2 months', strtotime($month));
         }
 
@@ -438,7 +436,24 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (empty(Session::get('orig_user')) === true) {
+            return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
+        }
+
+        $report = Report::find($id);
+
+        $report->delete();
+
+        $this->writeAuditTrail(
+            (string)Auth::user()->_id,
+            'delete',
+            'reports',
+            (string)$report->_id,
+            $report->toJson(),
+            'ReportController@destroy'
+        );
+
+        return Redirect::route('report.index');
     }
 
     public function sendReport($id)
