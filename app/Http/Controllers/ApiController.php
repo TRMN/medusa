@@ -394,4 +394,59 @@ class ApiController extends Controller
             return Response::json(['status' => 'ok']);
         }
     }
+
+    public function checkRankQual(\Illuminate\Http\Request $request)
+    {
+        $member = User::getUserByMemberId($request->input('member_id'));
+        $tigCheck = $request->input('tigCheck');
+        $pointCheck = $request->input('ppCheck');
+        $earlyPromotion = $request->input('ep');
+        $payGrade2Check = $request->input('payGrade');
+        $msg = null;
+
+        if ($tigCheck === true) {
+            $payGrade2Check = null; // If we're checking TiG, we want to look up the next paygrade
+        }
+
+        $promotionInfo = $member->getPromotableInfo($payGrade2Check);
+
+        $canPromote = $promotionInfo['exams']; // Always have to have the exams
+
+        if ($promotionInfo['exams'] === false) {
+            $msg[] = 'The member does not have the required coursework for the rank selected.';
+        }
+
+        if ($pointCheck === true) {
+            $canPromote = $canPromote && $promotionInfo['points'];
+
+            if ($promotionInfo['points'] === false) {
+                $msg[] = 'The member does not have the required promotion points for the rank selected.';
+            }
+        }
+
+        if ($earlyPromotion === true) {
+            $canPromote = $canPromote && $promotionInfo['early'];
+
+            if ($promotionInfo['early'] === false) {
+                $msg[] = 'The member does not qualify for early promotion';
+            }
+        }
+
+        if ($tigCheck === true) {
+            $canPromote = $canPromote && $promotionInfo['tig'];
+
+            if ($promotionInfo['next'][0] !== $request->input('payGrade')) {
+                // Check TiG was selected, but the paygrade was not the next one for the member
+                $canPromote = false;
+                $msg[] = 'The rank selected is not the next rank for the members current rank.  To skip this check, do not select "Check Time In Grade".';
+            }
+
+            if ($promotionInfo['tig'] === false) {
+                $msg[] = 'The member does not have the required time in grade for the rank selected';
+            }
+        }
+
+        return Response::json(['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check, 'pinfo' => $promotionInfo]);
+
+    }
 }

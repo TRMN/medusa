@@ -128,10 +128,23 @@
     </div>
 </div>
 
+<div class="container-fluid" id="early">
+    <div class="row bottom-border-double margin-bottom-10 padding-top-10 padding-bottom-10">
+        <div class="col-sm-4 text-left">Early Promotion</div>
+        <div class="col-sm-4 text-right">&nbsp;</div>
+        <div class="col-sm-4 text-right">Points Used</div>
+    </div>
+    <div class="row pp-row margin-bottom-10 padding-bottom-10">
+        <div class="col-sm-4">Promotion Points used for early promotion</div>
+        <div class="col-sm-4 text-right"> </div>
+        <div class="col-sm-4 text-right"><span class="pp">{{empty($user->points['ep'])? 0 : $user->points['ep']}}</span></div>
+    </div>
+</div>
+
 <div class="container-fluid zebra">
     <div class="row pp-row margin-bottom-10 padding-bottom-10">
         <div class="col-sm-12 text-right">
-            Total Promotion Points Earned: <span id="total-pp"></span>
+            Total Promotion Points: <span id="total-pp"></span>
         </div>
     </div>
 </div>

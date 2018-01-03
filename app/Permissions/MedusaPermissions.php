@@ -106,7 +106,7 @@ trait MedusaPermissions
         // Check if the logged in user has the correct permissions and is in the specified users Chain of Command or in
         // the array of chapter ids passed in
 
-        if ($this->hasPermissions(['DUTY_ROSTER']) === true) {
+        if (Auth::user()->hasPermissions(['DUTY_ROSTER']) === true) {
             $rosters = (Auth::user()->duty_roster);
             if (is_array($rosters) === false) {
                 $rosters = explode(',', trim($rosters, ','));
@@ -147,7 +147,20 @@ trait MedusaPermissions
 
     public function promotionPointsEditAccess(User $user)
     {
-        if (($this->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || $this->hasPermissions(['EDIT_MEMBER']) || $this->isInChainOfCommand($user) === true) {
+        if ((Auth::user()->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id)
+            || Auth::user()->hasPermissions(['EDIT_MEMBER'])
+            || Auth::user()->isInChainOfCommand($user) === true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function canPromote()
+    {
+        if ((Auth::user()->hasPermissions(['PROMOTE_E6O1']) === true && Auth::user()->isCoAssignedShip() === true)
+            || Auth::user()->hasAllPermissions()
+            || (Auth::user()->isFleetCO() === true && Auth::user()->hasPermissions(['PROMOTE_E6O2']) === true)) {
             return true;
         }
 

@@ -1,24 +1,29 @@
 module.exports = function () {
     this.initMemberForm = function () {
 
-        jQuery('#user #branch').change(function () {
+        jQuery('#user #branch').on('change', function () {
             var branch = jQuery('#branch').val();
             jQuery.getJSON('/api/branch/' + branch + '/grade', function (result) {
-                var grade = jQuery('#user #display_rank').val();
+                var grade = jQuery('#user #rank').val();
                 var options = '';
 
-                jQuery('#user #display_rank').empty();
+                jQuery('#user #rank').empty();
+                options = '<option value="">Select a Rank</option>';
                 jQuery.each(result, function (key, value) {
+                    options  += '<optgroup label="' + key + '">';
 
-                    var option = '';
-                    option = '<option value="' + key + '"';
-                    if (grade == key) {
-                        option += ' selected';
-                    }
-                    options += option + '>' + value + '</option>';
+                    jQuery.each(value, function (key, value) {
+                        var option = '';
+                        option = '<option value="' + key + '"';
+                        if (grade == key) {
+                            option += ' selected';
+                        }
+                        options += option + '>' + value + '</option>';
+                    });
 
+                    options += '</optgroup>';
                 });
-                jQuery('#user #display_rank').append(options);
+                jQuery('#user #rank').append(options);
             });
             jQuery.getJSON('/api/branch/' + branch + '/rate', function (result) {
                 jQuery('#user #rating').empty();

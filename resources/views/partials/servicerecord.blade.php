@@ -265,12 +265,11 @@
                             <br/>
                             @if($user->registration_status != "Pending" && (($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || ($permsObj->hasPermissions(['EDIT_MEMBER']))))
                                 <a href="{{route('user.edit', [$user->_id])}}"
-                                   class="editButton Incised901Black margin-5">EDIT</a>
+                                   class="btn btn-success"><span class="fa fa-edit"></span> EDIT</a>
                             @elseif($permsObj->hasPermissions(['PROC_APPLICATIONS']))
                                 <a href="{{route('user.approve', [$user->_id])}}"
-                                   class="editButton Incised901Black margin-5">Approve</a>
-                                <a href="{{route('user.deny', [$user->_id])}}" class="editButton
-                        Incised901Black margin-5">DENY</a>
+                                   class="btn btn-success"><span class="fa fa-check"></span> Approve</a>
+                                <a href="{{route('user.deny', [$user->_id])}}" class="btn btn-warning"><span class="fa fa-times"></span> DENY</a>
                             @endif
                         </div>
                     </div>

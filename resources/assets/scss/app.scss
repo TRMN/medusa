@@ -93,12 +93,12 @@ $medusa-yellow: #ffee00;
 }
 
 #left-nav .ui-accordion-header {
-  font-size: 1.25rem !important;
+  font-size: 1rem !important;
   color: $medusa-yellow !important;
 }
 
 #left-nav .ui-accordion-content {
-  font-size: 1.1rem !important;
+  font-size: .85rem !important;
   color: whitesmoke !important;
 }
 
@@ -486,6 +486,18 @@ th.branch {
   width: 80px;
 }
 
+.onepixel {
+  width: 1px;
+}
+
+.fiftypixels {
+  width: 50px;
+}
+
+.pixels-100 {
+  width: 100px;
+}
+
 body, html {
   background: url("/images/trmn-subdued.png");
   color: $text-primary;
@@ -672,9 +684,9 @@ table {
   text-align: right;
   width: 175px;
   color: white;
-  font-family: "Incised 901 W01 Bold Cd";
-  font-size: 1.1rem;
-  line-height: 1.1rem;
+  font-family: "Incised 901 W01 Light";
+  font-size: 1rem;
+  line-height: 1rem;
 }
 
 .rnav a {
@@ -1199,7 +1211,9 @@ select:disabled {
 }
 
 /* Hide default HTML checkbox */
-.switch input {display:none;}
+.switch input {
+  display: none;
+}
 
 /* The slider */
 .slider {
@@ -1251,6 +1265,6 @@ input:checked + .slider:before {
 
 .promotable {
   font-weight: 900;
-  font-style: italic;
-  color: lawngreen;
+  //font-style: italic;
+  color: lawngreen !important;
 }

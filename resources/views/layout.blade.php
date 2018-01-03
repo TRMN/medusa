@@ -51,7 +51,7 @@
         <div class="col-sm-2" id="left">
             @if(empty(Auth::user()->tos) === false && empty(Auth::user()->osa) === false)
                 <div class="padding-top-10 padding-bottom-10">
-                    <a href="{!!$serverUrl!!}"><img src="/images/trmnseal.png" alt="TRMN Seal" width="150px"
+                    <a href="{!!$serverUrl!!}"><img src="/images/trmn-seal.png" alt="TRMN Seal" width="150px"
                                                     height="150px"></a>
                 </div>
                 @include( 'nav', ['permsObj' => $permsObj] )
@@ -75,7 +75,7 @@
                             @if( $errors->any() )
                                 <ul class="medusa-error">
                                     @foreach( $errors->all() as $error )
-                                        <li class="fa fa-exclamation-triangle alert">{!! $error !!}</li>
+                                        <li class="alert-text Incised901Light"><span class="fa fa-exclamation-triangle"></span> {!! $error !!}</li>
                                     @endforeach
                                 </ul>
                             @endif
@@ -158,12 +158,12 @@
         <span class="text-center"><img src="{!!asset('images/project-medusa.svg')!!}" width="150px" height="150px"
                                        data-src="{!!asset('images/project-medusa.svg')!!}"></span>
         <p>{!! Config::get('app.version') !!}</p>
-        @if($_SERVER['SERVER_NAME'] == "medusa.dev" || $_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
+        @if(in_array($_SERVER['SERVER_NAME'],  ["medusa.dev", "medusa-dev.trmn.org", "medusa.local", "localhost"]))
             <div class="alert alert-info text-center alert-text">
-                @if($_SERVER['SERVER_NAME'] == "medusa.dev")
-                    LOCAL SANDBOX SERVER
-                @else
+                @if($_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
                     DEVELOPMENT / TEST SERVER
+                @else
+                    LOCAL SANDBOX SERVER
                 @endif
             </div>
         @endif

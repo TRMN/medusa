@@ -14,6 +14,6 @@
         {!! Form::close() !!}
     @else
         <p>Unable to decommission {!!$chapter->chapter_name!!} at this time because there are still members assigned to it.</p>
-        <a href="{!!route('chapter.index')!!}" class="btn">Return to Ship List</a>
+        <a href="{!!route('chapter.index')!!}" class="btn btn-danger">Return to Ship List</a>
     @endif
 @stop

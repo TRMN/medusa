@@ -28,21 +28,21 @@
         <fieldset>
             <legend>Branch Change Request</legend>
             <p>Only use this option if you are requesting a branch change.  If you are only requesting a chapter change, you do not need to select a branch.</p>
-            <p>Change Branch From {!!$branches[$user->branch]!!} to</p>
+            <p>Change Branch from&nbsp;<span class="bg-primary"> {!!$branches[$user->branch]!!} </span>&nbsp;to</p>
             {!! Form::select('new_branch', $branches, null, ['class' => 'selectize']) !!}
             {!! Form::hidden('old_branch', $user->branch) !!}
         </fieldset>
 
         <fieldset>
             <legend>Chapter Change Request</legend>
-            <p>Only use this option if you are requesting a chapter change.  If you are only requesting a branch change, you do not need to select a chapter.</p>
-            <p>Change Chapter From
+            <p>Only use this option if you are requesting a change to your primary chapter.  If you are only requesting a branch change, you do not need to select a chapter.</p>
+            <p>Change Chapter From&nbsp;<span class="bg-primary">
                 @if($user->getAssignmentName('primary') == 'HMS Charon')
                     HMS Charon
                 @else
                     {!!$allchapters[$user->getAssignmentId('primary')]!!}
                 @endif
-                to</p>
+                </span>&nbsp;to</p>
             <div class="row">
                 <div class=" col-sm-6  ninety Incised901Light">
                     {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!} {!! Form::select('primary_assignment', $chapters, null, ['placeholder' => 'Start typing to search for a chapter', 'class' => 'selectize']) !!}

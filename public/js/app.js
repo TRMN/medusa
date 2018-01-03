@@ -193,6 +193,19 @@ $(document).ready(function ($) {
         "$UI": true
     });
 
+    $('.crewlist').DataTable({
+        "autoWidth": true,
+        "pageLength": 10,
+        "columnDefs": [{ "orderable": false, "targets": 0 }, { "orderable": true, "targets": -1 }],
+        "language": {
+            "emptyTable": "None"
+        },
+        "order": [[3, 'desc']],
+        "$UI": true,
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+
+    });
+
     $('.trmnTableWithActions').DataTable({
         "autoWidth": false,
         "pageLength": 25,
@@ -703,7 +716,7 @@ $(document).ready(function ($) {
     function calcTotalPromotionPoints() {
         var sum = 0;
 
-        $.each(['service', 'events', 'parliament', 'peerages', 'awards'], function (index, value) {
+        $.each(['service', 'events', 'parliament', 'peerages', 'awards', 'early'], function (index, value) {
             sum += calcSectionPromotionPoints(value);
         });
 
@@ -713,13 +726,10 @@ $(document).ready(function ($) {
     function calcSectionPromotionPoints(target) {
         var sum = 0;
         $('#' + target + ' .pp').each(function () {
-            if (parseInt($(this).text()) > 0) {
-                sum += parseInt($(this).text());
-            }
+            sum += parseInt($(this).text());
         });
 
         $('#' + target + '-pp').text(sum);
-
         return sum;
     }
 
@@ -806,6 +816,10 @@ $(document).ready(function ($) {
             }
         });
     })();
+
+    if ($('#right').height() < $('#left').height()) {
+        $('#right').height($('#left').height());
+    }
 });
 
 /***/ }),
@@ -815,23 +829,29 @@ $(document).ready(function ($) {
 module.exports = function () {
     this.initMemberForm = function () {
 
-        jQuery('#user #branch').change(function () {
+        jQuery('#user #branch').on('change', function () {
             var branch = jQuery('#branch').val();
             jQuery.getJSON('/api/branch/' + branch + '/grade', function (result) {
-                var grade = jQuery('#user #display_rank').val();
+                var grade = jQuery('#user #rank').val();
                 var options = '';
 
-                jQuery('#user #display_rank').empty();
+                jQuery('#user #rank').empty();
+                options = '<option value="">Select a Rank</option>';
                 jQuery.each(result, function (key, value) {
+                    options += '<optgroup label="' + key + '">';
 
-                    var option = '';
-                    option = '<option value="' + key + '"';
-                    if (grade == key) {
-                        option += ' selected';
-                    }
-                    options += option + '>' + value + '</option>';
+                    jQuery.each(value, function (key, value) {
+                        var option = '';
+                        option = '<option value="' + key + '"';
+                        if (grade == key) {
+                            option += ' selected';
+                        }
+                        options += option + '>' + value + '</option>';
+                    });
+
+                    options += '</optgroup>';
                 });
-                jQuery('#user #display_rank').append(options);
+                jQuery('#user #rank').append(options);
             });
             jQuery.getJSON('/api/branch/' + branch + '/rate', function (result) {
                 jQuery('#user #rating').empty();

@@ -21,6 +21,14 @@ use Laravel\Passport\HasApiTokens;
 use App\Audit\MedusaAudit;
 use App\Permissions\MedusaPermissions;
 
+/**
+ * MEDUSA User model
+ *
+ * @property string id
+ *
+ * Class User
+ * @package App
+ */
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
 
@@ -111,12 +119,18 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'last_forum_login',
         'points',
         'path',
+        'history',
     ];
 
     private $_promotionRequirements;
 
     private $_nextGrade;
 
+    /**
+     * User constructor.
+     *
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -136,21 +150,33 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $this->email_address;
     }
 
+    /**
+     * Get email for password reset functions
+     *
+     * @return string
+     */
     public function getEmailForPasswordReset()
     {
         return $this->email_address;
     }
 
-    public function announcements()
-    {
-        return $this->hasMany(\App\Announcement::class);
-    }
 
+    /**
+     * Get users name with rank
+     *
+     * @return string
+     */
     public function getGreetingAndName()
     {
         return $this->getGreeting() . ' ' . $this->getFullName();
     }
 
+    /**
+     * Get the users full name
+     *
+     * @param bool $lastFirst Return name is Last, First Middle instead of First Middle Last
+     * @return string
+     */
     public function getFullName($lastFirst = false)
     {
         if ($lastFirst === true) {
@@ -173,7 +199,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     /**
      * Return only the preferred rank title for a user
      *
-     * @return mixed
+     * @return string
      */
     public function getGreeting()
     {
@@ -192,6 +218,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $displayRank;
     }
 
+    /**
+     * Get the greeting info in an array
+     *
+     * @return array
+     */
     public function getGreetingArray()
     {
         $greeting['rank'] = $this->getGreeting();
@@ -204,7 +235,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Set permanent rank, brevet rank and rating in one place
+     * Dynamically set the rank title
+     *
+     * @TODO The function name really be changed, as this is a dynamic setter, not a getter
+     *
      */
     public function getDisplayRank()
     {
@@ -221,16 +255,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->rank_title = $this->rank['grade'];
         }
 
-        if (isset($this->rating) && !empty($this->rating)) {
+        if (!empty($this->rating)) {
             if (is_array($this->rating) === true) {
                 $results =
-                    Rating::where('rate_code', '=', $this->rating['rate'])->get();
+                    Rating::where('rate_code', '=', $this->rating['rate'])->first();
             } else {
                 $results =
-                    Rating::where('rate_code', '=', $this->rating)->get();
+                    Rating::where('rate_code', '=', $this->rating)->first();
             }
-
-            $rate = $results[0];
 
             if (is_array($this->rating) === true) {
                 $currentRating = $this->rating['rate'];
@@ -241,9 +273,28 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->rating =
                 [
                     'rate' => $currentRating,
-                    'description' => $rate->rate['description'],
+                    'description' => $results->rate['description'],
                 ];
         }
+    }
+
+    /**
+     * Get the users rating
+     *
+     * @return string|null
+     */
+    public function getRate()
+    {
+        if (empty($this->rating) === false) {
+            if (is_array($this->rating) === true) {
+                return $this->rating['rate'];
+            }
+
+            return $this->rating;
+        }
+
+        return null;
+
     }
 
     /**
@@ -251,29 +302,39 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @param $rank
      *
-     * @return mixed
+     * @return boolean|string
      */
     public function getRateTitle($rank)
     {
         if (is_array($this->rating) === true) {
             $rateDetail =
-                Rating::where('rate_code', '=', $this->rating['rate'])->get();
+                Rating::where('rate_code', '=', $this->rating['rate'])->first();
         } else {
-            $rateDetail = Rating::where('rate_code', '=', $this->rating)->get();
+            $rateDetail = Rating::where('rate_code', '=', $this->rating)->first();
         }
 
-        if (isset($rateDetail[0]->rate[$this->branch][$rank]) === true && empty($rateDetail[0]->rate[$this->branch][$rank]) === false) {
-            return $rateDetail[0]->rate[$this->branch][$rank];
+        if (empty($rateDetail->rate[$this->branch][$rank]) === false) {
+            return $rateDetail->rate[$this->branch][$rank];
         }
 
         return false;
     }
 
+    /**
+     * Get Date of Rank
+     *
+     * @return string
+     */
     public function getDateOfRank()
     {
         return $this->rank['date_of_rank'];
     }
 
+    /**
+     * Get a users Post Nominals
+     *
+     * @return null|string
+     */
     public function getPostnominals()
     {
 
@@ -286,6 +347,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Get a users Post Nominals from awards
+     *
+     * @return string
+     */
     public function getPostnominalsFromAwards()
     {
         $postnominals = [];
@@ -305,6 +371,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Get a users Post Nominals from their peerages
+     *
+     * @return string
+     */
     private function getPostnominalsFromPeerages()
     {
         $postnominals = [];
@@ -323,6 +394,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Get a users peerages
+     *
+     * @param bool $detail
+     * @return array
+     */
     public function getPeerages($detail = false)
     {
         $landed = [];
@@ -350,6 +427,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return [];
     }
 
+    /**
+     * Get the name of a users Peerage lands
+     *
+     * @return null|string
+     */
     public function getNameofLands()
     {
         $peerages = $this->getPeerages(true);
@@ -363,6 +445,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the chapter ID of the ship to which a member is assigned, regardless of
      * whether that's the primary, secondary, or some tertiary assignment.
      *
+     * @return bool|string
      */
     public function getAssignedShip()
     {
@@ -392,30 +475,61 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return false;
     }
 
-    public function isCoAssignedShip()
+    /**
+     * Is this user the CO of the fleet their assigned ship is part of
+     *
+     * @return bool
+     */
+    public function isFleetCO()
     {
-        $assignedShip = $this->getAssignedShip();
+        $fleet = Chapter::find($this->getAssignedShip())->getAssignedFleet(true);
 
-        if ($assignedShip !== false) {
-            foreach ($this->assignment as $assignment) {
-                if ($assignment['chapter_id'] == $assignedShip && $assignment['billet'] === 'Commanding Officer') {
-                    return true;
-                }
-            }
+        if (is_null($fleet) === false && Chapter::find($fleet)->getCO()['_id'] == $this->id) {
+            return true;
         }
 
         return false;
     }
 
+    /**
+     * Is this user the CO of the ship they are assigned to
+     *
+     * @return bool
+     */
+    public function isCoAssignedShip()
+    {
+        $assignedShip = $this->getAssignedShip();
+
+        if (Chapter::find($assignedShip)->getCO()['_id'] == $this->id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the chapter ID of the specified assignment
+     *
+     * @param $position
+     * @return bool|string
+     */
     public function getAssignmentId($position)
+    {
+        return $this->_getIndividualAssignmentAttribute($position, 'chapter_id');
+    }
+
+    /**
+     * Get the full information on the specified assignment
+     *
+     * @param $position
+     * @return bool
+     */
+    public function getFullAssignmentInfo($position)
     {
         if (isset($this->assignment) == true) {
             foreach ($this->assignment as $assignment) {
                 if (empty($assignment[$position]) === false) {
-                    if (empty($assignment['chapter_id'])) {
-                        return false;
-                    }
-                    return $assignment['chapter_id'];
+                    return $assignment;
                 }
             }
             return false;
@@ -424,66 +538,116 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Return the specified attribute for the specified assignment or false if it's not set
+     *
+     * @param $position
+     * @param $attr
+     * @return bool|string
+     */
+    private function _getIndividualAssignmentAttribute($position, $attr)
+    {
+        $assignment = $this->getFullAssignmentInfo($position);
+        if (empty($assignment[$attr]) === true) {
+            return false;
+        }
+
+        return $assignment[$attr];
+    }
+
+    /**
+     * Get the primary assignment chapter id
+     *
+     * @deprecated
+     *
+     * @return bool|string
+     */
     public function getPrimaryAssignmentId()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getAssignmentId()
 
         return $this->getAssignmentId('primary');
     }
 
+    /**
+     * Get the secondary assignment chapter id
+     *
+     * @deprecated
+     *
+     * @return bool|string
+     */
     public function getSecondaryAssignmentId()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getAssignmentId()
 
         return $this->getAssignmentId('secondary');
     }
 
+    /**
+     * Get the chapter name of the designated assignment
+     *
+     * @param $position
+     * @return bool|mixed
+     */
     public function getAssignmentName($position)
     {
-        $chapter = Chapter::find($this->getAssignmentId($position));
-        if (empty($chapter) === false) {
-            return $chapter->chapter_name;
-        } else {
-            return false;
-        }
+        return $this->_getChapterAssignmentAttribute($position, 'chapter_name');
     }
 
+    /**
+     * @deprecated
+     *
+     * @return bool|mixed
+     */
     public function getPrimaryAssignmentName()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getAssignmentName()
 
         return $this->getAssignmentName('primary');
     }
 
+    /**
+     * @deprecated
+     *
+     * @return bool|mixed
+     */
     public function getSecondaryAssignmentName()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getAssignmentName()
 
         return $this->getAssignmentName('secondary');
     }
 
+    /**
+     * Get the hull number/designator for the specified assignment
+     *
+     * @param $position
+     * @return bool|mixed
+     */
     public function getAssignmentDesignation($position)
     {
-        // Why didn't I follow DRY for all of these???
-
-        $chapter = Chapter::find($this->getAssignmentId($position));
-        if (empty($chapter) === false) {
-            return $chapter->hull_number;
-        } else {
-            return false;
-        }
+        return $this->_getChapterAssignmentAttribute($position, 'hull_number');
     }
 
+    /**
+     * Get the chapter type for the designated assignment
+     *
+     * @param $position
+     * @return bool|mixed
+     */
     public function getAssignmentType($position)
     {
-        return $this->_getAssignmentAttribute($position, 'chapter_type');
+        return $this->_getChapterAssignmentAttribute($position, 'chapter_type');
     }
 
-    private function _getAssignmentAttribute($position, $attribute)
+    /**
+     * Get the specified attribute of the specified assignment
+     *
+     * @param $position
+     * @param $attribute
+     * @return bool|mixed
+     */
+    private function _getChapterAssignmentAttribute($position, $attribute)
     {
         $chapter = Chapter::find($this->getAssignmentId($position));
         if (empty($chapter) === false) {
@@ -493,86 +657,106 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * @deprecated
+     *
+     * @return bool|mixed
+     */
     public function getPrimaryAssignmentDesignation()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getAssignmentDesignation()
 
         return $this->getAssignmentDesignation('primary');
     }
 
+    /**
+     * @deprecated
+     *
+     * @return bool|mixed
+     */
     public function getSecondaryAssignmentDesignation()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getAssignmentDesignation()
 
         return $this->getAssignmentDesignation('secondary');
     }
 
+    /**
+     * Get the billet for the specified assignment
+     *
+     * @param $position
+     * @return bool|string
+     */
     public function getBillet($position)
     {
-        if (isset($this->assignment) == true) {
-            foreach ($this->assignment as $assignment) {
-                if (empty($assignment[$position]) === false) {
-                    return $assignment['billet'];
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
+        return $this->_getIndividualAssignmentAttribute($position, 'billet');
     }
 
+    /**
+     * @deprecated
+     *
+     * @return bool|mixed
+     */
     public function getPrimaryBillet()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getBillet()
 
         return $this->getBillet('primary');
     }
 
+    /**
+     * @deprecated
+     *
+     * @return bool|mixed
+     */
     public function getSecondaryBillet()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getBillet()
 
         return $this->getBillet('secondary');
     }
 
+    /**
+     * Get the date assigned to the specified assignment
+     *
+     * @param $position
+     * @return bool|string
+     */
     public function getDateAssigned($position)
     {
-        if (isset($this->assignment) == true) {
-            foreach ($this->assignment as $assignment) {
-                if (empty($assignment[$position]) === false) {
-                    if (isset($assignment['date_assigned']) === true) {
-                        return $assignment['date_assigned'];
-                    } else {
-                        return 'Unknown';
-                    }
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
+        return $this->_getIndividualAssignmentAttribute($position, 'date_assigned');
     }
 
+    /**
+     * @deprecated
+     *
+     * @return bool|mixed
+     */
     public function getPrimaryDateAssigned()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getDateAssigned()
 
         return $this->getDateAssigned('primary');
     }
 
+    /**
+     * @deprecated
+     *
+     * @return bool|mixed
+     */
     public function getSecondaryDateAssigned()
     {
         // Maintain backward compatibility
-        // TODO: Refactor all calls to use getDateAssigned()
 
         return $this->getDateAssigned('secondary');
     }
 
+    /**
+     * Get the billet for this user for the specified chapter
+     *
+     * @param $chapterId
+     * @return bool
+     */
     public function getBilletForChapter($chapterId)
     {
         if (isset($this->assignment) == true) {
@@ -587,6 +771,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Get a users time in grade.
+     *
+     * @TODO Refactor to use Carbon
+     *
+     * @param null|bool|string $short
+     * @return int|null|string
+     */
     public function getTimeInGrade($short = null)
     {
         if (empty($this->rank['date_of_rank']) === false) {
@@ -621,7 +813,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
-    // TODO: Refactor this to use Carbon
+    /**
+     * Get Time in Service formated per the options provided
+     *
+     * @param null $options
+     * @return int|null|string
+     */
     public function getTimeInService($options = null)
     {
         $short = false;
@@ -675,6 +872,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Get a list of the users exams, potentially filtered by the provided options
+     *
+     * @param null $options
+     * @return array|mixed
+     */
     public function getExamList($options = null)
     {
         if (is_null($options) === false) {
@@ -800,6 +1003,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Get the highest exam from the list of exams provided
+     *
+     * @param array $list
+     * @return array
+     */
     private function getHighestExamFromList(array $list)
     {
         if (count($list) < 1) {
@@ -839,6 +1048,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $list;
     }
 
+    /**
+     * Get the highest main line exam for the users branch.
+     *
+     * @param null|string $class
+     * @return int|null|string
+     */
     public function getHighestMainLineExamForBranch($class = null)
     {
         $options['pattern'] = '/^.*-' . $this->branch . '-.*/';
@@ -863,7 +1078,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     /**
      * Retrieve the highest level Enlisted exam a user has taken
      *
-     * @return String $exam
+     * @return array $exam
      */
     public function getHighestEnlistedExam()
     {
@@ -874,6 +1089,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $results;
     }
 
+    /**
+     * Get the highest Warrant Officer exam a user has taken
+     *
+     * @return array
+     */
     public function getHighestWarrantExam()
     {
         $exams = $this->getExamList(['class' => 'warrant']);
@@ -883,6 +1103,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $results;
     }
 
+    /**
+     * Get the highest Officer exam a user has taken
+     *
+     * @return array
+     */
     public function getHighestOfficerExam()
     {
         $exams = $this->getExamList(['class' => 'officer+flag']);
@@ -892,6 +1117,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $results;
     }
 
+    /**
+     * Get the highest Flag Officer exam a user has taken
+     *
+     * @return array
+     */
     public function getHighestFlagExam()
     {
         $exams = $this->getExamList(['class' => 'flag']);
@@ -901,6 +1131,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $results;
     }
 
+    /**
+     * Get the higest enlisted, warrant officer and officer (including flag) exams taken by a member
+     *
+     * @return array
+     */
     public function getHighestExams()
     {
         $classes = ['enlisted', 'warrant', 'officer+flag'];
@@ -916,6 +1151,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $results;
     }
 
+    /**
+     * Get exams completed after the specified date
+     *
+     * @param $after
+     * @return string
+     */
     public function getCompletedExams($after)
     {
         $exams = $this->getExamList(['after' => $after]);
@@ -932,6 +1173,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return implode(', ', array_keys($list));
     }
 
+    /**
+     * Get the date of the last update for exams
+     *
+     * @return bool|mixed
+     */
     public function getExamLastUpdated()
     {
         $exams = Exam::where('member_id', '=', $this->member_id)->first();
@@ -943,6 +1189,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Does the user have new exams
+     *
+     * @param string|null $regex
+     * @return bool
+     */
     public function hasNewExams($regex = null)
     {
         $options['since'] = Auth::user()->getLastLogin();
@@ -958,6 +1210,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return false;
     }
 
+    /**
+     * Give a user the standard set of CO permissions
+     *
+     * @return bool
+     */
     public function assignCoPerms()
     {
         $this->updatePerms(
@@ -975,6 +1232,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return true;
     }
 
+    /**
+     * Give a user all permissions
+     *
+     * @return bool
+     */
     public function assignAllPerms()
     {
         $this->updatePerms(['ALL_PERMS']);
@@ -982,6 +1244,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return true;
     }
 
+    /**
+     * Give a user perms used by BuShip
+     *
+     * @return bool
+     */
     public function assignBuShipPerms()
     {
         $this->updatePerms(
@@ -997,6 +1264,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return true;
     }
 
+    /**
+     * Give a user the perms used by BuPers
+     *
+     * @return bool
+     */
     public function assignBuPersPerms()
     {
         $this->updatePerms(
@@ -1016,6 +1288,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return true;
     }
 
+    /**
+     * Give a user Space Lord perms
+     *
+     * @return bool
+     */
     public function assignSpaceLordPerms()
     {
         $this->assignCoPerms();
@@ -1024,6 +1301,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return true;
     }
 
+    /**
+     * Update a users permissions
+     *
+     * @TODO Refactor to use a try / catch
+     *
+     * @param array $perms
+     * @return bool
+     */
     public function updatePerms(array $perms)
     {
         $this->permissions =
@@ -1053,6 +1338,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return true;
     }
 
+    /**
+     * Delete a permissions from a user
+     *
+     * @TODO Refactor to use try / catch
+     *
+     * @param $perm
+     * @return bool
+     */
     public function deletePerm($perm)
     {
         $this->permissions = array_where(
@@ -1085,6 +1378,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return true;
     }
 
+    /**
+     * Delete a peerage from a users record
+     *
+     * @param $peerageId
+     * @return bool
+     */
     public function deletePeerage($peerageId)
     {
         $peerages = array_where(
@@ -1115,6 +1414,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return true;
     }
 
+    /**
+     * Build the ID card png
+     *
+     * @param bool $showFullGrade
+     * @return \Intervention\Image\Image
+     */
     public function buildIdCard($showFullGrade = false)
     {
         $idCard =
@@ -1307,6 +1612,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $idCard;
     }
 
+    /**
+     * Try and standardize and normalize State and Province
+     *
+     * @param $state
+     * @return string
+     */
     static function normalizeStateProvince($state)
     {
         if (strlen($state) == 2) {
@@ -1356,6 +1667,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $state;
     }
 
+    /**
+     * Determine the next highest member id
+     *
+     * @TODO Refactor
+     *
+     * @return string
+     */
     static function getNextAvailableMemberId()
     {
         $uniqueMemberIds = self::_getMemberIds();
@@ -1381,6 +1699,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return "-$newNumber-$yearCode";
     }
 
+    /**
+     * Find the lowest unused member id
+     *
+     * @TODO Refactor
+     *
+     * @param bool $honorary
+     * @return string
+     */
     static function getFirstAvailableMemberId($honorary = false)
     {
         $uniqueMemberIds = self::_getMemberIds();
@@ -1408,6 +1734,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return self::getNextAvailableMemberId();
     }
 
+    /**
+     * Return all member id's
+     *
+     * @TODO Refactor
+     *
+     * @return array
+     */
     static function _getMemberIds()
     {
         $memberIds = self::all(['member_id']);
@@ -1420,21 +1753,39 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $uniqueMemberIds;
     }
 
+    /**
+     * Get email address for reminder emails
+     *
+     * @return mixed
+     */
     public function getReminderEmail()
     {
         return $this->email_address;
     }
 
+    /**
+     * Get field to use for authetication
+     *
+     * @return mixed
+     */
     public function getAuthIdentifier()
     {
         return $this->id;
     }
 
+    /**
+     * Get password for user, used by auth routines
+     *
+     * @return mixed
+     */
     public function getAuthPassword()
     {
         return $this->password;
     }
 
+    /**
+     * Update a users last login
+     */
     public function updateLastLogin()
     {
         $this->previous_login = $this->last_login;
@@ -1442,6 +1793,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $this->save();
     }
 
+    /**
+     * Get last login date
+     *
+     * @return false|string
+     */
     public function getLastLogin()
     {
         if (empty($this->previous_login) === true) {
@@ -1450,6 +1806,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return date('Y-m-d', strtotime($this->previous_login));
     }
 
+    /**
+     * Get the date the users record was last updated
+     *
+     * @return int
+     */
     public function getLastUpdated()
     {
         if (empty($this->lastUpdate) == true) {
@@ -1459,12 +1820,20 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $this->lastUpdate;
     }
 
+    /**
+     * Update the last updated field
+     */
     public function updateLastUpdated()
     {
         $this->lastUpdate = time();
         $this->save();
     }
 
+    /**
+     * Check all rosters that a user has access to for new exams
+     *
+     * @return bool
+     */
     public function checkRostersForNewExams()
     {
         if ($this->id != Auth::user()->id || empty($this->duty_roster) === true) {
@@ -1484,6 +1853,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $newExams;
     }
 
+    /**
+     * Get events that the user is a requestor or registrar
+     *
+     * @param null $continent
+     * @param null $city
+     * @return array
+     */
     public function getScheduledEvents($continent = null, $city = null)
     {
         $currentTz = $this->setTimeZone($continent, $city);
@@ -1503,6 +1879,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $events->toArray();
     }
 
+    /**
+     * Check a member in to an event
+     *
+     * @param $event
+     * @param $member
+     * @param null $continent
+     * @param null $city
+     * @return array
+     */
     public function checkMemberIn(
         $event,
         $member,
@@ -1588,6 +1973,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * Set the timezone
+     *
+     * @param null $continent
+     * @param null $city
+     * @return null|string
+     */
     private function setTimeZone($continent = null, $city = null)
     {
         if (is_null($continent) === false) {
@@ -1604,11 +1996,21 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return null;
     }
 
+    /**
+     * Find a members record by their member_id
+     *
+     * @param $memberId
+     * @return User
+     */
     public static function getUserByMemberId($memberId)
     {
         return self::where('member_id', '=', $memberId)->firstOrFail();
     }
 
+    /**
+     * Get the members current awards, account for awards due to issued in the future
+     * @return array
+     */
     public function getCurrentAwards()
     {
         $awards = [];
@@ -1635,6 +2037,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $awards;
     }
 
+    /**
+     * Get the ribbons for a specific location
+     *
+     * @param string $location
+     * @return array
+     */
     public function getRibbons($location = 'L')
     {
         $tmp = [];
@@ -1682,6 +2090,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $awards;
     }
 
+    /**
+     * Does the member have awards?
+     *
+     * @return bool
+     */
     public function hasAwards()
     {
         if (count($this->awards) > 0) {
@@ -1691,6 +2104,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return false;
     }
 
+    /**
+     * Get patch to shoulder patch for the specified assignment
+     *
+     * @param string $assignment
+     * @return bool|string
+     */
     public function getUnitPatchPath($assignment = 'primary')
     {
 
@@ -1749,16 +2168,36 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return false;
     }
 
+    /**
+     * Oauth find user
+     *
+     * @param $username
+     * @return User
+     */
     public function findForPassport($username)
     {
         return self::where('email_address', '=', str_replace(' ', '+', strtolower($username)))->first();
     }
 
+    /**
+     * Check if a user has a specific award
+     *
+     * @param string $awardAbbr
+     * @return bool
+     */
     public function hasAward(string $awardAbbr)
     {
         return isset($this->awards[$awardAbbr]);
     }
 
+    /**
+     * Add or update an award
+     *
+     * @TODO Add audit trail
+     *
+     * @param array $award
+     * @return bool
+     */
     public function addUpdateAward(array $award)
     {
         foreach ($award as $awardCode => $awardInfo) {
@@ -1772,8 +2211,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->awards = $awards;
             return $this->save();
         }
+
+        return false;
     }
 
+    /**
+     * Get promotion points earned from awards
+     *
+     * @return int
+     */
     public function getPointsFromAwards()
     {
         $points = 0;
@@ -1802,6 +2248,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $points;
     }
 
+    /**
+     * Get promotion points from Time in Service
+     *
+     * @return int
+     */
     public function getPointsFromTimeInService()
     {
         $today = Carbon::today('America/New_York');
@@ -1811,6 +2262,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return intval($today->diffInMonths($join) / 3);
     }
 
+    /**
+     * Get promotion points from Exams
+     *
+     * @return int|string
+     */
     public function getPointsFromExams()
     {
         $numCompletedExams = count($this->getExamList());
@@ -1837,6 +2293,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $pointsEarned;
     }
 
+    /**
+     * Get total promotion points for a user
+     *
+     * @return int
+     */
     public function getTotalPromotionPoints()
     {
         $points = 0;
@@ -1878,6 +2339,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $points;
     }
 
+    /**
+     * Get Overall GPA or for a specific school
+     *
+     * @param string $pattern
+     * @return string|int
+     */
     public function getGPA($pattern = '/.*/')
     {
         $exams = $this->getExamList(['pattern' => $pattern]);
@@ -1899,6 +2366,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $numExams !== 0 ? number_format($sum / $numExams, 2) : 'N/A';
     }
 
+    /**
+     * Get GPA for all the Schools
+     *
+     * @param $service
+     * @return array
+     */
     public function getGpaBySchool($service)
     {
         $servicePatterns = MedusaConfig::get('gpa.patterns', [], 'services');
@@ -1918,12 +2391,23 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $results;
     }
 
+    /**
+     * Get the members service path
+     *
+     * @return string
+     */
     public function getPath()
     {
         return empty($this->path) === true ? 'service' : $this->path;
     }
 
-    private function _getPromotableInfo()
+    /**
+     * Get promotion qualifications
+     *
+     * @param null|string $payGrade2Check
+     * @return array
+     */
+    public function getPromotableInfo($payGrade2Check = null)
     {
         $flags = [
             'tig' => false,
@@ -1945,7 +2429,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $special = $this->_specialPromotionCheck(['WO-1', 'O-1']);
                 if (count($special) > 0) {
                     $flags['next'] = $special;
-                    $flags['exams']=$flags['points']=$flags['tig'] = true;
+                    $flags['exams'] = $flags['points'] = $flags['tig'] = true;
                 }
                 break;
             case 'C-4':
@@ -1959,14 +2443,17 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $special = $this->_specialPromotionCheck(['C-12']);
                 if (count($special) > 0) {
                     $flags['next'] = $special;
-                    $flags['exams']=$flags['points']=$flags['tig'] = true;
+                    $flags['exams'] = $flags['points'] = $flags['tig'] = true;
                 }
                 break;
         }
 
-        if (empty($this->_nextGrade[$this->rank['grade']]) === false) {
+        if (is_null($payGrade2Check) === true && empty($this->_nextGrade[$this->rank['grade']]) === false) {
+            $payGrade2Check = $this->_nextGrade[$this->rank['grade']]['next'][0];
+        }
 
-            $requirements = $this->_promotionRequirements[$this->_nextGrade[$this->rank['grade']]['next'][0]];
+        if (empty($payGrade2Check) === false) {
+            $requirements = $this->_promotionRequirements[$payGrade2Check];
 
             $path = $this->getPath();
 
@@ -1977,11 +2464,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             if (in_array($this->rank['grade'], ['E-1', 'E-2', 'C-1', 'C-2']) === false &&
                 empty($this->rank['early']) === true &&
                 $flags['tig'] === false) {
-                $flags['tig'] = $flags['early'] = ($this->getTimeInGrade('months') >= ($requirements['tig'] - 3));
+                $flags['early'] = ($this->getTimeInGrade('months') >= ($requirements['tig'] - 3));
             }
 
             // If they have TiG, check other requirements.  No requirements for a members path == not eligible
-            if ($flags['tig'] === true && empty($requirements[$path]) === false) {
+            if (($flags['tig'] === true || $flags['early'] === true) && empty($requirements[$path]) === false) {
                 $flags['points'] = ($this->getTotalPromotionPoints() >= $requirements[$path]['points']);
 
                 // Check exams
@@ -2006,6 +2493,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $flags;
     }
 
+    /**
+     * Check eligibility for meritorious promotions
+     *
+     * @param array $grades
+     * @return array
+     */
     private function _specialPromotionCheck(array $grades)
     {
         $path = $this->getPath();
@@ -2024,6 +2517,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $ret;
     }
 
+    /**
+     * Check if the user has the required exam for the specified exam pattern
+     *
+     * @param array $exams
+     * @return bool
+     */
     private function _hasRequiredExams(array $exams)
     {
         $flag = false;
@@ -2034,6 +2533,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return $flag;
     }
 
+    /**
+     * Check if a SFS cadet is promotable based on age
+     *
+     * @return array|null
+     */
     private function _sfsIsPromotable()
     {
         $age = Carbon::now()->diffInYears(Carbon::parse($this->dob));
@@ -2056,32 +2560,162 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return null;
     }
 
-    public function isPromotableEarly()
+    /**
+     * Can this member be promoted early?
+     *
+     * @param null|string $payGrade2Check
+     * @return array|null
+     */
+    public function isPromotableEarly($payGrade2Check = null)
     {
         switch ($this->branch) {
             case 'SFS':
                 return $this->_sfsIsPromotable();
                 break;
             default:
-                $flags = $this->_getPromotableInfo();
-                return ($flags['tig'] && $flags['points'] && $flags['exams'] && $flags['early']) === true ? $flags['next'] : null;
+                $flags = $this->getPromotableInfo($payGrade2Check);
+                return ($flags['points'] && $flags['exams'] && $flags['early']) === true ? $flags['next'] : null;
         }
     }
 
-    public function isPromotable($tigCheck = true)
+    /**
+     * Can this member be promoted?
+     *
+     * @param bool $tigCheck
+     * @param null $payGrade2Check
+     * @return array|null
+     */
+    public function isPromotable($tigCheck = true, $payGrade2Check = null)
     {
         switch ($this->branch) {
             case 'SFS':
                 return $this->_sfsIsPromotable();
                 break;
             default:
-                $flags = $this->_getPromotableInfo();
+                $flags = $this->getPromotableInfo($payGrade2Check);
 
                 if ($tigCheck === true) {
                     return ($flags['tig'] && $flags['points'] && $flags['exams']) === true ? $flags['next'] : null;
                 } else {
                     return ($flags['points'] && $flags['exams']) === true ? $flags['next'] : null;
                 }
+        }
+    }
+
+    /**
+     * Add an entry to the users service history
+     *
+     * @param array $entry
+     * @return bool
+     */
+    public function addServiceHistoryEntry(array $entry)
+    {
+        // Check for proper format
+        if (empty($entry['timestamp']) === true || empty($entry['event']) === true) {
+            return false;
+        }
+
+        $history = $this->history;
+
+        // Add the entry
+
+        $history[] = $entry;
+
+        if (empty($history) === false) {
+            $history = array_values(array_sort($history, function ($value) {
+                return $value['timestamp'];
+            }));
+        }
+
+        $this->history = $history;
+
+        try {
+            $this->save();
+
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$this->_id,
+                json_encode($this),
+                'User@addServiceHistoryEntry'
+            );
+
+            return true;
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function promoteMember($rank, $early = false)
+    {
+        // Check for valid rank
+        $parsedRank = explode('-', $rank);
+
+        if (in_array($parsedRank[0], ['E', 'WO', 'C', 'O', 'F']) === false || is_numeric($parsedRank[1]) === false) {
+            // Not a valid rank
+            return false;
+        }
+
+        // Special check for RMN
+
+        if (empty($parsedRank[2]) === false && in_array($parsedRank[2], ['A', 'B']) === false) {
+            // Not a valid RMN rank
+            return false;
+        }
+
+
+        $rank = [
+            'grade' => $rank,
+            'date_of_rank' => date('Y-m-d')
+        ];
+
+        if ($early === true) {
+            $rank['early'] = $rank['date_of_rank'];
+            // Get TiG requirement of new grade
+            $requirements = Grade::getRequirements($rank['grade']);
+
+            // Calculate how many months early the promotion is and update the number of points
+            $points = $this->points;
+
+            if (empty($points['ep']) === true) {
+                $points['ep'] = 0;
+            }
+            $points['ep'] -= $requirements['tig'] - $this->getTimeInGrade('months');
+            $this->points = $points;
+        }
+
+        $event = 'Rank changed from ' . Grade::getRankTitle($this->rank['grade'], $this->getRate(),
+                $this->branch) . ' (' . $this->rank['grade'] . ') to ';
+
+        $this->rank = $rank;
+
+        try {
+
+            $this->save();
+
+            $this->writeAuditTrail(
+                (string)Auth::user()->_id,
+                'update',
+                'users',
+                (string)$this->_id,
+                json_encode($this),
+                'User@promoteMember'
+            );
+
+            $history = [
+                'timestamp' => time(),
+                'event' => $event . Grade::getRankTitle($rank['grade'], $this->getRate(),
+                        $this->branch) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
+            ];
+
+            $this->addServiceHistoryEntry($history);
+
+            return true;
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
     }
 }
