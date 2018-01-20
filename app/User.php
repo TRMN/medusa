@@ -8,6 +8,7 @@ use DateTime;
 use Exception;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Enums\MedusaDefaults;
@@ -25,56 +26,111 @@ use App\Permissions\MedusaPermissions;
  * MEDUSA User model
  *
  * @property string id
- *
- * Class User
+ * @property string forum_last_login
+ * @property string first_name
+ * @property string middle_name
+ * @property string last_name
+ * @property string suffix
+ * @property string address1
+ * @property string address2
+ * @property string city
+ * @property string state_province
+ * @property string postal_code
+ * @property string country
+ * @property string phone_number
+ * @property string email_address
+ * @property string branch
+ * @property array|string rating
+ * @property array rank
+ * @property array assignment
+ * @property array peerages
+ * @property array awards
+ * @property string password
+ * @property array permissions
+ * @property string duty_roster
+ * @property string registration_status
+ * @property string application_date
+ * @property string registration_date
+ * @property string active
+ * @property string dob
+ * @property string osa
+ * @property string idcard_printed
+ * @property string note
+ * @property string last_login
+ * @property string previous_login
+ * @property string lastUpdate
+ * @property string hasEvents
+ * @property string unitPatchPath
+ * @property string usePeerageLands
+ * @property string extraPadding
+ * @property string last_forum_login
+ * @property array points
+ * @property string path
+ * @property array history
+ * @property string rank_title
+ * @property string memberid
+ * @property object updated_at
+ *¬
  * @package App
+ *
  */
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
 
-    use Notifiable, MedusaAudit, MedusaPermissions, Authenticatable, HasApiTokens, CanResetPassword, AwardQualification;
+    use Notifiable,
+        MedusaAudit,
+        MedusaPermissions,
+        Authenticatable,
+        HasApiTokens,
+        CanResetPassword,
+        AwardQualification;
 
     public static $rules = [
-        'first_name' => 'required|min:2',
-        'last_name' => 'required|min:2',
-        'address1' => 'required|min:4',
-        'city' => 'required|min:2',
-        'state_province' => 'required|min:2',
-        'postal_code' => 'required|min:2',
-        'country' => 'required',
-        'email_address' => 'required|email|unique:users',
-        'password' => 'confirmed',
-        'branch' => 'required',
+        'first_name'         => 'required|min:2',
+        'last_name'          => 'required|min:2',
+        'address1'           => 'required|min:4',
+        'city'               => 'required|min:2',
+        'state_province'     => 'required|min:2',
+        'postal_code'        => 'required|min:2',
+        'country'            => 'required',
+        'email_address'      => 'required|email|unique:users',
+        'password'           => 'confirmed',
+        'branch'             => 'required',
         'primary_assignment' => 'required',
-        'phone_number' => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
+        'phone_number'       => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
     ];
 
     public static $updateRules = [
-        'first_name' => 'required|min:2',
-        'last_name' => 'required|min:2',
-        'address1' => 'required|min:4',
-        'city' => 'required|min:2',
+        'first_name'     => 'required|min:2',
+        'last_name'      => 'required|min:2',
+        'address1'       => 'required|min:4',
+        'city'           => 'required|min:2',
         'state_province' => 'required|min:2',
-        'postal_code' => 'required|min:2',
-        'country' => 'required',
-        'email_address' => 'required|email',
-        'password' => 'confirmed',
-        'branch' => 'required',
-        'phone_number' => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
+        'postal_code'    => 'required|min:2',
+        'country'        => 'required',
+        'email_address'  => 'required|email',
+        'password'       => 'confirmed',
+        'branch'         => 'required',
+        'phone_number'   => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
     ];
 
     public static $error_message = [
-        'min' => 'The members :attribute must be at least :min characters long',
-        'address1.required' => 'Please enter the members street address',
-        'address1.min' => 'The street address must be at least :size characters long',
-        'required' => 'Please enter the members :attribute',
-        'state_province.required' => 'Please enter the members state or province',
-        'state_province.min' => 'The members state or province must be at least :size character long',
-        'date_format' => 'Please enter a date in the format YYYY-MM-DD',
-        'branch.required' => "Please select the members branch",
-        'email_address.unique' => 'That email address is already in use',
+        'min'                         =>
+            'The members :attribute must be at least :min characters long',
+        'address1.required'           => 'Please enter the members street address',
+        'address1.min'                =>
+            'The street address must be at least :size characters long',
+        'required'                    => 'Please enter the members :attribute',
+        'state_province.required'     =>
+            'Please enter the members state or province',
+        'state_province.min'          =>
+            'The members state or province must be at least :size character long',
+        'date_format'                 =>
+            'Please enter a date in the format YYYY-MM-DD',
+        'branch.required'             => "Please select the members branch",
+        'email_address.unique'        => 'That email address is already in use',
         'primary_assignment.required' => 'Please select a chapter',
-        'phone_number' => 'Please enter a valid telephone number',
+        'phone_number'                => 'Please enter a valid telephone number',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -122,22 +178,23 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'history',
     ];
 
-    private $_promotionRequirements;
+    private $promotionRequirements;
 
-    private $_nextGrade;
+    private $nextGrade;
 
     /**
      * User constructor.
      *
-     * @param array $attributes
+     * @param array $attributes Additional attributes to use when instantiating
+     * the model
      */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
-        $this->_promotionRequirements = MedusaConfig::get('pp.requirements');
+        $this->promotionRequirements = MedusaConfig::get('pp.requirements');
 
-        $this->_nextGrade = MedusaConfig::get('pp.nextGrade');
+        $this->nextGrade = MedusaConfig::get('pp.nextGrade');
     }
 
     /**
@@ -174,26 +231,30 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     /**
      * Get the users full name
      *
-     * @param bool $lastFirst Return name is Last, First Middle instead of First Middle Last
+     * @param bool $lastFirst Return name is Last, First Middle instead of
+     *                        First Middle Last
+     *
      * @return string
      */
     public function getFullName($lastFirst = false)
     {
         if ($lastFirst === true) {
             return trim(
-                ucfirst($this->last_name) . (empty($this->suffix) ? '' : $this->suffix) . ', ' .
+                ucfirst($this->last_name) .
+                (empty($this->suffix) ? '' : $this->suffix) . ', ' .
                 ucfirst($this->first_name) . ' ' .
-                (empty($this->middle_name) ? '' : ucfirst($this->middle_name) . ' ')
+                (empty($this->middle_name) ? '' :
+                    ucfirst($this->middle_name) . ' ')
             );
         } else {
             return trim(
                 ucfirst($this->first_name) . ' ' .
-                (empty($this->middle_name) ? '' : ucfirst($this->middle_name) . ' ') .
+                (empty($this->middle_name) ? '' :
+                    ucfirst($this->middle_name) . ' ') .
                 ucfirst($this->last_name) . ' ' .
                 (empty($this->suffix) ? '' : $this->suffix)
             );
         }
-
     }
 
     /**
@@ -228,8 +289,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $greeting['rank'] = $this->getGreeting();
         // To be used when viewing an announcement not published by the current user
         $greeting['last_name'] = $this->last_name;
-        //To link to the user who published an announcement
-        $greeting['user_id'] = $this->user_id;
 
         return $greeting;
     }
@@ -237,13 +296,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     /**
      * Dynamically set the rank title
      *
-     * @TODO The function name really be changed, as this is a dynamic setter, not a getter
+     * @TODO The function name really be changed, as this is a dynamic setter,
+     *     not a getter
      *
+     * @return bool
      */
     public function getDisplayRank()
     {
-        $gradeDetails =
-            Grade::where('grade', '=', $this->rank['grade'])->first();
+        $gradeDetails = Grade::where('grade', '=', $this->rank['grade'])->first();
 
         if (empty($this->branch) === true) {
             $this->branch = 'RMN';
@@ -257,11 +317,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         if (!empty($this->rating)) {
             if (is_array($this->rating) === true) {
-                $results =
-                    Rating::where('rate_code', '=', $this->rating['rate'])->first();
+                $results = Rating::where('rate_code', '=', $this->rating['rate'])
+                                 ->first();
             } else {
-                $results =
-                    Rating::where('rate_code', '=', $this->rating)->first();
+                $results = Rating::where('rate_code', '=', $this->rating)->first();
             }
 
             if (is_array($this->rating) === true) {
@@ -270,12 +329,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $currentRating = $this->rating;
             }
 
-            $this->rating =
-                [
-                    'rate' => $currentRating,
-                    'description' => $results->rate['description'],
-                ];
+            $this->rating = [
+                'rate'        => $currentRating,
+                'description' => $results->rate['description'],
+            ];
         }
+
+        return true;
     }
 
     /**
@@ -294,7 +354,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
 
         return null;
-
     }
 
     /**
@@ -310,7 +369,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $rateDetail =
                 Rating::where('rate_code', '=', $this->rating['rate'])->first();
         } else {
-            $rateDetail = Rating::where('rate_code', '=', $this->rating)->first();
+            $rateDetail =
+                Rating::where('rate_code', '=', $this->rating)->first();
         }
 
         if (empty($rateDetail->rate[$this->branch][$rank]) === false) {
@@ -369,6 +429,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             return ', ' . implode(', ', $postnominals);
         }
+        return null;
     }
 
     /**
@@ -381,7 +442,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $postnominals = [];
 
         foreach ($this->peerages as $peerage) {
-            if (empty($peerage['courtesy']) === true && empty($peerage['postnominal']) === false) {
+            if (empty($peerage['courtesy']) === true &&
+                empty($peerage['postnominal']) === false) {
                 $postnominals[$peerage['precedence']] =
                     $peerage['postnominal']; // Order them by precedence
             }
@@ -392,12 +454,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             return ', ' . implode(', ', $postnominals);
         }
+        
+        return null;
     }
 
     /**
      * Get a users peerages
      *
      * @param bool $detail
+     *
      * @return array
      */
     public function getPeerages($detail = false)
@@ -436,14 +501,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $peerages = $this->getPeerages(true);
 
-        $land = empty($peerages['landed']) ? null : array_shift($peerages['landed']);
+        $land =
+            empty($peerages['landed']) ? null : array_shift($peerages['landed']);
 
         return isset($land['lands']) ? $land['lands'] : null;
     }
 
     /**
-     * Get the chapter ID of the ship to which a member is assigned, regardless of
-     * whether that's the primary, secondary, or some tertiary assignment.
+     * Get the chapter ID of the ship to which a member is assigned, regardless
+     * of whether that's the primary, secondary, or some tertiary assignment.
      *
      * @return bool|string
      */
@@ -484,7 +550,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $fleet = Chapter::find($this->getAssignedShip())->getAssignedFleet(true);
 
-        if (is_null($fleet) === false && Chapter::find($fleet)->getCO()['_id'] == $this->id) {
+        if (is_null($fleet) === false &&
+            Chapter::find($fleet)->getCO()['id'] == $this->id) {
             return true;
         }
 
@@ -500,7 +567,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $assignedShip = $this->getAssignedShip();
 
-        if (Chapter::find($assignedShip)->getCO()['_id'] == $this->id) {
+        if (Chapter::find($assignedShip)->getCO()['id'] == $this->id) {
             return true;
         }
 
@@ -511,17 +578,19 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the chapter ID of the specified assignment
      *
      * @param $position
+     *
      * @return bool|string
      */
     public function getAssignmentId($position)
     {
-        return $this->_getIndividualAssignmentAttribute($position, 'chapter_id');
+        return $this->getIndividualAssignmentAttribute($position, 'chapter_id');
     }
 
     /**
      * Get the full information on the specified assignment
      *
      * @param $position
+     *
      * @return bool
      */
     public function getFullAssignmentInfo($position)
@@ -539,13 +608,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Return the specified attribute for the specified assignment or false if it's not set
+     * Return the specified attribute for the specified assignment or false if
+     * it's not set
      *
      * @param $position
      * @param $attr
+     *
      * @return bool|string
      */
-    private function _getIndividualAssignmentAttribute($position, $attr)
+    private function getIndividualAssignmentAttribute($position, $attr)
     {
         $assignment = $this->getFullAssignmentInfo($position);
         if (empty($assignment[$attr]) === true) {
@@ -587,11 +658,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the chapter name of the designated assignment
      *
      * @param $position
+     *
      * @return bool|mixed
      */
     public function getAssignmentName($position)
     {
-        return $this->_getChapterAssignmentAttribute($position, 'chapter_name');
+        return $this->getChapterAssignmentAttribute($position, 'chapter_name');
     }
 
     /**
@@ -622,22 +694,24 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the hull number/designator for the specified assignment
      *
      * @param $position
+     *
      * @return bool|mixed
      */
     public function getAssignmentDesignation($position)
     {
-        return $this->_getChapterAssignmentAttribute($position, 'hull_number');
+        return $this->getChapterAssignmentAttribute($position, 'hull_number');
     }
 
     /**
      * Get the chapter type for the designated assignment
      *
      * @param $position
+     *
      * @return bool|mixed
      */
     public function getAssignmentType($position)
     {
-        return $this->_getChapterAssignmentAttribute($position, 'chapter_type');
+        return $this->getChapterAssignmentAttribute($position, 'chapter_type');
     }
 
     /**
@@ -645,9 +719,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @param $position
      * @param $attribute
+     *
      * @return bool|mixed
      */
-    private function _getChapterAssignmentAttribute($position, $attribute)
+    private function getChapterAssignmentAttribute($position, $attribute)
     {
         $chapter = Chapter::find($this->getAssignmentId($position));
         if (empty($chapter) === false) {
@@ -685,11 +760,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the billet for the specified assignment
      *
      * @param $position
+     *
      * @return bool|string
      */
     public function getBillet($position)
     {
-        return $this->_getIndividualAssignmentAttribute($position, 'billet');
+        return $this->getIndividualAssignmentAttribute($position, 'billet');
     }
 
     /**
@@ -720,11 +796,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the date assigned to the specified assignment
      *
      * @param $position
+     *
      * @return bool|string
      */
     public function getDateAssigned($position)
     {
-        return $this->_getIndividualAssignmentAttribute($position, 'date_assigned');
+        return $this->getIndividualAssignmentAttribute(
+            $position,
+            'date_assigned'
+        );
     }
 
     /**
@@ -755,6 +835,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the billet for this user for the specified chapter
      *
      * @param $chapterId
+     *
      * @return bool
      */
     public function getBilletForChapter($chapterId)
@@ -777,13 +858,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * @TODO Refactor to use Carbon
      *
      * @param null|bool|string $short
+     *
      * @return int|null|string
      */
     public function getTimeInGrade($short = null)
     {
         if (empty($this->rank['date_of_rank']) === false) {
             $dorObj = new DateTime();
-            list($year, $month, $day) =
+            list(
+                $year, $month, $day) =
                 explode('-', $this->rank['date_of_rank']);
             $dorObj->setDate($year, $month, $day);
 
@@ -801,7 +884,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     }
                 }
                 if ($short === true) {
-                    return $years < 1 ? $months . ' Mo' : $years . ' Yr ' . $months . ' Mo';
+                    return $years < 1 ? $months . ' Mo' :
+                        $years . ' Yr ' . $months . ' Mo';
                 } elseif ($short === 'months') {
                     return ($years * 12) + $months;
                 }
@@ -811,12 +895,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         } else {
             return null;
         }
+        return null;
     }
 
     /**
      * Get Time in Service formated per the options provided
      *
      * @param null $options
+     *
      * @return int|null|string
      */
     public function getTimeInService($options = null)
@@ -873,13 +959,17 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Get a list of the users exams, potentially filtered by the provided options
+     * Get a list of the users exams, potentially filtered by the provided
+     * options
      *
      * @param null $options
+     *
      * @return array|mixed
      */
     public function getExamList($options = null)
     {
+        $after = $since = $class = null;
+
         if (is_null($options) === false) {
             if (is_array($options) === false) {
                 $pattern = $options; // backwards compatibility
@@ -912,7 +1002,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $pattern = null;
         }
 
-        $exams = Exam::where('member_id', '=', $this->member_id)->first();
+        $exams = Exam::where('memberid', '=', $this->memberid)->first();
 
         if (empty($exams) === false) {
             if (is_null($pattern) === true) {
@@ -927,13 +1017,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $list = array_where(
                     $list,
                     function ($value, $key) use ($after) {
-                        if (strtotime($value['date']) >= $after && strtotime($value['date']) < strtotime(
+                        if (strtotime($value['date']) >= $after &&
+                            strtotime($value['date']) < strtotime(
                                 '+2 month',
                                 $after
                             )
                         ) {
                             return true;
                         }
+                        return false;
                     }
                 );
             }
@@ -950,6 +1042,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         if (strtotime($value['date_entered']) >= $since) {
                             return true;
                         }
+                        return false;
                     }
                 );
             }
@@ -1007,6 +1100,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the highest exam from the list of exams provided
      *
      * @param array $list
+     *
      * @return array
      */
     private function getHighestExamFromList(array $list)
@@ -1043,6 +1137,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 if (preg_match($search, $key) === 1) {
                     return true;
                 }
+                return false;
             }
         );
         return $list;
@@ -1052,6 +1147,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the highest main line exam for the users branch.
      *
      * @param null|string $class
+     *
      * @return int|null|string
      */
     public function getHighestMainLineExamForBranch($class = null)
@@ -1132,7 +1228,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Get the higest enlisted, warrant officer and officer (including flag) exams taken by a member
+     * Get the higest enlisted, warrant officer and officer (including flag)
+     * exams taken by a member
      *
      * @return array
      */
@@ -1143,7 +1240,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $results = [];
 
         foreach ($classes as $class) {
-            foreach ($this->getHighestExamFromList($this->getExamList(['class' => $class])) as $exam => $examData) {
+            foreach ($this->getHighestExamFromList(
+                $this->getExamList(['class' => $class])
+            ) as $exam => $examData) {
                 $results[ucfirst(substr($class, 0, 1))] = $exam;
             }
         }
@@ -1155,6 +1254,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get exams completed after the specified date
      *
      * @param $after
+     *
      * @return string
      */
     public function getCompletedExams($after)
@@ -1164,9 +1264,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $list = array_where(
             $exams,
             function ($value, $key) use ($after) {
-                if (intval($value['score']) > 70 || strtoupper($value['score'] == 'PASS')) {
+                if (intval($value['score']) > 70 ||
+                    strtoupper($value['score'] == 'PASS')) {
                     return $value;
                 }
+                return false;
             }
         );
 
@@ -1180,7 +1282,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getExamLastUpdated()
     {
-        $exams = Exam::where('member_id', '=', $this->member_id)->first();
+        $exams = Exam::where('memberid', '=', $this->memberid)->first();
 
         if (isset($exams) === true) {
             return $exams['updated_at'];
@@ -1193,6 +1295,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Does the user have new exams
      *
      * @param string|null $regex
+     *
      * @return bool
      */
     public function hasNewExams($regex = null)
@@ -1307,6 +1410,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * @TODO Refactor to use a try / catch
      *
      * @param array $perms
+     *
      * @return bool
      */
     public function updatePerms(array $perms)
@@ -1317,7 +1421,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if (is_null(Auth::user())) {
             $user = 'system user';
         } else {
-            $user = (string)Auth::user()->_id;
+            $user = (string)Auth::user()->id;
         }
 
         $this->osa = false;
@@ -1328,7 +1432,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $user,
             'update',
             'users',
-            (string)$this->_id,
+            (string)$this->id,
             json_encode($this->permissions),
             'User@updatePerms'
         );
@@ -1344,6 +1448,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * @TODO Refactor to use try / catch
      *
      * @param $perm
+     *
      * @return bool
      */
     public function deletePerm($perm)
@@ -1358,7 +1463,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if (is_null(Auth::user())) {
             $user = 'system user';
         } else {
-            $user = (string)Auth::user()->_id;
+            $user = (string)Auth::user()->id;
         }
 
         $this->osa = false;
@@ -1368,7 +1473,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $user,
             'update',
             'users',
-            (string)$this->_id,
+            (string)$this->id,
             json_encode($this->permissions),
             'User@deletePerms'
         );
@@ -1382,6 +1487,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Delete a peerage from a users record
      *
      * @param $peerageId
+     *
      * @return bool
      */
     public function deletePeerage($peerageId)
@@ -1389,7 +1495,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $peerages = array_where(
             $this->peerages,
             function ($value, $key) use ($peerageId) {
-                if ($value['peerage_id'] != $peerageId) {
+                if ($value['peerageid'] != $peerageId) {
                     return true;
                 }
 
@@ -1418,6 +1524,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Build the ID card png
      *
      * @param bool $showFullGrade
+     *
      * @return \Intervention\Image\Image
      */
     public function buildIdCard($showFullGrade = false)
@@ -1433,7 +1540,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             382,
             330,
             function ($font) use ($fontSize) {
-                $font->file(public_path() . "/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf");
+                $font->file(
+                    public_path() .
+                    "/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf"
+                );
                 $font->size($fontSize);
                 $font->align('center');
             }
@@ -1444,7 +1554,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             382,
             432,
             function ($font) {
-                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->file(
+                    public_path() .
+                    "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf"
+                );
                 $font->align('center');
                 $font->size(40);
             }
@@ -1458,7 +1571,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             382,
             527,
             function ($font) use ($fontSize) {
-                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->file(
+                    public_path() .
+                    "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf"
+                );
                 $font->align('center');
                 $font->size($fontSize);
             }
@@ -1488,7 +1604,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         $rankCode .= '-CD';
                 }
                 break;
-            default;
+            default:
                 break;
         }
 
@@ -1526,7 +1642,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             153,
             628,
             function ($font) {
-                $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                $font->file(
+                    public_path() .
+                    "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf"
+                );
                 $font->align('center');
                 $font->size(40);
                 $font->color('#BE1E2D');
@@ -1539,16 +1658,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $pCode = $peerages[0]['code'];
 
             if ($pCode == "K" && substr(
-                    Korders::where(
-                        'classes.postnominal',
-                        '=',
-                        $peerages[0]['postnominal']
-                    )->first()->getClassName(
-                        $peerages[0]['postnominal']
-                    ),
-                    0,
-                    6
-                ) != 'Knight'
+                Korders::where(
+                    'classes.postnominal',
+                    '=',
+                    $peerages[0]['postnominal']
+                )->first()->getClassName(
+                    $peerages[0]['postnominal']
+                ),
+                0,
+                6
+            ) != 'Knight'
             ) {
                 $pCode = '';
             }
@@ -1558,7 +1677,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 392,
                 628,
                 function ($font) {
-                    $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                    $font->file(
+                        public_path() .
+                        "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf"
+                    );
                     $font->align('center');
                     $font->size(40);
                     $font->color('#BE1E2D');
@@ -1571,7 +1693,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             628,
             628,
             function ($font) {
-                $font->file(public_path() . "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf");
+                $font->file(
+                    public_path() .
+                    "/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf"
+                );
                 $font->align('center');
                 $font->size(40);
                 $font->color('#BE1E2D');
@@ -1579,11 +1704,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         );
 
         $idCard->text(
-            $this->member_id,
+            $this->memberid,
             855,
             250,
             function ($font) {
-                $font->file(public_path() . "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf");
+                $font->file(
+                    public_path() .
+                    "/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf"
+                );
                 $font->align('center');
                 $font->size(20);
             }
@@ -1592,10 +1720,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $idCard->insert(
             base64_encode(
                 QrCode::format('png')
-                    ->margin(1)
-                    ->size(150)
-                    ->errorCorrection('H')
-                    ->generate($this->member_id)
+                      ->margin(1)
+                      ->size(150)
+                      ->errorCorrection('H')
+                      ->generate($this->memberid)
             ),
             'top-left',
             780,
@@ -1616,9 +1744,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Try and standardize and normalize State and Province
      *
      * @param $state
+     *
      * @return string
      */
-    static function normalizeStateProvince($state)
+    public static function normalizeStateProvince($state)
     {
         if (strlen($state) == 2) {
             /** No need to validate, we don't know all 2 letter state and province abbreviations */
@@ -1631,10 +1760,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
 
         if (strlen($state) == 4 && substr($state, -1) == '.' && substr(
-                $state,
-                -3,
-                1
-            ) == '.'
+            $state,
+            -3,
+            1
+        ) == '.'
         ) {
             // We have a 2 letter abbreviation with periods between the letters, like D.C. or B.C.
             return strtoupper(substr($state, 0, 1) . substr($state, -2, 1));
@@ -1643,9 +1772,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if (substr($state, 2, 2) == ' -') {
             // We may have a 2 letter abbreviation followed by the full name, try and validate
             if (array_key_exists(
-                    strtoupper(substr($state, 0, 2)),
-                    MedusaDefaults::STATES_BY_ABREVIATION
-                ) === true
+                strtoupper(substr($state, 0, 2)),
+                MedusaDefaults::STATES_BY_ABREVIATION
+            ) === true
             ) {
                 return strtoupper(substr($state, 0, 2));
             }
@@ -1654,9 +1783,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         // Nothing else hits, check and see if we know the 2 letter abbreviation
 
         if (array_key_exists(
-                strtoupper($state),
-                MedusaDefaults::STATES_BY_NAME
-            ) === true
+            strtoupper($state),
+            MedusaDefaults::STATES_BY_NAME
+        ) === true
         ) {
             $tmp = MedusaDefaults::STATES_BY_NAME;
             return $tmp[strtoupper($state)];
@@ -1674,9 +1803,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return string
      */
-    static function getNextAvailableMemberId()
+    public static function getNextAvailableMemberId()
     {
-        $uniqueMemberIds = self::_getMemberIds();
+        $uniqueMemberIds = self::getMemberIds();
 
         if (sizeof($uniqueMemberIds) == 0) {
             return "-0000-" . date('y');
@@ -1705,11 +1834,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * @TODO Refactor
      *
      * @param bool $honorary
+     *
      * @return string
      */
-    static function getFirstAvailableMemberId($honorary = false)
+    public static function getFirstAvailableMemberId($honorary = false)
     {
-        $uniqueMemberIds = self::_getMemberIds();
+        $uniqueMemberIds = self::getMemberIds();
 
         if (sizeof($uniqueMemberIds) == 0) {
             return "-0000" . date('y');
@@ -1720,13 +1850,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $lastId = 0;
 
         foreach ($uniqueMemberIds as $memberId) {
-            if ((intval($lastId) + 1 < intval($memberId)) && ($honorary === true || intval($lastId) + 1 > 200)) {
+            if ((intval($lastId) + 1 < intval($memberId)) &&
+                ($honorary === true || intval($lastId) + 1 > 200)) {
                 return '-' . str_pad(
-                        $lastId + 1,
-                        4,
-                        '0',
-                        STR_PAD_LEFT
-                    ) . '-' . date('y');
+                    $lastId + 1,
+                    4,
+                    '0',
+                    STR_PAD_LEFT
+                ) . '-' . date('y');
             }
             $lastId = $memberId;
         }
@@ -1741,13 +1872,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return array
      */
-    static function _getMemberIds()
+    public static function getMemberIds()
     {
-        $memberIds = self::all(['member_id']);
+        $memberIds = self::all(['memberid']);
         $uniqueMemberIds = [];
 
         foreach ($memberIds as $record) {
-            $uniqueMemberIds[] = intval(substr($record->member_id, 4, 4));
+            $uniqueMemberIds[] = intval(substr($record->memberid, 4, 4));
         }
 
         return $uniqueMemberIds;
@@ -1836,7 +1967,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function checkRostersForNewExams()
     {
-        if ($this->id != Auth::user()->id || empty($this->duty_roster) === true) {
+        if ($this->id != Auth::user()->id ||
+            empty($this->duty_roster) === true) {
             return false;
         }
         $rosters = explode(',', $this->duty_roster);
@@ -1858,6 +1990,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @param null $continent
      * @param null $city
+     *
      * @return array
      */
     public function getScheduledEvents($continent = null, $city = null)
@@ -1866,13 +1999,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $events =
             Events::where('start_date', '<=', date('Y-m-d'))
-                ->where('end_date', '>=', date('Y-m-d'))
-                ->where(function ($query) {
-                    $query->where('requestor', '=', $this->id)
-                        ->orWhere('registrars', '=', $this->id);
-                })
-                ->orderBy('start_date', 'ASC')
-                ->get(['_id', 'event_name']);
+                  ->where('end_date', '>=', date('Y-m-d'))
+                  ->where(function ($query) {
+                            $query->where('requestor', '=', $this->id)
+                                  ->orWhere('registrars', '=', $this->id);
+                  }
+                      )
+                  ->orderBy('start_date', 'ASC')
+                  ->get(['id', 'event_name']);
 
         $this->setTimeZone($currentTz);
 
@@ -1886,6 +2020,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * @param $member
      * @param null $continent
      * @param null $city
+     *
      * @return array
      */
     public function checkMemberIn(
@@ -1917,7 +2052,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         try {
             $user =
-                User::where('member_id', '=', $member)
+                User::where('memberid', '=', $member)
                     ->where('registration_status', '=', 'Active')
                     ->where('active', '=', 1)
                     ->firstOrFail();
@@ -1928,13 +2063,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         // Are we within the dates of the event?
 
-        if ($event->start_date <= date('Y-m-d') && $event->end_date >= date('Y-m-d')) {
+        if ($event->start_date <= date('Y-m-d') &&
+            $event->end_date >= date('Y-m-d')) {
             // Is the user doing the check-in a requestor or a registrar?
             if ($event->requestor === $this->id || in_array(
-                    $this->id,
-                    $event->registrars
-                ) === true
-            ) {
+                $this->id,
+                $event->registrars
+            ) === true) {
                 $checkIns = [];
                 if (isset($event->checkins) === true) {
                     $checkIns = $event->checkins;
@@ -1942,7 +2077,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 if (in_array($user->id, $checkIns) === false) {
                     // Only check them in once
                     $checkIns[] =
-                        ['_id' => $user->id, 'timestamp' => date('Y-m-d H:m:s')];
+                        ['id' => $user->id, 'timestamp' => date('Y-m-d H:m:s')];
                     //$checkIns[] = $user->id;
                     $event->checkins = $checkIns;
                 }
@@ -1961,16 +2096,22 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
                     $this->setTimeZone($currentTz);
 
-                    return ['success' => $user->getFullName() . ' has been checked in to ' . $event->event_name];
+                    return ['success' => $user->getFullName() .
+                                         ' has been checked in to ' .
+                                         $event->event_name];
                 } catch (Exception $e) {
                     $this->setTimeZone($currentTz);
-                    return ['error' => 'There was a problem checking ' . $user->getFullName() . ' in to ' . $event->event_name];
+                    return ['error' => 'There was a problem checking ' .
+                                       $user->getFullName() . ' in to ' .
+                                       $event->event_name];
                 }
             }
         } else {
             $this->setTimeZone($currentTz);
             return ['error' => 'The event has not started or is over'];
         }
+
+        return ['error' => 'There was a problem checking this member in'];
     }
 
     /**
@@ -1978,6 +2119,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @param null $continent
      * @param null $city
+     *
      * @return null|string
      */
     private function setTimeZone($continent = null, $city = null)
@@ -1997,9 +2139,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Find a members record by their member_id
+     * Find a members record by their memberid
      *
      * @param $memberId
+     *
      * @return User
      */
     public static function getUserByMemberId($memberId)
@@ -2008,7 +2151,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Get the members current awards, account for awards due to issued in the future
+     * Get the members current awards, account for awards due to issued in the
+     * future
      * @return array
      */
     public function getCurrentAwards()
@@ -2020,16 +2164,20 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         foreach ($this->awards as $code => $award) {
             foreach ($award['award_date'] as $date) {
                 $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')
-                    ->addDays(2);
+                                   ->addDays(2);
 
                 if ($awardDate->gt($today)) {
-                    $award['count']--; // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                    // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                    $award['count']--;
                 }
             }
 
             if ($award['count'] > 0) {
-                $award['award_date'] = array_slice($award['award_date'], 0,
-                    $award['count']);
+                $award['award_date'] = array_slice(
+                    $award['award_date'],
+                    0,
+                    $award['count']
+                );
                 $awards[$code] = $award;
             }
         }
@@ -2041,6 +2189,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get the ribbons for a specific location
      *
      * @param string $location
+     *
      * @return array
      */
     public function getRibbons($location = 'L')
@@ -2052,19 +2201,24 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         foreach ($this->awards as $code => $award) {
             $onDisk = true;
 
-            if (($location == 'L' || $location == 'R') && file_exists(public_path('/ribbons/' . $code . '-1.svg')) === false) {
+            if (($location == 'L' || $location == 'R') &&
+                file_exists(public_path('/ribbons/' . $code . '-1.svg')) ===
+                false) {
                 $onDisk = false;
             }
 
-            if ($award['location'] === $location && $award['display'] === true && $onDisk === true) {
+            if ($award['location'] === $location && $award['display'] === true &&
+                $onDisk === true) {
                 // Check for awards that haven't been given yet, adjust count as needed
 
                 foreach ($award['award_date'] as $date) {
-                    $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')
-                        ->addDays(2);
+                    $awardDate =
+                        Carbon::createFromFormat('Y-m-d H', $date . ' 0')
+                              ->addDays(2);
 
                     if ($awardDate->gt($today)) {
-                        $award['count']--; // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                        // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                        $award['count']--;
                     }
                 }
 
@@ -2108,6 +2262,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get patch to shoulder patch for the specified assignment
      *
      * @param string $assignment
+     *
      * @return bool|string
      */
     public function getUnitPatchPath($assignment = 'primary')
@@ -2158,7 +2313,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         // Check to see if we have a patch for this chapter
         foreach ($chapters as $item) {
             $chapter = Chapter::find($item);
-            $path = 'patches/' . $chapter->chapter_type . '/' . (empty($chapter->branch) || $chapter->chapter_type == 'bureau' ? '' : $chapter->branch . '/') . trim($chapter->hull_number) . '.svg';
+            $path = 'patches/' . $chapter->chapter_type . '/' .
+                    (empty($chapter->branch) ||
+                     $chapter->chapter_type == 'bureau' ? '' :
+                        $chapter->branch . '/') . trim($chapter->hull_number) .
+                    '.svg';
 
             if (file_exists(public_path($path)) === true) {
                 return $path;
@@ -2172,17 +2331,23 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Oauth find user
      *
      * @param $username
+     *
      * @return User
      */
     public function findForPassport($username)
     {
-        return self::where('email_address', '=', str_replace(' ', '+', strtolower($username)))->first();
+        return self::where(
+            'email_address',
+            '=',
+            str_replace(' ', '+', strtolower($username))
+        )->first();
     }
 
     /**
      * Check if a user has a specific award
      *
      * @param string $awardAbbr
+     *
      * @return bool
      */
     public function hasAward(string $awardAbbr)
@@ -2196,13 +2361,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * @TODO Add audit trail
      *
      * @param array $award
+     *
      * @return bool
      */
     public function addUpdateAward(array $award)
     {
         foreach ($award as $awardCode => $awardInfo) {
             // Check that we have all the required fields in the info
-            if (isset($awardInfo['count']) === false || isset($awardInfo['location']) === false || isset($awardInfo['award_date']) === false) {
+            if (isset($awardInfo['count']) === false ||
+                isset($awardInfo['location']) === false ||
+                isset($awardInfo['award_date']) === false) {
                 return false; // Invalid
             }
 
@@ -2210,6 +2378,69 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $awards[$awardCode] = $awardInfo;
             $this->awards = $awards;
             return $this->save();
+        }
+
+        return false;
+    }
+
+    /**
+     * Set a members career path
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function setPath(string $path)
+    {
+        $validPaths = ['line', 'staff', 'service'];
+
+        $path = strtolower($path);
+
+        if (in_array($path, $validPaths) === true) {
+            try {
+                $this->path = $path;
+
+                $this->save();
+
+                return true;
+            } catch (\MongoException $e) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Set a promotion point key to the specified value
+     *
+     * @param string $key
+     * @param string $value
+     *
+     * @return bool
+     */
+    public function setPromotionPointValue(string $key, string $value)
+    {
+        $validKeys =
+            [
+                'triad', 'fleet', 'ah', 'cpm', 'cpe', 'che', 'cph', 'chh', 'vch',
+                'con', 'ahcon', 'vcon', 'vahcon', 'mp', 'sh', 'ls',
+            ];
+
+        if (in_array($key, $validKeys) === true &&
+            (is_numeric($value) === true ||
+             in_array($value, ['B', 'E', 'S', 'D', 'G']) === true
+            )) {
+            // Valid promotion point key and is a number
+            $points = $this->points;
+
+            $points[$key] = $value;
+
+            $this->points = $points;
+
+            $this->save();
+
+            return true;
         }
 
         return false;
@@ -2232,11 +2463,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
                 if ($awardInfo->points > 0) {
                     foreach ($award['award_date'] as $date) {
-                        $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')
-                            ->addDays(2);
+                        $awardDate =
+                            Carbon::createFromFormat('Y-m-d H', $date . ' 0')
+                                  ->addDays(2);
 
                         if ($awardDate->gt($today)) {
-                            $award['count']--; // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                            // Reduce the count by one, the date of this award instance + 2 days is still in the future
+                            $award['count']--;
                         }
                     }
 
@@ -2285,7 +2518,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     $pointsEarned += $pointsForPattern;
                     $numCompletedExams -= $res;
                 }
-
             }
         }
         $pointsEarned += $numCompletedExams;
@@ -2323,7 +2555,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         case 'G':
                             $points += 3;
                             break;
-
                     }
                 } else {
                     $points += $v;
@@ -2343,6 +2574,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get Overall GPA or for a specific school
      *
      * @param string $pattern
+     *
      * @return string|int
      */
     public function getGPA($pattern = '/.*/')
@@ -2370,6 +2602,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get GPA for all the Schools
      *
      * @param $service
+     *
      * @return array
      */
     public function getGpaBySchool($service)
@@ -2405,15 +2638,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Get promotion qualifications
      *
      * @param null|string $payGrade2Check
+     *
      * @return array
      */
     public function getPromotableInfo($payGrade2Check = null)
     {
         $flags = [
-            'tig' => false,
+            'tig'    => false,
             'points' => false,
-            'exams' => false,
-            'early' => false,
+            'exams'  => false,
+            'early'  => false,
         ];
 
         // Check for special promotion capabilities
@@ -2426,7 +2660,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             case 'E-9':
             case 'E-10':
                 // Check for promotion to WO-1 and O-1
-                $special = $this->_specialPromotionCheck(['WO-1', 'O-1']);
+                $special = $this->specialPromotionCheck(['WO-1', 'O-1']);
                 if (count($special) > 0) {
                     $flags['next'] = $special;
                     $flags['exams'] = $flags['points'] = $flags['tig'] = true;
@@ -2440,7 +2674,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             case 'C-9':
             case 'C-10':
                 // Check for promotion to C-12
-                $special = $this->_specialPromotionCheck(['C-12']);
+                $special = $this->specialPromotionCheck(['C-12']);
                 if (count($special) > 0) {
                     $flags['next'] = $special;
                     $flags['exams'] = $flags['points'] = $flags['tig'] = true;
@@ -2448,45 +2682,55 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 break;
         }
 
-        if (is_null($payGrade2Check) === true && empty($this->_nextGrade[$this->rank['grade']]) === false) {
-            $payGrade2Check = $this->_nextGrade[$this->rank['grade']]['next'][0];
+        if (is_null($payGrade2Check) === true &&
+            empty($this->nextGrade[$this->rank['grade']]) === false) {
+            $payGrade2Check = $this->nextGrade[$this->rank['grade']]['next'][0];
         }
 
         if (empty($payGrade2Check) === false) {
-            $requirements = $this->_promotionRequirements[$payGrade2Check];
+            $requirements = $this->promotionRequirements[$payGrade2Check];
 
             $path = $this->getPath();
 
             // Check TiG requirements.
-            $flags['tig'] = empty($requirements['tig']) ? true : ($this->getTimeInGrade('months') >= $requirements['tig']);
-
-            // They are at least an E-3/C-3 and their last promotion was not an early one, check if they are promotable early
-            if (in_array($this->rank['grade'], ['E-1', 'E-2', 'C-1', 'C-2']) === false &&
+            $flags['tig'] = empty($requirements['tig']) ? true :
+                ($this->getTimeInGrade('months') >= $requirements['tig']);
+            
+            // They are at least an E-3/C-3 and their last promotion was not an early
+            // one, check if they are promotable early
+            
+            if (in_array($this->rank['grade'], ['E-1', 'E-2', 'C-1', 'C-2']) ===
+                false &&
                 empty($this->rank['early']) === true &&
                 $flags['tig'] === false) {
-                $flags['early'] = ($this->getTimeInGrade('months') >= ($requirements['tig'] - 3));
+                $flags['early'] = ($this->getTimeInGrade('months') >=
+                                   ($requirements['tig'] - 3));
             }
 
             // If they have TiG, check other requirements.  No requirements for a members path == not eligible
-            if (($flags['tig'] === true || $flags['early'] === true) && empty($requirements[$path]) === false) {
-                $flags['points'] = ($this->getTotalPromotionPoints() >= $requirements[$path]['points']);
+            if (($flags['tig'] === true || $flags['early'] === true) &&
+                empty($requirements[$path]) === false) {
+                $flags['points'] = ($this->getTotalPromotionPoints() >=
+                                    $requirements[$path]['points']);
 
                 // Check exams
                 if (empty($requirements[$path]['exam']) === false) {
-                    $flags['exams'] = $this->_hasRequiredExams($requirements[$path]['exam']);
+                    $flags['exams'] =
+                        $this->hasRequiredExams($requirements[$path]['exam']);
                 } else {
                     // No exam requirement
                     $flags['exams'] = true;
                 }
-
             }
 
             // Include what the next paygrade is
 
-            $flags['next'][] = $this->_nextGrade[$this->rank['grade']]['next'][0];
+            $flags['next'][] =
+                $this->nextGrade[$this->rank['grade']]['next'][0];
 
-            if (count($this->_nextGrade[$this->rank['grade']]['next']) > 1) {
-                $flags['next'][] = $this->_nextGrade[$this->rank['grade']]['next'][1];
+            if (count($this->nextGrade[$this->rank['grade']]['next']) > 1) {
+                $flags['next'][] =
+                    $this->nextGrade[$this->rank['grade']]['next'][1];
             }
         }
 
@@ -2497,18 +2741,20 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Check eligibility for meritorious promotions
      *
      * @param array $grades
+     *
      * @return array
      */
-    private function _specialPromotionCheck(array $grades)
+    private function specialPromotionCheck(array $grades)
     {
         $path = $this->getPath();
         $ret = [];
 
         foreach ($grades as $grade) {
-            $specialReq = $this->_promotionRequirements[$grade];
+            $specialReq = $this->promotionRequirements[$grade];
 
-            if ($this->getTotalPromotionPoints() >= $specialReq[$path]['points'] &&
-                $this->_hasRequiredExams($specialReq[$path]['exam']) === true &&
+            if ($this->getTotalPromotionPoints() >=
+                $specialReq[$path]['points'] &&
+                $this->hasRequiredExams($specialReq[$path]['exam']) === true &&
                 $this->getTimeInGrade('months') >= $specialReq['tig']) {
                 $ret[] = $grade;
             }
@@ -2521,13 +2767,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Check if the user has the required exam for the specified exam pattern
      *
      * @param array $exams
+     *
      * @return bool
      */
-    private function _hasRequiredExams(array $exams)
+    private function hasRequiredExams(array $exams)
     {
         $flag = false;
         foreach ($exams as $exam) {
-            $flag = !empty($this->getExamList(['pattern' => '/^.*-' . $exam . '$/']));
+            $flag = !empty(
+                $this->getExamList(['pattern' => '/^.*-' . $exam . '$/'])
+            );
         }
 
         return $flag;
@@ -2538,7 +2787,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return array|null
      */
-    private function _sfsIsPromotable()
+    private function sfsIsPromotable()
     {
         $age = Carbon::now()->diffInYears(Carbon::parse($this->dob));
 
@@ -2564,17 +2813,19 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Can this member be promoted early?
      *
      * @param null|string $payGrade2Check
+     *
      * @return array|null
      */
     public function isPromotableEarly($payGrade2Check = null)
     {
         switch ($this->branch) {
             case 'SFS':
-                return $this->_sfsIsPromotable();
+                return $this->sfsIsPromotable();
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
-                return ($flags['points'] && $flags['exams'] && $flags['early']) === true ? $flags['next'] : null;
+                return ($flags['points'] && $flags['exams'] &&
+                        $flags['early']) === true ? $flags['next'] : null;
         }
     }
 
@@ -2583,21 +2834,24 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @param bool $tigCheck
      * @param null $payGrade2Check
+     *
      * @return array|null
      */
     public function isPromotable($tigCheck = true, $payGrade2Check = null)
     {
         switch ($this->branch) {
             case 'SFS':
-                return $this->_sfsIsPromotable();
+                return $this->sfsIsPromotable();
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
 
                 if ($tigCheck === true) {
-                    return ($flags['tig'] && $flags['points'] && $flags['exams']) === true ? $flags['next'] : null;
+                    return ($flags['tig'] && $flags['points'] &&
+                            $flags['exams']) === true ? $flags['next'] : null;
                 } else {
-                    return ($flags['points'] && $flags['exams']) === true ? $flags['next'] : null;
+                    return ($flags['points'] && $flags['exams']) === true ?
+                        $flags['next'] : null;
                 }
         }
     }
@@ -2606,12 +2860,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * Add an entry to the users service history
      *
      * @param array $entry
+     *
      * @return bool
+     *
+     * @throws \Exception
      */
     public function addServiceHistoryEntry(array $entry)
     {
         // Check for proper format
-        if (empty($entry['timestamp']) === true || empty($entry['event']) === true) {
+        if (empty($entry['timestamp']) === true ||
+            empty($entry['event']) === true) {
             return false;
         }
 
@@ -2622,9 +2880,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $history[] = $entry;
 
         if (empty($history) === false) {
-            $history = array_values(array_sort($history, function ($value) {
-                return $value['timestamp'];
-            }));
+            $history = array_values(
+                array_sort(
+                    $history,
+                    function ($value) {
+                        return $value['timestamp'];
+                    }
+                )
+            );
         }
 
         $this->history = $history;
@@ -2633,16 +2896,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->save();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string)Auth::user()->id,
                 'update',
                 'users',
-                (string)$this->_id,
+                (string)$this->id,
                 json_encode($this),
                 'User@addServiceHistoryEntry'
             );
 
             return true;
-
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -2653,22 +2915,24 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         // Check for valid rank
         $parsedRank = explode('-', $rank);
 
-        if (in_array($parsedRank[0], ['E', 'WO', 'C', 'O', 'F']) === false || is_numeric($parsedRank[1]) === false) {
+        if (in_array($parsedRank[0], ['E', 'WO', 'C', 'O', 'F']) === false ||
+            is_numeric($parsedRank[1]) === false) {
             // Not a valid rank
             return false;
         }
 
         // Special check for RMN
 
-        if (empty($parsedRank[2]) === false && in_array($parsedRank[2], ['A', 'B']) === false) {
+        if (empty($parsedRank[2]) === false &&
+            in_array($parsedRank[2], ['A', 'B']) === false) {
             // Not a valid RMN rank
             return false;
         }
 
 
         $rank = [
-            'grade' => $rank,
-            'date_of_rank' => date('Y-m-d')
+            'grade'        => $rank,
+            'date_of_rank' => date('Y-m-d'),
         ];
 
         if ($early === true) {
@@ -2682,38 +2946,44 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             if (empty($points['ep']) === true) {
                 $points['ep'] = 0;
             }
-            $points['ep'] -= $requirements['tig'] - $this->getTimeInGrade('months');
+            $points['ep'] -= $requirements['tig'] -
+                             $this->getTimeInGrade('months');
             $this->points = $points;
         }
 
-        $event = 'Rank changed from ' . Grade::getRankTitle($this->rank['grade'], $this->getRate(),
-                $this->branch) . ' (' . $this->rank['grade'] . ') to ';
+        $event = 'Rank changed from ' .
+                 Grade::getRankTitle(
+                     $this->rank['grade'],
+                     $this->getRate(),
+                     $this->branch
+                 ) . ' (' . $this->rank['grade'] . ') to ';
 
         $this->rank = $rank;
 
         try {
-
             $this->save();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string)Auth::user()->id,
                 'update',
                 'users',
-                (string)$this->_id,
+                (string)$this->id,
                 json_encode($this),
                 'User@promoteMember'
             );
 
             $history = [
                 'timestamp' => time(),
-                'event' => $event . Grade::getRankTitle($rank['grade'], $this->getRate(),
-                        $this->branch) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
+                'event'     => $event . Grade::getRankTitle(
+                    $rank['grade'],
+                    $this->getRate(),
+                    $this->branch
+                ) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
             ];
 
             $this->addServiceHistoryEntry($history);
 
             return true;
-
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

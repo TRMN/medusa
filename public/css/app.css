@@ -4134,6 +4134,10 @@ table.dataTable.display tbody tr:first-child td {
   color: mediumblue !important;
 }
 
+.btn-row-xs {
+  line-height: 2;
+}
+
 .alert-text {
   color: #ff1fdb !important;
 }

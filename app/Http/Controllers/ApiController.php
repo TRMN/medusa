@@ -139,7 +139,9 @@ class ApiController extends Controller
 
     public function getUniversities()
     {
-        return Response::json(Chapter::getChaptersByType('university') + Chapter::getChaptersByType('university_system'));
+        return Response::json(
+            Chapter::getChaptersByType('university') +
+            Chapter::getChaptersByType('university_system'));
     }
 
     public function checkAddress($email_address)
@@ -214,15 +216,18 @@ class ApiController extends Controller
             case 1:
                 $query =
                     User::where('registration_status', '=', 'Active')
-                        ->where(function ($query) use ($terms) {
-                            $query->where(
-                                'member_id',
-                                'like',
-                                '%' . $terms[0] . '%'
-                            )
-                                ->orWhere('first_name', 'like', $terms[0] . '%')
-                                ->orWhere('last_name', 'like', $terms[0] . '%');
-                        });
+                        ->where(
+                            function ($query) use ($terms) {
+                                $query->where(
+                                    'member_id',
+                                    'like',
+                                    '%' . $terms[0] . '%'
+                                )
+                                      ->orWhere(
+                                          'first_name', 'like', $terms[0] . '%')
+                                      ->orWhere(
+                                          'last_name', 'like', $terms[0] . '%');
+                            });
                 break;
             case 2:
                 $query =
@@ -245,10 +250,15 @@ class ApiController extends Controller
         foreach ($results as $member) {
             $suggestions[] =
                 [
-                    'value' => $member->member_id . ' ' . $member->first_name . ' ' . (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name . (!empty($member->suffix) ? ' ' . $member->suffix : '') . ' (' . $member->getAssignmentName(
+                    'value' => $member->member_id . ' ' . $member->first_name . ' ' .
+                               (!empty($member->middle_name) ?
+                                   $member->middle_name . ' ' : '') .
+                               $member->last_name .
+                               (!empty($member->suffix) ? ' ' . $member->suffix :
+                                   '') . ' (' . $member->getAssignmentName(
                             'primary'
                         ) . ')',
-                    'data' => $member->id
+                    'data'  => $member->id,
                 ];
         }
 
@@ -267,9 +277,9 @@ class ApiController extends Controller
 
         $results =
             Chapter::orderBy('chapter_name', 'asc')
-                ->where('chapter_name', 'like', '%' . $query . '%')
-                ->whereNull('decommission_date')
-                ->get();
+                   ->where('chapter_name', 'like', '%' . $query . '%')
+                   ->whereNull('decommission_date')
+                   ->get();
 
         $suggestions = [];
 
@@ -277,7 +287,7 @@ class ApiController extends Controller
             $suggestions[] =
                 [
                     'value' => $chapter->chapter_name,
-                    'data' => $chapter->id,
+                    'data'  => $chapter->id,
                 ];
         }
 
@@ -294,8 +304,8 @@ class ApiController extends Controller
 
         $results =
             ExamList::where('name', 'like', '%' . $query . '%')
-                ->orWhere('exam_id', 'like', '%' . $query . '%')
-                ->get();
+                    ->orWhere('exam_id', 'like', '%' . $query . '%')
+                    ->get();
 
         $suggestions = [];
 
@@ -304,7 +314,7 @@ class ApiController extends Controller
                 $suggestions[] =
                     [
                         'value' => $exam->name . ' (' . $exam->exam_id . ')',
-                        'data' => $exam->exam_id
+                        'data'  => $exam->exam_id,
                     ];
             }
         }
@@ -314,9 +324,10 @@ class ApiController extends Controller
 
     public function getScheduledEvents($user, $continent = null, $city = null)
     {
-        return Response::json([
-            'events' => $user->getScheduledEvents($continent, $city)
-        ]);
+        return Response::json(
+            [
+                'events' => $user->getScheduledEvents($continent, $city),
+            ]);
     }
 
     public function checkInMember(
@@ -329,12 +340,13 @@ class ApiController extends Controller
         if (is_object($user) === false) {
             return Response::json(['error' => 'Invalid User']);
         }
-        return Response::json($user->checkMemberIn(
-            $event,
-            $member,
-            $continent,
-            $city
-        ));
+        return Response::json(
+            $user->checkMemberIn(
+                $event,
+                $member,
+                $continent,
+                $city
+            ));
     }
 
     public function getRibbonRack($member_id)
@@ -359,7 +371,8 @@ class ApiController extends Controller
 
     public function getChapterSelections()
     {
-        return MedusaConfig::get('chapter.selection',
+        return MedusaConfig::get(
+            'chapter.selection',
             '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
     }
 
@@ -367,11 +380,11 @@ class ApiController extends Controller
     {
         $user = User::find($request->input('user_id'));
 
-        $user->path = $request->input('path');
-
-        $user->save();
-
-        return Response::json(['status' => 'ok']);
+        return Response::json(
+            ['status' => ($user->setPath(
+                    $request->input('path'))
+                          === true) ? 'ok' : 'error']
+        );
     }
 
     public function updateAwardDisplayOrder(\Illuminate\Http\Request $request)
@@ -380,8 +393,9 @@ class ApiController extends Controller
 
         $errors = 0;
 
-        foreach($awards as $award) {
-            $res = Award::updateDisplayOrder($award['code'], $award['display_order']);
+        foreach ($awards as $award) {
+            $res =
+                Award::updateDisplayOrder($award['code'], $award['display_order']);
 
             if ($res === false) {
                 $errors++;
@@ -389,7 +403,9 @@ class ApiController extends Controller
         }
 
         if ($errors > 0) {
-            return Response::json(['status' => 'error', 'msg' => 'There was a problem updating one or more awards']);
+            return Response::json(
+                ['status' => 'error',
+                 'msg'    => 'There was a problem updating one or more awards']);
         } else {
             return Response::json(['status' => 'ok']);
         }
@@ -405,7 +421,8 @@ class ApiController extends Controller
         $msg = null;
 
         if ($tigCheck === true) {
-            $payGrade2Check = null; // If we're checking TiG, we want to look up the next paygrade
+            $payGrade2Check =
+                null; // If we're checking TiG, we want to look up the next paygrade
         }
 
         $promotionInfo = $member->getPromotableInfo($payGrade2Check);
@@ -413,14 +430,16 @@ class ApiController extends Controller
         $canPromote = $promotionInfo['exams']; // Always have to have the exams
 
         if ($promotionInfo['exams'] === false) {
-            $msg[] = 'The member does not have the required coursework for the rank selected.';
+            $msg[] =
+                'The member does not have the required coursework for the rank selected.';
         }
 
         if ($pointCheck === true) {
             $canPromote = $canPromote && $promotionInfo['points'];
 
             if ($promotionInfo['points'] === false) {
-                $msg[] = 'The member does not have the required promotion points for the rank selected.';
+                $msg[] =
+                    'The member does not have the required promotion points for the rank selected.';
             }
         }
 
@@ -438,15 +457,19 @@ class ApiController extends Controller
             if ($promotionInfo['next'][0] !== $request->input('payGrade')) {
                 // Check TiG was selected, but the paygrade was not the next one for the member
                 $canPromote = false;
-                $msg[] = 'The rank selected is not the next rank for the members current rank.  To skip this check, do not select "Check Time In Grade".';
+                $msg[] =
+                    'The rank selected is not the next rank for the members current rank.  To skip this check, do not select "Check Time In Grade".';
             }
 
             if ($promotionInfo['tig'] === false) {
-                $msg[] = 'The member does not have the required time in grade for the rank selected';
+                $msg[] =
+                    'The member does not have the required time in grade for the rank selected';
             }
         }
 
-        return Response::json(['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check, 'pinfo' => $promotionInfo]);
+        return Response::json(
+            ['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check,
+             'pinfo' => $promotionInfo]);
 
     }
 }

@@ -53,6 +53,11 @@ return [
             'root' => storage_path('app/public'),
             'visibility' => 'public',
         ],
+        'points' => [
+            'driver' => 'local',
+            'root' => storage_path('app/points'),
+            'visibility' => 'public',
+        ],
 
         'arms' => [
             'driver' => 'local',
