@@ -80,6 +80,10 @@
                                 </ul>
                             @endif
 
+                            @if(Session::has('error'))
+                                <p class="alert-text Incised901Light"><span class="fa fa-exclamation-triangle"></span> {{Session::get('error')}}</p>
+                            @endif
+
                             @if(Session::has('message'))
                                 <p>{!!Session::get('message')!!}</p>
                             @endif

@@ -146,7 +146,6 @@ class Award extends Eloquent
     public static function getAwardByCode($code)
     {
         return self::where('code', '=', $code)
-            ->orderBy('display_order')
             ->first();
     }
 

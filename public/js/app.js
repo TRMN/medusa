@@ -186,7 +186,7 @@ $(document).ready(function ($) {
     $('.trmnTable').DataTable({
         "autoWidth": true,
         "pageLength": 25,
-        "columnDefs": [{ "orderable": false, "targets": -1 }],
+        "columnDefs": [{ type: 'natural-nohtml', targets: '_all' }],
         "language": {
             "emptyTable": "No records found"
         },

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use \League\Csv\Writer;
 
 class ChapterController extends Controller
 {
@@ -363,8 +364,7 @@ class ChapterController extends Controller
             return $redirect;
         }
 
-        $csv =
-          \League\Csv\Writer::createFromFileObject(new \SplTempFileObject());
+        $csv = Writer::createFromFileObject(new \SplTempFileObject());
         $csv->setNewline("\r\n");
         $crew = $chapter->getAllCrew();
 
