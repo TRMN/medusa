@@ -66,7 +66,7 @@ class MedusaConfig extends Eloquent
      * @param string|null       $subkey  If the config value is an array, return
      *                                   this key
      *
-     * @return bool|null
+     * @return bool|null|mixed
      */
     public static function get(string $key, $default = null, string $subkey = null)
     {

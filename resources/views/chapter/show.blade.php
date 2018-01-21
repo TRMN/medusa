@@ -137,13 +137,18 @@
             </div>
         </div>
         <div class="row padding-5">
-            <div class="col-sm-10 Incised901Light ninety">
+            <div class="col-sm-10 Incised901Bold ninety">
                 <div class="btn-group text-center padding-bottom-10 btn-group-sm" role="group">
                     @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                         <br/><a href="{!!route('roster.export', [$detail->id])!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Download Roster</button></a>
                     @endif
                     @if($permsObj->canPromote())
-                            <a href="{{ route('promotions', [$detail->id]) }}"><button class="btn btn-sm btn-success"><span class="fa fa-thumbs-up"></span> Promotions</button></a>
+                            <a href="{{ route('promotions', [$detail->id]) }}"><button class="btn btn-sm btn-primary"><span class="fa fa-thumbs-up"></span> Promotions</button></a>
+                    @endif
+                    @if(Auth::user()->isCoAssignedShip())
+                            <a href="{!!route('report.index')!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-file-text-o"></span> Chapter Reports</button></a>
+                            <a href="/upload/status/{{Auth::user()->getAssignedShip()}}"><button class="btn btn-sm btn-primary"><span class="fa fa-question-circle"></span> Promotion Point Status</button></a>
+                            <a href="/upload/sheet/{{Auth::user()->getAssignedShip()}}"><button class="btn btn-sm btn-primary"><span class="fa fa-upload"></span> Upload Promotion Points</button></a>
                     @endif
                 </div>
             </div>

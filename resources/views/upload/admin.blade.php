@@ -37,8 +37,8 @@
                                    class="btn btn-xs btn-danger" title="Download {{$file['filename']}}"><span
                                             class="fa fa-download"></span></a>
                                 <a href="/upload/points/{{$log['_id']}}/{{$file['filename']}}"
-                                   class="btn btn-xs btn-success" title="Mark {{$file['filename']}} as processed">
-                                    <span class="fa fa-check"></span></a>
+                                   class="btn btn-xs btn-success" title="Upload CSV for processing">
+                                    <span class="fa fa-upload"></span></a>
                             </td>
                         </tr>
                     @endforeach

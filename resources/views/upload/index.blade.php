@@ -29,6 +29,16 @@
                 {{Form::close()}}
             </div>
         </div>
+
+        @if($method == 'processSheet')
+            <div class="row">
+                <div class="col-sm-5 text-left">
+                    <br/>
+                    <a href="{{route('chapter.show', [$hidden['chapter']])}}" class="btn btn-primary"><span
+                                class="fa fa-arrow-left"></span> Return to roster</a>
+                </div>
+            </div>
+        @endif
     </div>
 @stop
 

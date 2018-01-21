@@ -23,21 +23,6 @@
             </div>
         @endif
 
-        @if($permsObj->hasPermissions(['DUTY_ROSTER','CHAPTER_REPORT',]) === true)
-            <h3 class="nav-header lnav">CO Tools</h3>
-            <div class="rnav">
-                @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true && $permsObj->hasDutyRosterForAssignedShip() === true)
-                    <a href="{!!route('report.index')!!}">Chapter Reports</a><br/>
-                @endif
-
-                @if($permsObj->canPromote() && !empty(Auth::user()->duty_roster))
-                    <br /><span class="float-left">Promotions For:</span><br/>
-                    @foreach(explode(',', Auth::user()->duty_roster) as $chapter)
-                        <a href="{{route('promotions', [$chapter])}}">{{\App\Chapter::getName($chapter)}}</a><br/>
-                    @endforeach
-                @endif
-            </div>
-        @endif
         @if($permsObj->hasPermissions(['CREATE_ECHELON',
         'EDIT_ECHELON',
         'DEL_ECHELON',
@@ -188,6 +173,7 @@
                 <a href="{!! route('oauthclient.index') !!}">List OAuth Clients</a><br/>
                 <a href="{!! route('oauthclient.create') !!}">Add OAuth Client</a>
                 @if($permsObj->hasPermissions('CONFIG', true))<br/>
+                <a href="/upload/admin">Promotion Points Admin</a><br />
                 <a href="{!! route('config.index') !!}">Configuration Settings</a><br/>
                 <a href="{!!route('config.create')!!}">Add Setting</a>
                 @endif
