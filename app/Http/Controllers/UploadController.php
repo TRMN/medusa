@@ -121,7 +121,8 @@ class UploadController extends Controller
         return view(
             'upload.index',
             [
-                'title'  => 'Upload Chapter Promotion Point Spreadsheet',
+                'title'  => 'Upload Chapter Promotion Point Spreadsheet for ' .
+                            $chapter->chapter_name,
                 'method' => 'processSheet',
                 'source' => '/upload/sheet/' . $chapter->id,
                 'accept' => 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,*.xls,*.xlsx',

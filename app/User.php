@@ -515,12 +515,20 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getAssignedShip()
     {
+        $holding = MedusaConfig::get('chapter.holding');
+
         if (isset($this->assignment) == true) {
             foreach ($this->assignment as $assignment) {
-                switch (Chapter::find($assignment['chapter_id'])['chapter_type']) {
+                // If this is a holding chapter, return that chapter id
+                if (in_array($assignment['chapter_id'], $holding) === true) {
+                    return $assignment['chapter_id'];
+                }
+
+                $chapter = Chapter::find($assignment['chapter_id']);
+
+                switch ($chapter->chapter_type) {
                     case 'ship':
                     case 'bivouac':
-                    case 'headquarters':
                     case 'company':
                     case 'station':
                     case 'shuttle':
@@ -567,7 +575,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $assignedShip = $this->getAssignedShip();
 
-        if (Chapter::find($assignedShip)->getCO()['id'] == $this->id) {
+        if (Chapter::find($assignedShip)->getCO()['id'] == $this->id ||
+            Auth::user()->hasAllPermissions() === true) {
             return true;
         }
 
