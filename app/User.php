@@ -68,7 +68,7 @@ use App\Permissions\MedusaPermissions;
  * @property string path
  * @property array history
  * @property string rank_title
- * @property string memberid
+ * @property string member_id
  * @property object updated_at
  *¬
  * @package App
@@ -1011,7 +1011,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $pattern = null;
         }
 
-        $exams = Exam::where('memberid', '=', $this->memberid)->first();
+        $exams = Exam::where('member_id', '=', $this->member_id)->first();
 
         if (empty($exams) === false) {
             if (is_null($pattern) === true) {
@@ -1291,7 +1291,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getExamLastUpdated()
     {
-        $exams = Exam::where('memberid', '=', $this->memberid)->first();
+        $exams = Exam::where('member_id', '=', $this->member_id)->first();
 
         if (isset($exams) === true) {
             return $exams['updated_at'];
@@ -1713,7 +1713,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         );
 
         $idCard->text(
-            $this->memberid,
+            $this->member_id,
             855,
             250,
             function ($font) {
@@ -1732,7 +1732,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                       ->margin(1)
                       ->size(150)
                       ->errorCorrection('H')
-                      ->generate($this->memberid)
+                      ->generate($this->member_id)
             ),
             'top-left',
             780,
@@ -1883,11 +1883,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public static function getMemberIds()
     {
-        $memberIds = self::all(['memberid']);
+        $memberIds = self::all(['member_id']);
         $uniqueMemberIds = [];
 
         foreach ($memberIds as $record) {
-            $uniqueMemberIds[] = intval(substr($record->memberid, 4, 4));
+            $uniqueMemberIds[] = intval(substr($record->member_id, 4, 4));
         }
 
         return $uniqueMemberIds;
@@ -2061,7 +2061,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         try {
             $user =
-                User::where('memberid', '=', $member)
+                User::where('member_id', '=', $member)
                     ->where('registration_status', '=', 'Active')
                     ->where('active', '=', 1)
                     ->firstOrFail();
@@ -2148,7 +2148,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Find a members record by their memberid
+     * Find a members record by their member_id
      *
      * @param $memberId
      *
