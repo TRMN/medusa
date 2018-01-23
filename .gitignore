@@ -16,7 +16,6 @@ Thumbs.db
 tmp
 .vagrant
 /vendor
-composer.lock
 .env
 public/images/RMN*
 storage/
