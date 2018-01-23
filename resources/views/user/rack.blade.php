@@ -239,7 +239,7 @@
                                  alt="{{$group->name}}"
                                  class="{{$group->code === 'HS'? 'qual-badge-hs' : 'qual-badge'}}">
                         </div>
-                        <div class="col-sm-4 vertical-center-qual-badges">{{$group->name}}}</div>
+                        <div class="col-sm-4 vertical-center-qual-badges">{{$group->name}}</div>
                         <div class="col-sm-1 vertical-center-qual-badges">
                             @if($group->multiple)
                                 @if(in_array($group->code, $restricted) && !isset($user->awards[$group->code]))
