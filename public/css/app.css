@@ -4463,6 +4463,12 @@ div.stripes {
   margin-top: -5px;
 }
 
+.vertical-center-qual-badges > input,
+.ribbon-group-row input,
+.ribbon-row input {
+  width: 3em;
+}
+
 .top-15 {
   top: 15%;
 }
