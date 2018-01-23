@@ -23,12 +23,15 @@ alt="{!!$ribbon['name']!!}" data-toggle="tooltip" title="{!!$ribbon['name']!!}" 
 @endif
 <br/>
 @endforeach
+
 @foreach($user->leftRibbons as $index => $ribbon)
-<img src="{!!asset('ribbons/' . $ribbon['code'] . '-' . $ribbon['count'] . '.svg')!!}"
-alt="{!!$ribbon['name']!!}" data-toggle="tooltip" title="{!!$ribbon['name']!!}"
-class="ribbon">@if($user->leftRibbonCount % $user->numAcross == $index % $user->numAcross)
-<br />
+@set('ribbonPath', 'ribbons/' . $ribbon['code'] . '-' . $ribbon['count'] . '.svg')
+@if(!file_exists(public_path($ribbonPath)) && $ribbon['count'] > 5)
+@set('ribbonPath', 'ribbons/' . $ribbon['code'] . '-5.svg')
+@elseif(!file_exists(public_path($ribbonPath)))
+@set('ribbonPath', 'ribbons/' . $ribbon['code'] . '-1.svg')
 @endif
+<img src="{{asset($ribbonPath)}}" alt="{!!$ribbon['name']!!}" data-toggle="tooltip" title="{!!$ribbon['name']!!}" class="ribbon">@if($user->leftRibbonCount % $user->numAcross == $index % $user->numAcross) <br /> @endif
 @endforeach
 
 @if($user->hasAwards())
