@@ -679,16 +679,16 @@ $(document).ready(function ($) {
                 points = 1;
                 break;
             case 'E':
-                points = 1;
+                points = 2;
                 break;
             case 'S':
-                points = 2;
+                points = 4;
                 break;
             case 'D':
-                points = 2;
+                points = 4;
                 break;
             case 'G':
-                points = 3;
+                points = 7;
                 break;
             default:
                 points = 0;
