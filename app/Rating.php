@@ -9,29 +9,35 @@ use Moloquent\Eloquent\Model as Eloquent;
  *
  * Enlisted Ratings
  */
-
-
-
 class Rating extends Eloquent
 {
 
-    protected $fillable = [ 'rate_code', 'rate' ];
+    protected $fillable = ['rate_code', 'rate'];
 
-    static function getRatingsForBranch($branchID)
+    public static function getRatingsForBranch($branchID)
     {
         $results = Rating::all();
         $ratings = [];
 
         foreach ($results as $rating) {
-            if (isset($rating->rate[$branchID]) == true && empty($rating->rate[$branchID]) === false) {
-                $ratings[$rating->rate_code] = $rating->rate['description'] . ' (' . $rating->rate_code . ')';
+            if (isset($rating->rate[$branchID]) == true &&
+                empty($rating->rate[$branchID]) === false) {
+                $ratings[$rating->rate_code] =
+                    $rating->rate['description'] . ' (' . $rating->rate_code . ')';
             }
         }
 
         asort($ratings, SORT_NATURAL);
 
         if (count($ratings) > 0) {
-            $ratings = ['' => 'Select a Rating'] + $ratings;
+            switch ($branchID) {
+                case 'RMMM':
+                case 'CIVIL':
+                    $ratings = ['' => 'Select a Division'] + $ratings;
+                    break;
+                default:
+                    $ratings = ['' => 'Select a Rating'] + $ratings;
+            }
         } else {
             $ratings = ['' => 'No ratings available for this branch'];
         }
@@ -39,8 +45,9 @@ class Rating extends Eloquent
         return $ratings;
     }
 
-    static function getRateName($rateCode)
-    {
+    public static function getRateName(
+        $rateCode
+    ) {
         $rating = self::where('rate_code', '=', $rateCode)->first();
 
         return $rating->rate['description'];
