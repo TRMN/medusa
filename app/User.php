@@ -1603,7 +1603,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     case 'RMMM':
                         $rankCode .= '-MM';
                         break;
-                    case 'SFS':
+                    case 'SFC':
                         $rankCode .= '-SFC';
                         break;
                     case 'INTEL':
@@ -1619,10 +1619,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         switch ($this->branch) {
             case 'RMACS':
-            case 'RMMM':
-            case 'SFS':
             case 'CIVIL':
                 $seal = 'CIV.png';
+                break;
+            case 'RMMM':
+                $seal = 'RMMM.png';
+                break;
+            case 'SFC':
+                $seal = 'SFC.png';
                 break;
             case 'INTEL':
                 $seal = 'INTEL.png';

@@ -34,6 +34,12 @@ module.exports = function () {
                 });
             });
 
+            if (branch == 'RMMM' || branch == 'CIVIL') {
+                $('.ratingDisplay').text('Division');
+            } else {
+                $('.ratingDisplay').text('Rating');
+            }
+
         });
 
         // jQuery.each(['primary', 'secondary', 'additional', 'extra'], function (key, assignment) {

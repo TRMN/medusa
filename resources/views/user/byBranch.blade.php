@@ -29,5 +29,10 @@
             "order": [[3, 'asc']],
             "$UI": true
         });
+
+        $('.trmnUserTable-{{$branch}}').on('draw.dt', function() {
+            $('#right').height(200 + $('.trmnUserTable-{{$branch}}').height());
+        });
+
     </script>
 @stop
