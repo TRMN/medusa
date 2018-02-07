@@ -54,7 +54,7 @@
             @foreach(array_merge(\App\MedusaConfig::get('memberlist.branches'), ['Inactive' => 'Inactive', 'Suspended' => 'Suspended', 'Expelled' => 'Expelled']) as $branch => $branchName)
             $('.trmnUserTable-{{$branch}}').DataTable({
                 "autoWidth": false,
-                "pageLength": 25,
+                "pageLength": 10,
                 "serverSide": true,
                 "ajax": {
                     url: '/users/list/{{$branch}}',
@@ -68,6 +68,14 @@
                 "order": [[3, 'asc']],
                 "$UI": true
             });
+
+            $('.trmnUserTable-{{$branch}}').on('draw.dt', function() {
+                $('#right').height(240 + $('.trmnUserTable-{{$branch}}').height());
+
+                if ($('#right').height() < $('#left').height()) {
+                    $('#right').height($('#left').height());
+                }
+            });
             @endforeach
 
             @foreach(array_merge(\App\MedusaConfig::get('memberlist.branches'), ['Inactive' => 'Inactive', 'Suspended' => 'Suspended', 'Expelled' => 'Expelled']) as $branch => $branchName)
@@ -77,6 +85,7 @@
             $('#{{strtolower($branch)}}').removeClass('hidden');
             @endif
             @endforeach
+
         });
     </script>
 @stop

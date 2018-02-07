@@ -283,7 +283,7 @@ div.stripes {
     margin-right: auto;
   }
 
-  .MT ~ .MID, .MT ~ .WS {
+  .MT ~ .MID, .MT ~ .WS, .MID ~ .WS {
     margin-top: -123px;
   }
 }
@@ -1275,4 +1275,8 @@ input:checked + .slider:before {
   font-weight: 900;
   //font-style: italic;
   color: lawngreen !important;
+}
+
+.volkhov {
+  font-family: 'Volkhov', serif;
 }
