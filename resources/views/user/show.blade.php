@@ -45,27 +45,29 @@
                 @endif
                 @if(!empty($user->history))
                     <div role="tabpanel" class="tab-pane" id="history">
-                        <h2 class="text-center">Service History</h2><br/>
-                        @foreach($user->history as $item)
-                            @if ($loop->first && substr($item['event'], 0, 7) != 'Applied')
+                        <div class="history-content">
+                            <h2 class="text-center">Service History</h2><br/>
+                            @foreach($user->history as $item)
+                                @if ($loop->first && substr($item['event'], 0, 7) != 'Applied')
+                                    <div class="row zebra-odd padding-top-10 padding-bottom-10">
+                                        <div class="col-sm-12">
+                                            Applied on {{date('d M Y', strtotime($user->application_date))}}
+                                        </div>
+                                    </div>
+                                    <div class="row zebra-odd padding-top-10 padding-bottom-10">
+                                        <div class="col-sm-12">
+                                            Application approved by BuPers
+                                            on {{date('d M Y', strtotime($user->registration_date))}}
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="row zebra-odd padding-top-10 padding-bottom-10">
                                     <div class="col-sm-12">
-                                        Applied on {{date('d M Y', strtotime($user->application_date))}}
+                                        {{$item['event']}}
                                     </div>
                                 </div>
-                                <div class="row zebra-odd padding-top-10 padding-bottom-10">
-                                    <div class="col-sm-12">
-                                        Application approved by BuPers
-                                        on {{date('d M Y', strtotime($user->registration_date))}}
-                                    </div>
-                                </div>
-                            @endif
-                            <div class="row zebra-odd padding-top-10 padding-bottom-10">
-                                <div class="col-sm-12">
-                                    {{$item['event']}}
-                                </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
                 @endif
             @endif
@@ -79,7 +81,7 @@
             e.preventDefault();
             $(this).tab('show');
             if ($('.tab-content').height() > $('#right').height()) {
-                $('#right').height($('.tab-content').height());
+                $('#right').height($('.tab-content').height() + 50);
             }
         })
     </script>

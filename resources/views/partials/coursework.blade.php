@@ -27,9 +27,11 @@
             @if(count($user->getExamList(['pattern' => $regex])) > 0)
                 <li role="presentation"{!! $loop->first ? ' class="active"' : '' !!}><a
                             href="#{{str_replace(' ', '', $school)}}" aria-controls="{{str_replace(' ', '', $school)}}"
-                            role="tab" data-toggle="tab">{{$school}}</a>@if($user->hasNewExams($regex))
-                        <span class="fa fa-star red"></span>
-                    @endif
+                            role="tab" data-toggle="tab">
+                        {{$school}}@if($user->hasNewExams($regex)) <span class="fa fa-star red"></span>@endif
+                    </a>
+
+
                 </li>
             @endif
         @endforeach

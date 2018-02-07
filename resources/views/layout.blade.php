@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{!! asset('css/vendor.css') !!}?{{ time() }}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/app.css') !!}?{{ time() }}">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/overrides.css') !!}?{{ time() }}">
+    <link href="https://fonts.googleapis.com/css?family=Volkhov" rel="stylesheet">
 
     <link rel="shortcut icon" href="{!! asset('favicon.ico') !!}">
     @yield('dochead')

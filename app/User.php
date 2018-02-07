@@ -590,7 +590,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return bool|string
      */
-    public function getAssignmentId($position)
+    public function getAssignmentId($position = 'primary')
     {
         return $this->getIndividualAssignmentAttribute($position, 'chapter_id');
     }
@@ -602,7 +602,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return bool
      */
-    public function getFullAssignmentInfo($position)
+    public function getFullAssignmentInfo($position = 'primary')
     {
         if (isset($this->assignment) == true) {
             foreach ($this->assignment as $assignment) {
@@ -670,7 +670,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return bool|mixed
      */
-    public function getAssignmentName($position)
+    public function getAssignmentName($position = 'primary')
     {
         return $this->getChapterAssignmentAttribute($position, 'chapter_name');
     }
@@ -706,7 +706,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return bool|mixed
      */
-    public function getAssignmentDesignation($position)
+    public function getAssignmentDesignation($position = 'primary')
     {
         return $this->getChapterAssignmentAttribute($position, 'hull_number');
     }
@@ -718,7 +718,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return bool|mixed
      */
-    public function getAssignmentType($position)
+    public function getAssignmentType($position = 'primary')
     {
         return $this->getChapterAssignmentAttribute($position, 'chapter_type');
     }
@@ -772,7 +772,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return bool|string
      */
-    public function getBillet($position)
+    public function getBillet($position = 'primary')
     {
         return $this->getIndividualAssignmentAttribute($position, 'billet');
     }
@@ -808,7 +808,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return bool|string
      */
-    public function getDateAssigned($position)
+    public function getDateAssigned($position = 'primary')
     {
         return $this->getIndividualAssignmentAttribute(
             $position,
@@ -1606,11 +1606,29 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     case 'SFC':
                         $rankCode .= '-SFC';
                         break;
-                    case 'INTEL':
-                        $rankCode .= '-IS';
-                        break;
                     case 'CIVIL':
-                        $rankCode .= '-CD';
+                        switch ($this->rating) {
+                            case 'INTEL':
+                                $rankCode .= '-IS';
+                                break;
+                            case 'DIPLOMATIC':
+                                $rankCode .= '-CD';
+                                break;
+                            case "LORDS":
+                                if ($this->rank['grade'] == 'C-20' || $this->rank['grade'] == 'C-22') {
+                                    $rankCode .= '-MP';
+                                } else {
+                                    $rankCode .= '-LS';
+                                }
+                                break;
+                            case 'COMMONS':
+                                if ($this->rank['grade'] == 'C-20' || $this->rank['grade'] == 'C-22') {
+                                    $rankCode .= '-MP';
+                                } else {
+                                    $rankCode .= '-CS';
+                                }
+                                break;
+                        }
                 }
                 break;
             default:
@@ -1621,6 +1639,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             case 'RMACS':
             case 'CIVIL':
                 $seal = 'CIV.png';
+                if ($this->rating == 'INTEL') {
+                    $seal = 'INTEL.png';
+                }
                 break;
             case 'RMMM':
                 $seal = 'RMMM.png';

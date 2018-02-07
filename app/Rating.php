@@ -32,8 +32,10 @@ class Rating extends Eloquent
         if (count($ratings) > 0) {
             switch ($branchID) {
                 case 'RMMM':
-                case 'CIVIL':
                     $ratings = ['' => 'Select a Division'] + $ratings;
+                    break;
+                case 'CIVIL':
+                    $ratings = ['' => 'Select a Speciality'] + $ratings;
                     break;
                 default:
                     $ratings = ['' => 'Select a Rating'] + $ratings;

@@ -860,8 +860,10 @@ module.exports = function () {
                 });
             });
 
-            if (branch == 'RMMM' || branch == 'CIVIL') {
+            if (branch == 'RMMM') {
                 $('.ratingDisplay').text('Division');
+            } else if (branch == 'CIVIL') {
+                $('.ratingDisplay').text('Speciality');
             } else {
                 $('.ratingDisplay').text('Rating');
             }

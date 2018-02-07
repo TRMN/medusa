@@ -56,7 +56,9 @@
     font-family: "Incised 901 W01 Bold Cd";
     src: url("/fonts/adb6d4f0-d5ea-421c-9fda-9bee031b2e0f.eot?#iefix");
     src: url("/fonts/adb6d4f0-d5ea-421c-9fda-9bee031b2e0f.eot?#iefix") format("eot"), url("/fonts/f074e300-89a1-4eb0-aad4-c1c31096ba8b.woff2") format("woff2"), url("/fonts/dfde127f-985e-4f06-bd32-cd8f90f0ac70.woff") format("woff"), url("/fonts/b33a4ca6-dfe9-48d5-995f-e2fa8f71ec6d.ttf") format("truetype"), url("/fonts/e3b01211-055a-4725-85c7-d85a45abfa9c.svg#e3b01211-055a-4725-85c7-d85a45abfa9c") format("svg");
-}.swraper
+}
+
+.swraper
 {
 	display: inline-block;
 
@@ -4365,7 +4367,8 @@ div.stripes {
   }
 
   .MT ~ .MID,
-  .MT ~ .WS {
+  .MT ~ .WS,
+  .MID ~ .WS {
     margin-top: -123px;
   }
 }
@@ -5424,5 +5427,9 @@ input:checked + .slider:before {
 .promotable {
   font-weight: 900;
   color: lawngreen !important;
+}
+
+.volkhov {
+  font-family: 'Volkhov', serif;
 }
 

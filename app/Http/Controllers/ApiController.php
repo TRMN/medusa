@@ -141,7 +141,8 @@ class ApiController extends Controller
     {
         return Response::json(
             Chapter::getChaptersByType('university') +
-            Chapter::getChaptersByType('university_system'));
+            Chapter::getChaptersByType('university_system')
+        );
     }
 
     public function checkAddress($email_address)
@@ -170,7 +171,7 @@ class ApiController extends Controller
             $user->filePhoto = '/photos/' . $fileName;
 
             $this->writeAuditTrail(
-                (string)\Auth::user()->_id,
+                (string)\Auth::user()->id,
                 'update',
                 'users',
                 (string)$user->_id,
@@ -183,7 +184,6 @@ class ApiController extends Controller
             \Artisan::call('view:clear');
             \Artisan::call('cache:clear');
             \Artisan::call('route:clear');
-
         }
     }
 
@@ -224,10 +224,17 @@ class ApiController extends Controller
                                     '%' . $terms[0] . '%'
                                 )
                                       ->orWhere(
-                                          'first_name', 'like', $terms[0] . '%')
+                                          'first_name',
+                                          'like',
+                                          $terms[0] . '%'
+                                      )
                                       ->orWhere(
-                                          'last_name', 'like', $terms[0] . '%');
-                            });
+                                          'last_name',
+                                          'like',
+                                          $terms[0] . '%'
+                                      );
+                            }
+                        );
                 break;
             case 2:
                 $query =
@@ -256,8 +263,8 @@ class ApiController extends Controller
                                $member->last_name .
                                (!empty($member->suffix) ? ' ' . $member->suffix :
                                    '') . ' (' . $member->getAssignmentName(
-                            'primary'
-                        ) . ')',
+                                       'primary'
+                                   ) . ')',
                     'data'  => $member->id,
                 ];
         }
@@ -327,7 +334,8 @@ class ApiController extends Controller
         return Response::json(
             [
                 'events' => $user->getScheduledEvents($continent, $city),
-            ]);
+            ]
+        );
     }
 
     public function checkInMember(
@@ -346,7 +354,8 @@ class ApiController extends Controller
                 $member,
                 $continent,
                 $city
-            ));
+            )
+        );
     }
 
     public function getRibbonRack($member_id)
@@ -373,18 +382,28 @@ class ApiController extends Controller
     {
         return MedusaConfig::get(
             'chapter.selection',
-            '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]');
+            '[{"unjoinable": false, "label": "Holding Chapters", "url": "/api/holding"}]'
+        );
     }
 
     public function setPath(\Illuminate\Http\Request $request)
     {
-        $user = User::find($request->input('user_id'));
+        try {
+            $user = User::find($request->input('user_id'));
 
-        return Response::json(
-            ['status' => ($user->setPath(
-                    $request->input('path'))
-                          === true) ? 'ok' : 'error']
-        );
+            $status = $user->setPath($request->input('path'));
+
+            if ($status === true) {
+                $user->addServiceHistoryEntry([
+                      'timestamp' => time(),
+                      'event'     => ucfirst($request->input('path')) . ' path selected',
+                      ]);
+            }
+
+            return Response::json(['status' => $status === true ? 'ok' : 'error']);
+        } catch (\Exception $e) {
+            return Response::json(['status' => 'error']);
+        }
     }
 
     public function updateAwardDisplayOrder(\Illuminate\Http\Request $request)
@@ -405,7 +424,8 @@ class ApiController extends Controller
         if ($errors > 0) {
             return Response::json(
                 ['status' => 'error',
-                 'msg'    => 'There was a problem updating one or more awards']);
+                 'msg'    => 'There was a problem updating one or more awards']
+            );
         } else {
             return Response::json(['status' => 'ok']);
         }
@@ -469,7 +489,7 @@ class ApiController extends Controller
 
         return Response::json(
             ['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check,
-             'pinfo' => $promotionInfo]);
-
+             'pinfo' => $promotionInfo]
+        );
     }
 }
