@@ -344,14 +344,9 @@ class UploadController extends Controller
                                     [$key =>
                                          [
                                              'count'      => $value,
-                                             'location'   => Award::getAwardByCode(
-                                                 $key
-                                             )['location'],
-                                             'award_date' => array_fill(
-                                                 0,
-                                                 $value,
-                                                 '1970-01-01'
-                                             ),
+                                             'location'   => Award::getAwardByCode($key)['location'],
+                                             'award_date' => array_fill(0, $value, '1970-01-01'),
+                                             'display'    => true,
                                          ],
                                     ]
                                 );
