@@ -20,7 +20,7 @@
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
             <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">
-                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->promotionPointsEditAccess($user)])}}
+                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->promotionPointsEditAccess($user), 'min' => 0])}}
             </div>
             <div class="col-sm-4 text-right"><span class="pp" id="{{$item['target']}}"></span></div>
         </div>
@@ -46,7 +46,7 @@
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
             <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">
-                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->promotionPointsEditAccess($user)])}}
+                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->promotionPointsEditAccess($user), 'min' => 0])}}
             </div>
             <div class="col-sm-4 text-right"><span class="pp" id="{{$item['target']}}"></span></div>
         </div>
@@ -72,7 +72,7 @@
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
             <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">
-                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->hasPermissions(['EDIT_MEMBER'])])}}
+                {{Form::number("points[{$item['target']}]", empty($user->points[$item['target']]) ? 0 : $user->points[$item['target']], ['class' => $item['class'] . ' text-right', 'data-target' => $item['target'], 'data-points' => $item['points'], 'disabled' => !$permsObj->hasPermissions(['EDIT_MEMBER']), 'min' => 0])}}
             </div>
             <div class="col-sm-4 text-right"><span class="pp" id="{{$item['target']}}"></span></div>
         </div>
