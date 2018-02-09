@@ -2261,7 +2261,13 @@ class UserController extends Controller
             return $redirect;
         }
 
-        $user->points = $request->points;
+        $points = [];
+
+        foreach ($request->points as $key => $value) {
+            $points[$key] = $value >= 0 ? $value : 0;
+        }
+
+        $user->points = $points;
 
         try {
             $user->save();
