@@ -431,6 +431,16 @@ Route::get('/api/ribbonrack/{memberid}',
     ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']);
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 
+Route::get('/api/lastexam/{memberid}', function($memberid) {
+        $exams = \App\Exam::where('member_id', '=', $memberid)->first();
+
+        if (isset($exams) === true) {
+            return $exams['updated_at'];
+        } else {
+            return false;
+	} 
+});
+
 // This MUST be the last route
 Route::get(
     '/user/{user}/{message?}',
