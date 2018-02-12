@@ -506,15 +506,15 @@ Route::post(
     ['uses' => 'ApiController@checkRankQual']
 ); //->middleware('auth');
 
-// This MUST be the last route
-Route::get(
-    '/user/{user}/{message?}',
-    [
-        'as'        => 'user.show',
-        'uses'      => 'UserController@show',
-        'middlware' => 'auth',
-    ]
-);
+Route::get('/api/lastexam/{memberid}', function($memberid) {
+    $exams = \App\Exam::where('member_id', '=', $memberid)->first();
+
+    if (isset($exams) === true) {
+        return $exams['updated_at'];
+    } else {
+        return false;
+    }
+});
 
 Route::get(
     '/getRoutes', function () {
@@ -525,6 +525,16 @@ Route::get(
 
     }
 }
+);
+
+// These MUST be the last two routes
+Route::get(
+    '/user/{user}/{message?}',
+    [
+        'as'        => 'user.show',
+        'uses'      => 'UserController@show',
+        'middlware' => 'auth',
+    ]
 );
 
 Route::any(
