@@ -61,11 +61,13 @@
                                         </div>
                                     </div>
                                 @endif
-                                <div class="row zebra-odd padding-top-10 padding-bottom-10">
-                                    <div class="col-sm-12">
-                                        {{$item['event']}}
+                                @if($item['timestamp'] <= time())
+                                    <div class="row zebra-odd padding-top-10 padding-bottom-10">
+                                        <div class="col-sm-12">
+                                            {{$item['event']}}
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endforeach
                         </div>
                     </div>

@@ -3022,4 +3022,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             throw new Exception($e->getMessage());
         }
     }
+
+    /**
+     * Get all active users
+     *
+     * @return \App\User[]
+     */
+    public static function activeUsers()
+    {
+        return self::where('registration_status', 'Active')->where('active', 1)
+                   ->get();
+    }
 }
