@@ -2458,7 +2458,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $validKeys =
             [
                 'triad', 'fleet', 'ah', 'cpm', 'cpe', 'che', 'cph', 'chh', 'vch',
-                'con', 'ahcon', 'vcon', 'vahcon', 'mp', 'sh', 'ls',
+                'con', 'ahcon', 'vcon', 'vahcon', 'mp', 'sh', 'ls', 'peerage',
             ];
 
         if (in_array($key, $validKeys) === true &&
