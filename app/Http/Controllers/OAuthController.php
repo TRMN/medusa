@@ -296,6 +296,8 @@ class OAuthController extends Controller
               strtotime($_user->updated_at->toDateTimeString());
         }
 
+        $_user->promotionPoints = $_user->getTotalPromotionPoints();
+
         return Response::json($_user);
     }
 
