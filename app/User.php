@@ -2817,30 +2817,49 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Check if a SFS cadet is promotable based on age
+     * Check if a SFC cadet or member is promotable based on age (< 18) or regular
+     * requirements
      *
      * @return array|null
      */
-    private function sfsIsPromotable()
+    private function sfcIsPromotable($tigCheck = true, $payGrade2Check = null, $early = false)
     {
         $age = Carbon::now()->diffInYears(Carbon::parse($this->dob));
 
         switch ($age) {
             case ($age < 9):
-                return ['C-1'];
+                return $this->rank['grade'] != 'C-1' ? ['C-1'] : null;
                 break;
             case ($age < 13):
-                return ['C-2'];
+                return $this->rank['grade'] != 'C-2' ? ['C-2'] : null;
                 break;
             case ($age < 17):
-                return ['C-3'];
+                return $this->rank['grade'] != 'C-3' ? ['C-3'] : null;
                 break;
             case ($age < 18):
-                return ['C-6'];
+                return $this->rank['grade'] != 'C-6' ? ['C-6'] : null;
                 break;
-        }
+            default:
+                $flags = $this->getPromotableInfo($payGrade2Check);
 
-        return null;
+                if ($tigCheck === true) {
+                    if ($early === true) {
+                        return ($flags['tig'] && $flags['points'] && $flags['early'] === true
+                                && $flags['exams']) === true ? $flags['next'] : null;
+                    } else {
+                        return ($flags['tig'] && $flags['points'] &&
+                                $flags['exams']) === true ? $flags['next'] : null;
+                    }
+                } else {
+                    if ($early === true) {
+                        return ($flags['points'] && $flags['exams'] && $flags['early']) === true ?
+                            $flags['next'] : null;
+                    } else {
+                        return ($flags['points'] && $flags['exams']) === true ?
+                            $flags['next'] : null;
+                    }
+                }
+        }
     }
 
     /**
@@ -2853,8 +2872,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     public function isPromotableEarly($payGrade2Check = null)
     {
         switch ($this->branch) {
-            case 'SFS':
-                return $this->sfsIsPromotable();
+            case 'SFC':
+                return $this->sfcIsPromotable(true, $payGrade2Check, true);
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
@@ -2874,8 +2893,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     public function isPromotable($tigCheck = true, $payGrade2Check = null)
     {
         switch ($this->branch) {
-            case 'SFS':
-                return $this->sfsIsPromotable();
+            case 'SFC':
+                return $this->sfcIsPromotable($tigCheck, $payGrade2Check);
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);

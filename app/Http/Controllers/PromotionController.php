@@ -44,64 +44,68 @@ class PromotionController extends Controller
                 continue;
             }
 
-            $pi = $member->getPromotableInfo();
+            if (is_null($member->isPromotable()) === false ||
+                is_null($member->isPromotableEarly()) == false) {
+                $pi = $member->getPromotableInfo();
 
-            $flags = [
-                'promotable' => $pi['tig'] && $pi['exams'] && $pi['points'],
-                'early' => $pi['exams'] && $pi['points'] && $pi['early'],
-            ];
+                $flags = [
+                    'promotable' => $pi['tig'] && $pi['exams'] && $pi['points'],
+                    'early'      => $pi['exams'] && $pi['points'] && $pi['early'],
+                ];
 
-            if ($flags['promotable'] === true || $flags['early'] === true) {
-                // Crew member is promotable, determine which bucket
+                if ($flags['promotable'] === true || $flags['early'] === true) {
+                    // Crew member is promotable, determine which bucket
 
-                foreach ($pi['next'] as $rank) {
-                    $memberCopy = new \stdClass();
-                    $memberCopy->id = $member->id;
-                    $memberCopy->fullName = $member->getFullName(true);
-                    $memberCopy->next_grade = $rank;
-                    $memberCopy->primaryChapter = $member->getAssignmentName('primary');
+                    foreach ($pi['next'] as $rank) {
+                        $memberCopy = new \stdClass();
+                        $memberCopy->id = $member->id;
+                        $memberCopy->fullName = $member->getFullName(true);
+                        $memberCopy->next_grade = $rank;
+                        $memberCopy->primaryChapter =
+                            $member->getAssignmentName('primary');
 
-                    // Parse the pay grade
-                    $paygrade = explode('-', $rank);
+                        // Parse the pay grade
+                        $paygrade = explode('-', $rank);
 
-                    // Process based on Enlisted/Civilian/Warrant/Officer/Flag
-                    switch ($paygrade[0]) {
-                        case 'E':
-                        case 'C':
-                            if ($paygrade[1] < 7) {
-                                // Promotable by the CO to this grade
-                                if ($flags['early'] === true) {
-                                    $early[] = $memberCopy;
+                        // Process based on Enlisted/Civilian/Warrant/Officer/Flag
+                        switch ($paygrade[0]) {
+                            case 'E':
+                            case 'C':
+                                if ($paygrade[1] < 7) {
+                                    // Promotable by the CO to this grade
+                                    if ($flags['early'] === true) {
+                                        $early[] = $memberCopy;
+                                    } else {
+                                        $promotable[] = $memberCopy;
+                                    }
                                 } else {
-                                    $promotable[] = $memberCopy;
+                                    $board[] = $memberCopy;
                                 }
-                            } else {
-                                $board[] = $memberCopy;
-                            }
-                            break;
-                        case 'WO':
-                            if ($paygrade[1] == 1) {
-                                $warrant[] = $memberCopy;
-                            } else {
-                                $board[] = $memberCopy;
-                            }
+                                break;
+                            case 'WO':
+                                if ($paygrade[1] == 1) {
+                                    $warrant[] = $memberCopy;
+                                } else {
+                                    $board[] = $memberCopy;
+                                }
 
-                            break;
-                        case 'O':
-                            if ($paygrade[1] == 1) {
-                                $merit[] = $memberCopy;
-                            } elseif ($paygrade[1] == 2 && Auth::user()->hasPermissions(['PROMOTE_E6O2']) === true && Auth::user()->isFleetCO() === true) {
-                                $promotable[] = $memberCopy;
-                            } else {
-                                $board[] = $memberCopy;
-                            }
-                            break;
+                                break;
+                            case 'O':
+                                if ($paygrade[1] == 1) {
+                                    $merit[] = $memberCopy;
+                                } elseif ($paygrade[1] == 2 &&
+                                          Auth::user()->hasPermissions(['PROMOTE_E6O2']) === true &&
+                                          Auth::user()->isFleetCO() === true) {
+                                    $promotable[] = $memberCopy;
+                                } else {
+                                    $board[] = $memberCopy;
+                                }
+                                break;
+                        }
+                        unset($memberCopy);
                     }
-                    unset($memberCopy);
                 }
             }
-
-
         }
 
         return view('promotions.index', [
