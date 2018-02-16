@@ -174,10 +174,10 @@ trait MedusaPermissions
         return false;
     }
 
-    public function canPromote()
+    public function canPromote($chapterId)
     {
         if ((Auth::user()->hasPermissions(['PROMOTE_E6O1']) === true &&
-             Auth::user()->isCoAssignedShip() === true)
+             (Auth::user()->isCoAssignedShip() === true) || Auth::user()->isCommandingOfficer($chapterId))
             || Auth::user()->hasAllPermissions()
             || (Auth::user()->isFleetCO() === true &&
                 Auth::user()->hasPermissions(['PROMOTE_E6O2']) === true)) {

@@ -477,7 +477,7 @@ class Chapter extends Eloquent
             return $triad[$slot]['user'];
         }
 
-        return [];
+        return null;
     }
 
     /**
