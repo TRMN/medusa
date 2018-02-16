@@ -573,10 +573,23 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function isCoAssignedShip()
     {
-        $assignedShip = $this->getAssignedShip();
+        return $this->isCommandingOfficer($this->getAssignedShip());
+    }
 
-        if (Chapter::find($assignedShip)->getCO()['id'] == $this->id ||
-            Auth::user()->hasAllPermissions() === true) {
+    /**
+     * Is this user the CO of the specified Chapter?
+     *
+     * @param $chapterId
+     *
+     * @return bool
+     */
+    public function isCommandingOfficer($chapterId)
+    {
+        $chapterCO = Chapter::find($chapterId)->getCO();
+
+        if (is_null($chapterCO) === false &&
+            ($chapterCO['id'] == $this->id ||
+             Auth::user()->hasAllPermissions() === true)) {
             return true;
         }
 

@@ -142,7 +142,7 @@
                     @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                         <br/><a href="{!!route('roster.export', [$detail->id])!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Download Roster</button></a>
                     @endif
-                    @if($permsObj->canPromote())
+                    @if($permsObj->canPromote($detail->id))
                             <a href="{{ route('promotions', [$detail->id]) }}"><button class="btn btn-sm btn-primary"><span class="fa fa-thumbs-up"></span> Promotions</button></a>
                     @endif
                     @if(Auth::user()->isCoAssignedShip())
