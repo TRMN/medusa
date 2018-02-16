@@ -36,7 +36,7 @@ $(document).ready(function ($) {
         clickable: true,
         previewTemplate: '<div style="display:none"></div>',
         createImageThumbnails: false,
-        dictDefaultMessage: 'Click or Drop<br />File Here<br />&nbsp;<br />150 px X 200 px',
+        dictDefaultMessage: 'Click or Drop<br />File Here<br />&nbsp;<br />150px X 200px',
         dictInvalidFileType: 'Only .png, .gif and .jpg images will be accepted',
         init: function () {
             this.on("success", function (file) {

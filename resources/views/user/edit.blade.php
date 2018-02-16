@@ -287,7 +287,7 @@
                     <div class=" col-sm-4  ninety Incised901Light form-group">
                         {!! Form::label('display_rank', "Rank", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('display_rank', $grades, $user->display_rank, ['class' => 'form-control', 'id' => 'rank']) !!} {{Form::hidden('current_rank', $user->display_rank, ['id' => 'current_rank'])}}
                         @else
-                            {!!Form::hidden('display_rank', $user->display_rank)!!} {!!$grades[$user->display_rank]!!}
+                            {!!Form::hidden('display_rank', $user->display_rank)!!} {{$user->getGreeting()}} ({{$user->display_rank}})
                             <br/><br/>
                         @endif
                     </div>
