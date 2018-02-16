@@ -203,6 +203,7 @@ trait AwardQualification
                     $required++;
                 }
             }
+
             if ($required == count($swpQual['Required'])) {
                 $required = true;
             } else {
@@ -222,7 +223,7 @@ trait AwardQualification
             }
 
             // Do they qualify?
-            if ($required === true && count($departments) == $swpQual['NumDepts']) {
+            if ($required === true && count($departments) >= $swpQual['NumDepts']) {
                 // Yes they do, add it.
 
                 $awardDate = $isNewAward === true ? Carbon::create()->firstOfMonth()
@@ -253,6 +254,7 @@ trait AwardQualification
                         ]
                     );
                 }
+                return true;
             }
             return false;
         }
