@@ -15,7 +15,7 @@ class PromotionController extends Controller
 
     public function index(Chapter $chapter)
     {
-        if (($redirect = $this->canPromote()) !== true) {
+        if (($redirect = $this->canPromote($chapter)) !== true) {
             return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
@@ -146,7 +146,7 @@ class PromotionController extends Controller
         $promoted = [];
 
         foreach ($promotions as $member) {
-            $user = User::find($member['memberId']);
+            $user = Usercan::find($member['memberId']);
 
             $from = Grade::getRankTitle($user->rank['grade'], $user->getRate(),
                     $user->branch) . ' (' . $user->rank['grade'] . ')';
