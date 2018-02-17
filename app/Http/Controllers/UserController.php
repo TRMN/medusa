@@ -1293,7 +1293,7 @@ class UserController extends Controller
                 Chapter::find($data['additional_assignment'])->chapter_name;
 
             $assignment[] = [
-                'chapterid'    => $data['additional_assignment'],
+                'chapter_id'    => $data['additional_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
@@ -1312,7 +1312,7 @@ class UserController extends Controller
                 Chapter::find($data['extra_assignment'])->chapter_name;
 
             $assignment[] = [
-                'chapterid'    => $data['extra_assignment'],
+                'chapter_id'    => $data['extra_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
@@ -1343,7 +1343,7 @@ class UserController extends Controller
             $currentValue = $user->getFullAssignmentInfo($position);
 
             // Did this assignment change?
-            if ($item['chapterid'] !== $currentValue['chapterid']) {
+            if ($item['chapter_id'] !== $currentValue['chapter_id']) {
                 $history[] = [
                     'timestamp' => strtotime($item['date_assigned']),
                     'event'     => ucfirst($position) . ' assignment changed to ' .
