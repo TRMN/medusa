@@ -121,9 +121,9 @@ trait AwardQualification
     public function numToNextMcam()
     {
         if ($this->hasAward('MCAM')) {
-            $numMcams = $this->awards['MCAM']['count'];
+            $numMcams = $this->awards['MCAM']['count'] + 1;
 
-            return count($this->getExamList()) - (($numMcams * 35) + 5);
+            return (($numMcams * 35) + 5) - count($this->getExamList());
         }
 
         return null;
