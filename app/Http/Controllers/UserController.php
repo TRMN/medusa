@@ -637,7 +637,7 @@ class UserController extends Controller
         $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
         $assignment[] = [
-            'chapterid'    => $data['primary_assignment'],
+            'chapter_id'    => $data['primary_assignment'],
             'chapter_name'  => $chapterName,
             'date_assigned' => date(
                 'Y-m-d',
@@ -655,7 +655,7 @@ class UserController extends Controller
                 Chapter::find($data['secondary_assignment'])->chapter_name;
 
             $assignment[] = [
-                'chapterid'    => $data['secondary_assignment'],
+                'chapter_id'    => $data['secondary_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
@@ -872,7 +872,7 @@ class UserController extends Controller
                 Chapter::find($data['primary_assignment'])->chapter_name;
 
             $data['assignment'][] = [
-                'chapterid'    => $data['primary_assignment'],
+                'chapter_id'    => $data['primary_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date('Y-m-d'),
                 'billet'        => $billet,
@@ -1224,7 +1224,7 @@ class UserController extends Controller
                         $event = $branch . ' Rating ';
                 }
 
-                $old = ($user->branch === $branch) ? Rating::getRateName($rate) . ' (' . $rate . ') ' : null;
+                $old = ($user->branch === $branch && empty($rate) === false) ? Rating::getRateName($rate) . ' (' . $rate . ') ' : null;
 
                 $new = (empty($data['rating']) === false) ? Rating::getRateName($data['rating']) .
                         ' (' . $data['rating'] . ')': null;
@@ -1256,7 +1256,7 @@ class UserController extends Controller
         $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
         $assignment[] = [
-            'chapterid'    => $data['primary_assignment'],
+            'chapter_id'    => $data['primary_assignment'],
             'chapter_name'  => $chapterName,
             'date_assigned' => date(
                 'Y-m-d',
@@ -1274,7 +1274,7 @@ class UserController extends Controller
                 Chapter::find($data['secondary_assignment'])->chapter_name;
 
             $assignment[] = [
-                'chapterid'    => $data['secondary_assignment'],
+                'chapter_id'    => $data['secondary_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',

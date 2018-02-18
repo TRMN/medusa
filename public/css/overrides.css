@@ -2,19 +2,7 @@
   color: #66b2c9;
 }
 
-:-moz-placeholder {
-  color: #66b2c9;
-}
-
-::-moz-placeholdermoz-placeholder {
-  color: #66b2c9;
-}
-
 ::-ms-input-placeholder {
-  color: #66b2c9;
-}
-
-::-webkit-input-placeholder {
   color: #66b2c9;
 }
 

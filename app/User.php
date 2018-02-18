@@ -1131,15 +1131,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             return [];
         }
 
-        $list = array_sort(
-            $list,
-            function ($value) {
-                return $value['date'];
-            }
-        );
-
-        end($list);
-        return [key($list) => last($list)];
+        krsort($list);
+        return [key($list) => array_shift($list)];
     }
 
     /**
