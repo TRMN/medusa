@@ -109,22 +109,24 @@ class PromotionController extends Controller
         }
 
         return view('promotions.index', [
-            'chapter' => $chapter,
-            'early' => $early,
+            'chapter'    => $chapter,
+            'early'      => $early,
             'promotable' => $promotable,
-            'board' => $board,
-            'warrant' => $warrant,
-            'merit' => $merit,
+            'board'      => $board,
+            'warrant'    => $warrant,
+            'merit'      => $merit,
         ]);
     }
 
     public function promote(Request $request)
     {
-        if (($redirect = $this->canPromote()) !== true) {
-            return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
+        $chapterId = $request->chapter;
+
+        if (($redirect = $this->canPromote($chapterId)) !== true) {
+            return redirect(URL::previous())->with(
+                'message', 'You do not have permission to view that page');
         }
 
-        $chapterId = $request->chapter;
         $payload = json_decode($request->payload, true);
 
         foreach (['early', 'promotable'] as $key) {
@@ -146,7 +148,7 @@ class PromotionController extends Controller
         $promoted = [];
 
         foreach ($promotions as $member) {
-            $user = Usercan::find($member['memberId']);
+            $user = User::find($member['memberId']);
 
             $from = Grade::getRankTitle($user->rank['grade'], $user->getRate(),
                     $user->branch) . ' (' . $user->rank['grade'] . ')';
@@ -157,9 +159,9 @@ class PromotionController extends Controller
                     $user->branch) . ' (' . $member['grade'] . ')';
 
             $promoted[] = [
-                'name' => $user->getFullName(),
-                'from' => $from,
-                'to' => $to,
+                'name'      => $user->getFullName(),
+                'from'      => $from,
+                'to'        => $to,
                 'member_id' => $user->member_id,
             ];
         }
