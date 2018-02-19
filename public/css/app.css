@@ -4264,6 +4264,13 @@ table.dataTable.display tbody tr:first-child td {
   width: 105px;
 }
 
+.awq {
+  width: 100px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 10px;
+}
+
 .citation {
   width: 105px;
   margin-right: -6px;
@@ -4402,7 +4409,8 @@ div.stripes {
 .ESSW,
 .OSSW,
 .EMSW,
-.OMSW {
+.OMSW,
+.CIB {
   width: 262px;
   margin-bottom: 10px;
 }

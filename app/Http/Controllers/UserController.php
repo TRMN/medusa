@@ -1995,6 +1995,7 @@ class UserController extends Controller
                 "EMSW",
                 "OMSW",
                 "HS",
+                "CIB",
             ]
         );
 
