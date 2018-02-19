@@ -219,7 +219,7 @@
             </div>
         </div>
 
-        @foreach(App\Award::getTopBadges(['HS', 'OSWP', 'ESWP']) as $index => $badge)
+        @foreach(App\Award::getTopBadges(['HS', 'OSWP', 'ESWP', 'CIB']) as $index => $badge)
             @foreach($badge['group']['awards'] as $group)
                 @if(file_exists(public_path('awards/badges/' . $group->code . '-1.svg')))
                     <div class="row ribbon-group-row qual-badges">
@@ -252,8 +252,11 @@
                             @endif
                         </div>
                         <div class="col-sm-2 vertical-center-qual-badges qual-badges text-center">
-                            @if(in_array($group->code, $restricted) && !isset($user->awards[$group->code]))
-                                &nbsp;
+                            @if(
+                                (in_array($group->code, $restricted) && !isset($user->awards[$group->code])) ||
+                                ($group->code == 'CIB' && ($user->branch != 'RMA') && !$user->hasAllPermissions())
+                            )
+                                N/A
                             @else
                                 {{Form::radio('qualbadge_display', $group->code, isset($user->awards[$group->code]['display'])?$user->awards[$group->code]['display']:false)}}
                             @endif
@@ -284,7 +287,7 @@
                         <img id="select{{$groupCount}}_img" class="qual-badge"/>
                     </div>
                     <div class="col-sm-5 top-15"><select name="select{{$groupCount}}" id="select{{$groupCount}}"
-                                                          class="ribbon_group_select">
+                                                         class="ribbon_group_select">
                             <option value="">Choose your {{$desc}}</option>
                             @foreach($ribbon['group']['awards'] as $item)
                                 @if(file_exists(public_path('awards/badges/' . $item->code . '-1.svg')))
@@ -305,33 +308,35 @@
 
         @endforeach
 
-        <div class="row ribbon-group-row qual-badges">
-            <div class="col-sm-7">
-                <h4><em>Note: RMA Weapon Qualification Badges currently do not show up on your Ribbon Rack</em></h4>
-            </div>
-        </div>
-
-        @foreach(App\Award::getArmyWeaponQualificationBadges() as $index => $ribbon)
+        @if($user->branch == 'RMA' || $user->hasAllPermissions())
             <div class="row ribbon-group-row qual-badges">
-                <div class="col-sm-1 vertical-center-qual-badges">{{Form::checkbox('select' . $groupCount . '_chk', 1, false, ['id' => 'select' . $groupCount . '_chk'])}}</div>
-                <div class="col-sm-2 text-center">
-                    <img id="select{{$groupCount}}_img" class="qual-badge-hs"/>
+                <div class="col-sm-10 text-center">
+                    <h3>RMA Weapon Qualification Badges</h3>
                 </div>
-                <div class="col-sm-5 "><select name="select{{$groupCount}}" id="select{{$groupCount}}"
-                                                class="awq_group_select">
-                        <option value="">{{$ribbon['group']['label']}}</option>
-                        @foreach($ribbon['group']['awards'] as $item)
-
-                            <option value='{"code": "{{$item->code}}", "img": "select{{$groupCount}}_img", "chk":  "select{{$groupCount}}_chk", "badge": "/awards/badges/{{$item->image}}"}'{{isset($user->awards[$item->code])?' selected':''}}>{{$item->name}}</option>
-
-                        @endforeach
-                    </select></div>
             </div>
 
-            @php
-            $groupCount++;
-            @endphp
-        @endforeach
+            @foreach(App\Award::getArmyWeaponQualificationBadges() as $index => $ribbon)
+                <div class="row ribbon-group-row qual-badges">
+                    <div class="col-sm-1 vertical-center-qual-badges">{{Form::checkbox('select' . $groupCount . '_chk', 1, false, ['id' => 'select' . $groupCount . '_chk'])}}</div>
+                    <div class="col-sm-2 text-center">
+                        <img id="select{{$groupCount}}_img" class="qual-badge-hs"/>
+                    </div>
+                    <div class="col-sm-5 "><select name="select{{$groupCount}}" id="select{{$groupCount}}"
+                                                   class="awq_group_select">
+                            <option value="">{{$ribbon['group']['label']}}</option>
+                            @foreach($ribbon['group']['awards'] as $item)
+
+                                <option value='{"code": "{{$item->code}}", "img": "select{{$groupCount}}_img", "chk":  "select{{$groupCount}}_chk", "badge": "/awards/badges/{{$item->image}}"}'{{isset($user->awards[$item->code])?' selected':''}}>{{$item->name}}</option>
+
+                            @endforeach
+                        </select></div>
+                </div>
+
+                @php
+                $groupCount++;
+                @endphp
+            @endforeach
+        @endif
     </div>
 
 
@@ -411,7 +416,7 @@
                         <img id="select{{$groupCount}}_img" class="ribbon"/>
                     </div>
                     <div class="col-sm-5 "><select name="select{{$groupCount}}" id="select{{$groupCount}}"
-                                                    class="ribbon_group_select">
+                                                   class="ribbon_group_select">
                             <option value="">{{$ribbon['group']['label']}}</option>
                             @foreach($ribbon['group']['awards'] as $item)
                                 {{--                                    @if(file_exists(public_path('ribbons/' . $item->code . '-1.svg')))--}}

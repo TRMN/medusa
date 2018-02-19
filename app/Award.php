@@ -6,6 +6,22 @@ namespace App;
 use Mockery\Exception;
 use Moloquent\Eloquent\Model as Eloquent;
 
+/**
+ * Class Award
+ *
+ * @property int display_order
+ * @property string name
+ * @property string code
+ * @property string post_nominal
+ * @property string replaces
+ * @property string location
+ * @property bool multiple
+ * @property string group_label
+ * @property string image
+ * @property string branch
+ *
+ * @package App
+ */
 class Award extends Eloquent
 {
     protected $fillable = [
@@ -19,9 +35,17 @@ class Award extends Eloquent
         'group_label',
         'image',
         'branch',
-        'code',
+        'star_nation',
     ];
 
+    /**
+     * Get the awards for the specified uniform location
+     *
+     * @param $location
+     * @param array $limit
+     *
+     * @return array
+     */
     public static function _getAwards($location, array $limit = [])
     {
         $awards = [];
@@ -63,8 +87,8 @@ class Award extends Eloquent
 
                     $ribbons[] = [
                         'group' => [
-                            'label' => $ribbon->group_label,
-                            'awards' => $tmp,
+                            'label'    => $ribbon->group_label,
+                            'awards'   => $tmp,
                             'multiple' => $multiple,
                         ]
                     ];
@@ -75,6 +99,15 @@ class Award extends Eloquent
         return $ribbons;
     }
 
+    /**
+     * Get any a list of all Aerospace Wings
+     *
+     * @todo Refactor to use the config table
+     *
+     * @param array $limit
+     *
+     * @return array
+     */
     public static function getAerospaceWings(
         array $limit = [
             'SAW',
@@ -103,52 +136,140 @@ class Award extends Eloquent
             'EMSW',
             'OMSW'
         ]
-    )
-    {
+    ) {
         return self::_getAwards('TL', $limit);
     }
 
+    /**
+     * Get the ribbons that go on the left side of the uniform
+     *
+     * @return array
+     */
     public static function getLeftRibbons()
     {
         return self::_getAwards('L');
     }
 
+    /**
+     * Get the ribbons that go on the right side of the uniform
+     *
+     * @return array
+     */
     public static function getRightRibbons()
     {
         return self::_getAwards('R');
     }
 
+    /**
+     * Get the qualification badges that go above the ribbons
+     *
+     * @param array $limit
+     *
+     * @return array
+     */
     public static function getTopBadges(array $limit = [])
     {
         return self::_getAwards('TL', $limit);
     }
 
+    /**
+     * Get left sleeve items, such as HMS Unconquered
+     *
+     * @return array
+     */
     public static function getLeftSleeve()
     {
         return self::_getAwards('LS');
     }
 
+    /**
+     * Get the right sleeve stripes
+     *
+     * @return array
+     */
     public static function getRightSleeve()
     {
         return self::_getAwards('RS');
     }
 
+    /**
+     * Get the Army Weapons Qualification Badges
+     *
+     * @return array
+     */
     public static function getArmyWeaponQualificationBadges()
     {
         return self::_getAwards('AWQ');
     }
 
+    /**
+     * Get an awards display order
+     *
+     * @param $code
+     *
+     * @return int|mixed
+     */
     public static function getDisplayOrder($code)
     {
         return self::where('code', '=', $code)->first()->display_order;
     }
 
+    /**
+     * Get an award by the award code
+     *
+     * @param $code
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     */
     public static function getAwardByCode($code)
     {
         return self::where('code', '=', $code)
-            ->first();
+                   ->first();
     }
 
+    /**
+     * Get the points for an award
+     *
+     * @param string $code
+     *
+     * @return mixed
+     */
+    public static function getPointsForAward(string $code)
+    {
+        return self::where('code', $code)->first()->points;
+    }
+
+    /**
+     * Get the name of the award
+     *
+     * @param string $code
+     *
+     * @return mixed|string
+     */
+    public static function getAwardName(string $code)
+    {
+        return self::where('code', $code)->first()->name;
+    }
+
+    /**
+     * Get the name of the image to use
+     *
+     * @param string $code
+     *
+     * @return mixed|string
+     */
+    public static function getAwardImage(string $code)
+    {
+        return self::where('code', $code)->first()->image;
+    }
+    /**
+     * Update the award display order
+     *
+     * @param $code
+     * @param $display_order
+     *
+     * @return bool
+     */
     public static function updateDisplayOrder($code, $display_order)
     {
         $award = self::where('code', $code)->first();

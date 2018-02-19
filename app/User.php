@@ -2263,7 +2263,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 }
 
                 $award['code'] = $code;
-                $award['name'] = Award::where('code', '=', $code)->first()->name;
+                $award['name'] = Award::getAwardName($code);
+                $award['points'] = Award::getPointsForAward($code);
 
                 if ($award['count'] > 0) {
                     $tmp[Award::getDisplayOrder($code)] = $award;
@@ -3057,5 +3058,24 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         return self::where('registration_status', 'Active')->where('active', 1)
                    ->get();
+    }
+
+    /**
+     * Return an array of the base Army Weapons Qualification Badges
+     *
+     * @return array
+     */
+    public function getArmyWeaponBadges()
+    {
+        $badges = [];
+
+        foreach ($this->getRibbons('AWQ') as $badge) {
+            $badges[$badge['points']] = basename(Award::getAwardImage($badge['code']), '.png');
+        }
+
+        krsort($badges);
+
+        return $badges;
+
     }
 }
