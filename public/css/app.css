@@ -5334,6 +5334,10 @@ table.dataTable tr td:nth-child(1) {
   padding: 10px 0px 4px 0px;
 }
 
+.status-row {
+  padding: 10px;
+}
+
 .bottom-border-double {
   border-bottom: 4px whitesmoke double;
 }
