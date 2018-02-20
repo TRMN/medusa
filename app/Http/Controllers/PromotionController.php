@@ -15,7 +15,7 @@ class PromotionController extends Controller
 
     public function index(Chapter $chapter)
     {
-        if (($redirect = $this->canPromote($chapter)) !== true) {
+        if (($redirect = $this->canPromote($chapter->id)) !== true) {
             return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
         }
 
