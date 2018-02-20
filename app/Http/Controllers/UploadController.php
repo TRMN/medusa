@@ -71,6 +71,7 @@ class UploadController extends Controller
             [
                 'chapter_name' => Chapter::find($assignedShip)->chapter_name,
                 'log'          => $log,
+                'chapter_id'   => $assignedShip,
             ]
         );
     }
@@ -143,8 +144,12 @@ class UploadController extends Controller
      */
     public function postFile(Request $request)
     {
-        if (($redirect = $this->checkPermissions('CONFIG')) !== true) {
-            return $redirect;
+        if (Auth::user()->isCoAssignedShip() === false &&
+            Auth::user()->hasAllPermissions() === false) {
+            return redirect(URL::previous())->with(
+                'message',
+                'You do not have permission to view that page'
+            );
         }
 
         // If the file is valid, pass the request on to the specified target method
@@ -178,9 +183,10 @@ class UploadController extends Controller
         $file = $request->file('file');
         $originalFileName = $file->getClientOriginalName();
         $ext = $file->getClientOriginalExtension();
+        $numFiles = empty($log->files) === false ? count($log->files) : 0;
 
         $slug = str_slug($request->chaptername, '_');
-        $filename = $slug . '_' . (count($log->files) + 1) . '.' . $ext;
+        $filename = $slug . '_' . ($numFiles + 1) . '.' . $ext;
 
         if ($log->isDuplicate($originalFileName) === false) {
             try {
