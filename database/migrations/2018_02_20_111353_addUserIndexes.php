@@ -32,11 +32,6 @@ class AddUserIndexes extends Migration
     {
         Schema::table('users', function (Blueprint $collection) {
            $collection->dropUnique('email_address');
-           $collection->dropIndex('member_id');
-           $collection->dropIndex('branch');
-           $collection->dropIndex('registration_status');
-           $collection->dropIndex('active');
-           $collection->dropIndex('path');
         });
     }
 }
