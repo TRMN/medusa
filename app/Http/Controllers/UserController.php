@@ -76,11 +76,6 @@ class UserController extends Controller
         if (empty($search['value']) === false) {
             $searchTerm = '%' . $search['value'] . '%';
 
-            \Log::debug(
-                'Search: ' . print_r($search, true) . "\nSearch Term: " .
-                $searchTerm
-            );
-
             $query = $query->where(
                 function ($query) use ($searchTerm) {
                     $query->where('last_name', 'like', $searchTerm)

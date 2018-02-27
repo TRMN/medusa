@@ -147,8 +147,8 @@
                     @endif
                     @if(Auth::user()->isCoAssignedShip() || Auth::user()->hasAllPermissions())
                             <a href="{!!route('report.index')!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-file-text-o"></span> Chapter Reports</button></a>
-                            <a href="/upload/status/{{$detail->id}}"><button class="btn btn-sm btn-primary"><span class="fa fa-question-circle"></span> Promotion Point Status</button></a>
                             <a href="/upload/sheet/{{$detail->id}}"><button class="btn btn-sm btn-primary"><span class="fa fa-upload"></span> Upload Promotion Points</button></a>
+                            <a href="/upload/status/{{$detail->id}}"><button class="btn btn-sm btn-primary"><span class="fa fa-question-circle"></span> Promotion Point Status</button></a>
                     @endif
                 </div>
             </div>
@@ -182,18 +182,20 @@
                     @foreach($crew as $member)
                         <tr class="zebra-odd">
                             @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
-                                <td class="nowrap @if($member->isPromotable() || $member->isPromotableEarly()) promotable @endif ">
-                                    @if(!is_null($member->isPromotable()))
-                                        <strong>P [ {{implode(', ', $member->isPromotable())}} ]</strong>
-                                    @elseif(!is_null($member->isPromotableEarly()))
-                                        <strong>P-E [ {{implode(', ', $member->isPromotableEarly())}} ]</strong>
+                                @set('promotable', $member->isPromotable())
+                                @set('promotableEarly', $member->isPromotableEarly())
+                                <td class="nowrap @if($promotable || $promotableEarly) promotable @endif ">
+                                    @if(!is_null($promotable))
+                                        <strong>P [ {{implode(', ', $promotable)}} ]</strong>
+                                    @elseif(!is_null($promotableEarly))
+                                        <strong>P-E [ {{implode(', ', $promotableEarly)}} ]</strong>
                                     @endif
                                 </td>
                             @endif
                             <td>
                                 @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
                                     <a href="{!! route('user.show', [$member->_id]) !!}"
-                                       @if($member->isPromotable() || $member->isPromotableEarly()) class="promotable" @endif>
+                                       @if($promotable || $promotableEarly) class="promotable" @endif>
                                         @endif
                                         {!! $member->last_name !!}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
                                         , {!! $member->first_name !!}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}
