@@ -51,6 +51,10 @@ class ChapterController extends Controller
 
         $crew = $chapter->getAllCrew();
 
+        foreach($crew as $index => $member) {
+
+        }
+
         return view(
             'chapter.show',
             [

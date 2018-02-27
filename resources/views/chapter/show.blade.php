@@ -7,13 +7,14 @@
 
 @section('content')
     <div class="row">
-        <?php
-        if ($detail->chapter_type == 'fleet') {
-            $path = '/crests/fleet/';
-        } else {
-            $path = '/crests/';
-        }
-        ?>
+        @if($detail->chapter_type == 'fleet')
+            @set('path', '/crests/fleet/')
+        @else
+            @set('path', '/crests/')
+        @endif
+        @set('isInChainOfCommand', $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()))
+        @set('viewMembers', $permsObj->hasPermissions(['VIEW_MEMBERS']))
+        @set('idCard', $permsObj->hasPermissions(['ID_CARD']))
         @if(file_exists(public_path() . $path . $detail->hull_number . '.svg') === true)
             <div class=" col-sm-2">
                 <img class='crest' src="{!!asset($path . $detail->hull_number . '.svg')!!}"
@@ -28,13 +29,13 @@
                 @endif
                 {!! $detail->chapter_name !!} @if((in_array($detail->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
         isset($detail->hull_number) === true) ({!!$detail->hull_number!!}
-                ) @endif @if(empty($detail->idcards_printed) && $permsObj->hasPermissions(['ID_CARD']))
+                ) @endif @if(empty($detail->idcards_printed) && $idCard)
                     <a class="fa fa-credit-card green size-24" href="/id/bulk/{!!$detail->id!!}"
                        data-toggle="tooltip" title="Print ID Cards"></a>
                     <a class="fa fa-check green size-24" href="/id/markbulk/{!!$detail->id!!}"
                        data-toggle="tooltip" title="Mark ID Cards as printed"
                        onclick="return confirm('Mark ID cards as printed for this chapter?')"></a>
-                @elseif(!empty($detail->idcards_printed) && $permsObj->hasPermissions(['ID_CARD']))
+                @elseif(!empty($detail->idcards_printed) && $idCard)
                     <span class="fa fa-print size-24" data-toggle="tooltip" title="ID Cards printed"></span> @endif
             </h2>
 
@@ -105,14 +106,14 @@
                     {!!$info['display']!!}:
                 </div>
                 <div class=" col-sm-5 Incised901Light">
-                    @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                    @if($viewMembers || $isInChainOfCommand === true)
                         <a href="{!! route('user.show' , [$info['user']->id]) !!}">
                             @endif
 
                             {!! trim($info['user']->getGreeting()) !!} {!! $info['user']->first_name !!}{{ isset($info['user']->middle_name) ? ' ' . $info['user']->middle_name : '' }} {!! $info['user']->last_name !!}{{ !empty($info['user']->suffix) ? ' ' . $info['user']->suffix : '' }}
                             , {!!$info['user']->branch!!}
 
-                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                            @if($viewMembers || $isInChainOfCommand === true)
                         </a>
                         @if($info['user']->hasNewExams())
                             <span class="fa fa-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp</span>
@@ -123,7 +124,7 @@
         @endforeach
     @endif
 
-    @if (count($crew) > 0 && (Auth::user()->getAssignedShip() == $detail->id || $permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true))
+    @if (count($crew) > 0 && (Auth::user()->getAssignedShip() == $detail->id || $viewMembers || $isInChainOfCommand === true))
         <br/>
         <div class="row padding-5">
             <div class=" col-sm-10 text-center ">
@@ -139,7 +140,7 @@
         <div class="row padding-5">
             <div class="col-sm-10 Incised901Bold ninety">
                 <div class="btn-group text-center padding-bottom-10 btn-group-sm" role="group">
-                    @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                    @if($viewMembers || $isInChainOfCommand === true)
                         <br/><a href="{!!route('roster.export', [$detail->id])!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Download Roster</button></a>
                     @endif
                     @if($permsObj->canPromote($detail->id))
@@ -158,11 +159,11 @@
                 <table id="crewRoster" class="compact row-border">
                     <thead>
                     <tr>
-                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        @if($viewMembers || $isInChainOfCommand === true)
                             <th class="text-center green nowrap">P/P-E</th>
                         @endif
                         <th>Name</th>
-                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        @if($viewMembers || $isInChainOfCommand === true)
                             <th>ID #</th>
                             <th>Path</th>
                             <th>Points</th>
@@ -172,7 +173,7 @@
                         <th class="text-center">Time in Grade</th>
                         <th>Billet</th>
                         <th>Branch</th>
-                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        @if($viewMembers || $isInChainOfCommand === true)
                             <th>City</th>
                             <th>State / Province</th>
                         @endif
@@ -181,30 +182,27 @@
                     <tbody>
                     @foreach($crew as $member)
                         <tr class="zebra-odd">
-                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                            @if($viewMembers || $isInChainOfCommand === true)
                                 @set('promotable', $member->isPromotable())
-                                @set('promotableEarly', $member->isPromotableEarly())
-                                <td class="nowrap @if($promotable || $promotableEarly) promotable @endif ">
+                                <td class="nowrap @if($promotable) promotable @endif ">
                                     @if(!is_null($promotable))
-                                        <strong>P [ {{implode(', ', $promotable)}} ]</strong>
-                                    @elseif(!is_null($promotableEarly))
-                                        <strong>P-E [ {{implode(', ', $promotableEarly)}} ]</strong>
+                                        <strong>{{$promotable}}</strong>
                                     @endif
                                 </td>
                             @endif
                             <td>
-                                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                                @if($viewMembers || $isInChainOfCommand === true)
                                     <a href="{!! route('user.show', [$member->_id]) !!}"
-                                       @if($promotable || $promotableEarly) class="promotable" @endif>
+                                       @if($promotable) class="promotable" @endif>
                                         @endif
                                         {!! $member->last_name !!}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
                                         , {!! $member->first_name !!}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}
-                                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                                        @if($viewMembers || $isInChainOfCommand === true)
                                     </a>
                                 @endif
 
                             </td>
-                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                            @if($viewMembers || $isInChainOfCommand === true)
                                 <td class="nowrap">{!!$member->member_id!!}</td>
                                 <td>{{$member->path ? ucfirst($member->path) : 'Service'}}</td>
                                 <td class="text-right">{{ number_format((float)$member->getTotalPromotionPoints(), 2) }}</td>
@@ -218,7 +216,7 @@
                             <td>{!!is_null($tig = $member->getTimeInGrade(true))?'N/A':$tig!!}</td>
                             <td>{!! $member->getBilletForChapter($detail->id) !!}</td>
                             <td>{!!$member->branch!!}</td>
-                            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                            @if($viewMembers || $isInChainOfCommand === true)
                                 <td>{!!$member->city!!}</td>
                                 <td>{!!$member->state_province!!}</td>
                             @endif
@@ -227,11 +225,11 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        @if($viewMembers || $isInChainOfCommand === true)
                             <th class="text-center green">P/P-E</th>
                         @endif
                         <th>Name</th>
-                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        @if($viewMembers || $isInChainOfCommand === true)
                             <th>ID #</th>
                             <th>Path</th>
                             <th>Points</th>
@@ -241,7 +239,7 @@
                         <th class="text-center">Time in Grade</th>
                         <th>Billet</th>
                         <th>Branch</th>
-                        @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+                        @if($viewMembers || $isInChainOfCommand === true)
                             <th>City</th>
                             <th>State / Province</th>
                         @endif
@@ -262,7 +260,7 @@
                 "emptyTable": "No crew members found"
             },
             "$UI": true
-            @if($permsObj->hasPermissions(['VIEW_MEMBERS']) || $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()) === true)
+            @if($viewMembers || $isInChainOfCommand === true)
             , "order": [[0, "desc"]]
             @endif
         });
