@@ -2920,21 +2920,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $flags = $this->getPromotableInfo($payGrade2Check);
         }
 
-        if ($tigCheck === true) {
-            if ($flags['tig'] && $flags['points'] && $flags['exams'] === true &&
-                isset($flags['next']) === true) {
-                $return = $flags['early'] === true ?
-                    'P-E [ ' . implode(', ', $flags['next']) . ' ]' :
-                    'P [ ' . implode(', ', $flags['next']) . ' ]';
-            }
-        } else {
-            if ($flags['points'] && $flags['exams'] === true &&
-                isset($flags['next']) === true) {
-                $return = $flags['early'] === true ?
-                    'P-E [ ' . implode(', ', $flags['next']) . ' ]' :
-                    'P [ ' . implode(', ', $flags['next']) . ' ]';
+        if ($flags['points'] && $flags['exams'] && isset($flags['next']) === true) {
+            if ($flags['early'] === true) {
+                $return = 'P-E [ ' . implode(', ', $flags['next']) . ' ]';
+            } elseif ($flags['tig'] === true || $tigCheck === false) {
+                $return = 'P [ ' . implode(', ', $flags['next']) . ' ]';
             }
         }
+
+
         return $return;
     }
 
