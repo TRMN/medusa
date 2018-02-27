@@ -2897,25 +2897,45 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * @param bool $tigCheck
      * @param null $payGrade2Check
      *
-     * @return array|null
+     * @return string|null
      */
     public function isPromotable($tigCheck = true, $payGrade2Check = null)
     {
+        $age = Carbon::now()->diffInYears(Carbon::parse($this->dob));
+        $return = $flags = null;
+
         switch ($this->branch) {
             case 'SFC':
-                return $this->sfcIsPromotable($tigCheck, $payGrade2Check);
+                if ($age >= 18) {
+                    $flags['next'] = $this->sfcIsPromotable();
+                    if (is_null($flags['next']) === false) {
+                        $flags['tig'] = $flags['points'] = $flags['exams'] = true;
+                        $flags['early'] = false;
+                    }
+                } else {
+                    $flags = $this->getPromotableInfo($payGrade2Check);
+                }
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
-
-                if ($tigCheck === true) {
-                    return ($flags['tig'] && $flags['points'] &&
-                            $flags['exams']) === true ? $flags['next'] : null;
-                } else {
-                    return ($flags['points'] && $flags['exams']) === true ?
-                        $flags['next'] : null;
-                }
         }
+
+        if ($tigCheck === true) {
+            if ($flags['tig'] && $flags['points'] && $flags['exams'] === true &&
+                isset($flags['next']) === true) {
+                $return = $flags['early'] === true ?
+                    'P-E [ ' . implode(', ', $flags['next']) . ' ]' :
+                    'P [ ' . implode(', ', $flags['next']) . ' ]';
+            }
+        } else {
+            if ($flags['points'] && $flags['exams'] === true &&
+                isset($flags['next']) === true) {
+                $return = $flags['early'] === true ?
+                    'P-E [ ' . implode(', ', $flags['next']) . ' ]' :
+                    'P [ ' . implode(', ', $flags['next']) . ' ]';
+            }
+        }
+        return $return;
     }
 
     /**
