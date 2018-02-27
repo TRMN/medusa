@@ -9,6 +9,7 @@ use App\Log\MedusaLog;
 use App\Message;
 use App\UploadLog;
 use App\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use League\Csv\Reader;
@@ -255,10 +256,16 @@ class UploadController extends Controller
 
         // Parse each record
         foreach ($import->getRecords($header) as $index => $record) {
-            $member = User::getUserByMemberId($record['RMN']);
+            // Try and retrieve the user by their RMN number.
+            try {
+                $member = User::getUserByMemberId($record['RMN']);
+                $name = $member->getFullName();
+            } catch (ModelNotFoundException $e) {
+                $name = '<span class="red">' . $record['RMN'] . ' : Invalid</span>';
+            }
 
             $preview[] = [
-                'name'    => $member->getFullName(),
+                'name'    => $name,
                 'chapter' => $record['chapter'],
             ];
         }

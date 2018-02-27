@@ -17,7 +17,7 @@
             </thead>
             @foreach($preview as $member)
                 <tr class="zebra-even">
-                    <td>{{$member['name']}}</td>
+                    <td>{!! $member['name'] !!}</td>
                     <td>{{$member['chapter']}}</td>
                 </tr>
             @endforeach
