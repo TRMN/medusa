@@ -104,7 +104,7 @@ class UserController extends Controller
                 );
                 break;
             case 4:
-                $query = $query->orderBy('memberid', $sortOrder);
+                $query = $query->orderBy('member_id', $sortOrder);
                 break;
             case 5:
                 $query = $query->orderBy('email_address', $sortOrder);
