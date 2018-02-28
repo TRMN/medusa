@@ -125,6 +125,7 @@ class UploadController extends Controller
             [
                 'title'  => 'Upload Chapter Promotion Point Spreadsheet for ' .
                             $chapter->chapter_name,
+                'note'   => 'Processing the uploaded Promotion Point Spreadsheet is not an automated process.  A BuComm staff member will download your Promotion Point Spreadsheet, parse it on-line and then upload it for processing.  You will be able to check the status of this process by clicking on the &qoute;Promotion Point Status&qoute; button on your roster.',
                 'method' => 'processSheet',
                 'source' => '/upload/sheet/' . $chapter->id,
                 'accept' => 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,*.xls,*.xlsx',

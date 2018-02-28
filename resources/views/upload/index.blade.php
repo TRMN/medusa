@@ -12,6 +12,9 @@
 @section('content')
     <div class="container-fluid">
         <h1 class="text-center">{{ $title }}</h1>
+        @if($note)
+            <h4 class="yellow-border">{!! $note !!}</h4>
+        @endif
 
         <div class="row text-center">
             <div class="col-sm-5">
