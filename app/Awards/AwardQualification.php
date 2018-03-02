@@ -268,7 +268,7 @@ trait AwardQualification
      *
      * @return bool
      */
-    private function isPassingGrade(string $score)
+    public function isPassingGrade(string $score)
     {
         if (intval($score) > 70) {
             return true;

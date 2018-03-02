@@ -2553,7 +2553,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         foreach ($examConfig as $points => $patterns) {
             foreach ($patterns as $pattern) {
-                $res = count($this->getExamList(['pattern' => $pattern]));
+                $res = 0;
+
+                // Now that we're allowing a fail grade, make sure that we only
+                // give points for passing grades.
+                foreach ($this->getExamList(['pattern' => $pattern]) as $exam) {
+                    if ($this->isPassingGrade($exam['code'])) {
+                        $res++;
+                    }
+                }
 
                 if ($res > 0) {
                     $pointsForPattern = $res * $points;
@@ -2563,6 +2571,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 }
             }
         }
+
         $pointsEarned += $numCompletedExams;
 
         return $pointsEarned;
@@ -2918,6 +2927,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
+        }
+
+        // If there are no exams and no points, they are not promotable.
+        if (empty($flags['points']) === true || empty($flags['exams']) === true) {
+            return null;
         }
 
         if ($flags['points'] && $flags['exams'] && isset($flags['next']) === true) {

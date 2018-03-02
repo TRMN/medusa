@@ -22,6 +22,19 @@ trait MedusaPermissions
         return true;
     }
 
+    public function canDeleteExam($score)
+    {
+        if (($this->hasPermissions(['EDIT_GRADE']) && rtrim($score, '%') !== '0') ||
+            $this->hasPermissions(['UPLOAD_EXAMS'])) {
+            return true;
+        } else {
+            return redirect(URL::previous())->with(
+                'message',
+                'You do not have permission to view that page'
+            );
+        }
+    }
+
     public function hasDutyRosterForAssignedShip()
     {
         return Auth::user()->hasAllPermissions() === true ? true :
