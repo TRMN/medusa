@@ -117,7 +117,8 @@ class ExamController extends Controller
         $rules = [
             'member_id' => 'required|size:11|not_self',
             'exam'      => 'required|is_grader|exists:exam_list,exam_id',
-            'date'      => 'required|date|date_format:Y-m-d|post_dated'
+            'date'      => 'required|date|date_format:Y-m-d|post_dated',
+            'score'     => 'required|valid_grade',
         ];
 
         $errorMessages = [
@@ -126,22 +127,9 @@ class ExamController extends Controller
             'exam.exits'         => 'You have entered an invalid exam id',
             'date.required'      => 'You must provide the date the exam was graded',
             'date_format'        => 'Dates must be formated Y-M-D',
-            'score.in'           => 'Score must be PASS, BETA or CREATE',
-            'score.min'          => 'Score can not be less than 70',
-            'score.max'          => 'Score can not be more than 100',
         ];
 
         $data = Request::all();
-
-        // Do we have a numeric score?
-
-        if (preg_match('/^\d{2,3}%?/', $data['score']) === 0) {
-            // Not a numeric score, add rule for valid alpha grades and slam the score to upper case just in case
-            $rules['score'] = 'required|in:PASS,BETA,CREATE';
-            $data['score'] = strtoupper($data['score']);
-        } else {
-            $rules['score'] = 'required|integer|min:70|max:100';
-        }
 
         $validator = Validator::make($data, $rules, $errorMessages);
 
@@ -180,7 +168,8 @@ class ExamController extends Controller
             $record->exams = $exams;
 
             $message =
-                '<span class="fi-alert alert">' . strtoupper($data['exam']) . ' updated in academy coursework for ' . $member->first_name . ' ' .
+                '<span class="fi-alert alert">' . strtoupper($data['exam']) . ' updated in academy coursework for ' .
+                $member->first_name . ' ' .
                 ( !empty($member->middle_name) ? $member->middle_name . ' ' : '' ) . $member->last_name .
                 ( !empty($member->suffix) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
@@ -212,7 +201,8 @@ class ExamController extends Controller
             $record->exams = $exams;
 
             $message =
-                '<span class="fi-alert yellow">' . strtoupper($data['exam']) . ' added to academy coursework for ' . $member->first_name . ' ' .
+                '<span class="fi-alert yellow">' . strtoupper($data['exam']) . ' added to academy coursework for ' .
+                $member->first_name . ' ' .
                 ( !empty($member->middle_name) ? $member->middle_name . ' ' : '' ) . $member->last_name .
                 ( !empty($member->suffix) ? ' ' . $member->suffix : '' ) .
                 ' (' . $member->member_id . ')' . "</span>";
@@ -304,22 +294,23 @@ class ExamController extends Controller
         // updated to use the correct model
         ExamList::create($data);
 
-        // This should probably change, exam/index.blade.php is for the soon to be deprecated file upload.  Once the final
-        // excel upoad is done, we could probably re-purpose it.  I also updated the directory name from exam to exams.
+        // This should probably change, exam/index.blade.php is for the soon to be deprecated file upload.
+        //  Once the final excel upoad is done, we could probably re-purpose it. I also updated the directory
+        // name from exam to exams.
         return Redirect::route('exam.list');
     }
 
     public function delete()
     {
-        if (( $redirect = $this->checkPermissions('EDIT_GRADE') ) !== true) {
-            return $redirect;
-        }
-
-        $examId = Request::get('examID');
-        $memberNumber = Request::get('memberNumber');
-
         try {
+            $examId = Request::get('examID');
+            $memberNumber = Request::get('memberNumber');
+
             $examRecord = Exam::where('member_id', '=', $memberNumber)->first();
+
+            if (($redirect = $this->canDeleteExam($examRecord->exams[$examId]['score'])) !== true) {
+                return $redirect;
+            }
 
             $exams = array_except((array)$examRecord->exams, (string)$examId);
 
@@ -338,7 +329,8 @@ class ExamController extends Controller
 
             return back()->with('status', $examId . ' has been removed from the members academic record.');
         } catch (\Exception $e) {
-            return back()->with('status', "There was a problem removing " . $examId . " from the members academic record");
+            return back()
+                ->with('status', "There was a problem removing " . $examId . " from the members academic record");
         }
     }
 }
