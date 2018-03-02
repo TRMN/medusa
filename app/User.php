@@ -2558,7 +2558,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 // Now that we're allowing a fail grade, make sure that we only
                 // give points for passing grades.
                 foreach ($this->getExamList(['pattern' => $pattern]) as $exam) {
-                    if ($this->isPassingGrade($exam['code'])) {
+                    if ($this->isPassingGrade($exam['score'])) {
                         $res++;
                     }
                 }
