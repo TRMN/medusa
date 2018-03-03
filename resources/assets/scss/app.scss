@@ -1291,3 +1291,21 @@ input:checked + .slider:before {
 .volkhov {
   font-family: 'Volkhov', serif;
 }
+
+@media screen and (max-width: 1301px) {
+  .roster-narrow-1300 {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1161px){
+  .roster-narrow-1160 {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1051px){
+  .roster-narrow-1045 {
+    display: none;
+  }
+}

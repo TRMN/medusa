@@ -22,7 +22,7 @@
 
 
         <div class="col-sm-4 text-center">
-            <h3 class="trmn">Membership Database</h3>
+            <h3 class="trmn roster-narrow-1160 roster-narrow-1045">Membership Database</h3>
         </div>
 
         <div class="col-sm-4 text-right text-nowrap">

@@ -167,11 +167,11 @@
                             <th>ID #</th>
                             <th>Path</th>
                             <th>Points</th>
-                            <th class="text-center">Highest<br/>Courses</th>
+                            <th class="text-center roster-narrow-1300">Highest<br/>Courses</th>
                         @endif
                         <th>Rank</th>
-                        <th class="text-center">Time in Grade</th>
-                        <th>Billet</th>
+                        <th class="text-center roster-narrow-1045">Time in Grade</th>
+                        <th class="roster-narrow-1160">Billet</th>
                         <th>Branch</th>
                         @if($viewMembers || $isInChainOfCommand === true)
                             <th>City</th>
@@ -206,15 +206,15 @@
                                 <td class="nowrap">{!!$member->member_id!!}</td>
                                 <td>{{$member->path ? ucfirst($member->path) : 'Service'}}</td>
                                 <td class="text-right">{{ number_format((float)$member->getTotalPromotionPoints(), 2) }}</td>
-                                <td class="nowrap">
+                                <td class="nowrap roster-narrow-1300">
                                     @foreach($member->getHighestExams() as $class => $exam)
                                         {{$class}}: {{$exam}}<br/>
                                     @endforeach
                                 </td>
                             @endif
                             <td>{!!$member->rank['grade']!!} <br/>{!! $member->getGreeting() !!} </td>
-                            <td>{!!is_null($tig = $member->getTimeInGrade(true))?'N/A':$tig!!}</td>
-                            <td>{!! $member->getBilletForChapter($detail->id) !!}</td>
+                            <td class="roster-narrow-1045">{!!is_null($tig = $member->getTimeInGrade(true))?'N/A':$tig!!}</td>
+                            <td class="roster-narrow-1160">{!! $member->getBilletForChapter($detail->id) !!}</td>
                             <td>{!!$member->branch!!}</td>
                             @if($viewMembers || $isInChainOfCommand === true)
                                 <td>{!!$member->city!!}</td>
@@ -233,11 +233,11 @@
                             <th>ID #</th>
                             <th>Path</th>
                             <th>Points</th>
-                            <th class="text-center">Highest<br/>Courses</th>
+                            <th class="text-center roster-narrow-1300">Highest<br/>Courses</th>
                         @endif
                         <th>Rank</th>
-                        <th class="text-center">Time in Grade</th>
-                        <th>Billet</th>
+                        <th class="text-center roster-narrow-1045">Time in Grade</th>
+                        <th class="roster-narrow-1160">Billet</th>
                         <th>Branch</th>
                         @if($viewMembers || $isInChainOfCommand === true)
                             <th>City</th>
@@ -264,5 +264,25 @@
             , "order": [[0, "desc"]]
             @endif
         });
+
+        if ( $( window ).width() < 1560) {
+            $('#left').toggle();
+
+            var toggleState = $('#toggle-btn').hasClass('fa-angle-double-left');
+
+            if (toggleState === true) {
+                // Change to a right arrow
+                $('#toggle-btn').removeClass('fa-angle-double-left');
+                $('#toggle-btn').addClass('fa-angle-double-right');
+                $('#right-wrapper').removeClass('col-sm-10');
+                $('#right-wrapper').addClass('col-sm-12');
+            } else {
+                // Change to a left arrow
+                $('#toggle-btn').removeClass('fa-angle-double-right');
+                $('#toggle-btn').addClass('fa-angle-double-left');
+                $('#right-wrapper').removeClass('col-sm-12');
+                $('#right-wrapper').addClass('col-sm-10');
+            }
+        }
     </script>
 @stop
