@@ -12,7 +12,7 @@
 @section('content')
     <div class="container-fluid">
         <h1 class="text-center">{{ $title }}</h1>
-        @if($note)
+        @if(!empty($note))
             <h4 class="yellow-border">{!! $note !!}</h4>
         @endif
 
