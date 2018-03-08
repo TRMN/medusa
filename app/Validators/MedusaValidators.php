@@ -42,7 +42,8 @@ class MedusaValidators extends Validator
         if ($exams =
             Exam::where('member_id', '=', $this->data['member_id'])->first()) {
             // Is this a fail grade?  If yes, than only limited people can edit it.
-            if (rtrim($exams->exams[$value]['score'], '%') == '0' &&
+            if (empty($exams->exams[$value]) === false &&
+                rtrim($exams->exams[$value]['score'], '%') == '0' &&
                 $this->hasPermissions(['UPLOAD_EXAMS']) === false) {
                 return false; // Failed exam, not authorized to change grade.
             }

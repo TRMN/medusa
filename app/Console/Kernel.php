@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImportUsers::class,
         \App\Console\Commands\assignAHPerms::class,
         \App\Console\Commands\AddFleetCoPermission::class,
+        \App\Console\Commands\UpdatePromotionStatus::class,
     ];
 
     /**
@@ -33,8 +34,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+        $schedule->command('member:updps')->dailyAt('02:00');
     }
     /**
      * Register the Closure based commands for the application.

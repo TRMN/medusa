@@ -70,7 +70,8 @@ use App\Permissions\MedusaPermissions;
  * @property string rank_title
  * @property string member_id
  * @property object updated_at
- *¬
+ * @property string promotionStatus
+ *
  * @package App
  *
  */
@@ -176,6 +177,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'points',
         'path',
         'history',
+        'promotionStatus',
     ];
 
     private $promotionRequirements;
