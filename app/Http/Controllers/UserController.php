@@ -81,7 +81,7 @@ class UserController extends Controller
                     $query->where('last_name', 'like', $searchTerm)
                           ->orWhere('first_name', 'like', $searchTerm)
                           ->orWhere('rank.grade', 'like', $searchTerm)
-                          ->orWhere('memberid', 'like', $searchTerm)
+                          ->orWhere('member_id', 'like', $searchTerm)
                           ->orWhere('email_address', 'like', $searchTerm)
                           ->orWhere('registration_date', 'like', $searchTerm)
                           ->orWhere('assignment.chapter_name', 'like', $searchTerm);

@@ -124,7 +124,7 @@
         @endforeach
     @endif
 
-    @if (count($crew) > 0 && (Auth::user()->getAssignedShip() == $detail->id || $viewMembers || $isInChainOfCommand === true))
+    @if (Auth::user()->getAssignedShip() == $detail->id || $viewMembers || $isInChainOfCommand === true)
         <br/>
         <div class="row padding-5">
             <div class=" col-sm-10 text-center ">
@@ -164,10 +164,10 @@
                         @endif
                         <th>Name</th>
                         @if($viewMembers || $isInChainOfCommand === true)
-                            <th>ID #</th>
+                            <th class="nowrap">ID #</th>
                             <th>Path</th>
-                            <th>Points</th>
-                            <th class="text-center roster-narrow-1300">Highest<br/>Courses</th>
+                            <th class="text-right">Points</th>
+                            <th class="nowrap text-center roster-narrow-1300">Highest<br/>Courses</th>
                         @endif
                         <th>Rank</th>
                         <th class="text-center roster-narrow-1045">Time in Grade</th>
@@ -180,70 +180,28 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($crew as $member)
-                        <tr class="zebra-odd">
-                            @if($viewMembers || $isInChainOfCommand === true)
-                                @set('promotable', $member->isPromotable())
-                                <td class="nowrap @if($promotable) promotable @endif ">
-                                    @if(!is_null($promotable))
-                                        <strong>{{$promotable}}</strong>
-                                    @endif
-                                </td>
-                            @endif
-                            <td>
-                                @if($viewMembers || $isInChainOfCommand === true)
-                                    <a href="{!! route('user.show', [$member->_id]) !!}"
-                                       @if($promotable) class="promotable" @endif>
-                                        @endif
-                                        {!! $member->last_name !!}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
-                                        , {!! $member->first_name !!}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}
-                                        @if($viewMembers || $isInChainOfCommand === true)
-                                    </a>
-                                @endif
 
-                            </td>
-                            @if($viewMembers || $isInChainOfCommand === true)
-                                <td class="nowrap">{!!$member->member_id!!}</td>
-                                <td>{{$member->path ? ucfirst($member->path) : 'Service'}}</td>
-                                <td class="text-right">{{ number_format((float)$member->getTotalPromotionPoints(), 2) }}</td>
-                                <td class="nowrap roster-narrow-1300">
-                                    @foreach($member->getHighestExams() as $class => $exam)
-                                        {{$class}}: {{$exam}}<br/>
-                                    @endforeach
-                                </td>
-                            @endif
-                            <td>{!!$member->rank['grade']!!} <br/>{!! $member->getGreeting() !!} </td>
-                            <td class="roster-narrow-1045">{!!is_null($tig = $member->getTimeInGrade(true))?'N/A':$tig!!}</td>
-                            <td class="roster-narrow-1160">{!! $member->getBilletForChapter($detail->id) !!}</td>
-                            <td>{!!$member->branch!!}</td>
-                            @if($viewMembers || $isInChainOfCommand === true)
-                                <td>{!!$member->city!!}</td>
-                                <td>{!!$member->state_province!!}</td>
-                            @endif
-                        </tr>
-                    @endforeach
                     </tbody>
                     <tfoot>
-                    <tr>
-                        @if($viewMembers || $isInChainOfCommand === true)
-                            <th class="text-center green">P/P-E</th>
+                    @if($viewMembers || $isInChainOfCommand === true)
+                        <th class="text-center green nowrap">P/P-E</th>
+                    @endif
+                    <th>Name</th>
+                    @if($viewMembers || $isInChainOfCommand === true)
+                        <th class="nowrap">ID #</th>
+                        <th>Path</th>
+                        <th class="text-right">Points</th>
+                        <th class="nowrap text-center roster-narrow-1300">Highest<br/>Courses</th>
+                    @endif
+                    <th>Rank</th>
+                    <th class="text-center roster-narrow-1045">Time in Grade</th>
+                    <th class="roster-narrow-1160">Billet</th>
+                    <th>Branch</th>
+                    @if($viewMembers || $isInChainOfCommand === true)
+                        <th>City</th>
+                        <th>State / Province</th>
                         @endif
-                        <th>Name</th>
-                        @if($viewMembers || $isInChainOfCommand === true)
-                            <th>ID #</th>
-                            <th>Path</th>
-                            <th>Points</th>
-                            <th class="text-center roster-narrow-1300">Highest<br/>Courses</th>
-                        @endif
-                        <th>Rank</th>
-                        <th class="text-center roster-narrow-1045">Time in Grade</th>
-                        <th class="roster-narrow-1160">Billet</th>
-                        <th>Branch</th>
-                        @if($viewMembers || $isInChainOfCommand === true)
-                            <th>City</th>
-                            <th>State / Province</th>
-                        @endif
-                    </tr>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
@@ -253,36 +211,90 @@
 @stop
 @section('scriptFooter')
     <script type="text/javascript">
-        $('#crewRoster').DataTable({
-            "autoWidth": true,
-            "pageLength": 25,
-            "language": {
-                "emptyTable": "No crew members found"
-            },
-            "$UI": true
-            @if($viewMembers || $isInChainOfCommand === true)
-            , "order": [[0, "desc"]]
-            @endif
-        });
+        $(document).ready(function ($) {
+            $('#crewRoster').DataTable({
+                "autoWidth": false,
+                "pageLength": 10,
+                "language": {
+                    "emptyTable": "No crew members found"
+                },
+                "serverSide": true,
+                "ajax": {
+                    url: '/chapter/{{$detail->id}}/getRoster',
+                    type: 'post'
+                },
+                "columnDefs": [{
+                    @if($viewMembers || $isInChainOfCommand)
+                    "targets": [4, 5, 7, 8],
+                    @else
+                    "targets": [2, 3],
+                    @endif
+                    "orderable": false,
+                    "searchable": false
+                },
+                    @if($viewMembers || $isInChainOfCommand)
+                    {
+                        className: 'text-right', targets: [4]
+                    },
+                    {
+                        className: 'nowrap', targets: [2]
+                    },
+                    {
+                        className: 'nowrap roster-narrow-1300', targets: [5]
+                    },
+                    @endif
+                    {
+                        @if($viewMembers || $isInChainOfCommand)
+                        targets: [7],
+                        @else
+                        targets: [2],
+                        @endif
+                        className: 'roster-narrow-1045'
+                    },
+                    {
+                        @if($viewMembers || $isInChainOfCommand)
+                        targets: [8],
+                        @else
+                        targets: [3],
+                        @endif
+                        className: 'roster-narrow-1160'
+                    }
+                ],
+                @if($viewMembers || $isInChainOfCommand)
+                "order": [[0, 'desc']],
+                @else
+                "order": [[0, 'asc']],
+                @endif
+                "$UI": true
+            });
 
-        if ( $( window ).width() < 1560) {
-            $('#left').toggle();
+            $('#crewRoster').on('draw.dt', function() {
+                $('#right').height(240 + $('#crewRoster').height());
 
-            var toggleState = $('#toggle-btn').hasClass('fa-angle-double-left');
+                if ($('#right').height() < $('#left').height()) {
+                    $('#right').height($('#left').height());
+                }
+            });
 
-            if (toggleState === true) {
-                // Change to a right arrow
-                $('#toggle-btn').removeClass('fa-angle-double-left');
-                $('#toggle-btn').addClass('fa-angle-double-right');
-                $('#right-wrapper').removeClass('col-sm-10');
-                $('#right-wrapper').addClass('col-sm-12');
-            } else {
-                // Change to a left arrow
-                $('#toggle-btn').removeClass('fa-angle-double-right');
-                $('#toggle-btn').addClass('fa-angle-double-left');
-                $('#right-wrapper').removeClass('col-sm-12');
-                $('#right-wrapper').addClass('col-sm-10');
+            if ( $( window ).width() < 1560) {
+                $('#left').toggle();
+
+                var toggleState = $('#toggle-btn').hasClass('fa-angle-double-left');
+
+                if (toggleState === true) {
+                    // Change to a right arrow
+                    $('#toggle-btn').removeClass('fa-angle-double-left');
+                    $('#toggle-btn').addClass('fa-angle-double-right');
+                    $('#right-wrapper').removeClass('col-sm-10');
+                    $('#right-wrapper').addClass('col-sm-12');
+                } else {
+                    // Change to a left arrow
+                    $('#toggle-btn').removeClass('fa-angle-double-right');
+                    $('#toggle-btn').addClass('fa-angle-double-left');
+                    $('#right-wrapper').removeClass('col-sm-12');
+                    $('#right-wrapper').addClass('col-sm-10');
+                }
             }
-        }
+        });
     </script>
 @stop

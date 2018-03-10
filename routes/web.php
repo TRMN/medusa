@@ -239,6 +239,8 @@ Route::get(
         'middleware' => 'auth',
     ]
 );
+Route::post('/chapter/{chapter}/getRoster', 'ChapterController@getChapterMembers')
+    ->middleware(['auth']);
 Route::resource('chapter', 'ChapterController', ['middleware' => 'auth']);
 Route::get(
     '/triadreport',

@@ -242,18 +242,18 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         if ($lastFirst === true) {
             return trim(
-                ucfirst($this->last_name) .
+                $this->last_name .
                 (empty($this->suffix) ? '' : $this->suffix) . ', ' .
-                ucfirst($this->first_name) . ' ' .
+                $this->first_name . ' ' .
                 (empty($this->middle_name) ? '' :
-                    ucfirst($this->middle_name) . ' ')
+                    $this->middle_name . ' ')
             );
         } else {
             return trim(
-                ucfirst($this->first_name) . ' ' .
+                $this->first_name . ' ' .
                 (empty($this->middle_name) ? '' :
-                    ucfirst($this->middle_name) . ' ') .
-                ucfirst($this->last_name) . ' ' .
+                    $this->middle_name . ' ') .
+                $this->last_name . ' ' .
                 (empty($this->suffix) ? '' : $this->suffix)
             );
         }
