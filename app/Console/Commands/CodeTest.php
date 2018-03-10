@@ -42,16 +42,9 @@ class CodeTest extends Command
     public function fire()
     {
 
-        foreach (\App\User::activeUsers() as $user) {
-            // Check for SWP qualification.  This is for existing SWP's that may
-            // not be recorded, so set isNewAward to false.  Check for SWP first,
-            // because you can get a MCAM unless you have a SWP
-            $user->swpQual(false);
+        $user = User::getUserByMemberId('RMN-1094-12');
 
-            // Check for 1 or more MCAM's.  Again, this is for existing MCAM's
-            // that may not be recorded, so set isNewAward to false.
-            $user->mcamQual(false);
-        }
+        print $user->isPromotable() . "\n";
     }
 
     /**
