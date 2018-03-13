@@ -265,7 +265,8 @@
                 @else
                 "order": [[0, 'asc']],
                 @endif
-                "$UI": true
+                "$UI": true,
+                "stripeClasses": ['zebra-odd']
             });
 
             $('#crewRoster').on('draw.dt', function() {
