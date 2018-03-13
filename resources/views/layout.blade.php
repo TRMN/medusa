@@ -34,8 +34,7 @@
                 <h5 class="Incised901Light ninety">Last
                     Login: {!!date('d M Y @ g:i A T', strtotime(Auth::user()->getLastLogin()))!!}</h5>
 
-                <h5 class="Incised901Light ninety"
-                    title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums">Last Forum
+                <h5 class="Incised901Light ninety"><span class="fa fa-exclamation-triangle yellow" data-toggle="tooltip" data-placement="bottom" title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums"></span>&nbsp;Last Forum
                     Login:
                     @if(Auth::user()->forum_last_login)
                         {{date('d M Y @ g:i A T', Auth::user()->forum_last_login)}}
