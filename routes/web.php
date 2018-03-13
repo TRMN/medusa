@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
+use GeneaLabs\LaravelCaffeine\Http\Controllers\LaravelCaffeineController;
+
+$dripRoute = config('genealabs-laravel-caffeine.route', 'genealabs/laravel-caffeine/drip');
+Route::get($dripRoute, LaravelCaffeineController::class.'@drip');
 
 $request = Request::capture();
 

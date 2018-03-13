@@ -2826,14 +2826,25 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     private function hasRequiredExams(array $exams)
     {
-        $flag = false;
+        $numFalse = 0;
+
         foreach ($exams as $exam) {
-            $flag = !empty(
-                $this->getExamList(['pattern' => '/^.*-' . $exam . '$/'])
-            );
+            $examMatches = $this->getExamList(['pattern' => '/^.*-' . $exam . '$/']);
+
+            $passedExams = 0;
+
+            foreach($examMatches as $examInfo) {
+                if ($this->isPassingGrade($examInfo['score']) === true) {
+                    $passedExams++;
+                }
+            }
+
+            if ($passedExams === 0) {
+                $numFalse++;
+            }
         }
 
-        return $flag;
+        return $numFalse === 0;
     }
 
     /**
