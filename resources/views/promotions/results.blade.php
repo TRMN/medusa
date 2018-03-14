@@ -17,6 +17,11 @@
                 </div>
             @endforeach
     </div>
+    <br />
+    <br />
+    <div class="text-center">
+        <a href="{{ route('promotions', [$chapter->id]) }}" class="btn btn-primary"><span class="fa fa-thumbs-up"></span> Return to Promotions</a> <a href="{{route('chapter.show', [$chapter->id])}}" class="btn btn-primary"><span class="fa fa-arrow-left"></span> Return to Roster</a>
+    </div>
 @stop
 
 @section('scriptFooter')

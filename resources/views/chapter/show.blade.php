@@ -237,7 +237,7 @@
                         className: 'text-right', targets: [4]
                     },
                     {
-                        className: 'nowrap', targets: [2]
+                        className: 'nowrap', targets: [0, 2]
                     },
                     {
                         className: 'nowrap roster-narrow-1300', targets: [5]

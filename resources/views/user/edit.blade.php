@@ -281,13 +281,16 @@
             </fieldset>
 
             <fieldset>
-                <legend>Rank and <span class="ratingDisplay">{{$user->branch == 'RMMM' || $user->branch == 'CIVIL' ? ($user->branch == 'RMMM' ? 'Division' : 'Speciality') : 'Rating'}}</span></legend>
+                <legend>Rank and <span
+                            class="ratingDisplay">{{$user->branch == 'RMMM' || $user->branch == 'CIVIL' ? ($user->branch == 'RMMM' ? 'Division' : 'Speciality') : 'Rating'}}</span>
+                </legend>
 
                 <div class="row">
                     <div class=" col-sm-4  ninety Incised901Light form-group">
                         {!! Form::label('display_rank', "Rank", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('display_rank', $grades, $user->display_rank, ['class' => 'form-control', 'id' => 'rank']) !!} {{Form::hidden('current_rank', $user->display_rank, ['id' => 'current_rank'])}}
                         @else
-                            {!!Form::hidden('display_rank', $user->display_rank)!!} {{$user->getGreeting()}} ({{$user->display_rank}})
+                            {!!Form::hidden('display_rank', $user->display_rank)!!} {{$user->getGreeting()}}
+                            ({{$user->display_rank}})
                             <br/><br/>
                         @endif
                     </div>
@@ -449,12 +452,40 @@
             sortField: 'text'
         });
 
+        $('#rating').on('change', function () {
+            var rating = $('#rating').val();
+            var branch = $('#branch').val();
+
+            $.getJSON('/api/branch/' + rating + '/' + branch, function (result) {
+                var grade = $('#rank').val();
+                var options = '';
+
+                $('#rank').empty();
+                options = '<option value="">Select a Rank</option>';
+                $.each(result, function (key, value) {
+                    options += '<optgroup label="' + key + '">';
+
+                    $.each(value, function (key, value) {
+                        var option = '';
+                        option = '<option value="' + key + '"';
+                        if (grade == key) {
+                            option += ' selected';
+                        }
+                        options += option + '>' + value + '</option>';
+                    });
+
+                    options += '</optgroup>';
+                });
+                $('#rank').append(options);
+            });
+        });
+
         $('#rank').on('change', function () {
             let payload = {
                 "member_id": $('#member_id').val(),
-                "tigCheck": $('#tigCheck').prop('checked')? true: false,
-                "ppCheck": $('#ppCheck').prop('checked')? true: false,
-                "ep": $('#ep').prop('checked')? true: false,
+                "tigCheck": $('#tigCheck').prop('checked') ? true : false,
+                "ppCheck": $('#ppCheck').prop('checked') ? true : false,
+                "ep": $('#ep').prop('checked') ? true : false,
                 "payGrade": $('#rank').val()
             };
 
@@ -465,13 +496,12 @@
                 contentType: 'application/json',
                 dataType: 'json'
             })
-                .done(function( data ) {
-                    console.log(data);
+                .done(function (data) {
                     if (data.valid === false) {
                         let msg = 'INVALID RANK' + "\n";
 
                         if (data.msg) {
-                            $.each(data.msg, function(index, value) {
+                            $.each(data.msg, function (index, value) {
                                 msg += "\n* " + value;
                             });
                         }
@@ -488,12 +518,12 @@
             if ($('#tigCheck').prop('checked')) {
                 $('#ep').prop('checked', false);
             }
-        })
+        });
 
-        $('#ep').on('change', function() {
+        $('#ep').on('change', function () {
             if ($('#ep').prop('checked')) {
                 $('#tigCheck').prop('checked', false);
             }
-        })
+        });
     </script>
 @stop

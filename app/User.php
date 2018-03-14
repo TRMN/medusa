@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Enums\MedusaDefaults;
@@ -2704,6 +2705,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             'early'  => false,
         ];
 
+        $specialTig = 0;
+
         // Check for special promotion capabilities
         switch ($this->rank['grade']) {
             case 'E-4':
@@ -2741,8 +2744,51 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $payGrade2Check = $this->nextGrade[$this->rank['grade']]['next'][0];
         }
 
+        if ($this->isGradeValidForUser($payGrade2Check) === false) {
+            if (substr($payGrade2Check, 0, 1) == 'C') {
+                // Civilian, determine what the next grade is and if they're eligible
+                list($component, $step) = explode('-', $payGrade2Check);
+                // Tig for grade being checked
+                $specialTig = isset($this->promotionRequirements[$payGrade2Check]['tig']) ?
+                    $this->promotionRequirements[$payGrade2Check]['tig'] : 0;
+                $step++; // Start the check and the next one in sequence
+
+                // Get the TiG of all the missing steps
+                while($this->isGradeValidForUser('C-' . $step) === false) {
+                    if ($step > 23) {
+                        // No next one found
+                        return [
+                            'tig'    => false,
+                            'points' => false,
+                            'exams'  => false,
+                            'early'  => false,
+                        ];
+                    }
+                    $specialTig += $this->promotionRequirements['C-' . $step]['tig'];
+                    $step++;
+                }
+                // Get the Tig of the final step
+                $specialTig += $this->promotionRequirements['C-' . $step]['tig'];
+
+                // Set the Paygrade to check to the final match
+                $payGrade2Check = 'C-' . $step;
+            } else {
+                return [
+                    'tig'    => false,
+                    'points' => false,
+                    'exams'  => false,
+                    'early'  => false,
+                ];
+            }
+        }
+
         if (empty($payGrade2Check) === false) {
             $requirements = $this->promotionRequirements[$payGrade2Check];
+
+            // Steps were skipped, us that tig
+            if ($specialTig > 0) {
+                $requirements['tig'] = $specialTig;
+            }
 
             $path = $this->getPath();
 
@@ -2759,6 +2805,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $flags['tig'] === false) {
                 $flags['early'] = ($this->getTimeInGrade('months') >=
                                    ($requirements['tig'] - 3));
+            }
+
+            if (empty($requirements['tig']) === true) {
+                $flags['tig'] = false;
             }
 
             // If they have TiG, check other requirements.  No requirements for a members path == not eligible
@@ -2779,16 +2829,43 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             // Include what the next paygrade is
 
-            $flags['next'][] =
-                $this->nextGrade[$this->rank['grade']]['next'][0];
-
-            if (count($this->nextGrade[$this->rank['grade']]['next']) > 1) {
+            if ($specialTig > 0) {
+                $flags['next'][] = $payGrade2Check;
+            } else {
                 $flags['next'][] =
-                    $this->nextGrade[$this->rank['grade']]['next'][1];
+                    $this->nextGrade[$this->rank['grade']]['next'][0];
+
+                if (count($this->nextGrade[$this->rank['grade']]['next']) > 1) {
+                    $flags['next'][] =
+                        $this->nextGrade[$this->rank['grade']]['next'][1];
+                }
             }
         }
 
         return $flags;
+    }
+
+    public function isGradeValidForUser($payGrade2Check)
+    {
+        if (empty($this->rating) === true) {
+            // No rating, check the Grade collection
+            try {
+                $gradeInfo = Grade::where('grade', $payGrade2Check)->firstOrFail();
+                return isset($gradeInfo->rank[$this->branch]);
+            } catch (ModelNotFoundException $e) {
+                // Paygrade doesn't exist
+                return false;
+            }
+        } else {
+            // Check the available ranks for this rating
+            try {
+                $rateInfo = Rating::where('rate_code', $this->getRate())->firstOrFail();
+                return isset($rateInfo->rate[$this->branch][$payGrade2Check]);
+            } catch (ModelNotFoundException $e) {
+                // Rating doesn't exist
+                return false;
+            }
+        }
     }
 
     /**

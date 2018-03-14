@@ -22,6 +22,7 @@
             {!! str_replace('CHAPTER', $chapter->chapter_name, \App\MedusaConfig::get('promotions.instructions')) !!}
         </div>
     </div>
+
     <div>
         @if($early || $promotable)
             {{Form::open(['id' => 'promotions', 'url' => '/bulkpromote'])}}
@@ -50,12 +51,16 @@
             </div>
         @endif
 
-        @if($early || $promotable)
-            <div class="text-center">
+
+        <div class="text-center">
+            @if($early || $promotable)
                 <button type="submit" class="btn btn-success" id="btnPromote">Promote the selected members</button>
                 {{ Form::close() }}
-            </div>
-        @endif
+            @endif
+            <a href="{{route('chapter.show', [$chapter->id])}}" class="btn btn-primary"><span
+                        class="fa fa-arrow-left"></span> Return to Roster</a>
+        </div>
+
 
         @if(!empty($warrant))
             <div>

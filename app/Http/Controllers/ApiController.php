@@ -48,6 +48,38 @@ class ApiController extends Controller
         return Response::json(Grade::getGradesForBranch($branchID));
     }
 
+    public function getGradesForRating($rating, $branch)
+    {
+        $ratings = Rating::where('rate_code', $rating)->first();
+
+        $ratingsForBranch = $ratings->rate[$branch];
+
+        return [$ratings->rate['description'] => $this->parseRatingsForBranch($ratingsForBranch)];
+    }
+
+    private function parseRatingsForBranch($ratings)
+    {
+        $grades = [];
+
+        foreach ($ratings as $grade => $rate) {
+            $grades[$grade] = $this->mbTrim($rate) . ' (' . $grade . ')';
+        }
+
+        return $grades;
+    }
+
+    /**
+     * Trim whitespace from mb_strings
+     *
+     * @param $string
+     * @param string $trim_chars
+     * @return mixed
+     */
+    private function mbTrim($string, $trim_chars = '\s')
+    {
+        return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
+    }
+
     public function getChapters()
     {
         return Response::json(Chapter::getChapters());
