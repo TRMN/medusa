@@ -438,6 +438,7 @@ Route::get(
     '/api/branch/{branchID}/grade',
     'ApiController@getGradesForBranch'
 ); // Get a list of pay grades for that branch
+Route::get('/api/branch/{rating}/{branchID}','ApiController@getGradesForRating');
 Route::get(
     '/api/chapter',
     'ApiController@getChapters'
