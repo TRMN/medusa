@@ -33,7 +33,7 @@ class AddPeerageBillets extends Migration
                  ] as $billet) {
 
             try {
-                Billet::create(['billet_name' => $billet]);
+                App\Billet::create(['billet_name' => $billet]);
 
                 $this->writeAuditTrail(
                     'migration',
@@ -73,9 +73,9 @@ class AddPeerageBillets extends Migration
                      'Majordomo'
                  ] as $billet) {
             try {
-                $billetId = Billet::where('billet_name', $billet)->first()->id;
+                $billetId = App\Billet::where('billet_name', $billet)->first()->id;
 
-                Billet::destroy($billetId);
+                App\Billet::destroy($billetId);
 
                 $this->writeAuditTrail(
                     'migration',

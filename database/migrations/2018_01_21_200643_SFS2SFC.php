@@ -16,7 +16,7 @@ class SFS2SFC extends Migration
     {
         // Update the SFS entry in the branch's collection
 
-        $item = Branch::where('branch', 'SFS')->first();
+        $item = App\Branch::where('branch', 'SFS')->first();
 
         $item->branch = 'SFC';
         $item->branch_name = 'Sphinx Forestry Commission';
@@ -25,7 +25,7 @@ class SFS2SFC extends Migration
 
         // Get all the other entries and update the equivalency entry
 
-        foreach(Branch::where('branch', '!=', 'SFC')->get() as $entry) {
+        foreach(App\Branch::where('branch', '!=', 'SFC')->get() as $entry) {
             $equivalent = $entry->equivalent;
             $equivalent['SFC'] = $equivalent['SFS'];
             unset($equivalent['SFS']);

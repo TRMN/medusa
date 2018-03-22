@@ -14,7 +14,7 @@ class AdditionalAwards extends Migration
      */
     public function down()
     {
-        $loh = Award::where('code', 'LOH')->first();
+        $loh = App\Award::where('code', 'LOH')->first();
 
         $loh->name = 'List of Honor Citation';
         $loh->replaces = '';
@@ -24,12 +24,12 @@ class AdditionalAwards extends Migration
         $loh->save();
 
         // Update the FEA in Gold
-        $fea = Award::where('code', 'FEA')->first();
+        $fea = App\Award::where('code', 'FEA')->first();
         $fea->name = "Fleet Excellence Award";
         $fea->save();
 
         foreach (['LOHP', 'QE3SJM', 'QE3GJM', 'FEAS'] as $code) {
-            Award::where('code', $code)->delete();
+            App\Award::where('code', $code)->delete();
         }
 
         // Remove the Army weapons qualifications/rating
@@ -50,17 +50,17 @@ class AdditionalAwards extends Migration
 
         foreach ($quals as $qual) {
             foreach ($weapons as $code => $weapon) {
-                Award::where('code', 'A' . $code . $qual)->delete();
+                App\Award::where('code', 'A' . $code . $qual)->delete();
             }
         }
 
         // Pull everything up after removing the Jubilee medals
 
-        Award::where('display_order', '>=', 77)->where('display_order', '<', 1000)->decrement('display_order', 2);
+        App\Award::where('display_order', '>=', 77)->where('display_order', '<', 1000)->decrement('display_order', 2);
 
 
         // Pull everything up 1 after removing the Fleet Excellence Award in Silver
-        Award::where('display_order', '>=', 65)->where('display_order', '<', 1000)->decrement('display_order', 1);
+        App\Award::where('display_order', '>=', 65)->where('display_order', '<', 1000)->decrement('display_order', 1);
 
         // Renumber the Navy Marksmanship Awards, the Recruit Training Ribbon, NCO Senior Course Ribbon and the AFS
 
@@ -79,7 +79,7 @@ class AdditionalAwards extends Migration
         ];
 
         foreach ($marksmanship as $code => $display_order) {
-            $award = Award::where('code', $code)->first();
+            $award = App\Award::where('code', $code)->first();
             $award->display_order = $display_order;
             $award->save();
         }
@@ -106,7 +106,7 @@ class AdditionalAwards extends Migration
         $loh->save();
 
         // Add Personal LOH citation
-        Award::create([
+        App\Award::create([
             "display_order" => 61,
             "name" => "List of Honor Citation (Personal)",
             "code" => "LOHP",
@@ -119,11 +119,11 @@ class AdditionalAwards extends Migration
 
         // Push everything down to make room for the Jubilee medals
 
-        Award::where('display_order', '>=', 75)->where('display_order', '<', 1000)->increment('display_order', 2);
+        App\Award::where('display_order', '>=', 75)->where('display_order', '<', 1000)->increment('display_order', 2);
 
         // Add the Jubilee medals
 
-        Award::create([
+        App\Award::create([
             "display_order" => 75,
             "name" => "Queen Elizabeth III Silver Jubilee Medal",
             "code" => "QE3SJM",
@@ -134,7 +134,7 @@ class AdditionalAwards extends Migration
             "points" => 1
         ]);
 
-        Award::create([
+        App\Award::create([
             "display_order" => 76,
             "name" => "Queen Elizabeth III Gold Jubilee Medal",
             "code" => "QE3GJM",
@@ -162,7 +162,7 @@ class AdditionalAwards extends Migration
         ];
 
         foreach ($renumber as $code => $display_order) {
-            $award = Award::where('code', $code)->first();
+            $award = App\Award::where('code', $code)->first();
             $award->display_order = $display_order;
             if ($display_order < 115) {
                 $award->replaces = $award->replaces . ',' . substr($code, 0, 2) . 'MC';
@@ -195,7 +195,7 @@ class AdditionalAwards extends Migration
             $display_order = $typeInfo['start'];
             foreach ($weapons as $code => $weapon) {
 
-                Award::create([
+                App\Award::create([
                     "display_order" => $display_order,
                     "name" => "Army " . $weapon . " " . $typeInfo['suffix'],
                     "code" => "A" . $code . $suffix,
@@ -212,10 +212,10 @@ class AdditionalAwards extends Migration
         }
 
         // Push everything down 1 and insert the Fleet Excellence Award in Silver
-        Award::where('display_order', '>=', 64)->where('display_order', '<', 1000)->increment('display_order', 1);
+        App\Award::where('display_order', '>=', 64)->where('display_order', '<', 1000)->increment('display_order', 1);
 
         // Add the FEA in Silver
-        Award::create([
+        App\Award::create([
             "display_order" => 64,
             "name" => "Fleet Excellence Award in Silver",
             "code" => "FEAS",
@@ -227,7 +227,7 @@ class AdditionalAwards extends Migration
         ]);
 
         // Update the FEA in Gold
-        $fea = Award::where('code', 'FEA')->first();
+        $fea = App\Award::where('code', 'FEA')->first();
         $fea->name = "Fleet Excellence Award in Gold";
         $fea->save();
     }

@@ -30,13 +30,13 @@ class EditConfig extends Migration
                 json_encode(["name" => $perm, "description" => $desc]),
                 'add_config_perms'
             );
-            Permission::create(["name" => $perm, "description" => $desc]);
+            App\Permission::create(["name" => $perm, "description" => $desc]);
         }
 
         // Assign the new permission to Dave and Eric only
 
         foreach (['RMN-1094-12', 'RMN-2470-14'] as $admin) {
-            User::getUserByMemberId($admin)->updatePerms(['CONFIG']);
+            App\User::getUserByMemberId($admin)->updatePerms(['CONFIG']);
         }
     }
 

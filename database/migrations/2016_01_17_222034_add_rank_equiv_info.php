@@ -16,7 +16,7 @@ class AddRankEquivInfo extends Migration
     public function up()
     {
         // RMN is special with the A and B levels at O-6 and up
-        $branch = Branch::where('branch', '=', 'RMN')->first();
+        $branch = App\Branch::where('branch', '=', 'RMN')->first();
 
         $equiv = [
             'RMMC'  => [

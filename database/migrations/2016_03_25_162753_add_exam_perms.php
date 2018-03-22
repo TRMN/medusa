@@ -29,7 +29,7 @@ class AddExamPerms extends Migration
                 json_encode(["name" => $perm, "description" => $desc]),
                 'add_exam_perms'
             );
-            Permission::create(["name" => $perm, "description" => $desc]);
+            App\Permission::create(["name" => $perm, "description" => $desc]);
         }
     }
 
