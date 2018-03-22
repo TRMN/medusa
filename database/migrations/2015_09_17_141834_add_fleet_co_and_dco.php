@@ -26,7 +26,7 @@ class AddFleetCoAndDco extends Migration
                 json_encode(["billet_name" => $billet]),
                 'add_fleet_co_and_dco'
             );
-            Billet::create(["billet_name" => $billet]);
+            App\Billet::create(["billet_name" => $billet]);
         }
     }
 
