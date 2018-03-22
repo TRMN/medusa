@@ -15,7 +15,7 @@ class UpdateAssignemnts extends Migration
      */
     public function up()
     {
-        $members = User::all();
+        $members = App\User::all();
 
         foreach ($members as $member) {
             $assignments = $member->assignment;
