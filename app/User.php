@@ -201,6 +201,24 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
+     * Get the number of exams with a passing score for a member
+     *
+     * @return int
+     */
+    public function getNumExams()
+    {
+        $numExams = 0;
+
+        foreach ($this->getExamList() as $exam) {
+            if ($this->isPassingGrade($exam['score']) === true) {
+                $numExams++;
+            }
+        }
+
+        return $numExams;
+    }
+
+    /**
      * Route notifications for the mail channel.
      *
      * @return string

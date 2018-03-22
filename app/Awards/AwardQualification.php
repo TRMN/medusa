@@ -3,7 +3,6 @@
 namespace App\Awards;
 
 use App\AwardLog;
-use App\User;
 use App\MedusaConfig;
 use App\Utility\MedusaUtility;
 use Carbon\Carbon;
@@ -23,6 +22,7 @@ trait AwardQualification
      * @param bool $isNewAward
      *
      * @return bool
+     * @throws \Exception
      */
     public function mcamQual($isNewAward = true)
     {
@@ -31,14 +31,7 @@ trait AwardQualification
         if ($this->hasAward('ESWP') === true || $this->hasAward('OSWP') === true) {
             // If they're not qualified for a SWP, they can't qual for a MCAM
 
-            $numExams = 0;
-
-            foreach ($this->getExamList() as $exam) {
-                if ($this->isPassingGrade($exam['score']) === true) {
-                    $numExams++;
-                }
-            }
-
+            $numExams = $this->getNumExams();
 
             if ($numExams > 40) {
                 // Qualified for at least one MCAM
@@ -65,9 +58,11 @@ trait AwardQualification
 
             $newMCAM = $numMCAM - $curNumMCAM;
 
-            $awardDate = $isNewAward === true ? Carbon::create()->firstOfMonth()
-                                                      ->addMonth()
-                                                      ->toDateString() : '1970-01-01';
+            $awardDate = (
+                $isNewAward === true ?
+                Carbon::create()->firstOfMonth()->addMonth()->toDateString() :
+                '1970-01-01'
+            );
 
             if ($newMCAM > 0) {
                 // Calculated number of MCAM's is more the what the member
@@ -79,7 +74,7 @@ trait AwardQualification
                 );
             } else {
                 // There is a discrepancy, set the number of award dates to match
-                // the caluclated number of MCAM's per the 1SL
+                // the calculated number of MCAM's per the 1SL
                 $awardDates = array_fill(0, $numMCAM, $awardDate);
             }
 
@@ -93,7 +88,7 @@ trait AwardQualification
                                              ]
                                          ]);
 
-            if ($results === true && $isNewAward === true) {
+            if ($results === true && $isNewAward === true && $newMCAM > 0) {
                 // MCAM awarded and it's a new award.  Add it to their history and
                 // log it
 
@@ -107,8 +102,9 @@ trait AwardQualification
                                        $awardDate,
                     ]
                 );
+                return true;
             }
-            return $numMCAM;
+            return false;
         }
         return false;
     }
@@ -155,6 +151,7 @@ trait AwardQualification
      * @param bool $isNewAward
      *
      * @return bool
+     * @throws \Exception
      */
     public function swpQual($isNewAward = true)
     {
@@ -285,19 +282,34 @@ trait AwardQualification
         }
     }
 
+    /**
+     * Log the new award.
+     * @param $award
+     * @param $qty
+     * @param $event
+     *
+     * @return bool
+     * @throws \Exception
+     */
     private function logAward($award, $qty, $event)
     {
-        // Add this to the members service history
-        $this->addServiceHistoryEntry($event);
+        try {
+            // Add this to the members service history
+            $this->addServiceHistoryEntry($event);
 
-        // Add a log entry for BuTrain
-        AwardLog::create(
-            [
-                'timestamp' => $event['timestamp'],
-                'member_id' => $this->member_id,
-                'award' => $award,
-                'qty' => $qty,
-            ]
-        );
+            // Add a log entry for BuTrain
+            AwardLog::create(
+                [
+                    'timestamp' => $event['timestamp'],
+                    'member_id' => $this->member_id,
+                    'award' => $award,
+                    'qty' => $qty,
+                ]
+            );
+
+            return true;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }
