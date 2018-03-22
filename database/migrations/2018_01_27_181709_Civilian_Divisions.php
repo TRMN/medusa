@@ -134,7 +134,7 @@ class CivilianDivisions extends Migration
 
         // Set all the unrated civilian ranks to "Civilian One", etc
         for ($i=1; $i<=23; $i++) {
-            $fmt = new NumberFormatter( 'en_US', NumberFormatter::SPELLOUT );
+            $fmt = new \NumberFormatter( 'en_US', \NumberFormatter::SPELLOUT );
 
             $record = \App\Grade::where('grade', 'C-' . $i)->first();
 
