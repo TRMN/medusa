@@ -698,7 +698,7 @@ class AddRankEquivInfo extends Migration
         ];
 
         foreach (['RMMC', 'GSN', 'IAN', 'RHN', 'RMA'] as $value) {
-            $branch = Branch::where('branch', '=', $value)->first();
+            $branch = App\Branch::where('branch', '=', $value)->first();
 
             $branch['equivalent'] = array_except($equiv, [$value]);
             $branch->save();
@@ -994,7 +994,7 @@ class AddRankEquivInfo extends Migration
         ];
 
         foreach (['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMACS'] as $value) {
-            $branch = Branch::where('branch', '=', $value)->first();
+            $branch = App\Branch::where('branch', '=', $value)->first();
 
             $branch['equivalent'] = array_except($equiv, [$value]);
             $branch->save();
@@ -1017,7 +1017,7 @@ class AddRankEquivInfo extends Migration
      */
     public function down()
     {
-        foreach (Branch::all() as $branch) {
+        foreach (App\Branch::all() as $branch) {
             $branch->equivalent = null;
             $branch->save();
 

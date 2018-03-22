@@ -15,7 +15,7 @@ class UpdateScottAkersRegDate extends Migration
      */
     public function up()
     {
-        $user = User::where('member_id', '=', 'RMN-0011-08')->first();
+        $user = App\User::where('member_id', '=', 'RMN-0011-08')->first();
 
         $user->registration_date = "2008-02-22";
         $user->application_date = "2008-02-22";

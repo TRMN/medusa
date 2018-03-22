@@ -96,7 +96,7 @@ class AdditionalAwards extends Migration
     {
         // Update the List of Honor listing
 
-        $loh = Award::where('code', 'LOH')->first();
+        $loh = App\Award::where('code', 'LOH')->first();
 
         $loh->name = 'List of Honor Citation (Chapter)';
         $loh->replaces = 'LOHP';
