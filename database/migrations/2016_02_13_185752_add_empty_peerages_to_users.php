@@ -15,7 +15,7 @@ class AddEmptyPeeragesToUsers extends Migration
      */
     public function up()
     {
-        foreach (User::all() as $user) {
+        foreach (App\User::all() as $user) {
             $user->peerages = [];
             $user->save();
         }

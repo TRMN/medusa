@@ -23,7 +23,7 @@ class AddGunnyBillet extends Migration
             json_encode(["billet_name" => "Gunny"]),
             'add_flag_lt'
         );
-        Billet::create(["billet_name" => "Gunny"]);
+        App\Billet::create(["billet_name" => "Gunny"]);
     }
 
     /**

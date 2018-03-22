@@ -28,7 +28,7 @@ class AddPeerageLandsType extends Migration
 
         foreach ($lands as $desc => $type) {
             try {
-                Type::create(['chapter_type' => $type, 'chapter_description' => $desc]);
+                App\Type::create(['chapter_type' => $type, 'chapter_description' => $desc]);
 
                 $this->writeAuditTrail(
                     'migration',
@@ -63,9 +63,9 @@ class AddPeerageLandsType extends Migration
 
         foreach ($lands as $type) {
             try {
-                $typeId = Type::where('chapter_type', $type)->first()->id;
+                $typeId = App\Type::where('chapter_type', $type)->first()->id;
 
-                Type::destroy($typeId);
+                App\Type::destroy($typeId);
 
                 $this->writeAuditTrail(
                     'migration',

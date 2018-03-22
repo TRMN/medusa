@@ -115,7 +115,7 @@ class NewRibbons extends Migration
     public function up()
     {
         foreach (json_decode($this->awards, true) as $award) {
-            Award::create($award);
+            App\Award::create($award);
         }
     }
 
@@ -127,7 +127,7 @@ class NewRibbons extends Migration
     public function down()
     {
         foreach (json_decode($this->awards, true) as $award) {
-            Award::where('code', $award['code'])->delete();
+            App\Award::where('code', $award['code'])->delete();
         }
     }
 }

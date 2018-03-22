@@ -23,7 +23,7 @@ class AddFleetCoLiaiason extends Migration
             json_encode(["billet_name" => "Fleet CO Liaison"]),
             'add_flag_lt'
         );
-        Billet::create(["billet_name" => "Fleet CO Liaison"]);
+        App\Billet::create(["billet_name" => "Fleet CO Liaison"]);
     }
 
     /**

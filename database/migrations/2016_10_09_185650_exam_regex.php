@@ -14,7 +14,7 @@ class ExamRegex extends Migration
     public function up()
     {
 
-        MedusaConfig::create([
+        App\MedusaConfig::create([
           'key'   => 'exam.regex',
           'value' => json_decode('
                 {
@@ -42,6 +42,6 @@ class ExamRegex extends Migration
      */
     public function down()
     {
-        MedusaConfig::where('key', '=', 'exam.regex')->firstOrFail()->delete();
+        App\MedusaConfig::where('key', '=', 'exam.regex')->firstOrFail()->delete();
     }
 }
