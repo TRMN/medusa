@@ -14,13 +14,13 @@ class RenumberAwards extends Migration
      */
     public function up()
     {
-        $awards = Award::where('display_order', '>=', 3)->where('display_order', '<', 1000)->increment('display_order', 1);
+        $awards = App\Award::where('display_order', '>=', 3)->where('display_order', '<', 1000)->increment('display_order', 1);
 
         // Deal with a few oddities -- sleeve stripes need to be pulled out into their own section
 
-        Award::where('code', 'MT')->update(['display_order' => 3000]);
-        Award::where('code', 'MID')->update(['display_order' => 3001]);
-        Award::where('code', 'WS')->update(['display_order' => 3002]);
+        App\Award::where('code', 'MT')->update(['display_order' => 3000]);
+        App\Award::where('code', 'MID')->update(['display_order' => 3001]);
+        App\Award::where('code', 'WS')->update(['display_order' => 3002]);
     }
 
     /**
@@ -30,7 +30,7 @@ class RenumberAwards extends Migration
      */
     public function down()
     {
-        $awards = Award::where('display_order', '>=', 4)->where('display_order', '<', 1000)->decrement('display_order', 1);
+        $awards = App\Award::where('display_order', '>=', 4)->where('display_order', '<', 1000)->decrement('display_order', 1);
     }
 }
 
