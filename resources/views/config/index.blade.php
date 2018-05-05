@@ -24,7 +24,7 @@
             @foreach(\App\MedusaConfig::all() as $item)
                 <tr>
                     <td class="border-right">{!! $item->key !!}</td>
-                    <td class="border-right">@if(is_array($item->value)) <pre class="json preview"> @endif
+                    <td class="border-right cpreview">@if(is_array($item->value)) <pre class="json preview"> @endif
                         {!! is_array($item->value)?json_encode($item->value):$item->value !!}
                         @if(is_array($item->value)) </pre> @endif
                     </td>
@@ -83,6 +83,9 @@
                 $(this).addClass('preview');
               }
             });
+
+            $('.json').width(0);
+            $(".json").width($('.cpreview').width());
         });
     </script>
 @stop

@@ -335,6 +335,9 @@ class UploadController extends Controller
                         case 'triad':
                         case 'fleet':
                         case 'ah':
+                            // Import is number of 3 month blocks, MEDUSA uses total months
+                            $value = $value * 3;
+                            break;
                         case 'cpm':
                         case 'cpe':
                         case 'che':
