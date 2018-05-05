@@ -23,11 +23,15 @@
             </div>
         @endif
 
-        @if($permsObj->hasPermissions(['CREATE_ECHELON',
-        'EDIT_ECHELON',
-        'DEL_ECHELON',
-        'ASSIGN_SHIP',
-        'CHANGE_ASSIGNMENT','TRIAD_REPORT']) === true)
+        @if($permsObj->hasPermissions([
+            'CREATE_ECHELON',
+            'EDIT_ECHELON',
+            'DEL_ECHELON',
+            'ASSIGN_SHIP',
+            'CHANGE_ASSIGNMENT',
+            'TRIAD_REPORT',
+            'VIEW_BOSUN',
+        ]) === true)
             <h3 class="nav-header lnav">First Space Lord</h3>
             <div class="rnav">
 
@@ -36,6 +40,9 @@
                 @endif
                 @if($permsObj->hasPermissions(['TRIAD_REPORT']) == true)
                     <a href="{!!route('chapter.triadreport')!!}">Command Triad Report</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['VIEW_BOSUN']) == true)
+                    <a href="{!!route('showBranch', ['branch' => 'Bosun'])!!}">Bosun List</a><br/>
                 @endif
 
             </div>

@@ -10,6 +10,8 @@ class SWPandMCAMcheck extends Migration
      * Run the migrations.
      *
      * @return void
+     *
+     * @inheritdoc
      */
     public function up()
     {

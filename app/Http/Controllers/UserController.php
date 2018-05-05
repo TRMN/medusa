@@ -60,9 +60,16 @@ class UserController extends Controller
             case 'Expelled':
                 $query = User::where('registration_status', $branch);
                 break;
+            case 'Bosun':
+                $query =
+                    User::where('active', 1)
+                        ->where('registration_status', 'Active')
+                        ->where('assignment.billet', 'Bosun');
+                break;
             default:
                 $query =
-                    User::where('active', 1)->where('registration_status', 'Active')
+                    User::where('active', 1)
+                        ->where('registration_status', 'Active')
                         ->where('branch', $branch);
         }
 
@@ -110,7 +117,11 @@ class UserController extends Controller
                 $query = $query->orderBy('email_address', $sortOrder);
                 break;
             case 7:
-                $query = $query->orderBy('registration_date', $sortOrder);
+                if ($branch == 'Bosun') {
+                    $query = $query->orderBy('branch', $sortOrder);
+                } else {
+                    $query = $query->orderBy('registration_date', $sortOrder);
+                }
                 break;
         }
 
@@ -178,7 +189,7 @@ class UserController extends Controller
                 $user->getAssignmentName('primary') !== false ?
                     '<a href="/chapter/' . $user->getAssignmentId('primary') . '">' .
                     $user->getAssignmentName('primary') . '</a>' : 'N/A',
-                $user->registration_date,
+                $branch == 'Bosun' ? $user->branch : $user->registration_date,
                 $actions,
             ];
         }
@@ -1855,14 +1866,20 @@ class UserController extends Controller
      */
     public function showBranch($branch)
     {
-        if (($redirect = $this->checkPermissions('VIEW_' . $branch)) !== true) {
+        if (($redirect = $this->checkPermissions('VIEW_' . strtoupper($branch))) !== true) {
             return $redirect;
+        }
+
+        $title = $branch . " Members";
+
+        if ($branch == 'Bosun') {
+            $title = 'Bosun List';
         }
 
         return view(
             'user.byBranch',
             [
-                'title'  => $branch . " Members",
+                'title'  => $title,
                 'branch' => $branch,
             ]
         );
