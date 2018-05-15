@@ -2738,6 +2738,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getPromotableInfo($payGrade2Check = null)
     {
+        if ($debug === true) {
+            print "\n";
+        }
+
         $flags = [
             'tig'    => false,
             'points' => false,
@@ -2789,6 +2793,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 // Civilian, determine what the next grade is and if they're eligible
                 list($component, $step) = explode('-', $payGrade2Check);
                 // Tig for grade being checked
+                if ($debug === true) {
+                    print "  Checking C-" . $step . "\n";
+                }
                 $specialTig = isset($this->promotionRequirements[$payGrade2Check]['tig']) ?
                     $this->promotionRequirements[$payGrade2Check]['tig'] : 0;
                 $step++; // Start the check and the next one in sequence
@@ -2804,11 +2811,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                             'early'  => false,
                         ];
                     }
-                    $specialTig += $this->promotionRequirements['C-' . $step]['tig'];
+                    $specialTig += isset($this->promotionRequirements['C-' . $step]['tig']) ?
+                        $this->promotionRequirements['C-' . $step]['tig'] : 0;
                     $step++;
                 }
                 // Get the Tig of the final step
-                $specialTig += $this->promotionRequirements['C-' . $step]['tig'];
+                $specialTig += isset($this->promotionRequirements['C-' . $step]['tig']) ?
+                    $this->promotionRequirements['C-' . $step]['tig'] : 0;
 
                 // Set the Paygrade to check to the final match
                 $payGrade2Check = 'C-' . $step;
@@ -3052,11 +3061,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         $flags['early'] = false;
                     }
                 } else {
-                    $flags = $this->getPromotableInfo($payGrade2Check);
+                    $flags = $this->getPromotableInfo($payGrade2Check, $debug);
                 }
                 break;
             default:
-                $flags = $this->getPromotableInfo($payGrade2Check);
+                $flags = $this->getPromotableInfo($payGrade2Check, $debug);
         }
 
         // If there are no exams and no points, they are not promotable.
