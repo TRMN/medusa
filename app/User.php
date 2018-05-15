@@ -2738,10 +2738,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getPromotableInfo($payGrade2Check = null)
     {
-        if ($debug === true) {
-            print "\n";
-        }
-
         $flags = [
             'tig'    => false,
             'points' => false,
