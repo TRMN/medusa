@@ -2789,9 +2789,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 // Civilian, determine what the next grade is and if they're eligible
                 list($component, $step) = explode('-', $payGrade2Check);
                 // Tig for grade being checked
-                if ($debug === true) {
-                    print "  Checking C-" . $step . "\n";
-                }
                 $specialTig = isset($this->promotionRequirements[$payGrade2Check]['tig']) ?
                     $this->promotionRequirements[$payGrade2Check]['tig'] : 0;
                 $step++; // Start the check and the next one in sequence
