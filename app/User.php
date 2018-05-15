@@ -3061,11 +3061,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         $flags['early'] = false;
                     }
                 } else {
-                    $flags = $this->getPromotableInfo($payGrade2Check, $debug);
+                    $flags = $this->getPromotableInfo($payGrade2Check);
                 }
                 break;
             default:
-                $flags = $this->getPromotableInfo($payGrade2Check, $debug);
+                $flags = $this->getPromotableInfo($payGrade2Check);
         }
 
         // If there are no exams and no points, they are not promotable.
