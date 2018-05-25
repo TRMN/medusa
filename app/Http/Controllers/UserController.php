@@ -1679,12 +1679,12 @@ class UserController extends Controller
             $peerage['courtesy'] = true;
         }
 
-        if (empty($data['peerageid']) === true) {
+        if (empty($data['peerage_id']) === true) {
             // Give each entry a unique ID so we can edit or delete them later with ease
 
-            $peerage['peerageid'] = uniqid(null, true);
+            $peerage['peerage_id'] = uniqid(null, true);
         } else {
-            $peerage['peerageid'] = $data['peerageid'];
+            $peerage['peerage_id'] = $data['peerage_id'];
         }
 
         return $peerage;
@@ -1703,9 +1703,9 @@ class UserController extends Controller
 
         $msg = "Peerage added";
 
-        if (empty($data['peerageid']) === false) {
+        if (empty($data['peerage_id']) === false) {
             // This is an edit
-            $user->deletePeerage($data['peerageid']);
+            $user->deletePeerage($data['peerage_id']);
             $msg = "Peerage updated";
         }
 
@@ -1740,13 +1740,13 @@ class UserController extends Controller
      * Process AJAX request to delete a peerage
      *
      * @param \App\User $user
-     * @param $peerageId
+     * @param $peerage_id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function deletePeerage(User $user, $peerageId)
+    public function deletePeerage(User $user, $peerage_id)
     {
-        $user->deletePeerage($peerageId);
+        $user->deletePeerage($peerage_id);
 
         return Redirect::route('home')->with('message', 'Peerage deleted');
     }

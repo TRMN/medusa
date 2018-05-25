@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-sm-6 text-right">
+                                    <div class="form-group col-sm-6 text-right"><a href="{{ url('/password/reset') }}" class="text-right btn btn-lg btn-warning">Reset Password <span class="fa fa-lock"></span></a>
                                         <button class="btn btn-success btn-lg text-right Incised901Light" type="submit">
                                             Sign In
                                             <span
@@ -134,12 +134,7 @@
                                     </div>
                                 </div>
                                 {!! Form::close() !!}
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <a href="{{ url('/password/reset') }}" class="text-right"><p
-                                                    style="font-style: italic">Forgot your password?</p></a>
-                                    </div>
-                                </div>
+
                                 <div class="row">
                                     <div class="col-sm-6 text-right">
                                         <br clear="right">
@@ -148,6 +143,14 @@
                                            class="btn btn-lg btn-primary text-right">Register
                                             <span class="fa fa-pencil"></span></a>
                                     </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 text-right">
+                                        <br clear="right" />
+                                        <a href="https://bolthole.trmn.org/open.php?topicId=12" class="btn btn-lg btn-danger">GDPR Reqeust <span class="fa fa-address-card"></span></a>
+                                    </div>
+
                                 </div>
                             @endif
                         </div>
