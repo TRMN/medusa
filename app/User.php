@@ -1524,16 +1524,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     /**
      * Delete a peerage from a users record
      *
-     * @param $peerageId
+     * @param $peerage_id
      *
      * @return bool
      */
-    public function deletePeerage($peerageId)
+    public function deletePeerage($peerage_id)
     {
         $peerages = array_where(
             $this->peerages,
-            function ($value, $key) use ($peerageId) {
-                if ($value['peerageid'] != $peerageId) {
+            function ($value, $key) use ($peerage_id) {
+                if ($value['peerage_id'] != $peerage_id) {
                     return true;
                 }
 
