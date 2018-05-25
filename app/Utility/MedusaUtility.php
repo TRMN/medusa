@@ -32,18 +32,31 @@ class MedusaUtility
      */
     public static function getWelcomeLetter(User $user)
     {
-        $letter = MedusaConfig::get('bupers.letter', null);
+        $letter = MedusaConfig::get('bupers.welcome', null);
 
         $search = [
             '%CHAPTER%',
             '%CO%',
             '%COEMAIL',
+            '%5SL%',
+            '%MOTA%',
+            '%DANT%',
+            '%HA%',
+            '%1SL%',
+            '%FLA%',
         ];
 
         $replace = [
             $user->getAssignmentName('primary'),
             Chapter::find($user->getAssignmentId('primary'))->getCO()->getGreetingAndName(),
             Chapter::find($user->getAssignmentId('primary'))->getCO()->email_address,
+            User::where('assignment.billet', 'Fifth Space Lord')->first()->getGreetingAndName(),
+            User::where('assignment.billet', 'Marshal of the Army, RMA')->first()->getGreetingAndName(),
+            User::where('assignment.billet', 'Commandant, Royal Manticoran Marine Corps')->first()
+                ->getGreetingAndName(),
+            User::where('assignment.billet', 'High Admiral, GSN')->first()->getGreetingAndName(),
+            User::where('assignment.billet', 'First Space Lord')->first()->getGreetingAndName(),
+            User::where('assignment.billet', 'First Lord of the Admiralty')->first()->getGreetingAndName()
         ];
 
         if (is_null($letter) === false) {
