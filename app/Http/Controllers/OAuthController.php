@@ -52,19 +52,19 @@ class OAuthController extends Controller
         }
 
         $validator =
-          Validator::make($data = $request->all(), OAuthClient::$rules);
+            Validator::make($data = $request->all(), OAuthClient::$rules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
         $this->writeAuditTrail(
-          Auth::user()->id,
-          'create',
-          'oauth_clients',
-          null,
-          json_encode($data),
-          'OauthController@store'
+            Auth::user()->id,
+            'create',
+            'oauth_clients',
+            null,
+            json_encode($data),
+            'OauthController@store'
         );
 
         OAuthClient::create($data);
@@ -117,7 +117,7 @@ class OAuthController extends Controller
         }
 
         $validator =
-          Validator::make($data = $request->all(), OAuthClient::$updateRules);
+            Validator::make($data = $request->all(), OAuthClient::$updateRules);
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
@@ -128,12 +128,12 @@ class OAuthController extends Controller
         }
 
         $this->writeAuditTrail(
-          Auth::user()->id,
-          'update',
-          'oauth_client',
-          null,
-          $oauthClient->toJson(),
-          'OAuthController@update'
+            Auth::user()->id,
+            'update',
+            'oauth_client',
+            null,
+            $oauthClient->toJson(),
+            'OAuthController@update'
         );
 
         $oauthClient->save();
@@ -166,17 +166,17 @@ class OAuthController extends Controller
         \Log::info('Profile request');
 
         return \Response::json(
-          [
-            'uid'            => $user->_id,
-            'email'          => $user->email_address,
-            'firstname'      => $user->first_name,
-            'lastname'       => $user->last_name,
-            'city'           => $user->city,
-            'state_province' => $user->state_province,
-            'country'        => $user->country,
-            'imageurl'       => $user->filePhoto,
-            'user_id'        => $user->_id,
-          ]
+            [
+                'uid'            => $user->_id,
+                'email'          => $user->email_address,
+                'firstname'      => $user->first_name,
+                'lastname'       => $user->last_name,
+                'city'           => $user->city,
+                'state_province' => $user->state_province,
+                'country'        => $user->country,
+                'imageurl'       => $user->filePhoto,
+                'user_id'        => $user->_id,
+            ]
         );
     }
 
@@ -202,35 +202,37 @@ class OAuthController extends Controller
         foreach ($_user->getPeerages() as $_peerage) {
             $_peerage['path'] = null;
 
-            if ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
+            if ($_peerage['code'] = 'L') {
+                $_peerage['fullTitle'] = $_peerage['title'] . ' for ' . $_peerage['lands'];
+            } elseif ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                 if (empty($_peerage['filename']) === false && file_exists(
-                    public_path() . '/arms/peerage/' . $_peerage['filename']
-                  )
+                        public_path() . '/arms/peerage/' . $_peerage['filename']
+                    )
                 ) {
                     $_peerage['path'] =
-                      '/arms/peerage/' . $_peerage['filename'];
+                        '/arms/peerage/' . $_peerage['filename'];
                 }
 
                 $_peerage['fullTitle'] =
-                  $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
+                    $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
             } else {
                 $orderInfo =
-                  \App\Korders::where(
-                    'classes.postnominal',
-                    '=',
-                    $_peerage['postnominal']
-                  )->first();
+                    \App\Korders::where(
+                        'classes.postnominal',
+                        '=',
+                        $_peerage['postnominal']
+                    )->first();
                 if (file_exists(public_path() . '/awards/orders/medals/' . $orderInfo->filename)) {
                     $_peerage['path'] =
-                      substr(
-                        $orderInfo->filename,
-                        0,
-                        strrpos($orderInfo->filename, '.')
-                      );
+                        substr(
+                            $orderInfo->filename,
+                            0,
+                            strrpos($orderInfo->filename, '.')
+                        );
                 }
 
                 $_peerage['fullTitle'] =
-                  $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
+                    $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
             }
 
             unset($_peerage['peerage_id']);
@@ -258,24 +260,24 @@ class OAuthController extends Controller
 
                 if ($_grades['date'] != 'UNKNOWN') {
                     $_examList[$_id]['date'] =
-                      date('d M Y', strtotime($_grades['date']));
+                        date('d M Y', strtotime($_grades['date']));
                 }
 
                 unset($_examList[$_id]['entered_by']);
 
                 $_exams[str_replace(' ', '_', $_label)] =
-                  [
-                    'label'    => $_label,
-                    'new'      => $_newExams,
-                    'examlist' => $_examList
-                  ];
+                    [
+                        'label'    => $_label,
+                        'new'      => $_newExams,
+                        'examlist' => $_examList,
+                    ];
             }
         }
 
         $_user->exams = $_exams;
 
         $_user->greeting =
-          $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
+            $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
 
         if (!file_exists(public_path() . $_user->filePhoto)) {
             unset($_user->filePhoto);
@@ -286,14 +288,14 @@ class OAuthController extends Controller
             $_user->leftRibbons = $_user->getRibbons('L');
             $_user->numAcross = 3;
             $_user->ribbonrack =
-              view('partials.leftribbons', ['user' => $_user])->render();
+                view('partials.leftribbons', ['user' => $_user])->render();
         } else {
             $_user->ribbonrack = null;
         }
 
         if (empty($_user->lastUpdate)) {
             $_user->lastUpdate =
-              strtotime($_user->updated_at->toDateTimeString());
+                strtotime($_user->updated_at->toDateTimeString());
         }
 
         $_user->promotionPoints = $_user->getTotalPromotionPoints();
@@ -318,10 +320,10 @@ class OAuthController extends Controller
         $_user = $this->getUserFromRequest($request);
 
         return Response::json(
-          [
-            'tig' => $_user->getTimeInGrade(true),
-            'tis' => $_user->getTimeInService(true),
-          ]
+            [
+                'tig' => $_user->getTimeInGrade(true),
+                'tis' => $_user->getTimeInService(true),
+            ]
         );
     }
 
@@ -343,10 +345,11 @@ class OAuthController extends Controller
 
         Log::info('TZ=' . $_tz);
 
-        return Response::json([
-          'events' => $this->getUserFromRequest($request)
-                           ->getScheduledEvents($_tz)
-        ]);
+        return Response::json(
+            [
+                'events' => $this->getUserFromRequest($request)
+                                 ->getScheduledEvents($_tz),
+            ]);
     }
 
     public function checkMemberIn(Request $request)
@@ -356,12 +359,13 @@ class OAuthController extends Controller
 
         Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
 
-        return Response::json($this->getUserFromRequest($request)
-                                   ->checkMemberIn(
-                                     $_data['event'],
-                                     $_data['member'],
-                                     empty($_data['tz']) ? null : $_data['tz']
-                                   ));
+        return Response::json(
+            $this->getUserFromRequest($request)
+                 ->checkMemberIn(
+                     $_data['event'],
+                     $_data['member'],
+                     empty($_data['tz']) ? null : $_data['tz']
+                 ));
     }
 
     public function updateUser(Request $request)
@@ -379,30 +383,30 @@ class OAuthController extends Controller
 
         if ($_user->save()) {
             $this->writeAuditTrail(
-              $_user->id,
-              'update',
-              'users',
-              (string)$_user->_id,
-              json_encode($_data),
-              'OAuthControllere@updateUser'
+                $_user->id,
+                'update',
+                'users',
+                (string)$_user->_id,
+                json_encode($_data),
+                'OAuthControllere@updateUser'
             );
 
             Log::info('User profile updated');
 
             return Response::json(
-              [
-                'status'  => 'success',
-                'message' => 'Profile updated',
-              ]
+                [
+                    'status'  => 'success',
+                    'message' => 'Profile updated',
+                ]
             );
         } else {
             Log::info('There was some sort of problem');
             return Response::json(
-              [
-                'status'  => 'error',
-                'message' => 'Unable to update profile',
-              ],
-              500
+                [
+                    'status'  => 'error',
+                    'message' => 'Unable to update profile',
+                ],
+                500
             );
         }
     }
