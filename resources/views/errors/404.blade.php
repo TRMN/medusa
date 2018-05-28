@@ -18,18 +18,18 @@
 <div class="container">
     <header class="row trmn-width">
 
-        <div class="small-2 columns trmn-width">
-            <p></p><a href="{!!$serverUrl!!}"><img src="/images/trmnseal.png" alt="TRMN Seal" width="150px"
+        <div class="col-sm-2  trmn-width">
+            <p></p><a href="{!!$serverUrl!!}"><img src="/images/trmn-seal.png" alt="TRMN Seal" width="150px"
                                                    height="150px"></a>
         </div>
-        <div class="small-10 columns trmn-width end">
+        <div class="col-sm-10  trmn-width ">
             <h1 class="trmn">The Royal<br/>Manticoran Navy</h1>
 
             <h3 class="trmn">Membership Database</h3>
         </div>
     </header>
     <div class="row trmn-width">
-        <div class="small-12 columns trmn-width">
+        <div class="col-sm-12  trmn-width">
             <h2>Dutchman! Dutchman! Flight Ops is declaring a Dutchman! Get the ready pinnace out now!</h2>
 
             <p><em>CIC</em></p>
@@ -54,7 +54,7 @@
                                    data-src="{!!asset('images/project-medusa.svg')!!}"></span>
     <p>{!! Config::get('app.version') !!}</p>
     @if($_SERVER['SERVER_NAME'] == "medusa.dev" || $_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
-        <p class="alert-box">
+        <p class="alert">
             @if($_SERVER['SERVER_NAME'] == "medusa.dev")
                 LOCAL SANDBOX SERVER
             @else

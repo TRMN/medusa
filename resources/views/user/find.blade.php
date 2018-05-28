@@ -11,8 +11,8 @@
     <h1>Find A Member</h1>
 
     <div class="row">
-        <div class="columns small-6 ninety Incised901Light end">
-            {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name'])!!}
+        <div class=" col-sm-6 ninety Incised901Light ">
+            {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name', 'class' => 'form-control'])!!}
         </div>
     </div>
 
@@ -28,9 +28,9 @@
                     is a <span class="alert">super user</span> and has permission to do everything.
                 @else
                     @if(in_array('ADD_GRADE', $user->permissions))
-                        has permission to add grades. <a href="{!!route('user.perm.del', [$user->id, 'ADD_GRADE'])!!}"><span class="fi-trash red" title="Remove Permission">&nbsp;</span></a>
+                        has permission to add grades. <a href="{!!route('user.perm.del', [$user->id, 'ADD_GRADE'])!!}"><span class="fa fa-trash red" data-toggle="tooltip" title="Remove Permission">&nbsp;</span></a>
                     @else
-                        does not have permission to add grades. <a href="{!!route('user.perm.add', [$user->id, 'ADD_GRADE'])!!}"><span class="fi-plus green" title="Add Permission">&nbsp;</span></a>
+                        does not have permission to add grades. <a href="{!!route('user.perm.add', [$user->id, 'ADD_GRADE'])!!}"><span class="fa fa-plus green" data-toggle="tooltip" title="Add Permission">&nbsp;</span></a>
                     @endif
                 @endif
             </div>

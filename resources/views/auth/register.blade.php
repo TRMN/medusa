@@ -1,4 +1,8 @@
-@extends('layouts.app')
+@extends('layout')
+
+@section('pageTitle')
+    Join The Royal Manticoran Navy: The Official Honor Harrington Fan Association
+@stop
 
 @section('content')
 <div class="container">

@@ -41,15 +41,10 @@ class CodeTest extends Command
      */
     public function fire()
     {
-        $awards = Award::all();
 
-        $awards = array_sort($awards->toArray(), function($value) {
-            return $value['display_order'];
-        });
+        $user = User::getUserByMemberId('RMN-1094-12');
 
-        foreach($awards as $award) {
-            print $award['display_order'] . ' ' . $award['name'] . ' (' . $award['code'] . ")\n";
-        }
+        print $user->isPromotable() . "\n";
     }
 
     /**

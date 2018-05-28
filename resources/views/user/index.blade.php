@@ -8,61 +8,84 @@
     <div><h3 class="trmn">{!! $title !!}</h3></div>
     <div>Active Members: {!!$totalMembers!!} Enlisted: {!!$totalEnlisted!!} Officer: {!!$totalOfficer!!} Flag
         Officer: {!!$totalFlagOfficer!!} Civilian: {!!$totalCivilian!!}</div>
+    <br/>
     <div id="members">
-        <ul>
-            <li><a href="#members-1">RMN</a></li>
-            <li><a href="#members-2">RMMC</a></li>
-            <li><a href="#members-3">RMA</a></li>
-            <li><a href="#members-4">GSN</a></li>
-            <li><a href="#members-5">RHN</a></li>
-            <li><a href="#members-6">IAN</a></li>
-            <li><a href="#members-7">SFS</a></li>
-            <li><a href="#members-8">Civilian</a></li>
-            <li><a href="#members-9">Intelligence</a></li>
-            <li><a href="#inactive">Inactive</a></li>
+        <ul class="nav nav-pills" role="tablist">
+            @foreach(\App\MedusaConfig::get('memberlist.branches') as $branchName)
+                <li role="presentation" class="memberlist-tab{{$loop->first?' active':''}}"><a
+                            href="#members-{{$loop->iteration}}" role="tab" data-toggle="pill">{{$branchName}}</a>
+                </li>
+            @endforeach
+            <li role="presentation class=" class="memberlist-tab"><a href="#inactive">Inactive</a></li>
             @if($permsObj->hasPermissions('ALL_PERMS') === true)
-                <li><a href="#suspended">Suspended</a></li>
-                <li><a href="#expelled">Expelled</a></li>
+                <li role="presentation" class="memberlist-tab"><a href="#suspended" role="tab" data-toggle="pill">Suspended</a>
+                </li>
+                <li role="presentation" class="memberlist-tab"><a href="#expelled" role="tab"
+                                                                  data-toggle="pill">Expelled</a></li>
             @endif
         </ul>
-        <div id="members-1">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'RMN'])
-        </div>
-        <div id="inactive">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $otherThanActive, 'branch' => 'Inactive'])
-        </div>
-        @if($permsObj->hasPermissions('ALL_PERMS') === true)
-            <div id="suspended">
-                @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $otherThanActive, 'branch' => 'Suspended'])
+        <br/>
+        @foreach(\App\MedusaConfig::get('memberlist.branches') as $branch => $branchName)
+            <div id="members-{{$loop->iteration}}" role="tabpanel" class="tab-pane hidden{{$loop->first?' active':''}}">
+                @include('user.partials.byBranch', ['branch' => $branch])
             </div>
-            <div id="expelled">
-                @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $otherThanActive, 'branch' => 'Expelled'])
-            </div>
-        @endif
-        <div id="members-9">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'INTEL'])
-        </div>
-        <div id="members-8">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'CIVIL'])
-        </div>
-        <div id="members-7">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'SFS'])
-        </div>
-        <div id="members-6">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'IAN'])
-        </div>
-        <div id="members-5">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'RHN'])
-        </div>
-        <div id="members-4">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'GSN'])
-        </div>
-        <div id="members-3">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'RMA'])
-        </div>
-        <div id="members-2">
-            @include('user.partials.byBranch', ['permsObj' => $permsObj, 'users' => $users, 'branch' => 'RMMC'])
+        @endforeach
+
+
+        <div id="inactive" role="tabpanel" class="tab-pane hidden">
+            @include('user.partials.byBranch', ['branch' => 'Inactive'])
         </div>
 
+        @if($permsObj->hasPermissions('ALL_PERMS') === true)
+            <div id="suspended" role="tabpanel" class="tab-pane hidden">
+                @include('user.partials.byBranch', ['branch' => 'Suspended'])
+            </div>
+
+            <div id="expelled" role="tabpanel" class="tab-pane hidden">
+                @include('user.partials.byBranch', ['branch' => 'Expelled'])
+            </div>
+        @endif
     </div>
+@stop
+
+@section('scriptFooter')
+    <script type="text/javascript">
+        $(document).ready(function ($) {
+            @foreach(array_merge(\App\MedusaConfig::get('memberlist.branches'), ['Inactive' => 'Inactive', 'Suspended' => 'Suspended', 'Expelled' => 'Expelled']) as $branch => $branchName)
+            $('.trmnUserTable-{{$branch}}').DataTable({
+                "autoWidth": false,
+                "pageLength": 10,
+                "serverSide": true,
+                "ajax": {
+                    url: '/users/list/{{$branch}}',
+                    type: 'post'
+                },
+                "columnDefs": [{
+                    "targets": [0, 2, 6, 8],
+                    "orderable": false,
+                    "searchable": false
+                }],
+                "order": [[3, 'asc']],
+                "$UI": true
+            });
+
+            $('.trmnUserTable-{{$branch}}').on('draw.dt', function() {
+                $('#right').height(240 + $('.trmnUserTable-{{$branch}}').height());
+
+                if ($('#right').height() < $('#left').height()) {
+                    $('#right').height($('#left').height());
+                }
+            });
+            @endforeach
+
+            @foreach(array_merge(\App\MedusaConfig::get('memberlist.branches'), ['Inactive' => 'Inactive', 'Suspended' => 'Suspended', 'Expelled' => 'Expelled']) as $branch => $branchName)
+            @if(!in_array($branch, ['Inactive', 'Suspended', 'Expelled']))
+            $('#members-{{$loop->iteration}}').removeClass('hidden');
+            @else
+            $('#{{strtolower($branch)}}').removeClass('hidden');
+            @endif
+            @endforeach
+
+        });
+    </script>
 @stop

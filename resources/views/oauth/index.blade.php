@@ -20,10 +20,10 @@
             <tr>
                 <td>{!! $client->client_id !!}</td>
                 <td>{!! $client->name !!}</td>
-                <td><a href="{!!route('oauthclient.edit', [$client->id])!!}" class="tiny fi-pencil green size-24"
-                       title="Edit OAuth Client"></a>
+                <td><a href="{!!route('oauthclient.edit', [$client->id])!!}" class="tiny fa fa-pencil green size-24"
+                       data-toggle="tooltip" title="Edit OAuth Client"></a>
                     <a href="javascript:deleteClient('{!!$client->id!!}','{!!$client->name!!}');"
-                       class="tiny fi-x red size-24"></a>
+                       class="tiny fa fa-close red size-24"></a>
                 </td>
             </tr>
         @endforeach

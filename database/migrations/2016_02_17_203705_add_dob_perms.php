@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Permission;
 
 class AddDobPerms extends Migration
 {
@@ -28,7 +29,7 @@ class AddDobPerms extends Migration
                 json_encode(["name" => $perm, "description" => $desc]),
                 'add_dob_perms'
             );
-            Permission::create(["name" => $perm, "description" => $desc]);
+            App\Permission::create(["name" => $perm, "description" => $desc]);
         }
     }
 

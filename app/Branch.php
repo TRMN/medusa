@@ -11,7 +11,7 @@ class Branch extends Eloquent
 
     static function getBranchList()
     {
-        foreach (Branch::all(['branch', 'branch_name']) as $branch) {
+        foreach (self::all(['branch', 'branch_name']) as $branch) {
             $branches[$branch['branch']] = $branch['branch_name'];
         }
 
@@ -24,7 +24,7 @@ class Branch extends Eloquent
 
     static function getNavalBranchList()
     {
-        foreach (Branch::whereIn('branch', ['RMN', 'GSN', 'IAN', 'RHN'])->get(['branch', 'branch_name']) as $branch) {
+        foreach (self::whereIn('branch', ['RMN', 'GSN', 'IAN', 'RHN'])->get(['branch', 'branch_name']) as $branch) {
             $branches[$branch['branch']] = $branch['branch_name'];
         }
 
@@ -33,5 +33,12 @@ class Branch extends Eloquent
         $branches = ['' => 'Select a Branch'] + $branches;
 
         return $branches;
+    }
+
+    static function getBranchName($branch)
+    {
+        $res = self::where('branch', $branch)->first();
+
+        return $res['branch_name'];
     }
 }

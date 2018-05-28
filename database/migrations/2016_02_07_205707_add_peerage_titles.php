@@ -41,7 +41,7 @@ class AddPeerageTitles extends Migration
                 'add_peerage_titles'
             );
 
-            Ptitles::create(["title" => $title, "code" => $code, "precedence" => $precedence]);
+            App\Ptitles::create(["title" => $title, "code" => $code, "precedence" => $precedence]);
         }
     }
 

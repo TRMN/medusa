@@ -38,7 +38,7 @@ class AddBranchMemberViewPerms extends Migration
                 json_encode(["name" => $perm, "description" => $desc]),
                 'add_new_permissions'
             );
-            Permission::create(["name" => $perm, "description" => $desc]);
+            App\Permission::create(["name" => $perm, "description" => $desc]);
         }
     }
 

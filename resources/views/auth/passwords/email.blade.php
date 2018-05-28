@@ -6,8 +6,8 @@
 
 @section('content')
     <div class="login-form row">
-        <div class="small-6 small-centered columns">
-            <h4 class="NordItalic">Reset Your Password</h4>
+        <div class="col-sm-6">
+            <h1 class="NordItalic">Reset Your Password</h1>
 
             <p>Enter the email address you used to register and we will send you a link you can use to reset your
                 password. Be sure to check your SPAM folder if you do not receive it within the next hour.</p>
@@ -15,7 +15,7 @@
             <form action="{{ url('/password/email') }}" method="POST">
                 {{ Form::token() }}
                 <input type="email" name="email_address" id="email_address">
-                <input type="submit" value="Send Reminder" class="button">
+                <button type="submit" class="btn btn-success"><span class="fa fa-envelope"></span> Send Reminder</button>
             </form>
         </div>
     </div>

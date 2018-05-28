@@ -52,12 +52,17 @@
     "simplesoftwareio/simple-qrcode": "~1",
     "intervention/image": "^2.3",
     "google/recaptcha": "~1.1",
-    "league/csv": "^8.1",
+    "league/csv": "^9.0",
     "laravelcollective/html": "5.4.*",
     "themsaid/laravel-routes-publisher": "^1.0",
     "laravel/passport": "^3.0",
     "moloquent/moloquent": "dev-master",
-    "laravel/tinker": "^1.0"
+    "laravel/tinker": "^1.0",
+    "genealabs/laravel-caffeine": "^0.5.0",
+    "lesichkovm/laravel-advanced-route": "dev-master",
+    "radic/blade-extensions": "~7.0",
+    "guzzlehttp/guzzle": "^6.3",
+    "predis/predis": "^1.1"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
@@ -103,6 +108,12 @@
     {
       "type": "vcs",
       "url": "https://github.com/dweinerATL/moloquent"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/lesichkovm/laravel-advanced-route.git"
     }
-  ]
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

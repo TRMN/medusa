@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Billet;
 use App\Branch;
 use App\ChangeRequest;
 use App\Chapter;
@@ -11,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use App\Grade;
 
 class UserChangeRequestController extends Controller
 {
@@ -37,10 +37,10 @@ class UserChangeRequestController extends Controller
         return view(
             "user.requests.index",
             [
-                'user'      => $user,
-                'req'       => Auth::user(),
-                'branches'  => Branch::getBranchList(),
-                'chapters'  => Chapter::getFullChapterList(false),
+                'user' => $user,
+                'req' => Auth::user(),
+                'branches' => Branch::getBranchList(),
+                'chapters' => Chapter::getFullChapterList(false),
                 'allchapters' => Chapter::getChapters(null, 0, false),
             ]
         );
@@ -67,9 +67,9 @@ class UserChangeRequestController extends Controller
         // database
 
         $record = [
-            'user'      => $user->id,
+            'user' => $user->id,
             'requestor' => $requestor->id,
-            'status'    => 'open',
+            'status' => 'open',
         ];
 
         // Branch Change
@@ -133,7 +133,7 @@ class UserChangeRequestController extends Controller
 
     public function review()
     {
-        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+        if (($redirect = $this->checkPermissions('PROC_XFERS')) !== true) {
             return $redirect;
         }
 
@@ -147,7 +147,7 @@ class UserChangeRequestController extends Controller
                     $records[$index]['old_chapter'] = 'Unknown';
                 } else {
                     $records[$index]['old_chapter'] =
-                    Chapter::where('_id', '=', $record['old_value'])->first()->chapter_name;
+                        Chapter::where('_id', '=', $record['old_value'])->first()->chapter_name;
                 }
 
                 $records[$index]['new_chapter'] =
@@ -160,7 +160,7 @@ class UserChangeRequestController extends Controller
 
     public function approve(ChangeRequest $request)
     {
-        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+        if (($redirect = $this->checkPermissions('PROC_XFERS')) !== true) {
             return $redirect;
         }
 
@@ -192,6 +192,8 @@ class UserChangeRequestController extends Controller
                 $newValue = $request->new_value;
 
                 $checkRank = true;
+
+                $events[] = 'Transferred from ' . Branch::getBranchName($oldValue) . ' to ' . Branch::getBranchName($newValue) . ' on ' . date('d M Y');
 
                 break;
             case 'assignment.chapter':
@@ -247,6 +249,8 @@ class UserChangeRequestController extends Controller
                         break;
                 }
 
+                $events[] = 'Primary assignment changed to ' . $newValue . ' on ' . date('d M Y');
+
                 break;
         }
 
@@ -264,11 +268,13 @@ class UserChangeRequestController extends Controller
                 $message = '<li>This was a transfer from another military branch to the RMN.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
             }
 
-            if (in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($newValue, ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
+            if (in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($newValue,
+                    ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
                 $message = '<li>This was a transfer from a military branch to a civilian branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
             }
 
-            if (in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($oldValue, ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
+            if (in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($oldValue,
+                    ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
                 $message = '<li>This was a transfer from a civilian branch to a military branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
             }
 
@@ -280,6 +286,7 @@ class UserChangeRequestController extends Controller
 
             // Look up the equivalent rank
 
+            $oldRank = $user->rank['grade'];
             $newRank = $branchInfo->equivalent[$newValue][$user->rank['grade']];
 
             // Now check for instances where the equiv rank is E-1/C-1 and the original rank is not E-1/C-1
@@ -297,6 +304,10 @@ class UserChangeRequestController extends Controller
             $rank = $user->rank;
             $rank['grade'] = $newRank;
             $user->rank = $rank;
+
+            $events[] = 'Rank changed from ' . Grade::getRankTitle($oldRank, null,
+                    $oldValue) . ' (' . $oldRank . ') to ' . Grade::getRankTitle($newRank, null,
+                    $newValue) . ' (' . $newRank . ') on ' . date('d M Y');
         }
 
         if (empty($message) === false) {
@@ -324,6 +335,12 @@ class UserChangeRequestController extends Controller
         );
 
         $request->delete();
+
+        // Update the service history
+
+        foreach ($events as $event) {
+            $user->addServiceHistoryEntry(['timestamp' => time(), 'event' => $event]);
+        }
 
         // Send the email
 
@@ -353,7 +370,7 @@ class UserChangeRequestController extends Controller
 
     public function deny(ChangeRequest $request)
     {
-        if (( $redirect = $this->checkPermissions('PROC_XFERS') ) !== true) {
+        if (($redirect = $this->checkPermissions('PROC_XFERS')) !== true) {
             return $redirect;
         }
 
@@ -388,10 +405,10 @@ class UserChangeRequestController extends Controller
         Mail::send(
             'emails.change-denied',
             [
-                'user'      => $user,
-                'type'      => $type,
+                'user' => $user,
+                'type' => $type,
                 'fromValue' => $oldValue,
-                'toValue'   => $newValue
+                'toValue' => $newValue
             ],
             function ($message) use ($user, $type) {
                 $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');

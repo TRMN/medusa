@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="row">
-        <div class="column small-12 Incised901Light">
+        <div class=" col-sm-12 Incised901Light">
             <h1>Configuration Settings</h1>
         </div>
     </div>
@@ -24,14 +24,14 @@
             @foreach(\App\MedusaConfig::all() as $item)
                 <tr>
                     <td class="border-right">{!! $item->key !!}</td>
-                    <td class="border-right">@if(is_array($item->value)) <pre class="json"> @endif
+                    <td class="border-right cpreview">@if(is_array($item->value)) <pre class="json preview"> @endif
                         {!! is_array($item->value)?json_encode($item->value):$item->value !!}
                         @if(is_array($item->value)) </pre> @endif
                     </td>
-                    <td><a href="{!!route('config.edit', [$item->id])!!}" class="tiny fi-pencil green size-24"
-                           title="Edit Config"></a>
+                    <td><a href="{!!route('config.edit', [$item->id])!!}" class="tiny fa fa-pencil green size-24"
+                           data-toggle="tooltip" title="Edit Config"></a>
                         <a href="javascript:deleteConfig('{!!$item->id!!}','{!!$item->key!!}');"
-                           class="tiny fi-x red size-24"></a>
+                           class="tiny fa fa-close red size-24"></a>
                     </td>
                 </tr>
             @endforeach
@@ -46,7 +46,7 @@
         </table>
     @else
         <div class="row">
-            <div class="column small-12 Incised901Light"><h3>There are no configuration settings stored in the
+            <div class=" col-sm-12 Incised901Light"><h3>There are no configuration settings stored in the
                     database.</h3></div>
         </div>
     @endif
@@ -74,6 +74,18 @@
                 var elm = $(el);
                 elm.html(JSON.stringify(JSON.parse(elm.html()), undefined, 4));
             });
+
+            $('.preview').on('click', function() {
+
+              if ($(this).hasClass('preview')) {
+                $(this).removeClass('preview');
+              } else {
+                $(this).addClass('preview');
+              }
+            });
+
+            $('.json').width(0);
+            $(".json").width($('.cpreview').width());
         });
     </script>
 @stop

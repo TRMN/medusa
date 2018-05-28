@@ -23,7 +23,7 @@ class AddFlagLt extends Migration
             json_encode(["billet_name" => "Flag Lieutenant"]),
             'add_flag_lt'
         );
-        Billet::create(["billet_name" => "Flag Lieutenant"]);
+        App\Billet::create(["billet_name" => "Flag Lieutenant"]);
     }
 
     /**

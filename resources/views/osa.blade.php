@@ -76,8 +76,8 @@
             must agree to this policy, contact <a href="mailto:bupers@trmn.org">The Fifth Space Lord</a> (BuPers)</em>
     </p>
     <div>
-        <a class="button"
-           href="{!! route('signout') !!}">I do not agree</a> {!! Form::submit('I Agree', [ 'class' => 'button' ] ) !!}
+        <a class="btn btn-danger"
+           href="{!! route('signout') !!}"><span class="fa fa-times"></span> I do not agree </a> <button type="submit" class="btn btn-success"><span class="fa fa-check"></span> I Agree </button>
     </div>
     {!! Form::close() !!}
 @endif

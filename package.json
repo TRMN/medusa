@@ -1,36 +1,30 @@
 {
-  "name": "medusa",
-  "version": "0.0.1",
-  "description": "Web app for the Royal Manticoran Navy Database",
-  "main": "gulpfile.js",
-  "dependencies": {
-    "gulp": "^3.8.7",
-    "jquery": "^2.1.1"
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "browserify": "^5.12.0",
-    "gulp-browserify": "^0.5.1",
-    "gulp-cli": "~1.2.0",
-    "gulp-ruby-sass": "^0.7.1",
-    "gulp-sass": "^2.2.0",
-    "gulp-uglify": "^1.0.1",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0"
+    "axios": "^0.16.2",
+    "bootstrap-sass": "^3.3.7",
+    "cross-env": "^5.0.1",
+    "jquery": "^3.1.1",
+    "laravel-mix": "^1.7.2",
+    "lodash": "^4.17.10",
+    "vue": "^2.1.10"
   },
-  "scripts": {
-    "test": "make"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BenOvermyer/medusa.git"
-  },
-  "keywords": [
-    "medusa"
-  ],
-  "author": "Ben Overmyer <manatrance@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/BenOvermyer/medusa/issues"
-  },
-  "homepage": "https://github.com/BenOvermyer/medusa"
+  "dependencies": {
+    "ajv": "^6.1.1",
+    "bootstrap-block-grid": "^1.1.7",
+    "font-awesome": "^4.7.0",
+    "g": "^2.0.1",
+    "node-sass": "^4.9.0",
+    "npm": "^6.1.0",
+    "webpack": "^3.11.0"
+  }
 }

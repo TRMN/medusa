@@ -13,21 +13,45 @@ trait MedusaPermissions
     public function checkPermissions($permissions)
     {
         if ($this->hasPermissions($permissions) === false) {
-            return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
+            return redirect(URL::previous())->with(
+                'message',
+                'You do not have permission to view that page'
+            );
         }
 
         return true;
     }
 
+    public function canDeleteExam($score)
+    {
+        if (($this->hasPermissions(['EDIT_GRADE']) && rtrim($score, '%') !== '0') ||
+            $this->hasPermissions(['UPLOAD_EXAMS'])) {
+            return true;
+        } else {
+            return redirect(URL::previous())->with(
+                'message',
+                'You do not have permission to view that page'
+            );
+        }
+    }
+
     public function hasDutyRosterForAssignedShip()
     {
-        return in_array(Auth::user()->getAssignedShip(), explode(',', Auth::user()->duty_roster));
+        return Auth::user()->hasAllPermissions() === true ? true :
+                Auth::user()->hasPermissions(['DUTY_ROSTER']) &&
+                in_array(
+                    Auth::user()->getAssignedShip(),
+                    explode(',', Auth::user()->duty_roster)
+                );
     }
 
     public function loginValid()
     {
         if (Auth::check() === false) {
-            return redirect(URL::previous())->with('message', 'You do not have permission to view that page');
+            return redirect(URL::previous())->with(
+                'message',
+                'You do not have permission to view that page'
+            );
         }
 
         return true;
@@ -39,7 +63,8 @@ trait MedusaPermissions
             return false; // Not logged in, don't waste time
         }
 
-        if (in_array('ALL_PERMS', Auth::user()->permissions) === true && $skipAll === false) {
+        if (in_array('ALL_PERMS', Auth::user()->permissions) === true &&
+            $skipAll === false) {
             return true; // Don't waste time :)
         }
 
@@ -80,7 +105,7 @@ trait MedusaPermissions
     {
 
         if ($param instanceof User) {
-            //called with a user object, get the id's of all ships/echelons above the users ship/echelon as well as child ship/echelon
+            //called with a user object, get the id's of all ships/echelons above the users ship/echelon
             $chapterIds = [];
             foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
                 $chapterIds[] = $param->getAssignmentId($position);
@@ -94,7 +119,10 @@ trait MedusaPermissions
             foreach ($chapterIds as $chapterId) {
                 if ($chapterId !== false) {
                     $echelonIdsToCheck =
-                        array_merge($echelonIdsToCheck, Chapter::find($chapterId)->getChapterIdWithParents());
+                        array_merge(
+                            $echelonIdsToCheck,
+                            Chapter::find($chapterId)->getChapterIdWithParents()
+                        );
                 }
             }
         } elseif (is_array($param)) {
@@ -106,8 +134,8 @@ trait MedusaPermissions
         // Check if the logged in user has the correct permissions and is in the specified users Chain of Command or in
         // the array of chapter ids passed in
 
-        if ($this->hasPermissions(['DUTY_ROSTER']) === true) {
-            $rosters = ( Auth::user()->duty_roster );
+        if (Auth::user()->hasPermissions(['DUTY_ROSTER']) === true) {
+            $rosters = (Auth::user()->duty_roster);
             if (is_array($rosters) === false) {
                 $rosters = explode(',', trim($rosters, ','));
             }
@@ -122,10 +150,12 @@ trait MedusaPermissions
     }
 
     /**
-     * Check if the user has one of the specified permissions (config:permissions.restricted) AND the specified permission
+     * Check if the user has one of the specified permissions
+     * (config:permissions.restricted) AND the specified permission
      * ($permName) is in config:permissions.restricted
      *
      * @param string $permName
+     *
      * @return boolean
      */
     public function checkRestrictedAccess(string $permName)
@@ -137,11 +167,36 @@ trait MedusaPermissions
             return false; // Short circut the checks if the perm being checked for is not in the restricted list
         }
 
-        if (in_array($permName, $restrictedPerms) === true && in_array($permName, Auth::user()->permissions)) {
+        if (in_array($permName, $restrictedPerms) === true &&
+            in_array($permName, Auth::user()->permissions)) {
             return true;
         }
 
         return false;
+    }
 
+    public function promotionPointsEditAccess(User $user)
+    {
+        if ((Auth::user()->hasPermissions(['EDIT_SELF']) === true &&
+             Auth::user()->id == $user->id)
+            || Auth::user()->hasPermissions(['EDIT_MEMBER'])
+            || Auth::user()->isInChainOfCommand($user) === true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function canPromote($chapterId)
+    {
+        if ((Auth::user()->hasPermissions(['PROMOTE_E6O1']) === true &&
+             (Auth::user()->isCoAssignedShip() === true) || Auth::user()->isCommandingOfficer($chapterId))
+            || Auth::user()->hasAllPermissions()
+            || (Auth::user()->isFleetCO() === true &&
+                Auth::user()->hasPermissions(['PROMOTE_E6O2']) === true)) {
+            return true;
+        }
+
+        return false;
     }
 }

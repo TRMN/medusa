@@ -16,10 +16,16 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\QE3CM',
             'App\Listeners\KR3CM',
             'App\Listeners\QE3SJM',
-            'App\Listeners\QE3GJM'
+            'App\Listeners\QE3GJM',
+            'App\Listeners\SWP',
+            'App\Listeners\MCAM',
         ],
         'App\Events\EmailChanged' => [
             'App\Listeners\UpdateForumEmail',
+        ],
+        'App\Events\GradeEntered' => [
+            'App\Listeners\SWP',
+            'App\Listeners\MCAM',
         ],
     ];
 
