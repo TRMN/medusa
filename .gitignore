@@ -15,8 +15,8 @@ npm-debug.log
 Thumbs.db
 tmp
 .vagrant
-/vendor
+vendor
 .env
 public/images/RMN*
 storage/
-app/storage/
+app/storage/*
