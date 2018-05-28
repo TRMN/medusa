@@ -204,6 +204,7 @@ class OAuthController extends Controller
 
             if ($_peerage['code'] == 'L') {
                 $_peerage['fullTitle'] = $_peerage['title'] . ' for ' . $_peerage['lands'];
+                $_peerage['path'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
             } elseif ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                 if (empty($_peerage['filename']) === false && file_exists(
                         public_path() . '/arms/peerage/' . $_peerage['filename']
