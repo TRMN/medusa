@@ -201,7 +201,7 @@ class OAuthController extends Controller
 
         foreach ($_user->getPeerages() as $_peerage) {
             $_peerage['path'] = null;
-
+            Log::debug(print_r($_peerage, true));
             if ($_peerage['code'] = 'L') {
                 $_peerage['fullTitle'] = $_peerage['title'] . ' for ' . $_peerage['lands'];
             } elseif ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
