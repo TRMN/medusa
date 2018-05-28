@@ -11,8 +11,8 @@
     <h1>Manage / Enter Grades</h1>
 
     <div class="row">
-        <div class="columns small-6 ninety Incised901Light end">
-            {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name'])!!}
+        <div class=" col-sm-6 ninety Incised901Light ">
+            {!!Form::text('query', '', ['id' => 'query', 'placeholder' => 'Start typing member number or name', 'class' => 'form-control'])!!}
         </div>
     </div>
     @if(!empty($user->first_name))
@@ -24,14 +24,14 @@
             <div class="row">
                 {!!Form::open(['route' => 'exam.update', 'id' => 'exam_form'])!!}
                 {!! Form::hidden('member_id', $user->member_id) !!}
-                <div class="columns small-3 ninety Incised901Light">{!!Form::text('exam', '', ['id' => 'exam', 'placeholder' => 'Start typing Exam ID'])!!}</div>
-                <div class="columns small-3 ninety Incised901Light">{!!Form::text('score', '', ['id' => 'score', 'placeholder' => 'Exam Score'])!!}</div>
-                <div class="columns small-3 ninety Incised901Light end">{!!Form::date('date', '', ['id' => 'date', 'placeholder' => 'Exam Date (YYYY-MM-DD)'])!!}</div>
+                <div class=" col-sm-3 ninety Incised901Light form-group">{!!Form::text('exam', '', ['id' => 'exam', 'placeholder' => 'Start typing Exam ID', 'class' => 'form-control'])!!}</div>
+                <div class=" col-sm-3 ninety Incised901Light form-group">{!!Form::text('score', '', ['id' => 'score', 'placeholder' => 'Exam Score', 'class' => 'form-control'])!!}</div>
+                <div class=" col-sm-3 ninety Incised901Light form-group">{!!Form::date('date', '', ['id' => 'date', 'placeholder' => 'Exam Date (YYYY-MM-DD)', 'class' => 'form-control'])!!}</div>
             </div>
             <div class="row">
-                <div class="columns small-3 ninety Incised901Light end">
-                    <a class="button"
-                       href="{!! URL::route('exam.find', ['user' => $user->id]) !!}">Cancel</a> {!! Form::submit('Save', [ 'class' => 'button' ] ) !!}
+                <div class=" col-sm-9 ninety Incised901Light text-center">
+                    <a class="btn btn-warning"
+                       href="{!! URL::route('exam.find', ['user' => $user->id]) !!}"><span class="fa fa-times"></span> <strong>Cancel</strong> </a> <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> <strong>Save</strong> </button>
                 </div>
                 {!!Form::close()!!}
             </div>

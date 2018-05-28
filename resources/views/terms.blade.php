@@ -11,8 +11,8 @@
     {!! Form::hidden('tos',1) !!}
     <div>By clicking "I Agree", you agree that you have read and understand the Terms of Service</div>
     <div>
-    <a class="button"
-       href="{!! route('signout') !!}">I do not agree</a> {!! Form::submit('I Agree', [ 'class' => 'button' ] ) !!}
+    <a class="btn"
+       href="{!! route('signout') !!}">I do not agree</a> {!! Form::submit('I Agree', [ 'class' => 'btn' ] ) !!}
     </div>
     {!! Form::close() !!}
 @stop

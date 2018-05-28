@@ -15,7 +15,7 @@ class FixEmptyAssignments extends Migration
      */
     public function up()
     {
-        $users = User::where('registration_status', '=', 'Pending')->get();
+        $users = App\User::where('registration_status', '=', 'Pending')->get();
 
         $hmssGreenwich = \App\Chapter::where('hull_number', '=', 'SS-001')->first();
 

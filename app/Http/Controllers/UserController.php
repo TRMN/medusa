@@ -8,6 +8,7 @@ use App\Branch;
 use App\Chapter;
 use App\Country;
 use App\Events\EmailChanged;
+use App\Events\LoginComplete;
 use App\Grade;
 use App\Korders;
 use App\MedusaConfig;
@@ -15,6 +16,7 @@ use App\Permissions\MedusaPermissions;
 use App\Ptitles;
 use App\Rating;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +38,167 @@ class UserController extends Controller
     use MedusaPermissions;
 
     /**
+     * Get a list of members by branch
+     *
+     * @param $branch
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserList($branch, \Illuminate\Http\Request $request)
+    {
+        $order = $request->input('order');
+
+        /*
+         * Branch is used two different ways to avoid having two nearly identical methods and a second route,
+         * so check it and do the right thing based on it's value
+         *
+         */
+        switch ($branch) {
+            case 'Inactive':
+            case 'Suspended':
+            case 'Expelled':
+                $query = User::where('registration_status', $branch);
+                break;
+            case 'Bosun':
+                $query =
+                    User::where('active', 1)
+                        ->where('registration_status', 'Active')
+                        ->where('assignment.billet', 'Bosun');
+                break;
+            default:
+                $query =
+                    User::where('active', 1)
+                        ->where('registration_status', 'Active')
+                        ->where('branch', $branch);
+        }
+
+        $totalRecords = $filteredRecords = $query->count();
+
+        // Need to do any filtering before sort order
+
+        $search = $request->input('search');
+
+
+        if (empty($search['value']) === false) {
+            $searchTerm = '%' . $search['value'] . '%';
+
+            $query = $query->where(
+                function ($query) use ($searchTerm) {
+                    $query->where('last_name', 'like', $searchTerm)
+                          ->orWhere('first_name', 'like', $searchTerm)
+                          ->orWhere('rank.grade', 'like', $searchTerm)
+                          ->orWhere('member_id', 'like', $searchTerm)
+                          ->orWhere('email_address', 'like', $searchTerm)
+                          ->orWhere('registration_date', 'like', $searchTerm)
+                          ->orWhere('assignment.chapter_name', 'like', $searchTerm);
+                }
+            );
+
+            $filteredRecords = $query->count();
+        }
+
+        $sortOrder = $order[0]['dir'];
+
+        switch ($order[0]['column']) {
+            case 1:
+                $query = $query->orderBy('rank.grade', $sortOrder);
+                break;
+            case 3:
+                $query = $query->orderBy('last_name', $sortOrder)->orderBy(
+                    'first_name',
+                    $sortOrder
+                );
+                break;
+            case 4:
+                $query = $query->orderBy('member_id', $sortOrder);
+                break;
+            case 5:
+                $query = $query->orderBy('email_address', $sortOrder);
+                break;
+            case 7:
+                if ($branch == 'Bosun') {
+                    $query = $query->orderBy('branch', $sortOrder);
+                } else {
+                    $query = $query->orderBy('registration_date', $sortOrder);
+                }
+                break;
+        }
+
+
+        $users = $query->skip(intval($request->input('start')))->take(
+            intval($request->input('length'))
+        )->get();
+
+        $ret['draw'] = intval($request->draw);
+        $ret['recordsTotal'] = $totalRecords;
+        $ret['recordsFiltered'] = $filteredRecords;
+        $ret['data'] = [];
+
+        /* @var $user User */
+        foreach ($users as $user) {
+            $actions = '&nbsp;<a class="fa fa-user my" href="' . route(
+                "user.show",
+                [$user->id]
+            ) . '" data-toggle="tooltip" title="View User"></a>';
+
+            if (Auth::user()->hasPermissions(['EDIT_MEMBER']) === true) {
+                $actions .= '&nbsp;<a class="tiny fa fa-pencil green" href="' .
+                            route(
+                                "user.edit",
+                                [$user->id]
+                            ) .
+                            '" data-toggle="tooltip" title="Edit User"></a>';
+            }
+
+            if (Auth::user()->hasPermissions(["DEL_MEMBER"]) === true) {
+                $actions .= '&nbsp;<a class="fa fa-close red" href="' . route(
+                    "user.confirmdelete",
+                    [$user->id]
+                ) . '" data-toggle="tooltip" title="Delete User"></a>';
+            }
+
+            if (Auth::user()->hasPermissions(["ID_CARD"]) === true) {
+                $actions .= '&nbsp;<a class="fa fa-credit-card';
+
+                $actions .= $user->idcard_printed === true ? ' yellow' : ' green';
+
+                $actions .= '" href="/id/card/' . $user->id .
+                            '" data-toggle="tooltip" title="ID Card"></a>&nbsp;';
+
+                $actions .= $user->idcard_printed === true ? '' :
+                    '<a class="fa fa-check green idcard-confrim" href="/id/mark/' .
+                    $user->id . '" data-toggle="tooltip" title="Mark ID Card as printed" 
+                    onclick="return confirm(\'Mark ID card as printed for this member?\')"></a>';
+            }
+
+            $ret['data'][] = [
+                $user->hasNewExams() === true ?
+                    '<span class="fa fa-star red" data-toggle="tooltip" title="New Exams Posted">&nbsp;</span>' :
+                    '',
+                $user->rank['grade'],
+                is_null($user->getTimeInGrade(true)) === false ?
+                    $user->getTimeInGrade(true) : 'N/A',
+                ($user->branch == 'RMMM' ||
+                $user->branch == 'CIVIL') && empty($user->rating) === false ?
+                    $user->getFullName(true) . ' <span class="volkhov">( ' .
+                    substr($user->rating, 0, 1)
+                    . ' )</span>' : $user->getFullName(true),
+                $user->member_id,
+                $user->email_address,
+                $user->getAssignmentName('primary') !== false ?
+                    '<a href="/chapter/' . $user->getAssignmentId('primary') . '">' .
+                    $user->getAssignmentName('primary') . '</a>' : 'N/A',
+                $branch == 'Bosun' ? $user->branch : $user->registration_date,
+                $actions,
+            ];
+        }
+
+
+        return \response()->json($ret);
+    }
+
+    /**
      * Display a listing of users
      *
      * @return Response
@@ -46,39 +209,16 @@ class UserController extends Controller
             return $redirect;
         }
 
-        $branches =
-            ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN', 'SFS', 'CIVIL', 'INTEL'];
-
-        foreach ($branches as $branch) {
-            $users = User::where('active', '=', 1)
-                ->where('registration_status', '=', 'Active')
-                ->where('branch', '=', $branch)
-                ->get();
-
-            $usersByBranch[$branch] = $users;
-        }
-
-        $usersOtherThanActive = [];
-
-        foreach (User::whereIn(
-            'registration_status',
-            ['Inactive', 'Suspended', 'Expelled']
-        )->get() as $user) {
-            $usersOtherThanActive[$user->registration_status][] = $user;
-        }
-
         return view(
             'user.index',
             [
-                'users' => $usersByBranch,
-                'title' => 'Membership List',
-                'otherThanActive' => $usersOtherThanActive,
-                'totalMembers' => User::where(
+                'title'            => 'Membership List',
+                'totalMembers'     => User::where(
                     'registration_status',
                     '=',
                     'Active'
                 )->where('active', '=', 1)->count(),
-                'totalEnlisted' => User::where(
+                'totalEnlisted'    => User::where(
                     'registration_status',
                     '=',
                     'Active'
@@ -87,7 +227,7 @@ class UserController extends Controller
                     'like',
                     'E%'
                 )->count(),
-                'totalOfficer' => User::where(
+                'totalOfficer'     => User::where(
                     'registration_status',
                     '=',
                     'Active'
@@ -105,7 +245,7 @@ class UserController extends Controller
                     'like',
                     'F%'
                 )->count(),
-                'totalCivilian' => User::where(
+                'totalCivilian'    => User::where(
                     'registration_status',
                     '=',
                     'Active'
@@ -113,11 +253,18 @@ class UserController extends Controller
                     'rank.grade',
                     'like',
                     'C%'
-                )->count()
+                )->count(),
             ]
         );
     }
 
+    /**
+     * Find members with the specified billet.  Blade template sorts by assignment
+     *
+     * @param $billet
+     *
+     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function findDuplicateAssignment($billet)
     {
         if (($redirect = $this->checkPermissions('VIEW_MEMBERS')) !== true) {
@@ -152,19 +299,35 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * Show Password reset form
+     *
+     * @param \App\User $user
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getReset(User $user)
     {
         return view('user.reset', ['user' => $user]);
     }
 
+    /**
+     * Process password reset request
+     *
+     * @param \App\User $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postReset(User $user)
     {
         $in =
-            Request::only([
-                'current_password',
-                'password',
-                'password_confirmation'
-            ]);
+            Request::only(
+                [
+                    'current_password',
+                    'password',
+                    'password_confirmation',
+                ]
+            );
 
         // Did they enter their current password?
 
@@ -195,23 +358,28 @@ class UserController extends Controller
             $user->password = Hash::make($in['password']);
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string)Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->_id,
+                (string)$user->id,
                 'Password Change',
                 'UserController@postReset'
             );
             $user->save();
 
             return Redirect::route('home')
-                ->with('message', 'Your password has been changed');
+                           ->with('message', 'Your password has been changed');
         } else {
             return Redirect::route('user.getReset', [$user->id])
-                ->with('message', 'The passwords do not match');
+                           ->with('message', 'The passwords do not match');
         }
     }
 
+    /**
+     * Show list of pending applications
+     *
+     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function reviewApplications()
     {
         if (($redirect =
@@ -234,6 +402,13 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * Process approval of a pending application
+     *
+     * @param \App\User $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function approveApplication(User $user)
     {
         if (($redirect =
@@ -241,6 +416,9 @@ class UserController extends Controller
         ) {
             return $redirect;
         }
+
+        $events[] = 'Applied to ' . Branch::getBranchName($user->branch) . ' on ' .
+                    date('d M Y', strtotime($user->application_date));
 
         $user->registration_status = 'Active';
         $user->registration_date = date('Y-m-d');
@@ -305,33 +483,46 @@ class UserController extends Controller
         $rank = $user['rank'];
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
-        $user->member_id = 'RMN' . User::getFirstAvailableMemberId();
+        $user->memberid = 'RMN' . User::getFirstAvailableMemberId();
+
+        $events[] = 'Application approved by BuPers; Enlisted at rank of ' .
+                    Grade::getRankTitle($user->rank['grade'], null, $user->branch) .
+                    ' (' . $user->rank['grade'] . ') and assigned to ' .
+                    $user->getAssignmentName('primary') . ' on ' . date('d M Y');
 
         $user->permissions = [
             'LOGOUT',
             'CHANGE_PWD',
             'EDIT_SELF',
             'ROSTER',
-            'TRANSFER'
+            'TRANSFER',
         ];
 
         $user->lastUpdate = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string)Auth::user()->id,
             'update',
             'users',
-            (string)$user->_id,
+            (string)$user->id,
             $user->toJson(),
             'UserController@approveApplication'
         );
 
         $user->save();
 
+        // Update the service history
+
+        foreach ($events as $event) {
+            $user->addServiceHistoryEntry(
+                ['timestamp' => time(), 'event' => $event]
+            );
+        }
+
         // Get Chapter CO's email
         $user->co_email =
             Chapter::find($user->getPrimaryAssignmentId())
-                ->getCO()->email_address;
+                   ->getCO()->email_address;
 
         // Send welcome email
         Mail::send(
@@ -349,6 +540,13 @@ class UserController extends Controller
         return Redirect::route('user.review');
     }
 
+    /**
+     * Deny a pending application
+     *
+     * @param \App\User $user
+     *
+     * @return bool|\Illuminate\Http\RedirectResponse
+     */
     public function denyApplication(User $user)
     {
         if (($redirect =
@@ -363,10 +561,10 @@ class UserController extends Controller
         $user->lastUpdate = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string)Auth::user()->id,
             'update',
             'users',
-            (string)$user->_id,
+            (string)$user->id,
             $user->toJson(),
             'UserController@denyApplication'
         );
@@ -389,14 +587,15 @@ class UserController extends Controller
         return view(
             'user.create',
             [
-                'user' => new User,
+                'user'      => new User,
                 'countries' => Country::getCountries(),
-                'branches' => Branch::getBranchList(),
-                'grades' => Grade::getGradesForBranch('RMN'),
-                'ratings' => Rating::getRatingsForBranch('RMN'),
-                'chapters' => ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList(),
-                'billets' => ['' => 'Select a Billet'] + Billet::getBillets(),
-//            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
+                'branches'  => Branch::getBranchList(),
+                'grades'    => Grade::getGradesForBranch('RMN'),
+                'ratings'   => Rating::getRatingsForBranch('RMN'),
+                'chapters'  => ['' => 'Start typing to search for a chapter'] +
+                               Chapter::getFullChapterList(),
+                'billets'   => ['' => 'Select a Billet'] + Billet::getBillets(),
+                //            'locations' => ['0' => 'Select a Location'] + Chapter::getChapterLocations(),
 
             ]
         );
@@ -424,18 +623,18 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return Redirect::route('user.create')
-                ->withErrors($validator)
-                ->withInput();
+                           ->withErrors($validator)
+                           ->withInput();
         }
 
         // Massage the data a little bit.  First, build up the rank array
 
         $data['rank'] = [
-            'grade' => $data['display_rank'],
+            'grade'        => $data['display_rank'],
             'date_of_rank' => date(
                 'Y-m-d',
                 strtotime($data['dor'])
-            )
+            ),
         ];
         unset($data['display_rank'], $data['dor']);
 
@@ -444,31 +643,32 @@ class UserController extends Controller
         $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
         $assignment[] = [
-            'chapter_id' => $data['primary_assignment'],
-            'chapter_name' => $chapterName,
+            'chapter_id'    => $data['primary_assignment'],
+            'chapter_name'  => $chapterName,
             'date_assigned' => date(
                 'Y-m-d',
                 strtotime($data['primary_date_assigned'])
             ),
-            'billet' => $data['primary_billet'],
-            'primary' => true
+            'billet'        => $data['primary_billet'],
+            'primary'       => true,
         ];
 
         unset($data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet']);
 
-        if (isset($data['secondary_assignment']) === true && empty($data['secondary_assignment']) === false) {
+        if (isset($data['secondary_assignment']) === true &&
+            empty($data['secondary_assignment']) === false) {
             $chapterName =
                 Chapter::find($data['secondary_assignment'])->chapter_name;
 
             $assignment[] = [
-                'chapter_id' => $data['secondary_assignment'],
-                'chapter_name' => $chapterName,
+                'chapter_id'    => $data['secondary_assignment'],
+                'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
                     strtotime($data['secondary_date_assigned'])
                 ),
-                'billet' => $data['secondary_billet'],
-                'secondary' => true
+                'billet'        => $data['secondary_billet'],
+                'secondary'     => true,
             ];
         }
 
@@ -482,11 +682,11 @@ class UserController extends Controller
 
         // Assign a member id
 
-        $data['member_id'] =
+        $data['memberid'] =
             'RMN' . User::getFirstAvailableMemberId(empty($data['honorary']));
 
         if (isset($data['honorary']) === true && $data['honorary'] === "1") {
-            $data['member_id'] .= '-H';
+            $data['memberid'] .= '-H';
             unset($data['honorary']);
         }
 
@@ -508,7 +708,7 @@ class UserController extends Controller
             'CHANGE_PWD',
             'EDIT_SELF',
             'ROSTER',
-            'TRANSFER'
+            'TRANSFER',
         ];
 
         // For future use
@@ -524,7 +724,7 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string)Auth::user()->id,
             'create',
             'users',
             null,
@@ -536,7 +736,7 @@ class UserController extends Controller
 
         // Until I figure out why mongo drops fields, I'm doing this hack!
 
-        $u = User::find($user['_id']);
+        $u = User::find($user['id']);
 
         foreach ($data as $key => $value) {
             $u->$key = $value;
@@ -557,45 +757,45 @@ class UserController extends Controller
     public function apply()
     {
         $rules = [
-            'email_address' => 'required|email|unique:users',
-            'first_name' => 'required|min:2',
-            'last_name' => 'required|min:2',
-            'address1' => 'required|min:4',
-            'city' => 'required|min:2',
-            'state_province' => 'required|min:2',
-            'postal_code' => 'required|min:2',
-            'country' => 'required|min:2',
-            'password' => 'required|confirmed',
-            'dob' => 'required|date|date_format:Y-m-d',
-            'branch' => 'required',
+            'email_address'      => 'required|email|unique:users',
+            'first_name'         => 'required|min:2',
+            'last_name'          => 'required|min:2',
+            'address1'           => 'required|min:4',
+            'city'               => 'required|min:2',
+            'state_province'     => 'required|min:2',
+            'postal_code'        => 'required|min:2',
+            'country'            => 'required|min:2',
+            'password'           => 'required|confirmed',
+            'dob'                => 'required|date|date_format:Y-m-d',
+            'branch'             => 'required',
             'primary_assignment' => 'required|min:2',
-            'tos' => 'required',
+            'tos'                => 'required',
         ];
 
         $error_message = [
-            'first_name.required' => 'Please enter your first name',
-            'first_name.min' => 'Your first name must be at least 2 characters long',
-            'last_name.required' => 'Please enter your last name',
-            'last_name.min' => 'Your last name must be at least 2 characters long',
-            'address1.required' => 'Please enter your street address',
-            'address1.min' => 'The street address must be at least 4 characters long',
-            'city.required' => 'Please enter your city',
-            'city.min' => 'Your city must be at least 2 characters long',
-            'state_province.required' => 'Please enter your state or province',
-            'state_province.min' => 'Your state or province must be at least 2 characters long',
-            'postal_code.required' => 'Please enter your zip or postal code',
-            'postal_code.min' => 'Your zip or postal code must be at least 2 characters long',
-            'country.required' => 'Please enter your country',
-            'country.min' => 'Your country must be at least 2 characters long',
-            'dob.required' => 'Please enter your date of birth',
-            'dob.date_format' => 'Please enter your date of birth in the YYYY-MM-DD format',
-            'dob.date' => 'Please enter a valid date of birth',
+            'first_name.required'         => 'Please enter your first name',
+            'first_name.min'              => 'Your first name must be at least 2 characters long',
+            'last_name.required'          => 'Please enter your last name',
+            'last_name.min'               => 'Your last name must be at least 2 characters long',
+            'address1.required'           => 'Please enter your street address',
+            'address1.min'                => 'The street address must be at least 4 characters long',
+            'city.required'               => 'Please enter your city',
+            'city.min'                    => 'Your city must be at least 2 characters long',
+            'state_province.required'     => 'Please enter your state or province',
+            'state_province.min'          => 'Your state or province must be at least 2 characters long',
+            'postal_code.required'        => 'Please enter your zip or postal code',
+            'postal_code.min'             => 'Your zip or postal code must be at least 2 characters long',
+            'country.required'            => 'Please enter your country',
+            'country.min'                 => 'Your country must be at least 2 characters long',
+            'dob.required'                => 'Please enter your date of birth',
+            'dob.date_format'             => 'Please enter your date of birth in the YYYY-MM-DD format',
+            'dob.date'                    => 'Please enter a valid date of birth',
             'primary_assignment.required' => "Please select a chapter",
-            'primary_assignment.min' => "Please select a chapter",
-            'branch.required' => "Please select the members branch",
-            'email_address.unique' => 'That email address is already in use',
-            'email_address.required' => 'Please enter your email address',
-            'tos.required' => 'You must agree to the Terms of Service to apply',
+            'primary_assignment.min'      => "Please select a chapter",
+            'branch.required'             => "Please select the members branch",
+            'email_address.unique'        => 'That email address is already in use',
+            'email_address.required'      => 'Please enter your email address',
+            'tos.required'                => 'You must agree to the Terms of Service to apply',
         ];
 
         $data = \Request::all();
@@ -609,24 +809,36 @@ class UserController extends Controller
                     ->withInput();
             }
 
-            // Check Captcha
-            $secret = '6LdcghoTAAAAAJsX2nfOdCPvrCLc902o5ohewlyq';
-            $captcha = \Request::get('g-recaptcha-response', null);
+            if (in_array(
+                $_SERVER['SERVER_NAME'],
+                ["medusa.dev",
+                 "medusa-dev.trmn.org",
+                 "medusa.local",
+                 "localhost"]
+            ) === false) {
+                // Check Captcha
+                $secret = config('recaptcha.secret');
+                $captcha = \Request::get('g-recaptcha-response', null);
 
-            if (empty($captcha) === false) {
-                $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+                if (empty($captcha) === false) {
+                    $recaptcha = new \ReCaptcha\ReCaptcha($secret);
 
-                $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
+                    $resp = $recaptcha->verify($captcha, $_SERVER['REMOTE_ADDR']);
 
-                if ($resp->isSuccess() === false) {
+                    if ($resp->isSuccess() === false) {
+                        return redirect('register')
+                            ->withErrors(
+                                ['message' => 'Please prove that you\'re a sentient being']
+                            )
+                            ->withInput();
+                    }
+                } else {
                     return redirect('register')
-                        ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
+                        ->withErrors(
+                            ['message' => 'Please prove that you\'re a sentient being']
+                        )
                         ->withInput();
                 }
-            } else {
-                return redirect('register')
-                    ->withErrors(['message' => 'Please prove that you\'re a sentient being'])
-                    ->withInput();
             }
         }
 
@@ -660,16 +872,17 @@ class UserController extends Controller
                 $billet = "Crewman";
         }
 
-        if (isset($data['primary_assignment']) === true && empty($data['primary_assignment']) === false) {
+        if (isset($data['primary_assignment']) === true &&
+            empty($data['primary_assignment']) === false) {
             $chapterName =
                 Chapter::find($data['primary_assignment'])->chapter_name;
 
             $data['assignment'][] = [
-                'chapter_id' => $data['primary_assignment'],
-                'chapter_name' => $chapterName,
+                'chapter_id'    => $data['primary_assignment'],
+                'chapter_name'  => $chapterName,
                 'date_assigned' => date('Y-m-d'),
-                'billet' => $billet,
-                'primary' => true
+                'billet'        => $billet,
+                'primary'       => true,
             ];
         } else {
             $data['assignment'][] = [];
@@ -687,8 +900,7 @@ class UserController extends Controller
 
         // For future use
 
-        $data['peerage_record'] = [];
-        $data['awards'] = [];
+        $data['peerage_record'] = $data['history'] = $data['awards'] = [];
         $data['active'] = 0;
         $data['application_date'] = date('Y-m-d');
         $data['registration_status'] = 'Pending';
@@ -717,15 +929,19 @@ class UserController extends Controller
         if (isset($data['mobile']) === true) {
             if (empty($user->id)) {
                 // No id, insert didn't happen
-                return Response::json([
-                    'status' => 'error',
-                    'message' => 'Unable to create user',
-                ], 500);
+                return Response::json(
+                    [
+                        'status'  => 'error',
+                        'message' => 'Unable to create user',
+                    ],
+                    500
+                );
             } else {
-                return Response::json([
-                    'status' => 'success',
-                    'message' => 'User created',
-                ]);
+                return Response::json(
+                    [
+                        'status'  => 'success',
+                        'message' => 'User created',
+                    ]);
             }
         } else {
             return view('thankyou');
@@ -747,10 +963,12 @@ class UserController extends Controller
 
         if ($this->isInChainOfCommand($user) === false &&
             Auth::user()->id != $user->id &&
-            $this->hasPermissions([
-                'VIEW_MEMBERS',
-                'VIEW_' . $user->branch
-            ]) === false
+            $this->hasPermissions(
+                [
+                    'VIEW_MEMBERS',
+                    'VIEW_' . $user->branch,
+                ]
+            ) === false
         ) {
             return redirect(URL::previous())
                 ->with(
@@ -760,10 +978,13 @@ class UserController extends Controller
         }
 
         if (empty(Auth::user()->osa) === true) {
-            return view('osa', ['showform' => true, 'greeting' => Auth::user()->getGreetingArray()]);
+            return view(
+                'osa',
+                ['showform' => true, 'greeting' => Auth::user()->getGreetingArray()]
+            );
         }
 
-        $titles[''] = 'Select Peerage Title';
+        $titles[''] = 'Select Peerage';
 
         foreach (Ptitles::orderBy('precedence')->get() as $title) {
             $titles[$title->title] = $title->title;
@@ -775,43 +996,21 @@ class UserController extends Controller
             $orders[$order->id] = $order->order;
         }
 
-        $user->leftRibbonCount = count($user->getRibbons('L'));
         $user->leftRibbons = $user->getRibbons('L');
+        $user->leftRibbonCount = count($user->leftRibbons);
         $user->numAcross = 3;
 
         return view(
             'user.show',
             [
-                'user' => $user,
+                'user'      => $user,
                 'countries' => Country::getCountries(),
-                'branches' => Branch::getBranchList(),
-                'ptitles' => $titles,
-                'korders' => $orders,
-                'message' => $message,
+                'branches'  => Branch::getBranchList(),
+                'ptitles'   => $titles,
+                'korders'   => $orders,
+                'message'   => $message,
             ]
         );
-    }
-
-    public function fullRibbonDisplay(User $user)
-    {
-        if ($this->isInChainOfCommand($user) === false &&
-            Auth::user()->id != $user->id &&
-            $this->hasPermissions([
-                'VIEW_MEMBERS',
-                'VIEW_' . $user->branch
-            ]) === false
-        ) {
-            return redirect(URL::previous())
-                ->with(
-                    'message',
-                    'You do not have permission to view that page'
-                );
-        }
-
-        $user->leftRibbonCount = count($user->getRibbons('L'));
-        $user->leftRibbons = $user->getRibbons('L');
-
-        return view('user.bib', ['user' => $user,]);
     }
 
     /**
@@ -823,24 +1022,26 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if (($this->hasPermissions(['EDIT_SELF']) === true && Auth::user()->id == $user->id) || $this->hasPermissions(
-                ['EDIT_MEMBER']
-            ) === true
+        if (($this->hasPermissions(['EDIT_SELF']) === true &&
+             Auth::user()->id == $user->id) || $this->hasPermissions(
+                 ['EDIT_MEMBER']
+             ) === true
         ) {
             $greeting = $user->getGreetingArray();
 
-            if (isset($user->rating) === true && empty($user->rating) === false && is_array(
+            if (isset($user->rating) === true && empty($user->rating) === false &&
+                is_array(
                     $user->rating
                 ) === false
             ) {
                 $user->rating =
                     [
-                        'rate' => $user->rating,
+                        'rate'        => $user->rating,
                         'description' => Rating::where(
                             'rate_code',
                             '=',
                             $user->rating
-                        )->get()[0]->rate['description']
+                        )->get()[0]->rate['description'],
                     ];
             }
 
@@ -875,7 +1076,7 @@ class UserController extends Controller
                     'CHANGE_PWD',
                     'EDIT_SELF',
                     'ROSTER',
-                    'TRANSFER'
+                    'TRANSFER',
                 ];
             }
 
@@ -883,19 +1084,27 @@ class UserController extends Controller
             return view(
                 'user.edit',
                 [
-                    'user' => $user,
-                    'greeting' => $greeting,
-                    'countries' => Country::getCountries(),
-                    'branches' => Branch::getBranchList(),
-                    'grades' => Grade::getGradesForBranch($user->branch),
-                    'ratings' => Rating::getRatingsForBranch($user->branch),
-                    'chapters' => $user->hasPermissions(['EDIT_MEMBER']) === true ? ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList() : Chapter::getChapters(null,
-                        0, false),
-                    'billets' => ['' => 'Select a billet'] + Billet::getBillets(),
-                    'locations' => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
+                    'user'        => $user,
+                    'greeting'    => $greeting,
+                    'countries'   => Country::getCountries(),
+                    'branches'    => Branch::getBranchList(),
+                    'grades'      => Grade::getGradesForBranch($user->branch),
+                    'ratings'     => Rating::getRatingsForBranch($user->branch),
+                    'chapters'    => $user->hasPermissions(['EDIT_MEMBER']) ===
+                                     true ?
+                        ['' => 'Start typing to search for a chapter'] +
+                        Chapter::getFullChapterList() : Chapter::getChapters(
+                            null,
+                            0,
+                            false
+                        ),
+                    'billets'     => ['' => 'Select a billet'] +
+                                     Billet::getBillets(),
+                    'locations'   => ['' => 'Select a Location'] +
+                                     Chapter::getChapterLocations(),
                     'permissions' => DB::table('permissions')
-                        ->orderBy('name', 'asc')
-                        ->get(),
+                                       ->orderBy('name', 'asc')
+                                       ->get(),
 
                 ]
             );
@@ -936,19 +1145,115 @@ class UserController extends Controller
                 ->withInput();
         }
 
+        $rank = $history = [];
+
+        $transfer = 0; // Flag for this being a transfer
+
+        // Branch change?
+        if ($user->branch != $data['branch']) {
+            $transfer = time();
+
+            $history[] = [
+                'timestamp' => $transfer,
+                'event'     => 'Transferred from ' .
+                               Branch::getBranchName($user->branch) . ' to ' .
+                               Branch::getBranchName($data['branch']) . ' on ' .
+                               date('d M Y'),
+            ];
+        }
+
         // Massage the data a little bit.  First, build up the rank array
 
-        $rank = [];
-
-        if (isset($data['display_rank']) === true && empty($data['display_rank']) === false) {
+        if (empty($data['display_rank']) === false ||
+            empty($data['rating']) === false) {
             $data['rank'] = ['grade' => $data['display_rank']];
 
             if (empty($data['dor']) === true) {
                 $data['rank']['date_of_rank'] = '';
             } else {
                 $data['rank']['date_of_rank'] =
-                    date('Y-m-d', strtotime($data['dor']));
+                    date(
+                        'Y-m-d',
+                        $transfer == 0 ? strtotime($data['dor']) : $transfer
+                    );
             }
+
+            // Check and see if there is a change in rank
+            if ($user->rank['grade'] != $data['display_rank']) {
+                $history[] = [
+                    'timestamp' => $transfer == 0 ? strtotime($data['dor']) :
+                        $transfer + 1,
+                    'event'     => 'Rank changed from ' .
+                                   Grade::getRankTitle($user->rank['grade'], $user->getRate(), $user->branch) . ' (' .
+                                   $user->rank['grade'] . ') to ' .
+                                   Grade::getRankTitle(
+                                       $data['display_rank'],
+                                       !empty($data['rating']) ? $data['rating'] : null,
+                                       $data['branch']
+                                   ) . ' (' . $data['display_rank'] . ') on ' .
+                                   date('d M Y', $transfer == 0 ? strtotime($data['dor']) : $transfer),
+                ];
+
+                // Is this an early promotion?
+
+                if (empty($data['ep']) === false && $data['ep'] == "1") {
+                    // Get TiG requirement of new grade
+                    $requirements = Grade::getRequirements($data['display_rank']);
+
+                    // Calculate how many months early the promotion is and update the number of points
+                    $data['points'] = $user->points;
+
+                    if (empty($data['points']['ep']) === true) {
+                        $data['points']['ep'] = 0;
+                    }
+
+                    $data['points']['ep'] -= $requirements['tig'] -
+                                             $user->getTimeInGrade('months');
+                    $data['rank']['early'] = $data['rank']['date_of_rank'];
+                }
+            }
+
+            // Check for a change in rating
+            $rate = $user->getRate();
+
+            if ($rate != $data['rating']) {
+                $branch = empty($rate) === false ? $user->branch : $data['branch'];
+
+                switch ($branch) {
+                    case 'RMMM':
+                        $event = 'Merchant Marine Division ';
+                        break;
+                    case 'CIVIL':
+                        $event = 'Civilian Speciality ';
+                        break;
+                    default:
+                        $event = $branch . ' Rating ';
+                }
+
+                $old = ($user->branch === $branch && empty($rate) === false) ? Rating::getRateName($rate) . ' (' . $rate . ') ' : null;
+
+                $new = (empty($data['rating']) === false) ? Rating::getRateName($data['rating']) .
+                        ' (' . $data['rating'] . ')': null;
+
+                if (empty($data['rating']) === true) {
+                    // Rating has been removed
+                    $event .= $old . ' removed';
+                } elseif (empty($rate) === true) {
+                    $event .= $new . ' added';
+                } else {
+                    // Rating has changed
+                    $event .= $old . ' changed to ' . $new;
+                }
+
+                $event .= ' on ' . date('d M Y');
+
+
+                $history[] = [
+                    'timestamp' => time(),
+                    'event'     => $event,
+                ];
+            }
+
             unset($data['display_rank'], $data['dor']);
         }
 
@@ -957,67 +1262,70 @@ class UserController extends Controller
         $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
 
         $assignment[] = [
-            'chapter_id' => $data['primary_assignment'],
-            'chapter_name' => $chapterName,
+            'chapter_id'    => $data['primary_assignment'],
+            'chapter_name'  => $chapterName,
             'date_assigned' => date(
                 'Y-m-d',
                 strtotime($data['primary_date_assigned'])
             ),
-            'billet' => $data['primary_billet'],
-            'primary' => true
+            'billet'        => $data['primary_billet'],
+            'primary'       => true,
         ];
 
         unset($data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet']);
 
-        if (isset($data['secondary_assignment']) === true && empty($data['secondary_assignment']) === false) {
+        if (isset($data['secondary_assignment']) === true &&
+            empty($data['secondary_assignment']) === false) {
             $chapterName =
                 Chapter::find($data['secondary_assignment'])->chapter_name;
 
             $assignment[] = [
-                'chapter_id' => $data['secondary_assignment'],
-                'chapter_name' => $chapterName,
+                'chapter_id'    => $data['secondary_assignment'],
+                'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
                     strtotime($data['secondary_date_assigned'])
                 ),
-                'billet' => $data['secondary_billet'],
-                'secondary' => true
+                'billet'        => $data['secondary_billet'],
+                'secondary'     => true,
             ];
 
             unset($data['secondary_assignment'], $data['secondary_date_assigned'], $data['secondary_billet']);
         }
 
-        if (isset($data['additional_assignment']) === true && empty($data['additional_assignment']) === false) {
+        if (isset($data['additional_assignment']) === true &&
+            empty($data['additional_assignment']) === false) {
             $chapterName =
                 Chapter::find($data['additional_assignment'])->chapter_name;
 
             $assignment[] = [
-                'chapter_id' => $data['additional_assignment'],
-                'chapter_name' => $chapterName,
+                'chapter_id'    => $data['additional_assignment'],
+                'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
                     strtotime($data['additional_date_assigned'])
                 ),
-                'billet' => $data['additional_billet'],
-                'additional' => true
+                'billet'        => $data['additional_billet'],
+                'additional'    => true,
             ];
 
             unset($data['additional_assignment'], $data['additional_date_assigned'], $data['additional_billet']);
         }
 
-        if (isset($data['extra_assignment']) === true && empty($data['extra_assignment']) === false) {
+        if (isset($data['extra_assignment']) === true &&
+            empty($data['extra_assignment']) === false) {
             $chapterName =
                 Chapter::find($data['extra_assignment'])->chapter_name;
 
             $assignment[] = [
-                'chapter_id' => $data['extra_assignment'],
-                'chapter_name' => $chapterName,
+                'chapter_id'    => $data['extra_assignment'],
+                'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
                     strtotime($data['extra_date_assigned'])
                 ),
-                'billet' => $data['extra_billet'],
-                'extra' => true
+                'billet'        => $data['extra_billet'],
+                'extra'         => true,
             ];
 
             unset($data['extra_assignment'], $data['extra_date_assigned'], $data['extra_billet']);
@@ -1025,7 +1333,67 @@ class UserController extends Controller
 
         $data['assignment'] = $assignment;
 
-        if (isset($data['password']) === true && empty($data['password']) === false) {
+        // Check for changes in billets or assignments
+
+        foreach ($assignment as $item) {
+            $position = 'primary';
+
+            if (empty($item['secondary']) === false) {
+                $position = 'secondary';
+            } elseif (empty($item['additional']) === false) {
+                $position = 'additional';
+            } elseif (empty($item['extra']) === false) {
+                $position = 'extra';
+            }
+
+            $currentValue = $user->getFullAssignmentInfo($position);
+
+            // Did this assignment change?
+            if ($item['chapter_id'] !== $currentValue['chapter_id']) {
+                $history[] = [
+                    'timestamp' => strtotime($item['date_assigned']),
+                    'event'     => ucfirst($position) . ' assignment changed to ' .
+                                   $item['chapter_name'] . ' and assigned as ' .
+                                   $item['billet'] . ' on ' . date(
+                                       'd M Y',
+                                       strtotime($item['date_assigned'])
+                                   ),
+                ];
+            } elseif ($item['billet'] !== $currentValue['billet']) {
+                // Only the billet changed
+                $history[] = [
+                    'timestamp' => strtotime($item['date_assigned']),
+                    'event'     => ucfirst($position) . ' billet changed from ' .
+                                   $currentValue['billet'] . ' to ' .
+                                   $item['billet'] . ' on ' . date(
+                                       'd M Y',
+                                       strtotime($item['date_assigned'])
+                                   ),
+                ];
+            }
+        }
+
+        // Merge new history with existing history
+
+        if (empty($user->history) === false && empty($history) === false) {
+            $history = array_merge($user->history, $history);
+        }
+
+        if (empty($history) === false) {
+            $history = array_values(
+                array_sort(
+                    $history,
+                    function ($value) {
+                        return $value['timestamp'];
+                    }
+                )
+            );
+
+            $data['history'] = $history;
+        }
+
+        if (isset($data['password']) === true &&
+            empty($data['password']) === false) {
             // Hash the password
 
             $data['password'] = Hash::make($data['password']);
@@ -1084,36 +1452,46 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
 
-
         $data['awards'] = $user->awards;
 
         try {
             $user->update($data);
 
-            if ($data['reload_form'] === "yes") {
-                return Redirect::route('user.edit', [$user->_id]);
-            }
-
-            Cache::flush();
-
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string)Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->_id,
+                (string)$user->id,
                 json_encode($data),
                 'UserController@update'
             );
 
-            event(new EmailChanged($oldEmail, $data['email_address']));
+            if ($data['reload_form'] === "yes") {
+                $redirect = Response::redirectToRoute('user.edit', [$user->id]);
+            } else {
+                $redirect = Response::redirectTo($data['redirectTo']);
+            }
 
-            return redirect($data['redirectTo']);
+            if (isset($oldEmail) === true) {
+                event(new EmailChanged($oldEmail, $data['email_address']));
+            }
         } catch (\Exception $d) {
-            return redirect()->to('/user/' . $user->id)->with('error', 'There was a problem saving your changes.');
+            return redirect()->to('/user/' . $user->id)->with(
+                'error',
+                'There was a problem saving your changes.'
+            );
         }
 
+        Cache::flush();
+
+        return $redirect;
     }
 
+    /**
+     * Process acceptance of the Terms of Service
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function tos()
     {
         $this->loginValid();
@@ -1125,10 +1503,10 @@ class UserController extends Controller
             $user->tos = true;
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string)Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->_id,
+                (string)$user->id,
                 $user->toJson(),
                 'UserController@tos'
             );
@@ -1141,6 +1519,11 @@ class UserController extends Controller
         return redirect()->to('signout');
     }
 
+    /**
+     * Process acceptance of the Official Secrets Act
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function osa()
     {
         $this->loginValid();
@@ -1152,10 +1535,10 @@ class UserController extends Controller
             $user->osa = date('Y-m-d');
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string)Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->_id,
+                (string)$user->id,
                 $user->toJson(),
                 'UserController@osa'
             );
@@ -1198,21 +1581,26 @@ class UserController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string)Auth::user()->id,
             'hard delete',
             'users',
-            (string)$user->_id,
+            (string)$user->id,
             $user->toJson(),
             'UserController@destroy'
         );
 
-        User::destroy($user->_id);
+        User::destroy($user->id);
 
         Cache::flush();
 
         return Redirect::route('user.index');
     }
 
+    /**
+     * Show the sign up page
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function register()
     {
         $fullBranchList = Branch::all();
@@ -1225,32 +1613,25 @@ class UserController extends Controller
         asort($branches);
 
         $viewData = [
-            'user' => new User,
+            'user'      => new User,
             'countries' => Country::getCountries(),
-            'branches' => $branches,
-            'chapters' => ['' => 'Start typing to search for a chapter'] + Chapter::getFullChapterList(),
-            'locations' => ['' => 'Select a Location'] + Chapter::getChapterLocations(),
-            'register' => true,
+            'branches'  => $branches,
+            'chapters'  => ['' => 'Start typing to search for a chapter'] +
+                           Chapter::getFullChapterList(false),
+            'register'  => true,
         ];
 
         return view('user.register', $viewData);
     }
 
-    private function _getCountries()
-    {
-        $results = Countries::getList();
-        $countries = [];
-
-        foreach ($results as $country) {
-            $countries[$country['iso_3166_3']] = $country['name'];
-        }
-
-        asort($countries);
-
-        return $countries;
-    }
-
-    private function _buildPeerageRecord($data)
+    /**
+     * Build up a peerage record from the provided data
+     *
+     * @param array $data
+     *
+     * @return mixed
+     */
+    private function buildPeerageRecord(array $data)
     {
         $peerage['title'] = $data['ptitle'];
 
@@ -1261,21 +1642,23 @@ class UserController extends Controller
         if ($data['ptitle'] == 'Knight' || $data['ptitle'] == 'Dame') {
             $kOrder =
                 Korders::where('classes.postnominal', '=', $data['class'])
-                    ->first();
+                       ->first();
 
             // Use the precedence from the Knight Orders table
             $peerage['precedence'] =
-                $kOrder->getPrecedence([
-                    'type' => 'postnominal',
-                    'value' => $data['class']
-                ]);
+                $kOrder->getPrecedence(
+                    [
+                        'type'  => 'postnominal',
+                        'value' => $data['class'],
+                    ]
+                );
             $peerage['postnominal'] = $data['class'];
 
             if (substr(
-                    $kOrder->getClassName($data['class']),
-                    0,
-                    6
-                ) != 'Knight'
+                $kOrder->getClassName($data['class']),
+                0,
+                6
+            ) != 'Knight'
             ) {
                 $peerage['code'] = '';
             }
@@ -1285,7 +1668,7 @@ class UserController extends Controller
             $peerage['lands'] = $data['lands'];
 
             if (\Request::hasFile('arms') === true && \Request::file('arms')
-                    ->isValid() === true
+                                                              ->isValid() === true
             ) {
                 $peerage['filename'] =
                     basename(\Request::file('arms')->store('peerage', 'arms'));
@@ -1307,6 +1690,13 @@ class UserController extends Controller
         return $peerage;
     }
 
+    /**
+     * Process AJAX request to add or edit a peerage
+     *
+     * @param \App\User $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addOrEditPeerage(User $user)
     {
         $data = \Request::all();
@@ -1319,9 +1709,10 @@ class UserController extends Controller
             $msg = "Peerage updated";
         }
 
-        $peerage = $this->_buildPeerageRecord($data);
+        $peerage = $this->buildPeerageRecord($data);
 
-        if (empty($data['filename']) === false && empty($peerage['filename']) === true) {
+        if (empty($data['filename']) === false &&
+            empty($peerage['filename']) === true) {
             // Peerage entry had a file name set.  No new image uploaded
             $peerage['filename'] = $data['filename'];
         }
@@ -1332,10 +1723,10 @@ class UserController extends Controller
         $user->peerages = $currentPeerages;
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string)Auth::user()->id,
             'update',
             'users',
-            (string)$user->_id,
+            (string)$user->id,
             $user->toJson(),
             'UserController@addOrEditPeerage'
         );
@@ -1345,13 +1736,28 @@ class UserController extends Controller
         return redirect()->to(URL::previous())->with('message', $msg);
     }
 
-    public function deletePeerage(User $user, $peerageId)
+    /**
+     * Process AJAX request to delete a peerage
+     *
+     * @param \App\User $user
+     * @param $peerage_id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deletePeerage(User $user, $peerage_id)
     {
-        $user->deletePeerage($peerageId);
+        $user->deletePeerage($peerage_id);
 
         return Redirect::route('home')->with('message', 'Peerage deleted');
     }
 
+    /**
+     * Process AJAX request to add or edit a note
+     *
+     * @param \App\User $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addOrEditNote(User $user)
     {
         $data = \Request::all();
@@ -1361,10 +1767,10 @@ class UserController extends Controller
         $user->note = $data['note_text'];
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string)Auth::user()->id,
             'update',
             'users',
-            (string)$user->_id,
+            (string)$user->id,
             $user->toJson(),
             'UserController@addOrEditNote'
         );
@@ -1374,14 +1780,24 @@ class UserController extends Controller
         return redirect()->to(URL::previous())->with('message', $msg);
     }
 
+    /**
+     * Show the find a user page
+     *
+     * @param \App\User|null $user
+     *
+     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function find(User $user = null)
     {
         if (($redirect =
-                $this->checkPermissions([
-                    'EDIT_MEMBER',
-                    'EDIT_GRADE',
-                    'VIEW_MEMBERS'
-                ])) !== true
+                $this->checkPermissions(
+                    [
+                        'EDIT_MEMBER',
+                        'EDIT_GRADE',
+                        'VIEW_MEMBERS',
+                    ]
+                )
+            ) !== true
         ) {
             return $redirect;
         }
@@ -1389,6 +1805,14 @@ class UserController extends Controller
         return view('user.find', ['user' => $user]);
     }
 
+    /**
+     * Process AJAX request to add a permission to a user
+     *
+     * @param \App\User $user
+     * @param $perm
+     *
+     * @return bool|\Illuminate\Http\RedirectResponse
+     */
     public function addPerm(User $user, $perm)
     {
         if (($redirect =
@@ -1407,6 +1831,14 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * Process AJAX request to remove a permission from a user
+     *
+     * @param \App\User $user
+     * @param $perm
+     *
+     * @return bool|\Illuminate\Http\RedirectResponse
+     */
     public function deletePerm(User $user, $perm)
     {
         if (($redirect =
@@ -1425,29 +1857,39 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * Show all members for the specified branch
+     *
+     * @param $branch
+     *
+     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function showBranch($branch)
     {
-        if (($redirect = $this->checkPermissions('VIEW_' . $branch)) !== true) {
+        if (($redirect = $this->checkPermissions('VIEW_' . strtoupper($branch))) !== true) {
             return $redirect;
         }
 
-        $users = User::where('active', '=', 1)
-            ->where('registration_status', '=', 'Active')
-            ->where('branch', '=', $branch)
-            ->get();
+        $title = $branch . " Members";
 
-        $usersByBranch[$branch] = $users;
+        if ($branch == 'Bosun') {
+            $title = 'Bosun List';
+        }
 
         return view(
             'user.byBranch',
             [
-                'users' => $usersByBranch,
-                'title' => $branch . " Members",
-                'branch' => $branch
+                'title'  => $title,
+                'branch' => $branch,
             ]
         );
     }
 
+    /**
+     * Show Ribbon Rack builder page
+     *
+     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function buildRibbonRack()
     {
         if (($redirect =
@@ -1466,10 +1908,63 @@ class UserController extends Controller
             }
         }
 
-        return view('user.rack',
-            ['user' => Auth::user(), 'unitPatchPaths' => $unitPatchPaths]);
+        Auth::user()->awards = Auth::user()->getCurrentAwards();
+
+        return view(
+            'user.rack',
+            [
+                'user'           => Auth::user(),
+                'unitPatchPaths' => $unitPatchPaths,
+                'restricted'     => MedusaConfig::get(
+                    'awards.restricted',
+                    ['OSWP', 'ESWP', 'MCAM']
+                ),
+                'wings'          => MedusaConfig::get(
+                    'awards.wings',
+                    [
+                    "Aerospace Wings" => [
+                        "EAW",
+                        "OAW",
+                        "ESAW",
+                        "OSAW",
+                        "EMAW",
+                        "OMAW",
+                    ],
+                    "Navigator Wings" => [
+                        "ENW",
+                        "ONW",
+                        "ESNW",
+                        "OSNW",
+                        "EMNW",
+                        "OMNW",
+                    ],
+                    "Observer Wings"  => [
+                        "EOW",
+                        "OOW",
+                        "ESOW",
+                        "OSOW",
+                        "EMOW",
+                        "OMOW",
+                    ],
+                    "Simulator Wings" => [
+                        "ESW",
+                        "OSW",
+                        "ESSW",
+                        "OSSW",
+                        "EMSW",
+                        "OMSW",
+                    ],
+                    ]
+                ),
+            ]
+        );
     }
 
+    /**
+     * Save the submitted ribbon rack
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function saveRibbonRack()
     {
         if (($redirect =
@@ -1479,13 +1974,68 @@ class UserController extends Controller
         }
         $data = \Request::all();
 
-        $groups = array_where($data, function ($value, $key) {
-            return substr($key, 0, 5) == 'group';
-        });
+        // Process the display choice for qualification badges
 
-        $selects = array_where($data, function ($value, $key) {
-            return substr($key, -4) == '_chk';
-        });
+        $displayChoice = MedusaConfig::get(
+            'awards.display',
+            [
+                "OSWP",
+                "ESWP",
+                "SAW",
+                "EAW",
+                "OAW",
+                "ESAW",
+                "OSAW",
+                "EMAW",
+                "OMAW",
+                "ENW",
+                "ONW",
+                "ESNW",
+                "OSNW",
+                "EMNW",
+                "OMNW",
+                "EOW",
+                "OOW",
+                "ESOW",
+                "OSOW",
+                "EMOW",
+                "OMOW",
+                "ESW",
+                "OSW",
+                "ESSW",
+                "OSSW",
+                "EMSW",
+                "OMSW",
+                "HS",
+                "CIB",
+            ]
+        );
+
+        foreach ($displayChoice as $qualBadge) {
+            $data[$qualBadge . '_display'] = false;
+        }
+
+        if (empty($data['qualbadge_display']) === false) {
+            $data[$data['qualbadge_display'] . '_display'] = true;
+        }
+
+        // Process the groups
+
+        $groups = array_where(
+            $data,
+            function ($value, $key) {
+                return substr($key, 0, 5) == 'group';
+            }
+        );
+
+        // Process the selects
+
+        $selects = array_where(
+            $data,
+            function ($value, $key) {
+                return substr($key, -4) == '_chk';
+            }
+        );
 
         foreach ($groups as $index => $award) {
             if ($index != $award) {
@@ -1504,17 +2054,98 @@ class UserController extends Controller
                 $data[$award->code . '_quantity'] = 1;
             }
         }
-
+//die('<pre>' . print_r($data, true));
+        $curAwards = Auth::user()->awards;
         $awards = [];
 
         if (isset($data['ribbon']) === true) {
             foreach ($data['ribbon'] as $award) {
+                if (empty($curAwards[$award]) === false) {
+                    // Preserve all the valid dates
+                    $awardDates =
+                        $this->preserveValidDates($curAwards[$award]['award_date']);
+
+                    asort($awardDates);
+
+                    $numPending = $this->countPendingAwards($awardDates);
+
+                    // If the number of awards specified is less than the current count, add in the number pending
+                    if ($data[$award . '_quantity'] + $numPending <=
+                        $curAwards[$award]['count']) {
+                        $data[$award . '_quantity'] += $numPending;
+                    }
+
+                    // If we have more valid dates than the quantity, only take as many dates as we have awards
+                    if (count($awardDates) > $data[$award . '_quantity']) {
+                        $awardDates =
+                            array_slice($awardDates, $data[$award . '_quantity']);
+                    }
+
+                    if ($data[$award . '_quantity'] > $curAwards[$award]['count']) {
+                        // Number of award instances specified is greater than the current value
+                        // Fill out the start of the array as needed
+                        $awardDates = array_merge(
+                            array_fill(
+                                0,
+                                $data[$award . '_quantity'] -
+                                $curAwards[$award]['count'],
+                                '1970-01-01'
+                            ),
+                            $awardDates
+                        );
+                    } elseif ($data[$award . '_quantity'] <
+                              $curAwards[$award]['count']) {
+                        // The number of award instances has been reduced
+                        // Fill out the start of the array as needed
+                        $awardDates = array_merge(
+                            array_fill(
+                                0,
+                                $data[$award . '_quantity'] - count($awardDates),
+                                '1970-01-01'
+                            ),
+                            $awardDates
+                        );
+                    } elseif (count($awardDates) < $data[$award . '_quantity']) {
+                        $awardDates = array_merge(
+                            array_fill(
+                                0,
+                                $data[$award . '_quantity'] - count($awardDates),
+                                '1970-01-01'
+                            ),
+                            $awardDates
+                        );
+                    }
+                } else {
+                    $awardDates =
+                        array_fill(0, $data[$award . '_quantity'], '1970-01-01');
+                }
+
                 $awards[$award] =
                     [
-                        'count' => $data[$award . '_quantity'],
-                        'location' => Award::where('code', '=', $award)
-                            ->first()->location
+                        'count'      => $data[$award . '_quantity'],
+                        'location'   => Award::where('code', '=', $award)
+                                             ->first()->location,
+                        'award_date' => $awardDates,
+                        'display'    => isset($data[$award . '_display']) ?
+                            $data[$award . '_display'] : true,
                     ];
+            }
+        }
+
+        // Find out what awards are not present in the new list
+
+        $notPresent = array_diff_key($curAwards, $awards);
+
+        // Iterate through the not presents and see if we have any pending awards
+
+        foreach ($notPresent as $code => $award) {
+            $award['award_date'] =
+                (array)$this->preserveFutureDates($award['award_date']);
+            $award['count'] = $this->countPendingAwards($award['award_date']);
+
+            if ($award['count'] > 0) {
+                // We have a pending award, add it to the new list
+                $awards[$code] = $award;
             }
         }
 
@@ -1537,17 +2168,143 @@ class UserController extends Controller
         return redirect()->to('home');
     }
 
+    /**
+     * Admin function to temporarily login as a user
+     *
+     * @param \App\User $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function userSwitchStart(User $user)
     {
         Session::put('orig_user', Auth::id());
         Auth::login($user);
+        event(new LoginComplete(Auth::user()));
         return back();
     }
 
+    /**
+     * Admin function to return to your original user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function userSwitchStop()
     {
         $id = Session::pull('orig_user');
         Auth::login(User::find($id));
         return back();
+    }
+
+    /**
+     * Process an array of dates formatted YYYY-MM-DD and return any that are not
+     * 1970-01-01
+     *
+     * @param array $dates
+     *
+     * @return array
+     */
+    private function preserveValidDates(array $dates)
+    {
+        return array_where(
+            $dates,
+            function ($value, $key) {
+                return $value != '1970-01-01';
+            }
+        );
+    }
+
+    /**
+     * Process an array of dates formatted YYYY-MM-DD and return any that are at
+     * least 2 days in the future
+     *
+     * @param array $dates
+     *
+     * @return array
+     */
+    private function preserveFutureDates(array $dates)
+    {
+        $today = Carbon::today('America/New_York');
+
+        return array_where(
+            $dates,
+            function ($value, $key) use ($today) {
+                return Carbon::createFromFormat('Y-m-d H', $value . ' 0')->addDays(2)
+                         ->gt($today);
+            }
+        );
+    }
+
+    /**
+     * Count the number of awards that are pending
+     *
+     * @param array $awardDates
+     *
+     * @return int
+     */
+    private function countPendingAwards(array $awardDates)
+    {
+        $numPending = 0;
+        $today = Carbon::today('America/New_York');
+
+        // Count the number of awards that are in the future
+        foreach ($awardDates as $date) {
+            if (Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2)->gt(
+                $today
+            )) {
+                $numPending++;
+            }
+        }
+
+        return $numPending;
+    }
+
+    /**
+     * Update a members promotion points
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param $user
+     *
+     * @return bool|\Illuminate\Http\RedirectResponse
+     */
+    public function updatePoints(\Illuminate\Http\Request $request, $user)
+    {
+        if (($redirect =
+                $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF'])) !== true
+        ) {
+            return $redirect;
+        }
+
+        $points = [];
+
+        foreach ($request->points as $key => $value) {
+            $points[$key] = $value >= 0 ? $value : 0;
+        }
+
+        $user->points = $points;
+
+        try {
+            $user->save();
+
+            $this->writeAuditTrail(
+                (string)Auth::user()->id,
+                'update',
+                'users',
+                (string)$user->id,
+                json_encode($user->points),
+                'UserController@updatePoints'
+            );
+        } catch (\Exception $d) {
+            return redirect()->to('/user/' . $user->id)->with(
+                'error',
+                'There was a problem saving your changes.'
+            );
+        }
+
+        Cache::flush();
+
+        return redirect()->to('/user/' . $user->id)->with(
+            'status',
+            'Your promotion points have been updated.'
+        );
     }
 }

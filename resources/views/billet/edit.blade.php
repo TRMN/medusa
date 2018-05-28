@@ -9,14 +9,22 @@
 
     {!! Form::model( $billet, [ 'route' => [ 'billet.update', $billet->_id ], 'method' => 'put' ] ) !!}
     <div class="row">
-        <div class="small-6 columns ninety Incised901Light end">
-            {!! Form::label('billet_name', 'Billet Name') !!} {!! Form::text('billet_name') !!}
+        <div class="col-sm-6  ninety Incised901Light form-group">
+            {!! Form::label('billet_name', 'Billet Name') !!} {!! Form::text('billet_name', $billet->billet_name, ['class' => 'form-control']) !!}
             {!!Form::hidden('old_name', $billet->billet_name)!!}
         </div>
     </div>
 
 
-    <a class="button round"
-       href="{!! URL::previous() !!}">Cancel</a> {!! Form::submit( 'Save', [ 'class' => 'button round' ] ) !!}
+
+
+    <br/>
+    <div class="row">
+        <div class="col-sm-6 Incised901Light text-center">
+            <a class="btn btn-warning"
+               href="{!! URL::previous() !!}"><span class="fa fa-times"></span> Cancel </a> <button type="submit" class="btn btn-success"><span class="fa fa-save"><span
+                            class="Incised901Light"> Save </span></span></button>
+        </div>
+    </div>
     {!! Form::close() !!}
 @stop

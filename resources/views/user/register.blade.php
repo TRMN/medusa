@@ -6,72 +6,6 @@ Membership Application
 
 @section('dochead')
 <script src='https://www.google.com/recaptcha/api.js'></script>
-
-<style>
-    ::-webkit-input-placeholder {
-        color: #66b2c9;
-    }
-
-    :-moz-placeholder {
-        color: #66b2c9;
-    }
-
-    ::-moz-placeholdermoz-placeholder {
-        color: #66b2c9;
-    }
-
-    ::-ms-input-placeholder {
-        color: #66b2c9;
-    }
-
-    ::placeholder {
-        color: #66b2c9;
-    }
-
-    .selectize-input,
-    .selectize-input input {
-        color: whitesmoke;
-    }
-
-    .selectize-dropdown,
-    .selectize-input,
-    .selectize-control.single .selectize-input,
-    .selectize-control.single .selectize-input.input-active {
-        background: #1c1c1d;
-        color:  whitesmoke;
-    }
-
-    .selectize-control.single .selectize-input,
-    .selectize-dropdown.single {
-        border-color: #29292a;
-        z-index: 999;
-    }
-
-    .selectize-control.single .selectize-input {
-        padding: 2px 30px 2px 5px;
-    }
-
-    .selectize-control.single .selectize-input:after {
-        border-top-color: whitesmoke;
-    }
-
-    .selectize-dropdown .active {
-        color: #1c1c1d;
-        background-color: #66b2c9;
-    }
-
-    .selectize-input .item {
-        max-width: 95%;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        margin-top: 0.60rem;
-    }
-
-    .selectize-input {
-        min-height: 2.6875rem;
-    }
-</style>
 @stop
 
 @section( 'bodyclasses' )
@@ -88,17 +22,17 @@ registerform
         <legend>You'll use your email address and password to log in to the site</legend>
 
         <div class="row">
-            <div class="small-6 columns">
-                {!! Form::label( 'email_address', 'Email' ) !!} {!! Form::email( 'email_address' ) !!}
+            <div class="col-sm-6 form-group">
+                {!! Form::label( 'email_address', 'Email', null, ['class' => 'control-label'] ) !!} {!! Form::email( 'email_address', null, ['class' => 'form-control'] ) !!}
             </div>
         </div>
 
         <div class="row">
-            <div class="small-6 columns">
-                {!! Form::label( 'password', 'Password' ) !!} {!! Form::password( 'password' ) !!}
+            <div class="col-sm-6 form-group">
+                {!! Form::label( 'password', 'Password', null, ['class' => 'control-label'] ) !!} {!! Form::password( 'password', ['class' => 'form-control'] ) !!}
             </div>
-            <div class="small-6 columns">
-                {!! Form::label( 'password_confirmation', 'Confirm Password' ) !!} {!! Form::password( 'password_confirmation' ) !!}
+            <div class="col-sm-6 form-group">
+                {!! Form::label( 'password_confirmation', 'Confirm Password', null, ['class' => 'control-label'] ) !!} {!! Form::password( 'password_confirmation', ['class' => 'form-control'] ) !!}
             </div>
         </div>
     </fieldset>
@@ -108,17 +42,17 @@ registerform
         <legend>We need to know what to call you</legend>
 
         <div class="row">
-            <div class="small-4 columns">
-                {!! Form::label( 'first_name', 'First Name' ) !!} {!! Form::text( 'first_name' ) !!}
+            <div class="col-sm-4  form-group">
+                {!! Form::label( 'first_name', 'First Name', null, ['class' => 'control-label'] ) !!} {!! Form::text( 'first_name', null, ['class' => 'form-control'] ) !!}
             </div>
-            <div class="small-3 columns">
-                {!! Form::label( 'middle_name', 'Middle Name' ) !!} {!! Form::text( 'middle_name' ) !!}
+            <div class="col-sm-3  form-group">
+                {!! Form::label( 'middle_name', 'Middle Name', null, ['class' => 'control-label'] ) !!} {!! Form::text( 'middle_name', null, ['class' => 'form-control'] ) !!}
             </div>
-            <div class="small-4 columns">
-                {!! Form::label( 'last_name', 'Last Name' ) !!} {!! Form::text( 'last_name' ) !!}
+            <div class="col-sm-4  form-group">
+                {!! Form::label( 'last_name', 'Last Name', null, ['class' => 'control-label'] ) !!} {!! Form::text( 'last_name', null, ['class' => 'form-control'] ) !!}
             </div>
-            <div class="small-1 columns">
-                {!! Form::label( 'suffix', 'Suffix' ) !!} {!! Form::select('suffix', ['' => 'None', 'Jr' => 'Jr', 'Sr' => 'Sr', 'II' => 'II', 'III' => 'III', 'IV' => 'IV', 'V' => 'V']) !!}
+            <div class="col-sm-1  form-group">
+                {!! Form::label( 'suffix', 'Suffix', null, ['class' => 'control-label'] ) !!} {!! Form::select('suffix', ['' => 'None', 'Jr' => 'Jr', 'Sr' => 'Sr', 'II' => 'II', 'III' => 'III', 'IV' => 'IV', 'V' => 'V'], null, ['class' => 'form-control']) !!}
             </div>
         </div>
     </fieldset>
@@ -131,26 +65,26 @@ registerform
         </legend>
 
         <div class="row">
-            <div class="small-6 columns">
-                {!! Form::label( 'address1', 'Street Address' ) !!} {!! Form::text( 'address1' ) !!}
+            <div class="col-sm-6  form-group">
+                {!! Form::label( 'address1', 'Street Address', null, ['class' => 'control-label'] ) !!} {!! Form::text( 'address1', null, ['class' => 'form-control'] ) !!}
             </div>
-            <div class="small-6 columns">
-                {!! Form::label( 'address2', 'Address Line 2' ) !!} {!! Form::text( 'address2' ) !!}
+            <div class="col-sm-6  form-group">
+                {!! Form::label( 'address2', 'Address Line 2', null, ['class' => 'control-label'] ) !!} {!! Form::text( 'address2', null, ['class' => 'form-control'] ) !!}
             </div>
         </div>
 
         <div class="row">
-            <div class="small-3 columns">
-                {!! Form::label( 'city', 'City' ) !!} {!! Form::text( 'city' ) !!}
+            <div class="col-sm-3  form-group">
+                {!! Form::label( 'city', 'City', null, ['class' => 'control-label'] ) !!} {!! Form::text( 'city', null, ['class' => 'form-control'] ) !!}
             </div>
-            <div class="small-3 columns">
-                {!! Form::label( 'state_province', 'State/Province' ) !!} {!! Form::text( 'state_province' ) !!}
+            <div class="col-sm-3  form-group">
+                {!! Form::label( 'state_province', 'State/Province', null, ['class' => 'control-label'] ) !!} {!! Form::text( 'state_province', null, ['class' => 'form-control'] ) !!}
             </div>
-            <div class="small-3 columns">
-                {!! Form::label( 'postal_code', 'Zip/Postal Code' ) !!} {!! Form::text( 'postal_code' ) !!}
+            <div class="col-sm-3  form-group">
+                {!! Form::label( 'postal_code', 'Zip/Postal Code', null, ['class' => 'control-label'] ) !!} {!! Form::text( 'postal_code', null, ['class' => 'form-control'] ) !!}
             </div>
-            <div class="small-3 columns">
-                {!! Form::label( 'country', 'Country' ) !!} {!! Form::select( 'country', $countries, 'USA' ) !!}
+            <div class="col-sm-3  form-group">
+                {!! Form::label( 'country', 'Country', null, ['class' => 'my'] ) !!} {!! Form::select( 'country', $countries, null, ['class' => 'selectize'] ) !!}
             </div>
         </div>
     </fieldset>
@@ -158,8 +92,8 @@ registerform
     <h2>Age Verification</h2>
     <fieldset>
         <legend>We only use this to verify your eligibility for certain leadership positions</legend>
-        <div class="small-6 columns end">
-            {!! Form::label('dob', 'Date of Birth') !!} {!!Form::date('dob', $user->dob)!!}
+        <div class="col-sm-6 form-group">
+            {!! Form::label('dob', 'Date of Birth', null, ['class' => 'control-label']) !!} {!!Form::date('dob', null, ['class' => 'form-control'])!!}
         </div>
     </fieldset>
 
@@ -168,8 +102,8 @@ registerform
     <fieldset>
         <legend>Please choose which branch you would like to be part of</legend>
         <div class="row">
-            <div class="small-6 columns end">
-                {!! Form::label( 'branch', "Branch") !!} {!! Form::select( 'branch', $branches, 'RMN' ) !!}
+            <div class="col-sm-6 form-group">
+                {!! Form::label( 'branch', "Branch", null, ['class' => 'control-label']) !!} {!! Form::select( 'branch', $branches, null, ['class' => 'form-control'] ) !!}
             </div>
         </div>
     </fieldset>
@@ -178,56 +112,72 @@ registerform
     <fieldset>
         <legend>Please choose what chapter you would like to join</legend>
         <div class="row">
-            <div class="small-12 columns">
+            <div class="col-sm-12 form-group">
                 <p>If you're not sure, choose one of the holding
                     chapters. You may join any chapter, regardless of your branch</p>
             </div>
         </div>
         <div class="row">
-            <div class="small-6 columns end">
-                {!! Form::label( 'primary_assignment', "Chapter") !!} {!! Form::select( 'primary_assignment', $chapters ) !!}
+            <div class="col-sm-6 form-group">
+                {!! Form::label( 'primary_assignment', "Chapter", null, ['class' => 'control-label']) !!} {!! Form::select( 'primary_assignment', $chapters, null, ['class' => 'selectize'] ) !!}
             </div>
         </div>
     </fieldset>
     <fieldset>
         <legend>Terms of Service</legend>
         <div class="row">
-            {!! Form::checkbox('tos',1, false, ['class' => 'switcher']) !!} I have read and agree to the <a href="#"
-                                                                                                          data-reveal-id="tos">Terms
-                of Service</a>
+            <div class="col-sm-12 text-left">
+                <em><strong>I have read and agree to the <a href="#" data-target="#tos" data-toggle="modal">Terms of Service</a></strong></em>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-left">
+                No <label class="switch">
+                    <input type="checkbox" name="tos" value="1" id="tosAgree">
+                    <span class="slider round"></span>
+                </label> Yes
+            </div>
         </div>
     </fieldset>
     <fieldset>
         <legend>Please prove that you're a sentient being</legend>
         <div class="row">
-            <div class="small-4 columns end">
-                <div class="g-recaptcha" data-sitekey="6LdcghoTAAAAAKKj3XEL4KMPcUJMUjigT-qwcRvQ"></div>
+            <div class="col-sm-4  ">
+                <div class="g-recaptcha" data-sitekey="{{config('recaptcha.public')}}"></div>
             </div>
         </div>
     </fieldset>
-    {!! Form::submit( 'Sign me up!', [ 'class' => 'button' ] ) !!}
+    {!! Form::submit( 'Sign me up!', [ 'class' => 'btn btn-success', 'disabled' => true, 'id' => 'btnSubmit' ] ) !!}
 
     {!! Form::close() !!}
 
-    <div id="tos" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-        @include('partials.tos')
-        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    <div id="tos" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-title">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="text-center">Terms of Service</h4>
+                </div>
+                <div class="modal-body">
+                    @include('partials.tos')
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"></span> <storng>Close</storng> </button>
+                </div>
+            </div>
+        </div>
     </div>
 @stop
 @section ('scriptFooter')
-<script type="application/javascript">
-    $('.switcher').rcSwitcher({
-
-    // reverse: true,
-    inputs: false,
-    // width: 70,
-    // height: 24,
-    // blobOffset: 2,
-    onText: 'Yes',
-    offText: 'No',
-    theme: 'stoplight',
-    // autoFontSize: true,
-
-    });
-</script>
+    <script type="text/javascript">
+        $(function(){
+           $('#tosAgree').on('change', function() {
+              if ($(this).prop('checked')) {
+                  $('#btnSubmit').removeAttr('disabled');
+              } else {
+                  $('#btnSubmit').prop('disabled', true);
+              }
+           });
+        });
+    </script>
 @stop

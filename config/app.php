@@ -174,6 +174,8 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         App\Providers\PassportServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
+        GeneaLabs\LaravelCaffeine\Providers\LaravelCaffeineService::class,
+        Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ],
 
     /*
@@ -198,7 +200,7 @@ return [
       'Cookie'       => Illuminate\Support\Facades\Cookie::class,
       'Crypt'        => Illuminate\Support\Facades\Crypt::class,
       'DB'           => Illuminate\Support\Facades\DB::class,
-      'Eloquent'     => Illuminate\Database\Eloquent\Model::class,
+      'Eloquent'     => Moloquent\Eloquent\Model::class,
       'Event'        => Illuminate\Support\Facades\Event::class,
       'File'         => Illuminate\Support\Facades\File::class,
       'Gate'         => Illuminate\Support\Facades\Gate::class,
@@ -220,9 +222,9 @@ return [
       'URL'          => Illuminate\Support\Facades\URL::class,
       'Validator'    => Illuminate\Support\Facades\Validator::class,
       'View'         => Illuminate\Support\Facades\View::class,
-      'Moloquent'       => 'Moloquent\Eloquent\Model',
+      'Moloquent'       => Moloquent\Eloquent\Model::class,
       'Countries' => 'Webpatser\Countries\CountriesFacade',
-      'CSV'       => 'mnshankar\CSV\CSVFacade',
+//      'CSV'       => 'mnshankar\CSV\CSVFacade',
       'Excel'     => 'Maatwebsite\Excel\Facades\Excel',
       'Image'     => 'Intervention\Image\Facades\Image',
       'QrCode'    => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
@@ -231,13 +233,7 @@ return [
 
     ],
 
-    /**
-     * Upcoming Minor releases
-     *
-     * Troubadour 1.5.x
-     * Hancock 1.6.x
-     * Barnett 1.7.x
-     *
-     */
-    'version' => "Yeltsin's Star (Project MEDUSA v1.4.0)",
+
+    'version' => sprintf('%s (Project MEDUSA v%u.%u.%u)', env('CODE_NAME',"Ellen D'Orville"), env('MAJOR_VERSION', 1), env('MINOR_VERSION', 0), env('PATCH_VERSION', 0)),
+
 ];

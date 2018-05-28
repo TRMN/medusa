@@ -73,8 +73,8 @@ class AnyUnitController extends Controller
     private function getBranches()
     {
         return '<div class="row">
-    <div class="end small-6 columns ninety Incised901Light end">' .
-        \Form::label('branch', "Branch") . ' ' . \Form::select('branch', Branch::getBranchList()) . '
+    <div class="col-sm-6  ninety Incised901Light form-group">' .
+        \Form::label('branch', "Branch") . ' ' . \Form::select('branch', Branch::getBranchList(), null, ['class' => 'selectize']) . '
     </div>
 </div>';
     }

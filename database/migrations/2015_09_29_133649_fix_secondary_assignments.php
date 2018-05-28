@@ -15,7 +15,7 @@ class FixSecondaryAssignments extends Migration
      */
     public function up()
     {
-        $users = User::all();
+        $users = App\User::all();
 
         foreach ($users as $user) {
             $assignments = [];

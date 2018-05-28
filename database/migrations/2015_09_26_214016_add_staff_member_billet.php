@@ -23,7 +23,7 @@ class AddStaffMemberBillet extends Migration
             json_encode(["billet_name" => "Staff"]),
             'add_flag_lt'
         );
-        Billet::create(["billet_name" => "Staff"]);
+        App\Billet::create(["billet_name" => "Staff"]);
     }
 
     /**

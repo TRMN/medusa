@@ -34,8 +34,9 @@ class UpdateForumEmail
      */
     public function handle(EmailChanged $event)
     {
-        if($_SERVER['SERVER_NAME'] != "medusa.trmn.org") {
+        if($_SERVER['HTTP_HOST'] != "medusa.trmn.org") {
             // Local sandbox or test server, we don't want to change the forum
+            \Log::info('In sandbox, forum not updated');
             return;
         }
         // Get the forum user record
@@ -46,6 +47,9 @@ class UpdateForumEmail
             $user->user_email = $event->new_email;
 
             $user->save();
+
+            return;
+
         } catch (ModelNotFoundException $e) {
             // No forum user, don't do anything
             return;

@@ -8,9 +8,10 @@
             <a href="/id/card/{!!Auth::user()->id!!}">ID Card</a><br/>
             <a href="{!!route('user.change.request', [Auth::user()->id])!!}">Branch/Chapter Change</a><br/>
             <a href="{!! route('chapter.index') !!}">Ship/Unit List</a><br/>
-            <a href="{!!route('user.getReset', [Auth::user()->id])!!}">Change Password</a>
+            <a href="{!!route('user.getReset', [Auth::user()->id])!!}">Change Password</a><br />
+            <a href="https://bolthole.trmn.org/open.php?topicId=12">GDPR Request</a>
             @if(session('orig_user'))
-                <br /><a href="{{route('switch.stop')}}">Return to Original User</a>
+                <br/><a href="{{route('switch.stop')}}">Return to Original User</a>
             @endif
         </div>
         @if(!is_null(\App\MedusaConfig::get('show.events')))
@@ -23,19 +24,15 @@
             </div>
         @endif
 
-        @if($permsObj->hasPermissions(['DUTY_ROSTER','CHAPTER_REPORT',]) === true)
-            <h3 class="nav-header lnav">CO Tools</h3>
-            <div class="rnav">
-                @if($permsObj->hasPermissions(['CHAPTER_REPORT',]) === true && $permsObj->hasDutyRosterForAssignedShip() === true)
-                    <a href="{!!route('report.index')!!}">Chapter Reports</a><br/>
-                @endif
-            </div>
-        @endif
-        @if($permsObj->hasPermissions(['CREATE_ECHELON',
+        @if($permsObj->hasPermissions([
+            'CREATE_ECHELON',
             'EDIT_ECHELON',
             'DEL_ECHELON',
             'ASSIGN_SHIP',
-            'CHANGE_ASSIGNMENT','TRIAD_REPORT']) === true)
+            'CHANGE_ASSIGNMENT',
+            'TRIAD_REPORT',
+            'VIEW_BOSUN',
+        ]) === true)
             <h3 class="nav-header lnav">First Space Lord</h3>
             <div class="rnav">
 
@@ -44,6 +41,9 @@
                 @endif
                 @if($permsObj->hasPermissions(['TRIAD_REPORT']) == true)
                     <a href="{!!route('chapter.triadreport')!!}">Command Triad Report</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['VIEW_BOSUN']) == true)
+                    <a href="{!!route('showBranch', ['branch' => 'Bosun'])!!}">Bosun List</a><br/>
                 @endif
 
             </div>
@@ -59,23 +59,31 @@
         @if($permsObj->hasPermissions(['ADD_MEMBER','DEL_MEMBER','EDIT_MEMBER','VIEW_MEMBERS','PROC_APPLICATIONS','PROC_XFERS','ADD_BILLET','DEL_BILLET','EDIT_BILLET',]) === true)
             <h3 class="nav-header lnav">BuPers (5SL)</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) === true)<a href="{!! route('user.index') !!}">List
-                    Members</a><br/>
-                <a href="{!!route('user.find')!!}">Find a Member</a><br/>
-                <a href="{!!route('user.dups', 'CO')!!}">Show COs</a><br/>
-                <a href="{!!route('user.dups', 'XO')!!}">Show XOs</a><br/>
-                <a href="{!!route('user.dups', 'BOSUN')!!}">Show Bosuns</a><br/>
+                @if($permsObj->hasPermissions(['VIEW_MEMBERS']) === true)
+                    <a href="{!! route('user.index') !!}">List Members</a><br/>
+                    <a href="{!!route('user.find')!!}">Find a Member</a><br/>
+                    <a href="{!!route('user.dups', 'CO')!!}">Show COs</a><br/>
+                    <a href="{!!route('user.dups', 'XO')!!}">Show XOs</a><br/>
+                    <a href="{!!route('user.dups', 'BOSUN')!!}">Show Bosuns</a><br/>
                 @endif
-                @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) === true)<a href="{!! route('user.review') !!}">Approve
-                    Applications</a><br/>@endif
-                @if($permsObj->hasPermissions(['ADD_MEMBER']) === true)<a href="{!! route('user.create') !!}">Add
-                    Member</a><br/>@endif
-                @if($permsObj->hasPermissions(['PROC_XFERS']) === true)<a href="{!! route('user.change.review') !!}">Review
-                    Change Requests</a><br/>@endif
-                @if($permsObj->hasPermissions(['ADD_BILLET']) === true) <a href="{!! route('billet.create') !!}">Add
-                    Billet</a><br/> @endif
-                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true) <a
-                        href="{!! route('billet.index') !!}">Billet List</a><br/> @endif
+                @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) === true)
+                    <a href="{!! route('user.review') !!}">Approve Applications</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['ADD_MEMBER']) === true)
+                    <a href="{!! route('user.create') !!}">Add Member</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['PROC_XFERS']) === true)
+                    <a href="{!! route('user.change.review') !!}">Review Change Requests</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['ADD_BILLET']) === true)
+                    <a href="{!! route('billet.create') !!}">Add Billet</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true)
+                    <a href="{!! route('billet.index') !!}">Billet List</a><br/>
+                @endif
+                @if($permsObj->hasPermissions(['MANAGE_AWARDS']) === true)
+                    <a href="{{ route('awards.index') }}">Manage Awards</a>
+                @endif
             </div>
         @endif
 
@@ -83,8 +91,8 @@
             <h3 class="nav-header lnav">BuTrain (6SL)</h3>
             <div class="rnav">
                 @if($permsObj->hasPermissions(['EDIT_GRADE']) === true)
-                    <a href="{!!route('exam.list')!!}">Master Exam List</a><br/>
-                    <a href="{!!route('exam.create')!!}">Add Exam</a><br/>
+                    <a href="{!!route('exam.list')!!}">Master Course List</a><br/>
+                    <a href="{!!route('exam.create')!!}">Add Course</a><br/>
                     <a href="{!!route('user.find')!!}">Find a Member</a><br/>
                 @endif
                 @if($permsObj->hasPermissions(['ADD_GRADE', 'EDIT_GRADE']) === true)
@@ -146,10 +154,19 @@
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_SFS']) === true)
-            <h3 class="nav-header lnav">SFS</h3>
+            <h3 class="nav-header lnav">SFC</h3>
             <div class="rnav">
                 @if($permsObj->hasPermissions(['VIEW_SFS']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'SFS'])!!}">Show SFS members</a><br/>
+                    <a href="{!!route('showBranch', ['branch' => 'SFC'])!!}">Show SFC members</a><br/>
+                @endif
+            </div>
+        @endif
+
+        @if($permsObj->hasPermissions(['VIEW_RMMM']) === true)
+            <h3 class="nav-header lnav">RMMM</h3>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_RMMM']) === true)
+                    <a href="{!!route('showBranch', ['branch' => 'RMMM'])!!}">Show RMMM members</a><br/>
                 @endif
             </div>
         @endif
@@ -164,17 +181,18 @@
                 <a href="{!! route('oauthclient.index') !!}">List OAuth Clients</a><br/>
                 <a href="{!! route('oauthclient.create') !!}">Add OAuth Client</a>
                 @if($permsObj->hasPermissions('CONFIG', true))<br/>
+                <a href="/upload/admin">Promotion Points Admin</a><br />
                 <a href="{!! route('config.index') !!}">Configuration Settings</a><br/>
-                <a href="{!!route('config.create')!!}">Add Configuration Setting</a>
+                <a href="{!!route('config.create')!!}">Add Setting</a>
                 @endif
             </div>
         @endif
     @endif
 </div>
-<div style="width: 175px" class="text-center">
-    <a href="/signout"><h3 class="lnav nav-header whitesmoke">Logout</h3></a>
-    <br/>
-    <h5 class="whitesmoke Incised901Light">MEDUSA Mobile</h5>
+<div class="text-center logout">
+    <a href="/signout" class="lnav nav-header whitesmoke margin-5">Logout <span class="fa fa-sign-out"></span></a>
+    <br class="margin-5"/><br clear="both"/>
+    <h4 class="whitesmoke Incised901Light">MEDUSA Mobile</h4>
     <a href='https://play.google.com/store/apps/details?id=org.trmn.medusa&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img
                 alt='Get it on Google Play'
                 src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="175px"/></a><br/>

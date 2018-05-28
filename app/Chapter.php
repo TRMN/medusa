@@ -33,7 +33,12 @@ class Chapter extends Eloquent
         'chapter_type' => 'required'
     ];
 
-    static function getHoldingChapters()
+    /**
+     * Get a list of holding chapters
+     *
+     * @return array
+     */
+    public static function getHoldingChapters()
     {
         $results =
             Chapter::where('joinable', '!=', false)
@@ -53,7 +58,13 @@ class Chapter extends Eloquent
         return $chapters;
     }
 
-    static function getChaptersByType($type)
+    /**
+     * Get a list of chapters by type
+     *
+     * @param $type
+     * @return array
+     */
+    public static function getChaptersByType($type)
     {
         $results =
             Chapter::where('chapter_type', '=', $type)
@@ -88,7 +99,13 @@ class Chapter extends Eloquent
         return $chapters;
     }
 
-    static function getFullChapterList($showUnjoinable = true)
+    /**
+     * Get all chapters with an option to skip unjoinable chapters
+     *
+     * @param bool $showUnjoinable
+     * @return array
+     */
+    public static function getFullChapterList($showUnjoinable = true)
     {
         $chapters = [];
 
@@ -105,7 +122,15 @@ class Chapter extends Eloquent
         return $chapters;
     }
 
-    static function getChapters(
+    /**
+     * Get chapters filtered by branch and location
+     *
+     * @param string $branch
+     * @param int $location
+     * @param bool $joinableOnly
+     * @return array
+     */
+    public static function getChapters(
         $branch = '',
         $location = 0,
         $joinableOnly = true
@@ -184,9 +209,15 @@ class Chapter extends Eloquent
         return $chapters;
     }
 
+    public static function getName($chapterId)
+    {
+        return self::find($chapterId)->chapter_name;
+    }
 
     /**
      * Get all users/members assigned to a specific chapter excluding the command crew
+     *
+     * @TODO Refactor this
      *
      * @param $chapterId
      *
@@ -261,7 +292,7 @@ class Chapter extends Eloquent
      *
      * @param $id Optional Chapter ID.  If not present, the id of the current instantiation is used.
      *
-     * @return mixed
+     * @return User[]
      */
 
     public function getCrewWithChildren($id = null)
@@ -287,13 +318,14 @@ class Chapter extends Eloquent
      *
      * @param $chapterId
      *
-     * @return mixed
+     * @return User[]
      */
     public function getAllCrew($chapterId = null)
     {
         if (empty($chapterId) === true) {
             $chapterId = $this->id;
         }
+
         return User::where('assignment.chapter_id', '=', $chapterId)
             ->where('active', '=', 1)
             ->where(
@@ -305,6 +337,42 @@ class Chapter extends Eloquent
             ->get();
     }
 
+    public function getActiveCrewCount($chapterId = null)
+    {
+        return count($this->getAllCrew($chapterId));
+    }
+
+    /**
+     * @param string|null $chapterId
+     * @return User[]
+     */
+    public function getAllCrewIncludingChildren(string $chapterId = null)
+    {
+        if (empty($chapterId) === true) {
+            $chapterId = $this->id;
+        }
+
+        $chapters = $this->getChapterIdWithChildren($chapterId);
+
+        return User::whereIn('assignment.chapter_id', $chapters)
+            ->where('active', '=', 1)
+            ->where(
+                'registration_status',
+                '=',
+                'Active'
+            )
+            ->orderBy('last_name', 'asc')
+            ->get();
+    }
+
+    /**
+     * Return the user that is filling that specified billet for this chapter.  Peerage land aware
+     *
+     * @param $billet
+     * @param bool $exact
+     * @param bool $allow_courtesy
+     * @return User
+     */
     public function getCommandBillet($billet, $exact = true, $allow_courtesy = true)
     {
         $query =
@@ -337,10 +405,16 @@ class Chapter extends Eloquent
         return $this->findPeerByLand($billet, $allow_courtesy);
     }
 
+    /**
+     * @param $title
+     * @param $allow_courtesy
+     * @return User
+     */
     public function findPeerByLand($title, $allow_courtesy)
     {
         if (in_array($this->chapter_type, ['barony', 'county', 'steading', 'duchy', 'grand_duchy']) === true) {
-            $query = User::where('peerages.lands', str_replace(' Steading', '', $this->chapter_name))->where('peerages.title', $title);
+            $query = User::where('peerages.lands',
+                str_replace(' Steading', '', $this->chapter_name))->where('peerages.title', $title);
 
             if ($allow_courtesy === false) {
                 $query = $query->where('peerages.courtesy', '!=', true);
@@ -357,99 +431,53 @@ class Chapter extends Eloquent
         return [];
     }
 
+    /**
+     * Get the CO or equiv of a chapter
+     *
+     * @return User|array
+     */
     public function getCO()
     {
-        $users =
-            User::where('assignment.chapter_id', '=', (string)$this->_id)
-                ->whereIn(
-                    'assignment.billet',
-                    ['Commanding Officer', 'Fleet Commander', 'Space Lord']
-                )
-                ->get();
-
-        if (empty($users) === true) {
-            return [];
-        }
-
-        // Way too many edge cases
-
-        foreach ($users as $user) {
-            foreach ($user->assignment as $assignment) {
-                if ($assignment['chapter_id'] === (string)$this->_id && in_array(
-                        $assignment['billet'],
-                        ['Commanding Officer', 'Fleet Commander', 'Space Lord']
-                    )
-                ) {
-                    return $user;
-                }
-            }
-        }
-
-        return [];
+        return $this->_getTriadMember(1);
     }
 
+    /**
+     * Get the XO or equiv of a chapter
+     *
+     * @return User|array
+     */
     public function getXO()
     {
-        $users =
-            User::where('assignment.chapter_id', '=', (string)$this->_id)
-                ->whereIn(
-                    'assignment.billet',
-                    [
-                        'Executive Officer',
-                        'Deputy Fleet Commander',
-                        'Deputy Space Lord'
-                    ]
-                )
-                ->get();
-        if (empty($users) === true) {
-            return [];
-        }
-
-        foreach ($users as $user) {
-            foreach ($user->assignment as $assignment) {
-                if ($assignment['chapter_id'] === (string)$this->_id && in_array(
-                        $assignment['billet'],
-                        [
-                            'Executive Officer',
-                            'Deputy Fleet Commander',
-                            'Deputy Space Lord'
-                        ]
-                    )
-                ) {
-                    return $user;
-                }
-            }
-        }
-
-        return [];
+        return $this->_getTriadMember(2);
     }
 
+    /**
+     * Get the Bosun or equiv of a chapter
+     *
+     * @return User|array
+     */
     public function getBosun()
     {
-        $users =
-            User::where('assignment.chapter_id', '=', (string)$this->_id)
-                ->whereIn(
-                    'assignment.billet',
-                    ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC', 'Chief of Staff']
-                )
-                ->get();
-        if (empty($users) === true) {
-            return [];
+        return $this->_getTriadMember(3);
+    }
+
+    /**
+     * Return user returned for a specific slot in the command triad results
+     *
+     * @TODO Refactor to return null instead of an empty array.  Will have to check all code that calls this.
+     *
+     * @param $slot
+     * @return User|array
+     */
+    private function _getTriadMember($slot)
+    {
+        $triad = $this->getCommandCrew();
+
+        if (empty($triad[$slot]) === false) {
+            return $triad[$slot]['user'];
         }
 
-        foreach ($users as $user) {
-            foreach ($user->assignment as $assignment) {
-                if ($assignment['chapter_id'] === (string)$this->_id && in_array(
-                        $assignment['billet'],
-                        ['Bosun', 'Fleet Bosun', 'Gunny', 'NCOIC', 'Chief of Staff']
-                    )
-                ) {
-                    return $user;
-                }
-            }
-        }
-
-        return [];
+        return null;
     }
 
     /**
@@ -457,7 +485,7 @@ class Chapter extends Eloquent
      *
      * @param $chapterId
      *
-     * @return mixed
+     * @return array
      */
     public function getCommandCrew()
     {
@@ -523,6 +551,12 @@ class Chapter extends Eloquent
         return $commandCrew;
     }
 
+    /**
+     * Get a list of Chapter ID's and parents, with an option to stop at a certain type of chapters
+     *
+     * @param string $stopAtType
+     * @return array
+     */
     public function getChapterIdWithParents($stopAtType = null)
     {
         if (empty($this->assigned_to) === false && is_null($stopAtType) === true) {
@@ -542,11 +576,19 @@ class Chapter extends Eloquent
         }
     }
 
-    public function getAssignedFleet()
+    /**
+     * Get the fleet a ship is assigned to
+     *
+     * @return string
+     */
+    public function getAssignedFleet($idOnly = false)
     {
         foreach ($this->getChapterIdWithParents() as $chapterId) {
             $fleet = self::find($chapterId);
             if ($fleet->chapter_type == 'fleet') {
+                if ($idOnly === true) {
+                    return $fleet->id;
+                }
                 $nf = new NumberFormatter('en_US', NumberFormatter::SPELLOUT);
                 $nf->setTextAttribute(
                     NumberFormatter::DEFAULT_RULESET,
@@ -562,7 +604,7 @@ class Chapter extends Eloquent
      *
      * @param none
      *
-     * @return mixed
+     * @return array
      */
     public function getChildChapters()
     {
@@ -580,17 +622,17 @@ class Chapter extends Eloquent
     /**
      * Get the chapter ID with all subordinate chapter IDs
      *
-     * @param none
+     * @param string $id
      *
-     * @return mixed
+     * @return array
      */
 
-    public function getChapterIdWithChildren($id = null)
+    public function getChapterIdWithChildren(string $id = null)
     {
         if (empty($id) === true) {
             $id = $this->id;
         }
-        $children = Chapter::where('assigned_to', '=', $id)->get();
+        $children = Chapter::where('assigned_to', '=', $id)->where('decommission_date', '')->get();
 
         $results = [];
         foreach ($children as $child) {
@@ -603,12 +645,24 @@ class Chapter extends Eloquent
         return array_unique(array_merge([$id], $results));
     }
 
-    static function getChapterType($chapterId)
+    /**
+     * Get the Chapter Type
+     *
+     * @param string $chapterId
+     * @return mixed
+     */
+    static function getChapterType(string $chapterId)
     {
         $chapter = Chapter::find($chapterId);
         return $chapter->chapter_type;
     }
 
+    /**
+     * Get a list of all chapter locations
+     *
+     * @deprecated
+     * @return array
+     */
     static function getChapterLocations()
     {
         $states = \App\Enums\MedusaDefaults::STATES_BY_ABREVIATION;
@@ -638,7 +692,13 @@ class Chapter extends Eloquent
         return $retVal;
     }
 
-    public function crewHasNewExams($id = null)
+    /**
+     * Are there any new exams for this crew?
+     *
+     * @param string|null $id
+     * @return bool
+     */
+    public function crewHasNewExams(string $id = null)
     {
         if (empty($id) === true) {
             $id = $this->id;
