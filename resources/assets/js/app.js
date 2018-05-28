@@ -337,12 +337,27 @@ $(document).ready(function ($) {
                 $('#save_peerage').show();
                 $('#cancel').show();
             }
+        }else if ($('#ptitle').val() == "Senator for Life") {
+            $('#order').hide();
+            $('#class').hide();
+            $('#generation').hide();
+            $('#courtesy').hide();
+            $('#courtesy_label').hide();
+            $('#arms').hide();
+            $('#arms-label').hide();
+            $('#lands').attr('placeholder', 'District');
+            $('#lands').show();
+            if ($("#lands").val().length == 0) {
+                $('#save_peerage').hide();
+                $('#cancel').hide();
+            }
         } else {
             $('#order').hide();
             $('#class').hide();
             $('#generation').show();
             $('#courtesy').show();
             $('#courtesy_label').show();
+            $('#lands').attr('placeholder', 'Peerage Lands');
             if ($("#lands").val().length == 0) {
                 $('#save_peerage').hide();
                 $('#cancel').hide();
@@ -390,21 +405,32 @@ $(document).ready(function ($) {
         $('#cancel').show();
     });
 
+    $('#lands').on('keyup', function () {
+        if ($("#lands").val().length >= 2) {
+            $('#save_peerage').show();
+            $('#cancel').show();
+        }
+    });
+
     $('#peerage_form').on('submit', function () {
         var error_msg = [];
         // Check that a peerage was selected
-        if ($('#ptitle').val() == '') {
+        if ($('#ptitle').val() == "") {
             error_msg.push('You must select a Peerage title');
         }
         // Contional error checking based on peerate title
 
         if ($("#ptitle").val() == "Knight" || $("#ptitle").val() == "Dame") {
-            if ($("#order").val() == '') {
+            if ($("#order").val() == "") {
                 error_msg.push('You must select an Order');
             }
 
-            if ($("#class").val() == '') {
+            if ($("#class").val() == "") {
                 error_msg.push('You must select a class of Knighthood');
+            }
+        } else if ($('#ptitle').val() == "Senator for Life") {
+            if ($('#lands').val().length == 0) {
+                error_msg.push('You must provide the name of the District');
             }
         } else {
             if ($("#generation").val() == '') {
@@ -648,6 +674,9 @@ $(document).ready(function ($) {
                 points = 2;
                 break;
             case 'S':
+                points = 4;
+                break;
+            case 'L':
                 points = 4;
                 break;
             case 'D':

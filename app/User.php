@@ -494,9 +494,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if (empty($this->peerages) === false) {
             foreach ($this->peerages as $peerage) {
                 if ($peerage['code'] == 'K') {
-                    $knighthoods[$peerage['precedence']] = $peerage;
+                    $knighthoods[strval($peerage['precedence'])] = $peerage;
                 } else {
-                    $landed[$peerage['precedence']] = $peerage;
+                    $landed[strval($peerage['precedence'])] = $peerage;
                 }
             }
 
@@ -2631,6 +2631,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                             $points += 2;
                             break;
                         case 'S':
+                            $points += 4;
+                            break;
+                        case 'L':
                             $points += 4;
                             break;
                         case 'D':
