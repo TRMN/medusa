@@ -72,12 +72,7 @@ trait AwardQualification
                     $newMCAM,
                     $awardDate
                 );
-            } else {
-                // There is a discrepancy, set the number of award dates to match
-                // the calculated number of MCAM's per the 1SL
-                $awardDates = array_fill(0, $numMCAM, $awardDate);
             }
-
 
             $results = $this->addUpdateAward([
                                              'MCAM' => [
