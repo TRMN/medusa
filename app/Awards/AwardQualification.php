@@ -59,7 +59,7 @@ trait AwardQualification
             $newMCAM = $numMCAM - $curNumMCAM;
 
             $awardDate = (
-                $isNewAward === true ?
+            $isNewAward === true ?
                 Carbon::create()->firstOfMonth()->addMonth()->toDateString() :
                 '1970-01-01'
             );
@@ -74,14 +74,15 @@ trait AwardQualification
                 );
             }
 
-            $results = $this->addUpdateAward([
-                                             'MCAM' => [
-                                                 'count' => $numMCAM,
-                                                 'location' => 'L',
-                                                 'award_date' => $awardDates,
-                                                 'display' => true,
-                                             ]
-                                         ]);
+            $results = $this->addUpdateAward(
+                [
+                    'MCAM' => [
+                        'count'      => $numMCAM,
+                        'location'   => 'L',
+                        'award_date' => $awardDates,
+                        'display'    => true,
+                    ],
+                ]);
 
             if ($results === true && $isNewAward === true && $newMCAM > 0) {
                 // MCAM awarded and it's a new award.  Add it to their history and
@@ -137,7 +138,7 @@ trait AwardQualification
      */
     public function percentNextMcamDone()
     {
-        return 100-$this->percentNextMcamLeft();
+        return 100 - $this->percentNextMcamLeft();
     }
 
     /**
@@ -150,6 +151,36 @@ trait AwardQualification
      */
     public function swpQual($isNewAward = true)
     {
+        // If they have at least 1 MCAM and DON'T have a SWP, it's an edge case based on how qual badges were
+        // handled before.  Check that the MCAM was not just issued.
+
+        if ($this->hasAward('MCAM') === true &&
+            $this->hasAward('ESWP') === false &&
+            $this->hasAward('OSWP') === false &&
+            in_array(substr($this->rank['grade'], 0, 1), ['E', 'W', 'O', 'F', 'M'])) {
+            // Check the date of the first MCAM
+            if (Carbon::parse('today')->gt(Carbon::parse($this->awards['MCAM']['award_date'][0]))) {
+                // MCAM was issued in the past.  Since you can't get a MCAM without qualifying for a SWP, add
+                // The appropriate SWP to their record
+
+                try {
+                    $this->addUpdateAward(
+                        [
+                            substr($this->rank['grade'], 0, 1) . 'SWP' => [
+                                'count'      => 1,
+                                'location'   => 'TL',
+                                'award_date' => ['1970-01-01',],
+                                'display'    => false,
+                            ],
+                        ]
+                    );
+                    return true;
+                } catch (\Exception $e) {
+                    return false;
+                }
+            }
+        }
+
         // Get the users exams
 
         $exams = $this->getExamList();
@@ -172,9 +203,9 @@ trait AwardQualification
 
             switch (substr($this->rank['grade'], 0, 1)) {
                 case 'E':
-                case 'W':
                     $swpType = 'Enlisted';
                     break;
+                case 'W':
                 case 'O':
                 case 'F':
                 case 'M':
@@ -219,17 +250,18 @@ trait AwardQualification
                 // Yes they do, add it.
 
                 $awardDate = $isNewAward === true ? Carbon::create()->firstOfMonth()
-                                                              ->addMonth()
-                                                              ->toDateString() : '1970-01-01';
+                                                          ->addMonth()
+                                                          ->toDateString() : '1970-01-01';
 
-                $results = $this->addUpdateAward([
-                                                 substr($swpType, 0, 1) . 'SWP' => [
-                                                     'count' => 1,
-                                                     'location' => 'TL',
-                                                     'award_date' => [$awardDate,],
-                                                     'display' => false,
-                                                 ]
-                                             ]);
+                $results = $this->addUpdateAward(
+                    [
+                        substr($swpType, 0, 1) . 'SWP' => [
+                            'count'      => 1,
+                            'location'   => 'TL',
+                            'award_date' => [$awardDate,],
+                            'display'    => false,
+                        ],
+                    ]);
 
                 if ($results === true && $isNewAward === true) {
                     // SWP successfully added and it's a new award.  Add it to
@@ -279,6 +311,7 @@ trait AwardQualification
 
     /**
      * Log the new award.
+     *
      * @param $award
      * @param $qty
      * @param $event
@@ -297,8 +330,8 @@ trait AwardQualification
                 [
                     'timestamp' => $event['timestamp'],
                     'member_id' => $this->member_id,
-                    'award' => $award,
-                    'qty' => $qty,
+                    'award'     => $award,
+                    'qty'       => $qty,
                 ]
             );
 
