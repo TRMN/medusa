@@ -483,7 +483,7 @@ class UserController extends Controller
         $rank = $user['rank'];
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
-        $user->memberid = 'RMN' . User::getFirstAvailableMemberId();
+        $user->member_id = 'RMN' . User::getFirstAvailableMemberId();
 
         $events[] = 'Application approved by BuPers; Enlisted at rank of ' .
                     Grade::getRankTitle($user->rank['grade'], null, $user->branch) .
@@ -682,11 +682,11 @@ class UserController extends Controller
 
         // Assign a member id
 
-        $data['memberid'] =
+        $data['member_id'] =
             'RMN' . User::getFirstAvailableMemberId(empty($data['honorary']));
 
         if (isset($data['honorary']) === true && $data['honorary'] === "1") {
-            $data['memberid'] .= '-H';
+            $data['member_id'] .= '-H';
             unset($data['honorary']);
         }
 

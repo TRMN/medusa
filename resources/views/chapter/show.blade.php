@@ -146,7 +146,7 @@
                     @if($permsObj->canPromote($detail->id))
                             <a href="{{ route('promotions', [$detail->id]) }}"><button class="btn btn-sm btn-primary"><span class="fa fa-thumbs-up"></span> Promotions</button></a>
                     @endif
-                    @if(Auth::user()->isCoAssignedShip() || Auth::user()->hasAllPermissions())
+                    @if(Auth::user()->hasPermissions(['CHAPTER_REPORT',]) === true)
                             <a href="{!!route('report.index')!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-file-text-o"></span> Chapter Reports</button></a>
                             <a href="/upload/sheet/{{$detail->id}}"><button class="btn btn-sm btn-primary"><span class="fa fa-upload"></span> Upload Promotion Points</button></a>
                             <a href="/upload/status/{{$detail->id}}"><button class="btn btn-sm btn-primary"><span class="fa fa-question-circle"></span> Promotion Point Status</button></a>
