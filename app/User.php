@@ -2856,7 +2856,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $flags['tig'] = false;
             }
 
-            // If they have TiG, check other requirements.  No requirements for a members path == not eligible
+            // No requirements for a members path == not eligible
             if (empty($requirements[$path]) === false) {
                 $flags['points'] = ($this->getTotalPromotionPoints() >=
                                     $requirements[$path]['points']);
