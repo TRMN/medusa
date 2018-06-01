@@ -3113,6 +3113,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
     }
 
+    /**
+     * @param $rank
+     * @param bool $early
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function promoteMember($rank, $early = false)
     {
         // Check for valid rank
@@ -3162,6 +3169,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                  ) . ' (' . $this->rank['grade'] . ') to ';
 
         $this->rank = $rank;
+        $this->promotionStatus = null;
 
         try {
             $this->save();

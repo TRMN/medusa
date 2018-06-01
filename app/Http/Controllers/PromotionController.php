@@ -148,7 +148,7 @@ class PromotionController extends Controller
         $promoted = [];
 
         foreach ($promotions as $member) {
-            $user = User::find($member['member_id']);
+            $user = User::find($member['memberId']);
 
             $from = Grade::getRankTitle($user->rank['grade'], $user->getRate(),
                     $user->branch) . ' (' . $user->rank['grade'] . ')';

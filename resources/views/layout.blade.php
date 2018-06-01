@@ -148,7 +148,7 @@
                                 <div class="row">
                                     <div class="col-sm-6 text-right">
                                         <br clear="right" />
-                                        <a href="https://bolthole.trmn.org/open.php?topicId=12" class="btn btn-lg btn-danger">GDPR Reqeust <span class="fa fa-address-card"></span></a>
+                                        <a href="https://bolthole.trmn.org/open.php?topicId=12" class="btn btn-lg btn-danger">GDPR Removal Request <span class="fa fa-address-card"></span></a>
                                     </div>
 
                                 </div>

@@ -8,8 +8,10 @@
             <a href="/id/card/{!!Auth::user()->id!!}">ID Card</a><br/>
             <a href="{!!route('user.change.request', [Auth::user()->id])!!}">Branch/Chapter Change</a><br/>
             <a href="{!! route('chapter.index') !!}">Ship/Unit List</a><br/>
-            <a href="{!!route('user.getReset', [Auth::user()->id])!!}">Change Password</a><br />
-            <a href="https://bolthole.trmn.org/open.php?topicId=12">GDPR Request</a>
+            <a href="{!!route('user.getReset', [Auth::user()->id])!!}">Change Password</a>
+            <hr class="hr">
+            <a href="https://bolthole.trmn.org/open.php" target="_blank">New Bolthole Request</a><br />
+            <a href="https://bolthole.trmn.org/open.php?topicId=12" target="_blank">GDPR Removal Request</a>
             @if(session('orig_user'))
                 <br/><a href="{{route('switch.stop')}}">Return to Original User</a>
             @endif
