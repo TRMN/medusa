@@ -2644,7 +2644,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                             break;
                     }
                 } elseif ($k !== 'ep') {
-                    $itemConfig = $config[$k];
+                    $v = intval($v);
+                    $itemConfig = intval($config[$k]);
 
                     if ($itemConfig['class'] == "pp-calc-3") {
                         // Points based on 3 month blocks of time
@@ -2655,7 +2656,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
                     $points += $v;
                 } else {
-                    $points -= $v;
+                    $points -= intval($v);
                 }
             }
         }
