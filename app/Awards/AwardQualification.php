@@ -158,6 +158,8 @@ trait AwardQualification
             $this->hasAward('ESWP') === false &&
             $this->hasAward('OSWP') === false &&
             in_array(substr($this->rank['grade'], 0, 1), ['E', 'W', 'O', 'F', 'M'])) {
+            $type = substr($this->rank['grade'], 0, 1) == 'E' ? 'E' : 'O';
+
             // Check the date of the first MCAM
             if (Carbon::parse('today')->gt(Carbon::parse($this->awards['MCAM']['award_date'][0]))) {
                 // MCAM was issued in the past.  Since you can't get a MCAM without qualifying for a SWP, add
@@ -166,7 +168,7 @@ trait AwardQualification
                 try {
                     $this->addUpdateAward(
                         [
-                            substr($this->rank['grade'], 0, 1) . 'SWP' => [
+                            $type . 'SWP' => [
                                 'count'      => 1,
                                 'location'   => 'TL',
                                 'award_date' => ['1970-01-01',],
