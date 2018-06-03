@@ -2645,7 +2645,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     }
                 } elseif ($k !== 'ep') {
                     $v = intval($v);
-                    $itemConfig = intval($config[$k]);
+                    $itemConfig = $config[$k];
 
                     if ($itemConfig['class'] == "pp-calc-3") {
                         // Points based on 3 month blocks of time
