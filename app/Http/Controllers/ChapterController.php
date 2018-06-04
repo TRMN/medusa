@@ -331,18 +331,15 @@ class ChapterController extends Controller
      *
      * @return $this|bool|\Illuminate\Http\RedirectResponse
      */
-    public function update(Chapter $chapter)
+    public function update(Chapter $chapter, Request $request)
     {
         if (($redirect = $this->checkPermissions('EDIT_SHIP')) !== true) {
             return $redirect;
         }
 
-        $validator =
-            Validator::make($data = Request::all(), Chapter::$updateRules);
+        $this->validate($request, Chapter::$updateRules);
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+        $data = $request->all();
 
         unset($data['_method'], $data['_token']);
 
