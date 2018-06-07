@@ -1898,7 +1898,8 @@ class UserController extends Controller
             return $redirect;
         }
 
-        if (is_null($user) === true  && Auth::user()->hasPermissions(['EDIT_MEMBER'])) {
+        if (isset($user->member_id) === false ||
+            (isset($user->member_id) === true && Auth::user()->hasPermissions(['EDIT_MEMBER']) === false)) {
             $user = Auth::user();
         }
 
@@ -1912,7 +1913,7 @@ class UserController extends Controller
             }
         }
 
-        Auth::user()->awards = Auth::user()->getCurrentAwards();
+        $user->awards = $user->getCurrentAwards();
 
         return view(
             'user.rack',
@@ -1969,14 +1970,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function saveRibbonRack(User $user, Request $request)
+    public function saveRibbonRack(User $user)
     {
         if (($redirect =
                 $this->checkPermissions(['EDIT_SELF'])) !== true
         ) {
             return $redirect;
         }
-        $data = $request->all();
+        $data = \Request::all();
 
         // Process the display choice for qualification badges
 
@@ -2156,15 +2157,15 @@ class UserController extends Controller
         $user->awards = $awards;
 
         if (empty($data['unitPatch']) === false) {
-            Auth::user()->unitPatchPath = $data['unitPatch'];
+            $user->unitPatchPath = $data['unitPatch'];
         }
 
         if (empty($data['usePeerageLands']) === false) {
-            Auth::user()->usePeerageLands = true;
+            $user->usePeerageLands = true;
         }
 
         if (empty($data['extraPadding']) === false) {
-            Auth::user()->extraPadding = true;
+            $user->extraPadding = true;
         }
 
         $user->save();

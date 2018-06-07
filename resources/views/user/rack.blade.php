@@ -225,7 +225,7 @@
                     <div class="row ribbon-group-row qual-badges">
 
                         <div class="col-sm-1 vertical-center-qual-badges">
-                            @if(in_array($group->code, $restricted))
+                            @if(in_array($group->code, $restricted) && !Auth::user()->hasAllPermissions())
                                 @if(isset($user->awards[$group->code]))
                                     {{Form::hidden('ribbon[]', $group->code)}}
                                 @endif
@@ -346,13 +346,12 @@
         @if(is_object($ribbon))
             <div class="row ribbon-row">
                 <div class="col-sm-1">
-                    @if(in_array($ribbon->code, $restricted))
+                    @if(in_array($ribbon->code, $restricted) && !Auth::user()->hasAllPermissions())
                         @if(isset($user->awards[$ribbon->code]))
                             {{Form::hidden('ribbon[]', $ribbon->code)}}
                         @endif
-                        &nbsp;
-                    @else
-                        {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null)}}
+                    &nbsp;@else
+                        {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check'])}}
                     @endif
                 </div>
                 <div class="col-sm-2 text-center">
@@ -578,6 +577,10 @@
                 }
 
             });
+
+            $('.ribbon-select').on('click', function() {
+                var el = this;
+            })
         });
     </script>
 @stop
