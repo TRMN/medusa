@@ -2861,8 +2861,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             // No requirements for a members path == not eligible
             if (empty($requirements[$path]) === false) {
-                $flags['points'] = ($this->getTotalPromotionPoints() >=
-                                    $requirements[$path]['points']);
+                // Check Points
+                if (empty($requirements[$path]['points']) === false) {
+                    $flags['points'] = ($this->getTotalPromotionPoints() >=
+                                        $requirements[$path]['points']);
+                } else {
+                    // By appointment only
+                    $flags['points'] = true;
+                }
 
                 // Check exams
                 if (empty($requirements[$path]['exam']) === false) {
