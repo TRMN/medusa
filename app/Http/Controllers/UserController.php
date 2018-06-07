@@ -2054,7 +2054,7 @@ class UserController extends Controller
                 $data[$award->code . '_quantity'] = 1;
             }
         }
-//die('<pre>' . print_r($data, true));
+
         $curAwards = Auth::user()->awards;
         $awards = [];
 
@@ -2228,8 +2228,7 @@ class UserController extends Controller
         return array_where(
             $dates,
             function ($value, $key) use ($today) {
-                return Carbon::createFromFormat('Y-m-d H', $value . ' 0')->addDays(2)
-                         ->gt($today);
+                return $today->lt(Carbon::createFromFormat('Y-m-d H', $value . ' 0')->addDays(config('awards.display_days')));
             }
         );
     }
@@ -2248,8 +2247,7 @@ class UserController extends Controller
 
         // Count the number of awards that are in the future
         foreach ($awardDates as $date) {
-            if (Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(2)->gt(
-                $today
+            if ($today->lt(Carbon::createFromFormat('Y-m-d H', $date . ' 0')->addDays(config('awards.display_days'))
             )) {
                 $numPending++;
             }

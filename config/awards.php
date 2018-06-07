@@ -15,4 +15,5 @@ return [
       'address' => env('AWARD_FROM_ADDRESS', 'awardnotificaton@trmn.org'),
       'name' => env('AWARD_FROM_NAME', 'MEDUSA Award Notification'),
   ],
+  'display_days' => env('DAYS_TO_ADD', 2),
 ];

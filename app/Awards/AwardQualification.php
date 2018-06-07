@@ -156,9 +156,24 @@ trait AwardQualification
 
         if ($this->hasAward('MCAM') === true &&
             $this->hasAward('ESWP') === false &&
-            $this->hasAward('OSWP') === false &&
-            in_array(substr($this->rank['grade'], 0, 1), ['E', 'W', 'O', 'F', 'M'])) {
-            $type = substr($this->rank['grade'], 0, 1) == 'E' ? 'E' : 'O';
+            $this->hasAward('OSWP') === false) {
+            switch (substr($this->rank['grade'], 0, 1)) {
+                case 'E':
+                    $type = 'E';
+                    break;
+                case 'W':
+                case 'M':
+                case 'O':
+                case 'F':
+                    $type = 'O';
+                    break;
+                case 'C':
+                    if (substr($this->rank['grade'], 2) < 12) {
+                        $type = 'E';
+                    } else {
+                        $type = 'O';
+                    }
+            }
 
             // Check the date of the first MCAM
             if (Carbon::parse('today')->gt(Carbon::parse($this->awards['MCAM']['award_date'][0]))) {
@@ -213,6 +228,12 @@ trait AwardQualification
                 case 'M':
                     $swpType = 'Officer';
                     break;
+                case 'C':
+                    if (substr($this->rank['grade'], 2) < 12) {
+                        $swpType = 'Enlisted';
+                    } else {
+                        $swpType = 'Officer';
+                    }
             }
 
             // Drill down to the specific branch and officer or enlisted

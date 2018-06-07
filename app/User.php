@@ -2230,9 +2230,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         foreach ($this->awards as $code => $award) {
             foreach ($award['award_date'] as $date) {
                 $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')
-                                   ->addDays(2);
+                                   ->addDays(config('awards.display_days'));
 
-                if ($awardDate->gt($today)) {
+                if ($today->lt($awardDate)) {
                     // Reduce the count by one, the date of this award instance + 2 days is still in the future
                     $award['count']--;
                 }
@@ -2280,9 +2280,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 foreach ($award['award_date'] as $date) {
                     $awardDate =
                         Carbon::createFromFormat('Y-m-d H', $date . ' 0')
-                              ->addDays(2);
+                              ->addDays(config('awards.display_days'));
 
-                    if ($awardDate->gt($today)) {
+                    if ($today->lt($awardDate)) {
                         // Reduce the count by one, the date of this award instance + 2 days is still in the future
                         $award['count']--;
                     }
@@ -2532,9 +2532,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     foreach ($award['award_date'] as $date) {
                         $awardDate =
                             Carbon::createFromFormat('Y-m-d H', $date . ' 0')
-                                  ->addDays(2);
+                                  ->addDays(config('awards.display_days'));
 
-                        if ($awardDate->gt($today)) {
+                        if ($today->lt($awardDate)) {
                             // Reduce the count by one, the date of this award instance + 2 days is still in the future
                             $award['count']--;
                         }
