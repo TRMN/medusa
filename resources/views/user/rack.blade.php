@@ -30,7 +30,7 @@
             you will be able to select the number of times you have received the award.</p>
     </div>
 
-    {{ Form::open(array('route' => 'saverack')) }}
+    {{ Form::open(['route' => ['saverack', $user]]) }}
     <div class="row text-center"><h3>Name Badge</h3></div>
     <div class="ribbon-group">
         @if(!is_null($user->getNameofLands()) && in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
