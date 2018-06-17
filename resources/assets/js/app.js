@@ -255,7 +255,7 @@ $(document).ready(function ($) {
         $('#CHAPTER_REPORT').prop('checked', true);
 
 
-        $('#chooseShip').foundation('reveal', 'open');
+        $('#chooseShip').modal('show');
         return false;
     });
 
