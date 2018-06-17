@@ -48,6 +48,6 @@ class SwpReport extends Command
         $swp['ESWP'] = AwardLog::getAwardLogData(['award' => 'ESWP', 'start' => $reportDate]);
         $swp['OSWP'] = AwardLog::getAwardLogData(['award' => 'OSWP', 'start' => $reportDate]);
 
-        \Mail::to('david.l.weiner30030@gmail.com')->send(new \App\Mail\swpReport($swp));
+        \Mail::to(config('awards.SWP-notification.email'))->send(new \App\Mail\swpReport($swp));
     }
 }
