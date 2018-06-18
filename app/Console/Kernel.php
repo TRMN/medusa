@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\assignAHPerms::class,
         \App\Console\Commands\AddFleetCoPermission::class,
         \App\Console\Commands\UpdatePromotionStatus::class,
+        \App\Console\Commands\SwpReport::class,
     ];
 
     /**
@@ -35,6 +36,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('member:updps')->dailyAt('02:00');
+        $schedule->command('report:swp')->monthlyOn();
     }
     /**
      * Register the Closure based commands for the application.

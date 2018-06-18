@@ -20,3 +20,4 @@ vendor
 public/images/RMN*
 storage/
 app/storage/*
+!/resources/views/vendor/
