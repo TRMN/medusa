@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Webpatser\Countries\Countries;
-use \Log;
 
 class ApiController extends Controller
 {

@@ -58,7 +58,8 @@ class Events extends Eloquent
 
         foreach ($this->checkins as $checkin) {
             if (is_array($checkin)) {
-                $member = User::find($checkin['_id']);
+                $userId = empty($checkin['id']) === false ? $checkin['id'] : $checkin['_id'];
+                $member = User::find($userId);
             } else {
                 $member = User::find($checkin);
             }
