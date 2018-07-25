@@ -387,17 +387,15 @@ class ChapterController extends Controller
      *
      * @return Responsedb.
      */
-    public function store()
+    public function store(Request $request)
     {
         if (($redirect = $this->checkPermissions('COMMISSION_SHIP')) !== true) {
             return $redirect;
         }
 
-        $validator = Validator::make($data = Request::all(), Chapter::$rules);
+        $this->validate($request, Chapter::$rules);
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+        $data = $request->all();
 
         foreach ($data as $k => $v) {
             if (empty($data[$k]) === true) {
