@@ -2751,6 +2751,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             'early'  => false,
         ];
 
+        if ($this->branch === 'SFC') {
+            return $this->sfcIsPromotable($payGrade2Check);
+        }
+
         $specialTig = 0;
 
         // Check for special promotion capabilities
@@ -2988,19 +2992,19 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $age = Carbon::now()->diffInYears(Carbon::parse($this->dob));
 
         switch ($age) {
-            case ($age < 9):
+            case ($age <= 8):
                 return $this->rank['grade'] != 'C-1' ? ['next' => ['C-1'], 'tig' => true, 'points' => true, 'exams'
                 => true, 'early' => false] : null;
                 break;
-            case ($age < 13):
+            case ($age <= 12):
                 return $this->rank['grade'] != 'C-2' ? ['next' => ['C-2'], 'tig' => true, 'points' => true, 'exams'
                                                                => true, 'early' => false] : null;
                 break;
-            case ($age < 17):
+            case ($age <= 15):
                 return $this->rank['grade'] != 'C-3' ? ['next' => ['C-3'], 'tig' => true, 'points' => true, 'exams'
                                                                => true, 'early' => false] : null;
                 break;
-            case ($age < 18):
+            case ($age <= 17):
                 return $this->rank['grade'] != 'C-6' ? ['next' => ['C-6'], 'tig' => true, 'points' => true, 'exams'
                                                                => true, 'early' => false] : null;
                 break;
