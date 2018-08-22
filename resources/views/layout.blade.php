@@ -157,6 +157,7 @@
                 </div>
         </div>
     </div>
+</div>
     <footer class="inset-top">
         <p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington Fan
             Association,
