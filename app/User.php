@@ -1015,34 +1015,30 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getExamList($options = null)
     {
-        $after = $since = $class = null;
+        $pattern = $except = $after = $since = $class = null;
 
         if (is_null($options) === false) {
             if (is_array($options) === false) {
                 $pattern = $options; // backwards compatibility
             } else {
-                if (empty($options['pattern']) === true) {
-                    $pattern = null;
-                } else {
+                if (empty($options['pattern']) === false) {
                     $pattern = $options['pattern'];
                 }
 
-                if (empty($options['after']) === true) {
-                    $after = null;
-                } else {
+                if (empty($options['after']) === false) {
                     $after = strtotime($options['after']);
                 }
 
-                if (empty($options['class']) === true) {
-                    $class = null;
-                } else {
+                if (empty($options['class']) === false) {
                     $class = $options['class'];
                 }
 
-                if (empty($options['since']) === true) {
-                    $since = null;
-                } else {
+                if (empty($options['since']) === false) {
                     $since = strtotime($options['since']);
+                }
+
+                if (empty($options['except']) === false) {
+                    $except = $options['except'];
                 }
             }
         } else {
@@ -1056,7 +1052,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 $list = $exams->exams;
             } else {
                 // filter by pattern
-                $list = $this->filterExams($exams->exams, $pattern);
+                $list = $this->filterArray($exams->exams, $pattern);
+            }
+
+            // Exclude the indicated exams
+            if (empty($except) === false) {
+                $list = $this->filterArrayInverse($list, $except);
             }
 
             if (empty($after) === false) {
@@ -1102,28 +1103,28 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         //handle enlisted exams
                         $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-000[1-9]$/';
 
-                        $list = $this->filterExams($list, $examMatch);
+                        $list = $this->filterArray($list, $examMatch);
                         break;
 
                     case "warrant":
                         //handle warrant exams
                         $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-001[1-9]$/';
 
-                        $list = $this->filterExams($list, $examMatch);
+                        $list = $this->filterArray($list, $examMatch);
                         break;
 
                     case "officer":
                         //handle officer exams
                         $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-01[0-9][1-9]$/';
 
-                        $list = $this->filterExams($list, $examMatch);
+                        $list = $this->filterArray($list, $examMatch);
                         break;
 
                     case "flag":
                         //handle flag exams
                         $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-100[1-9]$/';
 
-                        $list = $this->filterExams($list, $examMatch);
+                        $list = $this->filterArray($list, $examMatch);
                         break;
 
                     case "officer+flag":
@@ -1161,23 +1162,50 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Function filterExams
+     * Function filterArray
      *
-     * @param array $exams
+     * Filter an array using a regular expression.  Return only elements of the array that the key matches the regex
+     *
+     * @param array $array
      * @param string $search
      *
      * @return array $list
      */
 
-    private function filterExams(array $exams, $search)
+    private function filterArray(array $array, $regex)
     {
         $list = array_where(
-            $exams,
-            function ($value, $key) use ($search) {
-                if (preg_match($search, $key) === 1) {
+            $array,
+            function ($value, $key) use ($regex) {
+                if (preg_match($regex, $key) === 1) {
                     return true;
                 }
                 return false;
+            }
+        );
+        return $list;
+    }
+
+    /**
+     * Function filterArrayInverse
+     *
+     * Filter an array using a regular expression.  Return only elements of the array that the key does not match
+     * the regex
+     *
+     * @param array $array
+     * @param $regex
+     *
+     * @return array
+     */
+    public function filterArrayInverse(array $array, $regex)
+    {
+        $list = array_where(
+            $array,
+            function ($value, $key) use ($regex) {
+                if (preg_match($regex, $key) === 1) {
+                    return false;
+                }
+                return true;
             }
         );
         return $list;
@@ -1192,7 +1220,21 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getHighestMainLineExamForBranch($class = null)
     {
-        $options['pattern'] = '/^.*-' . $this->branch . '-.*/';
+        switch($this->branch) {
+            case 'CIVIL':
+                if ($this->rank == 'INTEL') {
+                    $college = 'KC';
+                } else {
+                    $college = 'QC';
+                }
+                $options['pattern'] = '/^.*-' . $college . '-.*/';
+                $options['except'] = '/^.*-' . $college . '-0113|^.*-' . $college . '-0115/';
+                break;
+            default:
+                $options['pattern'] = '/^.*-' . $this->branch . '-.*/';
+                $options['except'] = '/^.*-' . $this->branch . '-0113|^.*-' . $this->branch . '-0115/';
+        }
+
         if (empty($class) === false) {
             $options['class'] = $class;
         }
@@ -1202,6 +1244,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if (count($exams) < 1) {
             // No exams found for branch, check RMN
             $options['pattern'] = '/^SIA-RMN-.*/';
+            $options['except'] = '/^SIA-RMN-0113|^SIA-RMN-0115/';
 
             $exams = $this->getExamList($options);
         }
