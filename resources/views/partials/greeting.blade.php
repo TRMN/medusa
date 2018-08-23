@@ -1,6 +1,6 @@
 <div class="Incised901Bold">
     {!! $user->getGreeting() !!}
-    {!! $user->first_name !!}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {!! $user->last_name !!}{{ !empty($user->suffix) ? ' ' . $user->suffix : '' }}{!!$user->getPostnominals()!!}, {!!$user->branch!!}
+    {!! $user->first_name !!}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {!! $user->last_name !!}{{ !empty($user->suffix) ? ' ' . $user->suffix : '' }}{!!$user->getPostnominals()!!}, {!!$user->branch!!} @if($user->branch == 'CIVIL') ({{ $user->getRate() }}) @endif
 
     @if($permsObj->hasPermissions(['ID_CARD']) === true && empty($user->idcard_printed))
         <a class="fa fa-credit-card green size-24" href="/id/card/{!!$user->id!!}"
