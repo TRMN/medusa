@@ -1222,7 +1222,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         switch($this->branch) {
             case 'CIVIL':
-                if ($this->rank == 'INTEL') {
+                if ($this->getRate() == 'INTEL') {
                     $college = 'KC';
                 } else {
                     $college = 'QC';
@@ -1241,8 +1241,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $exams = $this->getExamList($options);
 
+        // Special edge case for CIVIL branch members, check for SKU-CORE exams first
+
+        if (count($exams) < 1 && $this->branch == 'CIVIL') {
+            $options['pattern'] = '/^SKU-CORE-.*/';
+
+            $exams = $this->getExamList($options);
+        }
+
+        // No exams found for branch, check RMN
         if (count($exams) < 1) {
-            // No exams found for branch, check RMN
             $options['pattern'] = '/^SIA-RMN-.*/';
             $options['except'] = '/^SIA-RMN-0113|^SIA-RMN-0115/';
 
