@@ -1015,7 +1015,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getExamList($options = null)
     {
-        $pattern = $except = $after = $since = $class = null;
+        $pattern = $except = $after = $since = $class = $onlyPassing = null;
 
         if (is_null($options) === false) {
             if (is_array($options) === false) {
@@ -1040,6 +1040,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 if (empty($options['except']) === false) {
                     $except = $options['except'];
                 }
+
+                if (empty($options['onlyPassing']) === false) {
+                    $onlyPassing = true;
+                }
             }
         } else {
             $pattern = null;
@@ -1058,6 +1062,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             // Exclude the indicated exams
             if (empty($except) === false) {
                 $list = $this->filterArrayInverse($list, $except);
+            }
+
+            if ($onlyPassing === true) {
+                // Only return exams with a passing grade
+                $list = array_where($list, function ($value, $key) {
+                    return $this->isPassingGrade($value['score']);
+                });
             }
 
             if (empty($after) === false) {
@@ -2630,12 +2641,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             foreach ($patterns as $pattern) {
                 $res = 0;
 
-                // Now that we're allowing a fail grade, make sure that we only
-                // give points for passing grades.
-                foreach ($this->getExamList(['pattern' => $pattern]) as $exam) {
-                    if ($this->isPassingGrade($exam['score'])) {
-                        $res++;
-                    }
+                foreach ($this->getExamList(['pattern' => $pattern, 'onlyPassing' => true]) as $exam) {
+                    $res++;
                 }
 
                 if ($res > 0) {
