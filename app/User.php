@@ -2631,7 +2631,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getPointsFromExams()
     {
-        $numCompletedExams = count($this->getExamList());
+        $numCompletedExams = count($this->getExamList(['onlyPassing' => true]));
 
         $examConfig = MedusaConfig::get('pp.exams', []);
 
