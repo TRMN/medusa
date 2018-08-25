@@ -1015,7 +1015,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getExamList($options = null)
     {
-        $pattern = $except = $after = $since = $class = null;
+        $pattern = $except = $after = $since = $class = $onlyPassing = null;
 
         if (is_null($options) === false) {
             if (is_array($options) === false) {
@@ -1040,6 +1040,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 if (empty($options['except']) === false) {
                     $except = $options['except'];
                 }
+
+                if (empty($options['onlyPassing']) === false) {
+                    $onlyPassing = true;
+                }
             }
         } else {
             $pattern = null;
@@ -1058,6 +1062,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             // Exclude the indicated exams
             if (empty($except) === false) {
                 $list = $this->filterArrayInverse($list, $except);
+            }
+
+            if ($onlyPassing === true) {
+                // Only return exams with a passing grade
+                $list = array_where($list, function ($value, $key) {
+                    return $this->isPassingGrade($value['score']);
+                });
             }
 
             if (empty($after) === false) {
@@ -1222,7 +1233,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         switch($this->branch) {
             case 'CIVIL':
-                if ($this->rank == 'INTEL') {
+                if ($this->getRate() == 'INTEL') {
                     $college = 'KC';
                 } else {
                     $college = 'QC';
@@ -1241,8 +1252,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $exams = $this->getExamList($options);
 
+        // Special edge case for CIVIL branch members, check for SKU-CORE exams first
+
+        if (count($exams) < 1 && $this->branch == 'CIVIL') {
+            $options['pattern'] = '/^SKU-CORE-.*/';
+
+            $exams = $this->getExamList($options);
+        }
+
+        // No exams found for branch, check RMN
         if (count($exams) < 1) {
-            // No exams found for branch, check RMN
             $options['pattern'] = '/^SIA-RMN-.*/';
             $options['except'] = '/^SIA-RMN-0113|^SIA-RMN-0115/';
 
@@ -2612,7 +2631,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getPointsFromExams()
     {
-        $numCompletedExams = count($this->getExamList());
+        $numCompletedExams = count($this->getExamList(['onlyPassing' => true]));
 
         $examConfig = MedusaConfig::get('pp.exams', []);
 
@@ -2622,12 +2641,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             foreach ($patterns as $pattern) {
                 $res = 0;
 
-                // Now that we're allowing a fail grade, make sure that we only
-                // give points for passing grades.
-                foreach ($this->getExamList(['pattern' => $pattern]) as $exam) {
-                    if ($this->isPassingGrade($exam['score'])) {
-                        $res++;
-                    }
+                foreach ($this->getExamList(['pattern' => $pattern, 'onlyPassing' => true]) as $exam) {
+                    $res++;
                 }
 
                 if ($res > 0) {
