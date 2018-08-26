@@ -2800,7 +2800,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @return array
      */
-    public function getPromotableInfo($payGrade2Check = null)
+    public function getPromotableInfo($payGrade2Check = null, $sfcCheck = true)
     {
         $flags = [
             'tig'    => false,
@@ -2809,7 +2809,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             'early'  => false,
         ];
 
-        if ($this->branch === 'SFC') {
+        if ($this->branch === 'SFC'  && $sfcCheck === true) {
             return $this->sfcIsPromotable($payGrade2Check);
         }
 
@@ -3068,7 +3068,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 break;
             default:
                 // Adult member
-                return $this->getPromotableInfo($payGrade2Check);
+                return $this->getPromotableInfo($payGrade2Check, false);
         }
     }
 
