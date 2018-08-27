@@ -2,14 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Chapter;
-use App\Korders;
-use App\Ptitles;
-use Illuminate\Support\Facades\Request;
-
 class HomeController extends Controller
 {
-
     public function index($message = null)
     {
         session('url.intended', session('url.intended'));

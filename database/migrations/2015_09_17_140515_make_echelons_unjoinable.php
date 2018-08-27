@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class MakeEchelonsUnjoinable extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -27,7 +25,7 @@ class MakeEchelonsUnjoinable extends Migration
                     'system user',
                     'update',
                     'chapters',
-                    (string)$echelon->_id,
+                    (string) $echelon->_id,
                     $echelon->toJson(),
                     'make_echelons_unjoinable'
                 );

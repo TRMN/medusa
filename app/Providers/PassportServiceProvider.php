@@ -15,6 +15,5 @@ class PassportServiceProvider extends ServiceProvider
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
 
         $loader->alias('Laravel\Passport\Client', Client::class);
-
     }
 }

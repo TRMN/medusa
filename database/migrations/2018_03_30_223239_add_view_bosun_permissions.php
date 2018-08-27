@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddViewBosunPermissions extends Migration
@@ -25,10 +23,10 @@ class AddViewBosunPermissions extends Migration
                 'create',
                 'permissions',
                 null,
-                json_encode(["name" => $perm, "description" => $desc]),
+                json_encode(['name' => $perm, 'description' => $desc]),
                 'add_new_permissions'
             );
-            App\Permission::create(["name" => $perm, "description" => $desc]);
+            App\Permission::create(['name' => $perm, 'description' => $desc]);
         }
     }
 

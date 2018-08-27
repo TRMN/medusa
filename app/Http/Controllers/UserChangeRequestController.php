@@ -5,19 +5,18 @@ namespace App\Http\Controllers;
 use App\Branch;
 use App\ChangeRequest;
 use App\Chapter;
+use App\Grade;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
-use App\Grade;
+use Illuminate\Support\Facades\Request;
 
 class UserChangeRequestController extends Controller
 {
-
     /**
      * Display a listing of the resource.
-     * GET /userchangerequest
+     * GET /userchangerequest.
      *
      * @return Response
      */
@@ -28,19 +27,19 @@ class UserChangeRequestController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * GET /userchangerequest/create
+     * GET /userchangerequest/create.
      *
      * @return Response
      */
     public function create(\App\User $user)
     {
         return view(
-            "user.requests.index",
+            'user.requests.index',
             [
-                'user' => $user,
-                'req' => Auth::user(),
-                'branches' => Branch::getBranchList(),
-                'chapters' => Chapter::getFullChapterList(false),
+                'user'        => $user,
+                'req'         => Auth::user(),
+                'branches'    => Branch::getBranchList(),
+                'chapters'    => Chapter::getFullChapterList(false),
                 'allchapters' => Chapter::getChapters(null, 0, false),
             ]
         );
@@ -48,7 +47,7 @@ class UserChangeRequestController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /userchangerequest
+     * POST /userchangerequest.
      *
      * @return Response
      */
@@ -67,9 +66,9 @@ class UserChangeRequestController extends Controller
         // database
 
         $record = [
-            'user' => $user->id,
+            'user'      => $user->id,
             'requestor' => $requestor->id,
-            'status' => 'open',
+            'status'    => 'open',
         ];
 
         // Branch Change
@@ -80,7 +79,7 @@ class UserChangeRequestController extends Controller
             $record['new_value'] = $data['new_branch'];
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'create',
                 'change_request',
                 null,
@@ -97,7 +96,7 @@ class UserChangeRequestController extends Controller
             $record['new_value'] = $data['primary_billet'];
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'create',
                 'change_request',
                 null,
@@ -114,7 +113,7 @@ class UserChangeRequestController extends Controller
             $record['new_value'] = $data['primary_assignment'];
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'create',
                 'change_request',
                 null,
@@ -193,7 +192,7 @@ class UserChangeRequestController extends Controller
 
                 $checkRank = true;
 
-                $events[] = 'Transferred from ' . Branch::getBranchName($oldValue) . ' to ' . Branch::getBranchName($newValue) . ' on ' . date('d M Y');
+                $events[] = 'Transferred from '.Branch::getBranchName($oldValue).' to '.Branch::getBranchName($newValue).' on '.date('d M Y');
 
                 break;
             case 'assignment.chapter':
@@ -236,7 +235,6 @@ class UserChangeRequestController extends Controller
                     $cc[] = $newChapterCO->email_address;
                 }
 
-
                 // Is this a MARDET?
                 switch (Chapter::find($request->new_value)->chapter_type) {
                     case 'shuttle':
@@ -249,7 +247,7 @@ class UserChangeRequestController extends Controller
                         break;
                 }
 
-                $events[] = 'Primary assignment changed to ' . $newValue . ' on ' . date('d M Y');
+                $events[] = 'Primary assignment changed to '.$newValue.' on '.date('d M Y');
 
                 break;
         }
@@ -261,27 +259,27 @@ class UserChangeRequestController extends Controller
             // Check for situations that require a members record to be checked
 
             if ($oldValue == 'RMN' && in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true) {
-                $message = '<li>This was a transfer from the RMN to another military branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+                $message = '<li>This was a transfer from the RMN to another military branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
             if ($newValue == 'RMN' && in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true) {
-                $message = '<li>This was a transfer from another military branch to the RMN.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+                $message = '<li>This was a transfer from another military branch to the RMN.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
             if (in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($newValue,
                     ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
-                $message = '<li>This was a transfer from a military branch to a civilian branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+                $message = '<li>This was a transfer from a military branch to a civilian branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
             if (in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($oldValue,
                     ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
-                $message = '<li>This was a transfer from a civilian branch to a military branch.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+                $message = '<li>This was a transfer from a civilian branch to a military branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
             // SFS notice
 
             if ($newValue == 'SFS') {
-                $message .= '<li>This was a transfer to the Sphinx Forestry Service.  Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s age to ensure that their new rank is appropriate for their age.</li>";
+                $message .= '<li>This was a transfer to the Sphinx Forestry Service.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s age to ensure that their new rank is appropriate for their age.</li>";
             }
 
             // Look up the equivalent rank
@@ -292,10 +290,10 @@ class UserChangeRequestController extends Controller
             // Now check for instances where the equiv rank is E-1/C-1 and the original rank is not E-1/C-1
 
             switch ($newRank) {
-                case "C-1":
-                case "E-1":
+                case 'C-1':
+                case 'E-1':
                     if (in_array($user->rank['grade'], ['E-1', 'C-1']) === false) {
-                        $message .= '<li>There was no direct equivalent rank found. Please check ' . $greeting . ' ' . $user->first_name . ' ' . $user->last_name . "'s record to ensure that their new rank is correct.</li>";
+                        $message .= '<li>There was no direct equivalent rank found. Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
                     }
                     break;
                 default:
@@ -305,17 +303,17 @@ class UserChangeRequestController extends Controller
             $rank['grade'] = $newRank;
             $user->rank = $rank;
 
-            $events[] = 'Rank changed from ' . Grade::getRankTitle($oldRank, null,
-                    $oldValue) . ' (' . $oldRank . ') to ' . Grade::getRankTitle($newRank, null,
-                    $newValue) . ' (' . $newRank . ') on ' . date('d M Y');
+            $events[] = 'Rank changed from '.Grade::getRankTitle($oldRank, null,
+                    $oldValue).' ('.$oldRank.') to '.Grade::getRankTitle($newRank, null,
+                    $newValue).' ('.$newRank.') on '.date('d M Y');
         }
 
         if (empty($message) === false) {
-            $message = '<ul>' . $message . '</ul>';
+            $message = '<ul>'.$message.'</ul>';
         }
         // Update the user
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'users',
             $user->id,
@@ -326,7 +324,7 @@ class UserChangeRequestController extends Controller
         $user->save();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'soft delete',
             'change_request',
             $request->id,
@@ -344,7 +342,7 @@ class UserChangeRequestController extends Controller
 
         // Send the email
 
-        if ($user->branch == "RMMC") {
+        if ($user->branch == 'RMMC') {
             $cc[] = 'comforcecom@rmmc.trmn.org';
         }
 
@@ -391,7 +389,7 @@ class UserChangeRequestController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'soft delete',
             'change_request',
             $request->id,
@@ -405,17 +403,17 @@ class UserChangeRequestController extends Controller
         Mail::send(
             'emails.change-denied',
             [
-                'user' => $user,
-                'type' => $type,
+                'user'      => $user,
+                'type'      => $type,
                 'fromValue' => $oldValue,
-                'toValue' => $newValue
+                'toValue'   => $newValue,
             ],
             function ($message) use ($user, $type) {
                 $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
 
                 $message->to($user->email_address)->cc('bupers@trmn.org');
 
-                $message->subject('Your ' . strtolower($type) . ' change request has been denied');
+                $message->subject('Your '.strtolower($type).' change request has been denied');
             }
         );
 

@@ -6,21 +6,20 @@ use App\Chapter;
 use App\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class TypeController extends Controller
 {
-
     /**
      * Display a listing of the resource.
-     * GET /billet
+     * GET /billet.
      *
      * @return Response
      */
     public function index()
     {
-        if (( $redirect = $this->checkPermissions('ALL_PERMS') ) !== true) {
+        if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
         }
 
@@ -29,28 +28,28 @@ class TypeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * GET /billet/create
+     * GET /billet/create.
      *
      * @return Response
      */
     public function create()
     {
-        if (( $redirect = $this->checkPermissions('ALL_PERMS') ) !== true) {
+        if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
         }
 
-        return view("type.create");
+        return view('type.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * POST /billet
+     * POST /billet.
      *
      * @return Response
      */
     public function store()
     {
-        if (( $redirect = $this->checkPermissions('ALL_PERMS') ) !== true) {
+        if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
         }
 
@@ -72,9 +71,9 @@ class TypeController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /billet/{id}
+     * GET /billet/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -85,15 +84,15 @@ class TypeController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * GET /billet/{id}/edit
+     * GET /billet/{id}/edit.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
     public function edit(Type $type)
     {
-        if (( $redirect = $this->checkPermissions('ALL_PERMS') ) !== true) {
+        if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
         }
 
@@ -102,15 +101,15 @@ class TypeController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /billet/{id}
+     * PUT /billet/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
     public function update(Type $type)
     {
-        if (( $redirect = $this->checkPermissions('ALL_PERMS') ) !== true) {
+        if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
         }
 
@@ -123,10 +122,10 @@ class TypeController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'types',
-            (string)$type->_id,
+            (string) $type->_id,
             json_encode($data),
             'TypeController@update'
         );
@@ -144,9 +143,9 @@ class TypeController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * DELETE /billet/{id}
+     * DELETE /billet/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */

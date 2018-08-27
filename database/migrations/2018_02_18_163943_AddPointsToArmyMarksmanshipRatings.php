@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class AddPointsToArmyMarksmanshipRatings
+ * Class AddPointsToArmyMarksmanshipRatings.
  */
 class AddPointsToArmyMarksmanshipRatings extends Migration
 {
@@ -17,9 +15,9 @@ class AddPointsToArmyMarksmanshipRatings extends Migration
     public function up()
     {
         $patterns = [
-          'A%ER' => 3,
-          'A%SR' => 2,
-          'A%MR' => 1,
+          'A%ER'  => 3,
+          'A%SR'  => 2,
+          'A%MR'  => 1,
           'A%HER' => 4,
         ];
 

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\URL;
 
 class IdController extends Controller
 {
-
     /**
      * @param $id
      *
@@ -62,7 +61,7 @@ class IdController extends Controller
      */
     public function getBulk($shipID)
     {
-        if (( $redirect = $this->checkPermissions('ID_CARD') ) !== true) {
+        if (($redirect = $this->checkPermissions('ID_CARD')) !== true) {
             return $redirect;
         }
 
@@ -73,7 +72,7 @@ class IdController extends Controller
 
     public function getMarkbulk($shipID)
     {
-        if (( $redirect = $this->checkPermissions('ID_CARD') ) !== true) {
+        if (($redirect = $this->checkPermissions('ID_CARD')) !== true) {
             return $redirect;
         }
 
@@ -95,7 +94,7 @@ class IdController extends Controller
 
     public function getMark($userID)
     {
-        if (( $redirect = $this->checkPermissions('ID_CARD') ) !== true) {
+        if (($redirect = $this->checkPermissions('ID_CARD')) !== true) {
             return $redirect;
         }
 
@@ -112,7 +111,5 @@ class IdController extends Controller
 
         $member->idcard_printed = true;
         $member->save();
-
-        return;
     }
 }

@@ -5,19 +5,18 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class swpReport extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
-     * An array of ESWP and OSWP recipients for the previous month
+     * An array of ESWP and OSWP recipients for the previous month.
      *
      * @var array
      */
-
     public $swpReport;
+
     /**
      * Create a new message instance.
      *

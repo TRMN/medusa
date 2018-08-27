@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateScottAkersRegDate extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -17,8 +15,8 @@ class UpdateScottAkersRegDate extends Migration
     {
         $user = App\User::where('member_id', '=', 'RMN-0011-08')->first();
 
-        $user->registration_date = "2008-02-22";
-        $user->application_date = "2008-02-22";
+        $user->registration_date = '2008-02-22';
+        $user->application_date = '2008-02-22';
 
         $this->writeAuditTrail(
             'system user',

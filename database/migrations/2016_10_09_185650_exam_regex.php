@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class ExamRegex extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -13,7 +11,6 @@ class ExamRegex extends Migration
      */
     public function up()
     {
-
         App\MedusaConfig::create([
           'key'   => 'exam.regex',
           'value' => json_decode('
@@ -31,7 +28,7 @@ class ExamRegex extends Migration
                     "RMMM": "/^SIA-RMMM-.*/",
                     "Mannheim University": "/^MU-.*/"
                 }
-		')
+		'),
         ]);
     }
 

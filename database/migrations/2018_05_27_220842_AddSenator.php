@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddSenator extends Migration
@@ -11,8 +9,9 @@ class AddSenator extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function up()
     {
@@ -21,17 +20,17 @@ class AddSenator extends Migration
         $precedence = '2';
 
         try {
-            App\Ptitles::create(["title" => $title, "code" => $code, "precedence" => $precedence]);
+            App\Ptitles::create(['title' => $title, 'code' => $code, 'precedence' => $precedence]);
 
             $this->writeAuditTrail(
                 'system user',
                 'create',
                 'ptitles',
                 null,
-                json_encode(["title" => $title, "code" => $code, "precedence" => $precedence]),
+                json_encode(['title' => $title, 'code' => $code, 'precedence' => $precedence]),
                 'AddSenator'
             );
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
     }
@@ -39,8 +38,9 @@ class AddSenator extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function down()
     {
@@ -55,11 +55,9 @@ class AddSenator extends Migration
                 'delete',
                 'ptitles',
                 null,
-                json_encode(["title" => $title, "code" => $code]),
+                json_encode(['title' => $title, 'code' => $code]),
                 'AddSenator'
             );
-
-
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

@@ -4,9 +4,6 @@ namespace App\Listeners;
 
 use App\Events\GradeEntered;
 use App\Mail\McamNotice;
-use Carbon\Carbon;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
 class MCAM
@@ -24,10 +21,11 @@ class MCAM
     /**
      * Handle the event.
      *
-     * @param  GradeEntered $event
+     * @param GradeEntered $event
+     *
+     * @throws \Exception
      *
      * @return void
-     * @throws \Exception
      */
     public function handle($event)
     {

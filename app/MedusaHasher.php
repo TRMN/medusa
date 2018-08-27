@@ -6,7 +6,6 @@ use Illuminate\Contracts\Hashing\Hasher;
 
 class MedusaHasher implements Hasher
 {
-
     public function make($value, array $options = [])
     {
         return sha1($value);

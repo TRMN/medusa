@@ -10,24 +10,23 @@ use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
 {
-
     /**
      * Display a listing of the resource.
-     * GET /exam
+     * GET /exam.
      *
      * @return Response
      */
     public function index()
     {
-        if (( $redirect = $this->checkPermissions('UPLOAD_EXAMS') ) !== true) {
+        if (($redirect = $this->checkPermissions('UPLOAD_EXAMS')) !== true) {
             return $redirect;
         }
 
@@ -39,7 +38,7 @@ class ExamController extends Controller
 
     public function examList()
     {
-        if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
+        if (($redirect = $this->checkPermissions(['EDIT_GRADE'])) !== true) {
             return $redirect;
         }
 
@@ -48,7 +47,7 @@ class ExamController extends Controller
 
     public function find($user = null, $message = null)
     {
-        if (( $redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE']) ) !== true) {
+        if (($redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE'])) !== true) {
             return $redirect;
         }
 
@@ -57,7 +56,7 @@ class ExamController extends Controller
 
     public function manageExamPerms($user = null)
     {
-        if (( $redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE']) ) !== true) {
+        if (($redirect = $this->checkPermissions(['EDIT_MEMBER', 'EDIT_GRADE'])) !== true) {
             return $redirect;
         }
 
@@ -66,8 +65,7 @@ class ExamController extends Controller
 
     public function edit(ExamList $exam)
     {
-
-        if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
+        if (($redirect = $this->checkPermissions(['EDIT_GRADE'])) !== true) {
             return $redirect;
         }
 
@@ -76,7 +74,7 @@ class ExamController extends Controller
 
     public function create()
     {
-        if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
+        if (($redirect = $this->checkPermissions(['EDIT_GRADE'])) !== true) {
             return $redirect;
         }
 
@@ -85,7 +83,7 @@ class ExamController extends Controller
 
     public function updateExam()
     {
-        if (( $redirect = $this->checkPermissions(['EDIT_GRADE']) ) !== true) {
+        if (($redirect = $this->checkPermissions(['EDIT_GRADE'])) !== true) {
             return $redirect;
         }
 
@@ -106,7 +104,7 @@ class ExamController extends Controller
 
     public function update()
     {
-        if (( $redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE']) ) !== true) {
+        if (($redirect = $this->checkPermissions(['ADD_GRADE', 'EDIT_GRADE'])) !== true) {
             return $redirect;
         }
 
@@ -138,7 +136,7 @@ class ExamController extends Controller
         }
 
         if (preg_match('/^\d*$/', trim($data['score'])) === 1) {
-            $data['score'] = trim($data['score']) . '%';
+            $data['score'] = trim($data['score']).'%';
         } else {
             $data['score'] = strtoupper(trim($data['score']));
         }
@@ -168,11 +166,11 @@ class ExamController extends Controller
             $record->exams = $exams;
 
             $message =
-                '<span class="fi-alert alert">' . strtoupper($data['exam']) . ' updated in academy coursework for ' .
-                $member->first_name . ' ' .
-                ( !empty($member->middle_name) ? $member->middle_name . ' ' : '' ) . $member->last_name .
-                ( !empty($member->suffix) ? ' ' . $member->suffix : '' ) .
-                ' (' . $member->member_id . ')' . "</span>";
+                '<span class="fi-alert alert">'.strtoupper($data['exam']).' updated in academy coursework for '.
+                $member->first_name.' '.
+                (!empty($member->middle_name) ? $member->middle_name.' ' : '').$member->last_name.
+                (!empty($member->suffix) ? ' '.$member->suffix : '').
+                ' ('.$member->member_id.')'.'</span>';
         } else {
             if (empty($record) === false) {
                 $exams = $record->exams;
@@ -201,11 +199,11 @@ class ExamController extends Controller
             $record->exams = $exams;
 
             $message =
-                '<span class="fi-alert yellow">' . strtoupper($data['exam']) . ' added to academy coursework for ' .
-                $member->first_name . ' ' .
-                ( !empty($member->middle_name) ? $member->middle_name . ' ' : '' ) . $member->last_name .
-                ( !empty($member->suffix) ? ' ' . $member->suffix : '' ) .
-                ' (' . $member->member_id . ')' . "</span>";
+                '<span class="fi-alert yellow">'.strtoupper($data['exam']).' added to academy coursework for '.
+                $member->first_name.' '.
+                (!empty($member->middle_name) ? $member->middle_name.' ' : '').$member->last_name.
+                (!empty($member->suffix) ? ' '.$member->suffix : '').
+                ' ('.$member->member_id.')'.'</span>';
         }
         $this->writeAuditTrail(
             Auth::user()->id,
@@ -227,7 +225,7 @@ class ExamController extends Controller
 
     public function upload()
     {
-        if (( $redirect = $this->checkPermissions('UPLOAD_EXAMS') ) !== true) {
+        if (($redirect = $this->checkPermissions('UPLOAD_EXAMS')) !== true) {
             return $redirect;
         }
 
@@ -241,7 +239,7 @@ class ExamController extends Controller
                 return Redirect::route('exam.index')->with('message', 'Only .xlsx files will be accepted');
             }
 
-            Request::file('file')->move(app_path() . '/database', 'TRMN Exam grading spreadsheet.xlsx');
+            Request::file('file')->move(app_path().'/database', 'TRMN Exam grading spreadsheet.xlsx');
 
             $max_execution_time = ini_get('max_execution_time');
             set_time_limit(0);
@@ -262,7 +260,7 @@ class ExamController extends Controller
 
     public function store()
     {
-        if (( $redirect = $this->checkPermissions('EDIT_GRADE') ) !== true) {
+        if (($redirect = $this->checkPermissions('EDIT_GRADE')) !== true) {
             return $redirect;
         }
 
@@ -312,7 +310,7 @@ class ExamController extends Controller
                 return $redirect;
             }
 
-            $exams = array_except((array)$examRecord->exams, (string)$examId);
+            $exams = array_except((array) $examRecord->exams, (string) $examId);
 
             $examRecord->exams = $exams;
 
@@ -327,10 +325,10 @@ class ExamController extends Controller
 
             $examRecord->save();
 
-            return back()->with('status', $examId . ' has been removed from the members academic record.');
+            return back()->with('status', $examId.' has been removed from the members academic record.');
         } catch (\Exception $e) {
             return back()
-                ->with('status', "There was a problem removing " . $examId . " from the members academic record");
+                ->with('status', 'There was a problem removing '.$examId.' from the members academic record');
         }
     }
 }

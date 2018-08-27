@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class ExamPromotionPoints extends Migration
@@ -33,7 +31,7 @@ class ExamPromotionPoints extends Migration
           ],
           5 => [
             '/SIA-RMN-2001S/',
-          ]
+          ],
         ];
 
         \App\MedusaConfig::set('pp.exams', $config);

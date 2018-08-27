@@ -2,25 +2,22 @@
 
 namespace App;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Moloquent\Eloquent\Model as Eloquent;
 
 /**
- * Class UploadLog
+ * Class UploadLog.
  *
  * @property string chapter_id
  * @property string chapter_name
  * @property array files
- *
- * @package App
  */
 class UploadLog extends Eloquent
 {
     protected $fillable = [
-        "chapter_id",
-        "chapter_name",
-        "files",
+        'chapter_id',
+        'chapter_name',
+        'files',
     ];
 
     const UPLOAD_STATUS_UPLOADED = 'Uploaded';
@@ -33,7 +30,7 @@ class UploadLog extends Eloquent
     ];
 
     /**
-     * Has this file been uploaded for this chapter before
+     * Has this file been uploaded for this chapter before.
      *
      * @param string $originalFileName
      *
@@ -53,7 +50,7 @@ class UploadLog extends Eloquent
     }
 
     /**
-     * Add a new file to a chapters upload log
+     * Add a new file to a chapters upload log.
      *
      * @param string $filename
      * @param string $status
@@ -66,7 +63,6 @@ class UploadLog extends Eloquent
         string $status,
         string $originalFileName
     ) {
-
         $files = $this->files;
 
         $files[str_replace('.', '_', $filename)] = [
@@ -78,7 +74,7 @@ class UploadLog extends Eloquent
         ];
 
         $files[str_replace('.', '_', $filename)]['log'][] =
-            self::LOG_MESSAGES[$status] . ' ' . date("F j, Y @ g:i a");
+            self::LOG_MESSAGES[$status].' '.date('F j, Y @ g:i a');
 
         $this->files = $files;
 
@@ -86,7 +82,7 @@ class UploadLog extends Eloquent
     }
 
     /**
-     * Update the status for the specified file
+     * Update the status for the specified file.
      *
      * @param string $filename
      * @param string $status
@@ -101,7 +97,7 @@ class UploadLog extends Eloquent
         $file['current_status'] = $status;
         $file['status_ts'] = time();
 
-        $file['log'][] = self::LOG_MESSAGES[$status] . ' ' . date("F j, Y @ g:i a");
+        $file['log'][] = self::LOG_MESSAGES[$status].' '.date('F j, Y @ g:i a');
 
         $files[str_replace('.', '_', $filename)] = $file;
 
@@ -111,7 +107,7 @@ class UploadLog extends Eloquent
     }
 
     /**
-     * Get an UploadLog entry for the specified chapter
+     * Get an UploadLog entry for the specified chapter.
      *
      * @param string $id
      *

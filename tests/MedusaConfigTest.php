@@ -2,7 +2,6 @@
 
 class MedusaConfigTest extends TestCase
 {
-
     public function testConfigSet()
     {
         $this->assertNotEmpty(MedusaConfig::set(
@@ -37,7 +36,7 @@ class MedusaConfigTest extends TestCase
     }'));
 
         $this->assertEquals(
-            "/^SIA-RMN-.*/",
+            '/^SIA-RMN-.*/',
             MedusaConfig::get('test.config', null, 'RMN')['regex']
         );
     }

@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddSMCPON extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -30,9 +28,9 @@ class AddSMCPON extends Migration
         //
     }
 
-    function createChapter(
+    public function createChapter(
         $name,
-        $type = "ship",
+        $type = 'ship',
         $hull_number = '',
         $branch = '',
         $assignedTo = null,
@@ -48,7 +46,7 @@ class AddSMCPON extends Migration
                     'chapter_type' => $type,
                     'hull_number'  => $hull_number,
                     'branch'       => $branch,
-                    'joinable'     => $joinable
+                    'joinable'     => $joinable,
                 ];
 
             if (is_null($assignedTo) === false) {
@@ -67,9 +65,11 @@ class AddSMCPON extends Migration
                 json_encode($record),
                 'create rmmc chapters'
             );
+
             return \App\Chapter::create($record);
         } else {
-            echo "Skipping " . $name . ", unit already exists.\n";
+            echo 'Skipping '.$name.", unit already exists.\n";
+
             return $query;
         }
     }

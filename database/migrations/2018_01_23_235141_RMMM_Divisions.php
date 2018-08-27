@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class RMMMDivisions extends Migration
@@ -109,7 +107,6 @@ class RMMMDivisions extends Migration
         foreach ($ratings as $rating) {
             \App\Rating::insert($rating);
         }
-
     }
 
     /**

@@ -5,14 +5,14 @@ namespace App;
 use Moloquent\Eloquent\Model as Eloquent;
 
 /**
- * Grade Model
+ * Grade Model.
  *
  * Pay Grades and descriptions
  */
 class Grade extends Eloquent
 {
     /**
-     * @var array $fillable Fields that can be set
+     * @var array Fields that can be set
      */
     protected $fillable = ['grade', 'rank'];
 
@@ -24,13 +24,12 @@ class Grade extends Eloquent
         'C' => 'Civilian',
     ];
 
-
     public static function getRequirements($paygrade2check)
     {
         $requirements = MedusaConfig::get('pp.requirements');
+
         return $requirements[$paygrade2check];
     }
-
 
     public static function getRankTitle($grade, $rate = null, $branch = 'RMN')
     {
@@ -52,17 +51,18 @@ class Grade extends Eloquent
     }
 
     /**
-     * Get the paygrades for a branch
+     * Get the paygrades for a branch.
      *
      * @param $branchID
      * @param null $filter Valid values are null, E, O, F, W and C
+     *
      * @return array
      */
     public static function getGradesForBranch($branchID)
     {
         //$grades[''] = 'Select a rank';
 
-        foreach(self::$gradeFilters as $filter => $filterName) {
+        foreach (self::$gradeFilters as $filter => $filterName) {
             $tmp = self::_gradesForBranchForSelect($branchID, $filter);
 
             if (empty($tmp) === false) {
@@ -78,7 +78,7 @@ class Grade extends Eloquent
         $grades = [];
 
         foreach (self::_gradesForBranch($branchID, $filter) as $grade) {
-            $grades[$grade->grade] = self::mb_trim($grade->rank[$branchID]) . ' (' . $grade->grade . ')';
+            $grades[$grade->grade] = self::mb_trim($grade->rank[$branchID]).' ('.$grade->grade.')';
         }
 
         // Sort by the array key, which is the paygrade
@@ -89,10 +89,11 @@ class Grade extends Eloquent
 
     /**
      * Helper method to return an array of pay grades, optionally filter by Enlisted, Officer, Flag Officer, Warrant
-     * Officer or Civilian
+     * Officer or Civilian.
      *
      * @param $branchID
      * @param null $filter Valid values are null, E, O, F, W and C
+     *
      * @return array
      */
     private static function _gradesForBranch($branchID, $filter = null)
@@ -102,7 +103,6 @@ class Grade extends Eloquent
         $paygrades = self::_filterGrades($filter);
 
         foreach ($paygrades as $grade) {
-
             if (empty($grade->rank[$branchID]) === false) {
                 $grades[] = $grade;
             }
@@ -113,9 +113,10 @@ class Grade extends Eloquent
 
     /**
      * Helper method to filter paygrades by Enlisted, Officer, Flag Officer, Warrant Officer, Civilian or all
-     * paygrades (null)
+     * paygrades (null).
      *
      * @param null $filter Valid values are null, E, O, F, W and C
+     *
      * @return array
      */
     private static function _filterGrades($filter = null)
@@ -129,7 +130,6 @@ class Grade extends Eloquent
         }
 
         foreach (self::all() as $grade) {
-
             if (self::_filterMatch($filter, $grade->grade) === true) {
                 $grades[] = $grade;
             }
@@ -139,10 +139,11 @@ class Grade extends Eloquent
     }
 
     /**
-     * Helper method to return T/F if a paygrade matches the filter
+     * Helper method to return T/F if a paygrade matches the filter.
      *
      * @param $filter
      * @param $grade
+     *
      * @return bool
      */
     private static function _filterMatch($filter, $grade)
@@ -151,18 +152,20 @@ class Grade extends Eloquent
     }
 
     /**
-     * Trim whitespace from mb_strings
+     * Trim whitespace from mb_strings.
      *
      * @param $string
      * @param string $trim_chars
+     *
      * @return mixed
      */
-    private static function mb_trim($string, $trim_chars = '\s'){
-        return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1',$string);
+    private static function mb_trim($string, $trim_chars = '\s')
+    {
+        return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
     }
 
     /**
-     * Shortcut method to get enlisted paygrades
+     * Shortcut method to get enlisted paygrades.
      *
      * @return array
      */
@@ -172,7 +175,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Shortcut method to get warrant officer paygrades
+     * Shortcut method to get warrant officer paygrades.
      *
      * @return array
      */
@@ -182,7 +185,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Shortcut method to get officer paygrades
+     * Shortcut method to get officer paygrades.
      *
      * @return array
      */
@@ -192,7 +195,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Shortcut method to get flag officer paygrades
+     * Shortcut method to get flag officer paygrades.
      *
      * @return array
      */
@@ -202,7 +205,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Shortcut method to get civilian paygrades
+     * Shortcut method to get civilian paygrades.
      *
      * @return array
      */

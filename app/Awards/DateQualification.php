@@ -1,16 +1,12 @@
 <?php
+
 namespace App\Awards;
 
 use App\Audit\MedusaAudit;
 
 /**
- * Trait DateQualification
- * @package App\Awards
- *
- * Date based award functions
- *
+ * Trait DateQualification.
  */
-
 trait DateQualification
 {
     use MedusaAudit;
@@ -29,9 +25,9 @@ trait DateQualification
             $awards = $user->awards;
 
             $awards[$award] = [
-                'count' => 1,
-                'location' => 'L',
-                'display' => true,
+                'count'      => 1,
+                'location'   => 'L',
+                'display'    => true,
                 'award_date' => [date('Y-m-d', strtotime('-1 year', $date))],
             ];
 
