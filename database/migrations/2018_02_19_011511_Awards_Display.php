@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AwardsDisplay extends Migration
@@ -16,35 +14,35 @@ class AwardsDisplay extends Migration
         \App\MedusaConfig::set(
             'awards.display',
             [
-                "OSWP",
-                "ESWP",
-                "SAW",
-                "EAW",
-                "OAW",
-                "ESAW",
-                "OSAW",
-                "EMAW",
-                "OMAW",
-                "ENW",
-                "ONW",
-                "ESNW",
-                "OSNW",
-                "EMNW",
-                "OMNW",
-                "EOW",
-                "OOW",
-                "ESOW",
-                "OSOW",
-                "EMOW",
-                "OMOW",
-                "ESW",
-                "OSW",
-                "ESSW",
-                "OSSW",
-                "EMSW",
-                "OMSW",
-                "HS",
-                "CIB",
+                'OSWP',
+                'ESWP',
+                'SAW',
+                'EAW',
+                'OAW',
+                'ESAW',
+                'OSAW',
+                'EMAW',
+                'OMAW',
+                'ENW',
+                'ONW',
+                'ESNW',
+                'OSNW',
+                'EMNW',
+                'OMNW',
+                'EOW',
+                'OOW',
+                'ESOW',
+                'OSOW',
+                'EMOW',
+                'OMOW',
+                'ESW',
+                'OSW',
+                'ESSW',
+                'OSSW',
+                'EMSW',
+                'OMSW',
+                'HS',
+                'CIB',
             ]
         );
     }

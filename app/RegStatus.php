@@ -10,7 +10,7 @@ class RegStatus extends Eloquent
 
     protected $table = 'status';
 
-    static function getRegStatuses()
+    public static function getRegStatuses()
     {
         $retVal = [];
 

@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class NormalizeEmail extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -24,7 +22,7 @@ class NormalizeEmail extends Migration
                 'system user',
                 'update',
                 'users',
-                (string)$user->_id,
+                (string) $user->_id,
                 $user->toJson(),
                 'normalize email addresses'
             );

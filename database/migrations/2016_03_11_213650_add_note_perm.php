@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddNotePerm extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -15,22 +13,22 @@ class AddNotePerm extends Migration
      */
     public function up()
     {
-            $newPerms = [
+        $newPerms = [
             'VIEW_NOTE'  => 'Add a BuPers Note',
-            'EDIT_NOTE' => 'Edit a BuPers Note'
+            'EDIT_NOTE'  => 'Edit a BuPers Note',
             ];
 
-            foreach ($newPerms as $perm => $desc) {
-                $this->writeAuditTrail(
+        foreach ($newPerms as $perm => $desc) {
+            $this->writeAuditTrail(
                     'system user',
                     'create',
                     'permissions',
                     null,
-                    json_encode(["name" => $perm, "description" => $desc]),
+                    json_encode(['name' => $perm, 'description' => $desc]),
                     'add_new_permissions'
                 );
-                    App\Permission::create(["name" => $perm, "description" => $desc]);
-            }//
+            App\Permission::create(['name' => $perm, 'description' => $desc]);
+        }//
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Passport;
 
 use Moloquent\Eloquent\Model;
@@ -7,7 +8,7 @@ use Moloquent\Passport\Token;
 
 class Client extends Model
 {
-        /**
+    /**
      * The primary key for the model.
      *
      * @var string

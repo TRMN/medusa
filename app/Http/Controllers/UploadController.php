@@ -12,15 +12,15 @@ use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use League\Csv\Reader;
 use Illuminate\Support\Facades\URL;
+use League\Csv\Reader;
 
 class UploadController extends Controller
 {
     use MedusaLog;
 
     /**
-     * Show the Admin page
+     * Show the Admin page.
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -39,7 +39,7 @@ class UploadController extends Controller
     }
 
     /**
-     * Show either the status page for the users assigned ship or the specified ship
+     * Show either the status page for the users assigned ship or the specified ship.
      *
      * @param null $id
      *
@@ -63,7 +63,6 @@ class UploadController extends Controller
             $assignedShip = $id;
         }
 
-
         // Get the upload log for this chapter, if any
         $log = UploadLog::getEntryByChapterId($assignedShip);
 
@@ -79,7 +78,7 @@ class UploadController extends Controller
 
     /**
      * Show the Promotion Points CSV upload/import page using the generic blade
-     * template
+     * template.
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -105,7 +104,7 @@ class UploadController extends Controller
     }
 
     /**
-     * Show the Promotion Point Spreadsheet upload page
+     * Show the Promotion Point Spreadsheet upload page.
      *
      * @param $chapter
      *
@@ -123,11 +122,11 @@ class UploadController extends Controller
         return view(
             'upload.index',
             [
-                'title'  => 'Upload Chapter Promotion Point Spreadsheet for ' .
+                'title'  => 'Upload Chapter Promotion Point Spreadsheet for '.
                             $chapter->chapter_name,
                 'note'   => 'Processing the uploaded Promotion Point Spreadsheet is not an automated process.  A BuComm staff member will download your Promotion Point Spreadsheet, parse it on-line and then upload it for processing.  You will be able to check the status of this process by clicking on the &qoute;Promotion Point Status&qoute; button on your roster.',
                 'method' => 'processSheet',
-                'source' => '/upload/sheet/' . $chapter->id,
+                'source' => '/upload/sheet/'.$chapter->id,
                 'accept' => 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,*.xls,*.xlsx',
                 'hidden' => [
                     'chapter'     => $chapter->id,
@@ -138,7 +137,7 @@ class UploadController extends Controller
     }
 
     /**
-     * Handle the file upload.  This is a generic handler
+     * Handle the file upload.  This is a generic handler.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -169,7 +168,7 @@ class UploadController extends Controller
     }
 
     /**
-     * Process the uplaoded promotion points spreadsheet
+     * Process the uplaoded promotion points spreadsheet.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -188,7 +187,7 @@ class UploadController extends Controller
         $numFiles = empty($log->files) === false ? count($log->files) : 0;
 
         $slug = str_slug($request->chaptername, '_');
-        $filename = $slug . '_' . ($numFiles + 1) . '.' . $ext;
+        $filename = $slug.'_'.($numFiles + 1).'.'.$ext;
 
         if ($log->isDuplicate($originalFileName) === false) {
             try {
@@ -203,7 +202,7 @@ class UploadController extends Controller
 
                 return redirect($request->source)->with(
                     'message',
-                    $originalFileName .
+                    $originalFileName.
                     ' has been upload.  You may upload additional files if needed.'
                 );
             } catch (\Exception $e) {
@@ -221,7 +220,7 @@ class UploadController extends Controller
     }
 
     /**
-     * Generate a preview of the import and allow for the import to be cancelled
+     * Generate a preview of the import and allow for the import to be cancelled.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -237,12 +236,11 @@ class UploadController extends Controller
         $slug = str_slug($log['chapter_name'], '_');
 
         $file = $request->file('file');
-        $file->storeAs($slug, $fileinfo['filename'] . '.csv', 'points');
-
+        $file->storeAs($slug, $fileinfo['filename'].'.csv', 'points');
 
         $import = Reader::createFromPath(
             storage_path(
-                'app/points/' . $slug . '/' . $fileinfo['filename'] . '.csv'
+                'app/points/'.$slug.'/'.$fileinfo['filename'].'.csv'
             ),
             'r'
         );
@@ -262,7 +260,7 @@ class UploadController extends Controller
                 $member = User::getUserByMemberId($record['RMN']);
                 $name = $member->getFullName();
             } catch (ModelNotFoundException $e) {
-                $name = '<span class="red">' . $record['RMN'] . ' : Invalid</span>';
+                $name = '<span class="red">'.$record['RMN'].' : Invalid</span>';
             }
 
             $preview[] = [
@@ -275,8 +273,8 @@ class UploadController extends Controller
             'upload.preview',
             [
                 'log'      => $log,
-                'csv'      => 'app/points/' . $slug . '/' .
-                              $fileinfo['filename'] . '.csv',
+                'csv'      => 'app/points/'.$slug.'/'.
+                              $fileinfo['filename'].'.csv',
                 'preview'  => $preview,
                 'filename' => $filename,
             ]
@@ -284,7 +282,7 @@ class UploadController extends Controller
     }
 
     /**
-     * Read in the csv file and update the members record as appropriate
+     * Read in the csv file and update the members record as appropriate.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -292,15 +290,14 @@ class UploadController extends Controller
      */
     public function postProcesspoints(Request $request)
     {
-
         $this->clearLog('import_points');
 
         $this->logMsg(
             [
                 'source'   => 'import_points',
                 'severity' => 'info',
-                'msg'      => 'Promotion point import started ' .
-                              date("F j, Y @ g:i a"),
+                'msg'      => 'Promotion point import started '.
+                              date('F j, Y @ g:i a'),
             ]
         );
 
@@ -359,8 +356,7 @@ class UploadController extends Controller
                         default:
                             if ($value > 0) {
                                 $member->addUpdateAward(
-                                    [$key =>
-                                         [
+                                    [$key => [
                                              'count'      => $value,
                                              'location'   => Award::getAwardByCode($key)['location'],
                                              'award_date' => array_fill(0, $value, '1970-01-01'),
@@ -376,10 +372,10 @@ class UploadController extends Controller
                     [
                         'source'   => 'import_points',
                         'severity' => 'info',
-                        'msg'      => 'Imported ' . $member->getFullName() . ' (' .
-                                      $member->member_id . ') of the ' .
-                                      $record['chapter'] . ' at ' .
-                                      date("F j, Y @ g:i a"),
+                        'msg'      => 'Imported '.$member->getFullName().' ('.
+                                      $member->member_id.') of the '.
+                                      $record['chapter'].' at '.
+                                      date('F j, Y @ g:i a'),
                     ]
                 );
             } catch (\MongoException $e) {
@@ -387,12 +383,12 @@ class UploadController extends Controller
                     [
                         'source'   => 'import_points',
                         'severity' => 'info',
-                        'msg'      => 'Promblem Importing ' .
-                                      $member->getFullName() .
-                                      ' (' .
-                                      $member->member_id . ') of the ' .
-                                      $record['chapter'] . ' at ' .
-                                      date("F j, Y @ g:i a"),
+                        'msg'      => 'Promblem Importing '.
+                                      $member->getFullName().
+                                      ' ('.
+                                      $member->member_id.') of the '.
+                                      $record['chapter'].' at '.
+                                      date('F j, Y @ g:i a'),
                     ]
                 );
             }
@@ -402,8 +398,8 @@ class UploadController extends Controller
             [
                 'source'   => 'import_points',
                 'severity' => 'info',
-                'msg'      => 'Promotion point import ended ' .
-                              date("F j, Y @ g:i a"),
+                'msg'      => 'Promotion point import ended '.
+                              date('F j, Y @ g:i a'),
             ]
         );
 
@@ -424,7 +420,7 @@ class UploadController extends Controller
     }
 
     /**
-     * Log status to both the temporary log as well as the permanent
+     * Log status to both the temporary log as well as the permanent.
      *
      * @param array $msgDetails
      *

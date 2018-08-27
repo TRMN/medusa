@@ -7,16 +7,15 @@ use App\Type;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 trait MedusaEchelons
 {
-
     /**
      * Display a listing of the resource.
-     * GET /echelon
+     * GET /echelon.
      *
      * @return Response
      */
@@ -29,7 +28,7 @@ trait MedusaEchelons
 
     /**
      * Show the form for creating a new resource.
-     * GET /echelon/create
+     * GET /echelon/create.
      *
      * @return Response
      */
@@ -57,7 +56,7 @@ trait MedusaEchelons
             'unit.create',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => new Chapter,
+                'chapter'      => new Chapter(),
                 'commands'     => ['' => 'Select a Command/Unit'] + $this->getCommands(),
                 'title'        => $this->title,
                 'route'        => $this->routePrefix,
@@ -68,7 +67,7 @@ trait MedusaEchelons
 
     /**
      * Store a newly created resource in storage.
-     * POST /echelon
+     * POST /echelon.
      *
      * @return Response
      */
@@ -95,12 +94,12 @@ trait MedusaEchelons
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'create',
             'chapters',
             null,
             json_encode($data),
-            $this->auditName . '@store'
+            $this->auditName.'@store'
         );
 
         Chapter::create($data);
@@ -110,9 +109,9 @@ trait MedusaEchelons
 
     /**
      * Display the specified resource.
-     * GET /echelon/{id}
+     * GET /echelon/{id}.
      *
-     * @param  int $chapter
+     * @param int $chapter
      *
      * @return Response
      */
@@ -137,16 +136,16 @@ trait MedusaEchelons
                 'higher'   => $parentChapter,
                 'includes' => $includes,
                 'command'  => $commandCrew,
-                'crew'     => $crew
+                'crew'     => $crew,
             ]
         );
     }
 
     /**
      * Show the form for editing the specified resource.
-     * GET /echelon/{id}/edit
+     * GET /echelon/{id}/edit.
      *
-     * @param  int $chapter
+     * @param int $chapter
      *
      * @return Response
      */
@@ -170,9 +169,9 @@ trait MedusaEchelons
 
         $chapterTypes = ['' => $this->select] + $chapterTypes;
 
-        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
 
         return view(
             'unit.edit',
@@ -190,9 +189,9 @@ trait MedusaEchelons
 
     /**
      * Update the specified resource in storage.
-     * PUT /echelon/{id}
+     * PUT /echelon/{id}.
      *
-     * @param  int $chapter
+     * @param int $chapter
      *
      * @return Response
      */
@@ -237,16 +236,15 @@ trait MedusaEchelons
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
-            $this->auditName . '@update'
+            $this->auditName.'@update'
         );
 
         $chapter->save();
-        ;
 
         Cache::flush();
 
@@ -255,9 +253,9 @@ trait MedusaEchelons
 
     /**
      * Remove the specified resource from storage.
-     * DELETE /echelon/{id}
+     * DELETE /echelon/{id}.
      *
-     * @param  int $chapter
+     * @param int $chapter
      *
      * @return Response
      */
@@ -271,12 +269,12 @@ trait MedusaEchelons
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
-            $this->auditName . '@destroy'
+            $this->auditName.'@destroy'
         );
 
         $chapter->save();
@@ -290,13 +288,13 @@ trait MedusaEchelons
             return $redirect;
         }
 
-        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
 
         return view(
             'unit.confirm-deactivate',
-            ['chapter' => $chapter, 'numCrew' => count($crew) + count($childUnits), 'title' => $this->title,]
+            ['chapter' => $chapter, 'numCrew' => count($crew) + count($childUnits), 'title' => $this->title]
         );
     }
 }

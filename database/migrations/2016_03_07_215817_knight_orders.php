@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class KnightOrders extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -23,9 +21,9 @@ class KnightOrders extends Migration
                     [
                         'class'       => 'Knight',
                         'precedence'  => 3,
-                        'postnominal' => 'KSK'
-                    ]
-                ]
+                        'postnominal' => 'KSK',
+                    ],
+                ],
             ],
             [
                 'order'    => 'Most Honorable Order of King Roger',
@@ -34,44 +32,44 @@ class KnightOrders extends Migration
                     [
                         'class'       => 'Knight Grand Cross',
                         'precedence'  => 4,
-                        'postnominal' => 'GCR'
+                        'postnominal' => 'GCR',
                     ],
                     [
                         'class'       => 'Knight Commander',
                         'precedence'  => 7,
-                        'postnominal' => 'KDR'
+                        'postnominal' => 'KDR',
                     ],
                     [
                         'class'       => 'Knight Companion',
                         'precedence'  => 9,
-                        'postnominal' => 'KCR'
+                        'postnominal' => 'KCR',
                     ],
                     [
                         'class'       => 'Knight',
                         'precedence'  => 13,
-                        'postnominal' => 'KR'
+                        'postnominal' => 'KR',
                     ],
                     [
-                        'class' => 'Companion',
-                        'precedence' => 15,
+                        'class'       => 'Companion',
+                        'precedence'  => 15,
                         'postnominal' => 'CR',
                     ],
                     [
-                        'class' => 'Officer',
-                        'precedence' => 19,
+                        'class'       => 'Officer',
+                        'precedence'  => 19,
                         'postnominal' => 'OR',
                     ],
                     [
-                        'class' => 'Member',
-                        'precedence' => 24,
+                        'class'       => 'Member',
+                        'precedence'  => 24,
                         'postnominal' => 'MR',
                     ],
                     [
-                        'class' => 'Medal',
-                        'precedence' => 35,
+                        'class'       => 'Medal',
+                        'precedence'  => 35,
                         'postnominal' => 'RM',
                     ],
-                ]
+                ],
             ],
             [
                 'order'    => 'The Most Eminent Order of the Golden Lion',
@@ -80,44 +78,44 @@ class KnightOrders extends Migration
                     [
                         'class'       => 'Knight Grand Cross',
                         'precedence'  => 4.5,
-                        'postnominal' => 'GCGL'
+                        'postnominal' => 'GCGL',
                     ],
                     [
                         'class'       => 'Knight Commander',
                         'precedence'  => 7.6,
-                        'postnominal' => 'KDGL'
+                        'postnominal' => 'KDGL',
                     ],
                     [
                         'class'       => 'Knight Companion',
                         'precedence'  => 9.5,
-                        'postnominal' => 'KCGL'
+                        'postnominal' => 'KCGL',
                     ],
                     [
                         'class'       => 'Knight',
                         'precedence'  => 13.5,
-                        'postnominal' => 'KGL'
+                        'postnominal' => 'KGL',
                     ],
                     [
-                        'class' => 'Companion',
-                        'precedence' => 15.5,
+                        'class'       => 'Companion',
+                        'precedence'  => 15.5,
                         'postnominal' => 'CGL',
                     ],
                     [
-                        'class' => 'Officer',
-                        'precedence' => 19.5,
+                        'class'       => 'Officer',
+                        'precedence'  => 19.5,
                         'postnominal' => 'OGL',
                     ],
                     [
-                        'class' => 'Member',
-                        'precedence' => 24.5,
+                        'class'       => 'Member',
+                        'precedence'  => 24.5,
                         'postnominal' => 'MGL',
                     ],
                     [
-                        'class' => 'Medal',
-                        'precedence' => 35.5,
+                        'class'       => 'Medal',
+                        'precedence'  => 35.5,
                         'postnominal' => 'GLM',
                     ],
-                ]
+                ],
             ],
             [
                 'order'    => 'Most Regal Order of Queen Elizabeth',
@@ -126,44 +124,44 @@ class KnightOrders extends Migration
                     [
                         'class'       => 'Knight Grand Cross',
                         'precedence'  => 5,
-                        'postnominal' => 'GCE'
+                        'postnominal' => 'GCE',
                     ],
                     [
                         'class'       => 'Knight Commander',
                         'precedence'  => 8,
-                        'postnominal' => 'KDE'
+                        'postnominal' => 'KDE',
                     ],
                     [
                         'class'       => 'Knight Companion',
                         'precedence'  => 10,
-                        'postnominal' => 'KCE'
+                        'postnominal' => 'KCE',
                     ],
                     [
                         'class'       => 'Knight',
                         'precedence'  => 14,
-                        'postnominal' => 'KE'
+                        'postnominal' => 'KE',
                     ],
                     [
-                        'class' => 'Companion',
-                        'precedence' => 16,
+                        'class'       => 'Companion',
+                        'precedence'  => 16,
                         'postnominal' => 'CE',
                     ],
                     [
-                        'class' => 'Officer',
-                        'precedence' => 20,
+                        'class'       => 'Officer',
+                        'precedence'  => 20,
                         'postnominal' => 'OE',
                     ],
                     [
-                        'class' => 'Member',
-                        'precedence' => 25,
+                        'class'       => 'Member',
+                        'precedence'  => 25,
                         'postnominal' => 'ME',
                     ],
                     [
-                        'class' => 'Medal',
-                        'precedence' => 36,
+                        'class'       => 'Medal',
+                        'precedence'  => 36,
                         'postnominal' => 'EM',
                     ],
-                ]
+                ],
             ],
             [
                 'order'    => 'The Most Distinguished Order of Merit',
@@ -172,10 +170,10 @@ class KnightOrders extends Migration
                     [
                         'class'       => 'Knight',
                         'precedence'  => 6,
-                        'postnominal' => 'OM'
-                    ]
-                ]
-            ]
+                        'postnominal' => 'OM',
+                    ],
+                ],
+            ],
 
         ];
 
@@ -187,11 +185,11 @@ class KnightOrders extends Migration
                 'create',
                 'permissions',
                 null,
-                json_encode(["order" => $item['order'], "filename" => $item['filename'], "classes" => $item['classes']]),
+                json_encode(['order' => $item['order'], 'filename' => $item['filename'], 'classes' => $item['classes']]),
                 'add_knight_orders'
             );
 
-            App\Korders::create(["order" => $item['order'], "filename" => $item['filename'], "classes" => $item['classes']]);
+            App\Korders::create(['order' => $item['order'], 'filename' => $item['filename'], 'classes' => $item['classes']]);
         }
     }
 

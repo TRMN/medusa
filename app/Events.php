@@ -28,7 +28,7 @@ class Events extends Eloquent
       'state_province' => 'required',
       'postal_code'    => 'required',
       'country'        => 'required',
-      'start_date'     => 'required'
+      'start_date'     => 'required',
     ];
 
     public static $updateRules = [
@@ -74,11 +74,11 @@ class Events extends Eloquent
                     $member->getGreeting(),
                     $member->branch,
                     $member->getAssignmentName('primary'),
-                    empty($checkin['timestamp'])?'':$checkin['timestamp'],
+                    empty($checkin['timestamp']) ? '' : $checkin['timestamp'],
                 ]
             );
         }
 
-        $csv->output(date('Y-m-d') . '_' . str_replace(' ', '_', $this->event_name) . '_roster.csv');
+        $csv->output(date('Y-m-d').'_'.str_replace(' ', '_', $this->event_name).'_roster.csv');
     }
 }

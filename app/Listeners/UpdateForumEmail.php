@@ -5,14 +5,9 @@ namespace App\Listeners;
 use App\Events\EmailChanged;
 use App\ForumUser;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 /**
- * Class UpdateForumEmail
- * @package App\Listeners
- *
- * Event listener to update a members email address for the forums when they change their email address
+ * Class UpdateForumEmail.
  */
 class UpdateForumEmail
 {
@@ -29,14 +24,16 @@ class UpdateForumEmail
     /**
      * Handle the event.
      *
-     * @param  EmailChanged  $event
+     * @param EmailChanged $event
+     *
      * @return void
      */
     public function handle(EmailChanged $event)
     {
-        if($_SERVER['HTTP_HOST'] != "medusa.trmn.org") {
+        if ($_SERVER['HTTP_HOST'] != 'medusa.trmn.org') {
             // Local sandbox or test server, we don't want to change the forum
             \Log::info('In sandbox, forum not updated');
+
             return;
         }
         // Get the forum user record
@@ -49,7 +46,6 @@ class UpdateForumEmail
             $user->save();
 
             return;
-
         } catch (ModelNotFoundException $e) {
             // No forum user, don't do anything
             return;

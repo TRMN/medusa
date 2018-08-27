@@ -1,16 +1,16 @@
-<?php namespace App\Exceptions;
+<?php
+
+namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Support\Facades\View;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class Handler extends ExceptionHandler
 {
-
     /**
      * A list of the exception types that should not be reported.
      *
@@ -20,7 +20,7 @@ class Handler extends ExceptionHandler
         \Illuminate\Auth\AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
         \Illuminate\Validation\ValidationException::class,
-        'Symfony\Component\HttpKernel\Exception\HttpException'
+        'Symfony\Component\HttpKernel\Exception\HttpException',
     ];
 
     /**
@@ -28,7 +28,7 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception $e
+     * @param \Exception $e
      *
      * @return void
      */
@@ -40,25 +40,22 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Exception               $e
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $e
      *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
     {
-        if (Auth::check() === true &&  in_array(Auth::user()->member_id, config('errors.custom_error_pages'))) {
-
-            if (View::exists('errors.' . Auth::user()->member_id)) {
-                return response()->view('errors.' . Auth::user()->member_id, ['e' => $e]);
+        if (Auth::check() === true && in_array(Auth::user()->member_id, config('errors.custom_error_pages'))) {
+            if (View::exists('errors.'.Auth::user()->member_id)) {
+                return response()->view('errors.'.Auth::user()->member_id, ['e' => $e]);
             }
-
         }
 
         if ($e instanceof ModelNotFoundException) {
             return response()->view('errors.user-not-found');
         }
-
 
         return response()->view('errors.error', ['e' => $e]);
     }
@@ -66,8 +63,8 @@ class Handler extends ExceptionHandler
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request                 $request
-     * @param  \Illuminate\Auth\AuthenticationException $e
+     * @param \Illuminate\Http\Request                 $request
+     * @param \Illuminate\Auth\AuthenticationException $e
      *
      * @return \Illuminate\Http\Response
      */

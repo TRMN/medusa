@@ -1,10 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-use App\Type;
 use App\Audit\MedusaAudit;
+use App\Type;
+use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageLandsType extends Migration
 {
@@ -18,12 +16,12 @@ class AddPeerageLandsType extends Migration
     public function up()
     {
         $lands = [
-            'Keep' => 'keep',
-            'Barony' => 'barony',
-            'County' => 'county',
-            'Duchy' => 'duchy',
+            'Keep'        => 'keep',
+            'Barony'      => 'barony',
+            'County'      => 'county',
+            'Duchy'       => 'duchy',
             'Grand Duchy' => 'grand_duchy',
-            'Steading' => 'steading',
+            'Steading'    => 'steading',
         ];
 
         foreach ($lands as $desc => $type) {
@@ -39,10 +37,8 @@ class AddPeerageLandsType extends Migration
                     'AddPeerageLands Migration'
                 );
             } catch (Exception $e) {
-
             }
         }
-
     }
 
     /**
@@ -53,12 +49,12 @@ class AddPeerageLandsType extends Migration
     public function down()
     {
         $lands = [
-            'Keep' => 'keep',
-            'Barony' => 'barony',
-            'County' => 'county',
-            'Duchy' => 'duchy',
+            'Keep'        => 'keep',
+            'Barony'      => 'barony',
+            'County'      => 'county',
+            'Duchy'       => 'duchy',
             'Grand Duchy' => 'grand_duchy',
-            'Steading' => 'steading',
+            'Steading'    => 'steading',
         ];
 
         foreach ($lands as $type) {
@@ -75,9 +71,7 @@ class AddPeerageLandsType extends Migration
                     null,
                     'AddPeerageLands Migration'
                 );
-
-            } catch(Exception $e) {
-
+            } catch (Exception $e) {
             }
         }
     }

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\MedusaConfig;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class ConfigController extends Controller
 {
@@ -14,7 +14,7 @@ class ConfigController extends Controller
 
     /**
      * Display a listing of the resource.
-     * GET /config
+     * GET /config.
      *
      * @return Response
      */
@@ -29,7 +29,7 @@ class ConfigController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * GET /config/create
+     * GET /config/create.
      *
      * @return Response
      */
@@ -50,7 +50,7 @@ class ConfigController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /config
+     * POST /config.
      *
      * @return Response
      */
@@ -76,7 +76,7 @@ class ConfigController extends Controller
             $config->save();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'create',
                 'config',
                 null,
@@ -84,10 +84,10 @@ class ConfigController extends Controller
                 'ConfigController@update'
             );
 
-            $msg = '"' . $config->key . '" has been added';
+            $msg = '"'.$config->key.'" has been added';
         } catch (\Exception $e) {
             $msg =
-              'There was a problem saving "' . $config->key . '"';
+              'There was a problem saving "'.$config->key.'"';
             Log::error($e->getTraceAsString());
         }
 
@@ -96,9 +96,9 @@ class ConfigController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /config/{id}
+     * GET /config/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -111,9 +111,9 @@ class ConfigController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * GET /config/{id}/edit
+     * GET /config/{id}/edit.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -134,9 +134,9 @@ class ConfigController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /config/{id}
+     * PUT /config/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -160,7 +160,7 @@ class ConfigController extends Controller
             $config->save();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'update',
                 'config',
                 $config->id,
@@ -168,10 +168,10 @@ class ConfigController extends Controller
                 'ConfigController@update'
             );
 
-            $msg = '"' . $config->key . '" has been updated';
+            $msg = '"'.$config->key.'" has been updated';
         } catch (\Exception $e) {
             $msg =
-              'There was a problem saving the update to "' . $config->key . '"';
+              'There was a problem saving the update to "'.$config->key.'"';
             Log::error($e->getTraceAsString());
         }
 
@@ -180,9 +180,9 @@ class ConfigController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * DELETE /config/{id}
+     * DELETE /config/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -196,7 +196,7 @@ class ConfigController extends Controller
             $config->delete();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'delete',
                 'config',
                 $config->id,
@@ -207,6 +207,7 @@ class ConfigController extends Controller
             return 1;
         } catch (\Exception $e) {
             Log::error($e->getTraceAsString());
+
             return 0;
         }
     }

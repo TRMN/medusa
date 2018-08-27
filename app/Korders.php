@@ -10,12 +10,11 @@ class Korders extends Eloquent
 
     protected $table = 'korders';
 
-
     public function getPrecedence($options)
     {
         if (is_array($options) === false) {
             $options = [
-              'type' => 'postnominal',
+              'type'  => 'postnominal',
               'value' => $options,
             ];
         }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Chapter;
 use App\Grade;
 use App\Permissions\MedusaPermissions;
-use App\Chapter;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -139,8 +139,6 @@ class PromotionController extends Controller
             $this->_processPromotionRequests($payload['promotable']));
 
         return view('promotions.results', ['chapter' => Chapter::find($chapterId), 'promotions' => $promoted]);
-
-
     }
 
     private function _processPromotionRequests(array $promotions, bool $early = false)
@@ -151,12 +149,12 @@ class PromotionController extends Controller
             $user = User::find($member['memberId']);
 
             $from = Grade::getRankTitle($user->rank['grade'], $user->getRate(),
-                    $user->branch) . ' (' . $user->rank['grade'] . ')';
+                    $user->branch).' ('.$user->rank['grade'].')';
 
             $user->promoteMember($member['grade'], $early);
 
             $to = Grade::getRankTitle($member['grade'], $user->getRate(),
-                    $user->branch) . ' (' . $member['grade'] . ')';
+                    $user->branch).' ('.$member['grade'].')';
 
             $promoted[] = [
                 'name'      => $user->getFullName(),
