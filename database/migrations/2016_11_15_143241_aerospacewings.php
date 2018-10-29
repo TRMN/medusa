@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class Aerospacewings extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,7 +13,7 @@ class Aerospacewings extends Migration
     {
         // Add the wings to the replaces for the rest of the qual badges
 
-        $updates = \App\Award::where("group_label", '=', 'Qualification Badges')->get();
+        $updates = \App\Award::where('group_label', '=', 'Qualification Badges')->get();
 
         foreach ($updates as $row) {
             $row->replaces .= ',SAW,EAW,OAW,ESAW,OSAW,EMAW,OMAW,ENW,ONW,ESNW,OSNW,EMNW,OMNW,EOW,OOW,ESOW,OSOW,EMOW,OMOW,ESW,OSW,ESSW,OSSW,EMSW,OMSW';
@@ -280,7 +279,6 @@ class Aerospacewings extends Migration
             \App\Award::create($award);
         }
     }
-
 
     /**
      * Reverse the migrations.

@@ -1,12 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Permission;
 
 class AddNewPermissions extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -19,7 +16,7 @@ class AddNewPermissions extends Migration
         $newPerms = [
             'ADD_PEERAGE'  => 'Add a peerage',
             'DEL_PEERAGE'  => 'Delete a peerage',
-            'EDIT_PEERAGE' => 'Edit a peerage'
+            'EDIT_PEERAGE' => 'Edit a peerage',
         ];
 
         foreach ($newPerms as $perm => $desc) {
@@ -28,10 +25,10 @@ class AddNewPermissions extends Migration
                 'create',
                 'permissions',
                 null,
-                json_encode(["name" => $perm, "description" => $desc]),
+                json_encode(['name' => $perm, 'description' => $desc]),
                 'add_new_permissions'
             );
-            App\Permission::create(["name" => $perm, "description" => $desc]);
+            App\Permission::create(['name' => $perm, 'description' => $desc]);
         }
     }
 

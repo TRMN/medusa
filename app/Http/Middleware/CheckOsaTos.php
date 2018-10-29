@@ -4,15 +4,14 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Tests\Exception\UnauthorizedHttpExceptionTest;
 
 class CheckOsaTos
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
      *
      * @return mixed
      */
@@ -25,7 +24,7 @@ class CheckOsaTos
                 return view('osa', [
                     'showform' => true,
                     'greeting' => $authUser->getGreetingArray(),
-                    'redirect' => $request->fullUrl()
+                    'redirect' => $request->fullUrl(),
                 ]);
             }
 

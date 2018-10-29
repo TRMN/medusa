@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddUSERMASQ extends Migration
@@ -20,10 +18,10 @@ class AddUSERMASQ extends Migration
             'create',
             'permissions',
             null,
-            json_encode(["name" => 'USER_MASQ', "description" => 'Allow a user to masquerade as another user']),
+            json_encode(['name' => 'USER_MASQ', 'description' => 'Allow a user to masquerade as another user']),
             'add_new_permissions'
         );
-        App\Permission::create(["name" => 'USER_MASQ', "description" => 'Allow a user to masquerade as another user']);
+        App\Permission::create(['name' => 'USER_MASQ', 'description' => 'Allow a user to masquerade as another user']);
     }
 
     /**

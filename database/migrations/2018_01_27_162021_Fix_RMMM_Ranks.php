@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class FixRMMMRanks extends Migration
@@ -46,14 +44,13 @@ class FixRMMMRanks extends Migration
         }
     }
 
-/**
- * Reverse the migrations.
- *
- * @return void
- */
-public
-function down()
-{
-    // None, this is not a reversabile change
-}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        // None, this is not a reversabile change
+    }
 }

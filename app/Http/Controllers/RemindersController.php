@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
-
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Request;
 
 class RemindersController extends Controller
 {
-
     /**
      * Display the password reminder view.
      *
@@ -52,7 +50,8 @@ class RemindersController extends Controller
     /**
      * Display the password reset view for the given token.
      *
-     * @param  string  $token
+     * @param string $token
+     *
      * @return Response
      */
     public function getReset($token = null)
@@ -84,10 +83,10 @@ class RemindersController extends Controller
             $user->password = Hash::make($password);
 
             $this->writeAuditTrail(
-                'password reset from ' . Request::ip(),
+                'password reset from '.Request::ip(),
                 'update',
                 'users',
-                (string)$user->_id,
+                (string) $user->_id,
                 'Password Update',
                 'RemindersController@postReset'
             );

@@ -1,10 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-use App\Billet;
 use App\Audit\MedusaAudit;
+use App\Billet;
+use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageBillets extends Migration
 {
@@ -29,9 +27,8 @@ class AddPeerageBillets extends Migration
                      'Grand Duke',
                      'Grand Duchess',
                      'Steadholder',
-                     'Majordomo'
+                     'Majordomo',
                  ] as $billet) {
-
             try {
                 App\Billet::create(['billet_name' => $billet]);
 
@@ -43,11 +40,8 @@ class AddPeerageBillets extends Migration
                     json_encode(['billet_name' => $billet]),
                     'AddPeerageBillets Migration'
                 );
-
             } catch (Exception $e) {
-
             }
-
         }
     }
 
@@ -70,7 +64,7 @@ class AddPeerageBillets extends Migration
                      'Grand Duke',
                      'Grand Duchess',
                      'Steadholder',
-                     'Majordomo'
+                     'Majordomo',
                  ] as $billet) {
             try {
                 $billetId = App\Billet::where('billet_name', $billet)->first()->id;
@@ -85,9 +79,7 @@ class AddPeerageBillets extends Migration
                     null,
                     'AddPeerageBillets Migration'
                 );
-
             } catch (Exception $e) {
-
             }
         }
     }

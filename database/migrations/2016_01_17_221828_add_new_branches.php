@@ -1,11 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 
 class AddNewBranches extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -17,7 +15,7 @@ class AddNewBranches extends Migration
     {
         $newBranches = [
             'RMMM'  => 'Royal Manticoran Merchant Marines',
-            'RMACS' => 'Royal Manticoran Astro Control Service'
+            'RMACS' => 'Royal Manticoran Astro Control Service',
         ];
 
         foreach ($newBranches as $branch => $name) {
@@ -26,11 +24,11 @@ class AddNewBranches extends Migration
                 'create',
                 'brances',
                 null,
-                json_encode(["branch" => $branch, "branch_name" => $name]),
+                json_encode(['branch' => $branch, 'branch_name' => $name]),
                 'add_new_branches'
             );
 
-            Branch::create(["branch" => $branch, "branch_name" => $name]);
+            Branch::create(['branch' => $branch, 'branch_name' => $name]);
         }
     }
 

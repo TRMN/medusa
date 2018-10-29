@@ -5,16 +5,15 @@ namespace App\Http\Controllers;
 use App\Billet;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 class BilletController extends Controller
 {
-
     /**
      * Display a listing of the resource.
-     * GET /billet
+     * GET /billet.
      *
      * @return Response
      */
@@ -29,7 +28,7 @@ class BilletController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * GET /billet/create
+     * GET /billet/create.
      *
      * @return Response
      */
@@ -39,12 +38,12 @@ class BilletController extends Controller
             return $redirect;
         }
 
-        return view("billet.create");
+        return view('billet.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * POST /billet
+     * POST /billet.
      *
      * @return Response
      */
@@ -76,9 +75,10 @@ class BilletController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /billet/{id}
+     * GET /billet/{id}.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -88,9 +88,10 @@ class BilletController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * GET /billet/{id}/edit
+     * GET /billet/{id}/edit.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit(Billet $billet)
@@ -99,14 +100,15 @@ class BilletController extends Controller
             return $redirect;
         }
 
-        return view("billet.edit", ['billet' => $billet]);
+        return view('billet.edit', ['billet' => $billet]);
     }
 
     /**
      * Update the specified resource in storage.
-     * PUT /billet/{id}
+     * PUT /billet/{id}.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(Billet $billet)
@@ -166,15 +168,17 @@ class BilletController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * DELETE /billet/{id}
+     * DELETE /billet/{id}.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy(Billet $billet)
     {
         try {
             $billet->delete();
+
             return 1;
         } catch (\Exception $e) {
             return 0;

@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddIndividualAwards extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -706,6 +704,6 @@ class AddIndividualAwards extends Migration
      */
     public function down()
     {
-//		\App\Award::all()->destroy();
+        //		\App\Award::all()->destroy();
     }
 }

@@ -1,14 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-use App\Chapter;
 use App\Audit\MedusaAudit;
+use App\Chapter;
+use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageLandChapters extends Migration
 {
     use MedusaAudit;
+
     /**
      * Run the migrations.
      *
@@ -17,9 +16,9 @@ class AddPeerageLandChapters extends Migration
     public function up()
     {
         $data = [
-            "keep" => [
-                "Day Keep",
-                "Lochen Keep"
+            'keep' => [
+                'Day Keep',
+                'Lochen Keep',
             ],
             'barony' => [
                 'Nový Prerov',
@@ -57,27 +56,27 @@ class AddPeerageLandChapters extends Migration
                 'Westmarch',
                 'Fontana Flats',
                 'Nya Östergötland',
-                'Boundary Waters'
+                'Boundary Waters',
             ],
             'steading' => [
                 'Blackbird Steading',
                 'Pittman Steading',
                 'Henessey Steading',
-                'Maelstromm Steading'
+                'Maelstromm Steading',
             ],
             'duchy' => [
                 'New Scania',
                 'New Ulyanovsk',
                 'Karstadt Sea',
-                'Mountain View'
+                'Mountain View',
             ],
             'grand_duchy' => [
                 'Montana',
-                'New Arkhangelsk'
-            ]
+                'New Arkhangelsk',
+            ],
         ];
 
-        foreach($data as $type => $lands) {
+        foreach ($data as $type => $lands) {
             foreach ($lands as $land) {
                 try {
                     Chapter::create(['chapter_type' => $type, 'chapter_name' => $land, 'joinable' => false]);
@@ -91,9 +90,7 @@ class AddPeerageLandChapters extends Migration
                         'AddPeerageLandChapters Migration'
                     );
                 } catch (Exception $e) {
-
                 }
-
             }
         }
     }
@@ -105,8 +102,8 @@ class AddPeerageLandChapters extends Migration
      */
     public function down()
     {
-        foreach(['keep', 'barony', 'county', 'steading', 'duchy', 'grand_duchy'] as $type) {
-            foreach(Chapter::where('chapter_type', $type)->get() as $land) {
+        foreach (['keep', 'barony', 'county', 'steading', 'duchy', 'grand_duchy'] as $type) {
+            foreach (Chapter::where('chapter_type', $type)->get() as $land) {
                 Chapter::destroy($land->id);
             }
         }

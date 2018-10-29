@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class FixDoB extends Migration
@@ -13,7 +11,7 @@ class FixDoB extends Migration
      */
     public function up()
     {
-        foreach (\App\User::where('dob','regex','/^\d{1,2}-\d{1,2}-\d{1,2}$/')->get() as $member) {
+        foreach (\App\User::where('dob', 'regex', '/^\d{1,2}-\d{1,2}-\d{1,2}$/')->get() as $member) {
             $dob = explode('-', $member->dob);
 
             if ($dob[0] > 12) {

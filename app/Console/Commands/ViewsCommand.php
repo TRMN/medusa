@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 
 class ViewsCommand extends Command
 {
-
     /**
      * The console command name.
      *
@@ -36,7 +35,7 @@ class ViewsCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->files = new \Illuminate\Filesystem\Filesystem;
+        $this->files = new \Illuminate\Filesystem\Filesystem();
     }
 
     /**
@@ -46,8 +45,7 @@ class ViewsCommand extends Command
      */
     public function fire()
     {
-
-        foreach ($this->files->files(storage_path() . '/views') as $file) {
+        foreach ($this->files->files(storage_path().'/views') as $file) {
             $this->files->delete($file);
         }
 

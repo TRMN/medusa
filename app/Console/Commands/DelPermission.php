@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class DelPermission extends Command
 {
-
     /**
      * The console command name.
      *
@@ -43,7 +42,7 @@ class DelPermission extends Command
         if ($user = User::where('member_id', '=', $this->argument('member_id'))->first()) {
             $user->deletePerm(strtoupper($this->argument('perm')));
         } else {
-            $this->error($this->argument('member_id') . ' not found!');
+            $this->error($this->argument('member_id').' not found!');
         }
     }
 
@@ -55,8 +54,8 @@ class DelPermission extends Command
     protected function getArguments()
     {
         return [
-            [ 'member_id', InputArgument::REQUIRED, 'The user\'s TRMN number' ],
-            [ 'perm', InputArgument::REQUIRED, 'The permission to add' ],
+            ['member_id', InputArgument::REQUIRED, 'The user\'s TRMN number'],
+            ['perm', InputArgument::REQUIRED, 'The permission to add'],
         ];
     }
 
@@ -67,6 +66,6 @@ class DelPermission extends Command
      */
     protected function getOptions()
     {
-        return [ ];
+        return [];
     }
 }

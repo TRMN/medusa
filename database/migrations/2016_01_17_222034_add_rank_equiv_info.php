@@ -1,11 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 
 class AddRankEquivInfo extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -839,7 +837,7 @@ class AddRankEquivInfo extends Migration
                 'C-20' => 'F-3',
                 'C-21' => 'F-4',
                 'C-22' => 'F-5',
-                'C-23' => 'F-5'
+                'C-23' => 'F-5',
             ],
             'RMA'   => [
                 'C-1'  => 'E-1',

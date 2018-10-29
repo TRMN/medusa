@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -56,16 +56,17 @@ class ResetPasswordController extends BaseController
     protected function rules()
     {
         return [
-            'token' => 'required',
+            'token'         => 'required',
             'email_address' => 'required|email',
-            'password' => 'required|confirmed|min:6',
+            'password'      => 'required|confirmed|min:6',
         ];
     }
 
     /**
      * Get the password reset credentials from the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     protected function credentials(Request $request)
@@ -78,14 +79,15 @@ class ResetPasswordController extends BaseController
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
-     * @param  string  $password
+     * @param \Illuminate\Contracts\Auth\CanResetPassword $user
+     * @param string                                      $password
+     *
      * @return void
      */
     protected function resetPassword($user, $password)
     {
         $user->forceFill([
-            'password' => Hash::make($password),
+            'password'       => Hash::make($password),
             'remember_token' => Str::random(60),
         ])->save();
 

@@ -6,7 +6,6 @@ use App\Audit;
 
 trait MedusaAudit
 {
-
     /**
      * @param $memberId string RMN number of the person making the change
      * @param $action string What Action did they take (Update, Create, etc)
@@ -17,16 +16,15 @@ trait MedusaAudit
      *
      * @return bool
      */
-
     protected function writeAuditTrail($memberId, $action, $collection, $docId, $values, $from_where)
     {
         $auditRecord = [
-          'member_id' => $memberId,
-          'action' => $action,
+          'member_id'       => $memberId,
+          'action'          => $action,
           'collection_name' => $collection,
-          'document_id' => $docId,
+          'document_id'     => $docId,
           'document_values' => $values,
-          'from_where' => $from_where,
+          'from_where'      => $from_where,
         ];
 
         Audit::create($auditRecord);

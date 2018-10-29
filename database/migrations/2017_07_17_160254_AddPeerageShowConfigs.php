@@ -1,9 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\MedusaConfig;
+use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageShowConfigs extends Migration
 {
@@ -18,92 +16,92 @@ class AddPeerageShowConfigs extends Migration
 
         $showConfig['keep'] = [
             'Knight' => [
-                'billet' => 'Knight',
-                'display_order' => 1
+                'billet'        => 'Knight',
+                'display_order' => 1,
             ],
             'Dame' => [
-                'billet' => 'Dame',
-                'display_order' => 1
+                'billet'        => 'Dame',
+                'display_order' => 1,
             ],
             'Majordomo' => [
-                'billet' => 'Majordomo',
-                'display_order' => 2
-            ]
+                'billet'        => 'Majordomo',
+                'display_order' => 2,
+            ],
 
         ];
 
         $showConfig['barony'] = [
             'Baron|Baroness' => [
-                'display_order' => 1,
-                'allow_courtesy' => false
+                'display_order'  => 1,
+                'allow_courtesy' => false,
             ],
             'Baroness|Baron' => [
-                'display_order' => 2
+                'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet' => 'Majordomo',
-                'display_order' => 3
-            ]
+                'billet'        => 'Majordomo',
+                'display_order' => 3,
+            ],
 
         ];
 
         $showConfig['county'] = [
             'Earl|Countess' => [
                 'allow_courtesy' => false,
-                'display_order' => 1
+                'display_order'  => 1,
             ],
             'Countess|Earl' => [
-                'display_order' => 2
+                'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet' => 'Majordomo',
-                'display_order' => 3
-            ]
+                'billet'        => 'Majordomo',
+                'display_order' => 3,
+            ],
 
         ];
 
         $showConfig['duchy'] = [
             'Duke|Duchess' => [
                 'allow_courtesy' => false,
-                'display_order' => 1
+                'display_order'  => 1,
             ],
             'Duchess|Duke' => [
-                'display_order' => 2
+                'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet' => 'Majordomo',
-                'display_order' => 3
-            ]
+                'billet'        => 'Majordomo',
+                'display_order' => 3,
+            ],
 
         ];
 
         $showConfig['steading'] = [
             'Steadholder' => [
-                'billet' => 'Steadholder',
-                'display_order' => 1
+                'billet'        => 'Steadholder',
+                'display_order' => 1,
             ],
             'Lord|Lady' => [
                 'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet' => 'Majordomo',
-                'display_order' => 3
-            ]
+                'billet'        => 'Majordomo',
+                'display_order' => 3,
+            ],
 
         ];
 
         $showConfig['grand_duchy'] = [
             'Grand Duke|Grand Duchess' => [
                 'allow_courtesy' => false,
-                'display_order' => 1
+                'display_order'  => 1,
             ],
             'Grand Duchess|Grand Duke' => [
-                'display_order' => 2
+                'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet' => 'Majordomo',
-                'display_order' => 3
-            ]
+                'billet'        => 'Majordomo',
+                'display_order' => 3,
+            ],
 
         ];
 

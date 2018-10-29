@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use App\MedusaConfig;
+use Illuminate\Database\Migrations\Migration;
 
 class AnyUnitChapterTypes extends Migration
 {
@@ -46,7 +46,7 @@ class AnyUnitChapterTypes extends Migration
             'center',
             'university',
             'university_system',
-            "keep",
+            'keep',
             'barony',
             'county',
             'duchy',

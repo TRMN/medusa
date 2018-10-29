@@ -1,11 +1,12 @@
-<?php namespace App\Console\Commands;
+<?php
+
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 
 class Inspire extends Command
 {
-
     /**
      * The console command name.
      *
