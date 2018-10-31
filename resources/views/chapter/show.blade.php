@@ -14,7 +14,7 @@
         @endif
         @set('isInChainOfCommand', $permsObj->isInChainOfCommand($detail->getChapterIdWithParents()))
         @set('viewMembers', $permsObj->hasPermissions(['VIEW_MEMBERS']))
-        @set('idCard', $permsObj->hasPermissions(['ID_CARD']))
+        @set('idCard', $permsObj->hasPermissions(['ID_CARDS']))
         @if(file_exists(public_path() . $path . $detail->hull_number . '.svg') === true)
             <div class=" col-sm-2">
                 <img class='crest' src="{!!asset($path . $detail->hull_number . '.svg')!!}"
