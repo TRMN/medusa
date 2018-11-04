@@ -233,7 +233,7 @@ trait AwardQualification
         if (is_null($swpQual) === false &&
             in_array($this->branch, $swpBranches) === true &&
             ($swpType === 'Enlisted' && $this->hasAward('ESWP') === false ||
-            $swpType === 'Officer' && $this->hasAward('OSWP') === false) ) {
+            $swpType === 'Officer' && $this->hasAward('OSWP') === false)) {
             // Only process if the qualifications are defined,  it's a branch we check,
             // and they don't have their specific E|O SWP
 
