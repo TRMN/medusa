@@ -210,31 +210,32 @@ trait AwardQualification
 
         $swpBranches = MedusaConfig::get('awards.swp.branches', ['RMN', 'RMMC']);
 
+        // Determine member's rank classification
+        $swpType = null;
+        switch (substr($this->rank['grade'], 0, 1)) {
+            case 'E':
+                $swpType = 'Enlisted';
+                break;
+            case 'W':
+            case 'O':
+            case 'F':
+            case 'M':
+                $swpType = 'Officer';
+                break;
+            case 'C':
+                if (substr($this->rank['grade'], 2) < 12) {
+                    $swpType = 'Enlisted';
+                } else {
+                    $swpType = 'Officer';
+                }
+        }
+
         if (is_null($swpQual) === false &&
             in_array($this->branch, $swpBranches) === true &&
-            $this->hasAward('ESWP') === false &&
-            $this->hasAward('OSWP') === false) {
-            // Only process if the qualifications are defined,  it's a branch we check and they don't have an E|O SWP
-
-            $swpType = null;
-
-            switch (substr($this->rank['grade'], 0, 1)) {
-                case 'E':
-                    $swpType = 'Enlisted';
-                    break;
-                case 'W':
-                case 'O':
-                case 'F':
-                case 'M':
-                    $swpType = 'Officer';
-                    break;
-                case 'C':
-                    if (substr($this->rank['grade'], 2) < 12) {
-                        $swpType = 'Enlisted';
-                    } else {
-                        $swpType = 'Officer';
-                    }
-            }
+            ($swpType === 'Enlisted' && $this->hasAward('ESWP') === false ||
+            $swpType === 'Officer' && $this->hasAward('OSWP') === false)) {
+            // Only process if the qualifications are defined,  it's a branch we check,
+            // and they don't have their specific E|O SWP
 
             // Drill down to the specific branch and officer or enlisted
 
