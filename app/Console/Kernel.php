@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AddFleetCoPermission::class,
         \App\Console\Commands\UpdatePromotionStatus::class,
         \App\Console\Commands\SwpReport::class,
+        \App\Console\Commands\SWPCheck::class,
     ];
 
     /**
