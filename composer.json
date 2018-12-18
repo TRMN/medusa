@@ -1,119 +1,122 @@
 {
-  "name": "trmn/medusa",
-  "authors": [
-    {
-      "name": "Dave Weiner",
-      "email": "david.l.weiner30030@gmail.com",
-      "role": "Architect/Full Stack Developer"
+    "name": "trmn/medusa",
+    "authors": [
+        {
+            "name": "Dave Weiner",
+            "email": "david.l.weiner30030@gmail.com",
+            "role": "Architect/Full Stack Developer"
+        },
+        {
+            "name": "Robert Bulkeley",
+            "email": "bob.bulkeley@gmail.com",
+            "role": "Graphic Design/Layout"
+        },
+        {
+            "name": "Erik Plossl",
+            "email": "eplossl@gmail.com",
+            "role": "Back End Developer"
+        },
+        {
+            "name": "Dan Brandow",
+            "email": "dan.brandow@gmail.com",
+            "role": "QA"
+        },
+        {
+            "name": "Bill Knight",
+            "email": "bill.knight@conalscorner.com",
+            "homepage": "http://www.conalscorner.com/trmn",
+            "role": "Award Graphics"
+        },
+        {
+            "name": "Jerry Ablan",
+            "email": "jerryablan@gmail.com",
+            "role": "Refactoring and optimization"
+        }
+    ],
+    "description": "Project MEDUSA (Manticoran Enhanced Data Usability Service Architecture)",
+    "keywords": [
+        "framework",
+        "laravel",
+        "trmn"
+    ],
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0",
+        "laravel/framework": "5.5.*",
+        "doctrine/dbal": "~2.3",
+        "barryvdh/laravel-ide-helper": "^2.2",
+        "webpatser/laravel-countries": "dev-master",
+        "mnshankar/CSV": "*",
+        "maatwebsite/excel": "~2.1.0",
+        "simplesoftwareio/simple-qrcode": "~1",
+        "intervention/image": "^2.3",
+        "google/recaptcha": "~1.1",
+        "league/csv": "^9.0",
+        "laravelcollective/html": "5.5.*",
+        "themsaid/laravel-routes-publisher": "^1.0",
+        "laravel/passport": "^3.0",
+        "moloquent/moloquent": "dev-master",
+        "laravel/tinker": "^1.0",
+        "genealabs/laravel-caffeine": "^0.5.0",
+        "lesichkovm/laravel-advanced-route": "dev-master",
+        "radic/blade-extensions": "~7.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "predis/predis": "^1.1",
+        "fideloper/proxy": "~3.3"
     },
-    {
-      "name": "Robert Bulkeley",
-      "email": "bob.bulkeley@gmail.com",
-      "role": "Graphic Design/Layout"
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~6.0",
+        "phpspec/phpspec": "~2.1",
+        "symfony/dom-crawler": "~3.0",
+        "symfony/css-selector": "~3.0",
+        "filp/whoops": "~2.0"
     },
-    {
-      "name": "Erik Plossl",
-      "email": "eplossl@gmail.com",
-      "role": "Back End Developer"
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "App\\": "app/"
+        }
     },
-    {
-      "name": "Dan Brandow",
-      "email": "dan.brandow@gmail.com",
-      "role": "QA"
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
     },
-    {
-      "name": "Bill Knight",
-      "email": "bill.knight@conalscorner.com",
-      "homepage": "http://www.conalscorner.com/trmn",
-      "role": "Award Graphics"
+    "scripts": {
+        "post-root-package-install": [
+            "php -r \"copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "php artisan key:generate"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
+        ]
     },
-    {
-      "name": "Jerry Ablan",
-      "email": "jerryablan@gmail.com",
-      "role": "Refactoring and optimization"
+    "config": {
+        "preferred-install": "dist"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/dweinerATL/moloquent"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lesichkovm/laravel-advanced-route.git"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
     }
-  ],
-  "description": "Project MEDUSA (Manticoran Enhanced Data Usability Service Architecture)",
-  "keywords": [
-    "framework",
-    "laravel",
-    "trmn"
-  ],
-  "type": "project",
-  "license": "MIT",
-  "require": {
-    "php": ">=7.0",
-    "laravel/framework": "5.4.*",
-    "doctrine/dbal": "~2.3",
-    "barryvdh/laravel-ide-helper": "^2.2",
-    "webpatser/laravel-countries": "dev-master",
-    "mnshankar/CSV": "*",
-    "maatwebsite/excel": "~2.1.0",
-    "simplesoftwareio/simple-qrcode": "~1",
-    "intervention/image": "^2.3",
-    "google/recaptcha": "~1.1",
-    "league/csv": "^9.0",
-    "laravelcollective/html": "5.4.*",
-    "themsaid/laravel-routes-publisher": "^1.0",
-    "laravel/passport": "^3.0",
-    "moloquent/moloquent": "dev-master",
-    "laravel/tinker": "^1.0",
-    "genealabs/laravel-caffeine": "^0.5.0",
-    "lesichkovm/laravel-advanced-route": "dev-master",
-    "radic/blade-extensions": "~7.0",
-    "guzzlehttp/guzzle": "^6.3",
-    "predis/predis": "^1.1"
-  },
-  "require-dev": {
-    "fzaninotto/faker": "~1.4",
-    "mockery/mockery": "0.9.*",
-    "phpunit/phpunit": "~5.7",
-    "phpspec/phpspec": "~2.1",
-    "symfony/dom-crawler": "~3.0",
-    "symfony/css-selector": "~3.0"
-  },
-  "autoload": {
-    "classmap": [
-      "database"
-    ],
-    "psr-4": {
-      "App\\": "app/"
-    }
-  },
-  "autoload-dev": {
-    "classmap": [
-      "tests/TestCase.php"
-    ]
-  },
-  "scripts": {
-    "post-root-package-install": [
-      "php -r \"copy('.env.example', '.env');\""
-    ],
-    "post-create-project-cmd": [
-      "php artisan key:generate"
-    ],
-    "post-install-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postInstall",
-      "php artisan optimize"
-    ],
-    "post-update-cmd": [
-      "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-      "php artisan optimize"
-    ]
-  },
-  "config": {
-    "preferred-install": "dist"
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/dweinerATL/moloquent"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/lesichkovm/laravel-advanced-route.git"
-    }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true
 }
