@@ -62,7 +62,7 @@ Route::get(
     }
 );
 
-Route::model('oauthclient', 'App\OAuthClient');
+Route::model('oauthclient', \App\OAuthClient::class);
 Route::resource('oauthclient', 'OAuthController', ['middleware' => 'auth']);
 
 // Authentication
@@ -75,7 +75,7 @@ Route::post('/apply', 'UserController@apply')->name('user.apply')
      ->middleware('guest');
 
 // Users
-Route::model('user', 'App\User');
+Route::model('user', \App\User::class);
 Route::get('/user/switch/start/{user}', 'UserController@userSwitchStart')
      ->name('switch.start')->middleware('auth');
 Route::get('/user/switch/stop/', 'UserController@userSwitchStop')
@@ -190,7 +190,7 @@ Route::post(
 );
 
 // Assignment Change Requests
-Route::model('request', 'App\ChangeRequest');
+Route::model('request', \App\ChangeRequest::class);
 Route::get(
     '/user_request/{user}/create',
     [
@@ -233,11 +233,11 @@ Route::get(
 );
 
 // Other Routes
-Route::model('chapter', 'App\Chapter');
-Route::model('echelon', 'App\Chapter');
-Route::model('mardet', 'App\Chapter');
-Route::model('unit', 'App\Chapter');
-Route::model('anyunit', 'App\Chapter');
+Route::model('chapter', \App\Chapter::class);
+Route::model('echelon', \App\Chapter::class);
+Route::model('mardet', \App\Chapter::class);
+Route::model('unit', \App\Chapter::class);
+Route::model('anyunit', \App\Chapter::class);
 
 Route::get(
     '/home/{message?}',
@@ -302,7 +302,7 @@ Route::get(
 );
 Route::resource('echelon', 'EchelonController', ['middleware' => 'auth']);
 
-Route::model('unit', 'App\Chapter');
+Route::model('unit', \App\Chapter::class);
 Route::get(
     '/unit/{unit}/deactivate',
     [
@@ -332,7 +332,7 @@ Route::get(
     ]
 );
 
-Route::model('type', 'App\Type');
+Route::model('type', \App\Type::class);
 Route::resource('type', 'TypeController', ['middleware' => 'auth']);
 
 Route::get(
@@ -389,7 +389,7 @@ Route::get(
     ]
 );
 
-Route::model('exam', 'App\ExamList');
+Route::model('exam', \App\ExamList::class);
 Route::get(
     '/exam/edit/{exam}',
     ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'middleware' => 'auth']
@@ -407,7 +407,7 @@ Route::post(
     ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']
 );
 
-Route::model('billet', 'App\Billet');
+Route::model('billet', \App\Billet::class);
 Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
 
 // Awards
@@ -422,7 +422,7 @@ Route::get('id/bulk/{id}', 'IdController@getBulk');
 Route::get('id/markbulk/{id}', 'IdController@getMarkbulk');
 Route::get('id/mark/{id}', 'IdController@getMark');
 
-Route::model('events', 'App\Events');
+Route::model('events', \App\Events::class);
 Route::resource('events', 'EventController', ['middleware' => 'auth']);
 Route::get(
     '/events/export/{events}',
@@ -433,7 +433,7 @@ Route::get(
     ]
 );
 
-Route::model('config', 'App\MedusaConfig');
+Route::model('config', \App\MedusaConfig::class);
 Route::resource('config', 'ConfigController', ['middleware' => 'auth']);
 
 // Promotion routes

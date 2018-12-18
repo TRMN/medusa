@@ -160,7 +160,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        'App\Services\MedusaHasherServiceProvider',
+        App\Services\MedusaHasherServiceProvider::class,
         Moloquent\MongodbServiceProvider::class,
         Moloquent\Auth\PasswordResetServiceProvider::class,
         Moloquent\Passport\PassportServiceProvider::class,
@@ -169,7 +169,7 @@ return [
         'Maatwebsite\Excel\ExcelServiceProvider',
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
         'Intervention\Image\ImageServiceProvider',
-        'App\Services\MedusaServiceProvider',
+        App\Services\MedusaServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         App\Providers\PassportServiceProvider::class,

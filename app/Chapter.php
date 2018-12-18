@@ -537,7 +537,7 @@ class Chapter extends Eloquent
                         isset($billetInfo['allow_courtesy']) === true ? $billetInfo['allow_courtesy'] : true
                     );
 
-                    if (is_a($user, 'App\User') === true) {
+                    if (is_a($user, \App\User::class) === true) {
                         break 1;
                     }
                 }
@@ -550,7 +550,7 @@ class Chapter extends Eloquent
                     );
             }
 
-            if (is_a($user, 'App\User') === true) {
+            if (is_a($user, \App\User::class) === true) {
                 $commandCrew[(int) $billetInfo['display_order']] = [
                     'display' => $display,
                     'user'    => $user,

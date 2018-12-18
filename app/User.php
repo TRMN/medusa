@@ -2168,7 +2168,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             }
         }
 
-        if (is_a($event, 'App\Events') === false) {
+        if (is_a($event, \App\Events::class) === false) {
             // Not the correct object, return an error
             $this->setTimeZone($currentTz);
 
