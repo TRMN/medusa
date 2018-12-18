@@ -40,6 +40,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('member:updps')->dailyAt('02:00');
         $schedule->command('report:swp')->monthlyOn();
+        $schedule->command('user:sqpCheck')->monthlyOn(5);
     }
 
     /**
