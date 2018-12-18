@@ -46,18 +46,19 @@ Route::get('oauth/events', 'OAuthController@getScheduledEvents')
      ->middleware('auth:api');
 Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth:api');
 Route::get(
-    '/.well-known/openid-configuration', function () {
+    '/.well-known/openid-configuration',
+    function () {
         return response()->json(
-        \App\MedusaConfig::get(
-            'openid-configuration',
-            [
+            \App\MedusaConfig::get(
+                'openid-configuration',
+                [
                 'issuer'                 => 'https://medusa.trmn.org',
                 'authorization_endpoint' => 'https://medusa.trmn.org/oauth/authorize',
                 'token_endpoint'         => 'https://medusa.trmn.org/oauth/token',
                 'userinfo_endpoint'      => 'https://medusa.trmn.org/oauth/profile',
-            ]
-        )
-    );
+                ]
+            )
+        );
     }
 );
 
@@ -118,30 +119,38 @@ Route::post('/user/{user}/points', 'UserController@updatePoints')
      ->name('user.points')->middleware('auth');
 
 Route::get(
-    '/users/{branch}', [
+    '/users/{branch}',
+    [
     'as'         => 'showBranch',
     'uses'       => 'UserController@showBranch',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::get(
-    '/user/rack', [
+    '/user/rack',
+    [
     'as'         => 'ribbonRack',
     'uses'       => 'UserController@buildRibbonRack',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::post(
-    '/user/rack/save', [
+    '/user/rack/save',
+    [
     'as'         => 'saverack',
     'uses'       => 'UserController@saveRibbonRack',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 Route::get(
-    '/user/{user}/ribbons', [
+    '/user/{user}/ribbons',
+    [
     'as'         => 'userRibbons',
     'uses'       => 'UserController@fullRibbonDisplay',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 Route::post('/users/list/{branch}', 'UserController@getUserList');
 
@@ -164,17 +173,21 @@ Route::get(
     ]
 );
 Route::get(
-    '/user/{user}/reset', [
+    '/user/{user}/reset',
+    [
     'as'         => 'user.getReset',
     'uses'       => 'UserController@getReset',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::post(
-    '/user/{user}/reset', [
+    '/user/{user}/reset',
+    [
     'as'         => 'user.postReset',
     'uses'       => 'UserController@postReset',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 // Assignment Change Requests
 Route::model('request', 'App\ChangeRequest');
@@ -271,11 +284,13 @@ Route::get(
     ]
 );
 Route::get(
-    '/report/send/{id}', [
+    '/report/send/{id}',
+    [
     'as'         => 'report.send',
     'uses'       => 'ReportController@sendReport',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 Route::get(
     '/echelon/{echelon}/deactivate',
@@ -329,17 +344,21 @@ Route::get(
     ]
 );
 Route::post(
-    '/exam/upload', [
+    '/exam/upload',
+    [
     'as'         => 'exam.upload',
     'uses'       => 'ExamController@upload',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::post(
-    '/exam/update', [
+    '/exam/update',
+    [
     'as'         => 'exam.update',
     'uses'       => 'ExamController@update',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::get(
     '/exam/find/{user?}/{message?}',
     ['as' => 'exam.find', 'uses' => 'ExamController@find', 'middleware' => 'auth']
@@ -354,17 +373,21 @@ Route::post(
     ]
 );
 Route::get(
-    '/exam/list', [
+    '/exam/list',
+    [
     'as'         => 'exam.list',
     'uses'       => 'ExamController@examList',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::get(
-    '/exam/create', [
+    '/exam/create',
+    [
     'as'         => 'exam.create',
     'uses'       => 'ExamController@create',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 Route::model('exam', 'App\ExamList');
 Route::get(
@@ -372,11 +395,13 @@ Route::get(
     ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'middleware' => 'auth']
 );
 Route::post(
-    '/exam/updateExam', [
+    '/exam/updateExam',
+    [
     'as'         => 'exam.updateExam',
     'uses'       => 'ExamController@updateExam',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::post(
     '/exam/user/delete',
     ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']
@@ -400,11 +425,13 @@ Route::get('id/mark/{id}', 'IdController@getMark');
 Route::model('events', 'App\Events');
 Route::resource('events', 'EventController', ['middleware' => 'auth']);
 Route::get(
-    '/events/export/{events}', [
+    '/events/export/{events}',
+    [
     'as'         => 'event.export',
     'uses'       => 'EventController@export',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 Route::model('config', 'App\MedusaConfig');
 Route::resource('config', 'ConfigController', ['middleware' => 'auth']);
@@ -476,11 +503,13 @@ Route::post(
 Route::post('/api/path', 'ApiController@setPath', ['middleware' => 'auth']);
 
 Route::get(
-    '/api/find/{query?}', [
+    '/api/find/{query?}',
+    [
     'as'         => 'user.find.api',
     'uses'       => 'ApiController@findMember',
     'middleware' => 'auth',
-]); // search for a member
+    ]
+); // search for a member
 Route::get(
     '/api/exam',
     'ApiController@findExam',
@@ -520,7 +549,8 @@ Route::get('/api/lastexam/{memberid}', function ($memberid) {
 });
 
 Route::get(
-    '/getRoutes', function () {
+    '/getRoutes',
+    function () {
         foreach (app()->router->getRoutes() as $route) {
             if (in_array('GET', $route->methods()) === true) {
                 echo dirname($route->uri())."<br />\n";
@@ -540,7 +570,8 @@ Route::get(
 );
 
 Route::any(
-    '{catchall}', function ($url) {
+    '{catchall}',
+    function ($url) {
         return response()->view('errors.404', [], 404);
     }
 )->where('catchall', '(.*)');

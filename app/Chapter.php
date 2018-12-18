@@ -246,8 +246,8 @@ class Chapter extends Eloquent
         foreach ($users as $key => $user) {
             foreach ($user->assignment as $assignment) {
                 if ($assignment['chapter_id'] == $this->id && in_array(
-                        $assignment['billet'],
-                        [
+                    $assignment['billet'],
+                    [
                             'Commanding Officer',
                             'Executive Officer',
                             'Bosun',
@@ -257,7 +257,7 @@ class Chapter extends Eloquent
                             'Space Lord',
                             'Deputy Space Lord',
                         ]
-                    ) === true
+                ) === true
                 ) {
                     unset($users[$key]);
                 }
@@ -417,8 +417,10 @@ class Chapter extends Eloquent
     public function findPeerByLand($title, $allow_courtesy)
     {
         if (in_array($this->chapter_type, ['barony', 'county', 'steading', 'duchy', 'grand_duchy']) === true) {
-            $query = User::where('peerages.lands',
-                str_replace(' Steading', '', $this->chapter_name))->where('peerages.title', $title);
+            $query = User::where(
+                'peerages.lands',
+                str_replace(' Steading', '', $this->chapter_name)
+            )->where('peerages.title', $title);
 
             if ($allow_courtesy === false) {
                 $query = $query->where('peerages.courtesy', '!=', true);
@@ -429,8 +431,10 @@ class Chapter extends Eloquent
             return $query->first();
         } elseif ($this->chapter_type == 'keep') {
             // Keeps don't have land, we need to do a slightly different query
-            return User::where('peerages.postnominal', 'KSK')->where('peerages.title', $title)->where('last_name',
-                str_replace(' Keep', '', $this->chapter_name))->first();
+            return User::where('peerages.postnominal', 'KSK')->where('peerages.title', $title)->where(
+                'last_name',
+                str_replace(' Keep', '', $this->chapter_name)
+            )->first();
         }
 
         return [];
@@ -527,9 +531,11 @@ class Chapter extends Eloquent
                 // A courtesty title can't hold the first slot
 
                 foreach (explode('|', $position) as $display) {
-                    $user = $this->getCommandBillet($display,
+                    $user = $this->getCommandBillet(
+                        $display,
                         isset($billetInfo['exact']) === true ? $billetInfo['exact'] : true,
-                        isset($billetInfo['allow_courtesy']) === true ? $billetInfo['allow_courtesy'] : true);
+                        isset($billetInfo['allow_courtesy']) === true ? $billetInfo['allow_courtesy'] : true
+                    );
 
                     if (is_a($user, 'App\User') === true) {
                         break 1;

@@ -238,7 +238,8 @@ class ChapterController extends Controller
         $types =
             Type::whereIn(
                 'chapter_type',
-                MedusaConfig::get('chapter.types', ['ship', 'station']))
+                MedusaConfig::get('chapter.types', ['ship', 'station'])
+            )
                 ->orderBy('chapter_description')
                 ->get(
                     ['chapter_type', 'chapter_description']
@@ -497,7 +498,7 @@ class ChapterController extends Controller
                     get_class($billetInfo['user']) == 'App\User') {
                     $user = $billetInfo['user'];
                     switch (substr($user->rank['grade'], 0, 1)) {
-                        case 'E' :
+                        case 'E':
                             $exam = $user->getHighestEnlistedExam();
                             break;
                         case 'W':
@@ -613,6 +614,7 @@ class ChapterController extends Controller
                 ' ',
                 '_',
                 $chapter->chapter_name
-            ).'_roster.csv');
+            ).'_roster.csv'
+        );
     }
 }

@@ -937,7 +937,8 @@ class UserController extends Controller
                     [
                         'status'  => 'success',
                         'message' => 'User created',
-                    ]);
+                    ]
+                );
             }
         } else {
             return view('thankyou');
@@ -2243,8 +2244,7 @@ class UserController extends Controller
 
         // Count the number of awards that are in the future
         foreach ($awardDates as $date) {
-            if ($today->lt(Carbon::createFromFormat('Y-m-d H', $date.' 0')->addDays(config('awards.display_days'))
-            )) {
+            if ($today->lt(Carbon::createFromFormat('Y-m-d H', $date.' 0')->addDays(config('awards.display_days')))) {
                 $numPending++;
             }
         }
