@@ -356,7 +356,7 @@
 
     <div class="row form-group">
         <div class=" col-sm-3">
-            Chapter Activites, Last 60 Days:
+            Chapter Activities, Last 60 Days:
         </div>
         <div class=" col-sm-9">
             {!!Form::textarea('activities', null, ['class' => 'form-control'])!!}
