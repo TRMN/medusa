@@ -41,7 +41,7 @@ class ImportGrades extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // Get the current setting
 

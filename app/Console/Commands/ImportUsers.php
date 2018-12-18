@@ -98,7 +98,7 @@ class ImportUsers extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // Get the list of countries
         $results = Countries::getList();

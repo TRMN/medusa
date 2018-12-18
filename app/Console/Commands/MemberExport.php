@@ -37,7 +37,7 @@ class MemberExport extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         $options = $this->option();
 
