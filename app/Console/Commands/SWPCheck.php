@@ -39,7 +39,6 @@ class SWPCheck extends Command
      */
     public function handle()
     {
-        /** @var \App\User $user */
         $count = 0;
         foreach (\App\User::activeUsers() as $user) {
             // Check for SWP qualification.  This is for existing SWP's that may
