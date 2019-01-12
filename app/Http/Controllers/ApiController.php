@@ -11,15 +11,12 @@ use App\Korders;
 use App\MedusaConfig;
 use App\Rating;
 use App\User;
-use Illuminate\Support\Facades\Auth;
-use \Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Webpatser\Countries\Countries;
-use \Log;
 
 class ApiController extends Controller
 {
-
     public function getBranchList()
     {
         return Response::json(Branch::getBranchList());
@@ -62,17 +59,18 @@ class ApiController extends Controller
         $grades = [];
 
         foreach ($ratings as $grade => $rate) {
-            $grades[$grade] = $this->mbTrim($rate) . ' (' . $grade . ')';
+            $grades[$grade] = $this->mbTrim($rate).' ('.$grade.')';
         }
 
         return $grades;
     }
 
     /**
-     * Trim whitespace from mb_strings
+     * Trim whitespace from mb_strings.
      *
      * @param $string
      * @param string $trim_chars
+     *
      * @return mixed
      */
     private function mbTrim($string, $trim_chars = '\s')
@@ -196,18 +194,18 @@ class ApiController extends Controller
                 User::where('member_id', '=', \Request::get('member_id'))->first();
 
             $ext = \Request::file('file')->getClientOriginalExtension();
-            $fileName = $user->member_id . '.' . $ext;
+            $fileName = $user->member_id.'.'.$ext;
 
-            \Request::file('file')->move(public_path() . '/photos', $fileName);
+            \Request::file('file')->move(public_path().'/photos', $fileName);
 
             // File uploaded, add filename to user record
-            $user->filePhoto = '/photos/' . $fileName;
+            $user->filePhoto = '/photos/'.$fileName;
 
             $this->writeAuditTrail(
-                (string)\Auth::user()->id,
+                (string) \Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->_id,
+                (string) $user->_id,
                 $user->toJson(),
                 'ApiController@savePhoto'
             );
@@ -254,32 +252,32 @@ class ApiController extends Controller
                                 $query->where(
                                     'member_id',
                                     'like',
-                                    '%' . $terms[0] . '%'
+                                    '%'.$terms[0].'%'
                                 )
                                       ->orWhere(
                                           'first_name',
                                           'like',
-                                          $terms[0] . '%'
+                                          $terms[0].'%'
                                       )
                                       ->orWhere(
                                           'last_name',
                                           'like',
-                                          $terms[0] . '%'
+                                          $terms[0].'%'
                                       );
                             }
                         );
                 break;
             case 2:
                 $query =
-                    User::where('first_name', 'like', $terms[0] . '%')
-                        ->where('last_name', 'like', $terms[1] . '%')
+                    User::where('first_name', 'like', $terms[0].'%')
+                        ->where('last_name', 'like', $terms[1].'%')
                         ->where('registration_status', '=', 'Active');
                 break;
             default:
                 $query =
-                    User::where('first_name', 'like', $terms[0] . '%')
-                        ->where('middle_name', 'like', $terms[1] . '%')
-                        ->where('last_name', 'like', $terms[2] . '%')
+                    User::where('first_name', 'like', $terms[0].'%')
+                        ->where('middle_name', 'like', $terms[1].'%')
+                        ->where('last_name', 'like', $terms[2].'%')
                         ->where('registration_status', '=', 'Active');
         }
 
@@ -290,14 +288,14 @@ class ApiController extends Controller
         foreach ($results as $member) {
             $suggestions[] =
                 [
-                    'value' => $member->member_id . ' ' . $member->first_name . ' ' .
+                    'value' => $member->member_id.' '.$member->first_name.' '.
                                (!empty($member->middle_name) ?
-                                   $member->middle_name . ' ' : '') .
-                               $member->last_name .
-                               (!empty($member->suffix) ? ' ' . $member->suffix :
-                                   '') . ' (' . $member->getAssignmentName(
+                                   $member->middle_name.' ' : '').
+                               $member->last_name.
+                               (!empty($member->suffix) ? ' '.$member->suffix :
+                                   '').' ('.$member->getAssignmentName(
                                        'primary'
-                                   ) . ')',
+                                   ).')',
                     'data'  => $member->id,
                 ];
         }
@@ -317,7 +315,7 @@ class ApiController extends Controller
 
         $results =
             Chapter::orderBy('chapter_name', 'asc')
-                   ->where('chapter_name', 'like', '%' . $query . '%')
+                   ->where('chapter_name', 'like', '%'.$query.'%')
                    ->whereNull('decommission_date')
                    ->get();
 
@@ -343,8 +341,8 @@ class ApiController extends Controller
         }
 
         $results =
-            ExamList::where('name', 'like', '%' . $query . '%')
-                    ->orWhere('exam_id', 'like', '%' . $query . '%')
+            ExamList::where('name', 'like', '%'.$query.'%')
+                    ->orWhere('exam_id', 'like', '%'.$query.'%')
                     ->get();
 
         $suggestions = [];
@@ -353,7 +351,7 @@ class ApiController extends Controller
             if ($exam->enabled === true) {
                 $suggestions[] =
                     [
-                        'value' => $exam->name . ' (' . $exam->exam_id . ')',
+                        'value' => $exam->name.' ('.$exam->exam_id.')',
                         'data'  => $exam->exam_id,
                     ];
             }
@@ -381,6 +379,7 @@ class ApiController extends Controller
         if (is_object($user) === false) {
             return Response::json(['error' => 'Invalid User']);
         }
+
         return Response::json(
             $user->checkMemberIn(
                 $event,
@@ -407,6 +406,7 @@ class ApiController extends Controller
                     return view('ribbonrack', ['user' => $user]);
                 }
             }
+
             return '';
         }
     }
@@ -429,7 +429,7 @@ class ApiController extends Controller
             if ($status === true) {
                 $user->addServiceHistoryEntry([
                       'timestamp' => time(),
-                      'event'     => ucfirst($request->input('path')) . ' path selected',
+                      'event'     => ucfirst($request->input('path')).' path selected',
                       ]);
             }
 
@@ -457,7 +457,7 @@ class ApiController extends Controller
         if ($errors > 0) {
             return Response::json(
                 ['status' => 'error',
-                 'msg'    => 'There was a problem updating one or more awards']
+                 'msg'    => 'There was a problem updating one or more awards', ]
             );
         } else {
             return Response::json(['status' => 'ok']);
@@ -522,7 +522,7 @@ class ApiController extends Controller
 
         return Response::json(
             ['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check,
-             'pinfo' => $promotionInfo]
+             'pinfo' => $promotionInfo, ]
         );
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class Wings extends Migration
@@ -14,38 +12,38 @@ class Wings extends Migration
     public function up()
     {
         $config = [
-            "Aerospace Wings" => [
-                "EAW",
-                "OAW",
-                "ESAW",
-                "OSAW",
-                "EMAW",
-                "OMAW"
+            'Aerospace Wings' => [
+                'EAW',
+                'OAW',
+                'ESAW',
+                'OSAW',
+                'EMAW',
+                'OMAW',
             ],
-            "Navigator Wings" => [
-                "ENW",
-                "ONW",
-                "ESNW",
-                "OSNW",
-                "EMNW",
-                "OMNW"
+            'Navigator Wings' => [
+                'ENW',
+                'ONW',
+                'ESNW',
+                'OSNW',
+                'EMNW',
+                'OMNW',
             ],
-            "Observer Wings" => [
-                "EOW",
-                "OOW",
-                "ESOW",
-                "OSOW",
-                "EMOW",
-                "OMOW"
+            'Observer Wings' => [
+                'EOW',
+                'OOW',
+                'ESOW',
+                'OSOW',
+                'EMOW',
+                'OMOW',
             ],
-            "Simulator Wings" => [
-                "ESW",
-                "OSW",
-                "ESSW",
-                "OSSW",
-                "EMSW",
-                "OMSW"
-            ]
+            'Simulator Wings' => [
+                'ESW',
+                'OSW',
+                'ESSW',
+                'OSSW',
+                'EMSW',
+                'OMSW',
+            ],
         ];
 
         \App\MedusaConfig::set('awards.wings', $config);

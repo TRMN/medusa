@@ -1,11 +1,13 @@
-<?php namespace App\Providers;
+<?php
 
-use Illuminate\Support\ServiceProvider;
+namespace App\Providers;
+
 use App\Services\OAuthService;
+use Illuminate\Support\ServiceProvider;
 
 class OAuthServiceProvider extends ServiceProvider
 {
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     public function register()
     {
         $this->app->singleton(

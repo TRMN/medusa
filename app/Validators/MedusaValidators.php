@@ -3,19 +3,19 @@
 namespace App\Validators;
 
 use App\Exam;
+use App\Permissions\MedusaPermissions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
-use App\Permissions\MedusaPermissions;
 
 class MedusaValidators extends Validator
 {
     use MedusaPermissions;
 
     private $custom_messages = [
-        'is_grader' => 'You may only edit exam scores that you have entered or do not have a failing grade',
-        'not_self' => 'You may not enter an exam score for yourself',
-        'post_dated' => 'You may not enter an exam score with a date in the future',
+        'is_grader'   => 'You may only edit exam scores that you have entered or do not have a failing grade',
+        'not_self'    => 'You may not enter an exam score for yourself',
+        'post_dated'  => 'You may not enter an exam score with a date in the future',
         'valid_grade' => 'Only PASS, BETA, CREATE, 0 or a score between 70 and 100 are valid',
     ];
 
@@ -27,7 +27,7 @@ class MedusaValidators extends Validator
     }
 
     /**
-     * Setup any customizations etc
+     * Setup any customizations etc.
      *
      * @return void
      */
@@ -64,12 +64,12 @@ class MedusaValidators extends Validator
             return true; // No exams found, this is a new entry, allow it.
         }
 
-        return ($exams->exams[$value]['entered_by'] == Auth::user()->id);
+        return $exams->exams[$value]['entered_by'] == Auth::user()->id;
     }
 
     protected function validateNotSelf($attribute, $value, $param)
     {
-        return ($value != Auth::user()->member_id);
+        return $value != Auth::user()->member_id;
     }
 
     protected function validatePostDated($attribute, $value, $param)
@@ -88,7 +88,7 @@ class MedusaValidators extends Validator
             // Not a numeric score, check for valid alpha scores.
             return in_array(strtoupper($value), ['PASS', 'BETA', 'CREATE']);
         } else {
-            return (intval($value) === 0 || ($value >= 70 && $value <= 100));
+            return intval($value) === 0 || ($value >= 70 && $value <= 100);
         }
     }
 }

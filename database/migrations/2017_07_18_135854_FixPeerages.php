@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class FixPeerages extends Migration
@@ -13,7 +11,7 @@ class FixPeerages extends Migration
      */
     public function up()
     {
-        foreach(App\User::all() as $member) {
+        foreach (App\User::all() as $member) {
             if (isset($member->peerages) === true) {
                 $member->peerages = array_values($member->peerages);
                 $member->save();

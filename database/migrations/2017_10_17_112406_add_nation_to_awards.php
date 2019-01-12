@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddNationToAwards extends Migration
@@ -15,11 +13,10 @@ class AddNationToAwards extends Migration
     {
         $awards = \App\Award::all();
 
-        foreach($awards as $award) {
+        foreach ($awards as $award) {
             $award->star_nation = 'manticore';
             $award->save();
         }
-
     }
 
     /**
@@ -31,7 +28,7 @@ class AddNationToAwards extends Migration
     {
         $awards = \App\Award::all();
 
-        foreach($awards as $award) {
+        foreach ($awards as $award) {
             $award->unset('star_nation');
             $award->save();
         }

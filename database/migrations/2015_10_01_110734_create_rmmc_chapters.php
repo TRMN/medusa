@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateRmmcChapters extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -110,12 +108,12 @@ class CreateRmmcChapters extends Migration
 
         foreach ($mardets as $mardet) {
             // Look up the ship
-            $ship = \App\Chapter::where('chapter_name', '=', 'HMS ' . $mardet[0])->firstOrFail();
+            $ship = \App\Chapter::where('chapter_name', '=', 'HMS '.$mardet[0])->firstOrFail();
 
             $mardet[1] = date('Y-m-d', strtotime($mardet[1]));
 
             $this->createChapter(
-                'MARDET ' . $mardet[0],
+                'MARDET '.$mardet[0],
                 $rmmcEchelonTypes[$mardet[2]],
                 '',
                 'RMMC',
@@ -142,9 +140,9 @@ class CreateRmmcChapters extends Migration
         //
     }
 
-    function createChapter(
+    public function createChapter(
         $name,
-        $type = "ship",
+        $type = 'ship',
         $hull_number = '',
         $branch = '',
         $assignedTo = null,
@@ -160,7 +158,7 @@ class CreateRmmcChapters extends Migration
                     'chapter_type' => $type,
                     'hull_number'  => $hull_number,
                     'branch'       => $branch,
-                    'joinable'     => $joinable
+                    'joinable'     => $joinable,
                 ];
 
             if (is_null($assignedTo) === false) {
@@ -179,9 +177,11 @@ class CreateRmmcChapters extends Migration
                 json_encode($record),
                 'create rmmc chapters'
             );
+
             return \App\Chapter::create($record);
         } else {
-            echo "Skipping " . $name . ", unit already exists.\n";
+            echo 'Skipping '.$name.", unit already exists.\n";
+
             return $query;
         }
     }

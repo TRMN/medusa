@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Award;
 
 class NewRibbons extends Migration
 {
@@ -107,6 +104,7 @@ class NewRibbons extends Migration
         "group_label" : "Pistol Marksmanship"
 	}
 ]';
+
     /**
      * Run the migrations.
      *

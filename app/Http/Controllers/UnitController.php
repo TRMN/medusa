@@ -7,7 +7,6 @@ use App\Echelons\MedusaEchelons;
 
 class UnitController extends Controller
 {
-
     private $chapterTypes = ['bivouac', 'barracks', 'outpost', 'fort', 'planetary', 'theater'];
     private $permissions = ['ADD' => 'ADD_UNIT', 'EDIT' => 'EDIT_UNIT', 'DELETE' => 'DELETE_UNIT'];
     private $auditName = 'UnitController';
@@ -28,7 +27,7 @@ class UnitController extends Controller
 
         $hq = Chapter::where('chapter_name', '=', "King William's Tower")->first();
 
-        $chapters[$hq->id] = $hq->chapter_name . ' (' . $hq->branch . ')';
+        $chapters[$hq->id] = $hq->chapter_name.' ('.$hq->branch.')';
 
         asort($chapters);
 

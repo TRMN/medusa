@@ -8,21 +8,20 @@ use App\MedusaConfig;
 use App\Permissions\MedusaPermissions;
 use App\Type;
 use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use \League\Csv\Writer;
-use Illuminate\Http\Request;
+use League\Csv\Writer;
 
 class ChapterController extends Controller
 {
     use MedusaPermissions;
 
     /**
-     * Get sorted and filtered slice of roster via ajax
+     * Get sorted and filtered slice of roster via ajax.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Chapter             $chapter
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -49,7 +48,7 @@ class ChapterController extends Controller
 
         if (empty($search['value']) === false) {
             // Have search term, filter the results
-            $searchTerm = '%' . $search['value'] . '%';
+            $searchTerm = '%'.$search['value'].'%';
 
             $query = $query->where(
                 function ($query) use ($searchTerm) {
@@ -123,35 +122,35 @@ class ChapterController extends Controller
         $ret['data'] = [];
 
         /**
-         * Process the results
+         * Process the results.
          *
-         * @var User $user
+         * @var User
          */
         foreach ($users as $user) {
             if ($isInChainOfCommand === true || $viewMembers === true) {
                 $highestExams = '';
-                foreach($user->getHighestExams() as $class => $exam) {
-                    $highestExams .= $class . ': ' .$exam . '<br />';
+                foreach ($user->getHighestExams() as $class => $exam) {
+                    $highestExams .= $class.': '.$exam.'<br />';
                 }
 
-                $name = '<a href="/user/' . $user->id . '"' .
-                        (is_null($user->promotionStatus) === true? '' : ' class="promotable"') .
-                        '>' . $user->getFullName(true) . '</a>';
+                $name = '<a href="/user/'.$user->id.'"'.
+                        (is_null($user->promotionStatus) === true ? '' : ' class="promotable"').
+                        '>'.$user->getFullName(true).'</a>';
 
                 $ret['data'][] = [
-                    '<span class="promotable">' . $user->promotionStatus . '</span>',
+                    '<span class="promotable">'.$user->promotionStatus.'</span>',
                     $name,
                     $user->member_id,
                     $user->path ? ucfirst($user->path) : 'Service',
-                    number_format((float)$user->getTotalPromotionPoints(), 2),
+                    number_format((float) $user->getTotalPromotionPoints(), 2),
                     $highestExams,
-                    $user->rank['grade'] . '<br />' . $user->getGreeting(),
-                    is_null($tig = $user->getTimeInGrade(true))?'N/A':$tig,
+                    $user->rank['grade'].'<br />'.$user->getGreeting(),
+                    is_null($tig = $user->getTimeInGrade(true)) ? 'N/A' : $tig,
                     $user->getBilletForChapter($chapter->id),
-                    $user->branch .
+                    $user->branch.
                     (($user->branch == 'RMMM' || $user->branch == 'CIVIL') &&
-                    empty ($user->rating) === false ?
-                        ' <span class="volkhov">( ' . substr($user->getRate(), 0, 1) .
+                    empty($user->rating) === false ?
+                        ' <span class="volkhov">( '.substr($user->getRate(), 0, 1).
                         ' )</span>' : ''),
                     $user->city,
                     $user->state_province,
@@ -159,8 +158,8 @@ class ChapterController extends Controller
             } else {
                 $ret['data'][] = [
                   $user->getFullName(true),
-                  $user->rank['grade'] . '<br />' . $user->getGreeting(),
-                  is_null($tig = $user->getTimeInGrade(true))?'N/A':$tig,
+                  $user->rank['grade'].'<br />'.$user->getGreeting(),
+                  is_null($tig = $user->getTimeInGrade(true)) ? 'N/A' : $tig,
                   $user->getBilletForChapter($chapter->id),
                   $user->branch,
                 ];
@@ -171,7 +170,7 @@ class ChapterController extends Controller
     }
 
     /**
-     * Show the list of chapters
+     * Show the list of chapters.
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -188,7 +187,7 @@ class ChapterController extends Controller
     }
 
     /**
-     * Show a particular chapter
+     * Show a particular chapter.
      *
      * @param \App\Chapter $chapter
      *
@@ -217,16 +216,16 @@ class ChapterController extends Controller
         return view(
             'chapter.show',
             [
-                'detail' => $chapter,
-                'higher' => $parentChapter,
+                'detail'   => $chapter,
+                'higher'   => $parentChapter,
                 'includes' => $includes,
-                'command' => $commandCrew,
+                'command'  => $commandCrew,
             ]
         );
     }
 
     /**
-     * Show the form for creating a new chapter
+     * Show the form for creating a new chapter.
      *
      * @return Response
      */
@@ -261,7 +260,7 @@ class ChapterController extends Controller
             'chapter.create',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => new Chapter,
+                'chapter'      => new Chapter(),
                 'branches'     => Branch::getNavalBranchList(),
                 'fleets'       => ['' => 'Select a Fleet'] + $chapters,
             ]
@@ -269,7 +268,7 @@ class ChapterController extends Controller
     }
 
     /**
-     * Edit a Chapters record
+     * Edit a Chapters record.
      *
      * @param \App\Chapter $chapter
      *
@@ -277,7 +276,6 @@ class ChapterController extends Controller
      */
     public function edit(Chapter $chapter)
     {
-
         if (($redirect = $this->checkPermissions('EDIT_SHIP')) !== true) {
             return $redirect;
         }
@@ -309,7 +307,7 @@ class ChapterController extends Controller
         asort($chapters);
 
         $crew =
-            User::where('assignment.chapter_id', '=', (string)$chapter->_id)
+            User::where('assignment.chapter_id', '=', (string) $chapter->_id)
                 ->get();
 
         return view(
@@ -325,7 +323,7 @@ class ChapterController extends Controller
     }
 
     /**
-     * Process an update to a chapter
+     * Process an update to a chapter.
      *
      * @param \App\Chapter $chapter
      *
@@ -367,15 +365,15 @@ class ChapterController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
             'ChapterController@update'
         );
 
-        $chapter->save();;
+        $chapter->save();
 
         Cache::flush();
 
@@ -383,21 +381,19 @@ class ChapterController extends Controller
     }
 
     /**
-     * Save a newly created chapter
+     * Save a newly created chapter.
      *
      * @return Responsedb.
      */
-    public function store()
+    public function store(Request $request)
     {
         if (($redirect = $this->checkPermissions('COMMISSION_SHIP')) !== true) {
             return $redirect;
         }
 
-        $validator = Validator::make($data = Request::all(), Chapter::$rules);
+        $this->validate($request, Chapter::$rules);
 
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+        $data = $request->all();
 
         foreach ($data as $k => $v) {
             if (empty($data[$k]) === true) {
@@ -406,7 +402,7 @@ class ChapterController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'create',
             'chapters',
             null,
@@ -420,7 +416,7 @@ class ChapterController extends Controller
     }
 
     /**
-     * Decommission a chapter
+     * Decommission a chapter.
      *
      * @param \App\Chapter $chapter
      *
@@ -438,7 +434,7 @@ class ChapterController extends Controller
 
         return view(
             'chapter.confirm-decommission',
-            ['chapter' => $chapter, 'numCrew' => $crew,]
+            ['chapter' => $chapter, 'numCrew' => $crew]
         );
     }
 
@@ -461,10 +457,10 @@ class ChapterController extends Controller
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
             'ChapterController@destroy'
         );
@@ -475,7 +471,7 @@ class ChapterController extends Controller
     }
 
     /**
-     * Create a list of the command triads
+     * Create a list of the command triads.
      *
      * @return bool|\Illuminate\Http\RedirectResponse
      */
@@ -501,7 +497,7 @@ class ChapterController extends Controller
                     get_class($billetInfo['user']) == 'App\User') {
                     $user = $billetInfo['user'];
                     switch (substr($user->rank['grade'], 0, 1)) {
-                        case 'E':
+                        case 'E' :
                             $exam = $user->getHighestEnlistedExam();
                             break;
                         case 'W':
@@ -519,7 +515,7 @@ class ChapterController extends Controller
                         $examID = key($exam);
                         $examInfo = "$examID,{$exam[$examID]['date']}";
                     } else {
-                        $examInfo = ",";
+                        $examInfo = ',';
                     }
 
                     $output[] =
@@ -534,25 +530,26 @@ class ChapterController extends Controller
         header('Pragma: public');   // required
         header('Expires: 0');       // no cache
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s'));
+        header('Last-Modified: '.gmdate('D, d M Y H:i:s'));
         header('Cache-Control: private', false);
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="triad_report.csv"');
         header('Content-Transfer-Encoding: base64');
         header('Connection: close');
         foreach ($output as $line) {
-            print $line;
+            echo $line;
         }
         exit();
     }
 
     /**
-     * Export a chapters roster
+     * Export a chapters roster.
      *
      * @param \App\Chapter $chapter
      *
-     * @return bool|\Illuminate\Http\RedirectResponse
      * @throws \League\Csv\CannotInsertRecord
+     *
+     * @return bool|\Illuminate\Http\RedirectResponse
      */
     public function exportRoster(Chapter $chapter)
     {
@@ -612,10 +609,10 @@ class ChapterController extends Controller
         }
 
         $csv->output(
-            date('Y-m-d') . '_' . str_replace(
+            date('Y-m-d').'_'.str_replace(
                 ' ',
                 '_',
                 $chapter->chapter_name
-            ) . '_roster.csv');
+            ).'_roster.csv');
     }
 }

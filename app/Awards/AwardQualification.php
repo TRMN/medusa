@@ -8,21 +8,18 @@ use App\Utility\MedusaUtility;
 use Carbon\Carbon;
 
 /**
- * Trait AwardQualification
- *
- * @package App\Awards
- *
- * Functions to check various award qualifications
+ * Trait AwardQualification.
  */
 trait AwardQualification
 {
     /**
-     * Check if a member qualifies for a MCAM and if so, how many
+     * Check if a member qualifies for a MCAM and if so, how many.
      *
      * @param bool $isNewAward
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public function mcamQual($isNewAward = true)
     {
@@ -42,7 +39,7 @@ trait AwardQualification
 
                 $numExams -= 40;
 
-                $numMCAM += (int)($numExams / 35);
+                $numMCAM += (int) ($numExams / 35);
             }
         }
 
@@ -93,20 +90,23 @@ trait AwardQualification
                     $numMCAM,
                     [
                         'timestamp' => strtotime($awardDate),
-                        'event'     => MedusaUtility::ordinal($numMCAM) .
-                                       ' Manticore Combat Action Medal earned on ' .
+                        'event'     => MedusaUtility::ordinal($numMCAM).
+                                       ' Manticore Combat Action Medal earned on '.
                                        $awardDate,
                     ]
                 );
+
                 return true;
             }
+
             return false;
         }
+
         return false;
     }
 
     /**
-     * How many more exams does the member need to their next MCAM
+     * How many more exams does the member need to their next MCAM.
      *
      * @return int|null
      */
@@ -117,12 +117,10 @@ trait AwardQualification
 
             return (($numMcams * 35) + 5) - count($this->getExamList());
         }
-
-        return null;
     }
 
     /**
-     * Percentage left to next MCAM
+     * Percentage left to next MCAM.
      *
      * @return float
      */
@@ -132,7 +130,7 @@ trait AwardQualification
     }
 
     /**
-     * Percentage of next MCAM done
+     * Percentage of next MCAM done.
      *
      * @return float|int
      */
@@ -142,12 +140,13 @@ trait AwardQualification
     }
 
     /**
-     * Check if a member qualifies for a SWP
+     * Check if a member qualifies for a SWP.
      *
      * @param bool $isNewAward
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public function swpQual($isNewAward = true)
     {
@@ -183,14 +182,15 @@ trait AwardQualification
                 try {
                     $this->addUpdateAward(
                         [
-                            $type . 'SWP' => [
+                            $type.'SWP' => [
                                 'count'      => 1,
                                 'location'   => 'TL',
-                                'award_date' => ['1970-01-01',],
+                                'award_date' => ['1970-01-01'],
                                 'display'    => false,
                             ],
                         ]
                     );
+
                     return true;
                 } catch (\Exception $e) {
                     return false;
@@ -210,31 +210,32 @@ trait AwardQualification
 
         $swpBranches = MedusaConfig::get('awards.swp.branches', ['RMN', 'RMMC']);
 
+        // Determine member's rank classification
+        $swpType = null;
+        switch (substr($this->rank['grade'], 0, 1)) {
+            case 'E':
+                $swpType = 'Enlisted';
+                break;
+            case 'W':
+            case 'O':
+            case 'F':
+            case 'M':
+                $swpType = 'Officer';
+                break;
+            case 'C':
+                if (substr($this->rank['grade'], 2) < 12) {
+                    $swpType = 'Enlisted';
+                } else {
+                    $swpType = 'Officer';
+                }
+        }
+
         if (is_null($swpQual) === false &&
             in_array($this->branch, $swpBranches) === true &&
-            $this->hasAward('ESWP') === false &&
-            $this->hasAward('OSWP') === false) {
-            // Only process if the qualifications are defined,  it's a branch we check and they don't have an E|O SWP
-
-            $swpType = null;
-
-            switch (substr($this->rank['grade'], 0, 1)) {
-                case 'E':
-                    $swpType = 'Enlisted';
-                    break;
-                case 'W':
-                case 'O':
-                case 'F':
-                case 'M':
-                    $swpType = 'Officer';
-                    break;
-                case 'C':
-                    if (substr($this->rank['grade'], 2) < 12) {
-                        $swpType = 'Enlisted';
-                    } else {
-                        $swpType = 'Officer';
-                    }
-            }
+            (($swpType === 'Enlisted' && $this->hasAward('ESWP') === false) ||
+            ($swpType === 'Officer' && $this->hasAward('OSWP') === false))) {
+            // Only process if the qualifications are defined,  it's a branch we check,
+            // and they don't have their specific E|O SWP
 
             // Drill down to the specific branch and officer or enlisted
 
@@ -278,10 +279,10 @@ trait AwardQualification
 
                 $results = $this->addUpdateAward(
                     [
-                        substr($swpType, 0, 1) . 'SWP' => [
+                        substr($swpType, 0, 1).'SWP' => [
                             'count'      => 1,
                             'location'   => 'TL',
-                            'award_date' => [$awardDate,],
+                            'award_date' => [$awardDate],
                             'display'    => false,
                         ],
                     ]);
@@ -291,25 +292,28 @@ trait AwardQualification
                     // their history and log it for BuTrain
 
                     $this->logAward(
-                        substr($swpType, 0, 1) . 'SWP',
+                        substr($swpType, 0, 1).'SWP',
                         1,
                         [
                             'timestamp' => strtotime($awardDate),
-                            'event'     => $this->branch . ' ' . $swpType .
-                                           ' Space Warfare Pin earned on ' .
+                            'event'     => $this->branch.' '.$swpType.
+                                           ' Space Warfare Pin earned on '.
                                            $awardDate,
                         ]
                     );
                 }
+
                 return true;
             }
+
             return false;
         }
+
         return false;
     }
 
     /**
-     * Check if it's a passing score
+     * Check if it's a passing score.
      *
      * @param string $score
      *
@@ -339,8 +343,9 @@ trait AwardQualification
      * @param $qty
      * @param $event
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     private function logAward($award, $qty, $event)
     {

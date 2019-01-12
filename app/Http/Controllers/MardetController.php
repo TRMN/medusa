@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Chapter;
 use App\Echelons\MedusaEchelons;
 
-
 class MardetController extends Controller
 {
-
     private $chapterTypes = ['shuttle', 'section', 'squad', 'platoon', 'company', 'battalion', 'corps', 'exp_force', 'regiment'];
     private $permissions = ['ADD' => 'ADD_MARDET', 'EDIT' => 'EDIT_MARDET', 'DELETE' => 'DELETE_MARDET'];
     private $auditName = 'MardetController';

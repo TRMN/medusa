@@ -8,16 +8,15 @@ use App\Type;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * Class EchelonController
+ * Class EchelonController.
  */
 class EchelonController extends Controller
 {
-
     private $chapterTypes = ['district', 'fleet', 'task_force', 'task_group', 'squadron', 'division'];
     private $permissions = ['ADD' => 'CREATE_ECHELON', 'EDIT' => 'CREATE_ECHELON', 'DELETE' => 'DEL_ECHELON'];
     private $auditName = 'EchelonController';
@@ -27,7 +26,7 @@ class EchelonController extends Controller
 
     /**
      * Display a listing of the resource.
-     * GET /echelon
+     * GET /echelon.
      *
      * @return Response
      */
@@ -40,7 +39,7 @@ class EchelonController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * GET /echelon/create
+     * GET /echelon/create.
      *
      * @return Response
      */
@@ -77,7 +76,7 @@ class EchelonController extends Controller
             'echelon.create',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => new Chapter,
+                'chapter'      => new Chapter(),
                 'branches'     => Branch::getNavalBranchList(),
                 'fleets'       => ['' => 'Select an Echelon'] + $chapters,
             ]
@@ -86,7 +85,7 @@ class EchelonController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /echelon
+     * POST /echelon.
      *
      * @return Response
      */
@@ -111,7 +110,7 @@ class EchelonController extends Controller
         $data['joinable'] = false;
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'create',
             'chapters',
             null,
@@ -126,9 +125,10 @@ class EchelonController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /echelon/{id}
+     * GET /echelon/{id}.
      *
-     * @param  int  $chapter
+     * @param int $chapter
+     *
      * @return Response
      */
     public function show(Chapter $chapter)
@@ -152,16 +152,17 @@ class EchelonController extends Controller
                 'higher'   => $parentChapter,
                 'includes' => $includes,
                 'command'  => $commandCrew,
-                'crew'     => $crew
+                'crew'     => $crew,
             ]
         );
     }
 
     /**
      * Show the form for editing the specified resource.
-     * GET /echelon/{id}/edit
+     * GET /echelon/{id}/edit.
      *
-     * @param  int  $chapter
+     * @param int $chapter
+     *
      * @return Response
      */
     public function edit(Chapter $chapter)
@@ -195,9 +196,9 @@ class EchelonController extends Controller
 
         asort($chapters);
 
-        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
 
         return view(
             'echelon.edit',
@@ -213,9 +214,10 @@ class EchelonController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /echelon/{id}
+     * PUT /echelon/{id}.
      *
-     * @param  int  $chapter
+     * @param int $chapter
+     *
      * @return Response
      */
     public function update(Chapter $chapter)
@@ -257,16 +259,15 @@ class EchelonController extends Controller
         $chapter->joinable = false;
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
             'EchelonController@update'
         );
 
         $chapter->save();
-        ;
 
         Cache::flush();
 
@@ -275,9 +276,10 @@ class EchelonController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * DELETE /echelon/{id}
+     * DELETE /echelon/{id}.
      *
-     * @param  int  $chapter
+     * @param int $chapter
+     *
      * @return Response
      */
     public function destroy(Chapter $chapter)
@@ -290,10 +292,10 @@ class EchelonController extends Controller
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
             'EchelonController@update'
         );
@@ -313,6 +315,6 @@ class EchelonController extends Controller
 
         $childUnits = count($chapter->getChapterIdWithChildren()) - 1;
 
-        return view('echelon.confirm-deactivate', ['chapter' => $chapter, 'numCrew' => $crew + $childUnits,]);
+        return view('echelon.confirm-deactivate', ['chapter' => $chapter, 'numCrew' => $crew + $childUnits]);
     }
 }

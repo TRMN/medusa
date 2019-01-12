@@ -45,29 +45,29 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root'   => storage_path('app'),
         ],
 
         'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'driver'     => 'local',
+            'root'       => storage_path('app/public'),
             'visibility' => 'public',
         ],
         'points' => [
-            'driver' => 'local',
-            'root' => storage_path('app/points'),
+            'driver'     => 'local',
+            'root'       => storage_path('app/points'),
             'visibility' => 'public',
         ],
 
         'arms' => [
-            'driver' => 'local',
-            'root' => public_path() . '/arms',
+            'driver'     => 'local',
+            'root'       => public_path().'/arms',
             'visibility' => 'public',
         ],
 
         's3' => [
             'driver' => 's3',
-            'key' => 'your-key',
+            'key'    => 'your-key',
             'secret' => 'your-secret',
             'region' => 'your-region',
             'bucket' => 'your-bucket',

@@ -155,10 +155,10 @@
             </div>
         @endif
 
-        @if($permsObj->hasPermissions(['VIEW_SFS']) === true)
+        @if($permsObj->hasPermissions(['VIEW_SFC']) === true)
             <h3 class="nav-header lnav">SFC</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_SFS']) === true)
+                @if($permsObj->hasPermissions(['VIEW_SFC']) === true)
                     <a href="{!!route('showBranch', ['branch' => 'SFC'])!!}">Show SFC members</a><br/>
                 @endif
             </div>

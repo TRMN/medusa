@@ -1,22 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
+use GeneaLabs\LaravelCaffeine\Http\Controllers\LaravelCaffeineController;
 //use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
-use Illuminate\Http\Request;
-use GeneaLabs\LaravelCaffeine\Http\Controllers\LaravelCaffeineController;
 
 $dripRoute = config('genealabs-laravel-caffeine.route', 'genealabs/laravel-caffeine/drip');
 Route::get($dripRoute, LaravelCaffeineController::class.'@drip');
 
 $request = Request::capture();
 
-$protocol = ($request->secure()) ? "https:" : "http:";
+$protocol = ($request->secure()) ? 'https:' : 'http:';
 
 $host = $request->server('HTTP_HOST');
 
-$hostFull = $protocol . "//" . $host;
+$hostFull = $protocol.'//'.$host;
 
 if (Auth::check()) {
     $authUser = Auth::user();
@@ -47,21 +47,18 @@ Route::get('oauth/events', 'OAuthController@getScheduledEvents')
 Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth:api');
 Route::get(
     '/.well-known/openid-configuration', function () {
-    return response()->json(
+        return response()->json(
         \App\MedusaConfig::get(
             'openid-configuration',
             [
-                "issuer"                 => "https://medusa.trmn.org",
-                "authorization_endpoint" =>
-                    "https://medusa.trmn.org/oauth/authorize",
-                "token_endpoint"         =>
-                    "https://medusa.trmn.org/oauth/token",
-                "userinfo_endpoint"      =>
-                    "https://medusa.trmn.org/oauth/profile",
+                'issuer'                 => 'https://medusa.trmn.org',
+                'authorization_endpoint' => 'https://medusa.trmn.org/oauth/authorize',
+                'token_endpoint'         => 'https://medusa.trmn.org/oauth/token',
+                'userinfo_endpoint'      => 'https://medusa.trmn.org/oauth/profile',
             ]
         )
     );
-}
+    }
 );
 
 Route::model('oauthclient', 'App\OAuthClient');
@@ -423,7 +420,6 @@ Route::post('/bulkpromote', 'PromotionController@promote')->middleware('auth');
 AdvancedRoute::controller('/upload', 'UploadController');
 AdvancedRoute::controller('/download', 'DownloadController');
 
-
 // API calls
 
 Route::get(
@@ -438,7 +434,7 @@ Route::get(
     '/api/branch/{branchID}/grade',
     'ApiController@getGradesForBranch'
 ); // Get a list of pay grades for that branch
-Route::get('/api/branch/{rating}/{branchID}','ApiController@getGradesForRating');
+Route::get('/api/branch/{rating}/{branchID}', 'ApiController@getGradesForRating');
 Route::get(
     '/api/chapter',
     'ApiController@getChapters'
@@ -513,7 +509,7 @@ Route::post(
     ['uses' => 'ApiController@checkRankQual']
 ); //->middleware('auth');
 
-Route::get('/api/lastexam/{memberid}', function($memberid) {
+Route::get('/api/lastexam/{memberid}', function ($memberid) {
     $exams = \App\Exam::where('member_id', '=', $memberid)->first();
 
     if (isset($exams) === true) {
@@ -525,13 +521,12 @@ Route::get('/api/lastexam/{memberid}', function($memberid) {
 
 Route::get(
     '/getRoutes', function () {
-    foreach (app()->router->getRoutes() as $route) {
-        if (in_array('GET', $route->methods()) === true) {
-            print dirname($route->uri()) . "<br />\n";
+        foreach (app()->router->getRoutes() as $route) {
+            if (in_array('GET', $route->methods()) === true) {
+                echo dirname($route->uri())."<br />\n";
+            }
         }
-
     }
-}
 );
 
 // These MUST be the last two routes
@@ -546,6 +541,6 @@ Route::get(
 
 Route::any(
     '{catchall}', function ($url) {
-    return response()->view('errors.404', [], 404);
-}
+        return response()->view('errors.404', [], 404);
+    }
 )->where('catchall', '(.*)');

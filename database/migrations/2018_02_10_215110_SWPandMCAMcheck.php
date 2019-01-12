@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class SWPandMCAMcheck extends Migration
@@ -11,7 +9,7 @@ class SWPandMCAMcheck extends Migration
      *
      * @return void
      *
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function up()
     {

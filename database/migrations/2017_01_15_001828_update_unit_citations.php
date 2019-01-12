@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateUnitCitations extends Migration
@@ -23,7 +21,7 @@ class UpdateUnitCitations extends Migration
             $ribbon = \App\Award::where('code', '=', $old)->first();
             $ribbon->code = $new;
 
-            if ($new === "LOH") {
+            if ($new === 'LOH') {
                 $ribbon->multiple = false;
             }
 
@@ -48,7 +46,7 @@ class UpdateUnitCitations extends Migration
             $ribbon = \App\Award::where('code', '=', $new)->first();
             $ribbon->code = $old;
 
-            if ($new === "LOH") {
+            if ($new === 'LOH') {
                 $ribbon->multiple = true;
             }
 

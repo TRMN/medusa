@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\URL;
 
 trait MedusaPermissions
 {
-
     public function checkPermissions($permissions)
     {
         if ($this->hasPermissions($permissions) === false) {
@@ -95,7 +94,7 @@ trait MedusaPermissions
     }
 
     /**
-     * Determine if the logged in user is in the chain of command provided user
+     * Determine if the logged in user is in the chain of command provided user.
      *
      * @param User $user
      *
@@ -103,7 +102,6 @@ trait MedusaPermissions
      */
     public function isInChainOfCommand($param)
     {
-
         if ($param instanceof User) {
             //called with a user object, get the id's of all ships/echelons above the users ship/echelon
             $chapterIds = [];
@@ -152,15 +150,14 @@ trait MedusaPermissions
     /**
      * Check if the user has one of the specified permissions
      * (config:permissions.restricted) AND the specified permission
-     * ($permName) is in config:permissions.restricted
+     * ($permName) is in config:permissions.restricted.
      *
      * @param string $permName
      *
-     * @return boolean
+     * @return bool
      */
     public function checkRestrictedAccess(string $permName)
     {
-
         $restrictedPerms = config('permissions.restricted');
 
         if (in_array($permName, $restrictedPerms) === false) {

@@ -97,7 +97,7 @@ REPORT INFORMATION<br><br>
 Promotions Awarded/Requested: @if(empty($report->promotion_actions) === false) {!!nl2br($report->promotion_actions)!!} @endif<br><br>
 Awards Given/Requested: @if(empty($report->award_actions) === false) {!!nl2br($report->award_actions)!!} @endif<br><br>
 Courses Completed: @if(empty($report->courses) === false) {!!nl2br($report->courses)!!} @endif<br><br>
-Chapter Activites, Last 60 Days: @if(empty($report->activities) === false) {!!nl2br($report->activities)!!} @endif<br><br>
+Chapter Activities, Last 60 Days: @if(empty($report->activities) === false) {!!nl2br($report->activities)!!} @endif<br><br>
 Problems: @if(empty($report->problems) === false) {!!nl2br($report->problems)!!} @endif<br><br>
 General Questions: @if(empty($report->questions) === false) {!!nl2br($report->questions)!!} @endif
 

@@ -1,0 +1,36 @@
+server {
+    listen 8080; #Add default_server if you want this to come up for any unmatched hostname
+    server_name medusa.local; # You could also use medsusa.dev, but I've had better luck with .local
+    root /path/to/clone/of/medusa/public; # It's very important to point it at the public directory in the clone of the repo
+
+    add_header X-Frame-Options "SAMEORIGIN";
+
+    index index.php;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    access_log off;
+    error_log  /path/to/log/nginx/medusa.dev-error.log error;
+
+    error_page 404 /index.php;
+
+    sendfile off;
+
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/path/to/php-fpm.sock; # Important that this match the php-fpm config
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}

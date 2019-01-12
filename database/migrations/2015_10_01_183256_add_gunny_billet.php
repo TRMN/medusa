@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddGunnyBillet extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -20,10 +18,10 @@ class AddGunnyBillet extends Migration
             'create',
             'billets',
             null,
-            json_encode(["billet_name" => "Gunny"]),
+            json_encode(['billet_name' => 'Gunny']),
             'add_flag_lt'
         );
-        App\Billet::create(["billet_name" => "Gunny"]);
+        App\Billet::create(['billet_name' => 'Gunny']);
     }
 
     /**

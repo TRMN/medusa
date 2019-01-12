@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddDeputySpacelordBillet extends Migration
@@ -19,20 +18,20 @@ class AddDeputySpacelordBillet extends Migration
             'create',
             'billets',
             null,
-            json_encode(["billet_name" => "Deputy Space Lord"]),
+            json_encode(['billet_name' => 'Deputy Space Lord']),
             'add_deputy_space_lord'
         );
-        App\Billet::create(["billet_name" => "Deputy Space Lord"]);
+        App\Billet::create(['billet_name' => 'Deputy Space Lord']);
 
         $this->writeAuditTrail(
             'system user',
             'create',
             'billets',
             null,
-            json_encode(["billet_name" => "Space Lord"]),
+            json_encode(['billet_name' => 'Space Lord']),
             'add_deputy_space_lord'
         );
-        App\Billet::create(["billet_name" => "Space Lord"]);
+        App\Billet::create(['billet_name' => 'Space Lord']);
     }
 
     /**

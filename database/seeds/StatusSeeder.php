@@ -2,7 +2,6 @@
 
 class StatusSeeder extends Seeder
 {
-
     use \Medusa\Audit\MedusaAudit;
 
     public function run()
@@ -12,7 +11,7 @@ class StatusSeeder extends Seeder
         $statuses = ['Active', 'Denied', 'Pending', 'Suspended', 'Expelled'];
 
         foreach ($statuses as $status) {
-            $this->command->comment('Adding ' . $status);
+            $this->command->comment('Adding '.$status);
 
             $this->writeAuditTrail(
                 'db:seed',
@@ -23,7 +22,7 @@ class StatusSeeder extends Seeder
                 'status'
             );
 
-            Status::create(["status" => $status]);
+            Status::create(['status' => $status]);
         }
     }
 }
