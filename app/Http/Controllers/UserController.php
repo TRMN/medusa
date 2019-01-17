@@ -1887,13 +1887,13 @@ class UserController extends Controller
     public function buildRibbonRack(User $user = null)
     {
         if (($redirect =
-                $this->checkPermissions(['EDIT_SELF'])) !== true
+                $this->checkPermissions(['EDIT_SELF', 'EDIT_RR'], true)) !== true
         ) {
             return $redirect;
         }
 
         if (isset($user->member_id) === false ||
-            (isset($user->member_id) === true && Auth::user()->hasPermissions(['EDIT_MEMBER']) === false)) {
+            (isset($user->member_id) === true && Auth::user()->hasPermissions(['EDIT_RR'], true) === false)) {
             $user = Auth::user();
         }
 
