@@ -37,7 +37,7 @@ class MedusaUtility
         $search = [
             '%CHAPTER%',
             '%CO%',
-            '%COEMAIL',
+            '%COEMAIL%',
             '%5SL%',
             '%MOTA%',
             '%DANT%',

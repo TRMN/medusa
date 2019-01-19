@@ -233,6 +233,6 @@ return [
 
     ],
 
-    'version' => sprintf('%s (Project MEDUSA v%u.%u.%u)', env('CODE_NAME', "Ellen D'Orville"), env('MAJOR_VERSION', 1), env('MINOR_VERSION', 0), env('PATCH_VERSION', 0)),
+    'version' => sprintf('%s (Project MEDUSA v%s)', env('CODE_NAME', "Ellen D'Orville"), env('VERSION', '1.0.0')),
 
 ];

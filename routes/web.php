@@ -124,13 +124,13 @@ Route::get(
     'middleware' => 'auth',
 ]);
 Route::get(
-    '/user/rack', [
+    '/user/rack/{user?}', [
     'as'         => 'ribbonRack',
     'uses'       => 'UserController@buildRibbonRack',
     'middleware' => 'auth',
 ]);
 Route::post(
-    '/user/rack/save', [
+    '/user/rack/save/{user}', [
     'as'         => 'saverack',
     'uses'       => 'UserController@saveRibbonRack',
     'middleware' => 'auth',

@@ -15,6 +15,9 @@
     @if($permsObj->hasPermissions(['USER_MASQ'], true) && $user->id != Auth::id())
             <a class="fa fa-user-secret size-24" href="{{route('switch.start', [$user->id])}}" data-toggle="tooltip" title="Login as this user"></a>
     @endif
+    @if($permsObj->hasPermissions(['EDIT_RR'], true) && $user->id != Auth::id())
+            <a class="fa fa-bars size-24" href="{{route('ribbonRack', [$user->id])}}" data-toggle="tooltip" title="Edit members ribbon rack"></a>
+    @endif
     <br/>
     <span class="Incised901Light"><em>Date of Rank: {{ date('d M Y', strtotime($user->getDateOfRank())) }}</em></span>
 </div>
