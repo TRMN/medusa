@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddTriadReportPermission extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -20,10 +18,10 @@ class AddTriadReportPermission extends Migration
             'create',
             'permissions',
             null,
-            json_encode(["name" => "TRIAD_REPORT", "description" => "Download Command Triad Report"]),
+            json_encode(['name' => 'TRIAD_REPORT', 'description' => 'Download Command Triad Report']),
             'add_triad_report_perm'
         );
-        App\Permission::create(["name" => "TRIAD_REPORT", "description" => "Download Command Triad Report"]);
+        App\Permission::create(['name' => 'TRIAD_REPORT', 'description' => 'Download Command Triad Report']);
     }
 
     /**

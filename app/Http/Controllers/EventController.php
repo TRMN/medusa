@@ -6,16 +6,15 @@ use App\Country;
 use App\Events;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class EventController extends Controller
 {
-
     /**
      * Display a listing of the resource.
-     * GET /event
+     * GET /event.
      *
      * @return Response
      */
@@ -33,7 +32,7 @@ class EventController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * GET /event/create
+     * GET /event/create.
      *
      * @return Response
      */
@@ -55,7 +54,7 @@ class EventController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /event
+     * POST /event.
      *
      * @return Response
      */
@@ -80,7 +79,7 @@ class EventController extends Controller
             $event = Events::create($data);
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'create',
                 'events',
                 $event->id,
@@ -90,10 +89,10 @@ class EventController extends Controller
 
             $this->_updateUsers($event);
 
-            $msg = 'Your event "' . $event->event_name . '" has been scheduled';
+            $msg = 'Your event "'.$event->event_name.'" has been scheduled';
         } catch (\Exception $e) {
             $msg =
-              'There was a problem scheduling "' . $data['event_name'] . '"';
+              'There was a problem scheduling "'.$data['event_name'].'"';
             Log::error($e->getTraceAsString());
         }
 
@@ -105,7 +104,8 @@ class EventController extends Controller
 
     private function _updateUsers(Events $event)
     {
-        Log::debug('Updating requestor and registrars of ' . $event->event_name);
+        Log::debug('Updating requestor and registrars of '.$event->event_name);
+
         try {
             // Flag the record of the requestor and any registrars so the mobile app
             // knows to ask for the list of events
@@ -121,6 +121,7 @@ class EventController extends Controller
             }
         } catch (\Exception $e) {
             Log::error($e->getTraceAsString());
+
             throw new \Exception('Unable to update requestor or registrars');
         }
     }
@@ -134,7 +135,7 @@ class EventController extends Controller
             $user->save();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'update',
                 'users',
                 $user->id,
@@ -150,9 +151,9 @@ class EventController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /event/{id}
+     * GET /event/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -166,7 +167,7 @@ class EventController extends Controller
             'events.show',
             [
             'event'     => $event,
-            'countries' => Country::getCountries()
+            'countries' => Country::getCountries(),
             ]
         );
     }
@@ -182,9 +183,9 @@ class EventController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * GET /event/{id}/edit
+     * GET /event/{id}/edit.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -206,9 +207,9 @@ class EventController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /event/{id}
+     * PUT /event/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -226,7 +227,7 @@ class EventController extends Controller
             $event->update(Request::all());
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'update',
                 'events',
                 $event->id,
@@ -234,12 +235,12 @@ class EventController extends Controller
                 'EventController@update'
             );
 
-            $msg = 'Your event "' . $event->event_name . '" has been updated';
+            $msg = 'Your event "'.$event->event_name.'" has been updated';
 
             $this->_updateUsers($event);
         } catch (\Exception $e) {
             $msg =
-              'There was a problem saving the update to "' . $event->event_name . '"';
+              'There was a problem saving the update to "'.$event->event_name.'"';
             Log::error($e->getTraceAsString());
         }
 
@@ -248,9 +249,9 @@ class EventController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * DELETE /event/{id}
+     * DELETE /event/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */

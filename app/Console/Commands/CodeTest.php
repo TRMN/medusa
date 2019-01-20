@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Award;
 use App\User;
 use Illuminate\Console\Command;
 
@@ -41,10 +40,9 @@ class CodeTest extends Command
      */
     public function fire()
     {
-
         $user = User::getUserByMemberId('RMN-1094-12');
 
-        print $user->isPromotable() . "\n";
+        echo $user->isPromotable()."\n";
     }
 
     /**

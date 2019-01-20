@@ -54,14 +54,12 @@ class AddFleetCoPermission extends Command
             'system user',
             'update',
             'users',
-            (string)$user->_id,
+            (string) $user->_id,
             $user->toJson(),
             'AddFleetCoPermission'
         );
 
         $user->save();
-
-
 
         //$user->updatePerms([strtoupper($this->argument('perm'))]);
     }
@@ -74,8 +72,8 @@ class AddFleetCoPermission extends Command
     protected function getArguments()
     {
         return [
-            [ 'member_id', InputArgument::REQUIRED, 'The user\'s TRMN number' ],
-            [ 'fleet', InputArgument::REQUIRED, 'Which Fleet they are the CO of' ],
+            ['member_id', InputArgument::REQUIRED, 'The user\'s TRMN number'],
+            ['fleet', InputArgument::REQUIRED, 'Which Fleet they are the CO of'],
         ];
     }
 
@@ -86,6 +84,6 @@ class AddFleetCoPermission extends Command
      */
     protected function getOptions()
     {
-        return [ ];
+        return [];
     }
 }

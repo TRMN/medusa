@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class NewChapterTypes extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -46,7 +45,7 @@ class NewChapterTypes extends Migration
         \App\Type::whereIn('chapter_type', ['small_craft', 'lac'])->delete();
     }
 
-    function updateChapter(App\Chapter $chapter, $type)
+    public function updateChapter(App\Chapter $chapter, $type)
     {
         $chapter->chapter_type = $type;
 
@@ -62,9 +61,8 @@ class NewChapterTypes extends Migration
         $chapter->save();
     }
 
-    function createChapterType($type, $description, array $can_have = [])
+    public function createChapterType($type, $description, array $can_have = [])
     {
-
         $this->writeAuditTrail(
             'system user',
             'create',
@@ -73,7 +71,7 @@ class NewChapterTypes extends Migration
             json_encode([
             'chapter_type'        => $type,
             'chapter_description' => $description,
-            'can_have'            => $can_have
+            'can_have'            => $can_have,
             ]),
             'new_chapter_types'
         );
@@ -81,7 +79,7 @@ class NewChapterTypes extends Migration
         \App\Type::create([
           'chapter_type'        => $type,
           'chapter_description' => $description,
-          'can_have'            => $can_have
+          'can_have'            => $can_have,
         ]);
     }
 }

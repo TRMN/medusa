@@ -7,7 +7,7 @@ use App\Events\GradeEntered;
 class SWP
 {
     /**
-     * Determine if a member qualifies for a SWP
+     * Determine if a member qualifies for a SWP.
      *
      * @return void
      */
@@ -19,7 +19,7 @@ class SWP
     /**
      * Handle the event.
      *
-     * @param  GradeEntered $event
+     * @param GradeEntered $event
      *
      * @return void
      */

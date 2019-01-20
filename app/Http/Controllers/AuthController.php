@@ -6,18 +6,17 @@ use App\Events\LoginComplete;
 use App\ForumUser;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-
     public function signin(Request $request)
     {
         $rules = [
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ];
 
@@ -41,21 +40,17 @@ class AuthController extends Controller
             event(new LoginComplete(Auth::user()));
 
             // Get last forum login
-            if ($_SERVER['SERVER_NAME'] == "medusa.trmn.org") {
+            if ($_SERVER['SERVER_NAME'] == 'medusa.trmn.org') {
                 try {
                     $lastForumLogin = ForumUser::where('user_email', strtolower($email))
                         ->firstOrFail(['user_lastvisit'])
                         ->toArray();
 
                     Auth::user()->forum_last_login = $lastForumLogin['user_lastvisit'];
-
                 } catch (Exception $e) {
-
                     Auth::user()->forum_last_login = false;
-
                 }
             }
-
 
             Auth::user()->save();
 
@@ -88,7 +83,6 @@ class AuthController extends Controller
                     return true;
                 }
             }
-
         }
 
         return false;

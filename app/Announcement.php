@@ -6,7 +6,6 @@ use Moloquent\Eloquent\Model as Eloquent;
 
 class Announcement extends Eloquent
 {
-
     public $fillable = [
         'user_id',
         'summary',
@@ -21,6 +20,6 @@ class Announcement extends Eloquent
 
     public function getPublishLabels()
     {
-        return [  0  => 'Unpublished' , 1 => 'Publish' , ];
+        return [0  => 'Unpublished', 1 => 'Publish'];
     }
 }

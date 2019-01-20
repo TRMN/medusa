@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
+use App\User as User;
 use Illuminate\Queue\SerializesModels;
-use \App\User as User;
 
 class LoginComplete
 {

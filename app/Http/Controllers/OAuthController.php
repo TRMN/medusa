@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\OAuthClient;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-use \Response;
-use \Log;
-use Illuminate\Http\Request;
+use Log;
+use Response;
 
 class OAuthController extends Controller
 {
@@ -26,7 +26,7 @@ class OAuthController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * GET /billet/create
+     * GET /billet/create.
      *
      * @return Response
      */
@@ -36,12 +36,12 @@ class OAuthController extends Controller
             return $redirect;
         }
 
-        return view("oauth.create");
+        return view('oauth.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * POST /billet
+     * POST /billet.
      *
      * @return Response
      */
@@ -74,9 +74,9 @@ class OAuthController extends Controller
 
     /**
      * Display the specified resource.
-     * GET /billet/{id}
+     * GET /billet/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -87,9 +87,9 @@ class OAuthController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * GET /billet/{id}/edit
+     * GET /billet/{id}/edit.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -99,14 +99,14 @@ class OAuthController extends Controller
             return $redirect;
         }
 
-        return view("oauth.edit", ['oauthclient' => $oauthClient]);
+        return view('oauth.edit', ['oauthclient' => $oauthClient]);
     }
 
     /**
      * Update the specified resource in storage.
-     * PUT /billet/{id}
+     * PUT /billet/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -143,9 +143,9 @@ class OAuthController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * DELETE /billet/{id}
+     * DELETE /billet/{id}.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -153,6 +153,7 @@ class OAuthController extends Controller
     {
         try {
             $oauthClient->delete();
+
             return 1;
         } catch (\Exception $e) {
             return 0;
@@ -184,7 +185,7 @@ class OAuthController extends Controller
     {
         $_user = $this->getUserFromRequest($request);
 
-        Log::info('User Info Request for ' . $_user->member_id);
+        Log::info('User Info Request for '.$_user->member_id);
 
         unset($_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos);
 
@@ -203,19 +204,19 @@ class OAuthController extends Controller
             $_peerage['path'] = null;
 
             if ($_peerage['code'] == 'L') {
-                $_peerage['fullTitle'] = $_peerage['title'] . ' for ' . $_peerage['lands'];
+                $_peerage['fullTitle'] = $_peerage['title'].' for '.$_peerage['lands'];
                 $_peerage['path'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
             } elseif ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                 if (empty($_peerage['filename']) === false && file_exists(
-                        public_path() . '/arms/peerage/' . $_peerage['filename']
+                        public_path().'/arms/peerage/'.$_peerage['filename']
                     )
                 ) {
                     $_peerage['path'] =
-                        '/arms/peerage/' . $_peerage['filename'];
+                        '/arms/peerage/'.$_peerage['filename'];
                 }
 
                 $_peerage['fullTitle'] =
-                    $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
+                    $_peerage['generation'].' '.$_peerage['title'].' of '.$_peerage['lands'];
             } else {
                 $orderInfo =
                     \App\Korders::where(
@@ -223,7 +224,7 @@ class OAuthController extends Controller
                         '=',
                         $_peerage['postnominal']
                     )->first();
-                if (file_exists(public_path() . '/awards/orders/medals/' . $orderInfo->filename)) {
+                if (file_exists(public_path().'/awards/orders/medals/'.$orderInfo->filename)) {
                     $_peerage['path'] =
                         substr(
                             $orderInfo->filename,
@@ -233,7 +234,7 @@ class OAuthController extends Controller
                 }
 
                 $_peerage['fullTitle'] =
-                    $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
+                    $orderInfo->getClassName($_peerage['postnominal']).', '.$orderInfo->order;
             }
 
             unset($_peerage['peerage_id']);
@@ -278,9 +279,9 @@ class OAuthController extends Controller
         $_user->exams = $_exams;
 
         $_user->greeting =
-            $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
+            $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
 
-        if (!file_exists(public_path() . $_user->filePhoto)) {
+        if (!file_exists(public_path().$_user->filePhoto)) {
             unset($_user->filePhoto);
         }
 
@@ -315,7 +316,6 @@ class OAuthController extends Controller
 
     public function getTisTig(Request $request)
     {
-
         Log::info('Time in Service / Time in Grade request');
 
         $_user = $this->getUserFromRequest($request);
@@ -339,12 +339,11 @@ class OAuthController extends Controller
 
     public function getScheduledEvents(Request $request)
     {
-
         Log::info('List of scheduled events requested');
 
         $_tz = $request->tz;
 
-        Log::info('TZ=' . $_tz);
+        Log::info('TZ='.$_tz);
 
         return Response::json(
             [
@@ -355,10 +354,9 @@ class OAuthController extends Controller
 
     public function checkMemberIn(Request $request)
     {
-
         $_data = $request->all();
 
-        Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
+        Log::info('Attempting to check '.$_data['member'].' in to '.$_data['event']);
 
         return Response::json(
             $this->getUserFromRequest($request)
@@ -371,7 +369,6 @@ class OAuthController extends Controller
 
     public function updateUser(Request $request)
     {
-
         Log::info('User Update Request');
 
         $_user = $this->getUserFromRequest($request);
@@ -387,7 +384,7 @@ class OAuthController extends Controller
                 $_user->id,
                 'update',
                 'users',
-                (string)$_user->_id,
+                (string) $_user->_id,
                 json_encode($_data),
                 'OAuthControllere@updateUser'
             );
@@ -402,6 +399,7 @@ class OAuthController extends Controller
             );
         } else {
             Log::info('There was some sort of problem');
+
             return Response::json(
                 [
                     'status'  => 'error',

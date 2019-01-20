@@ -1,9 +1,9 @@
-<?php namespace App\Enums;
+<?php
+
+namespace App\Enums;
 
 /**
- * Class Constants for Medusa
- *
- * @package App\Enums
+ * Class Constants for Medusa.
  */
 class MedusaDefaults
 {
@@ -155,6 +155,6 @@ class MedusaDefaults
         'YUKON TERRITORY'           => 'YT',
         'ARMED FORCES AMERICAS'     => 'AA',
         'ARMED FORCES EUROPE'       => 'AE',
-        'ARMED FORCES PACIFIC'      => 'AP'
+        'ARMED FORCES PACIFIC'      => 'AP',
     ];
 }

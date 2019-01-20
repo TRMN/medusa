@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateMartin extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -15,7 +13,6 @@ class UpdateMartin extends Migration
      */
     public function up()
     {
-
         $user = App\User::where('member_id', '=', 'RMN-0001-07')->first();
 
         $user->registration_date = '2007-02-01';

@@ -9,7 +9,6 @@ use App\MedusaConfig;
 
 class AnyUnitController extends Controller
 {
-
     private $chapterTypes = [];
     private $permissions = ['ADD' => 'ALL_PERMS', 'EDIT' => 'ALL_PERMS', 'DELETE' => 'ALL_PERMS'];
     private $auditName = 'AnyUnitController';
@@ -57,7 +56,7 @@ class AnyUnitController extends Controller
             'institute',
             'center',
             'university',
-            'university_system'
+            'university_system',
         ]);
     }
 
@@ -73,8 +72,8 @@ class AnyUnitController extends Controller
     private function getBranches()
     {
         return '<div class="row">
-    <div class="col-sm-6  ninety Incised901Light form-group">' .
-        \Form::label('branch', "Branch") . ' ' . \Form::select('branch', Branch::getBranchList(), null, ['class' => 'selectize']) . '
+    <div class="col-sm-6  ninety Incised901Light form-group">'.
+        \Form::label('branch', 'Branch').' '.\Form::select('branch', Branch::getBranchList(), null, ['class' => 'selectize']).'
     </div>
 </div>';
     }

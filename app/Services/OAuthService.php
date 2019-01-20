@@ -1,26 +1,28 @@
-<?php namespace App\Services;
+<?php
 
+namespace App\Services;
+
+use App\Audit\MedusaAudit;
 use App\ExamList;
 use App\Korders;
+use App\Oauth\Storage\MedusaUserCredentials;
 use App\OauthClient;
+use App\Permissions\PermissionsHelper;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use App\Audit\MedusaAudit;
-use App\Oauth\Storage\MedusaUserCredentials;
-use App\Permissions\PermissionsHelper;
-use \OAuth2\GrantType\AuthorizationCode;
-use \OAuth2\GrantType\ClientCredentials;
-use \OAuth2\GrantType\RefreshToken;
-use \OAuth2\GrantType\UserCredentials;
-use \OAuth2\HttpFoundationBridge\Request;
-use \OAuth2\HttpFoundationBridge\Response;
-use \OAuth2\Server;
-use \OAuth2\Storage\Mongo;
 use MongoDB\Client;
+use OAuth2\GrantType\AuthorizationCode;
+use OAuth2\GrantType\ClientCredentials;
+use OAuth2\GrantType\RefreshToken;
+use OAuth2\GrantType\UserCredentials;
+use OAuth2\HttpFoundationBridge\Request;
+use OAuth2\HttpFoundationBridge\Response;
+use OAuth2\Server;
+use OAuth2\Storage\Mongo;
 
 /**
- * OAuth2 wrapper service
+ * OAuth2 wrapper service.
  */
 class OAuthService
 {
@@ -34,7 +36,7 @@ class OAuthService
     use MedusaAudit;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Illuminate\Foundation\Application $app
      */
@@ -46,7 +48,7 @@ class OAuthService
 
         $this->mongo =
           new Client(
-              'mongodb://' . implode(',', $_hosts),
+              'mongodb://'.implode(',', $_hosts),
               config('database.connections.mongodb.options', [])
           );
 
@@ -116,7 +118,7 @@ class OAuthService
         $_request = Request::createFromRequest(Request::instance());
         $_response = new Response();
 
-        /** @noinspection PhpUndefinedFieldInspection */
+        /* @noinspection PhpUndefinedFieldInspection */
         $this->server->handleAuthorizeRequest(
             $_request,
             $_response,
@@ -248,7 +250,7 @@ class OAuthService
                     $_user->id,
                     'update',
                     'users',
-                    (string)$_user->_id,
+                    (string) $_user->_id,
                     json_encode($_data),
                     'OAuthService@updateUser'
                 );
@@ -264,6 +266,7 @@ class OAuthService
                 Log::info('We should never get here');
             } else {
                 Log::info('There was some sort of problem');
+
                 return Response::json(
                     [
                     'status'  => 'error',
@@ -314,15 +317,15 @@ class OAuthService
 
                 if ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                     if (empty($_peerage['filename']) === false && file_exists(
-                        public_path() . '/arms/peerage/' . $_peerage['filename']
+                        public_path().'/arms/peerage/'.$_peerage['filename']
                     )
                     ) {
                         $_peerage['path'] =
-                          '/arms/peerage/' . $_peerage['filename'];
+                          '/arms/peerage/'.$_peerage['filename'];
                     }
 
                     $_peerage['fullTitle'] =
-                      $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
+                      $_peerage['generation'].' '.$_peerage['title'].' of '.$_peerage['lands'];
                 } else {
                     /** @noinspection PhpUndefinedMethodInspection */
                     /** @var \Korders $orderInfo */
@@ -332,7 +335,7 @@ class OAuthService
                           '=',
                           $_peerage['postnominal']
                       )->first();
-                    if (file_exists(public_path() . '/awards/orders/medals/' . $orderInfo->filename)) {
+                    if (file_exists(public_path().'/awards/orders/medals/'.$orderInfo->filename)) {
                         $_peerage['path'] =
                           substr(
                               $orderInfo->filename,
@@ -342,7 +345,7 @@ class OAuthService
                     }
 
                     $_peerage['fullTitle'] =
-                      $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
+                      $orderInfo->getClassName($_peerage['postnominal']).', '.$orderInfo->order;
                 }
 
                 unset($_peerage['peerage_id']);
@@ -380,7 +383,7 @@ class OAuthService
                       [
                         'label'    => $_label,
                         'new'      => $_newExams,
-                        'examlist' => $_examList
+                        'examlist' => $_examList,
                       ];
                 }
             }
@@ -388,9 +391,9 @@ class OAuthService
             $_user->exams = $_exams;
 
             $_user->greeting =
-              $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
+              $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
 
-            if (!file_exists(public_path() . $_user->filePhoto)) {
+            if (!file_exists(public_path().$_user->filePhoto)) {
                 unset($_user->filePhoto);
             }
 
@@ -488,7 +491,7 @@ class OAuthService
             $_token = $this->server->getAccessTokenData($_request);
             $_tz = Request::get('tz', null);
 
-            Log::info('TZ=' . $_tz);
+            Log::info('TZ='.$_tz);
 
             return Response::json([
               'events' => User::where(
@@ -497,7 +500,7 @@ class OAuthService
                   strtolower(str_replace(' ', '+', $_token['user_id']))
               )
                                ->first()
-                               ->getScheduledEvents($_tz)
+                               ->getScheduledEvents($_tz),
             ]);
         }
 
@@ -520,7 +523,7 @@ class OAuthService
 
             $_data = Request::all();
 
-            Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
+            Log::info('Attempting to check '.$_data['member'].' in to '.$_data['event']);
 
             return Response::json(User::where(
                 'email_address',

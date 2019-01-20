@@ -65,7 +65,6 @@ ORDER BY
 
  */
 
-
 class ImportUsers extends Command
 {
     use \App\Audit\MedusaAudit;
@@ -112,7 +111,7 @@ class ImportUsers extends Command
         // Get the users
 
         $this->comment('Reading user file');
-        $users = Excel::load(app_path() . '/database/users.xlsx')->formatDates(true, 'Y-m-d')->toArray();
+        $users = Excel::load(app_path().'/database/users.xlsx')->formatDates(true, 'Y-m-d')->toArray();
         $this->comment('User file loaded, started to process');
 
         foreach ($users as $user) {
@@ -120,7 +119,7 @@ class ImportUsers extends Command
             $user['rank']['date_of_rank'] = '';
             unset($user['grade']);
 
-            if ($user['ship_name'] != "NULL") {
+            if ($user['ship_name'] != 'NULL') {
                 if ($user['ship_name'] === 'HMS Charon') {
                     $user['registration_status'] = 'Suspended';
                 }
@@ -133,7 +132,7 @@ class ImportUsers extends Command
                     ['chapter_id'   => $this->getChapterByName($user['ship_name'])[0]['_id'],
                      'billet'       => $user['primary_billet'],
                      'primary'      => true,
-                     'chapter_name' => $user['ship_name']
+                     'chapter_name' => $user['ship_name'],
                     ];
 
                 if ($user['secondary_billet'] !== 'NULL') {
@@ -151,10 +150,10 @@ class ImportUsers extends Command
                 'CHANGE_PWD',
                 'EDIT_SELF',
                 'ROSTER',
-                'TRANSFER'
+                'TRANSFER',
             ];
 
-            if ($user['primary_billet'] == "Commanding Officer") {
+            if ($user['primary_billet'] == 'Commanding Officer') {
                 $user['permissions'] = array_merge($user['permissions'], [
                     'DUTY_ROSTER',
                     'EXPORT_ROSTER',
@@ -162,15 +161,15 @@ class ImportUsers extends Command
                     'ASSIGN_NONCOMMAND_BILLET',
                     'PROMOTE_E601',
                     'REQUEST_PROMOTION',
-                    'CHAPTER_REPORT'
+                    'CHAPTER_REPORT',
                 ]);
 
                 $user['duty_roster'] = $user['assignment'][0]['chapter_id'];
             }
 
-            if (( empty($user['secondary_billet']) === false ) &&
-                  $user['secondary_billet'] == "Commanding Officer") {
-                      $user['permissions'] = array_merge(
+            if ((empty($user['secondary_billet']) === false) &&
+                  $user['secondary_billet'] == 'Commanding Officer') {
+                $user['permissions'] = array_merge(
                           $user['permissions'],
                           [
                             'DUTY_ROSTER',
@@ -179,7 +178,7 @@ class ImportUsers extends Command
                             'ASSIGN_NONCOMMAND_BILLET',
                             'PROMOTE_E601',
                             'REQUEST_PROMOTION',
-                            'CHAPTER_REPORT'
+                            'CHAPTER_REPORT',
                           ]
                       );
             }
@@ -200,9 +199,9 @@ class ImportUsers extends Command
                 $user['application_date'] = $user['registration_date'];
             }
 
-            if ($user['rank']['grade'] == "E-1" ||
-                $user['rank']['grade'] == "C-1") {
-                    $user['rank']['date_of_rank'] = $user['application_date'];
+            if ($user['rank']['grade'] == 'E-1' ||
+                $user['rank']['grade'] == 'C-1') {
+                $user['rank']['date_of_rank'] = $user['application_date'];
             }
 
             if (isset($user['country'])) {
@@ -222,8 +221,8 @@ class ImportUsers extends Command
                 }
             }
 
-            if (isset($user['postal_code']) === true && empty($user['postal_code'])===false) {
-                $user['postal_code'] = (string)$user['postal_code'];
+            if (isset($user['postal_code']) === true && empty($user['postal_code']) === false) {
+                $user['postal_code'] = (string) $user['postal_code'];
             } else {
                 $user['postal_code'] = '';
             }
@@ -242,7 +241,7 @@ class ImportUsers extends Command
 
                 $u->save();
             } else {
-                $this->error("Duplicate user found! " . $user['member_id'] . " already exists in the database!");
+                $this->error('Duplicate user found! '.$user['member_id'].' already exists in the database!');
             }
         }
     }
@@ -269,7 +268,6 @@ class ImportUsers extends Command
 
     protected function getChapterByName($name)
     {
-
         foreach (['-One' => '01', '-Two' => '02', ' One' => '01', ' Two' => '02'] as $pnum => $pid) {
             $name = $this->normalizePinnaceName($name, $pnum, $pid);
         }
@@ -278,7 +276,7 @@ class ImportUsers extends Command
         if (count($results) > 0) {
             return $results;
         } else {
-            $this->info("Chapter " . $name . " not found, creating...");
+            $this->info('Chapter '.$name.' not found, creating...');
             $branch = '';
             $type = 'ship';
 
@@ -292,15 +290,15 @@ class ImportUsers extends Command
                     $branch = 'IAN';
                     break;
                 case 'Biv':
-                    $branch = "RMA";
-                    $type='bivouac';
+                    $branch = 'RMA';
+                    $type = 'bivouac';
                     break;
                 case 'For':
-                    $branch = "RMA";
+                    $branch = 'RMA';
                     $type = 'fort';
                     break;
                 case 'HG ':
-                    $branch = "RMA";
+                    $branch = 'RMA';
                     $type = 'outpost';
                     break;
                 default:
@@ -312,6 +310,7 @@ class ImportUsers extends Command
                 ['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch]
             ), 'import.user');
             Chapter::create(['chapter_name' => $name, 'chapter_type' => $type, 'branch' => $branch]);
+
             return Chapter::where('chapter_name', '=', $name)->get();
         }
     }
@@ -319,13 +318,14 @@ class ImportUsers extends Command
     protected function normalizePinnaceName($name, $pnum, $pid)
     {
         // Normalize Pinnace names
-        if (( $pos = strpos($name, $pnum) ) > 0) {
+        if (($pos = strpos($name, $pnum)) > 0) {
             if (substr($name, 0, 3) == 'Pin') {
-                $name = substr($name, 0, $pos) . ' ' . $pid;
+                $name = substr($name, 0, $pos).' '.$pid;
             } else {
-                $name = 'Pinnace ' . substr($name, 0, $pos) . ' ' . $pid;
+                $name = 'Pinnace '.substr($name, 0, $pos).' '.$pid;
             }
         }
+
         return $name;
     }
 }

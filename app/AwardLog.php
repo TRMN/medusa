@@ -15,7 +15,7 @@ class AwardLog extends Eloquent
             return self::all();
         }
 
-        $query = new AwardLog();
+        $query = new self();
 
         foreach ($params as $param => $value) {
             switch ($param) {

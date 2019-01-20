@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Log;
 
 use App\Message;
@@ -6,7 +7,7 @@ use App\Message;
 trait MedusaLog
 {
     /**
-     * Log a message to both the permanent and transitory logs
+     * Log a message to both the permanent and transitory logs.
      *
      * @param array $msgDetails
      *

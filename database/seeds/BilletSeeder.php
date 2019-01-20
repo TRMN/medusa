@@ -304,13 +304,13 @@ class BilletSeeder extends Seeder
             'Chief of Staff, 3SL',
             'Command Senior Master Chief of BuTrain',
             'First Fleet Staff Logistics Officer',
-            'First Fleet Flag Lieutenant'
+            'First Fleet Flag Lieutenant',
         ];
 
         foreach ($billets as $billet) {
-            $this->command->comment('Adding ' . $billet);
-            $this->writeAuditTrail('db:seed', 'create', 'billets', null, json_encode(["billet_name" => $billet]), 'billet');
-            Billet::create(["billet_name" => $billet]);
+            $this->command->comment('Adding '.$billet);
+            $this->writeAuditTrail('db:seed', 'create', 'billets', null, json_encode(['billet_name' => $billet]), 'billet');
+            Billet::create(['billet_name' => $billet]);
         }
     }
 }

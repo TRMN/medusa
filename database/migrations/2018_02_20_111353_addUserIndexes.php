@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddUserIndexes extends Migration
 {
@@ -31,7 +31,7 @@ class AddUserIndexes extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $collection) {
-           $collection->dropUnique('email_address');
+            $collection->dropUnique('email_address');
         });
     }
 }

@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddFleetCoAndDco extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -23,10 +21,10 @@ class AddFleetCoAndDco extends Migration
                 'create',
                 'billets',
                 null,
-                json_encode(["billet_name" => $billet]),
+                json_encode(['billet_name' => $billet]),
                 'add_fleet_co_and_dco'
             );
-            App\Billet::create(["billet_name" => $billet]);
+            App\Billet::create(['billet_name' => $billet]);
         }
     }
 

@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 
 class CreateEchelons extends Command
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -67,7 +66,7 @@ class CreateEchelons extends Command
         $this->createEchelon('Cruiser (Light) Division 651', 'division', '2015-08-25', 'LCruDiv 651', 'RMN', 'RMN-2374-14', ['HMS Gallant', 'HMS Odin', 'HMS Apollo'], '2');
         $this->createEchelon('Battle Squadron 1', 'squadron', '2014-11-03', 'BatRon 1', 'RMN', 'RMN-0366-11', ['HMS Invincible', 'HMS Valkyrie', 'HMS Intrepid', 'HMS Imperatrix']);
         $this->createEchelon('Task Group 21.2', 'task_group', '2014-11-03', 'TG 21.2', 'RMN', 'RMN-0384-11', ['HMS Musashi', 'HMS Kodiak Max', 'HMS Gawain', 'HMS Galahad']);
-        $this->createEchelon('Task Group 21.1', 'task_group', '2014-11-03', 'TG 21.1', 'RMN', 'RMN-0366-11', ['Battle Squadron 1','HMS Leonidas', 'HMS Samurai', 'HMS Lodestone', 'HMLAC Superior', 'Pinnace Invincible 01', 'Pinnace Intrepid 01', 'Pinnace Valkyrie 01']);
+        $this->createEchelon('Task Group 21.1', 'task_group', '2014-11-03', 'TG 21.1', 'RMN', 'RMN-0366-11', ['Battle Squadron 1', 'HMS Leonidas', 'HMS Samurai', 'HMS Lodestone', 'HMLAC Superior', 'Pinnace Invincible 01', 'Pinnace Intrepid 01', 'Pinnace Valkyrie 01']);
         $this->createEchelon('Task Force 21', 'task_force', '2014-11-03', 'TF 21', 'RMN', 'RMN-0117-11', ['Task Group 21.1', 'Task Group 21.2'], '2');
 
         // 1st Fleet Echelons
@@ -98,7 +97,7 @@ class CreateEchelons extends Command
     {
         // Iterate over the array of ship names
         foreach ($ships as $ship) {
-            $this->info(' Looking up ' . $ship);
+            $this->info(' Looking up '.$ship);
             // Get ship info
             $shipInfo = Chapter::where('chapter_name', '=', $ship)->First();
 
@@ -116,7 +115,7 @@ class CreateEchelons extends Command
 
             // Save it
             $shipInfo->save();
-            $this->info(' Assigned ' . $ship . ' to echelon');
+            $this->info(' Assigned '.$ship.' to echelon');
         }
 
         return true;
@@ -168,27 +167,28 @@ class CreateEchelons extends Command
         // Assign CO permissions
         //$member->assignCoPerms();
 
-        $this->info(' CO for ' . $name . ' set');
+        $this->info(' CO for '.$name.' set');
+
         return true;
     }
 
     protected function createEchelon($name, $type, $cdate, $designation, $branch, $co, array $elements, $fleet = null)
     {
-        $this->info('Creating echelon ' . $name);
+        $this->info('Creating echelon '.$name);
         // Build the echelon record
         $echelonRecord = [
-            'chapter_name' => $name,
-            'chapter_type' => $type,
+            'chapter_name'    => $name,
+            'chapter_type'    => $type,
             'commission_date' => $cdate,
-            'hull_number' => $designation,
-            'branch' => $branch,
-            'joinable' => false,
+            'hull_number'     => $designation,
+            'branch'          => $branch,
+            'joinable'        => false,
         ];
 
         // Assign this echelon directly to a fleet
         if (is_null($fleet) === false) {
             $fleet = Chapter::where('chapter_type', '=', 'fleet')->where('hull_number', '=', $fleet)->First();
-            $echelonRecord['assigned_to'] = (string)$fleet->_id;
+            $echelonRecord['assigned_to'] = (string) $fleet->_id;
         }
 
         // Create the echelon unless it already exists
@@ -208,11 +208,10 @@ class CreateEchelons extends Command
         }
 
         // Assign the CO of the echelon
-        $this->assignEchelonCO((string)$echelon->_id, $name, $co);
+        $this->assignEchelonCO((string) $echelon->_id, $name, $co);
 
         // Assign the elements to the echelon
-        $this->assignChaptersToEchelon((string)$echelon->_id, $elements);
-
+        $this->assignChaptersToEchelon((string) $echelon->_id, $elements);
 
         return true;
     }

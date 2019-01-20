@@ -3,11 +3,10 @@
 namespace App;
 
 //use Moloquent\Eloquent\Model as Eloquent;
-use Mockery\Exception;
 use Moloquent\Eloquent\Model as Eloquent;
 
 /**
- * Class Award
+ * Class Award.
  *
  * @property int display_order
  * @property string name
@@ -19,8 +18,6 @@ use Moloquent\Eloquent\Model as Eloquent;
  * @property string group_label
  * @property string image
  * @property string branch
- *
- * @package App
  */
 class Award extends Eloquent
 {
@@ -39,7 +36,7 @@ class Award extends Eloquent
     ];
 
     /**
-     * Get the awards for the specified uniform location
+     * Get the awards for the specified uniform location.
      *
      * @param $location
      * @param array $limit
@@ -90,7 +87,7 @@ class Award extends Eloquent
                             'label'    => $ribbon->group_label,
                             'awards'   => $tmp,
                             'multiple' => $multiple,
-                        ]
+                        ],
                     ];
                 }
             }
@@ -100,7 +97,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get any a list of all Aerospace Wings
+     * Get any a list of all Aerospace Wings.
      *
      * @todo Refactor to use the config table
      *
@@ -134,14 +131,14 @@ class Award extends Eloquent
             'ESSW',
             'OSSW',
             'EMSW',
-            'OMSW'
+            'OMSW',
         ]
     ) {
         return self::_getAwards('TL', $limit);
     }
 
     /**
-     * Get the ribbons that go on the left side of the uniform
+     * Get the ribbons that go on the left side of the uniform.
      *
      * @return array
      */
@@ -151,7 +148,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get the ribbons that go on the right side of the uniform
+     * Get the ribbons that go on the right side of the uniform.
      *
      * @return array
      */
@@ -161,7 +158,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get the qualification badges that go above the ribbons
+     * Get the qualification badges that go above the ribbons.
      *
      * @param array $limit
      *
@@ -173,7 +170,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get left sleeve items, such as HMS Unconquered
+     * Get left sleeve items, such as HMS Unconquered.
      *
      * @return array
      */
@@ -183,7 +180,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get the right sleeve stripes
+     * Get the right sleeve stripes.
      *
      * @return array
      */
@@ -193,7 +190,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get the Army Weapons Qualification Badges
+     * Get the Army Weapons Qualification Badges.
      *
      * @return array
      */
@@ -203,7 +200,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get an awards display order
+     * Get an awards display order.
      *
      * @param $code
      *
@@ -215,7 +212,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get an award by the award code
+     * Get an award by the award code.
      *
      * @param $code
      *
@@ -228,7 +225,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get the points for an award
+     * Get the points for an award.
      *
      * @param string $code
      *
@@ -240,7 +237,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get the name of the award
+     * Get the name of the award.
      *
      * @param string $code
      *
@@ -252,7 +249,7 @@ class Award extends Eloquent
     }
 
     /**
-     * Get the name of the image to use
+     * Get the name of the image to use.
      *
      * @param string $code
      *
@@ -262,8 +259,9 @@ class Award extends Eloquent
     {
         return self::where('code', $code)->first()->image;
     }
+
     /**
-     * Update the award display order
+     * Update the award display order.
      *
      * @param $code
      * @param $display_order
@@ -274,8 +272,10 @@ class Award extends Eloquent
     {
         $award = self::where('code', $code)->first();
         $award->display_order = $display_order;
+
         try {
             $award->save();
+
             return true;
         } catch (\Exception $e) {
             return false;

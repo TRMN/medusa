@@ -1,9 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\Branch;
+use Illuminate\Database\Migrations\Migration;
 
 class SFS2SFC extends Migration
 {
@@ -25,7 +23,7 @@ class SFS2SFC extends Migration
 
         // Get all the other entries and update the equivalency entry
 
-        foreach(App\Branch::where('branch', '!=', 'SFC')->get() as $entry) {
+        foreach (App\Branch::where('branch', '!=', 'SFC')->get() as $entry) {
             $equivalent = $entry->equivalent;
             $equivalent['SFC'] = $equivalent['SFS'];
             unset($equivalent['SFS']);
@@ -36,7 +34,7 @@ class SFS2SFC extends Migration
 
         // Update all the members branch
 
-        foreach(\App\User::where('branch', 'SFS')->get() as $member) {
+        foreach (\App\User::where('branch', 'SFS')->get() as $member) {
             $member->branch = 'SFC';
             $member->save();
         }
@@ -58,7 +56,7 @@ class SFS2SFC extends Migration
 
         // Update the rank tables
 
-        foreach(\App\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
+        foreach (\App\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
             if (empty($grade->rank['SFS']) === false) {
                 $rank = $grade->rank;
                 $rank['SFC'] = $rank['SFS'];
@@ -87,7 +85,7 @@ class SFS2SFC extends Migration
 
         // Get all the other entries and update the equivalency entry
 
-        foreach(Branch::where('branch', '!=', 'SFS')->get() as $entry) {
+        foreach (Branch::where('branch', '!=', 'SFS')->get() as $entry) {
             $equivalent = $entry->equivalent;
             $equivalent['SFS'] = $equivalent['SFC'];
             unset($equivalent['SFC']);
@@ -98,7 +96,7 @@ class SFS2SFC extends Migration
 
         // Update all the members branch
 
-        foreach(\App\User::where('branch', 'SFC')->get() as $member) {
+        foreach (\App\User::where('branch', 'SFC')->get() as $member) {
             $member->branch = 'SFS';
             $member->save();
         }
@@ -120,7 +118,7 @@ class SFS2SFC extends Migration
 
         // Revert the rank tables
 
-        foreach(\App\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
+        foreach (\App\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
             if (empty($grade->rank['SFC']) === false) {
                 $rank = $grade->rank;
                 $rank['SFS'] = $rank['SFC'];

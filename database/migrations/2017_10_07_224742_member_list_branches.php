@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class MemberListBranches extends Migration
@@ -14,17 +12,17 @@ class MemberListBranches extends Migration
     public function up()
     {
         $branches = [
-            "RMN" => "RMN",
-            "RMMC" => "RMMC",
-            "RMA" => "RMA",
-            "GSN" => "GSN",
-            "RHN" => "RHN",
-            "IAN" => "IAN",
-            "SFS" => "SFS",
-            "RMACS" => "RMACS",
-            "CIVIL" => "Civilian",
-            "INTEL" => "Intelligence",
-            "RMMM" => "Merchant Marine",
+            'RMN'   => 'RMN',
+            'RMMC'  => 'RMMC',
+            'RMA'   => 'RMA',
+            'GSN'   => 'GSN',
+            'RHN'   => 'RHN',
+            'IAN'   => 'IAN',
+            'SFS'   => 'SFS',
+            'RMACS' => 'RMACS',
+            'CIVIL' => 'Civilian',
+            'INTEL' => 'Intelligence',
+            'RMMM'  => 'Merchant Marine',
 
         ];
 

@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddFleetCoLiaiason extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -20,10 +18,10 @@ class AddFleetCoLiaiason extends Migration
             'create',
             'billets',
             null,
-            json_encode(["billet_name" => "Fleet CO Liaison"]),
+            json_encode(['billet_name' => 'Fleet CO Liaison']),
             'add_flag_lt'
         );
-        App\Billet::create(["billet_name" => "Fleet CO Liaison"]);
+        App\Billet::create(['billet_name' => 'Fleet CO Liaison']);
     }
 
     /**

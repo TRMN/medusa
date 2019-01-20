@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddUploadExams extends Migration
@@ -19,10 +18,10 @@ class AddUploadExams extends Migration
             'create',
             'permissions',
             null,
-            json_encode(["name" => "UPLOAD_EXAMS", "description" => "Upload Academy Exam Grades"]),
+            json_encode(['name' => 'UPLOAD_EXAMS', 'description' => 'Upload Academy Exam Grades']),
             'add_flag_lt'
         );
-        App\Permission::create(["name" => "UPLOAD_EXAMS", "description" => "Upload Academy Exam Grades"]);
+        App\Permission::create(['name' => 'UPLOAD_EXAMS', 'description' => 'Upload Academy Exam Grades']);
     }
 
     /**

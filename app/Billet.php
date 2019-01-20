@@ -10,7 +10,7 @@ class Billet extends Eloquent
 
     public static $rules = ['billet_name' => 'required|unique:billets'];
 
-    static function getBillets()
+    public static function getBillets()
     {
         $results = self::all();
         $billets = [];
@@ -20,9 +20,9 @@ class Billet extends Eloquent
         }
 
         asort($billets, SORT_NATURAL);
+
         return $billets;
     }
-
 
     public function getAssignedCount()
     {

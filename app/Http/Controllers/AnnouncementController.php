@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Announcement;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 
 class AnnouncementController extends Controller
 {
-
     public function index()
     {
         $announcements = Announcement::orderBy('publish_date')->get();
@@ -24,7 +23,6 @@ class AnnouncementController extends Controller
 
     public function show($id)
     {
-
         $announcement = Announcement::with('user')->find($id);
 
         if (empty($announcement)) {
@@ -40,8 +38,7 @@ class AnnouncementController extends Controller
 
     public function create()
     {
-
-        $announcement = new Announcement;
+        $announcement = new Announcement();
 
         $viewData = [
             'announcement' => $announcement,
@@ -52,12 +49,11 @@ class AnnouncementController extends Controller
 
     public function edit($id)
     {
-
         $announcement = Announcement::with('user')->find($id);
 
         // @todo: ACL will probably do more checking
         if (Auth::id() != $announcement->user->id) {
-            return redirect('announcement/' . $id);
+            return redirect('announcement/'.$id);
         }
 
         $viewData = [
@@ -69,7 +65,6 @@ class AnnouncementController extends Controller
 
     public function update($id)
     {
-
         $data = Request::all();
 
         $announcement = Announcement::with('user')->find($id);
@@ -78,7 +73,7 @@ class AnnouncementController extends Controller
 
         // @todo: ACL will probably do more checking
         if (Auth::id() != $announcementUserId) {
-            return redirect('announcement/' . $id);
+            return redirect('announcement/'.$id);
         }
 
         $announcement->update($data);
@@ -88,7 +83,6 @@ class AnnouncementController extends Controller
 
     public function store()
     {
-
         $data = Request::all();
 
         $announcement = Announcement::create($data);

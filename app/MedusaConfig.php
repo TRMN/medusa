@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Moloquent\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Log;
+use Moloquent\Eloquent\Model as Eloquent;
 
 class MedusaConfig extends Eloquent
 {
@@ -15,7 +15,7 @@ class MedusaConfig extends Eloquent
     protected $table = 'config';
 
     /**
-     * Add or update a config value in the database
+     * Add or update a config value in the database.
      *
      * @param string $key   Config key to set
      * @param mixed  $value What to set the config key to
@@ -33,15 +33,17 @@ class MedusaConfig extends Eloquent
                 $item->value = $value;
                 $item->save();
             }
+
             return $item->id;
         } catch (\Exception $e) {
-            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            Log::error($e->getMessage()."\n".$e->getTraceAsString());
+
             return false;
         }
     }
 
     /**
-     * Remove a config key
+     * Remove a config key.
      *
      * @param string $key Config key to remove
      *
@@ -51,15 +53,17 @@ class MedusaConfig extends Eloquent
     {
         try {
             self::where('key', '=', $key)->delete();
+
             return true;
         } catch (\Exception $e) {
-            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            Log::error($e->getMessage()."\n".$e->getTraceAsString());
+
             return false;
         }
     }
 
     /**
-     * Get a config value
+     * Get a config value.
      *
      * @param string            $key     Config key to retrieve
      * @param string|array|null $default Default value to return
@@ -73,19 +77,23 @@ class MedusaConfig extends Eloquent
         if (is_null($subkey) === true) {
             try {
                 $item = self::where('key', '=', $key)->first();
+
                 return isset($item->value) === true ? $item->value : $default;
             } catch (\Exception $e) {
-                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+                Log::error($e->getMessage()."\n".$e->getTraceAsString());
+
                 return false;
             }
         } else {
             try {
                 $item = self::where('key', '=', $key)->first();
+
                 return isset($item->value[$subkey]) === true ?
-                    $item->value[$subkey]:
+                    $item->value[$subkey] :
                     $default;
             } catch (\Exception $e) {
-                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+                Log::error($e->getMessage()."\n".$e->getTraceAsString());
+
                 return false;
             }
         }

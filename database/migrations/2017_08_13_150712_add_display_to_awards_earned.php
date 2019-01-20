@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddDisplayToAwardsEarned extends Migration
@@ -17,14 +15,14 @@ class AddDisplayToAwardsEarned extends Migration
 
         $users = \App\User::all();
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
             // Get the awards for the user
 
             if (isset($user->awards) === true) {
                 $awards = $user->awards;
 
                 // iterate through the awards and add award_date array and set it to 1 JAN 1970 for each instance
-                foreach($awards as $award => $awardInfo) {
+                foreach ($awards as $award => $awardInfo) {
                     $awardInfo['display'] = true;
 
                     $awards[$award] = $awardInfo;
@@ -47,14 +45,14 @@ class AddDisplayToAwardsEarned extends Migration
 
         $users = \App\User::all();
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
             // Get the awards for the user
 
             if (isset($user->awards) === true) {
                 $awards = $user->awards;
 
                 // iterate through the awards and add award_date array and set it to 1 JAN 1970 for each instance
-                foreach($awards as $award => $awardInfo) {
+                foreach ($awards as $award => $awardInfo) {
                     unset($awardInfo['display']);
 
                     $awards[$award] = $awardInfo;

@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateRmmcEchelonTypes extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -32,7 +30,7 @@ class CreateRmmcEchelonTypes extends Migration
         $mardet = \App\Type::where('chapter_type', '=', 'mardet')->first();
 
         if (empty($mardet->id) === false) {
-                   $this->writeAuditTrail(
+            $this->writeAuditTrail(
                        'system user',
                        'delete',
                        'types',
@@ -55,9 +53,8 @@ class CreateRmmcEchelonTypes extends Migration
         //
     }
 
-    function createChapterType($type, $description, array $can_have = [])
+    public function createChapterType($type, $description, array $can_have = [])
     {
-
         $this->writeAuditTrail(
             'system user',
             'create',

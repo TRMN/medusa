@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddExamList extends Migration
 {
-
     use \App\Audit\MedusaAudit;
 
     /**
@@ -556,10 +554,10 @@ class AddExamList extends Migration
                 'create',
                 'exam_list',
                 null,
-                json_encode(["exam_id" => $id, "name" => $name, "enabled" => true]),
+                json_encode(['exam_id' => $id, 'name' => $name, 'enabled' => true]),
                 'add_exam_list'
             );
-            ExamList::create(["exam_id" => $id, "name" => $name, "enabled" => true]);
+            ExamList::create(['exam_id' => $id, 'name' => $name, 'enabled' => true]);
         }
     }
 

@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class StarNationConfig extends Migration
@@ -15,9 +13,9 @@ class StarNationConfig extends Migration
     {
         $starNations = [
             'manticore' => 'Star Empire of Manticore',
-            'grayson' => 'Protectorate of Grayson',
+            'grayson'   => 'Protectorate of Grayson',
             'andermani' => 'Andermani Empire',
-            'haven' => 'Republic of Haven',
+            'haven'     => 'Republic of Haven',
         ];
 
         \App\MedusaConfig::set('starnations', $starNations);

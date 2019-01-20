@@ -5,25 +5,24 @@ namespace App;
 use Moloquent\Eloquent\Model as Eloquent;
 
 /**
- * Rating Model
+ * Rating Model.
  *
  * Enlisted Ratings
  */
 class Rating extends Eloquent
 {
-
     protected $fillable = ['rate_code', 'rate'];
 
     public static function getRatingsForBranch($branchID)
     {
-        $results = Rating::all();
+        $results = self::all();
         $ratings = [];
 
         foreach ($results as $rating) {
             if (isset($rating->rate[$branchID]) == true &&
                 empty($rating->rate[$branchID]) === false) {
                 $ratings[$rating->rate_code] =
-                    $rating->rate['description'] . ' (' . $rating->rate_code . ')';
+                    $rating->rate['description'].' ('.$rating->rate_code.')';
             }
         }
 
