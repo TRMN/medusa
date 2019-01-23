@@ -7,7 +7,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      *
      * @var string
      */
-    protected $baseUrl = 'http://localhost';
+    protected $baseUrl = 'http://medusa.local:8080';
 
     /**
      * Creates the application.
@@ -20,6 +20,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         $testEnvironment = 'testing';
 
-        return require __DIR__.'/../../bootstrap/start.php';
+        return require __DIR__.'/../bootstrap/autoload.php';
     }
 }

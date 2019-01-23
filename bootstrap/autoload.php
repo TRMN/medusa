@@ -1,6 +1,6 @@
 <?php
 
-define('LARAVEL_START', microtime(true));
+defined('LARAVEL_START') or define('LARAVEL_START', microtime(true));
 
 /*
 |--------------------------------------------------------------------------
