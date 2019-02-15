@@ -5,6 +5,7 @@
     - Updates to permissions
     - Fixed issue with new member welcome letter
     - Added script to update version number
+    - Fixed issue with promotion points where it would loose peerage investitures
 
 ## 2.0.5 (Released 2018-12-18)
     - SWP Fixes
