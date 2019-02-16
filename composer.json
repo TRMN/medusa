@@ -42,7 +42,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.0.0",
         "laravel/framework": "5.5.*",
         "doctrine/dbal": "~2.3",
         "barryvdh/laravel-ide-helper": "^2.2",
@@ -60,7 +60,7 @@
         "laravel/tinker": "^1.0",
         "genealabs/laravel-caffeine": "^0.5.0",
         "lesichkovm/laravel-advanced-route": "dev-master",
-        "radic/blade-extensions": "~7.0",
+    "radic/blade-extensions": "~7.1",
         "guzzlehttp/guzzle": "^6.3",
         "predis/predis": "^1.1",
         "fideloper/proxy": "~3.3"

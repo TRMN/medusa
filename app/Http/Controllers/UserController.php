@@ -1885,12 +1885,17 @@ class UserController extends Controller
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function buildRibbonRack()
+    public function buildRibbonRack(User $user = null)
     {
         if (($redirect =
-                $this->checkPermissions(['EDIT_SELF'])) !== true
+                $this->checkPermissions(['EDIT_SELF', 'EDIT_RR'], true)) !== true
         ) {
             return $redirect;
+        }
+
+        if (isset($user->member_id) === false ||
+            (isset($user->member_id) === true && Auth::user()->hasPermissions(['EDIT_RR'], true) === false)) {
+            $user = Auth::user();
         }
 
         // Try and find unit patches for all of the users assignments
@@ -1903,12 +1908,12 @@ class UserController extends Controller
             }
         }
 
-        Auth::user()->awards = Auth::user()->getCurrentAwards();
+        $user->awards = $user->getCurrentAwards();
 
         return view(
             'user.rack',
             [
-                'user'           => Auth::user(),
+                'user'           => $user,
                 'unitPatchPaths' => $unitPatchPaths,
                 'restricted'     => MedusaConfig::get(
                     'awards.restricted',
@@ -1960,7 +1965,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function saveRibbonRack()
+    public function saveRibbonRack(User $user)
     {
         if (($redirect =
                 $this->checkPermissions(['EDIT_SELF'])) !== true
@@ -2050,7 +2055,7 @@ class UserController extends Controller
             }
         }
 
-        $curAwards = Auth::user()->awards;
+        $curAwards = $user->awards;
         $awards = [];
 
         if (isset($data['ribbon']) === true) {
@@ -2144,23 +2149,23 @@ class UserController extends Controller
             }
         }
 
-        Auth::user()->awards = $awards;
+        $user->awards = $awards;
 
         if (empty($data['unitPatch']) === false) {
-            Auth::user()->unitPatchPath = $data['unitPatch'];
+            $user->unitPatchPath = $data['unitPatch'];
         }
 
         if (empty($data['usePeerageLands']) === false) {
-            Auth::user()->usePeerageLands = true;
+            $user->usePeerageLands = true;
         }
 
         if (empty($data['extraPadding']) === false) {
-            Auth::user()->extraPadding = true;
+            $user->extraPadding = true;
         }
 
-        Auth::user()->save();
+        $user->save();
 
-        return redirect()->to('home');
+        return redirect()->route('user.show', $user);
     }
 
     /**

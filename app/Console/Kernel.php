@@ -39,8 +39,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('member:updps')->dailyAt('02:00');
-        $schedule->command('report:swp')->monthlyOn();
-        $schedule->command('user:swpCheck')->monthlyOn(5);
+        $schedule->command('report:swp')->monthlyOn(1, '00:15');
+        $schedule->command('user:swpCheck')->monthlyOn(1, '00:05');
     }
 
     /**

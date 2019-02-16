@@ -10,27 +10,15 @@
 @section('content')
     @php
     $groupCount = 0;
+    $hasEdit_RR = Auth::user()->hasPermission(['EDIT_RR']);
     @endphp
     <div class="row">
         <h1 class="text-center">Ribbon Rack Builder
             for {{  $user->getGreeting() }} {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {{ $user->last_name }}{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}</h1>
-
-        <p>Currently, the Ribbon Rack Builder supports RMN/RMMC and a few RMA ribbons & badges. As the artwork becomes
-            available, they will be added. You many notice that some ribbons or badges don't have any artwork
-            shown. These items were added to allow the selection of them for promotion point calculations, they will be
-            saved to your record, but currently won't show up in your ribbon rack. Once the artwork is available they
-            willautomatically show up in your ribbon rack.
-        </p>
-
-        <p>Once you save your ribbon rack, it will be record in your MEDUSA record and displayed on your Service Record.
-            There will be a link under your ribbon rack that will show you the HTML required to embed your ribbon rack
-            in another website.</p>
-
-        <p>Please select your awards from the list below, then click "Save". If an award can be awarded more than once,
-            you will be able to select the number of times you have received the award.</p>
+        {!! \App\MedusaConfig::get('rr.instructions') !!}
     </div>
 
-    {{ Form::open(array('route' => 'saverack')) }}
+    {{ Form::open(['route' => ['saverack', $user]]) }}
     <div class="row text-center"><h3>Name Badge</h3></div>
     <div class="ribbon-group">
         @if(!is_null($user->getNameofLands()) && in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
@@ -225,7 +213,7 @@
                     <div class="row ribbon-group-row qual-badges">
 
                         <div class="col-sm-1 vertical-center-qual-badges">
-                            @if(in_array($group->code, $restricted))
+                            @if(in_array($group->code, $restricted) && !$hasEdit_RR)
                                 @if(isset($user->awards[$group->code]))
                                     {{Form::hidden('ribbon[]', $group->code)}}
                                 @endif
@@ -254,7 +242,7 @@
                         <div class="col-sm-2 vertical-center-qual-badges qual-badges text-center">
                             @if(
                                 (in_array($group->code, $restricted) && !isset($user->awards[$group->code])) ||
-                                ($group->code == 'CIB' && ($user->branch != 'RMA') && !$user->hasAllPermissions())
+                                ($group->code == 'CIB' && ($user->branch != 'RMA') && !$user->hasPermission(['EDIT_RR'], true))
                             )
                                 N/A
                             @else
@@ -308,7 +296,7 @@
 
         @endforeach
 
-        @if($user->branch == 'RMA' || $user->hasAllPermissions())
+        @if($user->branch == 'RMA' || $user->hasPermission(['EDIT_RR'], true))
             <div class="row ribbon-group-row qual-badges">
                 <div class="col-sm-10 text-center">
                     <h3>RMA Weapon Qualification Badges</h3>
@@ -344,15 +332,16 @@
     <div class="row text-center"><h3>Individual Awards</h3></div>
     @foreach(App\Award::getLeftRibbons() as $index => $ribbon)
         @if(is_object($ribbon))
+            @if(!in_array($ribbon->code, $restricted) && !$hasEdit_RR)
             <div class="row ribbon-row">
                 <div class="col-sm-1">
-                    @if(in_array($ribbon->code, $restricted))
+                        @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
                         @if(isset($user->awards[$ribbon->code]))
                             {{Form::hidden('ribbon[]', $ribbon->code)}}
                         @endif
                         &nbsp;
                     @else
-                        {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null)}}
+                            {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check'])}}
                     @endif
                 </div>
                 <div class="col-sm-2 text-center">
@@ -364,7 +353,7 @@
                 <div class="col-sm-4">{{$ribbon->name}}</div>
                 <div class="col-sm-1 ">
                     @if($ribbon->multiple)
-                        @if(in_array($ribbon->code, $restricted))
+                            @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
                             {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
                         @else
                             {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0])}}
@@ -374,7 +363,7 @@
                     @endif
                 </div>
             </div>
-
+            @endif
         @else
             @if($ribbon['group']['multiple'])
                 <div class="ribbon-group">
@@ -425,13 +414,12 @@
                             @endforeach
                         </select></div>
                 </div>
-
-            @endif
         @endif
 
         @php
         $groupCount++;
         @endphp
+        @endif
     @endforeach
     <div class="row text-left">
         <p><input type="checkbox" id="ack"> I acknowledge that awards entered into the MEDUSA System are not
@@ -578,6 +566,10 @@
                 }
 
             });
+
+            $('.ribbon-select').on('click', function () {
+                var el = this;
+            })
         });
     </script>
 @stop
