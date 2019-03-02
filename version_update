@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Get the version from the latest git tag
+TAG_VERSION=`git describe --tags`
+
+# Get the current version from .evn
+CUR_VERSION=`grep ^VERSION .env | cut -d'=' -f2`
+
+# The first time this will be run, the VERSION setting will not exist in .env, give it a default
+CUR_VERSION=${CUR_VERSION:="1.0.0"}
+
+# If the tag version is newer than the current version, update .env or add it if CUR_VERSION is set to the default
+if [ "$CUR_VERSION" = "1.0.0" ]
+then
+    echo "VERSION=$TAG_VERSION" >> ./.env
+elif [ `/bin/bash ./semver compare $TAG_VERSION $CUR_VERSION` -eq 1 ]
+then
+    cat .env | sed s/VERSION=$CUR_VERSION/VERSION=$TAG_VERSION/ > ./.env.new
+    mv ./.env.new ./.env
+fi

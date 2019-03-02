@@ -331,38 +331,38 @@
 
     <div class="row text-center"><h3>Individual Awards</h3></div>
     @foreach(App\Award::getLeftRibbons() as $index => $ribbon)
+
         @if(is_object($ribbon))
             @if(!in_array($ribbon->code, $restricted) && !$hasEdit_RR)
-            <div class="row ribbon-row">
-                <div class="col-sm-1">
+                <div class="row ribbon-row">
+                    <div class="col-sm-1">
                         @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
-                        @if(isset($user->awards[$ribbon->code]))
-                            {{Form::hidden('ribbon[]', $ribbon->code)}}
-                        @endif
-                        &nbsp;
-                    @else
+                            @if(isset($user->awards[$ribbon->code]))
+                                {{Form::hidden('ribbon[]', $ribbon->code)}}
+                            @endif
+                            &nbsp;@else
                             {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check'])}}
-                    @endif
-                </div>
-                <div class="col-sm-2 text-center">
-                    @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
-                        <img src="{{asset('ribbons/' . $ribbon->code . '-1.svg')}}" alt="{{$ribbon->name}}"
-                             class="ribbon">
-                    @endif
-                </div>
-                <div class="col-sm-4">{{$ribbon->name}}</div>
-                <div class="col-sm-1 ">
-                    @if($ribbon->multiple)
-                            @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
-                            {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
-                        @else
-                            {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0])}}
                         @endif
-                    @else
-                        {{Form::hidden($ribbon->code . '_quantity', '1')}}
-                    @endif
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
+                            <img src="{{asset('ribbons/' . $ribbon->code . '-1.svg')}}" alt="{{$ribbon->name}}"
+                                 class="ribbon">
+                        @endif
+                    </div>
+                    <div class="col-sm-4">{{$ribbon->name}}</div>
+                    <div class="col-sm-1 ">
+                        @if($ribbon->multiple)
+                            @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
+                                {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
+                            @else
+                                {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0])}}
+                            @endif
+                        @else
+                            {{Form::hidden($ribbon->code . '_quantity', '1')}}
+                        @endif
+                    </div>
                 </div>
-            </div>
             @endif
         @else
             @if($ribbon['group']['multiple'])
@@ -414,13 +414,14 @@
                             @endforeach
                         </select></div>
                 </div>
-        @endif
+            @endif
 
-        @php
-        $groupCount++;
-        @endphp
+            @php
+            $groupCount++;
+            @endphp
         @endif
     @endforeach
+
     <div class="row text-left">
         <p><input type="checkbox" id="ack"> I acknowledge that awards entered into the MEDUSA System are not
             private,
