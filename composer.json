@@ -57,12 +57,13 @@
         "themsaid/laravel-routes-publisher": "^1.0",
         "moloquent/moloquent": "dev-master",
         "laravel/tinker": "^1.0",
-        "genealabs/laravel-caffeine": "^0.5.0",
+        "genealabs/laravel-caffeine": "^0.6.0",
         "lesichkovm/laravel-advanced-route": "dev-master",
     "radic/blade-extensions": "~7.1",
         "guzzlehttp/guzzle": "^6.3",
         "predis/predis": "^1.1",
-        "fideloper/proxy": "~3.3"
+        "fideloper/proxy": "~3.3",
+        "laravel/passport": "~4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
