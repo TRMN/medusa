@@ -121,7 +121,7 @@ return [
     |
     */
 
-    'cookie' => env('SESSION_COOKIE','medusa_session'),
+    'cookie' => env('SESSION_COOKIE', 'medusa_session'),
 
     /*
     |--------------------------------------------------------------------------
