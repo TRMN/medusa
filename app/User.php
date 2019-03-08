@@ -2128,7 +2128,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                       function ($query) {
                             $query->where('requestor', '=', $this->id)
                                 ->orWhere('registrars', '=', $this->id);
-                        }
+                          }
                   )
                   ->orderBy('start_date', 'ASC')
                   ->get(['id', 'event_name']);
