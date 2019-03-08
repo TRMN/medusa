@@ -33,7 +33,7 @@ class EditRibbonRackPerm extends Migration
 
         // Add the new permission to the 5SL and Dir MDOC
 
-        foreach(['RMN-1094-12', 'RMN-0927-12'] as $member_id) {
+        foreach (['RMN-1094-12', 'RMN-0927-12'] as $member_id) {
             $user = \App\User::where('member_id', $member_id)->first();
             $user->updatePerms(['EDIT_RR']);
             $user->save();
