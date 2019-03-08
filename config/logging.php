@@ -40,7 +40,7 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/medusa.log'),
             'level' => 'debug',
         ],
 
