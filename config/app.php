@@ -12,7 +12,18 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'MEDUSA',
+    'name' => env('APP_NAME','MEDUSA'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Environment
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "environment" your application is currently
+    | running in. This may determine how you prefer to configure various
+    | services the application utilizes. Set this in your ".env" file.
+    |
+    */
 
     'env' => env('APP_ENV', 'production'),
 
@@ -27,7 +38,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG'),
+    'debug' => env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,6 +52,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+
+    'asset_url' => env('ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -83,6 +96,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Faker Locale
+    |--------------------------------------------------------------------------
+    |
+    | This locale will be used by the Faker PHP library when generating fake
+    | data for your database seeds. For example, this will be used to get
+    | localized telephone numbers, street address information and more.
+    |
+    */
+
+    'faker_locale' => 'en_US',
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |
@@ -122,6 +148,7 @@ return [
         Illuminate\Encryption\EncryptionServiceProvider::class,
         Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Hashing\HashServiceProvider::class,
         Illuminate\Mail\MailServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
         Illuminate\Pagination\PaginationServiceProvider::class,
@@ -170,6 +197,8 @@ return [
       'Artisan'         => Illuminate\Support\Facades\Artisan::class,
       'Auth'            => Illuminate\Support\Facades\Auth::class,
       'Blade'           => Illuminate\Support\Facades\Blade::class,
+      'Broadcast'       => Illuminate\Support\Facades\Broadcast::class,
+      'Bus'             => Illuminate\Support\Facades\Bus::class,
       'Cache'           => Illuminate\Support\Facades\Cache::class,
       'Config'          => Illuminate\Support\Facades\Config::class,
       'Cookie'          => Illuminate\Support\Facades\Cookie::class,
