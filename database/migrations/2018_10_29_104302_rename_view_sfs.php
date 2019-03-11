@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -40,7 +41,7 @@ class RenameViewSfs extends Migration
 
         foreach (App\User::where('permissions', 'VIEW_SFS')->get() as $user) {
             // First, remove the old permission from their list
-            $perms = array_where($user->permissions, function ($value, $key) {
+            $perms = Arr::where($user->permissions, function ($value, $key) {
                 return $value != 'VIEW_SFS';
             });
 

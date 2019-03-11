@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Arr;
 use App\Audit\MedusaAudit;
 use App\Awards\AwardQualification;
 use App\Enums\MedusaDefaults;
@@ -1053,14 +1054,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             if ($onlyPassing === true) {
                 // Only return exams with a passing grade
-                $list = array_where($list, function ($value, $key) {
+                $list = Arr::where($list, function ($value, $key) {
                     return $this->isPassingGrade($value['score']);
                 });
             }
 
             if (empty($after) === false) {
                 // filter by date
-                $list = array_where(
+                $list = Arr::where(
                     $list,
                     function ($value, $key) use ($after) {
                         if (strtotime($value['date']) >= $after &&
@@ -1079,7 +1080,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             if (empty($since) === false) {
                 // Filter by date entered
-                $list = array_where(
+                $list = Arr::where(
                     $list,
                     function ($value, $key) use ($since) {
                         if (empty($value['date_entered']) === true) {
@@ -1175,7 +1176,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     private function filterArray(array $array, $regex)
     {
-        $list = array_where(
+        $list = Arr::where(
             $array,
             function ($value, $key) use ($regex) {
                 if (preg_match($regex, $key) === 1) {
@@ -1202,7 +1203,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function filterArrayInverse(array $array, $regex)
     {
-        $list = array_where(
+        $list = Arr::where(
             $array,
             function ($value, $key) use ($regex) {
                 if (preg_match($regex, $key) === 1) {
@@ -1357,7 +1358,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $exams = $this->getExamList(['after' => $after]);
 
-        $list = array_where(
+        $list = Arr::where(
             $exams,
             function ($value, $key) use ($after) {
                 if (intval($value['score']) > 70 ||
@@ -1550,7 +1551,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function deletePerm($perm)
     {
-        $this->permissions = array_where(
+        $this->permissions = Arr::where(
             $this->permissions,
             function ($value, $key) use ($perm) {
                 return $value != $perm;
@@ -1589,7 +1590,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function deletePeerage($peerage_id)
     {
-        $peerages = array_where(
+        $peerages = Arr::where(
             $this->peerages,
             function ($value, $key) use ($peerage_id) {
                 if ($value['peerage_id'] != $peerage_id) {
@@ -3155,7 +3156,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         if (empty($history) === false) {
             $history = array_values(
-                array_sort(
+                Arr::sort(
                     $history,
                     function ($value) {
                         return $value['timestamp'];
