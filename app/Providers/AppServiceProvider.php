@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::withDoubleEncoding();
+        Blade::withoutDoubleEncoding();
         Paginator::useBootstrapThree();
     }
 
