@@ -1,7 +1,7 @@
 # MEDUSA CHANGELOG
 
 ## 2.0.7 (Released 2019-)
-   - Laravel updated to 5.
+   - Laravel updated to 5.8
     
 ## 2.0.6 (Release combined with 2.0.7)
    - Updates to Ribbon Rack Builder

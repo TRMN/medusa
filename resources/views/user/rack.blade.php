@@ -327,13 +327,10 @@
         @endif
     </div>
 
-
-
     <div class="row text-center"><h3>Individual Awards</h3></div>
     @foreach(App\Award::getLeftRibbons() as $index => $ribbon)
 
         @if(is_object($ribbon))
-            @if(!in_array($ribbon->code, $restricted) && !$hasEdit_RR)
                 <div class="row ribbon-row">
                     <div class="col-sm-1">
                         @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
@@ -341,13 +338,18 @@
                                 {{Form::hidden('ribbon[]', $ribbon->code)}}
                             @endif
                             &nbsp;@else
-                            {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check'])}}
+                            {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check', 'id' => $ribbon->code . '-select'])}}
                         @endif
                     </div>
-                    <div class="col-sm-2 text-center">
-                        @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
-                            <img src="{{asset('ribbons/' . $ribbon->code . '-1.svg')}}" alt="{{$ribbon->name}}"
-                                 class="ribbon">
+                    <div class="col-sm-2 text-center" id="{{$ribbon->code}}">
+                        @set('ribbon_image', null)
+                        @if(isset($user->awards[$ribbon->code]) && file_exists(public_path('ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')))
+                            @set('ribbon_image', 'ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')
+                        @elseif (file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
+                            @set('ribbon_image, 'ribbons/' . $ribbon->code . '-1.svg')
+                        @endif
+                        @if(!is_null($ribbon_image))
+                            <img src="{{asset($ribbon_image)}}" alt="{{$ribbon->name}}" class="ribbon">
                         @endif
                     </div>
                     <div class="col-sm-4">{{$ribbon->name}}</div>
@@ -356,14 +358,13 @@
                             @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
                                 {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
                             @else
-                                {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0])}}
+                                {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0, 'data-code' => $ribbon->code, 'data-name' => $ribbon->name, 'class' => 'ribbon-quantity'])}}
                             @endif
                         @else
                             {{Form::hidden($ribbon->code . '_quantity', '1')}}
                         @endif
                     </div>
                 </div>
-            @endif
         @else
             @if($ribbon['group']['multiple'])
                 <div class="ribbon-group">
@@ -568,8 +569,25 @@
 
             });
 
-            $('.ribbon-select').on('click', function () {
-                var el = this;
+            $('.ribbon-quantity').on('change', function () {
+                var el = $(this);
+                var ribbonCode = el.data('code');
+                var ribbonName = el.data('name');
+                var ribbonCount = el.val();
+                if (ribbonCount >= 1) {
+                    $('#' + ribbonCode + '-select').prop('checked', true);
+                } else {
+                    $('#' + ribbonCode + '-select').prop('checked', false);
+                }
+
+                $.ajax({
+                    url: "/api/awards/get_ribbon_image/" + ribbonCode + "/" + ribbonCount + "/" + encodeURIComponent(ribbonName) ,
+                    type: "GET",
+                    dataType: "html",
+                    success: function (data) {
+                        $('#' + ribbonCode).html(data);
+                    }
+                });
             })
         });
     </script>

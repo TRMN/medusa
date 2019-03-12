@@ -525,4 +525,13 @@ class ApiController extends Controller
              'pinfo' => $promotionInfo, ]
         );
     }
+
+    public function getRibbonImage($ribbonCode, $ribbonCount, $ribbonName)
+    {
+        $ribbonImage = 'ribbons/' . $ribbonCode . '-1.svg';
+        if (file_exists(public_path('ribbons/' . $ribbonCode . '-' . $ribbonCount . '.svg'))) {
+            $ribbonImage = 'ribbons/' . $ribbonCode . '-' . $ribbonCount . '.svg';
+        }
+        return '<img src="' . asset($ribbonImage) . '" alt="' . $ribbonName . '" class="ribbon">';
+    }
 }

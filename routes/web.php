@@ -533,6 +533,8 @@ Route::post(
     ['uses' => 'ApiController@checkRankQual']
 ); //->middleware('auth');
 
+Route::get('/api/awards/get_ribbon_image/{ribbonCode}/{ribbonCount}/{ribbonName}', 'ApiController@getRibbonImage');
+
 Route::get('/api/lastexam/{memberid}', function ($memberid) {
     $exams = \App\Exam::where('member_id', '=', $memberid)->first();
 
