@@ -20,7 +20,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Laravel\Passport\HasApiTokens;
-use Moloquent\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /**

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Moloquent\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use NumberFormatter;
 
 class Chapter extends Eloquent
