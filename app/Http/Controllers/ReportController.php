@@ -78,10 +78,7 @@ class ReportController extends Controller
         if (date('n') & 1 == 1) {
             $ts = strtotime('-1 month', $first);
             $month =
-              date(
-                  'F, Y',
-                  strtotime(date('Y').'-'.(date('n') + 1).'-01')
-              );
+              date('F, Y', strtotime(date('Y').'-'.(date('n') + 1).'-01'));
         } else {
             $ts = strtotime('-2 month', $first);
             $month = date('F, Y');
@@ -89,9 +86,7 @@ class ReportController extends Controller
 
         // Check and make sure that there's no pending requests
 
-        $reportDate = date('n') & 1 ?
-          date('Y-m', strtotime(date('Y').'-'.(date('n') + 1).'-01')) :
-          date('Y-m');
+        $reportDate = date('n') & 1 ? date('Y-m', strtotime(date('Y').'-'.(date('n') + 1).'-01')) : date('Y-m');
 
         $report =
           Report::where(
