@@ -20,7 +20,7 @@
                     <li role="presentation"><a href="#pp" aria-controls="pp" role="tab" data-toggle="tab">Promotion
                             Points</a></li>
                 @endif
-                @if(count($user->history))
+                @if(isset($user->history))
                     <li role="presentation"><a href="#history" aria-controls="sh" role="tab" data-toggle="tab">Service
                             History</a></li>
                 @endif
