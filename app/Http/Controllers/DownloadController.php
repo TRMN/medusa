@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\UploadLog;
 
 class DownloadController extends Controller
@@ -25,7 +26,7 @@ class DownloadController extends Controller
         if ($log->updateLog($filename, UploadLog::UPLOAD_STATUS_PROCESSING)) {
             // Download file
             return response()->download(storage_path('app/points/'.
-                                                     str_slug($log['chapter_name'], '_').
+                                                     Str::slug($log['chapter_name'], '_').
                                                      '/'.$filename));
         }
     }

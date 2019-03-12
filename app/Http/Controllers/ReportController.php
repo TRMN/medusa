@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Arr;
 use App\Chapter;
 use App\MedusaConfig;
 use App\Report;
@@ -184,7 +185,7 @@ class ReportController extends Controller
 
             $member->last_course = $member->getHighestMainLineExamForBranch();
             $data['command_crew'][$billetInfo['display']] =
-              array_only(
+              Arr::only(
                   $member->toArray(),
                   [
                   'branch',
@@ -212,7 +213,7 @@ class ReportController extends Controller
 
         foreach ($newCrew as $crew) {
             $data['new_crew'][] =
-              array_only($crew, [
+              Arr::only($crew, [
                 'first_name',
                 'last_name',
                 'middle_name',
@@ -349,7 +350,7 @@ class ReportController extends Controller
 
         foreach ($newCrew as $crew) {
             $new_crew[] =
-              array_only($crew, [
+              Arr::only($crew, [
                 'first_name',
                 'last_name',
                 'middle_name',

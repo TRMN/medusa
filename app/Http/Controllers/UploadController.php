@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\Award;
 use App\Chapter;
 use App\ImportLog;
@@ -186,7 +187,7 @@ class UploadController extends Controller
         $ext = $file->getClientOriginalExtension();
         $numFiles = empty($log->files) === false ? count($log->files) : 0;
 
-        $slug = str_slug($request->chaptername, '_');
+        $slug = Str::slug($request->chaptername, '_');
         $filename = $slug.'_'.($numFiles + 1).'.'.$ext;
 
         if ($log->isDuplicate($originalFileName) === false) {
@@ -233,7 +234,7 @@ class UploadController extends Controller
 
         $fileinfo = pathinfo($filename);
 
-        $slug = str_slug($log['chapter_name'], '_');
+        $slug = Str::slug($log['chapter_name'], '_');
 
         $file = $request->file('file');
         $file->storeAs($slug, $fileinfo['filename'].'.csv', 'points');

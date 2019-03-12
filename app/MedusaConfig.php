@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Log;
-use Moloquent\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class MedusaConfig extends Eloquent
 {

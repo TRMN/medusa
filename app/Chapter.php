@@ -2,8 +2,9 @@
 
 namespace App;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Moloquent\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use NumberFormatter;
 
 class Chapter extends Eloquent
@@ -620,7 +621,7 @@ class Chapter extends Eloquent
      */
     public function getChildChapters()
     {
-        return array_where(
+        return Arr::where(
             $this->getChapterIdWithChildren(),
             function ($value, $key) {
                 if ($value != $this->id) {

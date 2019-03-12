@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Arr;
 use App\Events\GradeEntered;
 use App\Exam;
 use App\ExamList;
@@ -310,7 +311,7 @@ class ExamController extends Controller
                 return $redirect;
             }
 
-            $exams = array_except((array) $examRecord->exams, (string) $examId);
+            $exams = Arr::except((array) $examRecord->exams, (string) $examId);
 
             $examRecord->exams = $exams;
 
