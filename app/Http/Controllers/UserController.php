@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Arr;
 use App\Award;
 use App\Billet;
 use App\Branch;
@@ -18,6 +17,7 @@ use App\Ptitles;
 use App\Rating;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

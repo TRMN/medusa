@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
 use App\UploadLog;
+use Illuminate\Support\Str;
 
 class DownloadController extends Controller
 {

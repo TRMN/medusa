@@ -230,9 +230,9 @@ return [
       'View'            => Illuminate\Support\Facades\View::class,
       'Moloquent'       => Moloquent\Eloquent\Model::class,
       'Countries'       => 'Webpatser\Countries\CountriesFacade',
-      'QrCode'    => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
-      'Form'      => 'Collective\Html\FormFacade',
-      'Html'      => 'Collective\Html\HtmlFacade',
+      'QrCode'          => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
+      'Form'            => 'Collective\Html\FormFacade',
+      'Html'            => 'Collective\Html\HtmlFacade',
 
     ],
 
