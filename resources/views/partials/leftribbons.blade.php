@@ -54,14 +54,14 @@
             <div class="name-badge-spacer">&nbsp;</div>
             @if(in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
                 @if($user->usePeerageLands)
-                    <div class="name-badge-RMN">{{$user->extraPadding?'&nbsp;':''}}{{$user->getNameofLands()}}{{$user->extraPadding?'&nbsp;':''}}</div>
+                    <div class="name-badge-RMN">{!! $user->extraPadding?'&nbsp;':'' !!}{!! $user->getNameofLands() !!}{!! $user->extraPadding?'&nbsp;':'' !!}</div>
                 @else
-                    <div class="name-badge-RMN">{{$user->extraPadding?'&nbsp;':''}}{{$user->last_name}}
-                        , {{substr($user->first_name, 0 , 1)}}{{$user->extraPadding?'&nbsp;':''}}</div>
+                    <div class="name-badge-RMN">{!! $user->extraPadding?'&nbsp;':'' !!}{{$user->last_name}}
+                        , {{substr($user->first_name, 0 , 1)}}{!! $user->extraPadding?'&nbsp;':'' !!}</div>
                 @endif
-                <div class="name-badge-spacer">&nbsp;</div>
+                <div class="name-badge-spacer">&nbsp</div>
             @elseif($user->branch === 'GSN')
-                <div class="name-badge-GSN">{{$user->extraPadding?'&nbsp;':''}}{{$user->last_name}}{{$user->extraPadding?'&nbsp;':''}}</div>
+                <div class="name-badge-GSN">{!! $user->extraPadding?'&nbsp;':'' !!}{{$user->last_name}}{!! $user->extraPadding?'&nbsp;':'' !!}</div>
                 <div class="name-badge-spacer">&nbsp;</div>
             @endif
         </div>

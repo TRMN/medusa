@@ -20,13 +20,13 @@ class AddNotePerm extends Migration
 
         foreach ($newPerms as $perm => $desc) {
             $this->writeAuditTrail(
-                    'system user',
-                    'create',
-                    'permissions',
-                    null,
-                    json_encode(['name' => $perm, 'description' => $desc]),
-                    'add_new_permissions'
-                );
+                'system user',
+                'create',
+                'permissions',
+                null,
+                json_encode(['name' => $perm, 'description' => $desc]),
+                'add_new_permissions'
+            );
             App\Permission::create(['name' => $perm, 'description' => $desc]);
         }//
     }

@@ -2,7 +2,7 @@
 
 namespace App\Passport;
 
-use Moloquent\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 use Moloquent\Passport\AuthCode;
 use Moloquent\Passport\Token;
 

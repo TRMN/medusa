@@ -208,8 +208,8 @@ class OAuthController extends Controller
                 $_peerage['path'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
             } elseif ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                 if (empty($_peerage['filename']) === false && file_exists(
-                        public_path().'/arms/peerage/'.$_peerage['filename']
-                    )
+                    public_path().'/arms/peerage/'.$_peerage['filename']
+                )
                 ) {
                     $_peerage['path'] =
                         '/arms/peerage/'.$_peerage['filename'];
@@ -349,7 +349,8 @@ class OAuthController extends Controller
             [
                 'events' => $this->getUserFromRequest($request)
                                  ->getScheduledEvents($_tz),
-            ]);
+            ]
+        );
     }
 
     public function checkMemberIn(Request $request)
@@ -364,7 +365,8 @@ class OAuthController extends Controller
                      $_data['event'],
                      $_data['member'],
                      empty($_data['tz']) ? null : $_data['tz']
-                 ));
+                 )
+        );
     }
 
     public function updateUser(Request $request)

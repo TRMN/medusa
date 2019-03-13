@@ -39,7 +39,7 @@ class CreateEchelons extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // 10th Fleet Echelons
         $this->createEchelon('Battlecruiser Division 962', 'division', '2015-01-20', 'BatCruDiv 962', 'RMN', 'RMN-1017-12', ['HMS Helen', 'HMS Black Rose', 'HMS Earsidh Kamerling']);

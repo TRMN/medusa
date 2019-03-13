@@ -36,7 +36,7 @@ class assignAHPerms extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // Martin Lessem, Scott Akers, Steph Taylor, Dave Weiner, Bob Bulkeley
         foreach (['RMN-0001-07', 'RMN-0011-08', 'RMN-0147-11', 'RMN-1094-12', 'RMN-0055-10'] as $member) {

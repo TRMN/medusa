@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Arr;
 use App\Award;
 use App\Billet;
 use App\Branch;
@@ -937,7 +938,8 @@ class UserController extends Controller
                     [
                         'status'  => 'success',
                         'message' => 'User created',
-                    ]);
+                    ]
+                );
             }
         } else {
             return view('thankyou');
@@ -1376,7 +1378,7 @@ class UserController extends Controller
 
         if (empty($history) === false) {
             $history = array_values(
-                array_sort(
+                Arr::sort(
                     $history,
                     function ($value) {
                         return $value['timestamp'];
@@ -2020,7 +2022,7 @@ class UserController extends Controller
 
         // Process the groups
 
-        $groups = array_where(
+        $groups = Arr::where(
             $data,
             function ($value, $key) {
                 return substr($key, 0, 5) == 'group';
@@ -2029,7 +2031,7 @@ class UserController extends Controller
 
         // Process the selects
 
-        $selects = array_where(
+        $selects = Arr::where(
             $data,
             function ($value, $key) {
                 return substr($key, -4) == '_chk';
@@ -2206,7 +2208,7 @@ class UserController extends Controller
      */
     private function preserveValidDates(array $dates)
     {
-        return array_where(
+        return Arr::where(
             $dates,
             function ($value, $key) {
                 return $value != '1970-01-01';
@@ -2226,7 +2228,7 @@ class UserController extends Controller
     {
         $today = Carbon::today('America/New_York');
 
-        return array_where(
+        return Arr::where(
             $dates,
             function ($value, $key) use ($today) {
                 return $today->lt(Carbon::createFromFormat('Y-m-d H', $value.' 0')->addDays(config('awards.display_days')));
@@ -2248,8 +2250,7 @@ class UserController extends Controller
 
         // Count the number of awards that are in the future
         foreach ($awardDates as $date) {
-            if ($today->lt(Carbon::createFromFormat('Y-m-d H', $date.' 0')->addDays(config('awards.display_days'))
-            )) {
+            if ($today->lt(Carbon::createFromFormat('Y-m-d H', $date.' 0')->addDays(config('awards.display_days')))) {
                 $numPending++;
             }
         }

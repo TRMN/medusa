@@ -7,13 +7,10 @@ use Illuminate\Support\ServiceProvider;
 
 class MedusaHasherServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function boot()
     {
-        $this->app->bind(
-            'hash',
-            function () {
-                return new MedusaHasher();
-            }
-        );
+        app('hash')->extend('sha1', function () {
+            return new MedusaHasher();
+        });
     }
 }
