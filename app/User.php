@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Support\Arr;
 use App\Audit\MedusaAudit;
 use App\Awards\AwardQualification;
 use App\Enums\MedusaDefaults;
@@ -14,13 +13,14 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use Laravel\Passport\HasApiTokens;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Laravel\Passport\HasApiTokens;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /**
@@ -2127,9 +2127,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                   ->where('end_date', '>=', date('Y-m-d'))
                   ->where(
                       function ($query) {
-                            $query->where('requestor', '=', $this->id)
+                          $query->where('requestor', '=', $this->id)
                                 ->orWhere('registrars', '=', $this->id);
-                          }
+                      }
                   )
                   ->orderBy('start_date', 'ASC')
                   ->get(['id', 'event_name']);

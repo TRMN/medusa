@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Support\Arr;
 use App\Exam;
 use App\Message;
 use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportGrades extends Command

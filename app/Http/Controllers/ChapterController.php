@@ -121,7 +121,7 @@ class ChapterController extends Controller
         $ret['recordsFiltered'] = $filteredRecords;
         $ret['data'] = [];
 
-        /**
+        /*
          * Process the results.
          *
          * @var User

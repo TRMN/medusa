@@ -1,9 +1,7 @@
 <?php
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Arr;
 
 class RenameViewSfs extends Migration
 {
@@ -12,8 +10,9 @@ class RenameViewSfs extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function up()
     {

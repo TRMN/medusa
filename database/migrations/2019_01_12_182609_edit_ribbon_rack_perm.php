@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class EditRibbonRackPerm extends Migration
@@ -16,7 +14,7 @@ class EditRibbonRackPerm extends Migration
     public function up()
     {
         $newPerms = [
-            'EDIT_RR'  => 'Edit Users Ribbon Rack'
+            'EDIT_RR'  => 'Edit Users Ribbon Rack',
         ];
 
         foreach ($newPerms as $perm => $desc) {

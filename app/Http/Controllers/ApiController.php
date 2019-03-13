@@ -533,12 +533,13 @@ class ApiController extends Controller
 
         if (in_array($ribbonCode, ['MT', 'MID', 'WS'])) {
             $prefix = 'awards/stripes/';
-            $suffix = ">";
+            $suffix = '>';
         }
-        $ribbonImage = $prefix . $ribbonCode . '-1.svg';
-        if (file_exists(public_path($prefix . $ribbonCode . '-' . $ribbonCount . '.svg'))) {
-            $ribbonImage = $prefix . $ribbonCode . '-' . $ribbonCount . '.svg';
+        $ribbonImage = $prefix.$ribbonCode.'-1.svg';
+        if (file_exists(public_path($prefix.$ribbonCode.'-'.$ribbonCount.'.svg'))) {
+            $ribbonImage = $prefix.$ribbonCode.'-'.$ribbonCount.'.svg';
         }
-        return '<img src="' . asset($ribbonImage) . '" alt="' . $ribbonName . '"' . $suffix;
+
+        return '<img src="'.asset($ribbonImage).'" alt="'.$ribbonName.'"'.$suffix;
     }
 }
