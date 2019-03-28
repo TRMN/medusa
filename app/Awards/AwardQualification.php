@@ -30,7 +30,7 @@ trait AwardQualification
 
             $numExams = $this->getNumExams();
 
-            if ($numExams > 40) {
+            if ($numExams >= 40) {
                 // Qualified for at least one MCAM
 
                 $numMCAM++;
