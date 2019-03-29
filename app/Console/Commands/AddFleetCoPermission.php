@@ -40,7 +40,7 @@ class AddFleetCoPermission extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         $user = User::where('member_id', '=', $this->argument('member_id'))->first();
 

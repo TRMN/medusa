@@ -12,7 +12,18 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'MEDUSA',
+    'name' => env('APP_NAME', 'MEDUSA'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Environment
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "environment" your application is currently
+    | running in. This may determine how you prefer to configure various
+    | services the application utilizes. Set this in your ".env" file.
+    |
+    */
 
     'env' => env('APP_ENV', 'production'),
 
@@ -27,7 +38,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG'),
+    'debug' => env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,6 +52,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+
+    'asset_url' => env('ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -83,6 +96,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Faker Locale
+    |--------------------------------------------------------------------------
+    |
+    | This locale will be used by the Faker PHP library when generating fake
+    | data for your database seeds. For example, this will be used to get
+    | localized telephone numbers, street address information and more.
+    |
+    */
+
+    'faker_locale' => 'en_US',
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |
@@ -92,26 +118,9 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'SomeRandomString'),
+    'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Logging Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the log settings for your application. Out of
-    | the box, Laravel uses the Monolog PHP logging library. This gives
-    | you a variety of powerful log handlers / formatters to utilize.
-    |
-    | Available Settings: "single", "daily", "syslog", "errorlog"
-    |
-    */
-
-    'log' => 'single',
-
-    'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
     /*
     |--------------------------------------------------------------------------
@@ -139,6 +148,7 @@ return [
         Illuminate\Encryption\EncryptionServiceProvider::class,
         Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Hashing\HashServiceProvider::class,
         Illuminate\Mail\MailServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
         Illuminate\Pagination\PaginationServiceProvider::class,
@@ -160,21 +170,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        'App\Services\MedusaHasherServiceProvider',
-        Moloquent\MongodbServiceProvider::class,
-        Moloquent\Auth\PasswordResetServiceProvider::class,
-        Moloquent\Passport\PassportServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        App\Services\MedusaHasherServiceProvider::class,
+//        Moloquent\MongodbServiceProvider::class,
+//        Moloquent\Auth\PasswordResetServiceProvider::class,
+//        Moloquent\Passport\PassportServiceProvider::class,
         'Webpatser\Countries\CountriesServiceProvider',
-        'Maatwebsite\Excel\ExcelServiceProvider',
         'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
-        'Intervention\Image\ImageServiceProvider',
-        'App\Services\MedusaServiceProvider',
-        Collective\Html\HtmlServiceProvider::class,
-        Laravel\Passport\PassportServiceProvider::class,
-        App\Providers\PassportServiceProvider::class,
-        Laravel\Tinker\TinkerServiceProvider::class,
-        GeneaLabs\LaravelCaffeine\Providers\LaravelCaffeineService::class,
+        App\Services\MedusaServiceProvider::class,
         Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ],
 
@@ -192,15 +194,18 @@ return [
     'aliases' => [
 
       'App'             => Illuminate\Support\Facades\App::class,
+      'Arr'             => Illuminate\Support\Arr::class,
       'Artisan'         => Illuminate\Support\Facades\Artisan::class,
       'Auth'            => Illuminate\Support\Facades\Auth::class,
       'Blade'           => Illuminate\Support\Facades\Blade::class,
+      'Broadcast'       => Illuminate\Support\Facades\Broadcast::class,
+      'Bus'             => Illuminate\Support\Facades\Bus::class,
       'Cache'           => Illuminate\Support\Facades\Cache::class,
       'Config'          => Illuminate\Support\Facades\Config::class,
       'Cookie'          => Illuminate\Support\Facades\Cookie::class,
       'Crypt'           => Illuminate\Support\Facades\Crypt::class,
       'DB'              => Illuminate\Support\Facades\DB::class,
-      'Eloquent'        => Moloquent\Eloquent\Model::class,
+//      'Eloquent'        => Moloquent\Eloquent\Model::class,
       'Event'           => Illuminate\Support\Facades\Event::class,
       'File'            => Illuminate\Support\Facades\File::class,
       'Gate'            => Illuminate\Support\Facades\Gate::class,
@@ -219,17 +224,15 @@ return [
       'Schema'          => Illuminate\Support\Facades\Schema::class,
       'Session'         => Illuminate\Support\Facades\Session::class,
       'Storage'         => Illuminate\Support\Facades\Storage::class,
+      'Str'             => Illuminate\Support\Str::class,
       'URL'             => Illuminate\Support\Facades\URL::class,
       'Validator'       => Illuminate\Support\Facades\Validator::class,
       'View'            => Illuminate\Support\Facades\View::class,
       'Moloquent'       => Moloquent\Eloquent\Model::class,
       'Countries'       => 'Webpatser\Countries\CountriesFacade',
-//      'CSV'       => 'mnshankar\CSV\CSVFacade',
-      'Excel'     => 'Maatwebsite\Excel\Facades\Excel',
-      'Image'     => 'Intervention\Image\Facades\Image',
-      'QrCode'    => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
-      'Form'      => 'Collective\Html\FormFacade',
-      'Html'      => 'Collective\Html\HtmlFacade',
+      'QrCode'          => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
+      'Form'            => 'Collective\Html\FormFacade',
+      'Html'            => 'Collective\Html\HtmlFacade',
 
     ],
 

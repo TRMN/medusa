@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Arr;
 
 class AddRankEquivInfo extends Migration
 {
@@ -698,7 +699,7 @@ class AddRankEquivInfo extends Migration
         foreach (['RMMC', 'GSN', 'IAN', 'RHN', 'RMA'] as $value) {
             $branch = App\Branch::where('branch', '=', $value)->first();
 
-            $branch['equivalent'] = array_except($equiv, [$value]);
+            $branch['equivalent'] = Arr::except($equiv, [$value]);
             $branch->save();
 
             $this->writeAuditTrail(
@@ -994,7 +995,7 @@ class AddRankEquivInfo extends Migration
         foreach (['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMACS'] as $value) {
             $branch = App\Branch::where('branch', '=', $value)->first();
 
-            $branch['equivalent'] = array_except($equiv, [$value]);
+            $branch['equivalent'] = Arr::except($equiv, [$value]);
             $branch->save();
 
             $this->writeAuditTrail(

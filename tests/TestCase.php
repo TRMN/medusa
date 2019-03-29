@@ -1,25 +1,11 @@
 <?php
-
-class TestCase extends Illuminate\Foundation\Testing\TestCase
-{
-    /**
-     * The base URL to use while testing the application.
-     *
-     * @var string
-     */
-    protected $baseUrl = 'http://medusa.local:8080';
-
-    /**
-     * Creates the application.
-     *
-     * @return \Symfony\Component\HttpKernel\HttpKernelInterface
-     */
-    public function createApplication()
+    
+    namespace Tests;
+    
+    use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+    use \Illuminate\Support\Facades\Log;
+    
+    abstract class TestCase extends BaseTestCase
     {
-        $unitTesting = true;
-
-        $testEnvironment = 'testing';
-
-        return require __DIR__.'/../bootstrap/autoload.php';
+        use CreatesApplication;
     }
-}

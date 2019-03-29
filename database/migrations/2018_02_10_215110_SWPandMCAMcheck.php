@@ -14,7 +14,6 @@ class SWPandMCAMcheck extends Migration
     public function up()
     {
         foreach (\App\User::activeUsers() as $user) {
-
             // Check for SWP qualification.  This is for existing SWP's that may
             // not be recorded, so set isNewAward to false.  Check for SWP first,
             // because you can get a MCAM unless you have a SWP

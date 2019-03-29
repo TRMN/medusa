@@ -72,7 +72,10 @@ class ResetPasswordController extends BaseController
     protected function credentials(Request $request)
     {
         return $request->only(
-            'email_address', 'password', 'password_confirmation', 'token'
+            'email_address',
+            'password',
+            'password_confirmation',
+            'token'
         );
     }
 

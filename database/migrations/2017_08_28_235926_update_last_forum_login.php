@@ -13,10 +13,12 @@ class UpdateLastForumLogin extends Migration
     {
         foreach (\App\User::all() as $user) {
             try {
-                $lastForumLogin = App\ForumUser::where('user_email',
-          strtolower($user->email_address))
-          ->firstOrFail(['user_lastvisit'])
-          ->toArray();
+                $lastForumLogin = App\ForumUser::where(
+                    'user_email',
+                    strtolower($user->email_address)
+                )
+                ->firstOrFail(['user_lastvisit'])
+                ->toArray();
 
                 $user->forum_last_login = $lastForumLogin['user_lastvisit'];
             } catch (Exception $e) {

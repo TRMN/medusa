@@ -39,7 +39,7 @@ class ImportChapters extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // Need to know about the fleets
 

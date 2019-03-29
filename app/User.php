@@ -13,13 +13,14 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Laravel\Passport\HasApiTokens;
-use Moloquent\Eloquent\Model as Eloquent;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /**
@@ -1053,14 +1054,14 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             if ($onlyPassing === true) {
                 // Only return exams with a passing grade
-                $list = array_where($list, function ($value, $key) {
+                $list = Arr::where($list, function ($value, $key) {
                     return $this->isPassingGrade($value['score']);
                 });
             }
 
             if (empty($after) === false) {
                 // filter by date
-                $list = array_where(
+                $list = Arr::where(
                     $list,
                     function ($value, $key) use ($after) {
                         if (strtotime($value['date']) >= $after &&
@@ -1079,7 +1080,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             if (empty($since) === false) {
                 // Filter by date entered
-                $list = array_where(
+                $list = Arr::where(
                     $list,
                     function ($value, $key) use ($since) {
                         if (empty($value['date_entered']) === true) {
@@ -1175,7 +1176,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     private function filterArray(array $array, $regex)
     {
-        $list = array_where(
+        $list = Arr::where(
             $array,
             function ($value, $key) use ($regex) {
                 if (preg_match($regex, $key) === 1) {
@@ -1202,7 +1203,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function filterArrayInverse(array $array, $regex)
     {
-        $list = array_where(
+        $list = Arr::where(
             $array,
             function ($value, $key) use ($regex) {
                 if (preg_match($regex, $key) === 1) {
@@ -1357,7 +1358,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $exams = $this->getExamList(['after' => $after]);
 
-        $list = array_where(
+        $list = Arr::where(
             $exams,
             function ($value, $key) use ($after) {
                 if (intval($value['score']) > 70 ||
@@ -1550,7 +1551,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function deletePerm($perm)
     {
-        $this->permissions = array_where(
+        $this->permissions = Arr::where(
             $this->permissions,
             function ($value, $key) use ($perm) {
                 return $value != $perm;
@@ -1589,7 +1590,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function deletePeerage($peerage_id)
     {
-        $peerages = array_where(
+        $peerages = Arr::where(
             $this->peerages,
             function ($value, $key) use ($peerage_id) {
                 if ($value['peerage_id'] != $peerage_id) {
@@ -1780,16 +1781,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $pCode = $peerages[0]['code'];
 
             if ($pCode == 'K' && substr(
-                                     Korders::where(
-                                         'classes.postnominal',
-                                         '=',
-                                         $peerages[0]['postnominal']
-                                     )->first()->getClassName(
-                                         $peerages[0]['postnominal']
-                                     ),
-                                     0,
-                                     6
-                                 ) != 'Knight'
+                Korders::where(
+                    'classes.postnominal',
+                    '=',
+                    $peerages[0]['postnominal']
+                )->first()->getClassName(
+                    $peerages[0]['postnominal']
+                ),
+                0,
+                6
+            ) != 'Knight'
             ) {
                 $pCode = '';
             }
@@ -1882,10 +1883,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         }
 
         if (strlen($state) == 4 && substr($state, -1) == '.' && substr(
-                                                                    $state,
-                                                                    -3,
-                                                                    1
-                                                                ) == '.'
+            $state,
+            -3,
+            1
+        ) == '.'
         ) {
             // We have a 2 letter abbreviation with periods between the letters, like D.C. or B.C.
             return strtoupper(substr($state, 0, 1).substr($state, -2, 1));
@@ -1894,9 +1895,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if (substr($state, 2, 2) == ' -') {
             // We may have a 2 letter abbreviation followed by the full name, try and validate
             if (array_key_exists(
-                    strtoupper(substr($state, 0, 2)),
-                    MedusaDefaults::STATES_BY_ABREVIATION
-                ) === true
+                strtoupper(substr($state, 0, 2)),
+                MedusaDefaults::STATES_BY_ABREVIATION
+            ) === true
             ) {
                 return strtoupper(substr($state, 0, 2));
             }
@@ -1905,9 +1906,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         // Nothing else hits, check and see if we know the 2 letter abbreviation
 
         if (array_key_exists(
-                strtoupper($state),
-                MedusaDefaults::STATES_BY_NAME
-            ) === true
+            strtoupper($state),
+            MedusaDefaults::STATES_BY_NAME
+        ) === true
         ) {
             $tmp = MedusaDefaults::STATES_BY_NAME;
 
@@ -1976,11 +1977,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             if ((intval($lastId) + 1 < intval($memberId)) &&
                 ($honorary === true || intval($lastId) + 1 > 200)) {
                 return '-'.str_pad(
-                        $lastId + 1,
-                        4,
-                        '0',
-                        STR_PAD_LEFT
-                    ).'-'.date('y');
+                    $lastId + 1,
+                    4,
+                    '0',
+                    STR_PAD_LEFT
+                ).'-'.date('y');
             }
             $lastId = $memberId;
         }
@@ -2168,7 +2169,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             }
         }
 
-        if (is_a($event, 'App\Events') === false) {
+        if (is_a($event, \App\Events::class) === false) {
             // Not the correct object, return an error
             $this->setTimeZone($currentTz);
 
@@ -2195,9 +2196,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $event->end_date >= date('Y-m-d')) {
             // Is the user doing the check-in a requestor or a registrar?
             if ($event->requestor === $this->id || in_array(
-                                                       $this->id,
-                                                       $event->registrars
-                                                   ) === true) {
+                $this->id,
+                $event->registrars
+            ) === true) {
                 $checkIns = [];
                 if (isset($event->checkins) === true) {
                     $checkIns = $event->checkins;
@@ -3155,7 +3156,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         if (empty($history) === false) {
             $history = array_values(
-                array_sort(
+                Arr::sort(
                     $history,
                     function ($value) {
                         return $value['timestamp'];
@@ -3257,10 +3258,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $history = [
                 'timestamp' => time(),
                 'event'     => $event.Grade::getRankTitle(
-                        $rank['grade'],
-                        $this->getRate(),
-                        $this->branch
-                    ).' ('.$rank['grade'].') on '.date('d M Y'),
+                    $rank['grade'],
+                    $this->getRate(),
+                    $this->branch
+                ).' ('.$rank['grade'].') on '.date('d M Y'),
             ];
 
             $this->addServiceHistoryEntry($history);

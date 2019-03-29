@@ -98,7 +98,7 @@ class ImportUsers extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // Get the list of countries
         $results = Countries::getList();
@@ -170,8 +170,8 @@ class ImportUsers extends Command
             if ((empty($user['secondary_billet']) === false) &&
                   $user['secondary_billet'] == 'Commanding Officer') {
                 $user['permissions'] = array_merge(
-                          $user['permissions'],
-                          [
+                    $user['permissions'],
+                    [
                             'DUTY_ROSTER',
                             'EXPORT_ROSTER',
                             'EDIT_WEBSITE',
@@ -180,7 +180,7 @@ class ImportUsers extends Command
                             'REQUEST_PROMOTION',
                             'CHAPTER_REPORT',
                           ]
-                      );
+                );
             }
 
             $user['permissions'] = array_unique($user['permissions']);

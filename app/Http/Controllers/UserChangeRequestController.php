@@ -266,13 +266,17 @@ class UserChangeRequestController extends Controller
                 $message = '<li>This was a transfer from another military branch to the RMN.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
-            if (in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($newValue,
-                    ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
+            if (in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array(
+                $newValue,
+                ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']
+            ) === true) {
                 $message = '<li>This was a transfer from a military branch to a civilian branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
-            if (in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array($oldValue,
-                    ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']) === true) {
+            if (in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array(
+                $oldValue,
+                ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']
+            ) === true) {
                 $message = '<li>This was a transfer from a civilian branch to a military branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
@@ -303,9 +307,15 @@ class UserChangeRequestController extends Controller
             $rank['grade'] = $newRank;
             $user->rank = $rank;
 
-            $events[] = 'Rank changed from '.Grade::getRankTitle($oldRank, null,
-                    $oldValue).' ('.$oldRank.') to '.Grade::getRankTitle($newRank, null,
-                    $newValue).' ('.$newRank.') on '.date('d M Y');
+            $events[] = 'Rank changed from '.Grade::getRankTitle(
+                $oldRank,
+                null,
+                $oldValue
+            ).' ('.$oldRank.') to '.Grade::getRankTitle(
+                $newRank,
+                null,
+                $newValue
+            ).' ('.$newRank.') on '.date('d M Y');
         }
 
         if (empty($message) === false) {

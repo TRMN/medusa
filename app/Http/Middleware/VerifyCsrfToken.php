@@ -2,11 +2,22 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
-class VerifyCsrfToken extends BaseVerifier
+class VerifyCsrfToken extends Middleware
 {
+    /**
+     * Indicates whether the XSRF-TOKEN cookie should be set on the response.
+     *
+     * @var bool
+     */
+    protected $addHttpCookie = true;
+
+    /**
+     * The URIs that should be excluded from CSRF verification.
+     *
+     * @var array
+     */
     protected $except = [
         'user/*/peerage',
         '/exam/user/delete',
@@ -18,17 +29,4 @@ class VerifyCsrfToken extends BaseVerifier
         '/config/*',
         '/chapter/*/getRoster',
     ];
-
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
-    {
-        return parent::handle($request, $next);
-    }
 }
