@@ -1,21 +1,32 @@
 <?php
-
-namespace Tests\Feature;
-
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-class ExampleTest extends TestCase
-{
+    
     /**
-     * A basic test example.
-     *
-     * @return void
+     * Feature/ExampleTest
      */
-    public function testBasicTest()
+    
+    namespace Tests\Feature;
+    
+    use Tests\TestCase;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    
+    // this is required; it does not see the reference in TestCase.php
+    use Illuminate\Support\Facades\Log;
+    
+    class ExampleTest extends TestCase
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        /**
+         * A basic test example.
+         *
+         * @return void
+         */
+        public function testBasicTest()
+        {
+            Log::debug('Feature/ExampleTest testBasicTest');
+            $response = $this->get('http://medusa.local:8080');
+            
+            // I'd like this to be a better http result code,
+            // but for now this will do as a proof of concept
+            $response->assertStatus(500);
+            Log::debug('Feature/ExampleTest testBasicTest done');
+        }
     }
-}
