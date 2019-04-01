@@ -8,7 +8,4 @@
     abstract class TestCase extends BaseTestCase
     {
         use CreatesApplication;
-        
-        // this can't be here: 
-        //use Illuminate\Support\Facades\Log;
     }

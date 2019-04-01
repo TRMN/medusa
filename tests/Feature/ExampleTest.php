@@ -8,10 +8,7 @@
     
     use Tests\TestCase;
     use Illuminate\Foundation\Testing\RefreshDatabase;
-    
-    // this is required; it does not see the reference in TestCase.php
-    use Illuminate\Support\Facades\Log;
-    
+
     class ExampleTest extends TestCase
     {
         /**
@@ -21,12 +18,12 @@
          */
         public function testBasicTest()
         {
-            Log::debug('Feature/ExampleTest testBasicTest');
+            \Log::debug('Feature/ExampleTest testBasicTest');
             $response = $this->get('http://medusa.local:8080');
             
             // I'd like this to be a better http result code,
             // but for now this will do as a proof of concept
             $response->assertStatus(500);
-            Log::debug('Feature/ExampleTest testBasicTest done');
+            \Log::debug('Feature/ExampleTest testBasicTest done');
         }
     }
