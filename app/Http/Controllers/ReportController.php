@@ -99,10 +99,10 @@ class ReportController extends Controller
               $reportDate
           )->first();
 
-        if (count($report) === 1 && empty($report->report_sent) === true) {
+        if (isset($report) === true && empty($report->report_sent) === true) {
             // report found, send them to the edit form
             return Response::view('report.chapter-edit', ['report' => $report]);
-        } elseif (count($report) === 1 && empty($report->report_sent) === false) {
+        } elseif (isset($report) === true && empty($report->report_sent) === false) {
             // The current report has been sent and they want to start the next one
             $month =
               date('F, Y', strtotime('+2 months', strtotime($report->report_date)));

@@ -239,7 +239,7 @@
         </div>
     </div>
     <br>
-    @if(count($report->new_crew) === 0)
+    @if(empty($report->new_crew))
         <div class="row">
             <div class=" small-text-center col-sm-12">
                 No new regular crew since last report

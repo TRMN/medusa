@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    @if(count(\App\MedusaConfig::all()))
+    @if(!empty(\App\MedusaConfig::all()))
         <table class="trmnTableWithActions compact row-border" id="config-table">
             <thead>
             <tr>
