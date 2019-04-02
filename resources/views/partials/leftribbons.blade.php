@@ -38,7 +38,7 @@
     @endforeach
 
     @set('awq', $user->getArmyWeaponBadges())
-    @if(count($awq) && ($user->branch == 'RMA' || $user->hasAllPermissions()))
+    @if(!empty($awq) && ($user->branch == 'RMA' || $user->hasAllPermissions()))
         <div class="text-center">
             @foreach($awq as $badge)
                 @if($loop->index < 3)

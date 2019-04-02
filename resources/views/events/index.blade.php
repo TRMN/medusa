@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    @if(count($events))
+    @if(!empty($events))
         <div class="row">
             <div class=" col-sm-3 Incised901Light underline">Dates</div>
             <div class=" col-sm-9 Incised901Light underline">Click to Edit/Download CSV</div>

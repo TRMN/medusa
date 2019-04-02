@@ -100,9 +100,9 @@
             <div class="clear-both">
                 <br/>
 
-                @if(count($user->getPeerages()))
+                @if(!empty($user->getPeerages()))
                     <h5 class="Incised901Black ninety">
-                        @if(count($user->getPeerages())>1)
+                        @if(!empty($user->getPeerages()))
                             Peerages
                         @else
                             Peerage

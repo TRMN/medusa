@@ -72,7 +72,7 @@
             </div>
         </div>
     @endif
-    @if (count($includes) > 0)
+    @if (!empty($includes))
         <div class="row padding-5">
             <div class="col-sm-2  Incised901Light ninety text-right">
                 Elements:
@@ -87,7 +87,7 @@
         </div>
     @endif
 
-    @if (count($command) > 0)
+    @if (!empty($command))
         <br/>
         <div class="row">
             <div class="col-sm-7 text-center">

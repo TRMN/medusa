@@ -24,7 +24,7 @@
 <div>
     <ul class="nav nav-tabs" role="tablist">
         @foreach(\App\MedusaConfig::get('exam.regex') as $school => $regex)
-            @if(count($user->getExamList(['pattern' => $regex])) > 0)
+            @if(!empty($user->getExamList(['pattern' => $regex])))
                 <li role="presentation"{!! $loop->first ? ' class="active"' : '' !!}><a
                             href="#{{str_replace(' ', '', $school)}}" aria-controls="{{str_replace(' ', '', $school)}}"
                             role="tab" data-toggle="tab">
@@ -39,7 +39,7 @@
 
     <div class="tab-content">
         @foreach(\App\MedusaConfig::get('exam.regex') as $school => $regex)
-            @if(count($user->getExamList(['pattern' => $regex])) > 0)
+            @if(!empty($user->getExamList(['pattern' => $regex])))
                 <div role="tabpanel" class="tab-pane padding-top-10{{$loop->first ? ' active' : ''}}"
                      id="{{str_replace(' ', '', $school)}}">
                     @foreach($user->getExamList(['pattern' => $regex]) as $exam => $gradeInfo)
