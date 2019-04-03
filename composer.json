@@ -47,7 +47,7 @@
         "doctrine/dbal": "~2.3",
         "barryvdh/laravel-ide-helper": "^2.2",
         "webpatser/laravel-countries": "dev-master",
-        "mnshankar/CSV": "*",
+        "mnshankar/csv": "*",
         "maatwebsite/excel": "^3.1.8",
         "simplesoftwareio/simple-qrcode": "~1",
         "intervention/image": "^2.3",

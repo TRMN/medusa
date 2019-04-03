@@ -139,9 +139,11 @@ trait MedusaPromotions
 
         if (is_null($payGrade2Check) === true) {
             $nextGrade = $this->getNextGrade($this->rank['grade']);
-        }
-        if (isset($nextGrade)) {
-            $payGrade2Check = $nextGrade[$this->rank['grade']]['next'][0];
+            if (empty($nextGrade) === false) {
+                $payGrade2Check = $nextGrade[$this->rank['grade']]['next'][0];
+            } else {
+                return $flags;  // Can't determine what paygrade to check
+            }
         }
 
         if ($this->isGradeValidForUser($payGrade2Check) === false) {
