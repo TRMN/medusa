@@ -1341,8 +1341,43 @@ class UserController extends Controller
                 $position = 'extra';
             }
 
+            // code starts changing here
             $currentValue = $user->getFullAssignmentInfo($position);
-
+            /**
+            $currentValue = $user->findAssignment($item['chapter_id'])
+            
+            // if the findAssignment function returns null, instead of an array, it's a new assignment
+            if (isset($currentValue) === false && empty($currentValue) === true)
+            {
+                $history[] = [
+                    'timestamp' => strtotime($item['date_assigned']),
+                    'event'     => 'Assigned to '.
+                                   $item['chapter_name'].' as '.
+                                   $item['billet'].' on '.date(
+                                       'd M Y',
+                                       strtotime($item['date_assigned'])
+                                   ),
+                ];
+            }
+            elseif ($item['billet'] !== $currentValue['billet']) {
+                // Only the billet changed
+                $history[] = [
+                    'timestamp' => strtotime($item['date_assigned']),
+                    'event'     => ' Billet in '. $item['chapter_name'] .'changed from '.
+                                   $currentValue['billet'].' to '.
+                                   $item['billet'].' on '.date(
+                                       'd M Y',
+                                       strtotime($item['date_assigned'])
+                                   ),
+                ];
+                // reset the date assigned in the changes to match the assignment date aboard 
+                // the ship since the user is only new to the position and not the chapter
+                item['date_assigned'] = currentValue['date_assigned'];
+            }
+            
+            
+            */
+            
             // Did this assignment change?
             if ($item['chapter_id'] !== $currentValue['chapter_id']) {
                 $history[] = [
