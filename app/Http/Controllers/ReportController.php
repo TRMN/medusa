@@ -312,6 +312,13 @@ class ReportController extends Controller
 
         $report = Report::find($id);
 
+        if (empty($report['report_sent']) === false) {
+            return redirect(URL::previous())->with(
+                'message',
+                'You may not edit a report that has already been sent'
+            );
+        }
+
         $commandCrew = $report['command_crew'];
 
         if (empty($commandCrew['CO']) === false) {
