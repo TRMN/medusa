@@ -109,7 +109,6 @@
                                     src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
     </footer>
 </div>
-<script src="{!! asset('js/app.js')!!}?{{ time() }}"></script>
 </body>
 </html>
 
