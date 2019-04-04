@@ -639,15 +639,16 @@ class UserController extends Controller
             $chapterName = Chapter::find($data[$position . '_assignment'])->chapter_name;
         
             $assignment[] = [
-                'chapter_id'    => $data['primary_assignment'],
+                'chapter_id'    => $data[$position . '_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
-                    strtotime($data['primary_date_assigned'])
+                    strtotime($data[$position . '_date_assigned'])
                 ),
-                'billet'        => $data['primary_billet'],
-                'primary'       => true,
+                'billet'        => $data[$position . '_billet'],
+                $position       => true,
             ];
+            
             $history[] = [
                 'timestamp' => strtotime($data[$position . '_date_assigned']),
                 'event'     => 'Assigned to '.
