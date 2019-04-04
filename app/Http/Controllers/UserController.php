@@ -652,7 +652,7 @@ class UserController extends Controller
             $history[] = [
                 'timestamp' => strtotime($data[$position . '_date_assigned']),
                 'event'     => 'Assigned to '.
-                              $chapter_name .' as '.
+                              $chapterName .' as '.
                               $data[$position . '_billet'].' on '.date(
                                   'd M Y',
                                   strtotime($data[$position . '_date_assigned'])
