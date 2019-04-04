@@ -1278,7 +1278,7 @@ class UserController extends Controller
                 $history[] = [
                     'timestamp' => strtotime($data[$position . '_date_assigned']),
                     'event'     => 'Assigned to '.
-                                   $chapter_name .' as '.
+                                   $chapterName .' as '.
                                    $data[$position . '_billet'].' on '.date(
                                        'd M Y',
                                        strtotime($data[$position . '_date_assigned'])
@@ -1289,7 +1289,7 @@ class UserController extends Controller
                 // Only the billet changed
                 $history[] = [
                     'timestamp' => strtotime($data[$position . '_date_assigned']),
-                    'event'     => ' Billet in '. $chapter_name .'changed from '.
+                    'event'     => ' Billet in '. $chapterName .'changed from '.
                                    $currentValue['billet'].' to '.
                                    $data[$position . '_billet'] .' on '.date(
                                        'd M Y',
@@ -1331,7 +1331,7 @@ class UserController extends Controller
                     { // if no new chapter_id matches the old one, write a log entry
                         $history[] = [
                             'timestamp' => time(),
-                            'event'     => ' Left the '. $oldItem['billet'] .' billet in '. $chapter_name .' on '.date(
+                            'event'     => ' Left the '. $oldItem['billet'] .' billet in '. $chapterName .' on '.date(
                                        'd M Y',
                                        time()
                                    ),
