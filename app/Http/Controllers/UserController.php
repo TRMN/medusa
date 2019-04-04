@@ -1265,53 +1265,55 @@ class UserController extends Controller
         $chapterIdFromForm = [];
 
         foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
-            // Get the chapter name
-            $chapterName = Chapter::find($data[$position . '_assignment'])->chapter_name;
+            if (empty($data[$position . '_assignment']) === false) {
+                // This position has been set, get the chapter name
+                $chapterName = Chapter::find($data[$position . '_assignment'])->chapter_name;
 
-            // Push the chapter id onto an array to be used to check for removed assignments
-            $chapterIdFromForm[] = $data[$position . '_assignment'];
+                // Push the chapter id onto an array to be used to check for removed assignments
+                $chapterIdFromForm[] = $data[$position . '_assignment'];
 
-            // If the member is already assigned to the chapter being added, pull the current data
-            $currentAssignment = $user->findAssignment($data[$position . '_assignment']);
+                // If the member is already assigned to the chapter being added, pull the current data
+                $currentAssignment = $user->findAssignment($data[$position . '_assignment']);
 
-            // if the findAssignment function returns null, instead of an array, it's a new assignment
-            if (empty($currentAssignment) === true) {
-                $history[] = [
-                    'timestamp' => strtotime($data[$position . '_date_assigned']),
-                    'event'     => 'Assigned to ' .
-                                   $chapterName . ' as ' .
-                                   $data[$position . '_billet'] . ' on ' .
-                                   date('d M Y', strtotime($data[$position . '_date_assigned'])),
+                // if the findAssignment function returns null, instead of an array, it's a new assignment
+                if (empty($currentAssignment) === true) {
+                    $history[] = [
+                        'timestamp' => strtotime($data[$position . '_date_assigned']),
+                        'event'     => 'Assigned to ' .
+                                       $chapterName . ' as ' .
+                                       $data[$position . '_billet'] . ' on ' .
+                                       date('d M Y', strtotime($data[$position . '_date_assigned'])),
+                    ];
+                } elseif ($data[$position . '_billet'] !== $currentAssignment['billet']) {
+                    // Only the billet changed
+                    $history[] = [
+                        'timestamp' => strtotime($data[$position . '_date_assigned']),
+                        'event'     => ' Billet in ' . $chapterName . 'changed from ' .
+                                       $currentAssignment['billet'] . ' to ' .
+                                       $data[$position . '_billet'] . ' on ' .
+                                       date(
+                                           'd M Y',
+                                           strtotime($data[$position . '_date_assigned'])
+                                       ),
+                    ];
+                    // reset the date assigned in the changes to match the assignment date aboard
+                    // the ship since the user is only new to the position and not the chapter
+                    $data[$position . '_date_assigned'] = $currentAssignment['date_assigned'];
+                }
+
+                $assignments[] = [
+                    'chapter_id'    => $data[$position . '_assignment'],
+                    'chapter_name'  => $chapterName,
+                    'date_assigned' => date(
+                        'Y-m-d',
+                        strtotime($data[$position . '_date_assigned'])
+                    ),
+                    'billet'        => $data[$position . '_billet'],
+                    $position       => true,
                 ];
-            } elseif ($data[$position . '_billet'] !== $currentAssignment['billet']) {
-                // Only the billet changed
-                $history[] = [
-                    'timestamp' => strtotime($data[$position . '_date_assigned']),
-                    'event'     => ' Billet in ' . $chapterName . 'changed from ' .
-                                   $currentAssignment['billet'] . ' to ' .
-                                   $data[$position . '_billet'] . ' on ' .
-                                   date(
-                                       'd M Y',
-                                       strtotime($data[$position . '_date_assigned'])
-                                   ),
-                ];
-                // reset the date assigned in the changes to match the assignment date aboard
-                // the ship since the user is only new to the position and not the chapter
-                $data[$position . '_date_assigned'] = $currentAssignment['date_assigned'];
+
+                unset($data[$position . '_assignment'], $data[$position . '_date_assigned'], $data[$position . '_billet']);
             }
-
-            $assignments[] = [
-                'chapter_id'    => $data[$position . '_assignment'],
-                'chapter_name'  => $chapterName,
-                'date_assigned' => date(
-                    'Y-m-d',
-                    strtotime($data[$position . '_date_assigned'])
-                ),
-                'billet'        => $data[$position . '_billet'],
-                $position       => true,
-            ];
-
-            unset($data[$position . '_assignment'], $data[$position . '_date_assigned'], $data[$position . '_billet']);
         }
 
         foreach ($user->assignment as $assignment) {
