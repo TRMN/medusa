@@ -1273,84 +1273,41 @@ class UserController extends Controller
             ];
 
             unset($data[$position . '_assignment'], $data[$position . '_date_assigned'], $data[$position . '_billet']);
-        }
-
-        $data['assignment'] = $assignment;
-
-        // Check for changes in billets or assignments
-
-        foreach ($assignment as $item) {
-            $position = 'primary';
-
-            if (empty($item['secondary']) === false) {
-                $position = 'secondary';
-            } elseif (empty($item['additional']) === false) {
-                $position = 'additional';
-            } elseif (empty($item['extra']) === false) {
-                $position = 'extra';
-            }
-
-            // code starts changing here
-            $currentValue = $user->getFullAssignmentInfo($position);
-            /**
-            $currentValue = $user->findAssignment($item['chapter_id'])
+            
+            $currentValue = $user->findAssignment($assignment['chapter_id'])
             
             // if the findAssignment function returns null, instead of an array, it's a new assignment
-            if (isset($currentValue) === false && empty($currentValue) === true)
+            if (empty($currentValue) === true)
             {
                 $history[] = [
-                    'timestamp' => strtotime($item['date_assigned']),
+                    'timestamp' => strtotime($assignment['date_assigned']),
                     'event'     => 'Assigned to '.
-                                   $item['chapter_name'].' as '.
-                                   $item['billet'].' on '.date(
+                                   $assignment['chapter_name'].' as '.
+                                   $assignment['billet'].' on '.date(
                                        'd M Y',
                                        strtotime($item['date_assigned'])
                                    ),
                 ];
             }
-            elseif ($item['billet'] !== $currentValue['billet']) {
+            elseif ($assignment['billet'] !== $currentValue['billet']) {
                 // Only the billet changed
                 $history[] = [
-                    'timestamp' => strtotime($item['date_assigned']),
-                    'event'     => ' Billet in '. $item['chapter_name'] .'changed from '.
+                    'timestamp' => strtotime($assignment['date_assigned']),
+                    'event'     => ' Billet in '. $assignment['chapter_name'] .'changed from '.
                                    $currentValue['billet'].' to '.
-                                   $item['billet'].' on '.date(
+                                   $assignment['billet'].' on '.date(
                                        'd M Y',
-                                       strtotime($item['date_assigned'])
+                                       strtotime($assignment['date_assigned'])
                                    ),
                 ];
                 // reset the date assigned in the changes to match the assignment date aboard 
                 // the ship since the user is only new to the position and not the chapter
-                item['date_assigned'] = currentValue['date_assigned'];
-            }
-            
-            
-            */
-            
-            // Did this assignment change?
-            if ($item['chapter_id'] !== $currentValue['chapter_id']) {
-                $history[] = [
-                    'timestamp' => strtotime($item['date_assigned']),
-                    'event'     => ucfirst($position).' assignment changed to '.
-                                   $item['chapter_name'].' and assigned as '.
-                                   $item['billet'].' on '.date(
-                                       'd M Y',
-                                       strtotime($item['date_assigned'])
-                                   ),
-                ];
-            } elseif ($item['billet'] !== $currentValue['billet']) {
-                // Only the billet changed
-                $history[] = [
-                    'timestamp' => strtotime($item['date_assigned']),
-                    'event'     => ucfirst($position).' billet changed from '.
-                                   $currentValue['billet'].' to '.
-                                   $item['billet'].' on '.date(
-                                       'd M Y',
-                                       strtotime($item['date_assigned'])
-                                   ),
-                ];
+                $assignment['date_assigned'] = currentValue['date_assigned'];
             }
         }
+
+        
+        $data['assignment'] = $assignment;
 
         // Merge new history with existing history
 
