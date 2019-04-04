@@ -635,40 +635,41 @@ class UserController extends Controller
         unset($data['display_rank'], $data['dor']);
 
         // Build up the member assignments
-
-        $chapterName = Chapter::find($data['primary_assignment'])->chapter_name;
-
-        $assignment[] = [
-            'chapter_id'    => $data['primary_assignment'],
-            'chapter_name'  => $chapterName,
-            'date_assigned' => date(
-                'Y-m-d',
-                strtotime($data['primary_date_assigned'])
-            ),
-            'billet'        => $data['primary_billet'],
-            'primary'       => true,
-        ];
-
-        unset($data['primary_assignment'], $data['primary_date_assigned'], $data['primary_billet']);
-
-        if (isset($data['secondary_assignment']) === true &&
-            empty($data['secondary_assignment']) === false) {
-            $chapterName =
-                Chapter::find($data['secondary_assignment'])->chapter_name;
-
+        foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
+            $chapterName = Chapter::find($data[$position . '_assignment'])->chapter_name;
+        
             $assignment[] = [
-                'chapter_id'    => $data['secondary_assignment'],
+                'chapter_id'    => $data['primary_assignment'],
                 'chapter_name'  => $chapterName,
                 'date_assigned' => date(
                     'Y-m-d',
-                    strtotime($data['secondary_date_assigned'])
+                    strtotime($data['primary_date_assigned'])
                 ),
-                'billet'        => $data['secondary_billet'],
-                'secondary'     => true,
+                'billet'        => $data['primary_billet'],
+                'primary'       => true,
             ];
-        }
+            $history[] = [
+                'timestamp' => strtotime($data[$position . '_date_assigned']),
+                'event'     => 'Assigned to '.
+                              $chapter_name .' as '.
+                              $data[$position . '_billet'].' on '.date(
+                                  'd M Y',
+                                  strtotime($data[$position . '_date_assigned'])
+                              ),
+            ];
 
-        unset($data['secondary_assignment'], $data['secondary_date_assigned'], $data['secondary_billet']);
+            unset($data[$position . '_assignment'], $data[$position . '_date_assigned'], $data[$position . '_billet']);
+        }
+        $history = array_values(
+            array_sort(
+                $history,
+                function ($value) {
+                    return $value['timestamp'];
+                    }
+                )
+            );
+        $data['history'] = $history;
+        
 
         $data['assignment'] = $assignment;
 
