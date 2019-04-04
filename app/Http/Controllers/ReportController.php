@@ -92,17 +92,17 @@ class ReportController extends Controller
           Report::where(
               'chapter_id',
               '=',
-              Auth::user()->getAssignmentId('primary')
+              $chapter->id
           )->where(
               'report_date',
               '=',
               $reportDate
           )->first();
 
-        if (count($report) === 1 && empty($report->report_sent) === true) {
+        if (isset($report) === true && empty($report->report_sent) === true) {
             // report found, send them to the edit form
             return Response::view('report.chapter-edit', ['report' => $report]);
-        } elseif (count($report) === 1 && empty($report->report_sent) === false) {
+        } elseif (isset($report) === true && empty($report->report_sent) === false) {
             // The current report has been sent and they want to start the next one
             $month =
               date('F, Y', strtotime('+2 months', strtotime($report->report_date)));
@@ -311,6 +311,13 @@ class ReportController extends Controller
         $this->updateNewCrew($id);
 
         $report = Report::find($id);
+
+        if (empty($report['report_sent']) === false) {
+            return redirect(URL::previous())->with(
+                'message',
+                'You may not edit a report that has already been sent'
+            );
+        }
 
         $commandCrew = $report['command_crew'];
 

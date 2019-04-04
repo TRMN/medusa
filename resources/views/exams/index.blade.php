@@ -15,7 +15,7 @@
         {!!Form::submit('Upload Grades', ['class' => 'btn round', 'id' => 'uploadGrades'])!!}
         {!! Form::close() !!}
     </div>
-    @if(count($messages) > 0)
+    @if(!empty($messages))
         @foreach($messages as $line)
             <div class="row">
                 <div class=" col-sm-12 @if($line->severity == 'info') green @else red @endif">

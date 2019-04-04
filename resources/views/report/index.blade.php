@@ -13,7 +13,7 @@
         <div class=" col-sm-2 ">&nbsp;</div>
     </div>
     <br>
-    @if(count($reports) === 0)
+    @if(empty($reports))
         <div class="row">
             <div class=" col-sm-6 text-center ">
                 No chapter reports found

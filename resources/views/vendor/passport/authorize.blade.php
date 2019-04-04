@@ -3,15 +3,9 @@
 <head>
 
     <title>Authorization Request From {!!$client->name!!} | Royal Manticoran Navy Database</title>
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/normalize.min.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/foundation.min.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/jquery.ui.datepicker.min.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/jquery.dataTables.min.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/dataTables.foundation.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/dataTables.jqueryui.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/jquery-ui.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/selectize.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/main.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('css/vendor.css') !!}?{{ time() }}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('css/app.css') !!}?{{ time() }}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('css/overrides.css') !!}?{{ time() }}">
     <link rel="shortcut icon" href="{!! asset('favicon.ico') !!}">
 </head>
 <body>
@@ -115,24 +109,6 @@
                                     src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
     </footer>
 </div>
-<script type="text/javascript" src="{!! asset('js/jquery.min.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/foundation.min.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/foundation.topbar.min.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/foundation.accordion.min.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/foundation.reveal.min.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/jquery-ui.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/jquery.dataTables.min.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/dataTables.foundation.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/dataTables.jqueryui.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/jquery.autocomplete.js')!!}"></script>
-<script type="text/javascript" src="{!! asset('js/selectize.min.js') !!}"></script>
-<script type="text/javascript" src="{!! asset('js/jquery.multipage.js') !!}"></script>
-<script type="text/javascript" src="{!! asset('js/js.cookie.js') !!}"></script>
-<script>
-    jQuery(document).foundation();
-</script>
-<script src="{!! asset('js/rcswitcher.js')!!}"></script>
-<script src="{!! asset('js/bundle.js')!!}"></script>
 </body>
 </html>
 

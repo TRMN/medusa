@@ -67,7 +67,7 @@ None Found
 NEW REGULAR CREW SINCE LAST REPORT<br><br>
 
 
-@if(count($report->new_crew) === 0)
+@if(empty($report->new_crew))
 
 
     No new regular crew since last report<br>
