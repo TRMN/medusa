@@ -92,7 +92,7 @@ class ReportController extends Controller
           Report::where(
               'chapter_id',
               '=',
-              Auth::user()->getAssignmentId('primary')
+              $chapter->id
           )->where(
               'report_date',
               '=',
