@@ -27,14 +27,19 @@ class ReportController extends Controller
             return $redirect;
         }
 
-        if ($this->hasDutyRosterForAssignedShip() === false) {
-            return redirect(URL::previous())->with('message', 'None of your assignments are required to report');
+        $validTypes = MedusaConfig::get('report.valid_types', ['ship', 'station', 'small_craft', 'lac']);
+        $chapter = Chapter::find(Auth::user()->getAssignedShip());
+
+        if ($this->hasDutyRosterForAssignedShip() === false ||
+            in_array($chapter->chapter_type, $validTypes) === false) {
+            return redirect(URL::previous())
+                ->with('message', 'None of your assignments are required to report or able to use this feature');
         }
 
         return view(
             'report.index',
             [
-            'reports' => Report::where('chapter_id', '=', Auth::user()->getAssignedShip())->orderBy('report_date')->get(),
+            'reports' => Report::where('chapter_id', '=', $chapter->chapter_id)->orderBy('report_date')->get(),
             ]
         );
     }
@@ -66,7 +71,8 @@ class ReportController extends Controller
             }
         }
 
-        if (is_null($chapter) === false && in_array($chapter->chapter_type, $validTypes) === false) {
+        if ((is_null($chapter) === false && in_array($chapter->chapter_type, $validTypes) === false) ||
+            is_null($chapter) === true) {
             return redirect(URL::previous())->with(
                 'message',
                 'I was unable to find an appropriate command for this report.'
