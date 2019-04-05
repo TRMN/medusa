@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
@@ -38,7 +39,7 @@ class Grade extends Eloquent
         $rateDetail = Rating::where('rate_code', '=', $rate)->first();
 
         if (empty($gradeDetails->rank[$branch]) === false) {
-            $rank_title = self::mb_trim($gradeDetails->rank[$branch]);
+            $rank_title = self::mbTrim($gradeDetails->rank[$branch]);
         } else {
             $rank_title = $grade;
         }
@@ -63,7 +64,7 @@ class Grade extends Eloquent
         //$grades[''] = 'Select a rank';
 
         foreach (self::$gradeFilters as $filter => $filterName) {
-            $tmp = self::_gradesForBranchForSelect($branchID, $filter);
+            $tmp = self::gradesForBranchForSelect($branchID, $filter);
 
             if (empty($tmp) === false) {
                 $grades[$filterName] = $tmp;
@@ -73,12 +74,12 @@ class Grade extends Eloquent
         return $grades;
     }
 
-    private static function _gradesForBranchForSelect($branchID, $filter)
+    private static function gradesForBranchForSelect($branchID, $filter)
     {
         $grades = [];
 
-        foreach (self::_gradesForBranch($branchID, $filter) as $grade) {
-            $grades[$grade->grade] = self::mb_trim($grade->rank[$branchID]).' ('.$grade->grade.')';
+        foreach (self::gradesForBranch($branchID, $filter) as $grade) {
+            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]) . ' (' . $grade->grade . ')';
         }
 
         // Sort by the array key, which is the paygrade
@@ -96,11 +97,11 @@ class Grade extends Eloquent
      *
      * @return array
      */
-    private static function _gradesForBranch($branchID, $filter = null)
+    private static function gradesForBranch($branchID, $filter = null)
     {
         $grades = [];
 
-        $paygrades = self::_filterGrades($filter);
+        $paygrades = self::filterGrades($filter);
 
         foreach ($paygrades as $grade) {
             if (empty($grade->rank[$branchID]) === false) {
@@ -119,7 +120,7 @@ class Grade extends Eloquent
      *
      * @return array
      */
-    private static function _filterGrades($filter = null)
+    private static function filterGrades($filter = null)
     {
         $grades = [];
 
@@ -130,7 +131,7 @@ class Grade extends Eloquent
         }
 
         foreach (self::all() as $grade) {
-            if (self::_filterMatch($filter, $grade->grade) === true) {
+            if (self::filterMatch($filter, $grade->grade) === true) {
                 $grades[] = $grade;
             }
         }
@@ -146,7 +147,7 @@ class Grade extends Eloquent
      *
      * @return bool
      */
-    private static function _filterMatch($filter, $grade)
+    private static function filterMatch($filter, $grade)
     {
         return is_null($filter) === true ? true : substr($grade, 0, 1) === $filter;
     }
@@ -159,7 +160,7 @@ class Grade extends Eloquent
      *
      * @return mixed
      */
-    private static function mb_trim($string, $trim_chars = '\s')
+    private static function mbTrim($string, $trim_chars = '\s')
     {
         return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
     }
@@ -171,7 +172,7 @@ class Grade extends Eloquent
      */
     public static function enlistedPayGrades()
     {
-        return self::_filterGrades('E');
+        return self::filterGrades('E');
     }
 
     /**
@@ -181,7 +182,7 @@ class Grade extends Eloquent
      */
     public static function warrantPayGrades()
     {
-        return self::_filterGrades('W');
+        return self::filterGrades('W');
     }
 
     /**
@@ -191,7 +192,7 @@ class Grade extends Eloquent
      */
     public static function officerPayGrades()
     {
-        return self::_filterGrades('O');
+        return self::filterGrades('O');
     }
 
     /**
@@ -201,7 +202,7 @@ class Grade extends Eloquent
      */
     public static function flagPayGrades()
     {
-        return self::_filterGrades('F');
+        return self::filterGrades('F');
     }
 
     /**
@@ -211,6 +212,26 @@ class Grade extends Eloquent
      */
     public static function civilianPayGrades()
     {
-        return self::_filterGrades('C');
+        return self::filterGrades('C');
+    }
+
+    /**
+     * Check if the requested pay grade is valid for the specified branch
+     *
+     * @param $paygrade
+     * @param $branch
+     *
+     * @return bool
+     */
+    public static function isPayGradeValidForBranch($paygrade, $branch)
+    {
+        try {
+            $gradeInfo = Grade::where('grade', $paygrade)->firstOrFail();
+
+            return isset($gradeInfo->rank[$branch]);
+        } catch (ModelNotFoundException $e) {
+            // Paygrade doesn't exist
+            return false;
+        }
     }
 }

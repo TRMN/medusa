@@ -370,28 +370,21 @@ trait MedusaPromotions
         return $return;
     }
 
+    /**
+     * Check if the pay grade is valid for the user
+     *
+     * @param $payGrade2Check
+     *
+     * @return bool
+     */
     public function isGradeValidForUser($payGrade2Check)
     {
         if (empty($this->rating) === true) {
             // No rating, check the Grade collection
-            try {
-                $gradeInfo = Grade::where('grade', $payGrade2Check)->firstOrFail();
-
-                return isset($gradeInfo->rank[$this->branch]);
-            } catch (ModelNotFoundException $e) {
-                // Paygrade doesn't exist
-                return false;
-            }
+            return Grade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
         } else {
             // Check the available ranks for this rating
-            try {
-                $rateInfo = Rating::where('rate_code', $this->getRate())->firstOrFail();
-
-                return isset($rateInfo->rate[$this->branch][$payGrade2Check]);
-            } catch (ModelNotFoundException $e) {
-                // Rating doesn't exist
-                return false;
-            }
+            return Rating::isPayGradeValid($payGrade2Check, $this->branch, $this->getRate());
         }
     }
 
