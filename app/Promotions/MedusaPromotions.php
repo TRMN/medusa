@@ -6,7 +6,7 @@ use App\Branch;
 use App\Grade;
 use App\MedusaConfig;
 use App\Rating;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
 
 trait MedusaPromotions
 {
@@ -21,7 +21,7 @@ trait MedusaPromotions
     public static $nextGrade = [];
 
     /**
-     * @param null $want
+     * @param null $want The service that the requirements are wanted for
      *
      * @return array|mixed
      */
@@ -84,6 +84,16 @@ trait MedusaPromotions
     }
 
     /**
+     * Get the member's branch to use for the requirements.  If the member's branch is CIVIL, return the rating
+     *
+     * @return string
+     */
+    private function getBranchForReq()
+    {
+        return $this->branch === 'CIVIL' ? $this->getRate() : $this->branch;
+    }
+
+    /**
      * Get promotion qualifications.
      *
      * @param null|string $payGrade2Check
@@ -98,6 +108,15 @@ trait MedusaPromotions
             'exams'  => false,
             'early'  => false,
         ];
+
+        if (is_null($payGrade2Check) === true) {
+            $nextGrade = $this->getNextGrade($this->rank['grade']);
+            if (empty($nextGrade) === false) {
+                $payGrade2Check = $nextGrade[$this->rank['grade']]['next'][0];
+            } else {
+                return $flags;  // Can't determine what pay grade to check
+            }
+        }
 
         if ($this->branch === 'SFC' && $sfcCheck === true) {
             return $this->sfcIsPromotable($payGrade2Check);
@@ -121,38 +140,19 @@ trait MedusaPromotions
                     $flags['exams'] = $flags['points'] = $flags['tig'] = true;
                 }
                 break;
-            case 'C-4':
-            case 'C-5':
-            case 'C-6':
-            case 'C-7':
-            case 'C-8':
-            case 'C-9':
-            case 'C-10':
-                // Check for promotion to C-12
-                $special = $this->specialPromotionCheck(['C-12']);
-                if (count($special) > 0) {
-                    $flags['next'] = $special;
-                    $flags['exams'] = $flags['points'] = $flags['tig'] = true;
-                }
-                break;
         }
 
-        if (is_null($payGrade2Check) === true) {
-            $nextGrade = $this->getNextGrade($this->rank['grade']);
-            if (empty($nextGrade) === false) {
-                $payGrade2Check = $nextGrade[$this->rank['grade']]['next'][0];
-            } else {
-                return $flags;  // Can't determine what paygrade to check
-            }
-        }
-
+        // Check for gaps in some of the civilian pay grades
         if ($this->isGradeValidForUser($payGrade2Check) === false) {
             if (substr($payGrade2Check, 0, 1) == 'C') {
                 // Civilian, determine what the next grade is and if they're eligible
                 list($component, $step) = explode('-', $payGrade2Check);
+
+                // Promotion requirements for this CIVIL branch
+                $cReq = $this->getRequirements($this->getBranchForReq());
                 // Tig for grade being checked
-                $specialTig = isset(self::$promotionRequirements[$payGrade2Check]['tig']) ?
-                    self::$promotionRequirements[$payGrade2Check]['tig'] : 0;
+                $specialTig = isset($cReq[$payGrade2Check]['tig']) ?
+                    $cReq[$payGrade2Check]['tig'] : 0;
                 $step++; // Start the check and the next one in sequence
 
                 // Get the TiG of all the missing steps
@@ -166,13 +166,13 @@ trait MedusaPromotions
                             'early'  => false,
                         ];
                     }
-                    $specialTig += isset(self::$promotionRequirements['C-' . $step]['tig']) ?
-                        self::$promotionRequirements['C-' . $step]['tig'] : 0;
+                    $specialTig += isset($cReq['C-' . $step]['tig']) ?
+                        $cReq['C-' . $step]['tig'] : 0;
                     $step++;
                 }
                 // Get the Tig of the final step
-                $specialTig += isset(self::$promotionRequirements['C-' . $step]['tig']) ?
-                    self::$promotionRequirements['C-' . $step]['tig'] : 0;
+                $specialTig += isset($cReq['C-' . $step]['tig']) ?
+                    $cReq['C-' . $step]['tig'] : 0;
 
                 // Set the Paygrade to check to the final match
                 $payGrade2Check = 'C-' . $step;
@@ -187,7 +187,7 @@ trait MedusaPromotions
         }
 
         if (empty($payGrade2Check) === false) {
-            $requirements = self::$promotionRequirements[$payGrade2Check];
+            $requirements = $this->getRequirements($this->getBranchForReq())[$payGrade2Check];
 
             // Steps were skipped, us that tig
             if ($specialTig > 0) {
@@ -241,12 +241,11 @@ trait MedusaPromotions
             if ($specialTig > 0) {
                 $flags['next'][] = $payGrade2Check;
             } else {
-                $flags['next'][] =
-                    $this->nextGrade[$this->rank['grade']]['next'][0];
+                $next = $this->getNextGrade($this->rank['grade']);
+                $flags['next'][] = $next['next'][0];
 
-                if (count($this->nextGrade[$this->rank['grade']]['next']) > 1) {
-                    $flags['next'][] =
-                        $this->nextGrade[$this->rank['grade']]['next'][1];
+                if (count($next['next']) > 1) {
+                    $flags['next'][] = $next['next'][1];
                 }
             }
         }
@@ -267,7 +266,7 @@ trait MedusaPromotions
         $ret = [];
 
         foreach ($grades as $grade) {
-            $specialReq = self::$promotionRequirements[$grade];
+            $specialReq = $this->getRequirements($this->getBranchForReq())[$grade];
 
             if ($this->getTotalPromotionPoints() >=
                 $specialReq[$path]['points'] &&
@@ -324,7 +323,7 @@ trait MedusaPromotions
     {
         switch ($this->branch) {
             case 'SFC':
-                return $this->sfcIsPromotable(true, $payGrade2Check, true);
+                return $this->sfcIsPromotable($payGrade2Check);
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
@@ -356,7 +355,7 @@ trait MedusaPromotions
 
         // If there are no exams and no points, they are not promotable.
         if (empty($flags['points']) === true || empty($flags['exams']) === true) {
-            return;
+            return false;
         }
 
         if ($flags['points'] && $flags['exams'] && isset($flags['next']) === true) {
@@ -423,7 +422,7 @@ trait MedusaPromotions
         if ($early === true) {
             $rank['early'] = $rank['date_of_rank'];
             // Get TiG requirement of new grade
-            $requirements = $this->getRequirements($this->branch)[$rank['grade']];
+            $requirements = $this->getRequirements($this->getBranchForReq())[$rank['grade']];
 
             // Calculate how many months early the promotion is and update the number of points
             $points = $this->points;
@@ -461,10 +460,10 @@ trait MedusaPromotions
             $history = [
                 'timestamp' => time(),
                 'event'     => $event . Grade::getRankTitle(
-                        $rank['grade'],
-                        $this->getRate(),
-                        $this->branch
-                    ) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
+                    $rank['grade'],
+                    $this->getRate(),
+                    $this->branch
+                ) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
             ];
 
             $this->addServiceHistoryEntry($history);
