@@ -639,28 +639,34 @@ class UserController extends Controller
         foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
             $chapterName = Chapter::find($data[$position . '_assignment'])->chapter_name;
 
-            $assignment[] = [
-                'chapter_id'    => $data[$position . '_assignment'],
-                'chapter_name'  => $chapterName,
-                'date_assigned' => date(
-                    'Y-m-d',
-                    strtotime($data[$position . '_date_assigned'])
-                ),
-                'billet'        => $data[$position . '_billet'],
-                $position       => true,
-            ];
+            if (is_null($chapterName) === false) {
+                $assignment[] = [
+                    'chapter_id'    => $data[$position . '_assignment'],
+                    'chapter_name'  => $chapterName,
+                    'date_assigned' => date(
+                        'Y-m-d',
+                        strtotime($data[$position . '_date_assigned'])
+                    ),
+                    'billet'        => $data[$position . '_billet'],
+                    $position       => true,
+                ];
 
-            $history[] = [
-                'timestamp' => strtotime($data[$position . '_date_assigned']),
-                'event'     => 'Assigned to ' .
-                               $chapterName . ' as ' .
-                               $data[$position . '_billet'] . ' on ' . date(
-                                   'd M Y',
-                                   strtotime($data[$position . '_date_assigned'])
-                               ),
-            ];
+                $history[] = [
+                    'timestamp' => strtotime($data[$position . '_date_assigned']),
+                    'event'     => 'Assigned to ' .
+                                   $chapterName . ' as ' .
+                                   $data[$position . '_billet'] . ' on ' . date(
+                                       'd M Y',
+                                       strtotime($data[$position . '_date_assigned'])
+                                   ),
+                ];
 
-            unset($data[$position . '_assignment'], $data[$position . '_date_assigned'], $data[$position . '_billet']);
+                unset(
+                    $data[$position . '_assignment'],
+                    $data[$position . '_date_assigned'],
+                    $data[$position . '_billet']
+                );
+            }
         }
         $history = array_values(
             array_sort(
