@@ -1284,22 +1284,25 @@ class UserController extends Controller
                                        $data[$position . '_billet'] . ' on ' .
                                        date('d M Y', strtotime($data[$position . '_date_assigned'])),
                     ];
-                } elseif ($data[$position . '_billet'] !== $currentAssignment['billet']) {
-                    // Only the billet changed
-                    $history[] = [
-                        'timestamp' => strtotime($data[$position . '_date_assigned']),
-                        'event'     => ' Billet in ' . $chapterName . 'changed from ' .
-                                       $currentAssignment['billet'] . ' to ' .
-                                       $data[$position . '_billet'] . ' on ' .
-                                       date(
-                                           'd M Y',
-                                           strtotime($data[$position . '_date_assigned'])
-                                       ),
-                    ];
+                } else {
+                    if ($data[$position . '_billet'] !== $currentAssignment['billet']) {
+                        // Only the billet changed
+                        $history[] = [
+                            'timestamp' => strtotime($data[$position . '_date_assigned']),
+                            'event'     => ' Billet in ' . $chapterName . 'changed from ' .
+                                           $currentAssignment['billet'] . ' to ' .
+                                           $data[$position . '_billet'] . ' on ' .
+                                           date(
+                                               'd M Y',
+                                               strtotime($data[$position . '_date_assigned'])
+                                           ),
+                        ];
+                    }
                     // reset the date assigned in the changes to match the assignment date aboard
                     // the ship since the user is only new to the position and not the chapter
                     $data[$position . '_date_assigned'] = $currentAssignment['date_assigned'];
                 }
+
 
                 $assignments[] = [
                     'chapter_id'    => $data[$position . '_assignment'],
@@ -1312,7 +1315,11 @@ class UserController extends Controller
                     $position       => true,
                 ];
 
-                unset($data[$position . '_assignment'], $data[$position . '_date_assigned'], $data[$position . '_billet']);
+                unset(
+                    $data[$position . '_assignment'],
+                    $data[$position . '_date_assigned'],
+                    $data[$position . '_billet']
+                );
             }
         }
 
