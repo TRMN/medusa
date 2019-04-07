@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Chapter;
 use App\MedusaConfig;
 use App\Report;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -83,10 +84,7 @@ class ReportController extends Controller
         if (date('n') & 1 == 1) {
             $ts = strtotime('-1 month', $first);
             $month =
-              date(
-                  'F, Y',
-                  strtotime(date('Y').'-'.(date('n') + 1).'-01')
-              );
+              date('F, Y', strtotime(date('Y').'-'.(date('n') + 1).'-01'));
         } else {
             $ts = strtotime('-2 month', $first);
             $month = date('F, Y');
@@ -94,9 +92,7 @@ class ReportController extends Controller
 
         // Check and make sure that there's no pending requests
 
-        $reportDate = date('n') & 1 ?
-          date('Y-m', strtotime(date('Y').'-'.(date('n') + 1).'-01')) :
-          date('Y-m');
+        $reportDate = date('n') & 1 ? date('Y-m', strtotime(date('Y').'-'.(date('n') + 1).'-01')) : date('Y-m');
 
         $report =
           Report::where(
@@ -190,7 +186,7 @@ class ReportController extends Controller
 
             $member->last_course = $member->getHighestMainLineExamForBranch();
             $data['command_crew'][$billetInfo['display']] =
-              array_only(
+              Arr::only(
                   $member->toArray(),
                   [
                   'branch',
@@ -218,7 +214,7 @@ class ReportController extends Controller
 
         foreach ($newCrew as $crew) {
             $data['new_crew'][] =
-              array_only($crew, [
+              Arr::only($crew, [
                 'first_name',
                 'last_name',
                 'middle_name',
@@ -362,7 +358,7 @@ class ReportController extends Controller
 
         foreach ($newCrew as $crew) {
             $new_crew[] =
-              array_only($crew, [
+              Arr::only($crew, [
                 'first_name',
                 'last_name',
                 'middle_name',

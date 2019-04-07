@@ -155,12 +155,12 @@
                                     @if($permsObj->hasPermissions(['EDIT_PEERAGE']))
                                         <a href="#" data-peerage-id="{{$peerage['peerage_id']}}"
                                            data-peerage-title="{{$peerage['title']}}"
-                                           data-peerage-generation="{{$peerage['generation'] or ''}}"
-                                           data-peerage-lands="{{$peerage['lands'] or ''}}"
-                                           data-peerage-order="{{$orderInfo->id or ''}}"
-                                           data-peerage-class="{{$peerage['postnominal'] or ''}}"
-                                           data-peerage-courtesy="{{$peerage['courtesy'] or "0"}}"
-                                           data-peerage-filename="{{$peerage['filename'] or ''}}"
+                                           data-peerage-generation="{{$peerage['generation'] ?? ''}}"
+                                           data-peerage-lands="{{$peerage['lands'] ?? ''}}"
+                                           data-peerage-order="{{$orderInfo->id ?? ''}}"
+                                           data-peerage-class="{{$peerage['postnominal'] ?? ''}}"
+                                           data-peerage-courtesy="{{$peerage['courtesy'] ?? "0"}}"
+                                           data-peerage-filename="{{$peerage['filename'] ?? ''}}"
                                            class="edit_peerage fa fa-pencil green">&nbsp;</a>
                                     @endif
                                     @if($permsObj->hasPermissions(['DEL_PEERAGE']))

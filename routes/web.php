@@ -1,14 +1,9 @@
 <?php
 
-use GeneaLabs\LaravelCaffeine\Http\Controllers\LaravelCaffeineController;
-//use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
-
-$dripRoute = config('genealabs-laravel-caffeine.route', 'genealabs/laravel-caffeine/drip');
-Route::get($dripRoute, LaravelCaffeineController::class.'@drip');
 
 $request = Request::capture();
 
@@ -46,22 +41,23 @@ Route::get('oauth/events', 'OAuthController@getScheduledEvents')
      ->middleware('auth:api');
 Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth:api');
 Route::get(
-    '/.well-known/openid-configuration', function () {
+    '/.well-known/openid-configuration',
+    function () {
         return response()->json(
-        \App\MedusaConfig::get(
-            'openid-configuration',
-            [
+            \App\MedusaConfig::get(
+                'openid-configuration',
+                [
                 'issuer'                 => 'https://medusa.trmn.org',
                 'authorization_endpoint' => 'https://medusa.trmn.org/oauth/authorize',
                 'token_endpoint'         => 'https://medusa.trmn.org/oauth/token',
                 'userinfo_endpoint'      => 'https://medusa.trmn.org/oauth/profile',
-            ]
-        )
-    );
+                ]
+            )
+        );
     }
 );
 
-Route::model('oauthclient', 'App\OAuthClient');
+Route::model('oauthclient', \App\OAuthClient::class);
 Route::resource('oauthclient', 'OAuthController', ['middleware' => 'auth']);
 
 // Authentication
@@ -74,7 +70,7 @@ Route::post('/apply', 'UserController@apply')->name('user.apply')
      ->middleware('guest');
 
 // Users
-Route::model('user', 'App\User');
+Route::model('user', \App\User::class);
 Route::get('/user/switch/start/{user}', 'UserController@userSwitchStart')
      ->name('switch.start')->middleware('auth');
 Route::get('/user/switch/stop/', 'UserController@userSwitchStop')
@@ -118,30 +114,38 @@ Route::post('/user/{user}/points', 'UserController@updatePoints')
      ->name('user.points')->middleware('auth');
 
 Route::get(
-    '/users/{branch}', [
+    '/users/{branch}',
+    [
     'as'         => 'showBranch',
     'uses'       => 'UserController@showBranch',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::get(
-    '/user/rack', [
+    '/user/rack/{user?}',
+    [
     'as'         => 'ribbonRack',
     'uses'       => 'UserController@buildRibbonRack',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::post(
-    '/user/rack/save', [
+    '/user/rack/save/{user}',
+    [
     'as'         => 'saverack',
     'uses'       => 'UserController@saveRibbonRack',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 Route::get(
-    '/user/{user}/ribbons', [
+    '/user/{user}/ribbons',
+    [
     'as'         => 'userRibbons',
     'uses'       => 'UserController@fullRibbonDisplay',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 Route::post('/users/list/{branch}', 'UserController@getUserList');
 
@@ -164,20 +168,24 @@ Route::get(
     ]
 );
 Route::get(
-    '/user/{user}/reset', [
+    '/user/{user}/reset',
+    [
     'as'         => 'user.getReset',
     'uses'       => 'UserController@getReset',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::post(
-    '/user/{user}/reset', [
+    '/user/{user}/reset',
+    [
     'as'         => 'user.postReset',
     'uses'       => 'UserController@postReset',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 // Assignment Change Requests
-Route::model('request', 'App\ChangeRequest');
+Route::model('request', \App\ChangeRequest::class);
 Route::get(
     '/user_request/{user}/create',
     [
@@ -220,11 +228,11 @@ Route::get(
 );
 
 // Other Routes
-Route::model('chapter', 'App\Chapter');
-Route::model('echelon', 'App\Chapter');
-Route::model('mardet', 'App\Chapter');
-Route::model('unit', 'App\Chapter');
-Route::model('anyunit', 'App\Chapter');
+Route::model('chapter', \App\Chapter::class);
+Route::model('echelon', \App\Chapter::class);
+Route::model('mardet', \App\Chapter::class);
+Route::model('unit', \App\Chapter::class);
+Route::model('anyunit', \App\Chapter::class);
 
 Route::get(
     '/home/{message?}',
@@ -271,11 +279,13 @@ Route::get(
     ]
 );
 Route::get(
-    '/report/send/{id}', [
+    '/report/send/{id}',
+    [
     'as'         => 'report.send',
     'uses'       => 'ReportController@sendReport',
     'middleware' => 'auth',
-]);
+    ]
+);
 
 Route::get(
     '/echelon/{echelon}/deactivate',
@@ -287,7 +297,7 @@ Route::get(
 );
 Route::resource('echelon', 'EchelonController', ['middleware' => 'auth']);
 
-Route::model('unit', 'App\Chapter');
+Route::model('unit', \App\Chapter::class);
 Route::get(
     '/unit/{unit}/deactivate',
     [
@@ -317,7 +327,7 @@ Route::get(
     ]
 );
 
-Route::model('type', 'App\Type');
+Route::model('type', \App\Type::class);
 Route::resource('type', 'TypeController', ['middleware' => 'auth']);
 
 Route::get(
@@ -329,17 +339,21 @@ Route::get(
     ]
 );
 Route::post(
-    '/exam/upload', [
+    '/exam/upload',
+    [
     'as'         => 'exam.upload',
     'uses'       => 'ExamController@upload',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::post(
-    '/exam/update', [
+    '/exam/update',
+    [
     'as'         => 'exam.update',
     'uses'       => 'ExamController@update',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::get(
     '/exam/find/{user?}/{message?}',
     ['as' => 'exam.find', 'uses' => 'ExamController@find', 'middleware' => 'auth']
@@ -354,35 +368,41 @@ Route::post(
     ]
 );
 Route::get(
-    '/exam/list', [
+    '/exam/list',
+    [
     'as'         => 'exam.list',
     'uses'       => 'ExamController@examList',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::get(
-    '/exam/create', [
+    '/exam/create',
+    [
     'as'         => 'exam.create',
     'uses'       => 'ExamController@create',
     'middleware' => 'auth',
-]);
+    ]
+);
 
-Route::model('exam', 'App\ExamList');
+Route::model('exam', \App\ExamList::class);
 Route::get(
     '/exam/edit/{exam}',
     ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'middleware' => 'auth']
 );
 Route::post(
-    '/exam/updateExam', [
+    '/exam/updateExam',
+    [
     'as'         => 'exam.updateExam',
     'uses'       => 'ExamController@updateExam',
     'middleware' => 'auth',
-]);
+    ]
+);
 Route::post(
     '/exam/user/delete',
     ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']
 );
 
-Route::model('billet', 'App\Billet');
+Route::model('billet', \App\Billet::class);
 Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
 
 // Awards
@@ -397,16 +417,18 @@ Route::get('id/bulk/{id}', 'IdController@getBulk');
 Route::get('id/markbulk/{id}', 'IdController@getMarkbulk');
 Route::get('id/mark/{id}', 'IdController@getMark');
 
-Route::model('events', 'App\Events');
+Route::model('events', \App\Events::class);
 Route::resource('events', 'EventController', ['middleware' => 'auth']);
 Route::get(
-    '/events/export/{events}', [
+    '/events/export/{events}',
+    [
     'as'         => 'event.export',
     'uses'       => 'EventController@export',
     'middleware' => 'auth',
-]);
+    ]
+);
 
-Route::model('config', 'App\MedusaConfig');
+Route::model('config', \App\MedusaConfig::class);
 Route::resource('config', 'ConfigController', ['middleware' => 'auth']);
 
 // Promotion routes
@@ -476,11 +498,13 @@ Route::post(
 Route::post('/api/path', 'ApiController@setPath', ['middleware' => 'auth']);
 
 Route::get(
-    '/api/find/{query?}', [
+    '/api/find/{query?}',
+    [
     'as'         => 'user.find.api',
     'uses'       => 'ApiController@findMember',
     'middleware' => 'auth',
-]); // search for a member
+    ]
+); // search for a member
 Route::get(
     '/api/exam',
     'ApiController@findExam',
@@ -509,6 +533,8 @@ Route::post(
     ['uses' => 'ApiController@checkRankQual']
 ); //->middleware('auth');
 
+Route::get('/api/awards/get_ribbon_image/{ribbonCode}/{ribbonCount}/{ribbonName}', 'ApiController@getRibbonImage');
+
 Route::get('/api/lastexam/{memberid}', function ($memberid) {
     $exams = \App\Exam::where('member_id', '=', $memberid)->first();
 
@@ -520,7 +546,8 @@ Route::get('/api/lastexam/{memberid}', function ($memberid) {
 });
 
 Route::get(
-    '/getRoutes', function () {
+    '/getRoutes',
+    function () {
         foreach (app()->router->getRoutes() as $route) {
             if (in_array('GET', $route->methods()) === true) {
                 echo dirname($route->uri())."<br />\n";
@@ -540,7 +567,8 @@ Route::get(
 );
 
 Route::any(
-    '{catchall}', function ($url) {
+    '{catchall}',
+    function ($url) {
         return response()->view('errors.404', [], 404);
     }
 )->where('catchall', '(.*)');

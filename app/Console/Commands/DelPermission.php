@@ -37,7 +37,7 @@ class DelPermission extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         if ($user = User::where('member_id', '=', $this->argument('member_id'))->first()) {
             $user->deletePerm(strtoupper($this->argument('perm')));

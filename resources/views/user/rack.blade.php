@@ -10,27 +10,15 @@
 @section('content')
     @php
     $groupCount = 0;
+    $hasEdit_RR = Auth::user()->hasPermission(['EDIT_RR']);
     @endphp
     <div class="row">
         <h1 class="text-center">Ribbon Rack Builder
             for {{  $user->getGreeting() }} {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {{ $user->last_name }}{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}</h1>
-
-        <p>Currently, the Ribbon Rack Builder supports RMN/RMMC and a few RMA ribbons & badges. As the artwork becomes
-            available, they will be added. You many notice that some ribbons or badges don't have any artwork
-            shown. These items were added to allow the selection of them for promotion point calculations, they will be
-            saved to your record, but currently won't show up in your ribbon rack. Once the artwork is available they
-            willautomatically show up in your ribbon rack.
-        </p>
-
-        <p>Once you save your ribbon rack, it will be record in your MEDUSA record and displayed on your Service Record.
-            There will be a link under your ribbon rack that will show you the HTML required to embed your ribbon rack
-            in another website.</p>
-
-        <p>Please select your awards from the list below, then click "Save". If an award can be awarded more than once,
-            you will be able to select the number of times you have received the award.</p>
+        {!! \App\MedusaConfig::get('rr.instructions') !!}
     </div>
 
-    {{ Form::open(array('route' => 'saverack')) }}
+    {{ Form::open(['route' => ['saverack', $user]]) }}
     <div class="row text-center"><h3>Name Badge</h3></div>
     <div class="ribbon-group">
         @if(!is_null($user->getNameofLands()) && in_array($user->branch, ['RMN', 'RMMC', 'RMA']))
@@ -107,15 +95,23 @@
             @if(file_exists(public_path('awards/stripes/' . $badge->code . '-1.svg')))
                 <div class="row ribbon-group-row">
                     <div class="col-sm-1">
-                        {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null)}}
+                        {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null, ['class' => 'ribbon-check', 'id' => $badge->code . '-select', 'data-code' => $badge->code])}}
                     </div>
-                    <div class="col-sm-2 text-center">
-                        <img src="{{asset('awards/stripes/' . $badge->code . '-1.svg')}}" alt="{{$badge->name}}">
+                    <div class="col-sm-2 text-center" id="{{$badge->code}}">
+                        @set('ribbon_image', null)
+                        @if(isset($user->awards[$badge->code]) && file_exists(public_path('awards/stripes/' . $badge->code . '-' . $user->awards[$badge->code]['count'] . '.svg')))
+                            @set('ribbon_image', 'awards/stripes/' . $badge->code . '-' . $user->awards[$badge->code]['count'] . '.svg')
+                        @elseif (file_exists(public_path('awards/stripes/' . $badge->code . '-1.svg')))
+                            @set('ribbon_image, 'awards/stripes/' . $badge->code . '-1.svg')
+                        @endif
+                        @if(!is_null($ribbon_image))
+                            <img src="{{asset($ribbon_image)}}" alt="{{$badge->name}}">
+                        @endif
                     </div>
                     <div class="col-sm-4"><br/><br/>{{$badge->name}}</div>
                     <div class="col-sm-1 ">
                         @if($badge->multiple)
-                            {{Form::number($badge->code . '_quantity', isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:0, ['min' => 0])}}
+                            {{Form::number($badge->code . '_quantity', isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:0, ['min' => 0, 'data-code' => $badge->code, 'data-name' => $badge->name, 'class' => 'ribbon-quantity'])}}
                         @else
                             {{Form::hidden($badge->code . '_quantity', '1')}}
                         @endif
@@ -132,18 +128,23 @@
             @if(is_object($ribbon))
                 <div class="row ribbon-group-row">
                     <div class="col-sm-1">
-                        {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null)}}
+                        {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check', 'id' => $ribbon->code . '-select', 'data-code' => $ribbon->code])}}
                     </div>
-                    <div class="col-sm-2 text-center">
-                        @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
-                            <img src="{{asset('ribbons/' . $ribbon->code . '-1.svg')}}" alt="{{$ribbon->name}}"
-                                 class="ribbon">
+                    <div class="col-sm-2 text-center" id="{{$ribbon->code}}">
+                        @set('ribbon_image', null)
+                        @if(isset($user->awards[$ribbon->code]) && file_exists(public_path('ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')))
+                            @set('ribbon_image', 'ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')
+                        @elseif (file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
+                            @set('ribbon_image, 'ribbons/' . $ribbon->code . '-1.svg')
+                        @endif
+                        @if(!is_null($ribbon_image))
+                            <img src="{{asset($ribbon_image)}}" alt="{{$ribbon->name}}" class="ribbon">
                         @endif
                     </div>
                     <div class="col-sm-4">{{$ribbon->name}}</div>
                     <div class="col-sm-1 ">
                         @if($ribbon->multiple)
-                            {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0])}}
+                            {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0, 'data-code' => $ribbon->code, 'data-name' => $ribbon->name, 'class' => 'ribbon-quantity'])}}
                         @else
                             {{Form::hidden($ribbon->code . '_quantity', '1')}}
                         @endif
@@ -225,13 +226,13 @@
                     <div class="row ribbon-group-row qual-badges">
 
                         <div class="col-sm-1 vertical-center-qual-badges">
-                            @if(in_array($group->code, $restricted))
+                            @if(in_array($group->code, $restricted) && !$hasEdit_RR)
                                 @if(isset($user->awards[$group->code]))
                                     {{Form::hidden('ribbon[]', $group->code)}}
                                 @endif
                                 &nbsp;
                             @else
-                                {{Form::checkbox('ribbon[]', $group->code, isset($user->awards[$group->code])?true:null)}}
+                                {{Form::checkbox('ribbon[]', $group->code, isset($user->awards[$group->code])?true:null,  ['class' => 'ribbon-check', 'id' => $group->code . '-select', 'data-code' => $group->code])}}
                             @endif
                         </div>
                         <div class="col-sm-2 text-center">
@@ -254,7 +255,7 @@
                         <div class="col-sm-2 vertical-center-qual-badges qual-badges text-center">
                             @if(
                                 (in_array($group->code, $restricted) && !isset($user->awards[$group->code])) ||
-                                ($group->code == 'CIB' && ($user->branch != 'RMA') && !$user->hasAllPermissions())
+                                ($group->code == 'CIB' && ($user->branch != 'RMA') && !$user->hasPermission(['EDIT_RR'], true))
                             )
                                 N/A
                             @else
@@ -308,7 +309,7 @@
 
         @endforeach
 
-        @if($user->branch == 'RMA' || $user->hasAllPermissions())
+        @if($user->branch == 'RMA' || $user->hasPermission(['EDIT_RR'], true))
             <div class="row ribbon-group-row qual-badges">
                 <div class="col-sm-10 text-center">
                     <h3>RMA Weapon Qualification Badges</h3>
@@ -339,42 +340,44 @@
         @endif
     </div>
 
-
-
     <div class="row text-center"><h3>Individual Awards</h3></div>
     @foreach(App\Award::getLeftRibbons() as $index => $ribbon)
-        @if(is_object($ribbon))
-            <div class="row ribbon-row">
-                <div class="col-sm-1">
-                    @if(in_array($ribbon->code, $restricted))
-                        @if(isset($user->awards[$ribbon->code]))
-                            {{Form::hidden('ribbon[]', $ribbon->code)}}
-                        @endif
-                        &nbsp;
-                    @else
-                        {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null)}}
-                    @endif
-                </div>
-                <div class="col-sm-2 text-center">
-                    @if(file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
-                        <img src="{{asset('ribbons/' . $ribbon->code . '-1.svg')}}" alt="{{$ribbon->name}}"
-                             class="ribbon">
-                    @endif
-                </div>
-                <div class="col-sm-4">{{$ribbon->name}}</div>
-                <div class="col-sm-1 ">
-                    @if($ribbon->multiple)
-                        @if(in_array($ribbon->code, $restricted))
-                            {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
-                        @else
-                            {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0])}}
-                        @endif
-                    @else
-                        {{Form::hidden($ribbon->code . '_quantity', '1')}}
-                    @endif
-                </div>
-            </div>
 
+        @if(is_object($ribbon))
+                <div class="row ribbon-row">
+                    <div class="col-sm-1">
+                        @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
+                            @if(isset($user->awards[$ribbon->code]))
+                                {{Form::hidden('ribbon[]', $ribbon->code)}}
+                            @endif
+                            &nbsp;@else
+                            {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check', 'id' => $ribbon->code . '-select', 'data-code' => $ribbon->code])}}
+                        @endif
+                    </div>
+                    <div class="col-sm-2 text-center" id="{{$ribbon->code}}">
+                        @set('ribbon_image', null)
+                        @if(isset($user->awards[$ribbon->code]) && file_exists(public_path('ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')))
+                            @set('ribbon_image', 'ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')
+                        @elseif (file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
+                            @set('ribbon_image, 'ribbons/' . $ribbon->code . '-1.svg')
+                        @endif
+                        @if(!is_null($ribbon_image))
+                            <img src="{{asset($ribbon_image)}}" alt="{{$ribbon->name}}" class="ribbon">
+                        @endif
+                    </div>
+                    <div class="col-sm-4">{{$ribbon->name}}</div>
+                    <div class="col-sm-1 ">
+                        @if($ribbon->multiple)
+                            @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
+                                {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
+                            @else
+                                {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0, 'data-code' => $ribbon->code, 'data-name' => $ribbon->name, 'class' => 'ribbon-quantity'])}}
+                            @endif
+                        @else
+                            {{Form::hidden($ribbon->code . '_quantity', '1')}}
+                        @endif
+                    </div>
+                </div>
         @else
             @if($ribbon['group']['multiple'])
                 <div class="ribbon-group">
@@ -382,18 +385,23 @@
 
                         <div class="row ribbon-group-row">
                             <div class="col-sm-1">
-                                {{Form::radio('group' . $groupCount, $group->code, isset($user->awards[$group->code])?true:null)}}
+                                {{Form::radio('group' . $groupCount, $group->code, isset($user->awards[$group->code])?true:null, ['class' => 'check-check', 'id' => $group->code . '-select', 'data-code' => $group->code])}}
                             </div>
-                            <div class="col-sm-2 text-center">
-                                @if(file_exists(public_path('ribbons/' . $group->code . '-1.svg')))
-                                    <img src="{{asset('ribbons/' . $group->code . '-1.svg')}}"
-                                         alt="{{$group->name}}" class="ribbon">
+                            <div class="col-sm-2 text-center" id="{{$group->code}}">
+                                @set('ribbon_image', null)
+                                @if(isset($user->awards[$group->code]) && file_exists(public_path('ribbons/' . $group->code . '-' . $user->awards[$group->code]['count'] . '.svg')))
+                                    @set('ribbon_image', 'ribbons/' . $group->code . '-' . $user->awards[$group->code]['count'] . '.svg')
+                                @elseif (file_exists(public_path('ribbons/' . $group->code . '-1.svg')))
+                                    @set('ribbon_image, 'ribbons/' . $group->code . '-1.svg')
+                                @endif
+                                @if(!is_null($ribbon_image))
+                                    <img src="{{asset($ribbon_image)}}" alt="{{$group->name}}" class="ribbon">
                                 @endif
                             </div>
                             <div class="col-sm-4">{{$group->name}}</div>
                             <div class="col-sm-1 ">
                                 @if($group->multiple)
-                                    {{Form::number($group->code . '_quantity', isset($user->awards[$group->code])?$user->awards[$group->code]['count']:0, ['min' => 0])}}
+                                    {{Form::number($group->code . '_quantity', isset($user->awards[$group->code])?$user->awards[$group->code]['count']:0, ['min' => 0, 'data-code' => $group->code, 'data-name' => $group->name, 'class' => 'ribbon-quantity'])}}
                                 @else
                                     {{Form::hidden($group->code . '_quantity', '1')}}
                                 @endif
@@ -403,7 +411,7 @@
                     @endforeach
                     <div class="row ribbon-group-row">
                         <div class="col-sm-1">
-                            {{Form::radio('group' . $groupCount, null)}}
+                            {{Form::radio('group' . $groupCount, '', false, ['class' => 'check-check'])}}
                         </div>
                         <div class="col-sm-2 text-center">&nbsp;</div>
                         <div class="col-sm-4 ">None of the above</div>
@@ -425,14 +433,14 @@
                             @endforeach
                         </select></div>
                 </div>
-
             @endif
-        @endif
 
-        @php
-        $groupCount++;
-        @endphp
+            @php
+            $groupCount++;
+            @endphp
+        @endif
     @endforeach
+
     <div class="row text-left">
         <p><input type="checkbox" id="ack"> I acknowledge that awards entered into the MEDUSA System are not
             private,
@@ -578,6 +586,63 @@
                 }
 
             });
+
+            $('.ribbon-quantity').on('change', function () {
+                var el = $(this);
+                var ribbonCode = el.data('code');
+                var ribbonName = el.data('name');
+                var ribbonCount = el.val();
+                if (ribbonCount >= 1) {
+                    $('#' + ribbonCode + '-select').prop('checked', true);
+                } else {
+                    $('#' + ribbonCode + '-select').prop('checked', false);
+                }
+
+                updateRibbon(ribbonCode, ribbonCount, ribbonName);
+            });
+
+            $('.ribbon-check').on('click', function() {
+               var el = $(this);
+
+               validateSelection(el);
+            });
+            
+            $('.check-check').on('change', function () {
+                var el = $(this);
+
+                validateSelection(el);
+
+                $('input[name="' + el.prop('name') + '"]').each(function() {
+                    var item = $(this);
+                    if (!item.prop('checked') === true) {
+                        $('input[name="' + item.data('code') + '_quantity"]').val(0);
+                        updateRibbon(item.data('code'), 0, $('input[name="' + item.data('code') + '_quantity"]').data('name'));
+                    }
+                });
+            });
+
+            function validateSelection(el) {
+                var isChecked = el.prop('checked');
+                var ribbonCode = el.data('code');
+
+                if (isChecked && $('input[name="' + ribbonCode + '_quantity"]').val() < 1) {
+                    $('input[name="' + ribbonCode + '_quantity"]').val(1);
+                } else {
+                    $('input[name="' + ribbonCode + '_quantity"]').val(0);
+                    updateRibbon(ribbonCode, 0, $('input[name="' + ribbonCode + '_quantity"]').data('name'));
+                }
+            }
+
+            function updateRibbon(ribbonCode, ribbonCount, ribbonName) {
+                $.ajax({
+                    url: "/api/awards/get_ribbon_image/" + ribbonCode + "/" + ribbonCount + "/" + encodeURIComponent(ribbonName) ,
+                    type: "GET",
+                    dataType: "html",
+                    success: function (data) {
+                        $('#' + ribbonCode).html(data);
+                    }
+                });
+            }
         });
     </script>
 @stop

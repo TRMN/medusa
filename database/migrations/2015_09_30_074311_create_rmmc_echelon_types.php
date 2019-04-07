@@ -31,13 +31,13 @@ class CreateRmmcEchelonTypes extends Migration
 
         if (empty($mardet->id) === false) {
             $this->writeAuditTrail(
-                       'system user',
-                       'delete',
-                       'types',
-                       $mardet->id,
-                       $mardet->toJson(),
-                       'create_rmmc_echelon_types'
-                   );
+                'system user',
+                'delete',
+                'types',
+                $mardet->id,
+                $mardet->toJson(),
+                'create_rmmc_echelon_types'
+            );
 
             $mardet->delete();
         }

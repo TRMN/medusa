@@ -121,7 +121,7 @@ class ChapterController extends Controller
         $ret['recordsFiltered'] = $filteredRecords;
         $ret['data'] = [];
 
-        /**
+        /*
          * Process the results.
          *
          * @var User
@@ -238,7 +238,8 @@ class ChapterController extends Controller
         $types =
             Type::whereIn(
                 'chapter_type',
-                MedusaConfig::get('chapter.types', ['ship', 'station']))
+                MedusaConfig::get('chapter.types', ['ship', 'station'])
+            )
                 ->orderBy('chapter_description')
                 ->get(
                     ['chapter_type', 'chapter_description']
@@ -494,10 +495,10 @@ class ChapterController extends Controller
 
             foreach ($commandTriad as $billetInfo) {
                 if (is_object($billetInfo['user']) &&
-                    get_class($billetInfo['user']) == 'App\User') {
+                    get_class($billetInfo['user']) == \App\User::class) {
                     $user = $billetInfo['user'];
                     switch (substr($user->rank['grade'], 0, 1)) {
-                        case 'E' :
+                        case 'E':
                             $exam = $user->getHighestEnlistedExam();
                             break;
                         case 'W':
@@ -613,6 +614,7 @@ class ChapterController extends Controller
                 ' ',
                 '_',
                 $chapter->chapter_name
-            ).'_roster.csv');
+            ).'_roster.csv'
+        );
     }
 }
