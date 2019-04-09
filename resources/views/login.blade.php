@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    @if( !Auth::check() )
+    @guest
         <div class="login-form row">
             <div class="col-sm-6 small-centered ">
                 <h4 class="NordItalic">Sign In</h4>
@@ -29,6 +29,6 @@
                 <a href="{!! URL::route( 'register' ) !!}" class="btn right reg-button">Register</a>
             </div>
         </div>
-    @endif
+    @endguest
 
 @stop

@@ -1,5 +1,5 @@
 <div id="left-nav">
-    @if(Auth::check())
+    @auth
         <h3 class="nav-header lnav">MEMBER</h3>
         <div class="rnav">
 
