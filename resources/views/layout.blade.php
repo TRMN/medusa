@@ -26,7 +26,7 @@
         </div>
 
         <div class="col-sm-4 text-right text-nowrap">
-            @if(Auth::check())
+            @auth
                 <a href="/home" title="Return to your Service Record">
                 <strong>{{ Auth::user()->getGreeting() }}
                     {{ substr(Auth::user()->first_name, 0, 1) }}
@@ -59,7 +59,7 @@
         </div>
 
         <div class="col-sm-10 padding-top-10 padding-bottom-10" id="right-wrapper">
-            @if(Auth::check())
+            @auth
                 <div class="btn btn-primary btn-sm toggle-nav">
                     <strong>
                         <span class="fa fa-angle-double-left size-21" id="toggle-btn"></span>
@@ -70,7 +70,7 @@
 
                     @else
                         <div class="padding-bottom-10 padding-top-10" id="right">
-                            @endif
+                            @endauth
 
                             @if( $errors->any() )
                                 <ul class="medusa-error">
