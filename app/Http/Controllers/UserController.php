@@ -926,7 +926,7 @@ class UserController extends Controller
         if (isset($data['mobile']) === true) {
             if (empty($user->id)) {
                 // No id, insert didn't happen
-                return Response::json(
+                return response()->json(
                     [
                         'status'  => 'error',
                         'message' => 'Unable to create user',
@@ -934,7 +934,7 @@ class UserController extends Controller
                     500
                 );
             } else {
-                return Response::json(
+                return response()->json(
                     [
                         'status'  => 'success',
                         'message' => 'User created',

@@ -107,7 +107,7 @@ class ReportController extends Controller
 
         if (isset($report) === true && empty($report->report_sent) === true) {
             // report found, send them to the edit form
-            return Response::view('report.chapter-edit', ['report' => $report]);
+            return response()->view('report.chapter-edit', ['report' => $report]);
         } elseif (isset($report) === true && empty($report->report_sent) === false) {
             // The current report has been sent and they want to start the next one
             $month =
@@ -124,7 +124,7 @@ class ReportController extends Controller
           'completed' => $this->getCompletedExamsForCrew($chapter->id, $ts),
         ];
 
-        return Response::view('report.chapter-create', $viewData);
+        return response()->view('report.chapter-create', $viewData);
     }
 
     public function getCompletedExamsForCrew($id, $ts = null)
@@ -259,7 +259,7 @@ class ReportController extends Controller
             );
         }
 
-        return Response::view(
+        return response()->view(
             'report.index',
             [
             'reports' => Report::where(
@@ -298,7 +298,7 @@ class ReportController extends Controller
             $report['command_crew'] = $commandCrew;
         }
 
-        return Response::view('report.chapter-show', ['report' => $report]);
+        return response()->view('report.chapter-show', ['report' => $report]);
     }
 
     /**
@@ -335,7 +335,7 @@ class ReportController extends Controller
             $report['command_crew'] = $commandCrew;
         }
 
-        return Response::view('report.chapter-edit', ['report' => $report]);
+        return response()->view('report.chapter-edit', ['report' => $report]);
     }
 
     private function updateNewCrew($id)
