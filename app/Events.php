@@ -34,8 +34,6 @@ class Events extends Eloquent
     public static $updateRules = [
     ];
 
-    protected $table = 'events';
-
     public function exportCheckIns()
     {
         $csv = \League\Csv\Writer::createFromFileObject(new \SplTempFileObject());
