@@ -25,7 +25,7 @@
         </div>
 
         <div class="col-sm-4 text-right text-nowrap">
-            @if(Auth::check())
+            @auth
                 <a href="/home" title="Return to your Service Record">
                     <strong>{{ Auth::user()->getGreeting() }}
                         {{ substr(Auth::user()->first_name, 0, 1) }}
