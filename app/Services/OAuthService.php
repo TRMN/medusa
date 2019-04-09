@@ -162,7 +162,7 @@ class OAuthService
 
             Log::info('Profile request');
 
-            return Response::json(
+            return response()->json(
                 [
                 'uid'            => $_token['user_id'],
                 'email'          => $_user->email_address,
@@ -179,7 +179,7 @@ class OAuthService
             );
         }
 
-        return Response::json(
+        return response()->json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -205,7 +205,7 @@ class OAuthService
                   strtolower(str_replace(' ', '+', $_token['user_id']))
               )->first();
 
-            return Response::json(
+            return response()->json(
                 [
                 'tig' => $_user->getTimeInGrade(true),
                 'tis' => $_user->getTimeInService(true),
@@ -213,7 +213,7 @@ class OAuthService
             );
         }
 
-        return Response::json(
+        return response()->json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -257,7 +257,7 @@ class OAuthService
 
                 Log::info('User profile updated');
 
-                return Response::json(
+                return response()->json(
                     [
                     'status'  => 'success',
                     'message' => 'Profile updated',
@@ -267,7 +267,7 @@ class OAuthService
             } else {
                 Log::info('There was some sort of problem');
 
-                return Response::json(
+                return response()->json(
                     [
                     'status'  => 'error',
                     'message' => 'Unable to update profile',
@@ -410,10 +410,10 @@ class OAuthService
                   strtotime($_user->updated_at->toDateTimeString());
             }
 
-            return Response::json($_user);
+            return response()->json($_user);
         }
 
-        return Response::json(
+        return response()->json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -441,10 +441,10 @@ class OAuthService
                    ->first()
                    ->getLastUpdated();
 
-            return Response::json(['lastUpdate' => $_lastUpdated]);
+            return response()->json(['lastUpdate' => $_lastUpdated]);
         }
 
-        return Response::json(
+        return response()->json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -473,7 +473,7 @@ class OAuthService
             return $_idCard->response('png');
         }
 
-        return Response::json(
+        return response()->json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -493,7 +493,7 @@ class OAuthService
 
             Log::info('TZ='.$_tz);
 
-            return Response::json([
+            return response()->json([
               'events' => User::where(
                   'email_address',
                   '=',
@@ -504,7 +504,7 @@ class OAuthService
             ]);
         }
 
-        return Response::json(
+        return response()->json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );
@@ -525,7 +525,7 @@ class OAuthService
 
             Log::info('Attempting to check '.$_data['member'].' in to '.$_data['event']);
 
-            return Response::json(User::where(
+            return response()->json(User::where(
                 'email_address',
                 '=',
                 strtolower(str_replace(' ', '+', $_token['user_id']))
@@ -538,7 +538,7 @@ class OAuthService
                                         ));
         }
 
-        return Response::json(
+        return response()->json(
             ['error' => 'Unauthorized'],
             $_response->getStatusCode()
         );

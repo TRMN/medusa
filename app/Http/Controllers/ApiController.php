@@ -19,7 +19,7 @@ class ApiController extends Controller
 {
     public function getBranchList()
     {
-        return Response::json(Branch::getBranchList());
+        return response()->json(Branch::getBranchList());
     }
 
     public function getCountries()
@@ -37,12 +37,12 @@ class ApiController extends Controller
 
         $countries = ['' => 'Select a Country'] + $countries;
 
-        return Response::json($countries);
+        return response()->json($countries);
     }
 
     public function getGradesForBranch($branchID)
     {
-        return Response::json(Grade::getGradesForBranch($branchID));
+        return response()->json(Grade::getGradesForBranch($branchID));
     }
 
     public function getGradesForRating($rating, $branch)
@@ -80,97 +80,97 @@ class ApiController extends Controller
 
     public function getChapters()
     {
-        return Response::json(Chapter::getChapters());
+        return response()->json(Chapter::getChapters());
     }
 
     public function getChaptersByBranch($branchID, $location = 0)
     {
-        return Response::json(Chapter::getChapters($branchID, $location));
+        return response()->json(Chapter::getChapters($branchID, $location));
     }
 
     public function getRatingsForBranch($branchID)
     {
-        return Response::json(Rating::getRatingsForBranch($branchID));
+        return response()->json(Rating::getRatingsForBranch($branchID));
     }
 
     public function getChapterLocations()
     {
-        return Response::json(Chapter::getChapterLocations());
+        return response()->json(Chapter::getChapterLocations());
     }
 
     public function getHoldingChapters()
     {
-        return Response::json(Chapter::getHoldingChapters());
+        return response()->json(Chapter::getHoldingChapters());
     }
 
     public function getFleets()
     {
-        return Response::json(Chapter::getChaptersByType('fleet'));
+        return response()->json(Chapter::getChaptersByType('fleet'));
     }
 
     public function getHeadquarters()
     {
-        return Response::json(Chapter::getChaptersByType('headquarters'));
+        return response()->json(Chapter::getChaptersByType('headquarters'));
     }
 
     public function getBureaus()
     {
-        return Response::json(Chapter::getChaptersByType('bureau'));
+        return response()->json(Chapter::getChaptersByType('bureau'));
     }
 
     public function getSeparationUnits()
     {
-        return Response::json(Chapter::getChaptersByType('SU'));
+        return response()->json(Chapter::getChaptersByType('SU'));
     }
 
     public function getTaskForces()
     {
-        return Response::json(Chapter::getChaptersByType('task_force'));
+        return response()->json(Chapter::getChaptersByType('task_force'));
     }
 
     public function getTaskGroups()
     {
-        return Response::json(Chapter::getChaptersByType('task_group'));
+        return response()->json(Chapter::getChaptersByType('task_group'));
     }
 
     public function getSquadrons()
     {
-        return Response::json(Chapter::getChaptersByType('squadron'));
+        return response()->json(Chapter::getChaptersByType('squadron'));
     }
 
     public function getDivisions()
     {
-        return Response::json(Chapter::getChaptersByType('division'));
+        return response()->json(Chapter::getChaptersByType('division'));
     }
 
     public function getOffices()
     {
-        return Response::json(Chapter::getChaptersByType('office'));
+        return response()->json(Chapter::getChaptersByType('office'));
     }
 
     public function getAcademies()
     {
-        return Response::json(Chapter::getChaptersByType('academy'));
+        return response()->json(Chapter::getChaptersByType('academy'));
     }
 
     public function getCenters()
     {
-        return Response::json(Chapter::getChaptersByType('center'));
+        return response()->json(Chapter::getChaptersByType('center'));
     }
 
     public function getColleges()
     {
-        return Response::json(Chapter::getChaptersByType('college'));
+        return response()->json(Chapter::getChaptersByType('college'));
     }
 
     public function getInstitutes()
     {
-        return Response::json(Chapter::getChaptersByType('institute'));
+        return response()->json(Chapter::getChaptersByType('institute'));
     }
 
     public function getUniversities()
     {
-        return Response::json(
+        return response()->json(
             Chapter::getChaptersByType('university') +
             Chapter::getChaptersByType('university_system')
         );
@@ -181,10 +181,10 @@ class ApiController extends Controller
         $user = User::where('email_address', '=', $email_address)->first();
 
         if (empty($user) === true) {
-            return Response::json(['available' => true]);
+            return response()->json(['available' => true]);
         }
 
-        return Response::json(['available' => false]);
+        return response()->json(['available' => false]);
     }
 
     public function savePhoto()
@@ -228,7 +228,7 @@ class ApiController extends Controller
             }
         }
 
-        return Response::json($classes);
+        return response()->json($classes);
     }
 
     public function findMember($query = null)
@@ -238,7 +238,7 @@ class ApiController extends Controller
         }
 
         if (is_null($query) === true) {
-            return Response::json(['suggestions' => []]);
+            return response()->json(['suggestions' => []]);
         }
 
         $terms = explode(' ', $query);
@@ -300,7 +300,7 @@ class ApiController extends Controller
                 ];
         }
 
-        return Response::json(['suggestions' => $suggestions]);
+        return response()->json(['suggestions' => $suggestions]);
     }
 
     public function findChapter($query = null)
@@ -310,7 +310,7 @@ class ApiController extends Controller
         }
 
         if (is_null($query) === true) {
-            return Response::json(['suggestions' => []]);
+            return response()->json(['suggestions' => []]);
         }
 
         $results =
@@ -329,7 +329,7 @@ class ApiController extends Controller
                 ];
         }
 
-        return Response::json(['suggestions' => $suggestions]);
+        return response()->json(['suggestions' => $suggestions]);
     }
 
     public function findExam()
@@ -337,7 +337,7 @@ class ApiController extends Controller
         $query = Request::get('query', null);
 
         if (is_null($query) === true) {
-            return Response::json(['suggestions' => []]);
+            return response()->json(['suggestions' => []]);
         }
 
         $results =
@@ -357,12 +357,12 @@ class ApiController extends Controller
             }
         }
 
-        return Response::json(['suggestions' => $suggestions]);
+        return response()->json(['suggestions' => $suggestions]);
     }
 
     public function getScheduledEvents($user, $continent = null, $city = null)
     {
-        return Response::json(
+        return response()->json(
             [
                 'events' => $user->getScheduledEvents($continent, $city),
             ]
@@ -377,10 +377,10 @@ class ApiController extends Controller
         $city = null
     ) {
         if (is_object($user) === false) {
-            return Response::json(['error' => 'Invalid User']);
+            return response()->json(['error' => 'Invalid User']);
         }
 
-        return Response::json(
+        return response()->json(
             $user->checkMemberIn(
                 $event,
                 $member,
@@ -433,9 +433,9 @@ class ApiController extends Controller
                       ]);
             }
 
-            return Response::json(['status' => $status === true ? 'ok' : 'error']);
+            return response()->json(['status' => $status === true ? 'ok' : 'error']);
         } catch (\Exception $e) {
-            return Response::json(['status' => 'error']);
+            return response()->json(['status' => 'error']);
         }
     }
 
@@ -455,12 +455,12 @@ class ApiController extends Controller
         }
 
         if ($errors > 0) {
-            return Response::json(
+            return response()->json(
                 ['status' => 'error',
                  'msg'    => 'There was a problem updating one or more awards', ]
             );
         } else {
-            return Response::json(['status' => 'ok']);
+            return response()->json(['status' => 'ok']);
         }
     }
 
@@ -520,7 +520,7 @@ class ApiController extends Controller
             }
         }
 
-        return Response::json(
+        return response()->json(
             ['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check,
              'pinfo' => $promotionInfo, ]
         );

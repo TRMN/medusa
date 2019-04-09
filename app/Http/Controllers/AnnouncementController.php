@@ -18,7 +18,7 @@ class AnnouncementController extends Controller
             'announcements' => $announcements,
         ];
 
-        return Response::view('announcement.index', $viewData);
+        return view('announcement.index', $viewData);
     }
 
     public function show($id)
@@ -33,7 +33,7 @@ class AnnouncementController extends Controller
             'announcement' => $announcement,
         ];
 
-        return Response::view('announcement.show', $viewData);
+        return view('announcement.show', $viewData);
     }
 
     public function create()
@@ -44,7 +44,7 @@ class AnnouncementController extends Controller
             'announcement' => $announcement,
         ];
 
-        return Response::view('announcement.create', $viewData);
+        return view('announcement.create', $viewData);
     }
 
     public function edit($id)
@@ -60,7 +60,7 @@ class AnnouncementController extends Controller
             'announcement' => $announcement,
         ];
 
-        return Response::view('announcement.edit', $viewData);
+        return view('announcement.edit', $viewData);
     }
 
     public function update($id)
