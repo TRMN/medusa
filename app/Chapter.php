@@ -43,7 +43,7 @@ class Chapter extends Eloquent
             self::where('joinable', '!=', false)
                 ->whereIn(
                     'hull_number',
-                    MedusaConfig::get('chapter.holding')
+                    Medusaconfig('chapter.holding')
                 )
                 ->orderBy('chapter_name')
                 ->get();
@@ -110,7 +110,7 @@ class Chapter extends Eloquent
     {
         $chapters = [];
 
-        foreach (MedusaConfig::get('chapter.selection') as $item) {
+        foreach (Medusaconfig('chapter.selection') as $item) {
             if ($item['unjoinable'] === $showUnjoinable || $item['unjoinable'] === false) {
                 if (isset($item['args']) === true) {
                     $chapters[$item['label']] = call_user_func($item['call'], $item['args']);
@@ -140,7 +140,7 @@ class Chapter extends Eloquent
         $nf = new NumberFormatter('en_US', NumberFormatter::ORDINAL);
 
         $holdingChapters =
-            MedusaConfig::get('chapter.holding');
+            Medusaconfig('chapter.holding');
 
         if (empty($branch) === false) {
             $results =
@@ -516,7 +516,7 @@ class Chapter extends Eloquent
         $search = ['%ordinal%'];
         $replace = [\App\Utility\MedusaUtility::ordinal($this->hull_number)];
 
-        $billets = MedusaConfig::get('chapter.show', $default, $this->chapter_type);
+        $billets = Medusaconfig('chapter.show', $default, $this->chapter_type);
 
         $commandCrew = [];
 

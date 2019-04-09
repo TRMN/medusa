@@ -23,7 +23,7 @@ class AnyUnitController extends Controller
     {
         parent::__construct();
 
-        $this->chapterTypes = MedusaConfig::get('anyunit.types', [
+        $this->chapterTypes = Medusaconfig('anyunit.types', [
             'district',
             'fleet',
             'task_force',

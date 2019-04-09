@@ -26,7 +26,7 @@ class Grade extends Eloquent
 
     public static function getRequirements($paygrade2check)
     {
-        $requirements = MedusaConfig::get('pp.requirements');
+        $requirements = Medusaconfig('pp.requirements');
 
         return $requirements[$paygrade2check];
     }

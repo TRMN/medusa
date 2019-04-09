@@ -23,7 +23,7 @@ class Branch extends Eloquent
 
     public static function getNavalBranchList()
     {
-        foreach (self::whereIn('branch', MedusaConfig::get('chapter.naval', ['RMN', 'GSN', 'IAN', 'RHN']))
+        foreach (self::whereIn('branch', Medusaconfig('chapter.naval', ['RMN', 'GSN', 'IAN', 'RHN']))
                 ->get(['branch', 'branch_name']) as $branch) {
             $branches[$branch['branch']] = $branch['branch_name'];
         }

@@ -59,7 +59,7 @@ class AuthController extends Controller
                 $redirect = '/';
             }
 
-            return Redirect::to($redirect);
+            return redirect($redirect);
         } else {
             return Redirect::back()
                 ->with('message', 'Your username/password combination was incorrect')

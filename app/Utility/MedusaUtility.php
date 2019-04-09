@@ -32,7 +32,7 @@ class MedusaUtility
      */
     public static function getWelcomeLetter(User $user)
     {
-        $letter = MedusaConfig::get('bupers.welcome', null);
+        $letter = Medusaconfig('bupers.welcome', null);
 
         $search = [
             '%CHAPTER%',

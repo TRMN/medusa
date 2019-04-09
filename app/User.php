@@ -186,9 +186,9 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         parent::__construct($attributes);
 
-        $this->promotionRequirements = MedusaConfig::get('pp.requirements');
+        $this->promotionRequirements = Medusaconfig('pp.requirements');
 
-        $this->nextGrade = MedusaConfig::get('pp.nextGrade');
+        $this->nextGrade = Medusaconfig('pp.nextGrade');
     }
 
     /**
@@ -520,7 +520,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getAssignedShip()
     {
-        $holding = MedusaConfig::get('chapter.holding');
+        $holding = Medusaconfig('chapter.holding');
 
         if (isset($this->assignment) == true) {
             foreach ($this->assignment as $assignment) {
@@ -2636,7 +2636,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $numCompletedExams = count($this->getExamList(['onlyPassing' => true]));
 
-        $examConfig = MedusaConfig::get('pp.exams', []);
+        $examConfig = Medusaconfig('pp.exams', []);
 
         $pointsEarned = 0;
 
@@ -2671,7 +2671,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $points = 0;
 
-        $c = MedusaConfig::get('pp.form-config');
+        $c = Medusaconfig('pp.form-config');
 
         $config = [];
 
@@ -2769,8 +2769,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getGpaBySchool($service)
     {
-        $servicePatterns = MedusaConfig::get('gpa.patterns', [], 'services');
-        $coursePatterns = MedusaConfig::get('gpa.patterns', [], 'courses');
+        $servicePatterns = Medusaconfig('gpa.patterns', [], 'services');
+        $coursePatterns = Medusaconfig('gpa.patterns', [], 'courses');
 
         $servicePattern = $servicePatterns[$service];
         $results = [];

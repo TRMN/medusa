@@ -205,11 +205,11 @@ trait AwardQualification
 
         // Get the qualifications for a SWP
 
-        $swpQual = MedusaConfig::get('awards.swp');
+        $swpQual = Medusaconfig('awards.swp');
 
         // Get the branches to check for
 
-        $swpBranches = MedusaConfig::get('awards.swp.branches', ['RMN', 'RMMC']);
+        $swpBranches = Medusaconfig('awards.swp.branches', ['RMN', 'RMMC']);
 
         // Determine member's rank classification
         $swpType = null;
