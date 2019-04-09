@@ -166,7 +166,7 @@ class OAuthController extends Controller
 
         \Log::info('Profile request');
 
-        return \Response::json(
+        return \response()->json(
             [
                 'uid'            => $user->_id,
                 'email'          => $user->email_address,
@@ -302,7 +302,7 @@ class OAuthController extends Controller
 
         $_user->promotionPoints = $_user->getTotalPromotionPoints();
 
-        return Response::json($_user);
+        return response()->json($_user);
     }
 
     public function lastUpdated(Request $request)
@@ -311,7 +311,7 @@ class OAuthController extends Controller
 
         $_lastUpdated = $this->getUserFromRequest($request)->getLastUpdated();
 
-        return Response::json(['lastUpdate' => $_lastUpdated]);
+        return response()->json(['lastUpdate' => $_lastUpdated]);
     }
 
     public function getTisTig(Request $request)
@@ -320,7 +320,7 @@ class OAuthController extends Controller
 
         $_user = $this->getUserFromRequest($request);
 
-        return Response::json(
+        return response()->json(
             [
                 'tig' => $_user->getTimeInGrade(true),
                 'tis' => $_user->getTimeInService(true),
@@ -345,7 +345,7 @@ class OAuthController extends Controller
 
         Log::info('TZ='.$_tz);
 
-        return Response::json(
+        return response()->json(
             [
                 'events' => $this->getUserFromRequest($request)
                                  ->getScheduledEvents($_tz),
@@ -359,7 +359,7 @@ class OAuthController extends Controller
 
         Log::info('Attempting to check '.$_data['member'].' in to '.$_data['event']);
 
-        return Response::json(
+        return response()->json(
             $this->getUserFromRequest($request)
                  ->checkMemberIn(
                      $_data['event'],
@@ -393,7 +393,7 @@ class OAuthController extends Controller
 
             Log::info('User profile updated');
 
-            return Response::json(
+            return response()->json(
                 [
                     'status'  => 'success',
                     'message' => 'Profile updated',
@@ -402,7 +402,7 @@ class OAuthController extends Controller
         } else {
             Log::info('There was some sort of problem');
 
-            return Response::json(
+            return response()->json(
                 [
                     'status'  => 'error',
                     'message' => 'Unable to update profile',
