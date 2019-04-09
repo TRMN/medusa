@@ -103,45 +103,73 @@ Route::post('/user/{user}/note', 'UserController@addOrEditNote')
 Route::get('/user/{user}/perm/{perm}/add', 'UserController@addPerm')
      ->name('user.perm.add')->middleware('auth');
 Route::get(
-    '/user/{user}/perm/{perm}/delete', 'UserController@deletePerm')->name('user.perm.del')->middleware('auth');
+    '/user/{user}/perm/{perm}/delete',
+    'UserController@deletePerm'
+)->name('user.perm.del')->middleware('auth');
 Route::post('/user/{user}/points', 'UserController@updatePoints')
      ->name('user.points')->middleware('auth');
 
 Route::get(
-    '/users/{branch}', 'UserController@showBranch')->name('showBranch')->middleware('auth');
+    '/users/{branch}',
+    'UserController@showBranch'
+)->name('showBranch')->middleware('auth');
 Route::get(
-    '/user/rack/{user?}', 'UserController@buildRibbonRack')->name('ribbonRack')->middleware('auth');
+    '/user/rack/{user?}',
+    'UserController@buildRibbonRack'
+)->name('ribbonRack')->middleware('auth');
 Route::post(
-    '/user/rack/save/{user}', 'UserController@saveRibbonRack')->name('saverack')->middleware('auth');
+    '/user/rack/save/{user}',
+    'UserController@saveRibbonRack'
+)->name('saverack')->middleware('auth');
 
 Route::get(
-    '/user/{user}/ribbons', 'UserController@fullRibbonDisplay')->name('userRibbons')->middleware('auth');
+    '/user/{user}/ribbons',
+    'UserController@fullRibbonDisplay'
+)->name('userRibbons')->middleware('auth');
 
 Route::post('/users/list/{branch}', 'UserController@getUserList');
 
 Route::resource('user', 'UserController')->middleware('auth');
 
 Route::get(
-    '/user/{user}/approve', 'UserController@approveApplication')->name('user.approve')->middleware('auth');
+    '/user/{user}/approve',
+    'UserController@approveApplication'
+)->name('user.approve')->middleware('auth');
 Route::get(
-    '/user/{user}/deny', 'UserController@denyApplication')->name('user.deny')->middleware('auth');
+    '/user/{user}/deny',
+    'UserController@denyApplication'
+)->name('user.deny')->middleware('auth');
 Route::get(
-    '/user/{user}/reset', 'UserController@getReset')->name('user.getReset')->middleware('auth');
+    '/user/{user}/reset',
+    'UserController@getReset'
+)->name('user.getReset')->middleware('auth');
 Route::post(
-    '/user/{user}/reset', 'UserController@postReset')->name('user.postReset')->middleware('auth');
+    '/user/{user}/reset',
+    'UserController@postReset'
+)->name('user.postReset')->middleware('auth');
 
 // Assignment Change Requests
 Route::model('request', \App\ChangeRequest::class);
 Route::get(
-    '/user_request/{user}/create', 'UserChangeRequestController@create')->name('user.change.request')->middleware('auth');
+    '/user_request/{user}/create',
+    'UserChangeRequestController@create'
+)->name('user.change.request')->middleware('auth');
 Route::post(
-    '/user_request', 'UserChangeRequestController@store')->name('user.change.store')->middleware('auth');
+    '/user_request',
+    'UserChangeRequestController@store'
+)->name('user.change.store')->middleware('auth');
 Route::get(
-    '/user_request/review', 'UserChangeRequestController@review')->name('user.change.review')->middleware('auth');
+    '/user_request/review',
+    'UserChangeRequestController@review'
+)->name('user.change.review')->middleware('auth');
 Route::get(
-    '/user_request/approve/{request}', 'UserChangeRequestController@approve')->name('user.change.approve')->middleware('auth');
+    '/user_request/approve/{request}',
+    'UserChangeRequestController@approve'
+)->name('user.change.approve')->middleware('auth');
 Route::get(
-    '/user_request/deny/{request}', 'UserChangeRequestController@deny')->name('user.change.deny')->middleware('auth');
+    '/user_request/deny/{request}',
+    'UserChangeRequestController@deny'
+)->name('user.change.deny')->middleware('auth');
 
 // Other Routes
 Route::model('chapter', \App\Chapter::class);
@@ -151,68 +179,108 @@ Route::model('unit', \App\Chapter::class);
 Route::model('anyunit', \App\Chapter::class);
 
 Route::get(
-    '/home/{message?}', 'HomeController@index')->name('home');
+    '/home/{message?}',
+    'HomeController@index'
+)->name('home');
 Route::get('/', 'HomeController@index')->name('root');
 Route::get('/login', 'HomeController@index')->name('login');
 Route::get(
-    '/chapter/{chapter}/decommission', 'ChapterController@decommission')->name('chapter.decommission')->middleware('auth');
+    '/chapter/{chapter}/decommission',
+    'ChapterController@decommission'
+)->name('chapter.decommission')->middleware('auth');
 Route::post('/chapter/{chapter}/getRoster', 'ChapterController@getChapterMembers')
     ->middleware(['auth']);
 Route::resource('chapter', 'ChapterController')->middleware('auth');
 Route::get(
-    '/triadreport', 'ChapterController@commandTriadReport')->name('chapter.triadreport')->middleware('auth');
+    '/triadreport',
+    'ChapterController@commandTriadReport'
+)->name('chapter.triadreport')->middleware('auth');
 Route::get(
-    '/export/{chapter}', 'ChapterController@exportRoster')->name('roster.export')->middleware('auth');
+    '/export/{chapter}',
+    'ChapterController@exportRoster'
+)->name('roster.export')->middleware('auth');
 
 Route::resource('report', 'ReportController')->middleware('auth');
 
 Route::get(
-    '/report/getexams/{id}', 'ReportController@getCompletedExamsForCrew')->name('report.getexams')->middleware('auth');
+    '/report/getexams/{id}',
+    'ReportController@getCompletedExamsForCrew'
+)->name('report.getexams')->middleware('auth');
 Route::get(
-    '/report/send/{id}', 'ReportController@sendReport')->name('report.send')->middleware('auth');
+    '/report/send/{id}',
+    'ReportController@sendReport'
+)->name('report.send')->middleware('auth');
 
 Route::get(
-    '/echelon/{echelon}/deactivate', 'EchelonController@deactivate')->name('echelon.deactivate')->middleware('auth');
+    '/echelon/{echelon}/deactivate',
+    'EchelonController@deactivate'
+)->name('echelon.deactivate')->middleware('auth');
 Route::resource('echelon', 'EchelonController')->middleware('auth');
 
 Route::model('unit', \App\Chapter::class);
 Route::get(
-    '/unit/{unit}/deactivate', 'UnitController@deactivate')->name('unit.deactivate')->middleware('auth');
+    '/unit/{unit}/deactivate',
+    'UnitController@deactivate'
+)->name('unit.deactivate')->middleware('auth');
 
 Route::resource('unit', 'UnitController')->middleware('auth');
 Route::resource('mardet', 'MardetController')->middleware('auth');
 Route::get(
-    '/mardet/{unit}/deactivate', 'MardetController@deactivate')->name('mardet.deactivate')->middleware('auth');
+    '/mardet/{unit}/deactivate',
+    'MardetController@deactivate'
+)->name('mardet.deactivate')->middleware('auth');
 Route::resource('anyunit', 'AnyUnitController')->middleware('auth');
 Route::get(
-    '/anyunit/{unit}/deactivate', 'AnyUnitController@deactivate')->name('anyunit.deactivate')->middleware('auth');
+    '/anyunit/{unit}/deactivate',
+    'AnyUnitController@deactivate'
+)->name('anyunit.deactivate')->middleware('auth');
 
 Route::model('type', \App\Type::class);
 Route::resource('type', 'TypeController')->middleware('auth');
 
 Route::get(
-    '/exam', 'ExamController@index')->name('exam.index')->middleware('auth');
+    '/exam',
+    'ExamController@index'
+)->name('exam.index')->middleware('auth');
 Route::post(
-    '/exam/upload', 'ExamController@upload')->name('exam.upload')->middleware('auth');
+    '/exam/upload',
+    'ExamController@upload'
+)->name('exam.upload')->middleware('auth');
 Route::post(
-    '/exam/update', 'ExamController@update')->name('exam.update')->middleware('auth');
+    '/exam/update',
+    'ExamController@update'
+)->name('exam.update')->middleware('auth');
 Route::get(
-    '/exam/find/{user?}/{message?}', 'ExamController@find')->name('exam.find')->middleware('auth');
+    '/exam/find/{user?}/{message?}',
+    'ExamController@find'
+)->name('exam.find')->middleware('auth');
 
 Route::post(
-    '/exam/store', 'ExamController@store')->name('exam.store')->middleware('auth');
+    '/exam/store',
+    'ExamController@store'
+)->name('exam.store')->middleware('auth');
 Route::get(
-    '/exam/list', 'ExamController@examList')->name('exam.list')->middleware('auth');
+    '/exam/list',
+    'ExamController@examList'
+)->name('exam.list')->middleware('auth');
 Route::get(
-    '/exam/create', 'ExamController@create')->name('exam.create')->middleware('auth');
+    '/exam/create',
+    'ExamController@create'
+)->name('exam.create')->middleware('auth');
 
 Route::model('exam', \App\ExamList::class);
 Route::get(
-    '/exam/edit/{exam}', 'ExamController@edit')->name('exam.edit')->middleware('auth');
+    '/exam/edit/{exam}',
+    'ExamController@edit'
+)->name('exam.edit')->middleware('auth');
 Route::post(
-    '/exam/updateExam', 'ExamController@updateExam')->name('exam.updateExam')->middleware('auth');
+    '/exam/updateExam',
+    'ExamController@updateExam'
+)->name('exam.updateExam')->middleware('auth');
 Route::post(
-    '/exam/user/delete', 'ExamController@delete')->name('exam.deleteUserExam');
+    '/exam/user/delete',
+    'ExamController@delete'
+)->name('exam.deleteUserExam');
 
 Route::model('billet', \App\Billet::class);
 Route::resource('billet', 'BilletController')->middleware('auth');
@@ -232,7 +300,9 @@ Route::get('id/mark/{id}', 'IdController@getMark');
 Route::model('events', \App\Events::class);
 Route::resource('events', 'EventController')->middleware('auth');
 Route::get(
-    '/events/export/{events}', 'EventController@export')->name('event.export')->middleware('auth');
+    '/events/export/{events}',
+    'EventController@export'
+)->name('event.export')->middleware('auth');
 
 Route::model('config', \App\MedusaConfig::class);
 Route::resource('config', 'ConfigController')->middleware('auth');
@@ -304,7 +374,9 @@ Route::post(
 Route::post('/api/path', 'ApiController@setPath', ['middleware' => 'auth']);
 
 Route::get(
-    '/api/find/{query?}', 'ApiController@findMember')->name('user.find.api')->middleware('auth'); // search for a member
+    '/api/find/{query?}',
+    'ApiController@findMember'
+)->name('user.find.api')->middleware('auth'); // search for a member
 Route::get(
     '/api/exam',
     'ApiController@findExam',
@@ -315,9 +387,13 @@ Route::get(
     'ApiController@checkAddress'
 ); // Check that an email address is available
 Route::get(
-    '/api/findchapter/{query?}', 'ApiController@findChapter')->name('chapter.find.api');
+    '/api/findchapter/{query?}',
+    'ApiController@findChapter'
+)->name('chapter.find.api');
 Route::get(
-    '/api/ribbonrack/{memberid}', 'ApiController@getRibbonRack')->name('ribbonrack');
+    '/api/ribbonrack/{memberid}',
+    'ApiController@getRibbonRack'
+)->name('ribbonrack');
 
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 
@@ -354,7 +430,9 @@ Route::get(
 
 // These MUST be the last two routes
 Route::get(
-    '/user/{user}/{message?}', 'UserController@show')->name('user.show')->middleware('auth');
+    '/user/{user}/{message?}',
+    'UserController@show'
+)->name('user.show')->middleware('auth');
 
 Route::any(
     '{catchall}',
