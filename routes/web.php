@@ -105,8 +105,6 @@ Route::get('/user/{user}/perm/{perm}/add', 'UserController@addPerm')
 Route::get(
     '/user/{user}/perm/{perm}/delete',
     [
-        'as'         => 'user.perm.del',
-        'uses'       => 'UserController@deletePerm',
         'middleware' => 'auth',
     ]
 );
@@ -116,24 +114,18 @@ Route::post('/user/{user}/points', 'UserController@updatePoints')
 Route::get(
     '/users/{branch}',
     [
-    'as'         => 'showBranch',
-    'uses'       => 'UserController@showBranch',
     'middleware' => 'auth',
     ]
 );
 Route::get(
     '/user/rack/{user?}',
     [
-    'as'         => 'ribbonRack',
-    'uses'       => 'UserController@buildRibbonRack',
     'middleware' => 'auth',
     ]
 );
 Route::post(
     '/user/rack/save/{user}',
     [
-    'as'         => 'saverack',
-    'uses'       => 'UserController@saveRibbonRack',
     'middleware' => 'auth',
     ]
 );
@@ -141,8 +133,6 @@ Route::post(
 Route::get(
     '/user/{user}/ribbons',
     [
-    'as'         => 'userRibbons',
-    'uses'       => 'UserController@fullRibbonDisplay',
     'middleware' => 'auth',
     ]
 );
@@ -154,32 +144,24 @@ Route::resource('user', 'UserController', ['middleware' => 'auth']);
 Route::get(
     '/user/{user}/approve',
     [
-        'as'         => 'user.approve',
-        'uses'       => 'UserController@approveApplication',
         'middleware' => 'auth',
     ]
 );
 Route::get(
     '/user/{user}/deny',
     [
-        'as'         => 'user.deny',
-        'uses'       => 'UserController@denyApplication',
         'middleware' => 'auth',
     ]
 );
 Route::get(
     '/user/{user}/reset',
     [
-    'as'         => 'user.getReset',
-    'uses'       => 'UserController@getReset',
     'middleware' => 'auth',
     ]
 );
 Route::post(
     '/user/{user}/reset',
     [
-    'as'         => 'user.postReset',
-    'uses'       => 'UserController@postReset',
     'middleware' => 'auth',
     ]
 );
@@ -189,40 +171,30 @@ Route::model('request', \App\ChangeRequest::class);
 Route::get(
     '/user_request/{user}/create',
     [
-        'as'         => 'user.change.request',
-        'uses'       => 'UserChangeRequestController@create',
         'middleware' => 'auth',
     ]
 );
 Route::post(
     '/user_request',
     [
-        'as'         => 'user.change.store',
-        'uses'       => 'UserChangeRequestController@store',
         'middleware' => 'auth',
     ]
 );
 Route::get(
     '/user_request/review',
     [
-        'as'         => 'user.change.review',
-        'uses'       => 'UserChangeRequestController@review',
         'middleware' => 'auth',
     ]
 );
 Route::get(
     '/user_request/approve/{request}',
     [
-        'as'         => 'user.change.approve',
-        'uses'       => 'UserChangeRequestController@approve',
         'middleware' => 'auth',
     ]
 );
 Route::get(
     '/user_request/deny/{request}',
     [
-        'as'         => 'user.change.deny',
-        'uses'       => 'UserChangeRequestController@deny',
         'middleware' => 'auth',
     ]
 );
@@ -235,16 +207,12 @@ Route::model('unit', \App\Chapter::class);
 Route::model('anyunit', \App\Chapter::class);
 
 Route::get(
-    '/home/{message?}',
-    ['as' => 'home', 'uses' => 'HomeController@index']
-);
-Route::get('/', ['as' => 'root', 'uses' => 'HomeController@index']);
-Route::get('/login', ['as' => 'login', 'uses' => 'HomeController@index']);
+    '/home/{message?}', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('root');
+Route::get('/login', 'HomeController@index')->name('login');
 Route::get(
     '/chapter/{chapter}/decommission',
     [
-        'as'         => 'chapter.decommission',
-        'uses'       => 'ChapterController@decommission',
         'middleware' => 'auth',
     ]
 );
@@ -254,16 +222,12 @@ Route::resource('chapter', 'ChapterController', ['middleware' => 'auth']);
 Route::get(
     '/triadreport',
     [
-        'as'         => 'chapter.triadreport',
-        'uses'       => 'ChapterController@commandTriadReport',
         'middleware' => 'auth',
     ]
 );
 Route::get(
     '/export/{chapter}',
     [
-        'as'         => 'roster.export',
-        'uses'       => 'ChapterController@exportRoster',
         'middleware' => 'auth',
     ]
 );
@@ -273,16 +237,12 @@ Route::resource('report', 'ReportController', ['middleware' => 'auth']);
 Route::get(
     '/report/getexams/{id}',
     [
-        'as'         => 'report.getexams',
-        'uses'       => 'ReportController@getCompletedExamsForCrew',
         'middleware' => 'auth',
     ]
 );
 Route::get(
     '/report/send/{id}',
     [
-    'as'         => 'report.send',
-    'uses'       => 'ReportController@sendReport',
     'middleware' => 'auth',
     ]
 );
@@ -290,8 +250,6 @@ Route::get(
 Route::get(
     '/echelon/{echelon}/deactivate',
     [
-        'as'         => 'echelon.deactivate',
-        'uses'       => 'EchelonController@deactivate',
         'middleware' => 'auth',
     ]
 );
@@ -301,8 +259,6 @@ Route::model('unit', \App\Chapter::class);
 Route::get(
     '/unit/{unit}/deactivate',
     [
-        'as'         => 'unit.deactivate',
-        'uses'       => 'UnitController@deactivate',
         'middleware' => 'auth',
     ]
 );
@@ -312,8 +268,6 @@ Route::resource('mardet', 'MardetController', ['middleware' => 'auth']);
 Route::get(
     '/mardet/{unit}/deactivate',
     [
-        'as'         => 'mardet.deactivate',
-        'uses'       => 'MardetController@deactivate',
         'middleware' => 'auth',
     ]
 );
@@ -321,8 +275,6 @@ Route::resource('anyunit', 'AnyUnitController', ['middleware' => 'auth']);
 Route::get(
     '/anyunit/{unit}/deactivate',
     [
-        'as'         => 'anyunit.deactivate',
-        'uses'       => 'AnyUnitController@deactivate',
         'middleware' => 'auth',
     ]
 );
@@ -333,74 +285,54 @@ Route::resource('type', 'TypeController', ['middleware' => 'auth']);
 Route::get(
     '/exam',
     [
-        'as'         => 'exam.index',
-        'uses'       => 'ExamController@index',
         'middleware' => 'auth',
     ]
 );
 Route::post(
     '/exam/upload',
     [
-    'as'         => 'exam.upload',
-    'uses'       => 'ExamController@upload',
     'middleware' => 'auth',
     ]
 );
 Route::post(
     '/exam/update',
     [
-    'as'         => 'exam.update',
-    'uses'       => 'ExamController@update',
     'middleware' => 'auth',
     ]
 );
 Route::get(
-    '/exam/find/{user?}/{message?}',
-    ['as' => 'exam.find', 'uses' => 'ExamController@find', 'middleware' => 'auth']
-);
+    '/exam/find/{user?}/{message?}', 'ExamController@find')->name('exam.find')->middleware('auth');
 
 Route::post(
     '/exam/store',
     [
-        'as'         => 'exam.store',
-        'uses'       => 'ExamController@store',
         'middleware' => 'auth',
     ]
 );
 Route::get(
     '/exam/list',
     [
-    'as'         => 'exam.list',
-    'uses'       => 'ExamController@examList',
     'middleware' => 'auth',
     ]
 );
 Route::get(
     '/exam/create',
     [
-    'as'         => 'exam.create',
-    'uses'       => 'ExamController@create',
     'middleware' => 'auth',
     ]
 );
 
 Route::model('exam', \App\ExamList::class);
 Route::get(
-    '/exam/edit/{exam}',
-    ['as' => 'exam.edit', 'uses' => 'ExamController@edit', 'middleware' => 'auth']
-);
+    '/exam/edit/{exam}', 'ExamController@edit')->name('exam.edit')->middleware('auth');
 Route::post(
     '/exam/updateExam',
     [
-    'as'         => 'exam.updateExam',
-    'uses'       => 'ExamController@updateExam',
     'middleware' => 'auth',
     ]
 );
 Route::post(
-    '/exam/user/delete',
-    ['as' => 'exam.deleteUserExam', 'uses' => 'ExamController@delete']
-);
+    '/exam/user/delete', 'ExamController@delete')->name('exam.deleteUserExam');
 
 Route::model('billet', \App\Billet::class);
 Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
@@ -422,8 +354,6 @@ Route::resource('events', 'EventController', ['middleware' => 'auth']);
 Route::get(
     '/events/export/{events}',
     [
-    'as'         => 'event.export',
-    'uses'       => 'EventController@export',
     'middleware' => 'auth',
     ]
 );
@@ -500,8 +430,6 @@ Route::post('/api/path', 'ApiController@setPath', ['middleware' => 'auth']);
 Route::get(
     '/api/find/{query?}',
     [
-    'as'         => 'user.find.api',
-    'uses'       => 'ApiController@findMember',
     'middleware' => 'auth',
     ]
 ); // search for a member
@@ -515,13 +443,9 @@ Route::get(
     'ApiController@checkAddress'
 ); // Check that an email address is available
 Route::get(
-    '/api/findchapter/{query?}',
-    ['as' => 'chapter.find.api', 'uses' => 'ApiController@findChapter']
-);
+    '/api/findchapter/{query?}', 'ApiController@findChapter')->name('chapter.find.api');
 Route::get(
-    '/api/ribbonrack/{memberid}',
-    ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']
-);
+    '/api/ribbonrack/{memberid}', 'ApiController@getRibbonRack')->name('ribbonrack');
 
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 
@@ -560,8 +484,6 @@ Route::get(
 Route::get(
     '/user/{user}/{message?}',
     [
-        'as'        => 'user.show',
-        'uses'      => 'UserController@show',
         'middlware' => 'auth',
     ]
 );
