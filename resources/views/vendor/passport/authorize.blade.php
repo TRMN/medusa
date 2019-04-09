@@ -11,7 +11,7 @@
 <body>
 <div class="container">
 
-            @if(Auth::check())
+            @auth
                 <div class="row text-center">
                     <div class=" col-sm-3">&nbsp;</div>
                     <div class=" col-sm-2 text-center">
@@ -85,7 +85,7 @@
                     </div>
                     <div class=" col-sm-3">&nbsp;</div>
                 </div>
-            @endif
+            @endauth
 
 
     <footer>
