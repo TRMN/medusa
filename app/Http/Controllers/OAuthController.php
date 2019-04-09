@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-use Log;
-use Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 
 class OAuthController extends Controller
 {
