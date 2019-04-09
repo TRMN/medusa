@@ -926,7 +926,7 @@ class UserController extends Controller
         if (isset($data['mobile']) === true) {
             if (empty($user->id)) {
                 // No id, insert didn't happen
-                return Response::json(
+                return response()->json(
                     [
                         'status'  => 'error',
                         'message' => 'Unable to create user',
@@ -934,7 +934,7 @@ class UserController extends Controller
                     500
                 );
             } else {
-                return Response::json(
+                return response()->json(
                     [
                         'status'  => 'success',
                         'message' => 'User created',
@@ -1916,11 +1916,11 @@ class UserController extends Controller
             [
                 'user'           => $user,
                 'unitPatchPaths' => $unitPatchPaths,
-                'restricted'     => MedusaConfig::get(
+                'restricted'     => Medusaconfig(
                     'awards.restricted',
                     ['OSWP', 'ESWP', 'MCAM']
                 ),
-                'wings'          => MedusaConfig::get(
+                'wings'          => Medusaconfig(
                     'awards.wings',
                     [
                     'Aerospace Wings' => [
@@ -1977,7 +1977,7 @@ class UserController extends Controller
 
         // Process the display choice for qualification badges
 
-        $displayChoice = MedusaConfig::get(
+        $displayChoice = Medusaconfig(
             'awards.display',
             [
                 'OSWP',

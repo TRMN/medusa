@@ -238,7 +238,7 @@ class ChapterController extends Controller
         $types =
             Type::whereIn(
                 'chapter_type',
-                MedusaConfig::get('chapter.types', ['ship', 'station'])
+                Medusaconfig('chapter.types', ['ship', 'station'])
             )
                 ->orderBy('chapter_description')
                 ->get(
