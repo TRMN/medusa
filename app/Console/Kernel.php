@@ -13,20 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\CodeTest::class,
-        \App\Console\Commands\CreateEchelons::class,
-        \App\Console\Commands\ImportGrades::class,
-        \App\Console\Commands\AddPermission::class,
-        \App\Console\Commands\ImportChapters::class,
-        \App\Console\Commands\Inspire::class,
-        \App\Console\Commands\DelPermission::class,
-        \App\Console\Commands\MemberExport::class,
-        \App\Console\Commands\ImportUsers::class,
-        \App\Console\Commands\assignAHPerms::class,
-        \App\Console\Commands\AddFleetCoPermission::class,
-        \App\Console\Commands\UpdatePromotionStatus::class,
-        \App\Console\Commands\SwpReport::class,
-        \App\Console\Commands\SWPCheck::class,
+        
     ];
 
     /**
