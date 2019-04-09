@@ -54,7 +54,7 @@ class AddKGL extends Migration
 
         foreach ($gl as $code => $replaces) {
             try {
-                $award = Award::where('code',$code)->firstOrFail();
+                $award = Award::where('code', $code)->firstOrFail();
                 $award->replaces = $replaces;
                 $award->save();
             } catch (Exception $e) {
