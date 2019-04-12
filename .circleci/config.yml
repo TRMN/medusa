@@ -3,7 +3,8 @@ jobs:
   build:
     working_directory: /var/www/html
     docker:
-      - image: php:7.2
+      - image: circleci/php:7.2-mongodb
+      - image: circleci/mongo:latest
         environment:
           APP_ENV: development
     steps:
@@ -12,7 +13,7 @@ jobs:
           command: apt-get update && apt-get -y install git
       - run:
           name: Install PHP extensions
-          command: docker-php-ext-install mongodb
+          command: docker-php-ext-install mongodb gd
       - checkout
       - run:
           name: Install Composer
