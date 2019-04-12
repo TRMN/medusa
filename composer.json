@@ -63,7 +63,8 @@
         "fideloper/proxy": "^4.0",
         "laravel/passport": "~5.0",
         "genealabs/laravel-caffeine": "^0.8.0",
-        "jenssegers/mongodb": "^3.5"
+        "jenssegers/mongodb": "^3.5",
+        "squizlabs/php_codesniffer": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
