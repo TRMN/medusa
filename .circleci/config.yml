@@ -10,7 +10,7 @@ jobs:
     steps:
       - run:
           name: Install system packages
-          command: sudo apt-get update && apt-get -y install libpng libjpeg libz
+          command: sudo apt-get update && sudo apt-get -y install libpng libjpeg libz
       - run:
           name: Install gd PHP extension
           command: sudo docker-php-ext-install gd
