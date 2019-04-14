@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Award;
-use App\Branch;
-use App\Chapter;
-use App\ExamList;
-use App\Grade;
-use App\Korders;
-use App\MedusaConfig;
-use App\Rating;
 use App\User;
+use App\Award;
+use App\Grade;
+use App\Branch;
+use App\Rating;
+use App\Chapter;
+use App\Korders;
+use App\ExamList;
+use App\MedusaConfig;
+use Webpatser\Countries\Countries;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Webpatser\Countries\Countries;
 
 class ApiController extends Controller
 {
@@ -289,10 +289,10 @@ class ApiController extends Controller
             $suggestions[] =
                 [
                     'value' => $member->member_id.' '.$member->first_name.' '.
-                               (!empty($member->middle_name) ?
+                               (! empty($member->middle_name) ?
                                    $member->middle_name.' ' : '').
                                $member->last_name.
-                               (!empty($member->suffix) ? ' '.$member->suffix :
+                               (! empty($member->suffix) ? ' '.$member->suffix :
                                    '').' ('.$member->getAssignmentName(
                                        'primary'
                                    ).')',

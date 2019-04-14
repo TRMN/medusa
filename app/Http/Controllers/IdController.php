@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Chapter;
 use App\User;
-use Illuminate\Support\Facades\Auth;
+use App\Chapter;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 
 class IdController extends Controller
 {

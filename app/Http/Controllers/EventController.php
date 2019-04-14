@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Country;
-use App\Events;
 use App\User;
-use Illuminate\Support\Facades\Auth;
+use App\Events;
+use App\Country;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller
 {

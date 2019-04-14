@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Type;
+use App\User;
 use App\Branch;
 use App\Chapter;
 use App\MedusaConfig;
-use App\Permissions\MedusaPermissions;
-use App\Type;
-use App\User;
+use League\Csv\Writer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use App\Permissions\MedusaPermissions;
 use Illuminate\Support\Facades\Redirect;
-use League\Csv\Writer;
 
 class ChapterController extends Controller
 {
