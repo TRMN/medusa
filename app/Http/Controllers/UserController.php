@@ -2,35 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Award;
+use App\Grade;
 use App\Billet;
 use App\Branch;
+use App\Rating;
 use App\Chapter;
 use App\Country;
+use App\Korders;
+use App\Ptitles;
+use Carbon\Carbon;
+use App\MedusaConfig;
+use Illuminate\Support\Arr;
 use App\Events\EmailChanged;
 use App\Events\LoginComplete;
-use App\Grade;
-use App\Korders;
-use App\MedusaConfig;
-use App\Permissions\MedusaPermissions;
-use App\Ptitles;
-use App\Rating;
-use App\User;
-use Carbon\Carbon;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
+use Webpatser\Countries\Countries;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
+use App\Permissions\MedusaPermissions;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
-use Webpatser\Countries\Countries;
 
 class UserController extends Controller
 {
@@ -79,7 +79,7 @@ class UserController extends Controller
         $search = $request->input('search');
 
         if (empty($search['value']) === false) {
-            $searchTerm = '%' . $search['value'] . '%';
+            $searchTerm = '%'.$search['value'].'%';
 
             $query = $query->where(
                 function ($query) use ($searchTerm) {
@@ -134,25 +134,25 @@ class UserController extends Controller
 
         /* @var $user User */
         foreach ($users as $user) {
-            $actions = '&nbsp;<a class="fa fa-user my" href="' . route(
+            $actions = '&nbsp;<a class="fa fa-user my" href="'.route(
                     'user.show',
                     [$user->id]
-                ) . '" data-toggle="tooltip" title="View User"></a>';
+                ).'" data-toggle="tooltip" title="View User"></a>';
 
             if (Auth::user()->hasPermissions(['EDIT_MEMBER']) === true) {
-                $actions .= '&nbsp;<a class="tiny fa fa-pencil green" href="' .
+                $actions .= '&nbsp;<a class="tiny fa fa-pencil green" href="'.
                             route(
                                 'user.edit',
                                 [$user->id]
-                            ) .
+                            ).
                             '" data-toggle="tooltip" title="Edit User"></a>';
             }
 
             if (Auth::user()->hasPermissions(['DEL_MEMBER']) === true) {
-                $actions .= '&nbsp;<a class="fa fa-close red" href="' . route(
+                $actions .= '&nbsp;<a class="fa fa-close red" href="'.route(
                         'user.confirmdelete',
                         [$user->id]
-                    ) . '" data-toggle="tooltip" title="Delete User"></a>';
+                    ).'" data-toggle="tooltip" title="Delete User"></a>';
             }
 
             if (Auth::user()->hasPermissions(['ID_CARD']) === true) {
@@ -160,12 +160,12 @@ class UserController extends Controller
 
                 $actions .= $user->idcard_printed === true ? ' yellow' : ' green';
 
-                $actions .= '" href="/id/card/' . $user->id .
+                $actions .= '" href="/id/card/'.$user->id.
                             '" data-toggle="tooltip" title="ID Card"></a>&nbsp;';
 
                 $actions .= $user->idcard_printed === true ? '' :
-                    '<a class="fa fa-check green idcard-confrim" href="/id/mark/' .
-                    $user->id . '" data-toggle="tooltip" title="Mark ID Card as printed" 
+                    '<a class="fa fa-check green idcard-confrim" href="/id/mark/'.
+                    $user->id.'" data-toggle="tooltip" title="Mark ID Card as printed" 
                     onclick="return confirm(\'Mark ID card as printed for this member?\')"></a>';
             }
 
@@ -178,14 +178,14 @@ class UserController extends Controller
                     $user->getTimeInGrade(true) : 'N/A',
                 ($user->branch == 'RMMM' ||
                  $user->branch == 'CIVIL') && empty($user->rating) === false ?
-                    $user->getFullName(true) . ' <span class="volkhov">( ' .
+                    $user->getFullName(true).' <span class="volkhov">( '.
                     substr($user->rating, 0, 1)
-                    . ' )</span>' : $user->getFullName(true),
+                    .' )</span>' : $user->getFullName(true),
                 $user->member_id,
                 $user->email_address,
                 $user->getAssignmentName('primary') !== false ?
-                    '<a href="/chapter/' . $user->getAssignmentId('primary') . '">' .
-                    $user->getAssignmentName('primary') . '</a>' : 'N/A',
+                    '<a href="/chapter/'.$user->getAssignmentId('primary').'">'.
+                    $user->getAssignmentName('primary').'</a>' : 'N/A',
                 $branch == 'Bosun' ? $user->branch : $user->registration_date,
                 $actions,
             ];
@@ -291,7 +291,7 @@ class UserController extends Controller
 
         return view(
             'user.duplicates',
-            ['users' => $users, 'title' => 'Show ' . $billet]
+            ['users' => $users, 'title' => 'Show '.$billet]
         );
     }
 
@@ -354,10 +354,10 @@ class UserController extends Controller
             $user->password = Hash::make($in['password']);
 
             $this->writeAuditTrail(
-                (string)Auth::user()->id,
+                (string) Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->id,
+                (string) $user->id,
                 'Password Change',
                 'UserController@postReset'
             );
@@ -413,7 +413,7 @@ class UserController extends Controller
             return $redirect;
         }
 
-        $events[] = 'Applied to ' . Branch::getBranchName($user->branch) . ' on ' .
+        $events[] = 'Applied to '.Branch::getBranchName($user->branch).' on '.
                     date('d M Y', strtotime($user->application_date));
 
         $user->registration_status = 'Active';
@@ -479,12 +479,12 @@ class UserController extends Controller
         $rank = $user['rank'];
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
-        $user->member_id = 'RMN' . User::getFirstAvailableMemberId();
+        $user->member_id = 'RMN'.User::getFirstAvailableMemberId();
 
-        $events[] = 'Application approved by BuPers; Enlisted at rank of ' .
-                    Grade::getRankTitle($user->rank['grade'], null, $user->branch) .
-                    ' (' . $user->rank['grade'] . ') and assigned to ' .
-                    $user->getAssignmentName('primary') . ' on ' . date('d M Y');
+        $events[] = 'Application approved by BuPers; Enlisted at rank of '.
+                    Grade::getRankTitle($user->rank['grade'], null, $user->branch).
+                    ' ('.$user->rank['grade'].') and assigned to '.
+                    $user->getAssignmentName('primary').' on '.date('d M Y');
 
         $user->permissions = [
             'LOGOUT',
@@ -497,10 +497,10 @@ class UserController extends Controller
         $user->lastUpdate = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->id,
+            (string) Auth::user()->id,
             'update',
             'users',
-            (string)$user->id,
+            (string) $user->id,
             $user->toJson(),
             'UserController@approveApplication'
         );
@@ -557,10 +557,10 @@ class UserController extends Controller
         $user->lastUpdate = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->id,
+            (string) Auth::user()->id,
             'update',
             'users',
-            (string)$user->id,
+            (string) $user->id,
             $user->toJson(),
             'UserController@denyApplication'
         );
@@ -637,34 +637,34 @@ class UserController extends Controller
 
         // Build up the member assignments
         foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
-            $chapterName = Chapter::find($data[$position . '_assignment'])->chapter_name;
+            $chapterName = Chapter::find($data[$position.'_assignment'])->chapter_name;
 
             if (is_null($chapterName) === false) {
                 $assignment[] = [
-                    'chapter_id'    => $data[$position . '_assignment'],
+                    'chapter_id'    => $data[$position.'_assignment'],
                     'chapter_name'  => $chapterName,
                     'date_assigned' => date(
                         'Y-m-d',
-                        strtotime($data[$position . '_date_assigned'])
+                        strtotime($data[$position.'_date_assigned'])
                     ),
-                    'billet'        => $data[$position . '_billet'],
+                    'billet'        => $data[$position.'_billet'],
                     $position       => true,
                 ];
 
                 $history[] = [
-                    'timestamp' => strtotime($data[$position . '_date_assigned']),
-                    'event'     => 'Assigned to ' .
-                                   $chapterName . ' as ' .
-                                   $data[$position . '_billet'] . ' on ' . date(
+                    'timestamp' => strtotime($data[$position.'_date_assigned']),
+                    'event'     => 'Assigned to '.
+                                   $chapterName.' as '.
+                                   $data[$position.'_billet'].' on '.date(
                                        'd M Y',
-                                       strtotime($data[$position . '_date_assigned'])
+                                       strtotime($data[$position.'_date_assigned'])
                                    ),
                 ];
 
                 unset(
-                    $data[$position . '_assignment'],
-                    $data[$position . '_date_assigned'],
-                    $data[$position . '_billet']
+                    $data[$position.'_assignment'],
+                    $data[$position.'_date_assigned'],
+                    $data[$position.'_billet']
                 );
             }
         }
@@ -677,7 +677,6 @@ class UserController extends Controller
             )
         );
         $data['history'] = $history;
-
 
         $data['assignment'] = $assignment;
 
@@ -729,7 +728,7 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->id,
+            (string) Auth::user()->id,
             'create',
             'users',
             null,
@@ -819,7 +818,7 @@ class UserController extends Controller
                     ['medusa.dev',
                      'medusa-dev.trmn.org',
                      'medusa.local',
-                     'localhost',]
+                     'localhost', ]
                 ) === false) {
                 // Check Captcha
                 $secret = config('recaptcha.secret');
@@ -919,7 +918,7 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-            'Guest from ' . \Request::getClientIp(),
+            'Guest from '.\Request::getClientIp(),
             'create',
             'users',
             null,
@@ -972,7 +971,7 @@ class UserController extends Controller
             $this->hasPermissions(
                 [
                     'VIEW_MEMBERS',
-                    'VIEW_' . $user->branch,
+                    'VIEW_'.$user->branch,
                 ]
             ) === false
         ) {
@@ -1161,9 +1160,9 @@ class UserController extends Controller
 
             $history[] = [
                 'timestamp' => $transfer,
-                'event'     => 'Transferred from ' .
-                               Branch::getBranchName($user->branch) . ' to ' .
-                               Branch::getBranchName($data['branch']) . ' on ' .
+                'event'     => 'Transferred from '.
+                               Branch::getBranchName($user->branch).' to '.
+                               Branch::getBranchName($data['branch']).' on '.
                                date('d M Y'),
             ];
         }
@@ -1189,14 +1188,14 @@ class UserController extends Controller
                 $history[] = [
                     'timestamp' => $transfer == 0 ? strtotime($data['dor']) :
                         $transfer + 1,
-                    'event'     => 'Rank changed from ' .
-                                   Grade::getRankTitle($user->rank['grade'], $user->getRate(), $user->branch) . ' (' .
-                                   $user->rank['grade'] . ') to ' .
+                    'event'     => 'Rank changed from '.
+                                   Grade::getRankTitle($user->rank['grade'], $user->getRate(), $user->branch).' ('.
+                                   $user->rank['grade'].') to '.
                                    Grade::getRankTitle(
                                        $data['display_rank'],
-                                       !empty($data['rating']) ? $data['rating'] : null,
+                                       ! empty($data['rating']) ? $data['rating'] : null,
                                        $data['branch']
-                                   ) . ' (' . $data['display_rank'] . ') on ' .
+                                   ).' ('.$data['display_rank'].') on '.
                                    date('d M Y', $transfer == 0 ? strtotime($data['dor']) : $transfer),
                 ];
 
@@ -1233,26 +1232,26 @@ class UserController extends Controller
                         $event = 'Civilian Speciality ';
                         break;
                     default:
-                        $event = $branch . ' Rating ';
+                        $event = $branch.' Rating ';
                 }
 
                 $old = ($user->branch === $branch && empty($rate) === false) ?
-                    Rating::getRateName($rate) . ' (' . $rate . ') ' : null;
+                    Rating::getRateName($rate).' ('.$rate.') ' : null;
 
-                $new = (empty($data['rating']) === false) ? Rating::getRateName($data['rating']) .
-                                                            ' (' . $data['rating'] . ')' : null;
+                $new = (empty($data['rating']) === false) ? Rating::getRateName($data['rating']).
+                                                            ' ('.$data['rating'].')' : null;
 
                 if (empty($data['rating']) === true) {
                     // Rating has been removed
-                    $event .= $old . ' removed';
+                    $event .= $old.' removed';
                 } elseif (empty($rate) === true) {
-                    $event .= $new . ' added';
+                    $event .= $new.' added';
                 } else {
                     // Rating has changed
-                    $event .= $old . ' changed to ' . $new;
+                    $event .= $old.' changed to '.$new;
                 }
 
-                $event .= ' on ' . date('d M Y');
+                $event .= ' on '.date('d M Y');
 
                 $history[] = [
                     'timestamp' => time(),
@@ -1264,69 +1263,67 @@ class UserController extends Controller
         }
 
         /**
-         * Build up the member assignments
+         * Build up the member assignments.
          *
          * Always remember DRY!  I should have done it this way to begin with, I don't know why I didn't - DLW
          * 2019-04-03
          */
-
         $chapterIdFromForm = [];
 
         foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
-            if (empty($data[$position . '_assignment']) === false) {
+            if (empty($data[$position.'_assignment']) === false) {
                 // This position has been set, get the chapter name
-                $chapterName = Chapter::find($data[$position . '_assignment'])->chapter_name;
+                $chapterName = Chapter::find($data[$position.'_assignment'])->chapter_name;
 
                 // Push the chapter id onto an array to be used to check for removed assignments
-                $chapterIdFromForm[] = $data[$position . '_assignment'];
+                $chapterIdFromForm[] = $data[$position.'_assignment'];
 
                 // If the member is already assigned to the chapter being added, pull the current data
-                $currentAssignment = $user->findAssignment($data[$position . '_assignment']);
+                $currentAssignment = $user->findAssignment($data[$position.'_assignment']);
 
                 // if the findAssignment function returns null, instead of an array, it's a new assignment
                 if (empty($currentAssignment) === true) {
                     $history[] = [
-                        'timestamp' => strtotime($data[$position . '_date_assigned']),
-                        'event'     => 'Assigned to ' .
-                                       $chapterName . ' as ' .
-                                       $data[$position . '_billet'] . ' on ' .
-                                       date('d M Y', strtotime($data[$position . '_date_assigned'])),
+                        'timestamp' => strtotime($data[$position.'_date_assigned']),
+                        'event'     => 'Assigned to '.
+                                       $chapterName.' as '.
+                                       $data[$position.'_billet'].' on '.
+                                       date('d M Y', strtotime($data[$position.'_date_assigned'])),
                     ];
                 } else {
-                    if ($data[$position . '_billet'] !== $currentAssignment['billet']) {
+                    if ($data[$position.'_billet'] !== $currentAssignment['billet']) {
                         // Only the billet changed
                         $history[] = [
-                            'timestamp' => strtotime($data[$position . '_date_assigned']),
-                            'event'     => ' Billet in ' . $chapterName . 'changed from ' .
-                                           $currentAssignment['billet'] . ' to ' .
-                                           $data[$position . '_billet'] . ' on ' .
+                            'timestamp' => strtotime($data[$position.'_date_assigned']),
+                            'event'     => ' Billet in '.$chapterName.'changed from '.
+                                           $currentAssignment['billet'].' to '.
+                                           $data[$position.'_billet'].' on '.
                                            date(
                                                'd M Y',
-                                               strtotime($data[$position . '_date_assigned'])
+                                               strtotime($data[$position.'_date_assigned'])
                                            ),
                         ];
                     }
                     // reset the date assigned in the changes to match the assignment date aboard
                     // the ship since the user is only new to the position and not the chapter
-                    $data[$position . '_date_assigned'] = $currentAssignment['date_assigned'];
+                    $data[$position.'_date_assigned'] = $currentAssignment['date_assigned'];
                 }
 
-
                 $assignments[] = [
-                    'chapter_id'    => $data[$position . '_assignment'],
+                    'chapter_id'    => $data[$position.'_assignment'],
                     'chapter_name'  => $chapterName,
                     'date_assigned' => date(
                         'Y-m-d',
-                        strtotime($data[$position . '_date_assigned'])
+                        strtotime($data[$position.'_date_assigned'])
                     ),
-                    'billet'        => $data[$position . '_billet'],
+                    'billet'        => $data[$position.'_billet'],
                     $position       => true,
                 ];
 
                 unset(
-                    $data[$position . '_assignment'],
-                    $data[$position . '_date_assigned'],
-                    $data[$position . '_billet']
+                    $data[$position.'_assignment'],
+                    $data[$position.'_date_assigned'],
+                    $data[$position.'_billet']
                 );
             }
         }
@@ -1336,9 +1333,9 @@ class UserController extends Controller
                 // This assignment was not present in the form submission
                 $history[] = [
                     'timestamp' => time(),
-                    'event'     => ' Left the ' .
-                                   $assignment['billet'] . ' billet attached to ' .
-                                   $assignment['chapter_name'] . ' on ' .
+                    'event'     => ' Left the '.
+                                   $assignment['billet'].' billet attached to '.
+                                   $assignment['chapter_name'].' on '.
                                    date('d M Y', time()),
                 ];
             }
@@ -1428,10 +1425,10 @@ class UserController extends Controller
             $user->update($data);
 
             $this->writeAuditTrail(
-                (string)Auth::user()->id,
+                (string) Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->id,
+                (string) $user->id,
                 json_encode($data),
                 'UserController@update'
             );
@@ -1446,7 +1443,7 @@ class UserController extends Controller
                 event(new EmailChanged($oldEmail, $data['email_address']));
             }
         } catch (\Exception $d) {
-            return redirect()->to('/user/' . $user->id)->with(
+            return redirect()->to('/user/'.$user->id)->with(
                 'error',
                 'There was a problem saving your changes.'
             );
@@ -1473,10 +1470,10 @@ class UserController extends Controller
             $user->tos = true;
 
             $this->writeAuditTrail(
-                (string)Auth::user()->id,
+                (string) Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->id,
+                (string) $user->id,
                 $user->toJson(),
                 'UserController@tos'
             );
@@ -1505,10 +1502,10 @@ class UserController extends Controller
             $user->osa = date('Y-m-d');
 
             $this->writeAuditTrail(
-                (string)Auth::user()->id,
+                (string) Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->id,
+                (string) $user->id,
                 $user->toJson(),
                 'UserController@osa'
             );
@@ -1551,10 +1548,10 @@ class UserController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->id,
+            (string) Auth::user()->id,
             'hard delete',
             'users',
-            (string)$user->id,
+            (string) $user->id,
             $user->toJson(),
             'UserController@destroy'
         );
@@ -1693,10 +1690,10 @@ class UserController extends Controller
         $user->peerages = $currentPeerages;
 
         $this->writeAuditTrail(
-            (string)Auth::user()->id,
+            (string) Auth::user()->id,
             'update',
             'users',
-            (string)$user->id,
+            (string) $user->id,
             $user->toJson(),
             'UserController@addOrEditPeerage'
         );
@@ -1737,10 +1734,10 @@ class UserController extends Controller
         $user->note = $data['note_text'];
 
         $this->writeAuditTrail(
-            (string)Auth::user()->id,
+            (string) Auth::user()->id,
             'update',
             'users',
-            (string)$user->id,
+            (string) $user->id,
             $user->toJson(),
             'UserController@addOrEditNote'
         );
@@ -1791,13 +1788,13 @@ class UserController extends Controller
             return $redirect;
         }
 
-        $user->updatePerms((array)$perm);
+        $user->updatePerms((array) $perm);
 
         Cache::flush();
 
         return redirect()->to(URL::previous())->with(
             'message',
-            $perm . ' permission has been given to ' . $user->getFullName()
+            $perm.' permission has been given to '.$user->getFullName()
         );
     }
 
@@ -1823,7 +1820,7 @@ class UserController extends Controller
 
         return redirect()->to(URL::previous())->with(
             'message',
-            $perm . ' permission has been removed from ' . $user->getFullName()
+            $perm.' permission has been removed from '.$user->getFullName()
         );
     }
 
@@ -1836,11 +1833,11 @@ class UserController extends Controller
      */
     public function showBranch($branch)
     {
-        if (($redirect = $this->checkPermissions('VIEW_' . strtoupper($branch))) !== true) {
+        if (($redirect = $this->checkPermissions('VIEW_'.strtoupper($branch))) !== true) {
             return $redirect;
         }
 
-        $title = $branch . ' Members';
+        $title = $branch.' Members';
 
         if ($branch == 'Bosun') {
             $title = 'Bosun List';
@@ -1987,11 +1984,11 @@ class UserController extends Controller
         );
 
         foreach ($displayChoice as $qualBadge) {
-            $data[$qualBadge . '_display'] = false;
+            $data[$qualBadge.'_display'] = false;
         }
 
         if (empty($data['qualbadge_display']) === false) {
-            $data[$data['qualbadge_display'] . '_display'] = true;
+            $data[$data['qualbadge_display'].'_display'] = true;
         }
 
         // Process the groups
@@ -2016,8 +2013,8 @@ class UserController extends Controller
             if ($index != $award) {
                 $data['ribbon'][] = $award;
 
-                if (array_key_exists($award . '_quantity', $data) === false) {
-                    $data[$award . '_quantity'] = 1;
+                if (array_key_exists($award.'_quantity', $data) === false) {
+                    $data[$award.'_quantity'] = 1;
                 }
             }
         }
@@ -2026,7 +2023,7 @@ class UserController extends Controller
             if (is_string($value) === true && is_numeric($value) === false) {
                 $award = json_decode($data[substr($key, 0, -4)]);
                 $data['ribbon'][] = $award->code;
-                $data[$award->code . '_quantity'] = 1;
+                $data[$award->code.'_quantity'] = 1;
             }
         }
 
@@ -2045,46 +2042,46 @@ class UserController extends Controller
                     $numPending = $this->countPendingAwards($awardDates);
 
                     // If the number of awards specified is less than the current count, add in the number pending
-                    if ($data[$award . '_quantity'] + $numPending <=
+                    if ($data[$award.'_quantity'] + $numPending <=
                         $curAwards[$award]['count']) {
-                        $data[$award . '_quantity'] += $numPending;
+                        $data[$award.'_quantity'] += $numPending;
                     }
 
                     // If we have more valid dates than the quantity, only take as many dates as we have awards
-                    if (count($awardDates) > $data[$award . '_quantity']) {
+                    if (count($awardDates) > $data[$award.'_quantity']) {
                         $awardDates =
-                            array_slice($awardDates, $data[$award . '_quantity']);
+                            array_slice($awardDates, $data[$award.'_quantity']);
                     }
 
-                    if ($data[$award . '_quantity'] > $curAwards[$award]['count']) {
+                    if ($data[$award.'_quantity'] > $curAwards[$award]['count']) {
                         // Number of award instances specified is greater than the current value
                         // Fill out the start of the array as needed
                         $awardDates = array_merge(
                             array_fill(
                                 0,
-                                $data[$award . '_quantity'] -
+                                $data[$award.'_quantity'] -
                                 $curAwards[$award]['count'],
                                 '1970-01-01'
                             ),
                             $awardDates
                         );
-                    } elseif ($data[$award . '_quantity'] <
+                    } elseif ($data[$award.'_quantity'] <
                               $curAwards[$award]['count']) {
                         // The number of award instances has been reduced
                         // Fill out the start of the array as needed
                         $awardDates = array_merge(
                             array_fill(
                                 0,
-                                $data[$award . '_quantity'] - count($awardDates),
+                                $data[$award.'_quantity'] - count($awardDates),
                                 '1970-01-01'
                             ),
                             $awardDates
                         );
-                    } elseif (count($awardDates) < $data[$award . '_quantity']) {
+                    } elseif (count($awardDates) < $data[$award.'_quantity']) {
                         $awardDates = array_merge(
                             array_fill(
                                 0,
-                                $data[$award . '_quantity'] - count($awardDates),
+                                $data[$award.'_quantity'] - count($awardDates),
                                 '1970-01-01'
                             ),
                             $awardDates
@@ -2092,17 +2089,17 @@ class UserController extends Controller
                     }
                 } else {
                     $awardDates =
-                        array_fill(0, $data[$award . '_quantity'], '1970-01-01');
+                        array_fill(0, $data[$award.'_quantity'], '1970-01-01');
                 }
 
                 $awards[$award] =
                     [
-                        'count'      => $data[$award . '_quantity'],
+                        'count'      => $data[$award.'_quantity'],
                         'location'   => Award::where('code', '=', $award)
                                              ->first()->location,
                         'award_date' => $awardDates,
-                        'display'    => isset($data[$award . '_display']) ?
-                            $data[$award . '_display'] : true,
+                        'display'    => isset($data[$award.'_display']) ?
+                            $data[$award.'_display'] : true,
                     ];
             }
         }
@@ -2115,7 +2112,7 @@ class UserController extends Controller
 
         foreach ($notPresent as $code => $award) {
             $award['award_date'] =
-                (array)$this->preserveFutureDates($award['award_date']);
+                (array) $this->preserveFutureDates($award['award_date']);
             $award['count'] = $this->countPendingAwards($award['award_date']);
 
             if ($award['count'] > 0) {
@@ -2206,7 +2203,7 @@ class UserController extends Controller
             $dates,
             function ($value, $key) use ($today) {
                 return $today->lt(
-                    Carbon::createFromFormat('Y-m-d H', $value . ' 0')->addDays(config('awards.display_days')));
+                    Carbon::createFromFormat('Y-m-d H', $value.' 0')->addDays(config('awards.display_days')));
             }
         );
     }
@@ -2261,15 +2258,15 @@ class UserController extends Controller
             $user->save();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->id,
+                (string) Auth::user()->id,
                 'update',
                 'users',
-                (string)$user->id,
+                (string) $user->id,
                 json_encode($user->points),
                 'UserController@updatePoints'
             );
         } catch (\Exception $d) {
-            return redirect()->to('/user/' . $user->id)->with(
+            return redirect()->to('/user/'.$user->id)->with(
                 'error',
                 'There was a problem saving your changes.'
             );
@@ -2277,7 +2274,7 @@ class UserController extends Controller
 
         Cache::flush();
 
-        return redirect()->to('/user/' . $user->id)->with(
+        return redirect()->to('/user/'.$user->id)->with(
             'status',
             'Your promotion points have been updated.'
         );

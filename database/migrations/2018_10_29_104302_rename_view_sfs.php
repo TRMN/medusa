@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Migrations\Migration;
 
 class RenameViewSfs extends Migration
 {

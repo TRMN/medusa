@@ -3,9 +3,9 @@
 namespace App\Awards;
 
 use App\AwardLog;
+use Carbon\Carbon;
 use App\MedusaConfig;
 use App\Utility\MedusaUtility;
-use Carbon\Carbon;
 
 /**
  * Trait AwardQualification.

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Chapter;
 use App\Type;
+use App\Chapter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class TypeController extends Controller
 {

@@ -3,10 +3,10 @@
 namespace App\Validators;
 
 use App\Exam;
-use App\Permissions\MedusaPermissions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
+use App\Permissions\MedusaPermissions;
 
 class MedusaValidators extends Validator
 {

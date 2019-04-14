@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Chapter;
-use App\Grade;
-use App\Permissions\MedusaPermissions;
 use App\User;
+use App\Grade;
+use App\Chapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Permissions\MedusaPermissions;
 
 class PromotionController extends Controller
 {
