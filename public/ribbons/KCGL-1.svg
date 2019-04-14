@@ -5,7 +5,8 @@
 <style type="text/css">
 	.st0{opacity:0.125;fill:url(#SVGID_1_);enable-background:new    ;}
 	.st1{opacity:0.25;fill:url(#SVGID_2_);enable-background:new    ;}
-	.st2{fill:#234F33;}
+	.st2{fill:#AD9B0C;}
+	.st3{fill:#234F33;}
 </style>
 <symbol  id="c" viewBox="-52.5 -13.5 105 27">
 	
@@ -25,6 +26,8 @@
 	</linearGradient>
 	<path class="st1" d="M-52.5-13.5h105v27h-105V-13.5z"/>
 </symbol>
-<path class="st2" d="M0,0h105v27H0V0z"/>
+<path class="st2" d="M0,0h7v27H0V0z"/>
+<path class="st3" d="M6,0h94v27H6V0z"/>
+<path class="st2" d="M99,0h7v27h-7V0z"/>
 <use xlink:href="#c"  width="105" height="27" x="-52.5" y="-13.5" transform="matrix(1 0 0 1 52.5 13.5)" style="overflow:visible;"/>
 </svg>

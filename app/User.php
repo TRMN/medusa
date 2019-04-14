@@ -591,6 +591,32 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return false;
     }
 
+    
+    /**
+     * Find an assignment associated with this user
+     *
+     * @param $chapterId - The chapter ID of the chapter we want to look for
+     *
+     * @return array
+     */
+    public function findAssignment($chapterID)
+    {
+        if (empty($chapterID) === true) {
+            return false;
+        }
+        
+        if (empty($this->assignment) == false) {
+            foreach ($this->assignment as $assignment) {
+                if (empty($assignment) === false) {
+                    if ($assignment['chapter_id'] == $chapterID) {
+                        return $assignment;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+        
     /**
      * Get the chapter ID of the specified assignment.
      *
@@ -2059,7 +2085,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                   ->where('end_date', '>=', date('Y-m-d'))
                   ->where(
                       function ($query) {
-                          $query->where('requestor', '=', $this->id)
+							$query->where('requestor', '=', $this->id)
                                 ->orWhere('registrars', '=', $this->id);
                       }
                   )

@@ -128,7 +128,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Primary Assignment Information</legend>
+                <legend>Primary Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="primary">(Clear)</a> @endif </legend>
 
                 <div class="row">
                     <div class=" col-sm-6  ninety Incised901Light form-group">
@@ -162,7 +162,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Secondary Assignment Information</legend>
+                <legend>Secondary Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="secondary">(Clear)</a> @endif </legend>
 
                 @if(empty($user->secondary_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -202,7 +202,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Additional Assignment Information</legend>
+                <legend>Additional Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="additional">(Clear)</a> @endif </legend>
 
                 @if(empty($user->additional_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -242,7 +242,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Supplemental Assignment Information</legend>
+                <legend>Supplemental Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="extra">(Clear)</a> @endif </legend>
 
                 @if(empty($user->extra_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -524,6 +524,17 @@
             if ($('#ep').prop('checked')) {
                 $('#tigCheck').prop('checked', false);
             }
+        });
+
+        $('.del_assignment').on('click', function() {
+           let position=$(this).data('position');
+           $("#" + position + "_date_assigned").val('');
+
+            $.each([ '_assignment', '_billet' ], function( index, value ) {
+                let $select = $('#' + position + value).selectize();
+                let $control = $select[0].selectize;
+                $control.clear();
+            });
         });
     </script>
 @stop

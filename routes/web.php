@@ -562,7 +562,7 @@ Route::get(
     [
         'as'        => 'user.show',
         'uses'      => 'UserController@show',
-        'middlware' => 'auth',
+        'middleware' => 'auth',
     ]
 );
 
