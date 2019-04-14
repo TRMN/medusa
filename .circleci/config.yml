@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Install gd PHP extension
           command: sudo docker-php-ext-install gd
-      -run:
+      - run:
           name: Install MongoDB
           command: sudo pecl install mongodb
       - checkout
