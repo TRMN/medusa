@@ -39,7 +39,7 @@ jobs:
             php composer.phar create-project
       - run:
           name: Run CS tests
-          command: vendor/bin/phpcs --standard=PSR2 --colors report=junit app/
+          command: vendor/bin/phpcs --standard=./phpcs.xml --report=junit app/
 #      - run:
 #          name: Run Unit tests
 #          command: vendor/bin/phpunit
