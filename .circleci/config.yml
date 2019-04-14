@@ -26,11 +26,6 @@ jobs:
             php composer-setup.php
             php -r "unlink('composer-setup.php');"
       - run:
-          name: Display PHP information
-          command: |
-            php -v
-            php composer.phar --version
-      - run:
           name: Install project dependencies
           command: |
             mkdir -p storage/framework/sessions
