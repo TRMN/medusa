@@ -12,8 +12,11 @@ jobs:
 #          name: Install system packages
 #          command: apt-get update && apt-get -y install git
       - run:
-          name: Install PHP extensions
-          command: sudo docker-php-ext-install mongodb gd
+          name: Install gd PHP extension
+          command: sudo docker-php-ext-install gd
+      -run:
+          name: Install MongoDB
+          command: sudo pecl install mongodb
       - checkout
       - run:
           name: Install Composer
