@@ -560,8 +560,8 @@ Route::get(
 Route::get(
     '/user/{user}/{message?}',
     [
-        'as'        => 'user.show',
-        'uses'      => 'UserController@show',
+        'as'         => 'user.show',
+        'uses'       => 'UserController@show',
         'middleware' => 'auth',
     ]
 );

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use App\Award;
+use Illuminate\Database\Migrations\Migration;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class AddKGL extends Migration
@@ -18,15 +18,15 @@ class AddKGL extends Migration
         Award::create(
             [
                 'display_order' => 19,
-                'name' => 'Knight of the Most Eminent Order of the Golden Lion',
-                'code' => 'KGL',
-                'post_nominal' => 'KGL',
-                'replaces' => 'GCGL,KDGL,KCGL,CGL,OGL,MGL,GLM',
-                'location' => 'L',
-                'multiple' => false,
-                'group_label' => 'Most Eminent Order of the Golden Lion',
-                'points' => 2.5,
-                'star_nation' => 'manticore',
+                'name'          => 'Knight of the Most Eminent Order of the Golden Lion',
+                'code'          => 'KGL',
+                'post_nominal'  => 'KGL',
+                'replaces'      => 'GCGL,KDGL,KCGL,CGL,OGL,MGL,GLM',
+                'location'      => 'L',
+                'multiple'      => false,
+                'group_label'   => 'Most Eminent Order of the Golden Lion',
+                'points'        => 2.5,
+                'star_nation'   => 'manticore',
             ]
         );
 
@@ -38,7 +38,7 @@ class AddKGL extends Migration
          * Companion: CGL
          * Officer: OGL
          * Member: MGL
-         * Medal: GLM
+         * Medal: GLM.
          */
 
         // Make sure that the rest of the GL have the right replaces
@@ -54,7 +54,7 @@ class AddKGL extends Migration
 
         foreach ($gl as $code => $replaces) {
             try {
-                $award = Award::where('code',$code)->firstOrFail();
+                $award = Award::where('code', $code)->firstOrFail();
                 $award->replaces = $replaces;
                 $award->save();
             } catch (Exception $e) {
