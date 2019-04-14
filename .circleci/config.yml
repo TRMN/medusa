@@ -39,7 +39,13 @@ jobs:
             php composer.phar create-project
       - run:
           name: Run CS tests
-          command: vendor/bin/phpcs --standard=./phpcs.xml --report=junit app/
+          command: |
+            mkdir reports
+            vendor/bin/phpcs --standard=./phpcs.xml --report=junit --report-file=/var/www/html/reports/phpcs-report.xml app/
+      - store_test_results:
+          path: /var/www/html/reports
+      - store_artifacts:
+          path: /var/www/html/reports
 #      - run:
 #          name: Run Unit tests
 #          command: vendor/bin/phpunit
