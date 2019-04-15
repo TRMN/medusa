@@ -11,7 +11,7 @@ class UpdateCivilianRatings extends Migration
      */
     public function up()
     {
-        /**
+        /*
          * @var App\User
          */
         foreach (App\User::where('branch', 'CIVIL')->get() as $user) {
