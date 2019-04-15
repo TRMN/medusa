@@ -1,6 +1,6 @@
 # MEDUSA CHANGELOG
 
-## 2.0.7 (Released 2019-)
+## 2.0.7
    - Laravel updated to 5.8
    - Fixed issue with current crew showing up as new in chapter reports
    - Fixed issues with civilian promotions
@@ -15,25 +15,25 @@
    - Added script to update version number
    - Fixed issue with promotion points where it would loose peerage investitures
 
-## 2.05a (Released 2019-03-04)    
+## 2.05a  
    - MCAM Fix
     
-## 2.0.5 (Released 2018-12-18)
+## 2.0.5 
    - SWP Fixes
     
-## 2.0.4 (Released 2018-11-20)
-   - Gramatical fixes
+## 2.0.4 
+   - Grammatical fixes
     
-## 2.0.3 (Released 2018-10-30)
+## 2.0.3
    - Updates to permissions
     
-## 2.0.2 (Released 2018-8-26)
+## 2.0.2
    - Fixed infinite loop in adult SFC promotion check            
     
-## 2.0.1 (Released 2018-8-24)
+## 2.0.1
    - Fixed infite loop in SFC promotion check
    - Fixed problem with civilian check for highest exam
     
-## 2.0.0 (Released 2018-08-23)
+## 2.0.0
    - Major update to MEDUSA to support promotion points, promotions and much much more
     
