@@ -1,14 +1,13 @@
 <?php
+
 namespace App\Common;
 
 use Illuminate\Support\Arr;
 
 /**
- * Trait MedusaCommon
+ * Trait MedusaCommon.
  *
  * Common utility methods
- *
- * @package App\Common
  */
 trait MedusaCommon
 {
@@ -64,5 +63,4 @@ trait MedusaCommon
 
         return $list;
     }
-
 }

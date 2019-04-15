@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Grade Model.
@@ -79,7 +79,7 @@ class Grade extends Eloquent
         $grades = [];
 
         foreach (self::gradesForBranch($branchID, $filter) as $grade) {
-            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]) . ' (' . $grade->grade . ')';
+            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]).' ('.$grade->grade.')';
         }
 
         // Sort by the array key, which is the paygrade
@@ -216,7 +216,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Check if the requested pay grade is valid for the specified branch
+     * Check if the requested pay grade is valid for the specified branch.
      *
      * @param $paygrade
      * @param $branch
@@ -226,7 +226,7 @@ class Grade extends Eloquent
     public static function isPayGradeValidForBranch($paygrade, $branch)
     {
         try {
-            $gradeInfo = Grade::where('grade', $paygrade)->firstOrFail();
+            $gradeInfo = self::where('grade', $paygrade)->firstOrFail();
 
             return isset($gradeInfo->rank[$branch]);
         } catch (ModelNotFoundException $e) {

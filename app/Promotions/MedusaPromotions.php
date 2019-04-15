@@ -2,12 +2,12 @@
 
 namespace App\Promotions;
 
-use App\Branch;
 use App\Grade;
-use App\MedusaConfig;
-use App\Rating;
 use Exception;
+use App\Branch;
+use App\Rating;
 use Carbon\Carbon;
+use App\MedusaConfig;
 
 trait MedusaPromotions
 {
@@ -47,7 +47,6 @@ trait MedusaPromotions
             self::$promotionRequirements['default'] = MedusaConfig::get('pp.requirements');
         }
 
-
         if (is_null($want) === true) {
             return self::$promotionRequirements;
         }
@@ -63,7 +62,7 @@ trait MedusaPromotions
      */
     protected function loadRequirements($branch)
     {
-        return MedusaConfig::get('pp.requirements.' . $branch, false);
+        return MedusaConfig::get('pp.requirements.'.$branch, false);
     }
 
     /**
@@ -85,7 +84,7 @@ trait MedusaPromotions
     }
 
     /**
-     * Get the member's branch to use for the requirements.  If the member's branch is CIVIL, return the rating
+     * Get the member's branch to use for the requirements.  If the member's branch is CIVIL, return the rating.
      *
      * @return string
      */
@@ -162,7 +161,7 @@ trait MedusaPromotions
                 $step++; // Start the check and the next one in sequence
 
                 // Get the TiG of all the missing steps
-                while ($this->isGradeValidForUser('C-' . $step) === false) {
+                while ($this->isGradeValidForUser('C-'.$step) === false) {
                     if ($step > 23) {
                         // No next one found
                         return [
@@ -172,16 +171,16 @@ trait MedusaPromotions
                             'early'  => false,
                         ];
                     }
-                    $specialTig += isset($cReq['C-' . $step]['tig']) ?
-                        $cReq['C-' . $step]['tig'] : 0;
+                    $specialTig += isset($cReq['C-'.$step]['tig']) ?
+                        $cReq['C-'.$step]['tig'] : 0;
                     $step++;
                 }
                 // Get the Tig of the final step
-                $specialTig += isset($cReq['C-' . $step]['tig']) ?
-                    $cReq['C-' . $step]['tig'] : 0;
+                $specialTig += isset($cReq['C-'.$step]['tig']) ?
+                    $cReq['C-'.$step]['tig'] : 0;
 
                 // Set the Paygrade to check to the final match
-                $payGrade2Check = 'C-' . $step;
+                $payGrade2Check = 'C-'.$step;
             } else {
                 return [
                     'tig'    => false,
@@ -366,9 +365,9 @@ trait MedusaPromotions
 
         if ($flags['points'] && $flags['exams'] && isset($flags['next']) === true) {
             if ($flags['early'] === true) {
-                $return = 'P-E [ ' . implode(', ', $flags['next']) . ' ]';
+                $return = 'P-E [ '.implode(', ', $flags['next']).' ]';
             } elseif ($flags['tig'] === true || $tigCheck === false) {
-                $return = 'P [ ' . implode(', ', $flags['next']) . ' ]';
+                $return = 'P [ '.implode(', ', $flags['next']).' ]';
             }
         }
 
@@ -376,7 +375,7 @@ trait MedusaPromotions
     }
 
     /**
-     * Check if the pay grade is valid for the user
+     * Check if the pay grade is valid for the user.
      *
      * @param $payGrade2Check
      *
@@ -399,7 +398,6 @@ trait MedusaPromotions
      *
      * @return bool
      * @throws \Exception
-     *
      */
     public function promoteMember($rank, $early = false)
     {
@@ -441,12 +439,12 @@ trait MedusaPromotions
             $this->points = $points;
         }
 
-        $event = 'Rank changed from ' .
+        $event = 'Rank changed from '.
                  Grade::getRankTitle(
                      $this->rank['grade'],
                      $this->getRate(),
                      $this->branch
-                 ) . ' (' . $this->rank['grade'] . ') to ';
+                 ).' ('.$this->rank['grade'].') to ';
 
         $this->rank = $rank;
         $this->promotionStatus = null;
@@ -455,21 +453,21 @@ trait MedusaPromotions
             $this->save();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->id,
+                (string) Auth::user()->id,
                 'update',
                 'users',
-                (string)$this->id,
+                (string) $this->id,
                 json_encode($this),
                 'User@promoteMember'
             );
 
             $history = [
                 'timestamp' => time(),
-                'event'     => $event . Grade::getRankTitle(
+                'event'     => $event.Grade::getRankTitle(
                         $rank['grade'],
                         $this->getRate(),
                         $this->branch
-                    ) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
+                    ).' ('.$rank['grade'].') on '.date('d M Y'),
             ];
 
             $this->addServiceHistoryEntry($history);
