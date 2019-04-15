@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateCivilianRatings extends Migration
@@ -14,11 +12,11 @@ class UpdateCivilianRatings extends Migration
     public function up()
     {
         /**
-         * @var App\User $user
+         * @var App\User
          */
         foreach (App\User::where('branch', 'CIVIL')->get() as $user) {
             if (empty($user->rating) === true) {
-                $user->rating = "DIPLOMATIC";
+                $user->rating = 'DIPLOMATIC';
                 $user->save();
             }
         }

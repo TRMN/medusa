@@ -19,7 +19,6 @@ use Illuminate\Notifications\Notifiable;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
