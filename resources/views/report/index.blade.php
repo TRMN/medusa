@@ -35,11 +35,11 @@
                 <div class="col-sm-1 nowrap">
                     <a class="fa fa-eye my" href="{!! route('report.show', [ $report->id ]) !!}" data-toggle="tooltip"
                        title="View Report"></a>&nbsp;
+                    <a class="fa fa-edit my" href="{!! route('report.edit', [ $report->id ]) !!}"
+                           data-toggle="tooltip" title="Edit Report"></a>
                     @if(empty($report['report_sent']) === true)
                         <a class="fa fa-envelope my" href="{!! route('report.send', [$report->id]) !!}"
-                           data-toggle="tooltip" title="Send Report"></a>&nbsp;
-                        <a class="fa fa-file-o-edit green" href="{!! route('report.edit', [ $report->id ]) !!}"
-                           data-toggle="tooltip" title="Edit Report"></a>
+                           data-toggle="tooltip" title="Send Report" data-report-date="{!!date('F, Y', strtotime($report['report_date']))!!}"></a>&nbsp;
                     @endif
                 </div>
                 @if(!empty(Session::get('orig_user')))
@@ -64,4 +64,14 @@
     </div>
 
 
+@stop
+
+@section('scriptFooter')
+    <script>
+        $('.fa-envelope').on('click', function(event) {
+            if (!confirm('Click Ok to send the ' + $(this).data('report-date')  + ' Chapter Report')) {
+                event.preventDefault();
+            }
+        });
+    </script>
 @stop

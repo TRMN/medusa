@@ -7,6 +7,7 @@ use App\Grade;
 use App\MedusaConfig;
 use App\Rating;
 use Exception;
+use Carbon\Carbon;
 
 trait MedusaPromotions
 {
@@ -109,10 +110,15 @@ trait MedusaPromotions
             'early'  => false,
         ];
 
+        if ($this->branch === 'SFC' && empty($this->dob) === true) {
+            // Unable to determine if the member is under or over 18, so they are not promotable
+            return $flags;
+        }
+
         if (is_null($payGrade2Check) === true) {
             $nextGrade = $this->getNextGrade($this->rank['grade']);
             if (empty($nextGrade) === false) {
-                $payGrade2Check = $nextGrade[$this->rank['grade']]['next'][0];
+                $payGrade2Check = $nextGrade['next'][0];
             } else {
                 return $flags;  // Can't determine what pay grade to check
             }
@@ -391,9 +397,9 @@ trait MedusaPromotions
      * @param $rank
      * @param bool $early
      *
+     * @return bool
      * @throws \Exception
      *
-     * @return bool
      */
     public function promoteMember($rank, $early = false)
     {
@@ -460,10 +466,10 @@ trait MedusaPromotions
             $history = [
                 'timestamp' => time(),
                 'event'     => $event . Grade::getRankTitle(
-                    $rank['grade'],
-                    $this->getRate(),
-                    $this->branch
-                ) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
+                        $rank['grade'],
+                        $this->getRate(),
+                        $this->branch
+                    ) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
             ];
 
             $this->addServiceHistoryEntry($history);

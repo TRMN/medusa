@@ -558,10 +558,14 @@ class ReportController extends Controller
 
                 $message->to($report->command_crew['Commanding Officer']['email_address']);
 
-                $message->cc('cno@trmn.org')
-                      ->cc('buplan@trmn.org')
-                      ->cc('buships@trmn.org')
-                      ->cc('bupers@trmn.org');
+                $additionalRecipients = MedusaConfig::get(
+                    'report.recipients',
+                    ['cno@trmn.org', 'buplan@trmn.org', 'buships@trmn.org', 'bupers@trmn.org']
+                );
+
+                foreach ($additionalRecipients as $recipient) {
+                    $message->cc($recipient);
+                }
 
                 foreach ($echelonEmails as $echelon) {
                     $message->cc($echelon);

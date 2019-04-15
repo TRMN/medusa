@@ -1664,6 +1664,26 @@ class UpdateCivilianPromotionPoints extends Migration
                                         ],
                                 ],
                         ],
+                    'RMACS'      =>
+                        [
+                            'tig'   => 12,
+                            'line'  =>
+                                [
+                                    'points' => 63,
+                                    'exam'   =>
+                                        [
+                                            '0103',
+                                        ],
+                                ],
+                            'staff' =>
+                                [
+                                    'points' => 50,
+                                    'exam'   =>
+                                        [
+                                            '0012',
+                                        ],
+                                ],
+                        ],
                 ],
             'C-15'  =>
                 [
@@ -2613,7 +2633,7 @@ class UpdateCivilianPromotionPoints extends Migration
         MedusaConfig::remove('pp.requirements.bak');
 
         foreach(['RMACS', 'RMMM', 'SFC', 'DIPLOMATIC', 'INTEL'] as $branch) {
-            MedusaConfig::set('pp.requirements.' . $branch);
+            MedusaConfig::remove('pp.requirements.' . $branch);
         }
     }
 }
