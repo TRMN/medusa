@@ -2,6 +2,11 @@
 
 ## 2.0.7 (Released 2019-)
    - Laravel updated to 5.8
+   - Fixed issue with current crew showing up as new in chapter reports
+   - Fixed issues with civilian promotions
+   - Added confirmation dialog for sending chapter reports
+   - Fixed icon for editing chapter reports
+   - Made list of additional recipients for chapter reports part of the MEDUSA configuration system
     
 ## 2.0.6 (Release combined with 2.0.7)
    - Updates to Ribbon Rack Builder
