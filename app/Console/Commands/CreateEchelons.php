@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Chapter;
 use App\User;
+use App\Chapter;
 use Illuminate\Console\Command;
 
 class CreateEchelons extends Command

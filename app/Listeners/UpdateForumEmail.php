@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\EmailChanged;
 use App\ForumUser;
+use App\Events\EmailChanged;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**

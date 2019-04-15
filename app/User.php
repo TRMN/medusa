@@ -2,28 +2,26 @@
 
 namespace App;
 
-use App\Audit\MedusaAudit;
-use App\Awards\AwardQualification;
-use App\Common\MedusaCommon;
-use App\Enums\MedusaDefaults;
-use App\Permissions\MedusaPermissions;
-use App\Promotions\MedusaPromotions;
-use Carbon\Carbon;
 use DateTime;
 use Exception;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-//use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
+use App\Audit\MedusaAudit;
 use Illuminate\Support\Arr;
+use App\Enums\MedusaDefaults;
+use App\Awards\AwardQualification;
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use Laravel\Passport\HasApiTokens;
+use App\Permissions\MedusaPermissions;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
  * MEDUSA User model.
@@ -264,7 +262,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
         $displayRank = $this->rank_title;
 
-        if (isset($this->rating) && !empty($this->rating)) {
+        if (isset($this->rating) && ! empty($this->rating)) {
             $rateGreeting = $this->getRateTitle($this->rank['grade']);
 
             if (isset($rateGreeting) === true && empty($rateGreeting) === false) {
@@ -311,7 +309,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->rank_title = $this->rank['grade'];
         }
 
-        if (!empty($this->rating)) {
+        if (! empty($this->rating)) {
             if (is_array($this->rating) === true) {
                 $results = Rating::where('rate_code', '=', $this->rating['rate'])
                                  ->first();
@@ -591,9 +589,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         return false;
     }
 
-    
     /**
-     * Find an assignment associated with this user
+     * Find an assignment associated with this user.
      *
      * @param $chapterId - The chapter ID of the chapter we want to look for
      *
@@ -604,7 +601,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if (empty($chapterID) === true) {
             return false;
         }
-        
+
         if (empty($this->assignment) == false) {
             foreach ($this->assignment as $assignment) {
                 if (empty($assignment) === false) {
@@ -614,9 +611,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 }
             }
         }
+
         return false;
     }
-        
+
     /**
      * Get the chapter ID of the specified assignment.
      *
@@ -2085,7 +2083,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                   ->where('end_date', '>=', date('Y-m-d'))
                   ->where(
                       function ($query) {
-							$query->where('requestor', '=', $this->id)
+                          $query->where('requestor', '=', $this->id)
                                 ->orWhere('registrars', '=', $this->id);
                       }
                   )

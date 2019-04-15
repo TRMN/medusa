@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Billet;
 use App\User;
+use App\Billet;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class BilletController extends Controller
