@@ -7,9 +7,11 @@ use Exception;
 use Carbon\Carbon;
 use App\Audit\MedusaAudit;
 use Illuminate\Support\Arr;
+use App\Common\MedusaCommon;
 use App\Enums\MedusaDefaults;
 use App\Awards\AwardQualification;
 use Laravel\Passport\HasApiTokens;
+use App\Promotions\MedusaPromotions;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
@@ -20,8 +22,6 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use App\Promotions\MedusaPromotions;
-use App\Common\MedusaCommon;
 
 /**
  * MEDUSA User model.
@@ -394,7 +394,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         } elseif (empty($this->perages) === false) {
             return $this->getPostnominalsFromPeerages();
         } else {
-            return null;
+            return;
         }
     }
 
@@ -906,7 +906,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      *
      * @throws \Exception
      */
-
     public function getTimeInGrade($short = null)
     {
         if (empty($this->rank['date_of_rank']) === false) {
@@ -939,7 +938,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
             }
         } else {
-            return null;
+            return;
         }
     }
 
@@ -1001,7 +1000,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
-            return null;
+            return;
         }
     }
 
