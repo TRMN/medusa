@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Rating Model.
@@ -56,7 +56,7 @@ class Rating extends Eloquent
     }
 
     /**
-     * Is the pay grade specified valid for the branch and rating provided
+     * Is the pay grade specified valid for the branch and rating provided.
      *
      * @param $branch
      * @param $rating
@@ -67,7 +67,7 @@ class Rating extends Eloquent
     public static function isPayGradeValid($paygrade, $branch, $rating)
     {
         try {
-            $rateInfo = Rating::where('rate_code', $rating)->firstOrFail();
+            $rateInfo = self::where('rate_code', $rating)->firstOrFail();
 
             return isset($rateInfo->rate[$branch][$paygrade]);
         } catch (ModelNotFoundException $e) {

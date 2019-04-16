@@ -1,9 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\Grade;
+use Illuminate\Database\Migrations\Migration;
 
 class UpdateCivilianValidGrades extends Migration
 {
@@ -51,7 +49,7 @@ class UpdateCivilianValidGrades extends Migration
           ],
           'C-14' => [
               'RMMM',
-          ]
+          ],
         ];
 
         foreach ($remove as $grade => $branches) {

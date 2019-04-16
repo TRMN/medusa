@@ -1,9 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use App\MedusaConfig;
+use Illuminate\Database\Migrations\Migration;
 
 class UpdateCivilianPromotionPoints extends Migration
 {
@@ -15,1097 +13,813 @@ class UpdateCivilianPromotionPoints extends Migration
     public function up()
     {
         $pp = [
-            'E-2'   =>
-                [
+            'E-2'   => [
                     'tig'     => 2,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 3,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0001',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 3,
-                            'exam'   =>
-                                [],
+                            'exam'   => [],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 3,
-                            'exam'   =>
-                                [],
+                            'exam'   => [],
                         ],
                 ],
-            'E-3'   =>
-                [
+            'E-3'   => [
                     'tig'     => 4,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 6,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0001',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 6,
-                            'exam'   =>
-                                [],
+                            'exam'   => [],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 6,
-                            'exam'   =>
-                                [],
+                            'exam'   => [],
                         ],
                 ],
-            'E-4'   =>
-                [
+            'E-4'   => [
                     'tig'     => 5,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 9,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0002',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 9,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0001',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 9,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0001',
                                 ],
                         ],
                 ],
-            'E-5'   =>
-                [
+            'E-5'   => [
                     'tig'     => 6,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 18,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0002',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 14,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0002',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 12,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0001',
                                 ],
                         ],
                 ],
-            'E-6'   =>
-                [
+            'E-6'   => [
                     'tig'     => 7,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 36,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0003',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 26,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0003',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 18,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0002',
                                 ],
                         ],
                 ],
-            'E-7'   =>
-                [
+            'E-7'   => [
                     'tig'     => 9,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 45,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0003',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 35,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0003',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 21,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0002',
                                 ],
                         ],
                 ],
-            'E-8'   =>
-                [
+            'E-8'   => [
                     'tig'   => 12,
-                    'line'  =>
-                        [
+                    'line'  => [
                             'points' => 54,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0004',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 42,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0004',
                                 ],
                         ],
                 ],
-            'E-9'   =>
-                [
+            'E-9'   => [
                     'tig'   => 15,
-                    'line'  =>
-                        [
+                    'line'  => [
                             'points' => 63,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0005',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 52,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0004',
                                 ],
                         ],
                 ],
-            'E-10'  =>
-                [
+            'E-10'  => [
                     'tig'  => 18,
-                    'line' =>
-                        [
+                    'line' => [
                             'points' => 72,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0006',
                                 ],
                         ],
                 ],
-            'C-2'   =>
-                [
-                    'RMMM'    =>
-                        [
+            'C-2'   => [
+                    'RMMM'    => [
                             'tig'     => 2,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 3,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0001',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 3,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 3,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
                         ],
                     'DIPLOMATIC' => [
                         'tig'     => 2,
-                        'line'    =>
-                            [
+                        'line'    => [
                                 'points' => 3,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-02',
                                     ],
                             ],
-                        'staff'   =>
-                            [
+                        'staff'   => [
                                 'points' => 3,
-                                'exam'   =>
-                                    [],
+                                'exam'   => [],
                             ],
-                        'service' =>
-                            [
+                        'service' => [
                                 'points' => 3,
-                                'exam'   =>
-                                    [],
+                                'exam'   => [],
                             ],
                     ],
                     'INTEL' => [
                         'tig'     => 2,
-                        'line'    =>
-                            [
+                        'line'    => [
                                 'points' => 3,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-02',
                                     ],
                             ],
-                        'staff'   =>
-                            [
+                        'staff'   => [
                                 'points' => 3,
-                                'exam'   =>
-                                    [],
+                                'exam'   => [],
                             ],
-                        'service' =>
-                            [
+                        'service' => [
                                 'points' => 3,
-                                'exam'   =>
-                                    [],
+                                'exam'   => [],
                             ],
-                    ]
+                    ],
                 ],
-            'C-3'   =>
-                [
-                    'RMMM'    =>
-                        [
+            'C-3'   => [
+                    'RMMM'    => [
                             'tig'     => 4,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 6,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0002',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 6,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 6,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
                         ],
                     'DIPLOMATIC' => [
                         'tig'     => 4,
-                        'line'    =>
-                            [
+                        'line'    => [
                                 'points' => 6,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-03',
                                     ],
                             ],
-                        'staff'   =>
-                            [
+                        'staff'   => [
                                 'points' => 6,
-                                'exam'   =>
-                                    [],
+                                'exam'   => [],
                             ],
-                        'service' =>
-                            [
+                        'service' => [
                                 'points' => 6,
-                                'exam'   =>
-                                    [],
+                                'exam'   => [],
                             ],
                     ],
                     'INTEL' => [
                         'tig'     => 4,
-                        'line'    =>
-                            [
+                        'line'    => [
                                 'points' => 6,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-03',
                                     ],
                             ],
-                        'staff'   =>
-                            [
+                        'staff'   => [
                                 'points' => 6,
-                                'exam'   =>
-                                    [],
+                                'exam'   => [],
                             ],
-                        'service' =>
-                            [
+                        'service' => [
                                 'points' => 6,
-                                'exam'   =>
-                                    [],
+                                'exam'   => [],
                             ],
-                    ]
+                    ],
                 ],
-            'C-4'   =>
-                [
-                    'RMACS'   =>
-                        [
+            'C-4'   => [
+                    'RMACS'   => [
                             'tig'     => 2,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 3,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0001',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 3,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 3,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
                         ],
                     'DIPLOMATIC' => [
                         'tig'     => 5,
-                        'line'    =>
-                            [
+                        'line'    => [
                                 'points' => 9,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-04',
                                     ],
                             ],
-                        'staff'   =>
-                            [
+                        'staff'   => [
                                 'points' => 9,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-01',
                                     ],
                             ],
-                        'service' =>
-                            [
+                        'service' => [
                                 'points' => 9,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-01',
                                     ],
                             ],
                     ],
                     'INTEL' => [
                         'tig'     => 5,
-                        'line'    =>
-                            [
+                        'line'    => [
                                 'points' => 9,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-04',
                                     ],
                             ],
-                        'staff'   =>
-                            [
+                        'staff'   => [
                                 'points' => 9,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-01',
                                     ],
                             ],
-                        'service' =>
-                            [
+                        'service' => [
                                 'points' => 9,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'Core-01',
                                     ],
                             ],
-                    ]
+                    ],
                 ],
-            'C-5'   =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-5'   => [
+                    'INTEL'      => [
                             'tig'     => 5,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 14,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0005',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 12,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 11,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-01',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'     => 5,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 14,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0005',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 12,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 11,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'core-01',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'     => 4,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 6,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0002',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 6,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 6,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
                         ],
                 ],
-            'C-6'   =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-6'   => [
+                    'INTEL'      => [
                             'tig'     => 5,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 19,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0005',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 15,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 13,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'     => 5,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 19,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0005',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 15,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 13,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'     => 5,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 9,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0003',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 9,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0001',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 9,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'     => 5,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 9,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0002',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 9,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0002',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 9,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
                         ],
                 ],
-            'C-7'   =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-7'   => [
+                    'INTEL'      => [
                             'tig'     => 7,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 24,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0006',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 18,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-03',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 15,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'     => 7,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 24,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0006',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 18,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-03',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 15,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
-                            'line'    =>
-                                [
+                    'SFC'        => [
+                            'line'    => [
                                     'points' => 9,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 6,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 6,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'     => 5,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 14,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0004',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 12,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0002',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 11,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0001',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'     => 7,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 24,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0004',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 18,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0002',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 15,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0001',
                                         ],
                                 ],
                         ],
                 ],
-            'C-8'   =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-8'   => [
+                    'INTEL'      => [
                             'tig'     => 7,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 29,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0011',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 21,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 18,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-03',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'     => 7,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 29,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0011',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 21,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 18,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-03',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'     => 7,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 29,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0005',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 21,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0003',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 18,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0002',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'     => 7,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 29,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0005',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 21,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0003',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 18,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0001',
                                         ],
                                 ],
                         ],
                 ],
-            'C-9'   =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-9'   => [
+                    'INTEL'      => [
                             'tig'     => 9,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 34,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0011',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 24,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 21,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'     => 9,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 34,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0011',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 24,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 21,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'     => 6,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 18,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-03',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 14,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-01',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 9,
-                                    'exam'   =>
-                                        [],
+                                    'exam'   => [],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'     => 9,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 34,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0006',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 24,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0004',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 21,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0002',
                                         ],
                                 ],
                         ],
                 ],
-            'C-10'  =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-10'  => [
+                    'INTEL'      => [
                             'tig'     => 9,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 39,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0012',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 27,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-05',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 26,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'     => 9,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 39,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0012',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 27,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-05',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 26,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'     => 6,
-                            'line'    =>
-                                [
+                            'line'    => [
                                     'points' => 36,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-04',
                                         ],
                                 ],
-                            'staff'   =>
-                                [
+                            'staff'   => [
                                     'points' => 26,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-02',
                                         ],
                                 ],
-                            'service' =>
-                                [
+                            'service' => [
                                     'points' => 12,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'Core-01',
                                         ],
                                 ],
                         ],
                 ],
-            'WO-1'  =>
-                [
+            'WO-1'  => [
                     'tig'     => 4,
-                    'as'      =>
-                        [
+                    'as'      => [
                             'E-4',
                             'E-5',
                             'E-6',
@@ -1114,149 +828,112 @@ class UpdateCivilianPromotionPoints extends Migration
                             'E-9',
                             'E-10',
                         ],
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 18,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0011',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 18,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0011',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 18,
-                            'exam'   =>
-                                [],
+                            'exam'   => [],
                         ],
                 ],
-            'WO-2'  =>
-                [
+            'WO-2'  => [
                     'tig'     => 6,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 36,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0011',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 26,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0011',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 24,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0011',
                                 ],
                         ],
                 ],
-            'WO-3'  =>
-                [
+            'WO-3'  => [
                     'tig'   => 9,
-                    'line'  =>
-                        [
+                    'line'  => [
                             'points' => 45,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0012',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 35,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0012',
                                 ],
                         ],
                 ],
-            'C-11'  =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-11'  => [
+                    'INTEL'      => [
                             'tig'   => 9,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 45,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0013',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 35,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0006',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'   => 9,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 45,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0013',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 35,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0006',
                                         ],
                                 ],
                         ],
                 ],
-            'WO-4'  =>
-                [
+            'WO-4'  => [
                     'tig'  => 12,
-                    'line' =>
-                        [
+                    'line' => [
                             'points' => 60,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0012',
                                 ],
                         ],
                 ],
-            'WO-5'  =>
-                [
+            'WO-5'  => [
                     'tig'  => 15,
-                    'line' =>
-                        [
+                    'line' => [
                             'points' => 72,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0013',
                                 ],
                         ],
                 ],
-            'O-1'   =>
-                [
+            'O-1'   => [
                     'tig'     => 4,
-                    'as'      =>
-                        [
+                    'as'      => [
                             'E-4',
                             'E-5',
                             'E-6',
@@ -1265,1326 +942,988 @@ class UpdateCivilianPromotionPoints extends Migration
                             'E-9',
                             'E-10',
                         ],
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 18,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0101',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 18,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0101',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 18,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0101',
                                 ],
                         ],
                 ],
-            'C-12'  =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-12'  => [
+                    'INTEL'      => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 51,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0101',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 40,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0011',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 51,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0101',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 40,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0011',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'   => 9,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 51,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0101',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 40,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0004',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 51,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0101',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 40,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0011',
                                         ],
                                 ],
                         ],
                 ],
-            'O-2'   =>
-                [
+            'O-2'   => [
                     'tig'     => 6,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 24,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0102',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 24,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0102',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 24,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0101',
                                 ],
                         ],
                 ],
-            'O-3'   =>
-                [
+            'O-3'   => [
                     'tig'     => 9,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 32,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0103',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 30,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0102',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 27,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0101',
                                 ],
                         ],
                 ],
-            'O-4'   =>
-                [
+            'O-4'   => [
                     'tig'     => 12,
-                    'line'    =>
-                        [
+                    'line'    => [
                             'points' => 40,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0104',
                                     '0113',
                                 ],
                         ],
-                    'staff'   =>
-                        [
+                    'staff'   => [
                             'points' => 36,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0102',
                                 ],
                         ],
-                    'service' =>
-                        [
+                    'service' => [
                             'points' => 32,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0101',
                                 ],
                         ],
                 ],
-            'O-5'   =>
-                [
+            'O-5'   => [
                     'tig'   => 15,
-                    'line'  =>
-                        [
+                    'line'  => [
                             'points' => 48,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0105',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 44,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0103',
                                 ],
                         ],
                 ],
-            'O-6'   =>
-                [
+            'O-6'   => [
                     'tig'   => 18,
-                    'line'  =>
-                        [
+                    'line'  => [
                             'points' => 56,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0106',
                                     '0113',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 52,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0103',
                                 ],
                         ],
                 ],
-            'C-13'  =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-13'  => [
+                    'INTEL'      => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 57,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0102',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 45,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0012',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 57,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0102',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 45,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0012',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'   => 9,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 45,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0101',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 35,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0011',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 57,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0102',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 45,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0005',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 57,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0102',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 45,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0012',
                                         ],
                                 ],
                         ],
                 ],
-            'C-14'  =>
-                [
-                    'INTEL'      =>
-                        [
+            'C-14'  => [
+                    'INTEL'      => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 63,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0103',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 50,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0013',
                                         ],
                                 ],
                         ],
-                    'DIPLOMATIC' =>
-                        [
+                    'DIPLOMATIC' => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 63,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0103',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 50,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0013',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 63,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0102',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 50,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0013',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'   => 12,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 63,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0103',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 50,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0012',
                                         ],
                                 ],
                         ],
                 ],
-            'C-15'  =>
-                [
-                    'DIPLOMATIC' =>
-                        [
+            'C-15'  => [
+                    'DIPLOMATIC' => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 69,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0113',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 55,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0101',
                                         ],
                                 ],
                         ],
-                    'INTEL'      =>
-                        [
+                    'INTEL'      => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 69,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0113',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 55,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0101',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 69,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0103',
                                             'QC-0113',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 55,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0101',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 69,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0103',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 55,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0101',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 69,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0104',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 55,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0012',
                                         ],
                                 ],
                         ],
                 ],
-            'C-16'  =>
-                [
-                    'DIPLOMATIC' =>
-                        [
+            'C-16'  => [
+                    'DIPLOMATIC' => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 75,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0104',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 60,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0102',
                                         ],
                                 ],
                         ],
-                    'INTEL'      =>
-                        [
+                    'INTEL'      => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 75,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0104',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 60,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0102',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 75,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0104',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 60,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0102',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 75,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0104',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 60,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0102',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 75,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0105',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 60,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0101',
                                         ],
                                 ],
                         ],
                 ],
-            'C-17'  =>
-                [
-                    'DIPLOMATIC' =>
-                        [
+            'C-17'  => [
+                    'DIPLOMATIC' => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 81,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0105',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 70,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0103',
                                         ],
                                 ],
                         ],
-                    'INTEL'      =>
-                        [
+                    'INTEL'      => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 81,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0105',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 70,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0103',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 81,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0105',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 70,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0103',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 81,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0105',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 70,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0103',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'   => 15,
-                            'line'  =>
-                                [
+                            'line'  => [
                                     'points' => 81,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0106',
                                         ],
                                 ],
-                            'staff' =>
-                                [
+                            'staff' => [
                                     'points' => 70,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0101',
                                         ],
                                 ],
                         ],
                 ],
-            'O-6-A' =>
-                [
+            'O-6-A' => [
                     'tig'   => 18,
-                    'line'  =>
-                        [
+                    'line'  => [
                             'points' => 56,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0106',
                                     '0113',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 52,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0103',
                                 ],
                         ],
                 ],
-            'O-6-B' =>
-                [
-                    'line'  =>
-                        [
+            'O-6-B' => [
+                    'line'  => [
                             'points' => 63,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1001',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 63,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0104',
                                     '0113',
                                 ],
                         ],
                 ],
-            'F-1'   =>
-                [
-                    'line'  =>
-                        [
+            'F-1'   => [
+                    'line'  => [
                             'points' => 73,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1001',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 73,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0105',
                                 ],
                         ],
                 ],
-            'C-18'  =>
-                [
-                    'DIPLOMATIC' =>
-                        [
+            'C-18'  => [
+                    'DIPLOMATIC' => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 90,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0115',
                                         ],
                                 ],
                         ],
-                    'INTEL'      =>
-                        [
+                    'INTEL'      => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 90,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-0115',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 90,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-0115',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 90,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '0106',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 90,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1001',
                                         ],
                                 ],
                         ],
                 ],
-            'F-2'   =>
-                [
-                    'line'  =>
-                        [
+            'F-2'   => [
+                    'line'  => [
                             'points' => 83,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1002',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 83,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0106',
                                     '0115',
                                 ],
                         ],
                 ],
-            'C-19'  =>
-                [
-                    'DIPLOMATIC' =>
-                        [
+            'C-19'  => [
+                    'DIPLOMATIC' => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 100,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-1001',
                                         ],
                                 ],
                         ],
-                    'INTEL'      =>
-                        [
+                    'INTEL'      => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 100,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-1001',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 100,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-1001',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 100,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1001',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 100,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1002',
                                         ],
                                 ],
                         ],
                 ],
-            'F-2-A' =>
-                [
-                    'line'  =>
-                        [
+            'F-2-A' => [
+                    'line'  => [
                             'points' => 83,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1002',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 83,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '0106',
                                     '0115',
                                 ],
                         ],
                 ],
-            'F-2-B' =>
-                [
-                    'line'  =>
-                        [
+            'F-2-B' => [
+                    'line'  => [
                             'points' => 93,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1002',
                                 ],
                         ],
-                    'staff' =>
-                        [
+                    'staff' => [
                             'points' => 93,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1001',
                                 ],
                         ],
                 ],
-            'F-3'   =>
-                [
-                    'line' =>
-                        [
+            'F-3'   => [
+                    'line' => [
                             'points' => 103,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1003',
                                 ],
                         ],
                 ],
-            'C-20'  =>
-                [
-                    'DIPLOMATIC' =>
-                        [
+            'C-20'  => [
+                    'DIPLOMATIC' => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 110,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-1002',
                                         ],
                                 ],
                         ],
-                    'INTEL'      =>
-                        [
+                    'INTEL'      => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 110,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-1002',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 110,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-1002',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 110,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1002',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'  => 15,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 110,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1003',
                                         ],
                                 ],
                         ],
                 ],
-            'F-3-A' =>
-                [
-                    'line' =>
-                        [
+            'F-3-A' => [
+                    'line' => [
                             'points' => 103,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1003',
                                 ],
                         ],
                 ],
-            'F-3-B' =>
-                [
-                    'line' =>
-                        [
+            'F-3-B' => [
+                    'line' => [
                             'points' => 113,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1003',
                                 ],
                         ],
                 ],
-            'F-4'   =>
-                [
-                    'line' =>
-                        [
+            'F-4'   => [
+                    'line' => [
                             'points' => 113,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1004',
                                 ],
                         ],
                 ],
-            'C-21'  =>
-                [
-                    'DIPLOMATIC' =>
-                        [
+            'C-21'  => [
+                    'DIPLOMATIC' => [
                             'tig'  => 18,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 120,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-1003',
                                         ],
                                 ],
                         ],
-                    'INTEL'      =>
-                        [
+                    'INTEL'      => [
                             'tig'  => 18,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 120,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-1003',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
+                    'SFC'        => [
                             'tig'  => 18,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 120,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-1003',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
+                    'RMMM'       => [
                             'tig'  => 18,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 120,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1003',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
+                    'RMACS'      => [
                             'tig'  => 18,
-                            'line' =>
-                                [
+                            'line' => [
                                     'points' => 120,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1004',
                                         ],
                                 ],
                         ],
                 ],
-            'F-4-A' =>
-                [
-                    'line' =>
-                        [
+            'F-4-A' => [
+                    'line' => [
                             'points' => 113,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1004',
                                 ],
                         ],
                 ],
-            'F-4-B' =>
-                [
-                    'line' =>
-                        [
+            'F-4-B' => [
+                    'line' => [
                             'points' => 123,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1004',
                                 ],
                         ],
                 ],
-            'F-5'   =>
-                [
-                    'line' =>
-                        [
+            'F-5'   => [
+                    'line' => [
                             'points' => 143,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1005',
                                 ],
                         ],
                 ],
-            'C-22'  =>
-                [
-                    'DIPLOMATIC' =>
-                        [
-                            'line' =>
-                                [
+            'C-22'  => [
+                    'DIPLOMATIC' => [
+                            'line' => [
                                     'points' => 130,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-1004',
                                         ],
                                 ],
                         ],
-                    'INTEL'      =>
-                        [
-                            'line' =>
-                                [
+                    'INTEL'      => [
+                            'line' => [
                                     'points' => 130,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'KC-1004',
                                         ],
                                 ],
                         ],
-                    'SFC'        =>
-                        [
-                            'line' =>
-                                [
+                    'SFC'        => [
+                            'line' => [
                                     'points' => 130,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             'QC-1004',
                                         ],
                                 ],
                         ],
-                    'RMMM'       =>
-                        [
-                            'line' =>
-                                [
+                    'RMMM'       => [
+                            'line' => [
                                     'points' => 130,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1004',
                                         ],
                                 ],
                         ],
-                    'RMACS'      =>
-                        [
-                            'line' =>
-                                [
+                    'RMACS'      => [
+                            'line' => [
                                     'points' => 130,
-                                    'exam'   =>
-                                        [
+                                    'exam'   => [
                                             '1004',
                                         ],
                                 ],
                         ],
                 ],
-            'F-5-A' =>
-                [
-                    'line' =>
-                        [
+            'F-5-A' => [
+                    'line' => [
                             'points' => 143,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1005',
                                 ],
                         ],
                 ],
-            'F-5-B' =>
-                [
-                    'line' =>
-                        [
+            'F-5-B' => [
+                    'line' => [
                             'points' => 153,
-                            'exam'   =>
-                                [
+                            'exam'   => [
                                     '1005',
                                 ],
                         ],
                 ],
-            'F-6'   =>
-                [
-                    'line' =>
-                        [
-                            'exam' =>
-                                [
+            'F-6'   => [
+                    'line' => [
+                            'exam' => [
                                     '1005',
                                 ],
                         ],
                 ],
             'C-23'  => [
-                'DIPLOMATIC' =>
-                    [
-                        'line' =>
-                            [
+                'DIPLOMATIC' => [
+                        'line' => [
                                 'points' => 150,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'QC-1005',
                                     ],
                             ],
                     ],
-                'INTEL'      =>
-                    [
-                        'line' =>
-                            [
+                'INTEL'      => [
+                        'line' => [
                                 'points' => 150,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'KC-1005',
                                     ],
                             ],
                     ],
-                'SFC'        =>
-                    [
-                        'line' =>
-                            [
+                'SFC'        => [
+                        'line' => [
                                 'points' => 150,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         'QC-1005',
                                     ],
                             ],
                     ],
-                'RMMM'       =>
-                    [
-                        'line' =>
-                            [
+                'RMMM'       => [
+                        'line' => [
                                 'points' => 150,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         '1004',
                                     ],
                             ],
                     ],
-                'RMACS'      =>
-                    [
-                        'line' =>
-                            [
+                'RMACS'      => [
+                        'line' => [
                                 'points' => 150,
-                                'exam'   =>
-                                    [
+                                'exam'   => [
                                         '1004',
                                     ],
                             ],
@@ -2594,11 +1933,11 @@ class UpdateCivilianPromotionPoints extends Migration
 
         $RMACS = $RMMM = $SFC = $DIPLOMATIC = $INTEL = [];
 
-        foreach($pp as $payGrade => $req) {
+        foreach ($pp as $payGrade => $req) {
             switch (substr($payGrade, 0, 1)) {
-                case "C":
+                case 'C':
                     foreach ($req as $branch => $breq) {
-                      $$branch[$payGrade] = $breq;
+                        $$branch[$payGrade] = $breq;
                     }
                     unset($pp[$payGrade]);
                     break;
@@ -2614,8 +1953,8 @@ class UpdateCivilianPromotionPoints extends Migration
 
         // Setup the civilian promotion point requirement entries
 
-        foreach(['RMACS', 'RMMM', 'SFC', 'DIPLOMATIC', 'INTEL'] as $branch) {
-            MedusaConfig::set('pp.requirements.' . $branch, $$branch);
+        foreach (['RMACS', 'RMMM', 'SFC', 'DIPLOMATIC', 'INTEL'] as $branch) {
+            MedusaConfig::set('pp.requirements.'.$branch, $$branch);
         }
     }
 
@@ -2632,8 +1971,8 @@ class UpdateCivilianPromotionPoints extends Migration
         // Delete the backup and the new entries
         MedusaConfig::remove('pp.requirements.bak');
 
-        foreach(['RMACS', 'RMMM', 'SFC', 'DIPLOMATIC', 'INTEL'] as $branch) {
-            MedusaConfig::remove('pp.requirements.' . $branch);
+        foreach (['RMACS', 'RMMM', 'SFC', 'DIPLOMATIC', 'INTEL'] as $branch) {
+            MedusaConfig::remove('pp.requirements.'.$branch);
         }
     }
 }
