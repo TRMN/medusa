@@ -33,6 +33,6 @@ class AddReportRecipients extends Migration
      */
     public function down()
     {
-        //
+        \App\MedusaConfig::remove('report.recipients');
     }
 }

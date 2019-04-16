@@ -14,13 +14,14 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Permissions\MedusaPermissions;
-//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use App\Promotions\MedusaPromotions;
+use App\Common\MedusaCommon;
 
 /**
  * MEDUSA User model.
@@ -393,7 +394,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         } elseif (empty($this->perages) === false) {
             return $this->getPostnominalsFromPeerages();
         } else {
-            return;
+            return null;
         }
     }
 
@@ -902,7 +903,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      * @param null|bool|string $short
      *
      * @return int|null|string
+     *
+     * @throws \Exception
      */
+
     public function getTimeInGrade($short = null)
     {
         if (empty($this->rank['date_of_rank']) === false) {
@@ -935,12 +939,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 return $timeInGrade->format('%y Year(s), %m Month(s), %d Day(s)');
             }
         } else {
-            return;
+            return null;
         }
     }
 
     /**
-     * Get Time in Service formated per the options provided.
+     * Get Time in Service formatted per the options provided.
      *
      * @param null $options
      *
@@ -997,7 +1001,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
         } else {
-            return;
+            return null;
         }
     }
 
