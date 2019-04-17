@@ -74,6 +74,16 @@ class Grade extends Eloquent
         return $grades;
     }
 
+    /**
+     * Get a list of pay grades and their titles suitable for creating an HTML select.
+     *
+     * @inheritDoc self::gradesForBranch
+     *
+     * @param $branchID
+     * @param $filter
+     *
+     * @return array
+     */
     private static function gradesForBranchForSelect($branchID, $filter)
     {
         $grades = [];
