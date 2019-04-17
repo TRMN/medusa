@@ -70,6 +70,16 @@
         }
 
         $(document).ready(function () {
+            formatJson();
+
+            var table = $("#config-table").DataTable();
+
+            table.on('draw', function() {
+                formatJson();
+            });
+        });
+
+        function formatJson() {
             $('.json').each(function (i, el) {
                 var elm = $(el);
                 elm.html(JSON.stringify(JSON.parse(elm.html()), undefined, 4));
@@ -77,15 +87,15 @@
 
             $('.preview').on('click', function() {
 
-              if ($(this).hasClass('preview')) {
-                $(this).removeClass('preview');
-              } else {
-                $(this).addClass('preview');
-              }
+                if ($(this).hasClass('preview')) {
+                    $(this).removeClass('preview');
+                } else {
+                    $(this).addClass('preview');
+                }
             });
 
             $('.json').width(0);
             $(".json").width($('.cpreview').width());
-        });
+        }
     </script>
 @stop
