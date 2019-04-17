@@ -77,7 +77,7 @@ class Grade extends Eloquent
     /**
      * Get a list of pay grades and their titles suitable for creating an HTML select.
      *
-     * @inheritDoc self::gradesForBranch
+     * {@inheritdoc} self::gradesForBranch
      *
      * @param $branchID
      * @param $filter
