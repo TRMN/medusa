@@ -97,7 +97,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'password'           => 'confirmed',
         'branch'             => 'required',
         'primary_assignment' => 'required',
-        'phone_number'       => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
+        'phone_number'       => 'nullable|sometimes|regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
     ];
 
     public static $updateRules = [
@@ -111,7 +111,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'email_address'  => 'required|email',
         'password'       => 'confirmed',
         'branch'         => 'required',
-        'phone_number'   => 'regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
+        'phone_number'   => 'nullable|sometimes|regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
     ];
 
     public static $error_message = [

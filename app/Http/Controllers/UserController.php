@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use App\MedusaConfig;
 use Illuminate\Support\Arr;
 use App\Events\EmailChanged;
+use Illuminate\Http\Request;
 use App\Events\LoginComplete;
 use Illuminate\Support\Facades\DB;
 use Webpatser\Countries\Countries;
@@ -25,8 +26,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
+//use Illuminate\Support\Facades\Request;
 use App\Permissions\MedusaPermissions;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -43,8 +44,9 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function getUserList($branch, \Illuminate\Http\Request $request)
+    public function getUserList($branch, Request $request)
     {
         $order = $request->input('order');
 
@@ -314,16 +316,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postReset(User $user)
+    public function postReset(User $user, Request $request)
     {
-        $in =
-            Request::only(
-                [
-                    'current_password',
-                    'password',
-                    'password_confirmation',
-                ]
-            );
+        $in = $request->only(
+            [
+                'current_password',
+                'password',
+                'password_confirmation',
+            ]
+        );
 
         // Did they enter their current password?
 
@@ -404,6 +405,7 @@ class UserController extends Controller
      * @param \App\User $user
      *
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function approveApplication(User $user)
     {
@@ -603,7 +605,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
         if (($redirect = $this->checkPermissions('ADD_MEMBER')) !== true) {
             return $redirect;
@@ -616,7 +618,7 @@ class UserController extends Controller
         $errMsg['password.required'] = 'You must set a password for the user';
         $errMsg['password.min'] =
             'The password must be at least 8 characters long';
-        $validator = Validator::make($data = \Request::all(), $rules, $errMsg);
+        $validator = Validator::make($data = $request->all(), $rules, $errMsg);
 
         if ($validator->fails()) {
             return Redirect::route('user.create')
@@ -756,9 +758,11 @@ class UserController extends Controller
     /**
      * Store a new applicant.
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
-    public function apply()
+    public function apply(Request $request)
     {
         $rules = [
             'email_address'      => 'required|email|unique:users',
@@ -802,7 +806,7 @@ class UserController extends Controller
             'tos.required'                => 'You must agree to the Terms of Service to apply',
         ];
 
-        $data = \Request::all();
+        $data = $request->all();
 
         if (isset($data['mobile']) === false) {
             $validator = Validator::make($data, $rules, $error_message);
@@ -822,7 +826,7 @@ class UserController extends Controller
                 ) === false) {
                 // Check Captcha
                 $secret = config('recaptcha.secret');
-                $captcha = \Request::get('g-recaptcha-response', null);
+                $captcha = $request->get('g-recaptcha-response', null);
 
                 if (empty($captcha) === false) {
                     $recaptcha = new \ReCaptcha\ReCaptcha($secret);
@@ -918,7 +922,7 @@ class UserController extends Controller
         $data['lastUpdate'] = time();
 
         $this->writeAuditTrail(
-            'Guest from '.\Request::getClientIp(),
+            'Guest from '.$request->getClientIp(),
             'create',
             'users',
             null,
@@ -1029,8 +1033,8 @@ class UserController extends Controller
     {
         if (($this->hasPermissions(['EDIT_SELF']) === true &&
              Auth::user()->id == $user->id) || $this->hasPermissions(
-                ['EDIT_MEMBER']
-            ) === true
+                 ['EDIT_MEMBER']
+             ) === true
         ) {
             $greeting = $user->getGreetingArray();
 
@@ -1085,7 +1089,6 @@ class UserController extends Controller
                 ];
             }
 
-//            $chapters = ;
             return view(
                 'user.edit',
                 [
@@ -1126,10 +1129,12 @@ class UserController extends Controller
      * Update the specified user in storage.
      *
      * @param User $user
+     * @param Request $request
      *
      * @return Response
+     * @throws \Exception
      */
-    public function update(User $user)
+    public function update(User $user, Request $request)
     {
         if (($redirect =
                 $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF'])) !== true
@@ -1139,7 +1144,7 @@ class UserController extends Controller
 
         $validator =
             Validator::make(
-                $data = \Request::all(),
+                $data = $request->all(),
                 User::$updateRules,
                 User::$error_message
             );
@@ -1457,13 +1462,15 @@ class UserController extends Controller
     /**
      * Process acceptance of the Terms of Service.
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function tos()
+    public function tos(Request $request)
     {
         $this->loginValid();
 
-        $data = \Request::all();
+        $data = $request->all();
 
         if (empty($data['tos']) === false) {
             $user = User::find($data['id']);
@@ -1489,13 +1496,14 @@ class UserController extends Controller
     /**
      * Process acceptance of the Official Secrets Act.
      *
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function osa()
+    public function osa(Request $request)
     {
         $this->loginValid();
 
-        $data = \Request::all();
+        $data = $request->all();
 
         if (empty($data['osa']) === false) {
             $user = User::find($data['id']);
@@ -1595,10 +1603,11 @@ class UserController extends Controller
      * Build up a peerage record from the provided data.
      *
      * @param array $data
+     * @param Request $request
      *
      * @return mixed
      */
-    private function buildPeerageRecord(array $data)
+    private function buildPeerageRecord(array $data, Request $request)
     {
         $peerage['title'] = $data['ptitle'];
 
@@ -1622,10 +1631,10 @@ class UserController extends Controller
             $peerage['postnominal'] = $data['class'];
 
             if (substr(
-                    $kOrder->getClassName($data['class']),
-                    0,
-                    6
-                ) != 'Knight'
+                $kOrder->getClassName($data['class']),
+                0,
+                6
+            ) != 'Knight'
             ) {
                 $peerage['code'] = '';
             }
@@ -1634,11 +1643,11 @@ class UserController extends Controller
             $peerage['generation'] = $data['generation'];
             $peerage['lands'] = $data['lands'];
 
-            if (\Request::hasFile('arms') === true && \Request::file('arms')
+            if ($request->hasFile('arms') === true && $request->file('arms')
                                                               ->isValid() === true
             ) {
                 $peerage['filename'] =
-                    basename(\Request::file('arms')->store('peerage', 'arms'));
+                    basename($request->file('arms')->store('peerage', 'arms'));
             }
         }
 
@@ -1661,12 +1670,13 @@ class UserController extends Controller
      * Process AJAX request to add or edit a peerage.
      *
      * @param \App\User $user
+     * @param Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function addOrEditPeerage(User $user)
+    public function addOrEditPeerage(User $user, Request $request)
     {
-        $data = \Request::all();
+        $data = $request->all();
 
         $msg = 'Peerage added';
 
@@ -1676,7 +1686,7 @@ class UserController extends Controller
             $msg = 'Peerage updated';
         }
 
-        $peerage = $this->buildPeerageRecord($data);
+        $peerage = $this->buildPeerageRecord($data, $request);
 
         if (empty($data['filename']) === false &&
             empty($peerage['filename']) === true) {
@@ -1722,12 +1732,13 @@ class UserController extends Controller
      * Process AJAX request to add or edit a note.
      *
      * @param \App\User $user
+     * @param Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function addOrEditNote(User $user)
+    public function addOrEditNote(User $user, Request $request)
     {
-        $data = \Request::all();
+        $data = $request->all();
 
         $msg = 'Note added';
 
@@ -1935,16 +1946,18 @@ class UserController extends Controller
     /**
      * Save the submitted ribbon rack.
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function saveRibbonRack(User $user)
+    public function saveRibbonRack(User $user, Request $request)
     {
         if (($redirect =
                 $this->checkPermissions(['EDIT_SELF'])) !== true
         ) {
             return $redirect;
         }
-        $data = \Request::all();
+        $data = $request->all();
 
         // Process the display choice for qualification badges
 
@@ -2203,7 +2216,8 @@ class UserController extends Controller
             $dates,
             function ($value, $key) use ($today) {
                 return $today->lt(
-                    Carbon::createFromFormat('Y-m-d H', $value.' 0')->addDays(config('awards.display_days')));
+                    Carbon::createFromFormat('Y-m-d H', $value.' 0')->addDays(config('awards.display_days'))
+                );
             }
         );
     }
@@ -2222,7 +2236,8 @@ class UserController extends Controller
 
         // Count the number of awards that are in the future
         foreach ($awardDates as $date) {
-            if ($today->lt(Carbon::createFromFormat('Y-m-d H', $date.' 0')->addDays(config('awards.display_days')))) {
+            if ($today->lt(Carbon::createFromFormat('Y-m-d H', $date.' 0')->addDays(config('awards.display_days')))
+            ) {
                 $numPending++;
             }
         }
@@ -2238,7 +2253,7 @@ class UserController extends Controller
      *
      * @return bool|\Illuminate\Http\RedirectResponse
      */
-    public function updatePoints(\Illuminate\Http\Request $request, $user)
+    public function updatePoints(Request $request, $user)
     {
         if (($redirect =
                 $this->checkPermissions(['EDIT_MEMBER', 'EDIT_SELF'])) !== true
