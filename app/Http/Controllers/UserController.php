@@ -42,6 +42,7 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function getUserList($branch, \Illuminate\Http\Request $request)
     {
@@ -403,6 +404,7 @@ class UserController extends Controller
      * @param \App\User $user
      *
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function approveApplication(User $user)
     {
@@ -1104,7 +1106,6 @@ class UserController extends Controller
                 ];
             }
 
-//            $chapters = ;
             return view(
                 'user.edit',
                 [
@@ -1147,6 +1148,7 @@ class UserController extends Controller
      * @param User $user
      *
      * @return Response
+     * @throws \Exception
      */
     public function update(User $user)
     {
