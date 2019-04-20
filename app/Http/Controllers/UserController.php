@@ -463,9 +463,9 @@ class UserController extends Controller
                 $user->assignment = $assignment;
 
                 break;
-            case 'SFS':
+            case 'SFC':
                 $assignment = $user->assignment;
-                $assignment[0]['billet'] = 'Cadet Ranger';
+                //$assignment[0]['billet'] = 'Cadet Ranger';
                 $user->assignment = $assignment;
 
                 break;
@@ -478,7 +478,7 @@ class UserController extends Controller
         $rank = $user['rank'];
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
-        $user->member_id = 'RMN'.User::getFirstAvailableMemberId();
+
 
         $events[] = 'Application approved by BuPers; Enlisted at rank of '.
                     Grade::getRankTitle($user->rank['grade'], null, $user->branch).
@@ -495,42 +495,52 @@ class UserController extends Controller
 
         $user->lastUpdate = time();
 
-        $this->writeAuditTrail(
-            (string) Auth::user()->id,
-            'update',
-            'users',
-            (string) $user->id,
-            $user->toJson(),
-            'UserController@approveApplication'
-        );
 
-        $user->save();
+        try {
+            $user->member_id = 'RMN'.User::getNextAvailableMemberId();
+            $user->save();
 
-        // Update the service history
-
-        foreach ($events as $event) {
-            $user->addServiceHistoryEntry(
-                ['timestamp' => time(), 'event' => $event]
+            $this->writeAuditTrail(
+                (string) Auth::user()->id,
+                'update',
+                'users',
+                (string) $user->id,
+                $user->toJson(),
+                'UserController@approveApplication'
             );
-        }
 
-        // Get Chapter CO's email
-        $user->co_email =
-            Chapter::find($user->getPrimaryAssignmentId())
-                   ->getCO()->email_address;
+            // Update the service history
 
-        // Send welcome email
-        Mail::send(
-            'emails.welcome',
-            ['user' => $user],
-            function ($message) use ($user) {
-                $message->from('membership@trmn.org', 'TRMN Membership');
-
-                $message->to($user->email_address)->bcc($user->co_email);
-
-                $message->subject('TRMN Membership');
+            foreach ($events as $event) {
+                $user->addServiceHistoryEntry(
+                    ['timestamp' => time(), 'event' => $event]
+                );
             }
-        );
+
+            // Get Chapter CO's email
+            $user->co_email =
+                Chapter::find($user->getPrimaryAssignmentId())
+                       ->getCO()->email_address;
+
+            // Send welcome email
+            Mail::send(
+                'emails.welcome',
+                ['user' => $user],
+                function ($message) use ($user) {
+                    $message->from('membership@trmn.org', 'TRMN Membership');
+
+                    $message->to($user->email_address)->bcc($user->co_email);
+
+                    $message->subject('TRMN Membership');
+                }
+            );
+        } catch (\Exception $e) {
+            $error = "There was a problem approving this member.  Please report the following error:\n";
+            $error .= $e->getMessage();
+
+            return Redirect::route('user.review')
+                           ->withErrors($error);
+        }
 
         return Redirect::route('user.review');
     }
@@ -846,9 +856,27 @@ class UserController extends Controller
                 $data['rank']['grade'] = 'C-1';
                 $billet = 'Civilian One';
                 break;
-            case 'SFS':
-                $data['rank']['grade'] = 'C-1';
-                $billet = 'Cadet Ranger One';
+            case 'SFC':
+                $age = Carbon::now()->diffInYears(Carbon::parse($data['dob']));
+
+                switch ($age) {
+                    case $age <= 8:
+                        $data['rank']['grade'] = 'C-1';
+                        $billet = 'Cadet Ranger One';
+                        break;
+                    case $age <= 12:
+                        $data['rank']['grade'] = 'C-2';
+                        $billet = 'Cadet Ranger Two';
+                        break;
+                    case $age <= 15:
+                        $data['rank']['grade'] = 'C-3';
+                        $billet = 'Cadet Ranger Three';
+                        break;
+                    case $age <= 17:
+                        $data['rank']['grade'] = 'C-6';
+                        $billet = 'Senior Cadet Ranger';
+                        break;
+                }
                 break;
             case 'RMMM':
                 $data['rank']['grade'] = 'C-1';
