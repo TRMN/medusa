@@ -472,7 +472,7 @@ div.filePhoto {
 .ofpt {
   height: 200px;
   width: 150px;
-  margin-top: 40%;
+  margin-top: -85%;
 }
 
 .clear-both {
@@ -1325,4 +1325,11 @@ input:checked + .slider:before {
 
 .info {
   color: #5bc0de;
+}
+
+.required:after {
+  content: '*';
+  color: $manticore-red;
+  padding-left: 5px;
+  font-size: 150%;
 }
