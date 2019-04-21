@@ -20,7 +20,7 @@
 <div class="row">
     <div class="alert" data-alert>
         <p>@if(empty($e))
-                {!! $exception->getMessage() !!}
+               {!! $exception->getMessage() !!}
             @else
                 {!! $e->getMessage() !!}
             @endif
