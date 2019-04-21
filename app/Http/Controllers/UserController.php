@@ -2045,6 +2045,10 @@ class UserController extends Controller
 
         if (isset($data['ribbon']) === true) {
             foreach ($data['ribbon'] as $award) {
+                if (empty($data[$award.'_quantity']) === true) {
+                    $data[$award.'_quantity'] = 1;
+                }
+
                 if (empty($curAwards[$award]) === false) {
                     // Preserve all the valid dates
                     $awardDates =
