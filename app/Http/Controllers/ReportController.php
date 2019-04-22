@@ -284,18 +284,7 @@ class ReportController extends Controller
             );
         }
 
-        return Response::view(
-            'report.index',
-            [
-            'reports' => Report::where(
-                'chapter_id',
-                '=',
-                Auth::user()->getPrimaryAssignmentId()
-            )->orderBy(
-                'report_date'
-            )->get(),
-            ]
-        );
+        return Response::redirectToRoute('report.index');
     }
 
     /**

@@ -956,7 +956,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     }
 
     /**
-     * Get Time in Service formatted per the options provided.
+     * Get Time in Service formated per the options provided.
      *
      * @param null $options
      *
@@ -1900,17 +1900,13 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public static function getNextAvailableMemberId()
     {
-        $uniqueMemberIds = self::getMemberIds();
+        $lastMemberId = self::getMemberIds();
 
-        if (count($uniqueMemberIds) == 0) {
+        if (empty($uniqueMemberIds) === true) {
             return '-0000-'.date('y');
         }
 
-        asort($uniqueMemberIds);
-
-        $lastUsedId = array_pop($uniqueMemberIds);
-
-        $newNumber = $lastUsedId + 1;
+        $newNumber = $lastMemberId + 1;
 
         if ($newNumber > 9999) {
             $newNumber = 0;
@@ -1926,7 +1922,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     /**
      * Find the lowest unused member id.
      *
-     * @TODO Refactor
+     * @deprecated Operation too expensive. Will now return the next available member id.
      *
      * @param bool $honorary
      *
@@ -1934,29 +1930,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public static function getFirstAvailableMemberId($honorary = false)
     {
-        $uniqueMemberIds = self::getMemberIds();
-
-        if (count($uniqueMemberIds) == 0) {
-            return '-0000'.date('y');
-        }
-
-        asort($uniqueMemberIds);
-
-        $lastId = 0;
-
-        foreach ($uniqueMemberIds as $memberId) {
-            if ((intval($lastId) + 1 < intval($memberId)) &&
-                ($honorary === true || intval($lastId) + 1 > 200)) {
-                return '-'.str_pad(
-                    $lastId + 1,
-                    4,
-                    '0',
-                    STR_PAD_LEFT
-                ).'-'.date('y');
-            }
-            $lastId = $memberId;
-        }
-
         return self::getNextAvailableMemberId();
     }
 
@@ -1969,14 +1942,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public static function getMemberIds()
     {
-        $memberIds = self::all(['member_id']);
-        $uniqueMemberIds = [];
-
-        foreach ($memberIds as $record) {
-            $uniqueMemberIds[] = intval(substr($record->member_id, 4, 4));
-        }
-
-        return $uniqueMemberIds;
+        return intval(substr(self::max('member_id'), 4, 4));
     }
 
     /**
