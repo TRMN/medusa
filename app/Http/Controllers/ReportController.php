@@ -40,6 +40,7 @@ class ReportController extends Controller
             'report.index',
             [
             'reports' => Report::where('chapter_id', '=', $chapter->id)->orderBy('report_date')->get(),
+            'chapterName' => $chapter->chapter_name,
             ]
         );
     }

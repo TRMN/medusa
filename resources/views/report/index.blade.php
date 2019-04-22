@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    <h1 class="text-center">Chapter Reports</h1>
+    <h1 class="text-center">Chapter Reports for {{ $chapterName }}</h1>
 
     <div class="row">
         <div class=" col-sm-2 underline">Status</div>
