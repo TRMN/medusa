@@ -3,7 +3,7 @@
 namespace App;
 
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use Moloquent\Eloquent\SoftDeletes;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class ChangeRequest extends Eloquent
 {

@@ -2,10 +2,10 @@
 
 namespace App;
 
+use NumberFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use NumberFormatter;
 
 class Chapter extends Eloquent
 {

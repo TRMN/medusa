@@ -1,7 +1,7 @@
 <?php
 
-use App\Audit\MedusaAudit;
 use App\Billet;
+use App\Audit\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageBillets extends Migration

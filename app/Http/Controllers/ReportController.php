@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Report;
 use App\Chapter;
 use App\MedusaConfig;
-use App\Report;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 
 class ReportController extends Controller
 {
@@ -27,14 +27,20 @@ class ReportController extends Controller
             return $redirect;
         }
 
-        if ($this->hasDutyRosterForAssignedShip() === false) {
-            return redirect(URL::previous())->with('message', 'None of your assignments are required to report');
+        $validTypes = MedusaConfig::get('report.valid_types', ['ship', 'station', 'small_craft', 'lac']);
+        $chapter = Chapter::find(Auth::user()->getAssignedShip());
+
+        if ($this->hasDutyRosterForAssignedShip() === false ||
+            in_array($chapter->chapter_type, $validTypes) === false) {
+            return redirect(URL::previous())
+                ->with('message', 'None of your assignments are required to report or able to use this feature');
         }
 
         return view(
             'report.index',
             [
-            'reports' => Report::where('chapter_id', '=', Auth::user()->getAssignedShip())->orderBy('report_date')->get(),
+            'reports' => Report::where('chapter_id', '=', $chapter->id)->orderBy('report_date')->get(),
+            'chapterName' => $chapter->chapter_name,
             ]
         );
     }
@@ -66,7 +72,8 @@ class ReportController extends Controller
             }
         }
 
-        if (is_null($chapter) === false && in_array($chapter->chapter_type, $validTypes) === false) {
+        if ((is_null($chapter) === false && in_array($chapter->chapter_type, $validTypes) === false) ||
+            is_null($chapter) === true) {
             return redirect(URL::previous())->with(
                 'message',
                 'I was unable to find an appropriate command for this report.'
@@ -88,25 +95,30 @@ class ReportController extends Controller
 
         $reportDate = date('n') & 1 ? date('Y-m', strtotime(date('Y').'-'.(date('n') + 1).'-01')) : date('Y-m');
 
-        $report =
-          Report::where(
-              'chapter_id',
-              '=',
-              Auth::user()->getAssignmentId('primary')
-          )->where(
-              'report_date',
-              '=',
-              $reportDate
-          )->first();
+        $report = $this->doesReportExists($chapter, $reportDate);
 
-        if (isset($report) === true && empty($report->report_sent) === true) {
-            // report found, send them to the edit form
-            return Response::view('report.chapter-edit', ['report' => $report]);
-        } elseif (isset($report) === true && empty($report->report_sent) === false) {
+        if (is_a($report, 'Illuminate\Http\Response')) {
+            return $report;
+        }
+
+        if (isset($report) === true && empty($report->report_sent) === false) {
             // The current report has been sent and they want to start the next one
             $month =
               date('F, Y', strtotime('+2 months', strtotime($report->report_date)));
             $ts = strtotime('-2 months', strtotime($month));
+
+            // Just in case this is not the first time they've done this
+            $report = $this->doesReportExists($chapter, date('Y-m', strtotime($month)));
+
+            if (is_a($report, 'Illuminate\Http\Response')) {
+                return $report;
+            }
+
+            // If for some reason this report has already been sent, send them back to the index page with a message.
+
+            if (empty($report->report_sent) === false) {
+                return Response::redirectToRoute('report.index')->with('error', 'It is too soon to create a new report');
+            }
         }
 
         $viewData = [
@@ -119,6 +131,26 @@ class ReportController extends Controller
         ];
 
         return Response::view('report.chapter-create', $viewData);
+    }
+
+    private function doesReportExists(Chapter $chapter, $reportDate)
+    {
+        $report =
+            Report::where(
+                'chapter_id',
+                '=',
+                $chapter->id
+            )->where(
+                'report_date',
+                '=',
+                $reportDate
+            )->first();
+
+        if (isset($report) === true && empty($report->report_sent) === true) {
+            return Response::view('report.chapter-edit', ['report' => $report]);
+        }
+
+        return $report;
     }
 
     public function getCompletedExamsForCrew($id, $ts = null)
@@ -253,18 +285,7 @@ class ReportController extends Controller
             );
         }
 
-        return Response::view(
-            'report.index',
-            [
-            'reports' => Report::where(
-                'chapter_id',
-                '=',
-                Auth::user()->getPrimaryAssignmentId()
-            )->orderBy(
-                'report_date'
-            )->get(),
-            ]
-        );
+        return Response::redirectToRoute('report.index');
     }
 
     /**
@@ -311,6 +332,13 @@ class ReportController extends Controller
         $this->updateNewCrew($id);
 
         $report = Report::find($id);
+
+        if (empty($report['report_sent']) === false) {
+            return redirect(URL::previous())->with(
+                'message',
+                'You may not edit a report that has already been sent'
+            );
+        }
 
         $commandCrew = $report['command_crew'];
 
@@ -545,10 +573,14 @@ class ReportController extends Controller
 
                 $message->to($report->command_crew['Commanding Officer']['email_address']);
 
-                $message->cc('cno@trmn.org')
-                      ->cc('buplan@trmn.org')
-                      ->cc('buships@trmn.org')
-                      ->cc('bupers@trmn.org');
+                $additionalRecipients = MedusaConfig::get(
+                    'report.recipients',
+                    ['cno@trmn.org', 'buplan@trmn.org', 'buships@trmn.org', 'bupers@trmn.org']
+                );
+
+                foreach ($additionalRecipients as $recipient) {
+                    $message->cc($recipient);
+                }
 
                 foreach ($echelonEmails as $echelon) {
                     $message->cc($echelon);

@@ -12,7 +12,7 @@
     <h1>Add a Member</h1>
 
     <?php
-    if (count($errors->all())) {
+    if (!empty($errors->all())) {
         echo "<p>Please correct the following errors:</p>\n<ul>\n";
         foreach ($errors->all() as $message) {
             echo "<li>" . $message . "</li>\n";

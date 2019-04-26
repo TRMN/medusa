@@ -19,9 +19,20 @@
 
 <div class="row">
     <div class="alert" data-alert>
-        <p>{!! $e->getMessage() !!}</p>
+        <p>@if(empty($e))
+                {!! $exception->getMessage() !!}
+            @else
+                {!! $e->getMessage() !!}
+            @endif
+        </p>
         <p>Stack Trace:</p>
-        <p class="small">{!! nl2br($e->getTraceAsString()) !!}</p>
+        <p class="small">
+            @if(empty($e))
+                {!! nl2br($exception->getTraceAsString()) !!}
+            @else
+                {!! nl2br($e->getTraceAsString()) !!}
+            @endif
+        </p>
         <p>{!!date('Y-m-d H:m:s')!!}</p>
     </div>
 </div>

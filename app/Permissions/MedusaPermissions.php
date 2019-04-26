@@ -2,10 +2,10 @@
 
 namespace App\Permissions;
 
-use App\Chapter;
 use App\User;
-use Illuminate\Support\Facades\Auth;
+use App\Chapter;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 
 trait MedusaPermissions
 {

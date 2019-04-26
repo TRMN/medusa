@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\GradeEntered;
 use App\Mail\McamNotice;
+use App\Events\GradeEntered;
 use Illuminate\Support\Facades\Mail;
 
 class MCAM

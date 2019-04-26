@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    <h1 class="text-center">Chapter Reports</h1>
+    <h1 class="text-center">Chapter Reports for {{ $chapterName }}</h1>
 
     <div class="row">
         <div class=" col-sm-2 underline">Status</div>
@@ -13,7 +13,7 @@
         <div class=" col-sm-2 ">&nbsp;</div>
     </div>
     <br>
-    @if(count($reports) === 0)
+    @if(empty($reports))
         <div class="row">
             <div class=" col-sm-6 text-center ">
                 No chapter reports found
@@ -36,10 +36,12 @@
                     <a class="fa fa-eye my" href="{!! route('report.show', [ $report->id ]) !!}" data-toggle="tooltip"
                        title="View Report"></a>&nbsp;
                     @if(empty($report['report_sent']) === true)
-                        <a class="fa fa-envelope my" href="{!! route('report.send', [$report->id]) !!}"
-                           data-toggle="tooltip" title="Send Report"></a>&nbsp;
-                        <a class="fa fa-file-o-edit green" href="{!! route('report.edit', [ $report->id ]) !!}"
+                        <a class="fa fa-edit my" href="{!! route('report.edit', [ $report->id ]) !!}"
                            data-toggle="tooltip" title="Edit Report"></a>
+
+                        <a class="fa fa-envelope my" href="{!! route('report.send', [$report->id]) !!}"
+                           data-toggle="tooltip" title="Send Report"
+                           data-report-date="{!!date('F, Y', strtotime($report['report_date']))!!}"></a>&nbsp;
                     @endif
                 </div>
                 @if(!empty(Session::get('orig_user')))
@@ -64,4 +66,14 @@
     </div>
 
 
+@stop
+
+@section('scriptFooter')
+    <script>
+        $('.fa-envelope').on('click', function (event) {
+            if (!confirm('Click Ok to send the ' + $(this).data('report-date') + ' Chapter Report')) {
+                event.preventDefault();
+            }
+        });
+    </script>
 @stop

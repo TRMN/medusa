@@ -30,20 +30,20 @@
                 <legend>Member Information</legend>
                 <div class="row">
                     <div class="col-sm-8  ninety Incised901Light form-group">
-                        {!! Form::label('email_address', 'E-Mail Address (This is your Username)', ['class' => 'my']) !!}
+                        {!! Form::label('email_address', 'E-Mail Address (This is your Username)', ['class' => 'my required']) !!}
                         {!! Form::email('email_address', $user->email_address, ['class' => 'form-control']) !!}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-3  ninety Incised901Light form-group">
-                        {!! Form::label('first_name', 'First Name', ['class' => 'my']) !!} {!! Form::text('first_name', $user->first_name, ['class' => 'form-control']) !!}
+                        {!! Form::label('first_name', 'First Name', ['class' => 'my required']) !!} {!! Form::text('first_name', $user->first_name, ['class' => 'form-control']) !!}
                     </div>
                     <div class="col-sm-2  ninety Incised901Light form-group">
                         {!! Form::label('middle_name', 'Middle Name', ['class' => 'my']) !!} {!! Form::text('middle_name', $user->middle_name, ['class' => 'form-control']) !!}
                     </div>
                     <div class="col-sm-3  ninety Incised901Light form-group">
-                        {!! Form::label('last_name', 'Last Name', ['class' => 'my']) !!} {!! Form::text('last_name', $user->last_name, ['class' => 'form-control']) !!}
+                        {!! Form::label('last_name', 'Last Name', ['class' => 'my required']) !!} {!! Form::text('last_name', $user->last_name, ['class' => 'form-control']) !!}
                     </div>
                     <div class="col-sm-2  ninety Incised901Light form-group ">
                         {!! Form::label('suffix', 'Suffix', ['class' => 'my']) !!} {!! Form::select('suffix', ['' => 'None', 'Jr' => 'Jr', 'Sr' => 'Sr', 'II' => 'II', 'III' => 'III', 'IV' => 'IV', 'V' => 'V'], $user->suffix, ['class' => 'form-control']) !!}
@@ -52,7 +52,7 @@
 
                 <div class="row">
                     <div class="col-sm-8  ninety Incised901Light form-group ">
-                        {!! Form::label('address1', 'Street Address', ['class' => 'my']) !!} {!! Form::text('address1', $user->address1, ['class' => 'form-control']) !!}
+                        {!! Form::label('address1', 'Street Address', ['class' => 'my required']) !!} {!! Form::text('address1', $user->address1, ['class' => 'form-control']) !!}
                     </div>
 
                 </div>
@@ -64,16 +64,16 @@
 
                 <div class="row">
                     <div class="col-sm-3  ninety Incised901Light form-group">
-                        {!! Form::label('city', 'City', ['class' => 'my']) !!} {!! Form::text('city', $user->city, ['class' => 'form-control']) !!}
+                        {!! Form::label('city', 'City', ['class' => 'my required']) !!} {!! Form::text('city', $user->city, ['class' => 'form-control']) !!}
                     </div>
                     <div class="col-sm-2  ninety Incised901Light form-group">
-                        {!! Form::label('state_province', 'State/Province', ['class' => 'my']) !!} {!! Form::text('state_province', $user->state_province, ['class' => 'form-control']) !!}
+                        {!! Form::label('state_province', 'State/Province', ['class' => 'my required']) !!} {!! Form::text('state_province', $user->state_province, ['class' => 'form-control']) !!}
                     </div>
                     <div class="col-sm-2  ninety Incised901Light form-group">
-                        {!! Form::label('postal_code', 'Postal Code', ['class' => 'my']) !!} {!! Form::text('postal_code', $user->postal_code, ['class' => 'form-control']) !!}
+                        {!! Form::label('postal_code', 'Postal Code', ['class' => 'my required']) !!} {!! Form::text('postal_code', $user->postal_code, ['class' => 'form-control']) !!}
                     </div>
                     <div class=" col-sm-3  ninety Incised901Light form-group">
-                        {!! Form::label('country', 'Country', ['class' => 'my']) !!} {!! Form::select('country', $countries, $user->country, ['class' => 'form-control']) !!}
+                        {!! Form::label('country', 'Country', ['class' => 'my required']) !!} {!! Form::select('country', $countries, $user->country, ['class' => 'form-control']) !!}
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                         {!! Form::label('phone_number', "Phone Number", ['class' => 'my']) !!} {!! Form::text('phone_number', $user->phone_number, ['class' => 'form-control']) !!}
                     </div>
                     <div class=" col-sm-4  ninety Incised901Light form-group">
-                        {!! Form::label('dob', 'Date of Birth', ['class' => 'my']) !!} {!!Form::date('dob', $user->dob, ['class' => 'form-control'])!!}
+                        {!! Form::label('dob', 'Date of Birth', ['class' => 'my required']) !!} {!!Form::date('dob', $user->dob, ['class' => 'form-control'])!!}
                     </div>
                 </div>
 
@@ -97,7 +97,7 @@
 
                 <div class="row">
                     <div class=" col-sm-6  ninety Incised901Light form-group">
-                        {!! Form::label('branch', "Branch", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_USER']) === true){!! Form::select('branch', $branches, $user->branch, ['class' => 'form-control']) !!}
+                        {!! Form::label('branch', "Branch", ['class' => 'my required']) !!} @if($permsObj->hasPermissions(['EDIT_USER']) === true){!! Form::select('branch', $branches, $user->branch, ['class' => 'form-control']) !!}
                         @else
                             {!!Form::hidden('branch', $user->branch)!!} {!!$branches[$user->branch]!!}
                         @endif
@@ -107,15 +107,15 @@
                 @if($permsObj->hasPermissions(['EDIT_USER']) === true)
                     <div class="row">
                         <div class=" col-sm-6  ninety Incised901Light form-group">
-                            {!!Form::label('registration_status', 'Registration Status', ['class' => 'my'])!!} {!!Form::select('registration_status', App\RegStatus::getRegStatuses(), $user->registration_status, ['class' => 'form-control']) !!}
+                            {!!Form::label('registration_status', 'Registration Status', ['class' => 'my required'])!!} {!!Form::select('registration_status', App\RegStatus::getRegStatuses(), $user->registration_status, ['class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="row">
                         <div class=" col-sm-4  ninety Incised901Light form-group">
-                            {!! Form::label('application_date', 'Application Date', ['class' => 'my']) !!} {!!Form::date('application_date', $user->application_date, ['class' => 'form-control'])!!}
+                            {!! Form::label('application_date', 'Application Date', ['class' => 'my required']) !!} {!!Form::date('application_date', $user->application_date, ['class' => 'form-control'])!!}
                         </div>
                         <div class=" col-sm-4  ninety Incised901Light form-group">
-                            {!! Form::label('registration_date', 'Registration Date', ['class' => 'my']) !!} {!!Form::date('registration_date', $user->registration_date, ['class' => 'form-control'])!!}
+                            {!! Form::label('registration_date', 'Registration Date', ['class' => 'my required']) !!} {!!Form::date('registration_date', $user->registration_date, ['class' => 'form-control'])!!}
                         </div>
                     </div>
                 @else
@@ -128,11 +128,11 @@
             </fieldset>
 
             <fieldset>
-                <legend>Primary Assignment Information</legend>
+                <legend>Primary Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="primary">(Clear)</a> @endif </legend>
 
                 <div class="row">
                     <div class=" col-sm-6  ninety Incised901Light form-group">
-                        {!! Form::label('primary_assignment', "Chapter", ['class' => 'my']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('primary_assignment', $chapters, $user->primary_assignment, ['class' => 'selectize']) !!}
+                        {!! Form::label('primary_assignment', "Chapter", ['class' => 'my required']) !!}  @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('primary_assignment', $chapters, $user->primary_assignment, ['class' => 'selectize']) !!}
                         {!! Form::hidden('passignment', $user->primary_assignment, ['id' => 'passignment']) !!}
                         @else
                             {!!Form::hidden('primary_assignment', $user->primary_assignment)!!} {!!$chapters[$user->primary_assignment]!!}
@@ -143,7 +143,7 @@
                 </div>
                 <div class="row">
                     <div class=" col-sm-6  ninety Incised901Light form-group">
-                        {!! Form::label('primary_billet', 'Billet', ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('primary_billet', $billets, $user->primary_billet, ['class' => 'billet']) !!}
+                        {!! Form::label('primary_billet', 'Billet', ['class' => 'my required']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('primary_billet', $billets, $user->primary_billet, ['class' => 'billet']) !!}
                         @else
                             {!!Form::hidden('primary_billet', $user->primary_billet)!!} {!!$user->primary_billet!!}<br/>
                             <br/>
@@ -152,7 +152,7 @@
                 </div>
                 <div class="row">
                     <div class=" col-sm-6  ninety Incised901Light form-group">
-                        {!! Form::label('primary_date_assigned', "Date Assigned", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::date('primary_date_assigned', $user->primary_date_assigned, ['class' => 'form-control']) !!}
+                        {!! Form::label('primary_date_assigned', "Date Assigned", ['class' => 'my required']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::date('primary_date_assigned', $user->primary_date_assigned, ['class' => 'form-control']) !!}
                         @else
                             {!!Form::hidden('primary_date_assigned', $user->primary_date_assigned)!!} {!!$user->primary_date_assigned!!}
                             <br/><br/>
@@ -162,7 +162,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Secondary Assignment Information</legend>
+                <legend>Secondary Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="secondary">(Clear)</a> @endif </legend>
 
                 @if(empty($user->secondary_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -202,7 +202,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Additional Assignment Information</legend>
+                <legend>Additional Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="additional">(Clear)</a> @endif </legend>
 
                 @if(empty($user->additional_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -242,7 +242,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Supplemental Assignment Information</legend>
+                <legend>Supplemental Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="extra">(Clear)</a> @endif </legend>
 
                 @if(empty($user->extra_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -387,7 +387,7 @@
                 </div>
             </div>
 
-            <a class="btn btn-danger" href="{!! URL::previous() !!}"><span class="fa fa-times"></span> Cancel </a>
+            <a class="btn btn-danger" href="{!! route('user.show', ['user' => $user->id]) !!}"><span class="fa fa-times"></span> Cancel </a>
             <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button>
 
             {!! Form::close() !!}
@@ -400,6 +400,8 @@
 
                     @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
                         <img src="{!!$user->filePhoto!!}?ts={{time()}}" alt="Official File Photo">
+                    @else
+                        <img />
                     @endif
                     <div class="ofpt">
                         <form action='/api/photo' class='dropzone' id='trmnDropzone' method='post'
@@ -524,6 +526,17 @@
             if ($('#ep').prop('checked')) {
                 $('#tigCheck').prop('checked', false);
             }
+        });
+
+        $('.del_assignment').on('click', function() {
+           let position=$(this).data('position');
+           $("#" + position + "_date_assigned").val('');
+
+            $.each([ '_assignment', '_billet' ], function( index, value ) {
+                let $select = $('#' + position + value).selectize();
+                let $control = $select[0].selectize;
+                $control.clear();
+            });
         });
     </script>
 @stop
