@@ -92,10 +92,6 @@
         Log::debug('Unit/MedusaConfigTest testRemove');
         $this->assertTrue(\App\MedusaConfig::remove('test.config'));
         $this->assertNull(\App\MedusaConfig::get('test.config'));
-        // Error: Class 'Tests\Unit\DB' not found
-        //DB::table('config')->delete();
-        // Error: Class 'vendor\laravel\framework\src\Illuminate\Support\Facades\DB' not found
-        //\vendor\laravel\framework\src\Illuminate\Support\Facades\DB::table('config')->delete();
-                               
+        \DB::table('config')->delete();                               
     }
 }
