@@ -35,7 +35,8 @@
 
         $actualResult = \App\MedusaConfig::get($param);
         $this->assertEquals($expectedResult, $actualResult);// Failed asserting that null matches expected 'This is a test'.
-        // Doesn't actually call the mock
+        // Doesn't actually call the mock - If testConfigSet is uncommented,
+        // then this test fails because the mock never got called. 
     }
 
     public function testConfigUpdate()
