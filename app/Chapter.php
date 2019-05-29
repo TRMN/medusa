@@ -78,16 +78,19 @@ class Chapter extends Eloquent
                 case 'SU':
                     $name =
                         $chapter->chapter_name.' ('.$chapter->hull_number.')';
+
                     break;
                 case 'headquarters':
                     $name =
                         $chapter->chapter_name.' ('.$chapter->branch.')';
+
                     break;
                 case 'fleet':
                     $fleet =
                         new NumberFormatter('en_US', NumberFormatter::ORDINAL);
                     $name =
                         $chapter->chapter_name.' ('.$fleet->format($chapter->hull_number).')';
+
                     break;
                 default:
                     $name = $chapter->chapter_name;

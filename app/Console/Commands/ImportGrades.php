@@ -743,6 +743,7 @@ class ImportGrades extends Command
         switch ($msgDetails['severity']) {
             case 'info':
                 $this->info($msgDetails['msg']);
+
                 break;
             default:
                 $this->error($msgDetails['msg']);

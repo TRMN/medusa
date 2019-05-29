@@ -1940,6 +1940,7 @@ class UpdateCivilianPromotionPoints extends Migration
                         $$branch[$payGrade] = $breq;
                     }
                     unset($pp[$payGrade]);
+
                     break;
             }
         }

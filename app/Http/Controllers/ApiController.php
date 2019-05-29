@@ -266,12 +266,14 @@ class ApiController extends Controller
                                       );
                             }
                         );
+
                 break;
             case 2:
                 $query =
                     User::where('first_name', 'like', $terms[0].'%')
                         ->where('last_name', 'like', $terms[1].'%')
                         ->where('registration_status', '=', 'Active');
+
                 break;
             default:
                 $query =

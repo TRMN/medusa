@@ -76,39 +76,50 @@ class ChapterController extends Controller
             switch ($order[0]['column']) {
                 case 0:
                     $query = $query->orderBy('promotionStatus', $sortOrder);
+
                     break;
                 case 1:
                     $query = $query->orderBy('last_name', $sortOrder)->orderBy('first_name', $sortOrder);
+
                     break;
                 case 2:
                     $query = $query->orderBy('member_id', $sortOrder);
+
                     break;
                 case 3:
                     $query = $query->orderBy('path', $sortOrder);
+
                     break;
                 case 6:
                     $query = $query->orderBy('rank.grade', $sortOrder);
+
                     break;
                 case 9:
                     $query = $query->orderBy('branch', $sortOrder);
+
                     break;
                 case 10:
                     $query = $query->orderBy('city', $sortOrder);
+
                     break;
                 case 11:
                     $query = $query->orderBy('state_province', $sortOrder);
+
                     break;
             }
         } else {
             switch ($order[0]['column']) {
                 case 0:
                     $query = $query->orderBy('last_name', $sortOrder)->orderBy('first_name', $sortOrder);
+
                     break;
                 case 1:
                     $query = $query->orderBy('rank.grade', $sortOrder);
+
                     break;
                 case 4:
                     $query = $query->orderBy('branch', $sortOrder);
+
                     break;
             }
         }
@@ -500,13 +511,16 @@ class ChapterController extends Controller
                     switch (substr($user->rank['grade'], 0, 1)) {
                         case 'E':
                             $exam = $user->getHighestEnlistedExam();
+
                             break;
                         case 'W':
                             $exam = $user->getHighestWarrantExam();
+
                             break;
                         case 'O':
                         case 'F':
                             $exam = $user->getHighestOfficerExam();
+
                             break;
                         default:
                             $exam = [];

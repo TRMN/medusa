@@ -10,11 +10,17 @@ use App\Echelons\MedusaEchelons;
 class AnyUnitController extends Controller
 {
     private $chapterTypes = [];
+
     private $permissions = ['ADD' => 'ALL_PERMS', 'EDIT' => 'ALL_PERMS', 'DELETE' => 'ALL_PERMS'];
+
     private $auditName = 'AnyUnitController';
+
     private $select = 'Select a Unit Type';
+
     private $title = 'a Unit';
+
     private $branch = 'RMMC';
+
     private $routePrefix = 'anyunit';
 
     use MedusaEchelons;

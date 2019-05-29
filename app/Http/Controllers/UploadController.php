@@ -328,6 +328,7 @@ class UploadController extends Controller
                         // Career Path
                         case 'path':
                             $member->setPath($value);
+
                             break;
                         // Activity points
                         case 'triad':
@@ -336,6 +337,7 @@ class UploadController extends Controller
                             // Import is number of 3 month blocks, MEDUSA uses total months
                             $value = $value * 3;
                             $member->setPromotionPointValue($key, $value);
+
                             break;
                         case 'cpm':
                         case 'cpe':
@@ -352,6 +354,7 @@ class UploadController extends Controller
                         case 'ls':
                         case 'peerage':
                             $member->setPromotionPointValue($key, $value);
+
                             break;
                         // Anything else is an award
                         default:

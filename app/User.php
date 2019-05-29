@@ -553,6 +553,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     case 'theater':
                     case 'headquarters':
                         return $assignment['chapter_id'];
+
                         break;
                 }
             }
@@ -1003,18 +1004,23 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 switch ($options['format']) {
                     case 'M':
                         return $join->diffInMonths($today);
+
                         break;
                     case 'Y':
                         return $join->diffInYears($today);
+
                         break;
                     case 'D':
                         return $join->diffInDays($today);
+
                         break;
                     case 'H':
                         return $join->diffInHours($today);
+
                         break;
                     case 'm':
                         return $join->diffInMinutes($today);
+
                         break;
                 }
             }
@@ -1137,6 +1143,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-000[1-9]$/';
 
                         $list = $this->filterArray($list, $examMatch);
+
                         break;
 
                     case 'warrant':
@@ -1144,6 +1151,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-001[1-9]$/';
 
                         $list = $this->filterArray($list, $examMatch);
+
                         break;
 
                     case 'officer':
@@ -1151,6 +1159,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-01[0-9][1-9]$/';
 
                         $list = $this->filterArray($list, $examMatch);
+
                         break;
 
                     case 'flag':
@@ -1158,6 +1167,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                         $examMatch = '/^.*-(RMN|GSN|RHN|IAN)-100[1-9]$/';
 
                         $list = $this->filterArray($list, $examMatch);
+
                         break;
 
                     case 'officer+flag':
@@ -1166,6 +1176,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                                 $this->getExamList(['class' => 'officer']),
                                 $this->getExamList(['class' => 'flag'])
                             );
+
                         break;
                 }
             }
@@ -1214,6 +1225,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 }
                 $options['pattern'] = '/^.*-'.$college.'-.*/';
                 $options['except'] = '/^.*-'.$college.'-0113|^.*-'.$college.'-0115/';
+
                 break;
             default:
                 $options['pattern'] = '/^.*-'.$this->branch.'-.*/';
@@ -1667,20 +1679,25 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 switch ($this->branch) {
                     case 'RMACS':
                         $rankCode .= '-AC';
+
                         break;
                     case 'RMMM':
                         $rankCode .= '-MM';
+
                         break;
                     case 'SFC':
                         $rankCode .= '-SFC';
+
                         break;
                     case 'CIVIL':
                         switch ($this->rating) {
                             case 'INTEL':
                                 $rankCode .= '-IS';
+
                                 break;
                             case 'DIPLOMATIC':
                                 $rankCode .= '-CD';
+
                                 break;
                             case 'LORDS':
                                 if ($this->rank['grade'] == 'C-20' || $this->rank['grade'] == 'C-22') {
@@ -1688,6 +1705,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                                 } else {
                                     $rankCode .= '-LS';
                                 }
+
                                 break;
                             case 'COMMONS':
                                 if ($this->rank['grade'] == 'C-20' || $this->rank['grade'] == 'C-22') {
@@ -1695,9 +1713,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                                 } else {
                                     $rankCode .= '-CS';
                                 }
+
                                 break;
                         }
                 }
+
                 break;
             default:
                 break;
@@ -1710,30 +1730,39 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                 if ($this->rating == 'INTEL') {
                     $seal = 'INTEL.png';
                 }
+
                 break;
             case 'RMMM':
                 $seal = 'RMMM.png';
+
                 break;
             case 'SFC':
                 $seal = 'SFC.png';
+
                 break;
             case 'INTEL':
                 $seal = 'INTEL.png';
+
                 break;
             case 'IAN':
                 $seal = 'IAN.png';
+
                 break;
             case 'RHN':
                 $seal = 'RHN.png';
+
                 break;
             case 'GSN':
                 $seal = 'GSN.png';
+
                 break;
             case 'RMMC':
                 $seal = 'RMMC.png';
+
                 break;
             case 'RMA':
                 $seal = 'RMA.png';
+
                 break;
             default:
                 $seal = 'RMN.png';
@@ -2363,9 +2392,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             case 'exp_force':
             case 'corps':
                 $chapters = [$chapter->assigned_to];
+
                 break;
             case 'lac':
                 $chapters = $chapter->getChapterIdWithParents('district');
+
                 break;
             case 'fleet':
             case 'ship':
@@ -2382,6 +2413,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             case 'headquarters':
             case 'bureau':
                 $chapters = [$chapter->id];
+
                 break;
             default:
                 $chapters = $chapter->getChapterIdWithParents();
@@ -2634,21 +2666,27 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
                     switch ($v) {
                         case 'B':
                             $points += 1;
+
                             break;
                         case 'E':
                             $points += 2;
+
                             break;
                         case 'S':
                             $points += 4;
+
                             break;
                         case 'L':
                             $points += 4;
+
                             break;
                         case 'D':
                             $points += 4;
+
                             break;
                         case 'G':
                             $points += 7;
+
                             break;
                     }
                 } elseif ($k !== 'ep') {

@@ -28,6 +28,7 @@ class OAuthService
 {
     /** @var \MongoClient */
     protected $mongo;
+
     /**
      * @var Server
      */

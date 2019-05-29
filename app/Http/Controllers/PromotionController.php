@@ -81,6 +81,7 @@ class PromotionController extends Controller
                                 } else {
                                     $board[] = $memberCopy;
                                 }
+
                                 break;
                             case 'WO':
                                 if ($paygrade[1] == 1) {
@@ -100,6 +101,7 @@ class PromotionController extends Controller
                                 } else {
                                     $board[] = $memberCopy;
                                 }
+
                                 break;
                         }
                         unset($memberCopy);
