@@ -322,6 +322,12 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             $this->rank_title = $this->rank['grade'];
         }
 
+        // Fix issue resulting from combining Intel and Diplomatic branches into one.
+        if ($this->branch == 'CIVIL' && empty($this->rating) === true) {
+            $this->rating = 'DIPLOMATIC';
+            $this->save();
+        }
+
         if (! empty($this->rating)) {
             if (is_array($this->rating) === true) {
                 $results = Rating::where('rate_code', '=', $this->rating['rate'])
@@ -358,6 +364,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             }
 
             return $this->rating;
+        } elseif ($this->branch == 'CIVIL') {
+            return 'DIPLOMATIC';
         }
     }
 
