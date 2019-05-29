@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Chapter;
+use App\Models\Chapter;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -22,7 +22,7 @@ class ImportChapters extends Command
      */
     protected $description = 'Import chapters from the old system';
 
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Create a new command instance.

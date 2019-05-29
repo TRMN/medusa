@@ -11,7 +11,7 @@ class FixDoB extends Migration
      */
     public function up()
     {
-        foreach (\App\User::where('dob', 'regex', '/^\d{1,2}-\d{1,2}-\d{1,2}$/')->get() as $member) {
+        foreach (\App\Models\User::where('dob', 'regex', '/^\d{1,2}-\d{1,2}-\d{1,2}$/')->get() as $member) {
             $dob = explode('-', $member->dob);
 
             if ($dob[0] > 12) {

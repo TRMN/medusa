@@ -13,7 +13,7 @@ class RestrictedAwards extends Migration
     {
         $config = ['OSWP', 'ESWP', 'MCAM', 'KR3CM', 'QE3CM', 'QE3GJM', 'QE3SJM'];
 
-        \App\MedusaConfig::set('awards.restricted', $config);
+        \App\Models\MedusaConfig::set('awards.restricted', $config);
     }
 
     /**
@@ -23,6 +23,6 @@ class RestrictedAwards extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('awards.restricted');
+        \App\Models\MedusaConfig::remove('awards.restricted');
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Awards;
+namespace App\Models\Awards;
 
-use App\AwardLog;
+use App\Models\AwardLog;
 use Carbon\Carbon;
-use App\MedusaConfig;
+use App\Models\MedusaConfig;
 use App\Utility\MedusaUtility;
 
 /**

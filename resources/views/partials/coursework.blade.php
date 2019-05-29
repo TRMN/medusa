@@ -23,7 +23,7 @@
 
 <div>
     <ul class="nav nav-tabs" role="tablist">
-        @foreach(\App\MedusaConfig::get('exam.regex') as $school => $regex)
+        @foreach(\App\Models\MedusaConfig::get('exam.regex') as $school => $regex)
             @if(!empty($user->getExamList(['pattern' => $regex])))
                 <li role="presentation"{!! $loop->first ? ' class="active"' : '' !!}><a
                             href="#{{str_replace(' ', '', $school)}}" aria-controls="{{str_replace(' ', '', $school)}}"
@@ -38,13 +38,13 @@
     </ul>
 
     <div class="tab-content">
-        @foreach(\App\MedusaConfig::get('exam.regex') as $school => $regex)
+        @foreach(\App\Models\MedusaConfig::get('exam.regex') as $school => $regex)
             @if(!empty($user->getExamList(['pattern' => $regex])))
                 <div role="tabpanel" class="tab-pane padding-top-10{{$loop->first ? ' active' : ''}}"
                      id="{{str_replace(' ', '', $school)}}">
                     @foreach($user->getExamList(['pattern' => $regex]) as $exam => $gradeInfo)
                         <div class="row zebra-odd">
-                            <div class="col-sm-6  Incised901Light text-left @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) >= strtotime(Auth::user()->getLastLogin())))yellow @endif">{!!$exam!!} @if (!is_null(App\ExamList::where('exam_id','=',$exam)->first())){!!App\ExamList::where('exam_id','=',$exam)->first()->name!!}@endif</div>
+                            <div class="col-sm-6  Incised901Light text-left @if(!empty($gradeInfo['date_entered']) && (strtotime($gradeInfo['date_entered']) >= strtotime(Auth::user()->getLastLogin())))yellow @endif">{!!$exam!!} @if (!is_null(App\Models\ExamList::where('exam_id','=',$exam)->first())){!!App\Models\ExamList::where('exam_id','=',$exam)->first()->name!!}@endif</div>
                             <div class="col-sm-1  Incised901Light text-right">{!! is_numeric(rtrim($gradeInfo['score'], '%'))? ($gradeInfo['score'] == 0 ? '<span class="red">FAIL</span>' : $gradeInfo['score']): '100%' !!}</div>
                             <div class="col-sm-3  Incised901Light text-right">@if($gradeInfo['date'] != 'UNKNOWN')
                                     {!!date('d M Y', strtotime($gradeInfo['date']))!!}

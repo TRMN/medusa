@@ -2,7 +2,7 @@
 
 namespace App\Log;
 
-use App\Message;
+use App\Models\Message;
 
 trait MedusaLog
 {

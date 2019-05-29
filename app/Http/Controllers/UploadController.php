@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Award;
-use App\Chapter;
-use App\Message;
-use App\ImportLog;
-use App\UploadLog;
+use App\Models\User;
+use App\Models\Award;
+use App\Models\Chapter;
+use App\Models\Message;
+use App\Models\ImportLog;
+use App\Models\UploadLog;
 use App\Log\MedusaLog;
 use League\Csv\Reader;
 use Illuminate\Support\Str;

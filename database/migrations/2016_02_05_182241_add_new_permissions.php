@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddNewPermissions extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -28,7 +28,7 @@ class AddNewPermissions extends Migration
                 json_encode(['name' => $perm, 'description' => $desc]),
                 'add_new_permissions'
             );
-            App\Permission::create(['name' => $perm, 'description' => $desc]);
+            App\Models\Permission::create(['name' => $perm, 'description' => $desc]);
         }
     }
 

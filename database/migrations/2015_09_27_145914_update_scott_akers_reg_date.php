@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class UpdateScottAkersRegDate extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class UpdateScottAkersRegDate extends Migration
      */
     public function up()
     {
-        $user = App\User::where('member_id', '=', 'RMN-0011-08')->first();
+        $user = App\Models\User::where('member_id', '=', 'RMN-0011-08')->first();
 
         $user->registration_date = '2008-02-22';
         $user->application_date = '2008-02-22';

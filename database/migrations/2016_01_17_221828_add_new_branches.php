@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddNewBranches extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.

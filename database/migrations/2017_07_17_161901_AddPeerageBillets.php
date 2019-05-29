@@ -1,7 +1,7 @@
 <?php
 
-use App\Billet;
-use App\Audit\MedusaAudit;
+use App\Models\Billet;
+use App\Models\Audit\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageBillets extends Migration
@@ -30,7 +30,7 @@ class AddPeerageBillets extends Migration
                      'Majordomo',
                  ] as $billet) {
             try {
-                App\Billet::create(['billet_name' => $billet]);
+                App\Models\Billet::create(['billet_name' => $billet]);
 
                 $this->writeAuditTrail(
                     'migration',
@@ -67,9 +67,9 @@ class AddPeerageBillets extends Migration
                      'Majordomo',
                  ] as $billet) {
             try {
-                $billetId = App\Billet::where('billet_name', $billet)->first()->id;
+                $billetId = App\Models\Billet::where('billet_name', $billet)->first()->id;
 
-                App\Billet::destroy($billetId);
+                App\Models\Billet::destroy($billetId);
 
                 $this->writeAuditTrail(
                     'migration',

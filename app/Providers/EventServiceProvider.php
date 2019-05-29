@@ -12,7 +12,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\LoginComplete::class => [
+        \App\Models\Events\LoginComplete::class => [
             \App\Listeners\QE3CM::class,
             \App\Listeners\KR3CM::class,
             \App\Listeners\QE3SJM::class,
@@ -20,10 +20,10 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\SWP::class,
             \App\Listeners\MCAM::class,
         ],
-        \App\Events\EmailChanged::class => [
+        \App\Models\Events\EmailChanged::class => [
             \App\Listeners\UpdateForumEmail::class,
         ],
-        \App\Events\GradeEntered::class => [
+        \App\Models\Events\GradeEntered::class => [
             \App\Listeners\SWP::class,
             \App\Listeners\MCAM::class,
         ],

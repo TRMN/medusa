@@ -1,21 +1,21 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use DateTime;
 use Exception;
 use Carbon\Carbon;
-use App\Audit\MedusaAudit;
+use App\Models\Audit\MedusaAudit;
 use Illuminate\Support\Arr;
 use App\Common\MedusaCommon;
 use App\Enums\MedusaDefaults;
-use App\Awards\AwardQualification;
+use App\Models\Awards\AwardQualification;
 use Laravel\Passport\HasApiTokens;
 use App\Promotions\MedusaPromotions;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use App\Permissions\MedusaPermissions;
+use App\Models\Permissions\MedusaPermissions;
 use Illuminate\Notifications\Notifiable;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -2143,7 +2143,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             }
         }
 
-        if (is_a($event, \App\Events::class) === false) {
+        if (is_a($event, \App\Models\Events::class) === false) {
             // Not the correct object, return an error
             $this->setTimeZone($currentTz);
 

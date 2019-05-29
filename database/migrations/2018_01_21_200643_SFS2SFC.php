@@ -1,6 +1,6 @@
 <?php
 
-use App\Branch;
+use App\Models\Branch;
 use Illuminate\Database\Migrations\Migration;
 
 class SFS2SFC extends Migration
@@ -14,7 +14,7 @@ class SFS2SFC extends Migration
     {
         // Update the SFS entry in the branch's collection
 
-        $item = App\Branch::where('branch', 'SFS')->first();
+        $item = App\Models\Branch::where('branch', 'SFS')->first();
 
         $item->branch = 'SFC';
         $item->branch_name = 'Sphinx Forestry Commission';
@@ -23,7 +23,7 @@ class SFS2SFC extends Migration
 
         // Get all the other entries and update the equivalency entry
 
-        foreach (App\Branch::where('branch', '!=', 'SFC')->get() as $entry) {
+        foreach (App\Models\Branch::where('branch', '!=', 'SFC')->get() as $entry) {
             $equivalent = $entry->equivalent;
             $equivalent['SFC'] = $equivalent['SFS'];
             unset($equivalent['SFS']);
@@ -34,29 +34,29 @@ class SFS2SFC extends Migration
 
         // Update all the members branch
 
-        foreach (\App\User::where('branch', 'SFS')->get() as $member) {
+        foreach (\App\Models\User::where('branch', 'SFS')->get() as $member) {
             $member->branch = 'SFC';
             $member->save();
         }
 
         // Update the gpa patterns
 
-        $gpa = \App\MedusaConfig::get('gpa.patterns');
+        $gpa = \App\Models\MedusaConfig::get('gpa.patterns');
         $gpa['services']['SFC'] = '/^SIA-SFC-';
 
-        \App\MedusaConfig::set('gpa.patterns', $gpa);
+        \App\Models\MedusaConfig::set('gpa.patterns', $gpa);
 
         // Update the exam regex
 
-        $exams = App\MedusaConfig::get('exam.regex');
+        $exams = App\Models\MedusaConfig::get('exam.regex');
         $exams['SFC'] = $exams['SFS'];
         unset($exams['SFS']);
 
-        \App\MedusaConfig::set('exam.regex', $exams);
+        \App\Models\MedusaConfig::set('exam.regex', $exams);
 
         // Update the rank tables
 
-        foreach (\App\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
+        foreach (\App\Models\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
             if (empty($grade->rank['SFS']) === false) {
                 $rank = $grade->rank;
                 $rank['SFC'] = $rank['SFS'];
@@ -96,29 +96,29 @@ class SFS2SFC extends Migration
 
         // Update all the members branch
 
-        foreach (\App\User::where('branch', 'SFC')->get() as $member) {
+        foreach (\App\Models\User::where('branch', 'SFC')->get() as $member) {
             $member->branch = 'SFS';
             $member->save();
         }
 
         // Revert the gpa patterns
 
-        $gpa = \App\MedusaConfig::get('gpa.patterns');
+        $gpa = \App\Models\MedusaConfig::get('gpa.patterns');
         unset($gpa['services']['SFC']);
 
-        \App\MedusaConfig::set('gpa.patterns', $gpa);
+        \App\Models\MedusaConfig::set('gpa.patterns', $gpa);
 
         // Revert the exam regex
 
-        $exams = App\MedusaConfig::get('exam.regex');
+        $exams = App\Models\MedusaConfig::get('exam.regex');
         $exams['SFS'] = $exams['SFC'];
         unset($exams['SFC']);
 
-        \App\MedusaConfig::set('exam.regex', $exams);
+        \App\Models\MedusaConfig::set('exam.regex', $exams);
 
         // Revert the rank tables
 
-        foreach (\App\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
+        foreach (\App\Models\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
             if (empty($grade->rank['SFC']) === false) {
                 $rank = $grade->rank;
                 $rank['SFS'] = $rank['SFC'];

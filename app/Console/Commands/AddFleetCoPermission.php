@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Chapter;
+use App\Models\User;
+use App\Models\Chapter;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
 class AddFleetCoPermission extends Command
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * The console command name.

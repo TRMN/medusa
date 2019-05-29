@@ -13,7 +13,7 @@ class AddDisplayToAwardsEarned extends Migration
     {
         // Get all the users
 
-        $users = \App\User::all();
+        $users = \App\Models\User::all();
 
         foreach ($users as $user) {
             // Get the awards for the user
@@ -43,7 +43,7 @@ class AddDisplayToAwardsEarned extends Migration
     {
         // Get all the users
 
-        $users = \App\User::all();
+        $users = \App\Models\User::all();
 
         foreach ($users as $user) {
             // Get the awards for the user

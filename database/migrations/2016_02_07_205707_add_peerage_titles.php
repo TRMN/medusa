@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageTitles extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -39,7 +39,7 @@ class AddPeerageTitles extends Migration
                 'add_peerage_titles'
             );
 
-            App\Ptitles::create(['title' => $title, 'code' => $code, 'precedence' => $precedence]);
+            App\Models\Ptitles::create(['title' => $title, 'code' => $code, 'precedence' => $precedence]);
         }
     }
 

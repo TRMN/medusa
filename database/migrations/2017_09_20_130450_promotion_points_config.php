@@ -116,7 +116,7 @@ class PromotionPointsConfig extends Migration
             ],
         ];
 
-        \App\MedusaConfig::set('pp.form-config', $config);
+        \App\Models\MedusaConfig::set('pp.form-config', $config);
     }
 
     /**
@@ -126,6 +126,6 @@ class PromotionPointsConfig extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('pp.form-config');
+        \App\Models\MedusaConfig::remove('pp.form-config');
     }
 }

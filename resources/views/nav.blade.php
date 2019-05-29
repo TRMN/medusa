@@ -16,11 +16,11 @@
                 <br/><a href="{{route('switch.stop')}}">Return to Original User</a>
             @endif
         </div>
-        @if(!is_null(\App\MedusaConfig::get('show.events')))
+        @if(!is_null(\App\Models\MedusaConfig::get('show.events')))
             <h3 class="nav-header lnav">Events</h3>
             <div class="rnav">
                 <a href="{!!route('events.create')!!}">Schedule an Event</a>
-                @if (!empty(\App\Events::where('requestor', '=', Auth::user()->id)->get()))
+                @if (!empty(\App\Models\Events::where('requestor', '=', Auth::user()->id)->get()))
                     <br/><a href="{!!route('events.index')!!}">View Scheduled Events</a>
                 @endif
             </div>

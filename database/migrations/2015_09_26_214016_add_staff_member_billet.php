@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddStaffMemberBillet extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -21,7 +21,7 @@ class AddStaffMemberBillet extends Migration
             json_encode(['billet_name' => 'Staff']),
             'add_flag_lt'
         );
-        App\Billet::create(['billet_name' => 'Staff']);
+        App\Models\Billet::create(['billet_name' => 'Staff']);
     }
 
     /**

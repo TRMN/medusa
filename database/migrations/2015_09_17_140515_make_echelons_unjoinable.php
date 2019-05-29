@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class MakeEchelonsUnjoinable extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -16,7 +16,7 @@ class MakeEchelonsUnjoinable extends Migration
         $types = ['task_force', 'task_group', 'squadron', 'division'];
 
         foreach ($types as $type) {
-            $echelons = \App\Chapter::where('chapter_type', '=', $type)->get();
+            $echelons = \App\Models\Chapter::where('chapter_type', '=', $type)->get();
 
             foreach ($echelons as $echelon) {
                 $echelon->joinable = false;

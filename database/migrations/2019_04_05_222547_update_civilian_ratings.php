@@ -12,9 +12,9 @@ class UpdateCivilianRatings extends Migration
     public function up()
     {
         /*
-         * @var App\User
+         * @var App\Models\User
          */
-        foreach (App\User::where('branch', 'CIVIL')->get() as $user) {
+        foreach (App\Models\User::where('branch', 'CIVIL')->get() as $user) {
             if (empty($user->rating) === true) {
                 $user->rating = 'DIPLOMATIC';
                 $user->save();

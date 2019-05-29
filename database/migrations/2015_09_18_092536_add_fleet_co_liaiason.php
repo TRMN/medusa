@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddFleetCoLiaiason extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -21,7 +21,7 @@ class AddFleetCoLiaiason extends Migration
             json_encode(['billet_name' => 'Fleet CO Liaison']),
             'add_flag_lt'
         );
-        App\Billet::create(['billet_name' => 'Fleet CO Liaison']);
+        App\Models\Billet::create(['billet_name' => 'Fleet CO Liaison']);
     }
 
     /**

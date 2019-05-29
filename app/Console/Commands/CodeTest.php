@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class CodeTest extends Command
 {
-    use \App\Permissions\MedusaPermissions;
+    use \App\Models\Permissions\MedusaPermissions;
 
     /**
      * The console command name.

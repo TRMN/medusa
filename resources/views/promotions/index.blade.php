@@ -19,7 +19,7 @@
 
     <div class="collapse" id="instructions">
         <div class="well well-sm Incised901Light text-left">
-            {!! str_replace('CHAPTER', $chapter->chapter_name, \App\MedusaConfig::get('promotions.instructions')) !!}
+            {!! str_replace('CHAPTER', $chapter->chapter_name, \App\Models\MedusaConfig::get('promotions.instructions')) !!}
         </div>
     </div>
 

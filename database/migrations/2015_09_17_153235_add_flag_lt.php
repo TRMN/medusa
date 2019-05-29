@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddFlagLt extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -21,7 +21,7 @@ class AddFlagLt extends Migration
             json_encode(['billet_name' => 'Flag Lieutenant']),
             'add_flag_lt'
         );
-        App\Billet::create(['billet_name' => 'Flag Lieutenant']);
+        App\Models\Billet::create(['billet_name' => 'Flag Lieutenant']);
     }
 
     /**

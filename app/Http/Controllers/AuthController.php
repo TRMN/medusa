@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\ForumUser;
-use App\Events\LoginComplete;
+use App\Models\User;
+use App\Models\ForumUser;
+use App\Models\Events\LoginComplete;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;

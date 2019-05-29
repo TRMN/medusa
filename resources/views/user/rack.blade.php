@@ -15,7 +15,7 @@
     <div class="row">
         <h1 class="text-center">Ribbon Rack Builder
             for {{  $user->getGreeting() }} {{ $user->first_name }}{{ isset($user->middle_name) ? ' ' . $user->middle_name : '' }} {{ $user->last_name }}{{ isset($user->suffix) ? ' ' . $user->suffix : '' }}</h1>
-        {!! \App\MedusaConfig::get('rr.instructions') !!}
+        {!! \App\Models\MedusaConfig::get('rr.instructions') !!}
     </div>
 
     {{ Form::open(['route' => ['saverack', $user]]) }}
@@ -42,7 +42,7 @@
         </div>
     </div>
     <br clear="both"/>
-    @foreach(App\Award::getLeftSleeve() as $badge)
+    @foreach(App\Models\Award::getLeftSleeve() as $badge)
         @if(file_exists(public_path('images/' . $badge->code . '.svg')))
             <div class="row ribbon-row">
                 <div class="col-sm-1">
@@ -91,7 +91,7 @@
 
     <div class="row text-center"><h3>Award Stripes</h3></div>
     <div class="ribbon-group">
-        @foreach(App\Award::getRightSleeve() as $badge)
+        @foreach(App\Models\Award::getRightSleeve() as $badge)
             @if(file_exists(public_path('awards/stripes/' . $badge->code . '-1.svg')))
                 <div class="row ribbon-group-row">
                     <div class="col-sm-1">
@@ -124,7 +124,7 @@
 
     <div class="row text-center"><h3>Unit Citations</h3></div>
     <div class="ribbon-group padding-top-10">
-        @foreach(App\Award::getRightRibbons() as $ribbon)
+        @foreach(App\Models\Award::getRightRibbons() as $ribbon)
             @if(is_object($ribbon))
                 <div class="row ribbon-group-row">
                     <div class="col-sm-1">
@@ -220,7 +220,7 @@
             </div>
         </div>
 
-        @foreach(App\Award::getTopBadges(['HS', 'OSWP', 'ESWP', 'CIB']) as $index => $badge)
+        @foreach(App\Models\Award::getTopBadges(['HS', 'OSWP', 'ESWP', 'CIB']) as $index => $badge)
             @foreach($badge['group']['awards'] as $group)
                 @if(file_exists(public_path('awards/badges/' . $group->code . '-1.svg')))
                     <div class="row ribbon-group-row qual-badges">
@@ -281,7 +281,7 @@
         </div>
 
         @foreach($wings as $desc => $wing)
-            @foreach(App\Award::getAerospaceWings($wing) as $index => $ribbon)
+            @foreach(App\Models\Award::getAerospaceWings($wing) as $index => $ribbon)
                 <div class="row ribbon-group-row qual-badges">
                     <div class="col-sm-1 vertical-center-qual-badges">{{Form::checkbox('select' . $groupCount . '_chk', 1, false, ['id' => 'select' . $groupCount . '_chk'])}}</div>
                     <div class="col-sm-2 text-center">
@@ -316,7 +316,7 @@
                 </div>
             </div>
 
-            @foreach(App\Award::getArmyWeaponQualificationBadges() as $index => $ribbon)
+            @foreach(App\Models\Award::getArmyWeaponQualificationBadges() as $index => $ribbon)
                 <div class="row ribbon-group-row qual-badges">
                     <div class="col-sm-1 vertical-center-qual-badges">{{Form::checkbox('select' . $groupCount . '_chk', 1, false, ['id' => 'select' . $groupCount . '_chk'])}}</div>
                     <div class="col-sm-2 text-center">
@@ -341,7 +341,7 @@
     </div>
 
     <div class="row text-center"><h3>Individual Awards</h3></div>
-    @foreach(App\Award::getLeftRibbons() as $index => $ribbon)
+    @foreach(App\Models\Award::getLeftRibbons() as $index => $ribbon)
 
         @if(is_object($ribbon))
                 <div class="row ribbon-row">

@@ -2,12 +2,12 @@
 
 namespace App\Promotions;
 
-use App\Grade;
+use App\Models\Grade;
 use Exception;
-use App\Branch;
-use App\Rating;
+use App\Models\Branch;
+use App\Models\Rating;
 use Carbon\Carbon;
-use App\MedusaConfig;
+use App\Models\MedusaConfig;
 use Illuminate\Support\Facades\Auth;
 
 /**

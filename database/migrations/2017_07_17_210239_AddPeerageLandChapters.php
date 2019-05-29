@@ -1,7 +1,7 @@
 <?php
 
-use App\Chapter;
-use App\Audit\MedusaAudit;
+use App\Models\Chapter;
+use App\Models\Audit\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageLandChapters extends Migration

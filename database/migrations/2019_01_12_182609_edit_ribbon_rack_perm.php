@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class EditRibbonRackPerm extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -26,13 +26,13 @@ class EditRibbonRackPerm extends Migration
                 json_encode(['name' => $perm, 'description' => $desc]),
                 'add_new_permissions'
             );
-            App\Permission::create(['name' => $perm, 'description' => $desc]);
+            App\Models\Permission::create(['name' => $perm, 'description' => $desc]);
         }
 
         // Add the new permission to the 5SL and Dir MDOC
 
         foreach (['RMN-1094-12', 'RMN-0927-12'] as $member_id) {
-            $user = \App\User::where('member_id', $member_id)->first();
+            $user = \App\Models\User::where('member_id', $member_id)->first();
             $user->updatePerms(['EDIT_RR']);
             $user->save();
         }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddViewBosunPermissions extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -26,7 +26,7 @@ class AddViewBosunPermissions extends Migration
                 json_encode(['name' => $perm, 'description' => $desc]),
                 'add_new_permissions'
             );
-            App\Permission::create(['name' => $perm, 'description' => $desc]);
+            App\Models\Permission::create(['name' => $perm, 'description' => $desc]);
         }
     }
 
@@ -37,7 +37,7 @@ class AddViewBosunPermissions extends Migration
      */
     public function down()
     {
-        $bosunPerm = \App\Permission::where('name', 'VIEW_BOSUN')->first();
-        \App\Permission::destroy($bosunPerm->id);
+        $bosunPerm = \App\Models\Permission::where('name', 'VIEW_BOSUN')->first();
+        \App\Models\Permission::destroy($bosunPerm->id);
     }
 }

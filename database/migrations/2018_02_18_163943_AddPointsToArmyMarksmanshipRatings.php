@@ -22,7 +22,7 @@ class AddPointsToArmyMarksmanshipRatings extends Migration
         ];
 
         foreach ($patterns as $pattern => $points) {
-            foreach (\App\Award::where('code', 'like', $pattern)->get() as $award) {
+            foreach (\App\Models\Award::where('code', 'like', $pattern)->get() as $award) {
                 $award->points = $points;
                 $award->save();
             }
@@ -36,6 +36,6 @@ class AddPointsToArmyMarksmanshipRatings extends Migration
      */
     public function down()
     {
-        \App\Award::where('code', 'like', 'A%R')->unset('code');
+        \App\Models\Award::where('code', 'like', 'A%R')->unset('code');
     }
 }

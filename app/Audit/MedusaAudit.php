@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Audit;
+namespace App\Models\Audit;
 
-use App\Audit;
+use App\Models\Audit;
 
 trait MedusaAudit
 {

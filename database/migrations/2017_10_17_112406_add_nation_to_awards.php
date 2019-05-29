@@ -11,7 +11,7 @@ class AddNationToAwards extends Migration
      */
     public function up()
     {
-        $awards = \App\Award::all();
+        $awards = \App\Models\Award::all();
 
         foreach ($awards as $award) {
             $award->star_nation = 'manticore';
@@ -26,7 +26,7 @@ class AddNationToAwards extends Migration
      */
     public function down()
     {
-        $awards = \App\Award::all();
+        $awards = \App\Models\Award::all();
 
         foreach ($awards as $award) {
             $award->unset('star_nation');

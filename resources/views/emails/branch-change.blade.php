@@ -27,7 +27,7 @@
 
 <p>In Service,</p>
 
-<p>{{App\MedusaConfig::get('bupers.sig')}}
+<p>{{App\Models\MedusaConfig::get('bupers.sig')}}
     <a href="mailto:bupers@trmn.org">bupers@trmn.org</a></p>
 
 <p><em>-- <br>

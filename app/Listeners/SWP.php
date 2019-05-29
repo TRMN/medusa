@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\GradeEntered;
+use App\Models\Events\GradeEntered;
 
 class SWP
 {

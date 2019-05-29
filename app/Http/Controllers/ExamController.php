@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Exam;
-use App\User;
-use App\Message;
-use App\ExamList;
+use App\Models\Exam;
+use App\Models\User;
+use App\Models\Message;
+use App\Models\ExamList;
 use Illuminate\Support\Arr;
-use App\Events\GradeEntered;
+use App\Models\Events\GradeEntered;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class KnightOrders extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -189,7 +189,7 @@ class KnightOrders extends Migration
                 'add_knight_orders'
             );
 
-            App\Korders::create(['order' => $item['order'], 'filename' => $item['filename'], 'classes' => $item['classes']]);
+            App\Models\Korders::create(['order' => $item['order'], 'filename' => $item['filename'], 'classes' => $item['classes']]);
         }
     }
 

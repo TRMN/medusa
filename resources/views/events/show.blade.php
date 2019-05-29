@@ -37,7 +37,7 @@
             <div class=" col-sm-1 Incised901Light">Registrars:</div>
             <div class=" col-sm-11 Incised901Light">
                 @foreach($event->registrars as $registrar)
-                    {!!App\User::find($registrar)->getFullName()!!}<br/>
+                    {!!App\Models\User::find($registrar)->getFullName()!!}<br/>
                 @endforeach
             </div>
         </div>

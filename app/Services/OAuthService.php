@@ -2,19 +2,19 @@
 
 namespace App\Services;
 
-use App\User;
-use App\Korders;
-use App\ExamList;
+use App\Models\User;
+use App\Models\Korders;
+use App\Models\ExamList;
 use OAuth2\Server;
 use MongoDB\Client;
 use App\OauthClient;
 use OAuth2\Storage\Mongo;
-use App\Audit\MedusaAudit;
+use App\Models\Audit\MedusaAudit;
 use OAuth2\GrantType\RefreshToken;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use OAuth2\GrantType\UserCredentials;
-use App\Permissions\PermissionsHelper;
+use App\Models\Permissions\PermissionsHelper;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
 use OAuth2\HttpFoundationBridge\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Permissions;
+namespace App\Models\Permissions;
 
 class PermissionsHelper
 {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Award;
+use App\Models\Award;
 use Illuminate\Database\Migrations\Migration;
 use Symfony\Component\Console\Output\ConsoleOutput;
 

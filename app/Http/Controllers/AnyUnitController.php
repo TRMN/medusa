@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Branch;
-use App\Chapter;
-use App\MedusaConfig;
+use App\Models\Branch;
+use App\Models\Chapter;
+use App\Models\MedusaConfig;
 use App\Echelons\MedusaEchelons;
 
 class AnyUnitController extends Controller

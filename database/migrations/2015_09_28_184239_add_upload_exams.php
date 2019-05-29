@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddUploadExams extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -21,7 +21,7 @@ class AddUploadExams extends Migration
             json_encode(['name' => 'UPLOAD_EXAMS', 'description' => 'Upload Academy Exam Grades']),
             'add_flag_lt'
         );
-        App\Permission::create(['name' => 'UPLOAD_EXAMS', 'description' => 'Upload Academy Exam Grades']);
+        App\Models\Permission::create(['name' => 'UPLOAD_EXAMS', 'description' => 'Upload Academy Exam Grades']);
     }
 
     /**

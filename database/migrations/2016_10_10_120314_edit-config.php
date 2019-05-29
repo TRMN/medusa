@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class EditConfig extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -28,13 +28,13 @@ class EditConfig extends Migration
                 json_encode(['name' => $perm, 'description' => $desc]),
                 'add_config_perms'
             );
-            App\Permission::create(['name' => $perm, 'description' => $desc]);
+            App\Models\Permission::create(['name' => $perm, 'description' => $desc]);
         }
 
         // Assign the new permission to Dave and Eric only
 
         foreach (['RMN-1094-12', 'RMN-2470-14'] as $admin) {
-            App\User::getUserByMemberId($admin)->updatePerms(['CONFIG']);
+            App\Models\User::getUserByMemberId($admin)->updatePerms(['CONFIG']);
         }
     }
 

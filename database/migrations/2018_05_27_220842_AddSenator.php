@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddSenator extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -20,7 +20,7 @@ class AddSenator extends Migration
         $precedence = '2';
 
         try {
-            App\Ptitles::create(['title' => $title, 'code' => $code, 'precedence' => $precedence]);
+            App\Models\Ptitles::create(['title' => $title, 'code' => $code, 'precedence' => $precedence]);
 
             $this->writeAuditTrail(
                 'system user',
@@ -48,7 +48,7 @@ class AddSenator extends Migration
         $code = 'L';
 
         try {
-            App\Ptitles::where('title', $title)->where('code', $code)->delete();
+            App\Models\Ptitles::where('title', $title)->where('code', $code)->delete();
 
             $this->writeAuditTrail(
                 'system user',

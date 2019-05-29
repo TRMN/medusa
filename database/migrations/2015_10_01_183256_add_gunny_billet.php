@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddGunnyBillet extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -21,7 +21,7 @@ class AddGunnyBillet extends Migration
             json_encode(['billet_name' => 'Gunny']),
             'add_flag_lt'
         );
-        App\Billet::create(['billet_name' => 'Gunny']);
+        App\Models\Billet::create(['billet_name' => 'Gunny']);
     }
 
     /**

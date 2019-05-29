@@ -41,7 +41,7 @@ class PromotionTextBlocks extends Migration
         ];
 
         foreach ($blocks as $key => $block) {
-            \App\MedusaConfig::set($key, $block);
+            \App\Models\MedusaConfig::set($key, $block);
         }
     }
 
@@ -53,7 +53,7 @@ class PromotionTextBlocks extends Migration
     public function down()
     {
         foreach (['promotions.instructions', 'promotions.enlisted', 'promotions.warrant', 'promotions.officer', 'promotions.flag'] as $key) {
-            \App\MedusaConfig::remove($key);
+            \App\Models\MedusaConfig::remove($key);
         }
     }
 }

@@ -11,7 +11,7 @@ class AwardsDisplay extends Migration
      */
     public function up()
     {
-        \App\MedusaConfig::set(
+        \App\Models\MedusaConfig::set(
             'awards.display',
             [
                 'OSWP',
@@ -54,6 +54,6 @@ class AwardsDisplay extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('awards.display');
+        \App\Models\MedusaConfig::remove('awards.display');
     }
 }

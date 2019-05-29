@@ -11,7 +11,7 @@ class FixPeerages extends Migration
      */
     public function up()
     {
-        foreach (App\User::all() as $member) {
+        foreach (App\Models\User::all() as $member) {
             if (isset($member->peerages) === true) {
                 $member->peerages = array_values($member->peerages);
                 $member->save();

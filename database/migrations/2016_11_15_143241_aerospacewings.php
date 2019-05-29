@@ -13,7 +13,7 @@ class Aerospacewings extends Migration
     {
         // Add the wings to the replaces for the rest of the qual badges
 
-        $updates = \App\Award::where('group_label', '=', 'Qualification Badges')->get();
+        $updates = \App\Models\Award::where('group_label', '=', 'Qualification Badges')->get();
 
         foreach ($updates as $row) {
             $row->replaces .= ',SAW,EAW,OAW,ESAW,OSAW,EMAW,OMAW,ENW,ONW,ESNW,OSNW,EMNW,OMNW,EOW,OOW,ESOW,OSOW,EMOW,OMOW,ESW,OSW,ESSW,OSSW,EMSW,OMSW';
@@ -276,7 +276,7 @@ class Aerospacewings extends Migration
         ]', true);
 
         foreach ($awards as $award) {
-            \App\Award::create($award);
+            \App\Models\Award::create($award);
         }
     }
 
@@ -287,6 +287,6 @@ class Aerospacewings extends Migration
      */
     public function down()
     {
-        \App\Award::whereIn('code', ['SAW', 'EAW', 'OAW', 'ESAW', 'OSAW', 'EMAW', 'OMAW', 'ENW', 'ONW', 'ESNW', 'OSNW', 'EMNW', 'OMNW', 'EOW', 'OOW', 'ESOW', 'OSOW', 'EMOW', 'OMOW', 'ESW', 'OSW', 'ESSW', 'OSSW', 'EMSW', 'OMSW'])->delete();
+        \App\Models\Award::whereIn('code', ['SAW', 'EAW', 'OAW', 'ESAW', 'OSAW', 'EMAW', 'OMAW', 'ENW', 'ONW', 'ESNW', 'OSNW', 'EMNW', 'OMNW', 'EOW', 'OOW', 'ESOW', 'OSOW', 'EMOW', 'OMOW', 'ESW', 'OSW', 'ESSW', 'OSSW', 'EMSW', 'OMSW'])->delete();
     }
 }

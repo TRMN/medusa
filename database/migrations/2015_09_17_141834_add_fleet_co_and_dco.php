@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddFleetCoAndDco extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use \App\Models\Audit\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -24,7 +24,7 @@ class AddFleetCoAndDco extends Migration
                 json_encode(['billet_name' => $billet]),
                 'add_fleet_co_and_dco'
             );
-            App\Billet::create(['billet_name' => $billet]);
+            App\Models\Billet::create(['billet_name' => $billet]);
         }
     }
 
