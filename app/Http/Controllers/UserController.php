@@ -179,9 +179,9 @@ class UserController extends Controller
                 is_null($user->getTimeInGrade(true)) === false ?
                     $user->getTimeInGrade(true) : 'N/A',
                 ($user->branch == 'RMMM' ||
-                 $user->branch == 'CIVIL') && empty($user->rating) === false ?
+                 $user->branch == 'CIVIL') ?
                     $user->getFullName(true).' <span class="volkhov">( '.
-                    substr($user->rating, 0, 1)
+                    substr($user->getRate(), 0, 1)
                     .' )</span>' : $user->getFullName(true),
                 $user->member_id,
                 $user->email_address,
