@@ -76,7 +76,8 @@
         "filp/whoops": "^2.0",
         "nunomaduro/collision": "^2.0",
         "beyondcode/laravel-dump-server": "^1.0",
-        "phpmd/phpmd" : "@stable"
+        "phpmd/phpmd" : "@stable",
+        "laravel/homestead": "^8.5"
     },
     "autoload": {
         "classmap": [
