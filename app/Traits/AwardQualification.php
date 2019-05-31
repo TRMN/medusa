@@ -160,12 +160,14 @@ trait AwardQualification
             switch (substr($this->rank['grade'], 0, 1)) {
                 case 'E':
                     $type = 'E';
+
                     break;
                 case 'W':
                 case 'M':
                 case 'O':
                 case 'F':
                     $type = 'O';
+
                     break;
                 case 'C':
                     if (substr($this->rank['grade'], 2) < 12) {
@@ -216,12 +218,14 @@ trait AwardQualification
         switch (substr($this->rank['grade'], 0, 1)) {
             case 'E':
                 $swpType = 'Enlisted';
+
                 break;
             case 'W':
             case 'O':
             case 'F':
             case 'M':
                 $swpType = 'Officer';
+
                 break;
             case 'C':
                 if (substr($this->rank['grade'], 2) < 12) {
@@ -265,6 +269,7 @@ trait AwardQualification
                 foreach ($deptExams as $exam) {
                     if (isset($exams[$exam]) === true && $this->isPassingGrade($exams[$exam]['score']) === true) {
                         $departments[$dept] = true;
+
                         break;
                     }
                 }
@@ -332,6 +337,7 @@ trait AwardQualification
             case 'BETA':
             case 'CREA':
                 return true;
+
                 break;
             default:
                 return false;

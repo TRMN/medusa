@@ -9,6 +9,7 @@ class EmailChanged
     use SerializesModels;
 
     public $old_email;
+
     public $new_email;
 
     /**

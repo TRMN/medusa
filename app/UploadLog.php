@@ -21,8 +21,11 @@ class UploadLog extends Eloquent
     ];
 
     const UPLOAD_STATUS_UPLOADED = 'Uploaded';
+
     const UPLOAD_STATUS_PROCESSING = 'In Process';
+
     const UPLOAD_STATUS_IMPORTED = 'Imported';
+
     const LOG_MESSAGES = [
         'Uploaded'   => 'Uploaded',
         'In Process' => 'Downloaded for processing',

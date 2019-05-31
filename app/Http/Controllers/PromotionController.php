@@ -6,8 +6,8 @@ use App\User;
 use App\Grade;
 use App\Chapter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Traits\MedusaPermissions;
+use Illuminate\Support\Facades\Auth;
 
 class PromotionController extends Controller
 {
@@ -81,6 +81,7 @@ class PromotionController extends Controller
                                 } else {
                                     $board[] = $memberCopy;
                                 }
+
                                 break;
                             case 'WO':
                                 if ($paygrade[1] == 1) {
@@ -100,6 +101,7 @@ class PromotionController extends Controller
                                 } else {
                                     $board[] = $memberCopy;
                                 }
+
                                 break;
                         }
                         unset($memberCopy);

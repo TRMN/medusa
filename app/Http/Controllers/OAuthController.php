@@ -110,7 +110,7 @@ class OAuthController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, \App\OAuthClient $oauthClient)
+    public function update(Request $request, OAuthClient $oauthClient)
     {
         if (($redirect = $this->checkPermissions('ALL_PERMS')) !== true) {
             return $redirect;
@@ -149,7 +149,7 @@ class OAuthController extends Controller
      *
      * @return Response
      */
-    public function destroy(\App\OAuthClient $oauthClient)
+    public function destroy(OAuthClient $oauthClient)
     {
         try {
             $oauthClient->delete();

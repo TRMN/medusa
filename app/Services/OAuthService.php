@@ -10,11 +10,11 @@ use MongoDB\Client;
 use App\OauthClient;
 use OAuth2\Storage\Mongo;
 use App\Traits\MedusaAudit;
+use App\Traits\PermissionsHelper;
 use OAuth2\GrantType\RefreshToken;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use OAuth2\GrantType\UserCredentials;
-use App\Traits\PermissionsHelper;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
 use OAuth2\HttpFoundationBridge\Request;
@@ -28,6 +28,7 @@ class OAuthService
 {
     /** @var \MongoClient */
     protected $mongo;
+
     /**
      * @var Server
      */

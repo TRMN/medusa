@@ -1,6 +1,5 @@
 <?php
 
-
 class CountriesSeeder extends Seeder
 {
     use \Medusa\Audit\MedusaAudit;
