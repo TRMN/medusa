@@ -11,7 +11,7 @@ class WelcomeLetter extends Migration
      */
     public function up()
     {
-        \App\MedusaConfig::set('bupers.welcome', '<p>Greetings and welcome aboard The Royal Manticoran Navy, The Official Honor Harrington Fan Association (TRMN). You have begun an epic and exciting adventure with a new and different type of Science Fiction Fan Club. What makes TRMN such a different and unique club? You do! We are collectively a different type of fan club, because all of our members, their uniqueness, their talents, their skills. In addition TMRN is different because our leadership has been specifically selected by David Weber himself. David’s direct involvement in the TRMN gives us many advantages; the greatest among them is that we have been invited to become part of his family. </p>
+        \App\Models\MedusaConfig::set('bupers.welcome', '<p>Greetings and welcome aboard The Royal Manticoran Navy, The Official Honor Harrington Fan Association (TRMN). You have begun an epic and exciting adventure with a new and different type of Science Fiction Fan Club. What makes TRMN such a different and unique club? You do! We are collectively a different type of fan club, because all of our members, their uniqueness, their talents, their skills. In addition TMRN is different because our leadership has been specifically selected by David Weber himself. David’s direct involvement in the TRMN gives us many advantages; the greatest among them is that we have been invited to become part of his family. </p>
 
 <p>I am %5SL%, Fifth Space Lord and head of the Bureau of Personnel (BuPers). On behalf of the First Lord of the Admiralty and the rest of the Space Lords I would like to personally welcome you to the organization.  Please log in to <a href="https://medusa.trmn.org">MEDUSA</a> and review your contact information.  If you need to update your address or phone number, just click on the "Edit" button on the bottom of the first screen and make what ever changes are needed.</p>
 
@@ -35,7 +35,7 @@ Mailing List: <a href="http://lists.trmn.org/listinfo.cgi/trmn-trmn.org">http://
 
 <p>Again, welcome to TRMN and the Honorverse.</p>');
 
-        \App\MedusaConfig::set('bupers.header', '<table border="0">
+        \App\Models\MedusaConfig::set('bupers.header', '<table border="0">
     <tr>
         <td valign="middle"><img src="%patch%" alt="Rampant Manticore"/></td>
         <td valign="middle" align="center"><h2>THE ROYAL MANTICORAN NAVY<br/>OFFICE OF THE FIFTH SPACE LORD<br/>BUREAU OF PERSONNEL<br/>ADMIRALTY HOUSE<br/>LANDING</h2></td>
@@ -51,7 +51,7 @@ Mailing List: <a href="http://lists.trmn.org/listinfo.cgi/trmn-trmn.org">http://
      */
     public function down()
     {
-        \App\MedusaConfig::remove('bupers.welcome');
-        \App\MedusaConfig::remove('bupers.header');
+        \App\Models\MedusaConfig::remove('bupers.welcome');
+        \App\Models\MedusaConfig::remove('bupers.header');
     }
 }

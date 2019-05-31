@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use DateTime;
 use Exception;
@@ -2143,7 +2143,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             }
         }
 
-        if (is_a($event, \App\MedusaEvents::class) === false) {
+        if (is_a($event, \App\Models\MedusaEvents::class) === false) {
             // Not the correct object, return an error
             $this->setTimeZone($currentTz);
 

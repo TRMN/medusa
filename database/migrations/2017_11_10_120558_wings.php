@@ -46,7 +46,7 @@ class Wings extends Migration
             ],
         ];
 
-        \App\MedusaConfig::set('awards.wings', $config);
+        \App\Models\MedusaConfig::set('awards.wings', $config);
     }
 
     /**
@@ -56,6 +56,6 @@ class Wings extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('awards.wings');
+        \App\Models\MedusaConfig::remove('awards.wings');
     }
 }

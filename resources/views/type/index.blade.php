@@ -16,7 +16,7 @@ Chapter Types
             </tr>
         </thead>
         <tbody>
-        @foreach(App\Type::orderBy('chapter_description', 'asc')->get() as $type)
+        @foreach(App\Models\Type::orderBy('chapter_description', 'asc')->get() as $type)
             <tr>
                 <td>{!! $type->chapter_description !!}</td>
                 <td>{!! $type->chapter_type !!}</td>

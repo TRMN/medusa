@@ -35,7 +35,7 @@ class AddOfficeOfHa extends Migration
         $joinable = true,
         $commisionDate = null
     ) {
-        $query = \App\Chapter::where('chapter_name', '=', $name)->first();
+        $query = \App\Models\Chapter::where('chapter_name', '=', $name)->first();
 
         if (empty($query->id) === true) {
             $record =
@@ -64,7 +64,7 @@ class AddOfficeOfHa extends Migration
                 'create rmmc chapters'
             );
 
-            return \App\Chapter::create($record);
+            return \App\Models\Chapter::create($record);
         } else {
             echo 'Skipping '.$name.", unit already exists.\n";
 

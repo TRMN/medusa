@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\User;
-use App\Korders;
-use App\ExamList;
+use App\Models\User;
+use App\Models\Korders;
+use App\Models\ExamList;
 use OAuth2\Server;
 use MongoDB\Client;
 use App\OauthClient;

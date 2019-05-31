@@ -26,7 +26,7 @@ class MemberListBranches extends Migration
 
         ];
 
-        \App\MedusaConfig::set('memberlist.branches', $branches);
+        \App\Models\MedusaConfig::set('memberlist.branches', $branches);
     }
 
     /**
@@ -36,6 +36,6 @@ class MemberListBranches extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('memberlist.branches');
+        \App\Models\MedusaConfig::remove('memberlist.branches');
     }
 }

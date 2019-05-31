@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\MedusaConfig;
+use App\Models\MedusaConfig;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;

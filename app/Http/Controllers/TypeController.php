@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Type;
-use App\Chapter;
+use App\Models\Type;
+use App\Models\Chapter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;

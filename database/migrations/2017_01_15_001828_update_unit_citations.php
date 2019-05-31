@@ -18,7 +18,7 @@ class UpdateUnitCitations extends Migration
         ];
 
         foreach ($transform as $old => $new) {
-            $ribbon = \App\Award::where('code', '=', $old)->first();
+            $ribbon = \App\Models\Award::where('code', '=', $old)->first();
             $ribbon->code = $new;
 
             if ($new === 'LOH') {
@@ -43,7 +43,7 @@ class UpdateUnitCitations extends Migration
         ];
 
         foreach ($transform as $old => $new) {
-            $ribbon = \App\Award::where('code', '=', $new)->first();
+            $ribbon = \App\Models\Award::where('code', '=', $new)->first();
             $ribbon->code = $old;
 
             if ($new === 'LOH') {

@@ -18,7 +18,7 @@ class StarNationConfig extends Migration
             'haven'     => 'Republic of Haven',
         ];
 
-        \App\MedusaConfig::set('starnations', $starNations);
+        \App\Models\MedusaConfig::set('starnations', $starNations);
     }
 
     /**
@@ -28,6 +28,6 @@ class StarNationConfig extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('starnations');
+        \App\Models\MedusaConfig::remove('starnations');
     }
 }

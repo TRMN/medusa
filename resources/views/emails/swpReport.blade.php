@@ -6,10 +6,10 @@ The following individuals have qualified for the indicated SWP for {{$swpReport[
 |------|:-----------:|:----------:|
 @if (!empty($swpReport['ESWP']) || !empty($swpReport['OSWP']))
 @foreach($swpReport['ESWP'] as $line)
-| {{App\User::getUserByMemberId($line->member_id)->getFullName()}} | {{$line->member_id}} | {{$line->award}}|
+| {{App\Models\User::getUserByMemberId($line->member_id)->getFullName()}} | {{$line->member_id}} | {{$line->award}}|
 @endforeach
 @foreach($swpReport['OSWP'] as $line)
-| {{App\User::getUserByMemberId($line->member_id)->getFullName()}} | {{$line->member_id}} | {{$line->award}}|
+| {{App\Models\User::getUserByMemberId($line->member_id)->getFullName()}} | {{$line->member_id}} | {{$line->award}}|
 @endforeach
 @else
 No SWP qualifications for {{$swpReport['report_date']}}

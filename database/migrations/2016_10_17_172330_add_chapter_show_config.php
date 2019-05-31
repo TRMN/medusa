@@ -11,7 +11,7 @@ class AddChapterShowConfig extends Migration
      */
     public function up()
     {
-        App\MedusaConfig::create([
+        App\Models\MedusaConfig::create([
           'key'   => 'chapter.show',
           'value' => json_decode('
                 {
@@ -187,6 +187,6 @@ class AddChapterShowConfig extends Migration
      */
     public function down()
     {
-        App\MedusaConfig::where('key', '=', 'chapter.show')->firstOrFail()->delete();
+        App\Models\MedusaConfig::where('key', '=', 'chapter.show')->firstOrFail()->delete();
     }
 }

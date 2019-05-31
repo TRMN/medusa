@@ -27,7 +27,7 @@ class CreateRmmcEchelonTypes extends Migration
 
         // Remove MARDET type
 
-        $mardet = \App\Type::where('chapter_type', '=', 'mardet')->first();
+        $mardet = \App\Models\Type::where('chapter_type', '=', 'mardet')->first();
 
         if (empty($mardet->id) === false) {
             $this->writeAuditTrail(
@@ -64,6 +64,6 @@ class CreateRmmcEchelonTypes extends Migration
             'create_rmmc_echelon_types'
         );
 
-        \App\Type::create(['chapter_type' => $type, 'chapter_description' => $description, 'can_have' => $can_have]);
+        \App\Models\Type::create(['chapter_type' => $type, 'chapter_description' => $description, 'can_have' => $can_have]);
     }
 }

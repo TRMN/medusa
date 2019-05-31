@@ -105,7 +105,7 @@ class RMMMDivisions extends Migration
         $ratings = [$medical, $catering, $eng, $deck];
 
         foreach ($ratings as $rating) {
-            \App\Rating::insert($rating);
+            \App\Models\Rating::insert($rating);
         }
     }
 
@@ -116,7 +116,7 @@ class RMMMDivisions extends Migration
      */
     public function down()
     {
-        \App\Rating::whereIn('rate_code', ['DECK', 'ENG', 'CATERING', 'MEDICAL'])
+        \App\Models\Rating::whereIn('rate_code', ['DECK', 'ENG', 'CATERING', 'MEDICAL'])
                    ->delete();
     }
 }

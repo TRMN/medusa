@@ -13,7 +13,7 @@ class HoldingChaptersConfig extends Migration
     {
         $holding = ['SS-001', 'SS-002', 'RMOP-01', 'HC', 'RHSS-01', 'SMRS-01'];
 
-        App\MedusaConfig::set('chapter.holding', $holding);
+        App\Models\MedusaConfig::set('chapter.holding', $holding);
     }
 
     /**
@@ -23,6 +23,6 @@ class HoldingChaptersConfig extends Migration
      */
     public function down()
     {
-        App\MedusaConfig::remove('chapter.holding');
+        App\Models\MedusaConfig::remove('chapter.holding');
     }
 }

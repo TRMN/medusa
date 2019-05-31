@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\User;
-use App\Chapter;
+use App\Models\User;
+use App\Models\Chapter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 

@@ -34,7 +34,7 @@ class ExamPromotionPoints extends Migration
           ],
         ];
 
-        \App\MedusaConfig::set('pp.exams', $config);
+        \App\Models\MedusaConfig::set('pp.exams', $config);
     }
 
     /**
@@ -44,6 +44,6 @@ class ExamPromotionPoints extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('pp.exams');
+        \App\Models\MedusaConfig::remove('pp.exams');
     }
 }

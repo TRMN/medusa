@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Grade;
-use App\Branch;
-use App\Chapter;
-use App\ChangeRequest;
+use App\Models\User;
+use App\Models\Grade;
+use App\Models\Branch;
+use App\Models\Chapter;
+use App\Models\ChangeRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;

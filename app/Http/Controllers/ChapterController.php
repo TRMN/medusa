@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Type;
-use App\User;
-use App\Branch;
-use App\Chapter;
-use App\MedusaConfig;
+use App\Models\Type;
+use App\Models\User;
+use App\Models\Branch;
+use App\Models\Chapter;
+use App\Models\MedusaConfig;
 use League\Csv\Writer;
 use Illuminate\Http\Request;
 use App\Traits\MedusaPermissions;
@@ -21,7 +21,7 @@ class ChapterController extends Controller
     /**
      * Get sorted and filtered slice of roster via ajax.
      *
-     * @param \App\Chapter             $chapter
+     * @param \App\Models\Chapter             $chapter
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -200,7 +200,7 @@ class ChapterController extends Controller
     /**
      * Show a particular chapter.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -282,7 +282,7 @@ class ChapterController extends Controller
     /**
      * Edit a Chapters record.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -337,7 +337,7 @@ class ChapterController extends Controller
     /**
      * Process an update to a chapter.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @return $this|bool|\Illuminate\Http\RedirectResponse
      */
@@ -430,7 +430,7 @@ class ChapterController extends Controller
     /**
      * Decommission a chapter.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -506,7 +506,7 @@ class ChapterController extends Controller
 
             foreach ($commandTriad as $billetInfo) {
                 if (is_object($billetInfo['user']) &&
-                    get_class($billetInfo['user']) == \App\User::class) {
+                    get_class($billetInfo['user']) == \App\Models\User::class) {
                     $user = $billetInfo['user'];
                     switch (substr($user->rank['grade'], 0, 1)) {
                         case 'E':
@@ -560,7 +560,7 @@ class ChapterController extends Controller
     /**
      * Export a chapters roster.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @throws \League\Csv\CannotInsertRecord
      *

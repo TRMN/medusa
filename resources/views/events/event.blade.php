@@ -218,7 +218,7 @@
                 @foreach($event->registrars as $registrar)
                     self.addOption({
                     data: '{!!$registrar!!}',
-                    value: '{!!App\User::find($registrar)->getFullName()!!} ({!!App\User::find($registrar)->getAssignmentName('primary')!!})'
+                    value: '{!!App\Models\User::find($registrar)->getFullName()!!} ({!!App\Models\User::find($registrar)->getAssignmentName('primary')!!})'
                 });
                 self.addItem('{!!$registrar!!}');
                 @endforeach

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\UploadLog;
+use App\Models\UploadLog;
 use Illuminate\Support\Str;
 
 class DownloadController extends Controller

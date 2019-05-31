@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Grade;
-use App\Chapter;
+use App\Models\User;
+use App\Models\Grade;
+use App\Models\Chapter;
 use Illuminate\Http\Request;
 use App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Auth;

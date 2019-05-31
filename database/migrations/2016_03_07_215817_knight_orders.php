@@ -189,7 +189,7 @@ class KnightOrders extends Migration
                 'add_knight_orders'
             );
 
-            App\Korders::create(['order' => $item['order'], 'filename' => $item['filename'], 'classes' => $item['classes']]);
+            App\Models\Korders::create(['order' => $item['order'], 'filename' => $item['filename'], 'classes' => $item['classes']]);
         }
     }
 

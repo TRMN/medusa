@@ -12,7 +12,7 @@ class Divorcestripes extends Migration
     public function up()
     {
         // Clear out the bad entries
-        \App\Award::whereIn('code', ['MT', 'WS', 'MID'])->delete();
+        \App\Models\Award::whereIn('code', ['MT', 'WS', 'MID'])->delete();
 
         // Now add the good ones
         $awards = json_decode('[
@@ -46,7 +46,7 @@ class Divorcestripes extends Migration
     ]', true);
 
         foreach ($awards as $award) {
-            \App\Award::create($award);
+            \App\Models\Award::create($award);
         }
     }
 
@@ -57,6 +57,6 @@ class Divorcestripes extends Migration
      */
     public function down()
     {
-        \App\Award::whereIn('code', ['MT', 'WS', 'MID'])->delete();
+        \App\Models\Award::whereIn('code', ['MT', 'WS', 'MID'])->delete();
     }
 }

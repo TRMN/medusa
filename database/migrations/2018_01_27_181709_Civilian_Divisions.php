@@ -109,11 +109,11 @@ class CivilianDivisions extends Migration
         // Add the new divisions
 
         foreach ([$intel, $diplo, $commons, $lords] as $division) {
-            \App\Rating::insert($division);
+            \App\Models\Rating::insert($division);
         }
 
         // If a Civil member is C-6 or higher, set their rating/division to DIPLO
-        foreach (\App\User::where('branch', 'CIVIL')->get() as $member) {
+        foreach (\App\Models\User::where('branch', 'CIVIL')->get() as $member) {
             list($type, $grade) = explode('-', $member->rank['grade']);
             if ($grade > 5) {
                 $member->rating = 'DIPLOMATIC';
@@ -124,7 +124,7 @@ class CivilianDivisions extends Migration
         // Change all the members with branch = INTEL to CIVIL and set their
         // rating to INTEL
 
-        foreach (\App\User::where('branch', 'INTEL')->get() as $member) {
+        foreach (\App\Models\User::where('branch', 'INTEL')->get() as $member) {
             $member->branch = 'CIVIL';
             $member->rating = 'INTEL';
             $member->save();
@@ -134,7 +134,7 @@ class CivilianDivisions extends Migration
         for ($i = 1; $i <= 23; $i++) {
             $fmt = new \NumberFormatter('en_US', \NumberFormatter::SPELLOUT);
 
-            $record = \App\Grade::where('grade', 'C-'.$i)->first();
+            $record = \App\Models\Grade::where('grade', 'C-'.$i)->first();
 
             $rank = $record->rank;
             unset($rank['INTEL']);
@@ -146,19 +146,19 @@ class CivilianDivisions extends Migration
 
         // Update branches
 
-        \App\Branch::where('branch', 'INTEL')->delete();
+        \App\Models\Branch::where('branch', 'INTEL')->delete();
 
-        $civil = \App\Branch::where('branch', 'CIVIL')->first();
+        $civil = \App\Models\Branch::where('branch', 'CIVIL')->first();
         $civil->branch_name = 'Civil Service';
         $civil->save();
 
         // Update branches to show in list members
 
-        $memberlist = \App\MedusaConfig::get('memberlist.branches');
+        $memberlist = \App\Models\MedusaConfig::get('memberlist.branches');
 
         unset($memberlist['INTEL']);
 
-        \App\MedusaConfig::set('memberlist.branches', $memberlist);
+        \App\Models\MedusaConfig::set('memberlist.branches', $memberlist);
     }
 
     /**

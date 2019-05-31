@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Log;
 use Response;
 //use Illuminate\Support\Facades\Request;
-use App\OAuthClient;
+use App\Models\OAuthClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -219,7 +219,7 @@ class OAuthController extends Controller
                     $_peerage['generation'].' '.$_peerage['title'].' of '.$_peerage['lands'];
             } else {
                 $orderInfo =
-                    \App\Korders::where(
+                    \App\Models\Korders::where(
                         'classes.postnominal',
                         '=',
                         $_peerage['postnominal']
@@ -243,7 +243,7 @@ class OAuthController extends Controller
 
         $_user->peerages = $_peerages;
 
-        $_schools = \App\MedusaConfig::get('exam.regex');
+        $_schools = \App\Models\MedusaConfig::get('exam.regex');
         foreach ($_schools as $_label => $_regex) {
             $_examList = $_user->getExamList(['pattern' => $_regex]);
             $_newExams = false;
@@ -254,7 +254,7 @@ class OAuthController extends Controller
                     $_newExams = true;
                 }
 
-                $_exam = \App\ExamList::where('exam_id', '=', $_id)->first();
+                $_exam = \App\Models\ExamList::where('exam_id', '=', $_id)->first();
 
                 if (! is_null($_exam)) {
                     $_examList[$_id]['name'] = $_exam->name;
@@ -414,6 +414,6 @@ class OAuthController extends Controller
 
     private function getUserFromRequest(Request $request)
     {
-        return \App\User::find(json_decode($request->user())->_id);
+        return \App\Models\User::find(json_decode($request->user())->_id);
     }
 }

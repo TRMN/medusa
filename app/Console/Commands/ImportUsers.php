@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Chapter;
+use App\Models\User;
+use App\Models\Chapter;
 use Illuminate\Console\Command;
 use Webpatser\Countries\Countries;
 use Maatwebsite\Excel\Facades\Excel;

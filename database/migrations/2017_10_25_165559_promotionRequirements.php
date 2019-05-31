@@ -179,7 +179,7 @@ class PromotionRequirements extends Migration
   }
 }', true);
 
-        \App\MedusaConfig::set('pp.nextGrade', $config);
+        \App\Models\MedusaConfig::set('pp.nextGrade', $config);
     }
 
     /**
@@ -189,6 +189,6 @@ class PromotionRequirements extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('pp.nextGrade');
+        \App\Models\MedusaConfig::remove('pp.nextGrade');
     }
 }

@@ -26,7 +26,7 @@ class AddPromoteO2 extends Migration
                 json_encode(['name' => $perm, 'description' => $desc]),
                 'add_dob_perms'
             );
-            App\Permission::create(['name' => $perm, 'description' => $desc]);
+            App\Models\Permission::create(['name' => $perm, 'description' => $desc]);
         }
     }
 
@@ -37,6 +37,6 @@ class AddPromoteO2 extends Migration
      */
     public function down()
     {
-        App\Permission::where('name', 'PROMOTE_E6O2')->first()->delete();
+        App\Models\Permission::where('name', 'PROMOTE_E6O2')->first()->delete();
     }
 }

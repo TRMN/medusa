@@ -15,7 +15,7 @@ class AddRankEquivInfo extends Migration
     public function up()
     {
         // RMN is special with the A and B levels at O-6 and up
-        $branch = App\Branch::where('branch', '=', 'RMN')->first();
+        $branch = App\Models\Branch::where('branch', '=', 'RMN')->first();
 
         $equiv = [
             'RMMC'  => [
@@ -697,7 +697,7 @@ class AddRankEquivInfo extends Migration
         ];
 
         foreach (['RMMC', 'GSN', 'IAN', 'RHN', 'RMA'] as $value) {
-            $branch = App\Branch::where('branch', '=', $value)->first();
+            $branch = App\Models\Branch::where('branch', '=', $value)->first();
 
             $branch['equivalent'] = Arr::except($equiv, [$value]);
             $branch->save();
@@ -993,7 +993,7 @@ class AddRankEquivInfo extends Migration
         ];
 
         foreach (['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMACS'] as $value) {
-            $branch = App\Branch::where('branch', '=', $value)->first();
+            $branch = App\Models\Branch::where('branch', '=', $value)->first();
 
             $branch['equivalent'] = Arr::except($equiv, [$value]);
             $branch->save();
@@ -1016,7 +1016,7 @@ class AddRankEquivInfo extends Migration
      */
     public function down()
     {
-        foreach (App\Branch::all() as $branch) {
+        foreach (App\Models\Branch::all() as $branch) {
             $branch->equivalent = null;
             $branch->save();
 

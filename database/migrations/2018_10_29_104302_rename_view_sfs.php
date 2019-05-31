@@ -17,7 +17,7 @@ class RenameViewSfs extends Migration
     public function up()
     {
         // Change the name and description
-        $record = App\Permission::where('name', 'VIEW_SFS')->first();
+        $record = App\Models\Permission::where('name', 'VIEW_SFS')->first();
 
         $record->name = 'VIEW_SFC';
         $record->description = 'View SFC members';
@@ -38,7 +38,7 @@ class RenameViewSfs extends Migration
 
         // Find all users with the old permission and update them
 
-        foreach (App\User::where('permissions', 'VIEW_SFS')->get() as $user) {
+        foreach (App\Models\User::where('permissions', 'VIEW_SFS')->get() as $user) {
             // First, remove the old permission from their list
             $perms = Arr::where($user->permissions, function ($value, $key) {
                 return $value != 'VIEW_SFS';

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\AwardLog;
+use App\Models\AwardLog;
 use Illuminate\Console\Command;
 
 class SwpReport extends Command

@@ -1,6 +1,6 @@
 <?php
 
-use App\MedusaConfig;
+use App\Models\MedusaConfig;
 use Illuminate\Database\Migrations\Migration;
 
 class AnyUnitChapterTypes extends Migration

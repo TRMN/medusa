@@ -13,9 +13,9 @@ class SetAssignmentDates extends Migration
      */
     public function up()
     {
-        App\User::unguard();
+        App\Models\User::unguard();
 
-        $members = App\User::where('active', '=', 1)->where('registration_status', '=', 'Active')->get();
+        $members = App\Models\User::where('active', '=', 1)->where('registration_status', '=', 'Active')->get();
 
         $july31 = strtotime('2015-07-31');
 

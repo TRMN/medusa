@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Report;
-use App\Chapter;
-use App\MedusaConfig;
+use App\Models\Report;
+use App\Models\Chapter;
+use App\Models\MedusaConfig;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;

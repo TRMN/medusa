@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Chapter;
+use App\Models\Chapter;
 use App\Traits\MedusaEchelons;
 
 class MardetController extends Controller

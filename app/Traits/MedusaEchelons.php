@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
-use App\Type;
-use App\User;
-use App\Chapter;
+use App\Models\Type;
+use App\Models\User;
+use App\Models\Chapter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
