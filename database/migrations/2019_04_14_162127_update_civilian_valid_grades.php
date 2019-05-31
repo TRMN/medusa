@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Grade;
+use Personalities\Models\Grade;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateCivilianValidGrades extends Migration

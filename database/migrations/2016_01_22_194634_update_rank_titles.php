@@ -461,11 +461,11 @@ class UpdateRankTitles extends Migration
         ];
 
         foreach ($grades as $grade => $titles) {
-            $record = App\Models\Grade::where('grade', '=', $grade)->first();
+            $record = Personalities\Models\Grade::where('grade', '=', $grade)->first();
 
             if (empty($record) === true) {
                 // Grade does not exist, we must create it
-                $record = new App\Models\Grade();
+                $record = new Personalities\Models\Grade();
 
                 $record->grade = $grade;
                 $record->rank = $titles;

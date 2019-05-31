@@ -56,7 +56,7 @@ class SFS2SFC extends Migration
 
         // Update the rank tables
 
-        foreach (\App\Models\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
+        foreach (Personalities\Models\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
             if (empty($grade->rank['SFS']) === false) {
                 $rank = $grade->rank;
                 $rank['SFC'] = $rank['SFS'];
@@ -118,7 +118,7 @@ class SFS2SFC extends Migration
 
         // Revert the rank tables
 
-        foreach (\App\Models\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
+        foreach (Personalities\Models\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
             if (empty($grade->rank['SFC']) === false) {
                 $rank = $grade->rank;
                 $rank['SFS'] = $rank['SFC'];

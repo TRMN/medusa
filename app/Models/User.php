@@ -22,6 +22,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Personalities\Models\Grade;
 
 /**
  * MEDUSA User model.

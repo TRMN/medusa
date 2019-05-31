@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Award;
-use App\Models\Grade;
+use Personalities\Models\Grade;
 use App\Models\Billet;
 use App\Models\Branch;
 use App\Models\Rating;
@@ -17,7 +17,7 @@ use App\Models\MedusaConfig;
 use Illuminate\Support\Arr;
 use App\Models\Events\EmailChanged;
 use Illuminate\Http\Request;
-use App\Models\Events\LoginComplete;
+use App\Events\LoginComplete;
 use Illuminate\Support\Facades\DB;
 use Webpatser\Countries\Countries;
 use Illuminate\Support\Facades\URL;

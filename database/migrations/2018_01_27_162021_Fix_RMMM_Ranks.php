@@ -32,7 +32,7 @@ class FixRMMMRanks extends Migration
 
         // Update the RMMM Ranks
 
-        foreach (\App\Models\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
+        foreach (Personalities\Models\Grade::where('grade', 'like', 'C-%')->get() as $grade) {
             $rank = $grade->rank;
             if (empty($lookup[$grade->grade]) === true) {
                 unset($rank['RMMM']);

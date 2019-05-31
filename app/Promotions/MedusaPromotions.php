@@ -2,7 +2,7 @@
 
 namespace App\Promotions;
 
-use App\Models\Grade;
+use Personalities\Models\Grade;
 use Exception;
 use App\Models\Branch;
 use App\Models\Rating;

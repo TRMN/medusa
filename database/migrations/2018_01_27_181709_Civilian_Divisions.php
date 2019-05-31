@@ -134,7 +134,7 @@ class CivilianDivisions extends Migration
         for ($i = 1; $i <= 23; $i++) {
             $fmt = new \NumberFormatter('en_US', \NumberFormatter::SPELLOUT);
 
-            $record = \App\Models\Grade::where('grade', 'C-'.$i)->first();
+            $record = Personalities\Models\Grade::where('grade', 'C-'.$i)->first();
 
             $rank = $record->rank;
             unset($rank['INTEL']);

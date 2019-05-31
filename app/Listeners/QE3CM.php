@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Models\Events\LoginComplete;
+use App\Events\LoginComplete;
 use App\Models\Awards\DateQualification;
 
 /**

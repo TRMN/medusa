@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Award;
-use App\Models\Grade;
+use Personalities\Models\Grade;
 use App\Models\Branch;
 use App\Models\Rating;
 use App\Models\Chapter;

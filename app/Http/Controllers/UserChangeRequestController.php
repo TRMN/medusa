@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Grade;
+use Personalities\Models\Grade;
 use App\Models\Branch;
 use App\Models\Chapter;
 use App\Models\ChangeRequest;
