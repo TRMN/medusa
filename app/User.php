@@ -5,17 +5,17 @@ namespace App;
 use DateTime;
 use Exception;
 use Carbon\Carbon;
-use App\Audit\MedusaAudit;
+use App\Traits\MedusaAudit;
 use Illuminate\Support\Arr;
-use App\Common\MedusaCommon;
+use App\Traits\MedusaCommon;
 use App\Enums\MedusaDefaults;
-use App\Awards\AwardQualification;
+use App\Traits\AwardQualification;
 use Laravel\Passport\HasApiTokens;
-use App\Promotions\MedusaPromotions;
+use App\Traits\MedusaPromotions;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use App\Permissions\MedusaPermissions;
+use App\Traits\MedusaPermissions;
 use Illuminate\Notifications\Notifiable;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -2068,16 +2068,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $currentTz = $this->setTimeZone($continent, $city);
 
         $events =
-            Events::where('start_date', '<=', date('Y-m-d'))
-                  ->where('end_date', '>=', date('Y-m-d'))
-                  ->where(
+            MedusaEvents::where('start_date', '<=', date('Y-m-d'))
+                        ->where('end_date', '>=', date('Y-m-d'))
+                        ->where(
                       function ($query) {
                           $query->where('requestor', '=', $this->id)
                                 ->orWhere('registrars', '=', $this->id);
                       }
                   )
-                  ->orderBy('start_date', 'ASC')
-                  ->get(['id', 'event_name']);
+                        ->orderBy('start_date', 'ASC')
+                        ->get(['id', 'event_name']);
 
         $this->setTimeZone($currentTz);
 
@@ -2106,7 +2106,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         if (is_object($event) === false) {
             // If it's not an object, instantiate an event object
             try {
-                $event = Events::find($event);
+                $event = MedusaEvents::find($event);
             } catch (Exception $e) {
                 $this->setTimeZone($currentTz);
 
@@ -2114,7 +2114,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
             }
         }
 
-        if (is_a($event, \App\Events::class) === false) {
+        if (is_a($event, \App\MedusaEvents::class) === false) {
             // Not the correct object, return an error
             $this->setTimeZone($currentTz);
 

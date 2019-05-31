@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class UpdateRankTitles extends Migration
 {
-    use \App\Audit\MedusaAudit;
+    use App\Traits\MedusaAudit;
 
     /**
      * Run the migrations.

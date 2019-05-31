@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 class CreateEchelons extends Command
 {
-    use \App\Audit\MedusaAudit;
+    use App\Traits\MedusaAudit;
 
     /**
      * The console command name.

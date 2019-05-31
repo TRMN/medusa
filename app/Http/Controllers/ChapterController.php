@@ -11,7 +11,7 @@ use League\Csv\Writer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use App\Permissions\MedusaPermissions;
+use App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Redirect;
 
 class ChapterController extends Controller

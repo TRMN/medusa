@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Audit;
+namespace App\Traits;
 
 use App\Audit;
 

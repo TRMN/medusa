@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ImportGrades extends Command
 {
-    use \App\Audit\MedusaAudit;
+    use App\Traits\MedusaAudit;
 
     /**
      * The console command name.

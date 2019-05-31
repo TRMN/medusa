@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Common;
+namespace App\Traits;
 
 use Illuminate\Support\Arr;
 

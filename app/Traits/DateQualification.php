@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Awards;
+namespace App\Traits;
 
-use App\Audit\MedusaAudit;
+use App\Traits\MedusaAudit;
 
 /**
  * Trait DateQualification.

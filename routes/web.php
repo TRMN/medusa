@@ -417,7 +417,7 @@ Route::get('id/bulk/{id}', 'IdController@getBulk');
 Route::get('id/markbulk/{id}', 'IdController@getMarkbulk');
 Route::get('id/mark/{id}', 'IdController@getMark');
 
-Route::model('events', \App\Events::class);
+Route::model('events', \App\MedusaEvents::class);
 Route::resource('events', 'EventController', ['middleware' => 'auth']);
 Route::get(
     '/events/export/{events}',

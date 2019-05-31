@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Awards;
+namespace App\Traits;
 
 use App\AwardLog;
 use Carbon\Carbon;

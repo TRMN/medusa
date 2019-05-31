@@ -8,7 +8,7 @@ use App\Chapter;
 use App\Message;
 use App\ImportLog;
 use App\UploadLog;
-use App\Log\MedusaLog;
+use App\Traits\MedusaLog;
 use League\Csv\Reader;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;

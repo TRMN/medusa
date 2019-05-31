@@ -6,7 +6,7 @@ use App\Exam;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
-use App\Permissions\MedusaPermissions;
+use App\Traits\MedusaPermissions;
 
 class MedusaValidators extends Validator
 {

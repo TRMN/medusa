@@ -7,7 +7,7 @@ use App\Grade;
 use App\Chapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Permissions\MedusaPermissions;
+use App\Traits\MedusaPermissions;
 
 class PromotionController extends Controller
 {

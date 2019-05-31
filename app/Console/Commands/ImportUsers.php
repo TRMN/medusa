@@ -67,7 +67,7 @@ ORDER BY
 
 class ImportUsers extends Command
 {
-    use \App\Audit\MedusaAudit;
+    use App\Traits\MedusaAudit;
 
     /**
      * The console command name.

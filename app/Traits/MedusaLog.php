@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Log;
+namespace App\Traits;
 
 use App\Message;
 

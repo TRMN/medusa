@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Permissions;
+namespace App\Traits;
 
 use App\User;
 use App\Chapter;

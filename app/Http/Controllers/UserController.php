@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 //use Illuminate\Support\Facades\Request;
-use App\Permissions\MedusaPermissions;
+use App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;

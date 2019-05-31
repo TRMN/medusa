@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Events;
+use App\MedusaEvents;
 use App\Country;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +26,7 @@ class EventController extends Controller
 
         return view(
             'events.index',
-            ['events' => Events::where('requestor', '=', Auth::user()->id)->orderBy('start_date')->get()]
+            ['events' => MedusaEvents::where('requestor', '=', Auth::user()->id)->orderBy('start_date')->get()]
         );
     }
 
@@ -45,9 +45,9 @@ class EventController extends Controller
         return view(
             'events.event',
             [
-            'action'    => 'add',
-            'event'     => new Events(),
-            'countries' => Country::getCountries(),
+                'action'    => 'add',
+                'event'     => new MedusaEvents(),
+                'countries' => Country::getCountries(),
             ]
         );
     }
@@ -76,7 +76,7 @@ class EventController extends Controller
         }
 
         try {
-            $event = Events::create($data);
+            $event = MedusaEvents::create($data);
 
             $this->writeAuditTrail(
                 (string) Auth::user()->_id,
@@ -102,7 +102,7 @@ class EventController extends Controller
         );
     }
 
-    private function _updateUsers(Events $event)
+    private function _updateUsers(MedusaEvents $event)
     {
         Log::debug('Updating requestor and registrars of '.$event->event_name);
 
@@ -157,7 +157,7 @@ class EventController extends Controller
      *
      * @return Response
      */
-    public function show(Events $event)
+    public function show(MedusaEvents $event)
     {
         if (($redirect = $this->loginValid()) !== true || $event->requestor != Auth::user()->id) {
             return $redirect;
@@ -172,7 +172,7 @@ class EventController extends Controller
         );
     }
 
-    public function export(Events $event)
+    public function export(MedusaEvents $event)
     {
         if (($redirect = $this->loginValid()) !== true || $event->requestor != Auth::user()->id) {
             return $redirect;
@@ -189,7 +189,7 @@ class EventController extends Controller
      *
      * @return Response
      */
-    public function edit(Events $event)
+    public function edit(MedusaEvents $event)
     {
         if (($redirect = $this->loginValid()) !== true) {
             return $redirect;
@@ -213,7 +213,7 @@ class EventController extends Controller
      *
      * @return Response
      */
-    public function update(Events $event)
+    public function update(MedusaEvents $event)
     {
         if (($redirect = $this->loginValid()) !== true) {
             return $redirect;

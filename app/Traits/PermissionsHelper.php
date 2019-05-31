@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Permissions;
+namespace App\Traits;
 
 class PermissionsHelper
 {

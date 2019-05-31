@@ -20,7 +20,7 @@
             <h3 class="nav-header lnav">Events</h3>
             <div class="rnav">
                 <a href="{!!route('events.create')!!}">Schedule an Event</a>
-                @if (!empty(\App\Events::where('requestor', '=', Auth::user()->id)->get()))
+                @if (!empty(\App\MedusaEvents::where('requestor', '=', Auth::user()->id)->get()))
                     <br/><a href="{!!route('events.index')!!}">View Scheduled Events</a>
                 @endif
             </div>

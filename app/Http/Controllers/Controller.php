@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Audit\MedusaAudit;
+use App\Traits\MedusaAudit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-use App\Permissions\MedusaPermissions;
+use App\Traits\MedusaPermissions;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 //use Illuminate\Support\Facades\Request;
 use Illuminate\Routing\Controller as BaseController;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Promotions;
+namespace App\Traits;
 
 use App\Grade;
 use Exception;

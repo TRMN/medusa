@@ -4,7 +4,7 @@ namespace App;
 
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Events extends Eloquent
+class MedusaEvents extends Eloquent
 {
     protected $fillable = [
       'event_name',

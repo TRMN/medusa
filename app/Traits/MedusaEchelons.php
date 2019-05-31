@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Echelons;
+namespace App\Traits;
 
 use App\Type;
 use App\User;
