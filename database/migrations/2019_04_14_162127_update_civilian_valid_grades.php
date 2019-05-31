@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Grade;
+use Personalities\Models\PayGrade;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateCivilianValidGrades extends Migration
@@ -53,7 +53,7 @@ class UpdateCivilianValidGrades extends Migration
         ];
 
         foreach ($remove as $grade => $branches) {
-            $record = Grade::where('grade', $grade)->first();
+            $record = PayGrade::where('grade', $grade)->first();
 
             if (empty($record) === false) {
                 $rank = $record->rank;
@@ -67,7 +67,7 @@ class UpdateCivilianValidGrades extends Migration
 
         // Be through, check for any we might have missed
 
-        foreach (Grade::all() as $record) {
+        foreach (PayGrade::all() as $record) {
             $rank = $record->rank;
             foreach ($rank as $branch => $rankTitle) {
                 if (empty($rankTitle) === true) {

@@ -5,13 +5,13 @@ namespace App\Models;
 use DateTime;
 use Exception;
 use Carbon\Carbon;
-use App\Traits\MedusaAudit;
+use \App\Traits\MedusaAudit;
 use Illuminate\Support\Arr;
-use App\Traits\MedusaCommon;
+use \App\Traits\MedusaCommon;
 use App\Enums\MedusaDefaults;
-use App\Traits\MedusaPromotions;
-use App\Traits\MedusaPermissions;
-use App\Traits\AwardQualification;
+use \App\Traits\MedusaPromotions;
+use \App\Traits\MedusaPermissions;
+use \App\Traits\AwardQualification;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +22,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Personalities\Models\PayGrade;
 
 /**
  * MEDUSA User model.
@@ -310,7 +311,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
      */
     public function getDisplayRank()
     {
-        $gradeDetails = Grade::where('grade', '=', $this->rank['grade'])->first();
+        $gradeDetails = PayGrade::where('grade', '=', $this->rank['grade'])->first();
 
         if (empty($this->branch) === true) {
             $this->branch = 'RMN';

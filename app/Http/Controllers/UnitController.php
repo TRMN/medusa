@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chapter;
-use App\Traits\MedusaEchelons;
+use \App\Traits\MedusaEchelons;
 
 class UnitController extends Controller
 {

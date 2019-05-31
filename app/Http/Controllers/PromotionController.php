@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Grade;
+use Personalities\Models\PayGrade;
 use App\Models\Chapter;
 use Illuminate\Http\Request;
-use App\Traits\MedusaPermissions;
+use \App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Auth;
 
 class PromotionController extends Controller
@@ -154,19 +154,19 @@ class PromotionController extends Controller
         foreach ($promotions as $member) {
             $user = User::find($member['memberId']);
 
-            $from = Grade::getRankTitle(
+            $from = PayGrade::getRankTitle(
                 $user->rank['grade'],
                 $user->getRate(),
                 $user->branch
-            ).' ('.$user->rank['grade'].')';
+            ) . ' (' .$user->rank['grade'] . ')';
 
             $user->promoteMember($member['grade'], $early);
 
-            $to = Grade::getRankTitle(
+            $to = PayGrade::getRankTitle(
                 $member['grade'],
                 $user->getRate(),
                 $user->branch
-            ).' ('.$member['grade'].')';
+            ) . ' (' .$member['grade'] . ')';
 
             $promoted[] = [
                 'name'      => $user->getFullName(),

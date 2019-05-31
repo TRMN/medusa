@@ -9,7 +9,7 @@ use App\Models\Chapter;
 use App\Models\MedusaConfig;
 use League\Csv\Writer;
 use Illuminate\Http\Request;
-use App\Traits\MedusaPermissions;
+use \App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;

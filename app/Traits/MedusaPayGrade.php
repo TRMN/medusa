@@ -1,61 +1,15 @@
 <?php
+namespace App\Traits;
 
-namespace App\Models;
-
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-/**
- * Grade Model.
- *
- * Pay Grades and descriptions
- */
-class Grade extends Eloquent
+trait MedusaPayGrade
 {
-    /**
-     * @var array Fields that can be set
-     */
-    protected $fillable = ['grade', 'rank'];
-
-    private static $gradeFilters = [
-        'E' => 'Enlisted',
-        'W' => 'Warrant Officer',
-        'O' => 'Officer',
-        'F' => 'Flag Officer',
-        'C' => 'Civilian',
-    ];
-
-    public static function getRequirements($paygrade2check)
-    {
-        $requirements = MedusaConfig::get('pp.requirements');
-
-        return $requirements[$paygrade2check];
-    }
-
-    public static function getRankTitle($grade, $rate = null, $branch = 'RMN')
-    {
-        $gradeDetails = self::where('grade', '=', $grade)->first();
-
-        $rateDetail = Rating::where('rate_code', '=', $rate)->first();
-
-        if (empty($gradeDetails->rank[$branch]) === false) {
-            $rank_title = self::mbTrim($gradeDetails->rank[$branch]);
-        } else {
-            $rank_title = $grade;
-        }
-
-        if (empty($rateDetail->rate[$branch][$grade]) === false) {
-            $rank_title = $rateDetail->rate[$branch][$grade];
-        }
-
-        return $rank_title;
-    }
-
     /**
      * Get the paygrades for a branch.
      *
      * @param $branchID
-     * @param null $filter Valid values are null, E, O, F, W and C
+     * @param null $filter
      *
      * @return array
      */
@@ -103,7 +57,7 @@ class Grade extends Eloquent
      * Officer or Civilian.
      *
      * @param $branchID
-     * @param null $filter Valid values are null, E, O, F, W and C
+     * @param null $filter
      *
      * @return array
      */
@@ -123,10 +77,9 @@ class Grade extends Eloquent
     }
 
     /**
-     * Helper method to filter paygrades by Enlisted, Officer, Flag Officer, Warrant Officer, Civilian or all
-     * paygrades (null).
+     * Helper method to filter paygrades.
      *
-     * @param null $filter Valid values are null, E, O, F, W and C
+     * @param null $filter
      *
      * @return array
      */
@@ -136,7 +89,7 @@ class Grade extends Eloquent
 
         // If $filter is set, validate it
 
-        if (is_null($filter) === false && in_array($filter, ['E', 'O', 'F', 'W', 'C']) === false) {
+        if (is_null($filter) === false && in_array($filter, array_keys(self::$gradeFilters)) === false) {
             $filter = null;
         }
 
@@ -173,56 +126,6 @@ class Grade extends Eloquent
     private static function mbTrim($string, $trim_chars = '\s')
     {
         return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
-    }
-
-    /**
-     * Shortcut method to get enlisted paygrades.
-     *
-     * @return array
-     */
-    public static function enlistedPayGrades()
-    {
-        return self::filterGrades('E');
-    }
-
-    /**
-     * Shortcut method to get warrant officer paygrades.
-     *
-     * @return array
-     */
-    public static function warrantPayGrades()
-    {
-        return self::filterGrades('W');
-    }
-
-    /**
-     * Shortcut method to get officer paygrades.
-     *
-     * @return array
-     */
-    public static function officerPayGrades()
-    {
-        return self::filterGrades('O');
-    }
-
-    /**
-     * Shortcut method to get flag officer paygrades.
-     *
-     * @return array
-     */
-    public static function flagPayGrades()
-    {
-        return self::filterGrades('F');
-    }
-
-    /**
-     * Shortcut method to get civilian paygrades.
-     *
-     * @return array
-     */
-    public static function civilianPayGrades()
-    {
-        return self::filterGrades('C');
     }
 
     /**

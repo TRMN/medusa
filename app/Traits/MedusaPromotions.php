@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\Grade;
+use Personalities\Models\PayGrade;
 use Exception;
 use App\Models\Branch;
 use App\Models\Rating;
@@ -404,7 +404,7 @@ trait MedusaPromotions
     {
         if (empty($this->rating) === true) {
             // No rating, check the Grade collection
-            return Grade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
+            return PayGrade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
         } else {
             // Check the available ranks for this rating
             return Rating::isPayGradeValid($payGrade2Check, $this->branch, $this->getRate());
@@ -460,8 +460,8 @@ trait MedusaPromotions
             $this->points = $points;
         }
 
-        $event = 'Rank changed from '.
-                 Grade::getRankTitle(
+        $event = 'Rank changed from ' .
+                 PayGrade::getRankTitle(
                      $this->rank['grade'],
                      $this->getRate(),
                      $this->branch
@@ -484,7 +484,7 @@ trait MedusaPromotions
 
             $history = [
                 'timestamp' => time(),
-                'event'     => $event.Grade::getRankTitle(
+                'event'     => $event . PayGrade::getRankTitle(
                     $rank['grade'],
                     $this->getRate(),
                     $this->branch

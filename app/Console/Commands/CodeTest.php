@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class CodeTest extends Command
 {
-    use App\Traits\MedusaPermissions;
+    use \App\Traits\MedusaPermissions;
 
     /**
      * The console command name.

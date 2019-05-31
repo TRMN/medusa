@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddStaffMemberBillet extends Migration
 {
-    use App\Traits\MedusaAudit;
+    use \App\Traits\MedusaAudit;
 
     /**
      * Run the migrations.

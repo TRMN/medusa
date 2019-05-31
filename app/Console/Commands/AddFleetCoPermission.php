@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class AddFleetCoPermission extends Command
 {
-    use App\Traits\MedusaAudit;
+    use \App\Traits\MedusaAudit;
 
     /**
      * The console command name.

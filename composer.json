@@ -65,7 +65,8 @@
         "laravel/passport": "~5.0",
         "genealabs/laravel-caffeine": "^0.8.0",
         "jenssegers/mongodb": "^3.5",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "*",
+        "trmn/personality": "dev-develop"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
@@ -115,6 +116,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/lesichkovm/laravel-advanced-route.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/TRMN/personality.git"
         }
     ],
     "minimum-stability": "dev",

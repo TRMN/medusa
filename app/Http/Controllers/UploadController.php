@@ -9,7 +9,7 @@ use App\Models\Message;
 use App\Models\ImportLog;
 use App\Models\UploadLog;
 use League\Csv\Reader;
-use App\Traits\MedusaLog;
+use \App\Traits\MedusaLog;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;

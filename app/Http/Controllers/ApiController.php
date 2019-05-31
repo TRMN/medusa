@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Award;
-use App\Models\Grade;
+use Personalities\Models\PayGrade;
 use App\Models\Branch;
 use App\Models\Rating;
 use App\Models\Chapter;
@@ -42,7 +42,7 @@ class ApiController extends Controller
 
     public function getGradesForBranch($branchID)
     {
-        return Response::json(Grade::getGradesForBranch($branchID));
+        return Response::json(PayGrade::getGradesForBranch($branchID));
     }
 
     public function getGradesForRating($rating, $branch)

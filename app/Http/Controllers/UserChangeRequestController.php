@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Grade;
+use Personalities\Models\PayGrade;
 use App\Models\Branch;
 use App\Models\Chapter;
 use App\Models\ChangeRequest;
@@ -310,11 +310,11 @@ class UserChangeRequestController extends Controller
             $rank['grade'] = $newRank;
             $user->rank = $rank;
 
-            $events[] = 'Rank changed from '.Grade::getRankTitle(
+            $events[] = 'Rank changed from ' . PayGrade::getRankTitle(
                 $oldRank,
                 null,
                 $oldValue
-            ).' ('.$oldRank.') to '.Grade::getRankTitle(
+            ).' ('.$oldRank.') to ' . PayGrade::getRankTitle(
                 $newRank,
                 null,
                 $newValue

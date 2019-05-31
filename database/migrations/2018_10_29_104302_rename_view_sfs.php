@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class RenameViewSfs extends Migration
 {
-    use App\Traits\MedusaAudit;
+    use \App\Traits\MedusaAudit;
 
     /**
      * Run the migrations.

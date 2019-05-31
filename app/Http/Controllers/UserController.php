@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Award;
-use App\Models\Grade;
+use Personalities\Models\PayGrade;
 use App\Models\Billet;
 use App\Models\Branch;
 use App\Models\Rating;
@@ -18,7 +18,7 @@ use Illuminate\Support\Arr;
 use App\Events\EmailChanged;
 use Illuminate\Http\Request;
 use App\Events\LoginComplete;
-use App\Traits\MedusaPermissions;
+use \App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\DB;
 use Webpatser\Countries\Countries;
 use Illuminate\Support\Facades\URL;
@@ -492,8 +492,8 @@ class UserController extends Controller
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
 
-        $events[] = 'Application approved by BuPers; Enlisted at rank of '.
-                    Grade::getRankTitle($user->rank['grade'], null, $user->branch).
+        $events[] = 'Application approved by BuPers; Enlisted at rank of ' .
+                    PayGrade::getRankTitle($user->rank['grade'], null, $user->branch) .
                     ' ('.$user->rank['grade'].') and assigned to '.
                     $user->getAssignmentName('primary').' on '.date('d M Y');
 
@@ -607,7 +607,7 @@ class UserController extends Controller
                 'user'      => new User(),
                 'countries' => Country::getCountries(),
                 'branches'  => Branch::getBranchList(),
-                'grades'    => Grade::getGradesForBranch('RMN'),
+                'grades'    => PayGrade::getGradesForBranch('RMN'),
                 'ratings'   => Rating::getRatingsForBranch('RMN'),
                 'chapters'  => ['' => 'Start typing to search for a chapter'] +
                                Chapter::getFullChapterList(),
@@ -1142,7 +1142,7 @@ class UserController extends Controller
                     'greeting'    => $greeting,
                     'countries'   => Country::getCountries(),
                     'branches'    => Branch::getBranchList(),
-                    'grades'      => Grade::getGradesForBranch($user->branch),
+                    'grades'      => PayGrade::getGradesForBranch($user->branch),
                     'ratings'     => Rating::getRatingsForBranch($user->branch),
                     'chapters'    => $user->hasPermissions(['EDIT_MEMBER']) ===
                                      true ?
@@ -1239,10 +1239,10 @@ class UserController extends Controller
                 $history[] = [
                     'timestamp' => $transfer == 0 ? strtotime($data['dor']) :
                         $transfer + 1,
-                    'event'     => 'Rank changed from '.
-                                   Grade::getRankTitle($user->rank['grade'], $user->getRate(), $user->branch).' ('.
-                                   $user->rank['grade'].') to '.
-                                   Grade::getRankTitle(
+                    'event'     => 'Rank changed from ' .
+                                   PayGrade::getRankTitle($user->rank['grade'], $user->getRate(), $user->branch) . ' (' .
+                                   $user->rank['grade'].') to ' .
+                                   PayGrade::getRankTitle(
                                        $data['display_rank'],
                                        ! empty($data['rating']) ? $data['rating'] : null,
                                        $data['branch']
@@ -1254,7 +1254,7 @@ class UserController extends Controller
 
                 if (empty($data['ep']) === false && $data['ep'] == '1') {
                     // Get TiG requirement of new grade
-                    $requirements = Grade::getRequirements($data['display_rank']);
+                    $requirements = PayGrade::getRequirements($data['display_rank']);
 
                     // Calculate how many months early the promotion is and update the number of points
                     $data['points'] = $user->points;

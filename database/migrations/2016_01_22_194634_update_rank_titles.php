@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class UpdateRankTitles extends Migration
 {
-    use App\Traits\MedusaAudit;
+    use \App\Traits\MedusaAudit;
 
     /**
      * Run the migrations.
@@ -461,11 +461,11 @@ class UpdateRankTitles extends Migration
         ];
 
         foreach ($grades as $grade => $titles) {
-            $record = App\Models\Grade::where('grade', '=', $grade)->first();
+            $record = Personalities\Models\PayGrade::where('grade', '=', $grade)->first();
 
             if (empty($record) === true) {
                 // Grade does not exist, we must create it
-                $record = new App\Models\Grade();
+                $record = new Personalities\Models\PayGrade();
 
                 $record->grade = $grade;
                 $record->rank = $titles;

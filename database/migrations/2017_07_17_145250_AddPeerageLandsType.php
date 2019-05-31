@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Type;
-use App\Traits\MedusaAudit;
+use \App\Traits\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 
 class AddPeerageLandsType extends Migration

@@ -4,7 +4,7 @@ namespace App\Validators;
 
 use App\Models\Exam;
 use Carbon\Carbon;
-use App\Traits\MedusaPermissions;
+use \App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 

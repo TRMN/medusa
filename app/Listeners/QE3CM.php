@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\LoginComplete;
-use App\Traits\DateQualification;
+use \App\Traits\DateQualification;
 
 /**
  * Class QE3CM.

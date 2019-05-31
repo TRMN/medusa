@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Traits\MedusaAudit;
+use \App\Traits\MedusaAudit;
 
 /**
  * Trait DateQualification.
