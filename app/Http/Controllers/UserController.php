@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Award;
-use App\Grade;
-use App\Billet;
-use App\Branch;
-use App\Rating;
-use App\Chapter;
-use App\Country;
-use App\Korders;
-use App\Ptitles;
+use App\Models\User;
+use App\Models\Award;
+use App\Models\Grade;
+use App\Models\Billet;
+use App\Models\Branch;
+use App\Models\Rating;
+use App\Models\Chapter;
+use App\Models\Country;
+use App\Models\Korders;
+use App\Models\Ptitles;
 use Carbon\Carbon;
-use App\MedusaConfig;
+use App\Models\MedusaConfig;
 use Illuminate\Support\Arr;
 use App\Events\EmailChanged;
 use Illuminate\Http\Request;
 use App\Events\LoginComplete;
+use App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\DB;
 use Webpatser\Countries\Countries;
 use Illuminate\Support\Facades\URL;
@@ -25,9 +26,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Event;
 //use Illuminate\Support\Facades\Request;
-use App\Traits\MedusaPermissions;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
@@ -60,12 +60,14 @@ class UserController extends Controller
             case 'Suspended':
             case 'Expelled':
                 $query = User::where('registration_status', $branch);
+
                 break;
             case 'Bosun':
                 $query =
                     User::where('active', 1)
                         ->where('registration_status', 'Active')
                         ->where('assignment.billet', 'Bosun');
+
                 break;
             default:
                 $query =
@@ -103,18 +105,22 @@ class UserController extends Controller
         switch ($order[0]['column']) {
             case 1:
                 $query = $query->orderBy('rank.grade', $sortOrder);
+
                 break;
             case 3:
                 $query = $query->orderBy('last_name', $sortOrder)->orderBy(
                     'first_name',
                     $sortOrder
                 );
+
                 break;
             case 4:
                 $query = $query->orderBy('member_id', $sortOrder);
+
                 break;
             case 5:
                 $query = $query->orderBy('email_address', $sortOrder);
+
                 break;
             case 7:
                 if ($branch == 'Bosun') {
@@ -122,6 +128,7 @@ class UserController extends Controller
                 } else {
                     $query = $query->orderBy('registration_date', $sortOrder);
                 }
+
                 break;
         }
 
@@ -272,12 +279,15 @@ class UserController extends Controller
         switch ($billet) {
             case 'CO':
                 $billet = 'Commanding Officer';
+
                 break;
             case 'XO':
                 $billet = 'Executive Officer';
+
                 break;
             case 'BOSUN':
                 $billet = 'Bosun';
+
                 break;
         }
 
@@ -300,7 +310,7 @@ class UserController extends Controller
     /**
      * Show Password reset form.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -312,7 +322,7 @@ class UserController extends Controller
     /**
      * Process password reset request.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -402,7 +412,7 @@ class UserController extends Controller
     /**
      * Process approval of a pending application.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      *
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
@@ -482,7 +492,6 @@ class UserController extends Controller
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
 
-
         $events[] = 'Application approved by BuPers; Enlisted at rank of '.
                     Grade::getRankTitle($user->rank['grade'], null, $user->branch).
                     ' ('.$user->rank['grade'].') and assigned to '.
@@ -497,7 +506,6 @@ class UserController extends Controller
         ];
 
         $user->lastUpdate = time();
-
 
         try {
             $user->member_id = 'RMN'.User::getNextAvailableMemberId();
@@ -551,7 +559,7 @@ class UserController extends Controller
     /**
      * Deny a pending application.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      *
      * @return bool|\Illuminate\Http\RedirectResponse
      */
@@ -867,6 +875,7 @@ class UserController extends Controller
             case 'INTEL':
                 $data['rank']['grade'] = 'C-1';
                 $billet = 'Civilian One';
+
                 break;
             case 'SFC':
                 $age = Carbon::now()->diffInYears(Carbon::parse($data['dob']));
@@ -875,34 +884,43 @@ class UserController extends Controller
                     case $age <= 8:
                         $data['rank']['grade'] = 'C-1';
                         $billet = 'Cadet Ranger One';
+
                         break;
                     case $age <= 12:
                         $data['rank']['grade'] = 'C-2';
                         $billet = 'Cadet Ranger Two';
+
                         break;
                     case $age <= 15:
                         $data['rank']['grade'] = 'C-3';
                         $billet = 'Cadet Ranger Three';
+
                         break;
                     case $age <= 17:
                         $data['rank']['grade'] = 'C-6';
                         $billet = 'Senior Cadet Ranger';
+
                         break;
                 }
+
                 break;
             case 'RMMM':
                 $data['rank']['grade'] = 'C-1';
                 $billet = 'Apprentice Merchant Spacer';
+
                 break;
             case 'RMACS':
                 $data['rank']['grade'] = 'C-1';
                 $billet = 'Trainee';
+
                 break;
             case 'RMMC':
                 $billet = 'Marine';
+
                 break;
             case 'RMA':
                 $billet = 'Soldier';
+
                 break;
             default:
                 $billet = 'Crewman';
@@ -1260,9 +1278,11 @@ class UserController extends Controller
                 switch ($branch) {
                     case 'RMMM':
                         $event = 'Merchant Marine Division ';
+
                         break;
                     case 'CIVIL':
                         $event = 'Civilian Speciality ';
+
                         break;
                     default:
                         $event = $branch.' Rating ';
@@ -1697,7 +1717,7 @@ class UserController extends Controller
     /**
      * Process AJAX request to add or edit a peerage.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      * @param Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -1744,7 +1764,7 @@ class UserController extends Controller
     /**
      * Process AJAX request to delete a peerage.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      * @param $peerage_id
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -1759,7 +1779,7 @@ class UserController extends Controller
     /**
      * Process AJAX request to add or edit a note.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      * @param Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -1789,7 +1809,7 @@ class UserController extends Controller
     /**
      * Show the find a user page.
      *
-     * @param \App\User|null $user
+     * @param \App\Models\User|null $user
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -1814,7 +1834,7 @@ class UserController extends Controller
     /**
      * Process AJAX request to add a permission to a user.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      * @param $perm
      *
      * @return bool|\Illuminate\Http\RedirectResponse
@@ -1840,7 +1860,7 @@ class UserController extends Controller
     /**
      * Process AJAX request to remove a permission from a user.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      * @param $perm
      *
      * @return bool|\Illuminate\Http\RedirectResponse
@@ -2188,7 +2208,7 @@ class UserController extends Controller
     /**
      * Admin function to temporarily login as a user.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      *
      * @return \Illuminate\Http\RedirectResponse
      */

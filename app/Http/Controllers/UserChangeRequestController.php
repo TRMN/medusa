@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Grade;
-use App\Branch;
-use App\Chapter;
-use App\ChangeRequest;
+use App\Models\User;
+use App\Models\Grade;
+use App\Models\Branch;
+use App\Models\Chapter;
+use App\Models\ChangeRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
@@ -31,7 +31,7 @@ class UserChangeRequestController extends Controller
      *
      * @return Response
      */
-    public function create(\App\User $user)
+    public function create(User $user)
     {
         return view(
             'user.requests.index',
@@ -210,6 +210,7 @@ class UserChangeRequestController extends Controller
                     case 'battalion':
                         // We have a MARDET, get the parent chapter CO's email address.
                         $cc[] = Chapter::find(Chapter::find($user->getAssignedShip())->assigned_to)->getCO()->email_address;
+
                         break;
                 }
 
@@ -244,6 +245,7 @@ class UserChangeRequestController extends Controller
                     case 'battalion':
                         // We have a MARDET, get the parent chapter CO's email address.
                         $cc[] = Chapter::find(Chapter::find($request->new_value)->assigned_to)->getCO()->email_address;
+
                         break;
                 }
 
@@ -299,6 +301,7 @@ class UserChangeRequestController extends Controller
                     if (in_array($user->rank['grade'], ['E-1', 'C-1']) === false) {
                         $message .= '<li>There was no direct equivalent rank found. Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
                     }
+
                     break;
                 default:
             }
@@ -389,12 +392,14 @@ class UserChangeRequestController extends Controller
                 $oldValue = $request->old_value;
                 $newValue = $request->new_value;
                 $type = 'Branch';
+
                 break;
 
             case 'assignment.chapter':
                 $oldValue = Chapter::find($request->old_value)->chapter_name;
                 $newValue = Chapter::find($request->new_value)->chapter_name;
                 $type = 'Chapter';
+
                 break;
         }
 

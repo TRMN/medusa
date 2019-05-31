@@ -2,9 +2,9 @@
 
 namespace App\Utility;
 
-use App\User;
-use App\Chapter;
-use App\MedusaConfig;
+use App\Models\User;
+use App\Models\Chapter;
+use App\Models\MedusaConfig;
 
 class MedusaUtility
 {
@@ -26,7 +26,7 @@ class MedusaUtility
     /**
      * Get the new user welcome letter and replace the tokens.
      *
-     * @param \App\User $user
+     * @param \App\Models\User $user
      *
      * @return mixed|null
      */

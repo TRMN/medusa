@@ -21,7 +21,7 @@ class AddDeputySpacelordBillet extends Migration
             json_encode(['billet_name' => 'Deputy Space Lord']),
             'add_deputy_space_lord'
         );
-        App\Billet::create(['billet_name' => 'Deputy Space Lord']);
+        App\Models\Billet::create(['billet_name' => 'Deputy Space Lord']);
 
         $this->writeAuditTrail(
             'system user',
@@ -31,7 +31,7 @@ class AddDeputySpacelordBillet extends Migration
             json_encode(['billet_name' => 'Space Lord']),
             'add_deputy_space_lord'
         );
-        App\Billet::create(['billet_name' => 'Space Lord']);
+        App\Models\Billet::create(['billet_name' => 'Space Lord']);
     }
 
     /**

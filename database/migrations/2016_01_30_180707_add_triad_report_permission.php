@@ -21,7 +21,7 @@ class AddTriadReportPermission extends Migration
             json_encode(['name' => 'TRIAD_REPORT', 'description' => 'Download Command Triad Report']),
             'add_triad_report_perm'
         );
-        App\Permission::create(['name' => 'TRIAD_REPORT', 'description' => 'Download Command Triad Report']);
+        App\Models\Permission::create(['name' => 'TRIAD_REPORT', 'description' => 'Download Command Triad Report']);
     }
 
     /**

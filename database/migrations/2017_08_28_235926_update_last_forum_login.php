@@ -11,9 +11,9 @@ class UpdateLastForumLogin extends Migration
      */
     public function up()
     {
-        foreach (\App\User::all() as $user) {
+        foreach (\App\Models\User::all() as $user) {
             try {
-                $lastForumLogin = App\ForumUser::where(
+                $lastForumLogin = App\Models\ForumUser::where(
                     'user_email',
                     strtolower($user->email_address)
                 )

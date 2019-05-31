@@ -1,6 +1,6 @@
 <?php
 
-use App\Type;
+use App\Models\Type;
 use App\Traits\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 
@@ -26,7 +26,7 @@ class AddPeerageLandsType extends Migration
 
         foreach ($lands as $desc => $type) {
             try {
-                App\Type::create(['chapter_type' => $type, 'chapter_description' => $desc]);
+                App\Models\Type::create(['chapter_type' => $type, 'chapter_description' => $desc]);
 
                 $this->writeAuditTrail(
                     'migration',
@@ -59,9 +59,9 @@ class AddPeerageLandsType extends Migration
 
         foreach ($lands as $type) {
             try {
-                $typeId = App\Type::where('chapter_type', $type)->first()->id;
+                $typeId = App\Models\Type::where('chapter_type', $type)->first()->id;
 
-                App\Type::destroy($typeId);
+                App\Models\Type::destroy($typeId);
 
                 $this->writeAuditTrail(
                     'migration',

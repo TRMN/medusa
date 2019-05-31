@@ -158,10 +158,10 @@ class SWPQuals extends Migration
         ];
 
         // Add the quals
-        \App\MedusaConfig::set('awards.swp', $swpQual);
+        \App\Models\MedusaConfig::set('awards.swp', $swpQual);
 
         // Add the branches that can get SWP's
-        \App\MedusaConfig::set('awards.swp.branches', ['RMN', 'RMMC']);
+        \App\Models\MedusaConfig::set('awards.swp.branches', ['RMN', 'RMMC']);
     }
 
     /**
@@ -171,7 +171,7 @@ class SWPQuals extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('awards.swp');
-        \App\MedusaConfig::remove('awards.swp.branches');
+        \App\Models\MedusaConfig::remove('awards.swp');
+        \App\Models\MedusaConfig::remove('awards.swp.branches');
     }
 }

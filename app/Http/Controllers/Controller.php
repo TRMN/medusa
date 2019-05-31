@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Traits\MedusaAudit;
+use App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-use App\Traits\MedusaPermissions;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 //use Illuminate\Support\Facades\Request;
 use Illuminate\Routing\Controller as BaseController;

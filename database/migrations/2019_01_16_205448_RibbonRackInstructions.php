@@ -11,7 +11,7 @@ class RibbonRackInstructions extends Migration
      */
     public function up()
     {
-        \App\MedusaConfig::set('rr.instructions', '<p>Currently, the Ribbon Rack Builder supports RMN/RMMC and a few RMA ribbons & badges. As the artwork becomes
+        \App\Models\MedusaConfig::set('rr.instructions', '<p>Currently, the Ribbon Rack Builder supports RMN/RMMC and a few RMA ribbons & badges. As the artwork becomes
             available, they will be added. You many notice that some ribbons or badges don\'t have any artwork
             shown. These items were added to allow the selection of them for promotion point calculations, they will be
             saved to your record, but currently won\'t show up in your ribbon rack. Once the artwork is available they

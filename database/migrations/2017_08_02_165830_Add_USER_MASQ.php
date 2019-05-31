@@ -21,7 +21,7 @@ class AddUSERMASQ extends Migration
             json_encode(['name' => 'USER_MASQ', 'description' => 'Allow a user to masquerade as another user']),
             'add_new_permissions'
         );
-        App\Permission::create(['name' => 'USER_MASQ', 'description' => 'Allow a user to masquerade as another user']);
+        App\Models\Permission::create(['name' => 'USER_MASQ', 'description' => 'Allow a user to masquerade as another user']);
     }
 
     /**
@@ -31,6 +31,6 @@ class AddUSERMASQ extends Migration
      */
     public function down()
     {
-        App\Permission::where('name', 'USER_MASQ')->delete();
+        App\Models\Permission::where('name', 'USER_MASQ')->delete();
     }
 }

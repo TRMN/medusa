@@ -648,7 +648,7 @@ class BupersPromotionRequirements extends Migration
   }
 }', true);
 
-        \App\MedusaConfig::set('pp.requirements', $config);
+        \App\Models\MedusaConfig::set('pp.requirements', $config);
     }
 
     /**
@@ -658,6 +658,6 @@ class BupersPromotionRequirements extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('pp.requirements');
+        \App\Models\MedusaConfig::remove('pp.requirements');
     }
 }

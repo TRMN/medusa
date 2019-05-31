@@ -124,7 +124,7 @@
                                     $toolTip = 'Arms for ' . $fullTitle;
                                 } else {
                                     $orderInfo =
-                                        \App\Korders::where('classes.postnominal', '=', $peerage['postnominal'])
+                                        \App\Models\Korders::where('classes.postnominal', '=', $peerage['postnominal'])
                                             ->first();
                                     $path = '/awards/orders/medals/' . $orderInfo->filename;
                                     $fullTitle =

@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
-use App\Grade;
+use App\Models\Grade;
 use Exception;
-use App\Branch;
-use App\Rating;
+use App\Models\Branch;
+use App\Models\Rating;
 use Carbon\Carbon;
-use App\MedusaConfig;
+use App\Models\MedusaConfig;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -156,6 +156,7 @@ trait MedusaPromotions
                     $flags['next'] = $special;
                     $flags['exams'] = $flags['points'] = $flags['tig'] = true;
                 }
+
                 break;
         }
 
@@ -310,18 +311,22 @@ trait MedusaPromotions
             case $age <= 8:
                 return $this->rank['grade'] != 'C-1' ?
                     ['next' => ['C-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+
                 break;
             case $age <= 12:
                 return $this->rank['grade'] != 'C-2' ?
                     ['next' => ['C-2'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+
                 break;
             case $age <= 15:
                 return $this->rank['grade'] != 'C-3' ?
                     ['next' => ['C-3'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+
                 break;
             case $age <= 17:
                 return $this->rank['grade'] != 'C-6' ?
                     ['next' => ['C-6'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+
                 break;
             default:
                 // Adult member
@@ -341,6 +346,7 @@ trait MedusaPromotions
         switch ($this->branch) {
             case 'SFC':
                 return $this->sfcIsPromotable($payGrade2Check);
+
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
@@ -365,6 +371,7 @@ trait MedusaPromotions
         switch ($this->branch) {
             case 'SFC':
                 $flags = $this->sfcIsPromotable($payGrade2Check);
+
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);

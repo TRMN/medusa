@@ -29,7 +29,7 @@ class GpaPatterns extends Migration
             ],
         ];
 
-        \App\MedusaConfig::set('gpa.patterns', $config);
+        \App\Models\MedusaConfig::set('gpa.patterns', $config);
     }
 
     /**
@@ -39,6 +39,6 @@ class GpaPatterns extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('gpa.patterns');
+        \App\Models\MedusaConfig::remove('gpa.patterns');
     }
 }

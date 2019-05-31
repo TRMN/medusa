@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use NumberFormatter;
 use Illuminate\Support\Arr;
@@ -78,16 +78,19 @@ class Chapter extends Eloquent
                 case 'SU':
                     $name =
                         $chapter->chapter_name.' ('.$chapter->hull_number.')';
+
                     break;
                 case 'headquarters':
                     $name =
                         $chapter->chapter_name.' ('.$chapter->branch.')';
+
                     break;
                 case 'fleet':
                     $fleet =
                         new NumberFormatter('en_US', NumberFormatter::ORDINAL);
                     $name =
                         $chapter->chapter_name.' ('.$fleet->format($chapter->hull_number).')';
+
                     break;
                 default:
                     $name = $chapter->chapter_name;
@@ -538,7 +541,7 @@ class Chapter extends Eloquent
                         isset($billetInfo['allow_courtesy']) === true ? $billetInfo['allow_courtesy'] : true
                     );
 
-                    if (is_a($user, \App\User::class) === true) {
+                    if (is_a($user, \App\Models\User::class) === true) {
                         break 1;
                     }
                 }
@@ -551,7 +554,7 @@ class Chapter extends Eloquent
                     );
             }
 
-            if (is_a($user, \App\User::class) === true) {
+            if (is_a($user, \App\Models\User::class) === true) {
                 $commandCrew[(int) $billetInfo['display_order']] = [
                     'display' => $display,
                     'user'    => $user,

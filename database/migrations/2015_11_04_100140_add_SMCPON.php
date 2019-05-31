@@ -13,7 +13,7 @@ class AddSMCPON extends Migration
      */
     public function up()
     {
-        $firstSL = \App\Chapter::where('chapter_name', '=', 'Office of the First Space Lord')->first();
+        $firstSL = \App\Models\Chapter::where('chapter_name', '=', 'Office of the First Space Lord')->first();
 
         $this->createChapter('Office of the Senior Master Chief Petty Officer of the Navy', 'bureau', '', 'RMN', $firstSL->id, false);
     }
@@ -37,7 +37,7 @@ class AddSMCPON extends Migration
         $joinable = true,
         $commisionDate = null
     ) {
-        $query = \App\Chapter::where('chapter_name', '=', $name)->first();
+        $query = \App\Models\Chapter::where('chapter_name', '=', $name)->first();
 
         if (empty($query->id) === true) {
             $record =
@@ -66,7 +66,7 @@ class AddSMCPON extends Migration
                 'create rmmc chapters'
             );
 
-            return \App\Chapter::create($record);
+            return \App\Models\Chapter::create($record);
         } else {
             echo 'Skipping '.$name.", unit already exists.\n";
 

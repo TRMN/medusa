@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Chapter;
+use App\Models\Chapter;
 use App\Traits\MedusaEchelons;
 
 class UnitController extends Controller
 {
     private $chapterTypes = ['bivouac', 'barracks', 'outpost', 'fort', 'planetary', 'theater'];
+
     private $permissions = ['ADD' => 'ADD_UNIT', 'EDIT' => 'EDIT_UNIT', 'DELETE' => 'DELETE_UNIT'];
+
     private $auditName = 'UnitController';
+
     private $select = 'Select a Command/Unit Type';
+
     private $title = 'a Command or Unit';
+
     private $branch = 'RMA';
+
     private $routePrefix = 'unit';
 
     use MedusaEchelons;

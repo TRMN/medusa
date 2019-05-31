@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach(App\ExamList::all() as $exam)
+        @foreach(App\Models\ExamList::all() as $exam)
             <tr>
                 <td>{!! $exam->exam_id !!} @if($exam->enabled === false) (Disabled) @endif</td>
                 <td>{!! $exam->name !!}</td>

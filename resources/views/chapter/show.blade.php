@@ -25,7 +25,7 @@
         <div class=" col-sm-10 ">
             <h2 class="Incised901Bold padding-5">
                 @if(in_array($detail->chapter_type, ['barony', 'county', 'duchy', 'grand_duchy']))
-                    {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!} of
+                    {!!App\Models\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!} of
                 @endif
                 {!! $detail->chapter_name !!} @if((in_array($detail->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
         isset($detail->hull_number) === true) ({!!$detail->hull_number!!}
@@ -49,7 +49,7 @@
                 Chapter Type:
             </div>
             <div class="col-sm-10  Incised901Light ninety">
-                {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
+                {!!App\Models\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
                 @if(in_array($detail->chapter_type, ['ship', 'station']) === true)
                     @if(empty($detail->decommission_date) === true)
                         (Commissoned {!!date('F jS, Y', strtotime($detail->commission_date))!!})
@@ -93,7 +93,7 @@
             <div class="col-sm-7 text-center">
                 <h3 class="Incised901Light">
                     @if(in_array($detail->chapter_type, ['keep', 'barony', 'county', 'duchy', 'grand_duchy', 'steading']))
-                        {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
+                        {!!App\Models\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
                     @else
                         Command
                     @endif
@@ -130,7 +130,7 @@
             <div class=" col-sm-10 text-center ">
                 <h3 class="Incised901Light">
                     @if(in_array($detail->chapter_type, ['keep', 'barony', 'county', 'duchy', 'grand_duchy', 'steading']))
-                        {!!App\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
+                        {!!App\Models\Type::where('chapter_type', '=', $detail->chapter_type)->first()->chapter_description!!}
                         Members
                     @else
                         Crew Roster

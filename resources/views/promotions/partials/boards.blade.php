@@ -23,25 +23,25 @@
 
     <div class="collapse" id="enlistedBoard">
         <div class="well well-sm text-left">
-            {!! \App\MedusaConfig::get('promotions.enlisted') !!}
+            {!! \App\Models\MedusaConfig::get('promotions.enlisted') !!}
         </div>
     </div>
 
     <div class="collapse" id="woBoard">
         <div class="well well-sm text-left">
-            {!! \App\MedusaConfig::get('promotions.warrant') !!}
+            {!! \App\Models\MedusaConfig::get('promotions.warrant') !!}
         </div>
     </div>
 
     <div class="collapse" id="officerBoard">
         <div class="well well-sm text-left">
-            {!! \App\MedusaConfig::get('promotions.officer') !!}
+            {!! \App\Models\MedusaConfig::get('promotions.officer') !!}
         </div>
     </div>
 
     <div class="collapse" id="flagBoard">
         <div class="well well-sm text-left">
-            {!! \App\MedusaConfig::get('promotions.flag') !!}
+            {!! \App\Models\MedusaConfig::get('promotions.flag') !!}
         </div>
     </div>
 </div>

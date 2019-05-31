@@ -11,7 +11,7 @@ trait DateQualification
 {
     use MedusaAudit;
 
-    public function coronationAndJubilee(\App\User $user, $award, $date)
+    public function coronationAndJubilee(\App\Models\User $user, $award, $date)
     {
         if (is_int($date) === false) {
             $date = strtotime($date);

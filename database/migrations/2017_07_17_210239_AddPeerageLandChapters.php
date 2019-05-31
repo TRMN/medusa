@@ -1,6 +1,6 @@
 <?php
 
-use App\Chapter;
+use App\Models\Chapter;
 use App\Traits\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 

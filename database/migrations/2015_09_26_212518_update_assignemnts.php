@@ -13,7 +13,7 @@ class UpdateAssignemnts extends Migration
      */
     public function up()
     {
-        $members = App\User::all();
+        $members = App\Models\User::all();
 
         foreach ($members as $member) {
             $assignments = $member->assignment;

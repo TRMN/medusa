@@ -11,7 +11,7 @@
     <br/>
     <div id="members">
         <ul class="nav nav-pills" role="tablist">
-            @foreach(\App\MedusaConfig::get('memberlist.branches') as $branchName)
+            @foreach(\App\Models\MedusaConfig::get('memberlist.branches') as $branchName)
                 <li role="presentation" class="memberlist-tab{{$loop->first?' active':''}}"><a
                             href="#members-{{$loop->iteration}}" role="tab" data-toggle="pill">{{$branchName}}</a>
                 </li>
@@ -25,7 +25,7 @@
             @endif
         </ul>
         <br/>
-        @foreach(\App\MedusaConfig::get('memberlist.branches') as $branch => $branchName)
+        @foreach(\App\Models\MedusaConfig::get('memberlist.branches') as $branch => $branchName)
             <div id="members-{{$loop->iteration}}" role="tabpanel" class="tab-pane hidden{{$loop->first?' active':''}}">
                 @include('user.partials.byBranch', ['branch' => $branch])
             </div>
@@ -51,7 +51,7 @@
 @section('scriptFooter')
     <script type="text/javascript">
         $(document).ready(function ($) {
-            @foreach(array_merge(\App\MedusaConfig::get('memberlist.branches'), ['Inactive' => 'Inactive', 'Suspended' => 'Suspended', 'Expelled' => 'Expelled']) as $branch => $branchName)
+            @foreach(array_merge(\App\Models\MedusaConfig::get('memberlist.branches'), ['Inactive' => 'Inactive', 'Suspended' => 'Suspended', 'Expelled' => 'Expelled']) as $branch => $branchName)
             $('.trmnUserTable-{{$branch}}').DataTable({
                 "autoWidth": false,
                 "pageLength": 10,
@@ -78,7 +78,7 @@
             });
             @endforeach
 
-            @foreach(array_merge(\App\MedusaConfig::get('memberlist.branches'), ['Inactive' => 'Inactive', 'Suspended' => 'Suspended', 'Expelled' => 'Expelled']) as $branch => $branchName)
+            @foreach(array_merge(\App\Models\MedusaConfig::get('memberlist.branches'), ['Inactive' => 'Inactive', 'Suspended' => 'Suspended', 'Expelled' => 'Expelled']) as $branch => $branchName)
             @if(!in_array($branch, ['Inactive', 'Suspended', 'Expelled']))
             $('#members-{{$loop->iteration}}').removeClass('hidden');
             @else

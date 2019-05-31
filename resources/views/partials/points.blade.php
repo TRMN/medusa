@@ -16,7 +16,7 @@
         <div class="col-sm-4 text-right"><span class="pp">{{$user->getPointsFromTimeInService()}}</span></div>
     </div>
 
-    @foreach(App\MedusaConfig::get('pp.form-config', [], 'service') as $item)
+    @foreach(App\Models\MedusaConfig::get('pp.form-config', [], 'service') as $item)
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
             <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">
@@ -42,7 +42,7 @@
         <div class="col-sm-4 text-right">Points Earned</div>
     </div>
 
-    @foreach(App\MedusaConfig::get('pp.form-config', [], 'events') as $item)
+    @foreach(App\Models\MedusaConfig::get('pp.form-config', [], 'events') as $item)
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
             <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">
@@ -68,7 +68,7 @@
         <div class="col-sm-4 text-right">Points Earned</div>
     </div>
 
-    @foreach(App\MedusaConfig::get('pp.form-config', [], 'parliament') as $item)
+    @foreach(App\Models\MedusaConfig::get('pp.form-config', [], 'parliament') as $item)
         <div class="row pp-row margin-bottom-10">
             <div class="col-sm-4">{!! str_replace('/br/', '<br />', $item['title']) !!}</div>
             <div class="col-sm-4 text-right{{!strpos('/br/', $item['title']) ? ' margin-bottom-10': ''}}">

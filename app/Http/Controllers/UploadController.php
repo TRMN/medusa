@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Award;
-use App\Chapter;
-use App\Message;
-use App\ImportLog;
-use App\UploadLog;
-use App\Traits\MedusaLog;
+use App\Models\User;
+use App\Models\Award;
+use App\Models\Chapter;
+use App\Models\Message;
+use App\Models\ImportLog;
+use App\Models\UploadLog;
 use League\Csv\Reader;
+use App\Traits\MedusaLog;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -328,6 +328,7 @@ class UploadController extends Controller
                         // Career Path
                         case 'path':
                             $member->setPath($value);
+
                             break;
                         // Activity points
                         case 'triad':
@@ -336,6 +337,7 @@ class UploadController extends Controller
                             // Import is number of 3 month blocks, MEDUSA uses total months
                             $value = $value * 3;
                             $member->setPromotionPointValue($key, $value);
+
                             break;
                         case 'cpm':
                         case 'cpe':
@@ -352,6 +354,7 @@ class UploadController extends Controller
                         case 'ls':
                         case 'peerage':
                             $member->setPromotionPointValue($key, $value);
+
                             break;
                         // Anything else is an award
                         default:

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Type;
-use App\User;
-use App\Branch;
-use App\Chapter;
-use App\MedusaConfig;
+use App\Models\Type;
+use App\Models\User;
+use App\Models\Branch;
+use App\Models\Chapter;
+use App\Models\MedusaConfig;
 use League\Csv\Writer;
 use Illuminate\Http\Request;
+use App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Redirect;
 
 class ChapterController extends Controller
@@ -21,7 +21,7 @@ class ChapterController extends Controller
     /**
      * Get sorted and filtered slice of roster via ajax.
      *
-     * @param \App\Chapter             $chapter
+     * @param \App\Models\Chapter             $chapter
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -76,39 +76,50 @@ class ChapterController extends Controller
             switch ($order[0]['column']) {
                 case 0:
                     $query = $query->orderBy('promotionStatus', $sortOrder);
+
                     break;
                 case 1:
                     $query = $query->orderBy('last_name', $sortOrder)->orderBy('first_name', $sortOrder);
+
                     break;
                 case 2:
                     $query = $query->orderBy('member_id', $sortOrder);
+
                     break;
                 case 3:
                     $query = $query->orderBy('path', $sortOrder);
+
                     break;
                 case 6:
                     $query = $query->orderBy('rank.grade', $sortOrder);
+
                     break;
                 case 9:
                     $query = $query->orderBy('branch', $sortOrder);
+
                     break;
                 case 10:
                     $query = $query->orderBy('city', $sortOrder);
+
                     break;
                 case 11:
                     $query = $query->orderBy('state_province', $sortOrder);
+
                     break;
             }
         } else {
             switch ($order[0]['column']) {
                 case 0:
                     $query = $query->orderBy('last_name', $sortOrder)->orderBy('first_name', $sortOrder);
+
                     break;
                 case 1:
                     $query = $query->orderBy('rank.grade', $sortOrder);
+
                     break;
                 case 4:
                     $query = $query->orderBy('branch', $sortOrder);
+
                     break;
             }
         }
@@ -189,7 +200,7 @@ class ChapterController extends Controller
     /**
      * Show a particular chapter.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -271,7 +282,7 @@ class ChapterController extends Controller
     /**
      * Edit a Chapters record.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -326,7 +337,7 @@ class ChapterController extends Controller
     /**
      * Process an update to a chapter.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @return $this|bool|\Illuminate\Http\RedirectResponse
      */
@@ -419,7 +430,7 @@ class ChapterController extends Controller
     /**
      * Decommission a chapter.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
@@ -495,18 +506,21 @@ class ChapterController extends Controller
 
             foreach ($commandTriad as $billetInfo) {
                 if (is_object($billetInfo['user']) &&
-                    get_class($billetInfo['user']) == \App\User::class) {
+                    get_class($billetInfo['user']) == \App\Models\User::class) {
                     $user = $billetInfo['user'];
                     switch (substr($user->rank['grade'], 0, 1)) {
                         case 'E':
                             $exam = $user->getHighestEnlistedExam();
+
                             break;
                         case 'W':
                             $exam = $user->getHighestWarrantExam();
+
                             break;
                         case 'O':
                         case 'F':
                             $exam = $user->getHighestOfficerExam();
+
                             break;
                         default:
                             $exam = [];
@@ -546,7 +560,7 @@ class ChapterController extends Controller
     /**
      * Export a chapters roster.
      *
-     * @param \App\Chapter $chapter
+     * @param \App\Models\Chapter $chapter
      *
      * @throws \League\Csv\CannotInsertRecord
      *

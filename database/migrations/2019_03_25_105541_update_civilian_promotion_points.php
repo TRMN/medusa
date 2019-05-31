@@ -1,6 +1,6 @@
 <?php
 
-use App\MedusaConfig;
+use App\Models\MedusaConfig;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateCivilianPromotionPoints extends Migration
@@ -1940,6 +1940,7 @@ class UpdateCivilianPromotionPoints extends Migration
                         $$branch[$payGrade] = $breq;
                     }
                     unset($pp[$payGrade]);
+
                     break;
             }
         }

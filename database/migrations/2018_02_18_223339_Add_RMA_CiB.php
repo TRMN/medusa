@@ -13,7 +13,7 @@ class AddRMACiB extends Migration
     {
         // Add the CIB to the rest of the group
 
-        foreach (\App\Award::where('group_label', 'Qualification Badges')->get() as $badge) {
+        foreach (\App\Models\Award::where('group_label', 'Qualification Badges')->get() as $badge) {
             $replaces = $badge->replaces;
             $replaces .= ',CIB';
             $badge->replaces = $replaces;
@@ -34,7 +34,7 @@ class AddRMACiB extends Migration
             'points'        => 0,
         ];
 
-        \App\Award::create($cib);
+        \App\Models\Award::create($cib);
     }
 
     /**
@@ -46,10 +46,10 @@ class AddRMACiB extends Migration
     {
         // Remove the CIB
 
-        \App\Award::where('code', 'CIB')->delete();
+        \App\Models\Award::where('code', 'CIB')->delete();
 
         // Remove the CIB from the group
-        foreach (\App\Award::where('group_label', 'Qualification Badges')->get() as $badge) {
+        foreach (\App\Models\Award::where('group_label', 'Qualification Badges')->get() as $badge) {
             $replaces = $badge->replaces;
             $replaces .= ',CIB';
             $badge->replaces = $replaces;

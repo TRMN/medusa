@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Chapter;
+use App\Models\User;
+use App\Models\Chapter;
 use Illuminate\Console\Command;
 use Webpatser\Countries\Countries;
 use Maatwebsite\Excel\Facades\Excel;
@@ -285,21 +285,26 @@ class ImportUsers extends Command
             switch ($tmp) {
                 case 'GNS':
                     $branch = 'GSN';
+
                     break;
                 case 'SMS':
                     $branch = 'IAN';
+
                     break;
                 case 'Biv':
                     $branch = 'RMA';
                     $type = 'bivouac';
+
                     break;
                 case 'For':
                     $branch = 'RMA';
                     $type = 'fort';
+
                     break;
                 case 'HG ':
                     $branch = 'RMA';
                     $type = 'outpost';
+
                     break;
                 default:
                     $branch = 'RMN';

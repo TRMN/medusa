@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-sm-6">
             <ul class="list-group list-group-sortable-handles sortable">
-                @foreach(App\Award::where('display_order', '<', 1000)->where('location', '!=', 'AWQ')->orderBy('display_order')->get() as $award)
+                @foreach(App\Models\Award::where('display_order', '<', 1000)->where('location', '!=', 'AWQ')->orderBy('display_order')->get() as $award)
                     <li class="list-group-item text-center nobackground" draggable="true"
                         data-display_order="{{$award->display_order}}" data-code="{{$award->code}}">
                         @if(file_exists(public_path('ribbons/' . $award->code . '-1.svg')))
@@ -96,7 +96,7 @@
                             <div class="col-sm-7">
                                 <select id="awardReplaces" class="white-border" multiple>
                                     <option value="">Replaces these awards (if any)</option>
-                                    @foreach(App\Award::whereIn('location', ['L', 'R'])->orderBy('display_order')->get() as $ribbon)
+                                    @foreach(App\Models\Award::whereIn('location', ['L', 'R'])->orderBy('display_order')->get() as $ribbon)
                                         <option value="{{$ribbon->code}}">{{$ribbon->name}}</option>
                                     @endforeach
                                 </select>
@@ -114,7 +114,7 @@
                             <div class="col-sm-7">
                                 <select id="starNation" class="form-control" required>
                                     <option value="">Choose a Star Nation</option>
-                                    @foreach(\App\MedusaConfig::get('starnations') as $key => $value)
+                                    @foreach(\App\Models\MedusaConfig::get('starnations') as $key => $value)
                                         <option value="{{$key}}">{{$value}}</option>
                                     @endforeach
                                 </select>

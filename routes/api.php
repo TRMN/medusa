@@ -1,6 +1,5 @@
 <?php
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -12,6 +11,6 @@
 |
 */
 
-Route::get('/oauthuser', function (\Illuminate\Http\Request $request) {
+Route::get('/oauthuser', function (Illuminate\Http\Request $request) {
     return $request->user();
 })->middleware('auth:api');

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Type;
-use App\User;
-use App\Branch;
-use App\Chapter;
+use App\Models\Type;
+use App\Models\User;
+use App\Models\Branch;
+use App\Models\Chapter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
@@ -18,10 +18,15 @@ use Illuminate\Support\Facades\Validator;
 class EchelonController extends Controller
 {
     private $chapterTypes = ['district', 'fleet', 'task_force', 'task_group', 'squadron', 'division'];
+
     private $permissions = ['ADD' => 'CREATE_ECHELON', 'EDIT' => 'CREATE_ECHELON', 'DELETE' => 'DEL_ECHELON'];
+
     private $auditName = 'EchelonController';
+
     private $select = 'Select an Echelon Type';
+
     private $title = 'an Echelon';
+
     private $branch = 'RMN';
 
     /**

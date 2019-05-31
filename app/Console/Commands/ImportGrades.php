@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Exam;
-use App\User;
-use App\Message;
+use App\Models\Exam;
+use App\Models\User;
+use App\Models\Message;
 use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
@@ -743,6 +743,7 @@ class ImportGrades extends Command
         switch ($msgDetails['severity']) {
             case 'info':
                 $this->info($msgDetails['msg']);
+
                 break;
             default:
                 $this->error($msgDetails['msg']);

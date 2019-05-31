@@ -13,7 +13,7 @@ class UpdateMartin extends Migration
      */
     public function up()
     {
-        $user = App\User::where('member_id', '=', 'RMN-0001-07')->first();
+        $user = App\Models\User::where('member_id', '=', 'RMN-0001-07')->first();
 
         $user->registration_date = '2007-02-01';
 

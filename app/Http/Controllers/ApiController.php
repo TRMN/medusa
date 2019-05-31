@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Award;
-use App\Grade;
-use App\Branch;
-use App\Rating;
-use App\Chapter;
-use App\Korders;
-use App\ExamList;
-use App\MedusaConfig;
+use App\Models\User;
+use App\Models\Award;
+use App\Models\Grade;
+use App\Models\Branch;
+use App\Models\Rating;
+use App\Models\Chapter;
+use App\Models\Korders;
+use App\Models\ExamList;
+use App\Models\MedusaConfig;
 use Webpatser\Countries\Countries;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -266,12 +266,14 @@ class ApiController extends Controller
                                       );
                             }
                         );
+
                 break;
             case 2:
                 $query =
                     User::where('first_name', 'like', $terms[0].'%')
                         ->where('last_name', 'like', $terms[1].'%')
                         ->where('registration_status', '=', 'Active');
+
                 break;
             default:
                 $query =

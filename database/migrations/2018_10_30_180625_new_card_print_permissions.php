@@ -27,7 +27,7 @@ class NewCardPrintPermissions extends Migration
                 json_encode(['name' => $perm, 'description' => $desc]),
                 'add_new_permissions'
             );
-            App\Permission::create(['name' => $perm, 'description' => $desc]);
+            App\Models\Permission::create(['name' => $perm, 'description' => $desc]);
         }
     }
 

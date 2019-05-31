@@ -23,7 +23,7 @@ class AddReportRecipients extends Migration
             'highadm@gsn.trmn.org',
         ];
 
-        App\MedusaConfig::set('report.recipients', $recipients);
+        App\Models\MedusaConfig::set('report.recipients', $recipients);
     }
 
     /**
@@ -33,6 +33,6 @@ class AddReportRecipients extends Migration
      */
     public function down()
     {
-        \App\MedusaConfig::remove('report.recipients');
+        \App\Models\MedusaConfig::remove('report.recipients');
     }
 }

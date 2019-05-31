@@ -2,11 +2,11 @@
 
 namespace App\Validators;
 
-use App\Exam;
+use App\Models\Exam;
 use Carbon\Carbon;
+use App\Traits\MedusaPermissions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
-use App\Traits\MedusaPermissions;
 
 class MedusaValidators extends Validator
 {

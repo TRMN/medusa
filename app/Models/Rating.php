@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,9 +33,11 @@ class Rating extends Eloquent
             switch ($branchID) {
                 case 'RMMM':
                     $ratings = ['' => 'Select a Division'] + $ratings;
+
                     break;
                 case 'CIVIL':
                     $ratings = ['' => 'Select a Speciality'] + $ratings;
+
                     break;
                 default:
                     $ratings = ['' => 'Select a Rating'] + $ratings;

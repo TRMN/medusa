@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\ForumUser;
+use App\Models\ForumUser;
 use App\Events\EmailChanged;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

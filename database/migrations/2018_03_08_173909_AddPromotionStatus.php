@@ -11,7 +11,7 @@ class AddPromotionStatus extends Migration
      */
     public function up()
     {
-        foreach (App\User::activeUsers() as $member) {
+        foreach (App\Models\User::activeUsers() as $member) {
             $member->promotionStatus = $member->isPromotable();
             $member->save();
         }
