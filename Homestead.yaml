@@ -11,7 +11,7 @@ folders:
         to: /home/vagrant/code
 sites:
     -
-        map: medusa.test
+        map: medusa.local
         to: /home/vagrant/code/public
 databases:
     - trmn
