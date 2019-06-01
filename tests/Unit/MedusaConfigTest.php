@@ -5,38 +5,23 @@
     use Tests\TestCase;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Support\Facades\Log;
-    use Mockery;
 
     class MedusaConfigTest extends TestCase
     {
 
-    //public function testConfigSet()
-    //{
-    //    Log::debug('Unit/MedusaConfigTest testConfigSet');
-    //    $this->assertNotEmpty(\App\MedusaConfig::set('test.config', 'This is a test'));
-    //}
+    public function testConfigSet()
+    {
+        Log::debug('Unit/MedusaConfigTest testConfigSet');
+        $this->assertNotEmpty(\App\MedusaConfig::set('test.config', 'This is a test'));
+    }
 
     public function testConfigGet()
     {
         Log::debug('Unit/MedusaConfigTest testConfigGet');
-        
-        Mockery::close();
-
-        $param = 'test.config';
-        $expectedResult = 'This is a test';
-        
-        $medusa = Mockery::mock('MedusaConfig', 'Eloquent');
-        $medusa->shouldReceive('get')
-            ->with($param)
-            ->andReturn($expectedResult);
-        
-        //$mcfg = new \App\MedusaConfig();
-        //$actualResult = $mcfg.get($param); //  Error: Call to undefined function Tests\Unit\get()
-
-        $actualResult = \App\MedusaConfig::get($param);
-        $this->assertEquals($expectedResult, $actualResult);// Failed asserting that null matches expected 'This is a test'.
-        // Doesn't actually call the mock - If testConfigSet is uncommented,
-        // then this test fails because the mock never got called. 
+        $this->assertEquals(
+            'This is a test',
+            \App\MedusaConfig::get('test.config')
+            );
     }
 
     public function testConfigUpdate()
