@@ -387,6 +387,15 @@ trait MedusaPromotions
     }
 
     /**
+     * Return the pay grade of an individual
+     *
+     * @return string
+     */
+    public function getPayGrade() {
+        return $this->rank['grade'];
+    }
+
+    /**
      * Check if the pay grade is valid for the user.
      *
      * @param $payGrade2Check
@@ -395,12 +404,19 @@ trait MedusaPromotions
      */
     public function isGradeValidForUser($payGrade2Check)
     {
-        if (empty($this->rating) === true) {
-            // No rating, check the Grade collection
-            return Grade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
-        } else {
+        $branchesWithRatings = [
+            'CIVIL',
+            'RMMM'
+        ];
+
+        if (empty($this->rating) === false && (
+            substr($this->getPayGrade(), 0, 1) === 'E' ||
+            in_array($this->branch, $branchesWithRatings))) {
             // Check the available ranks for this rating
             return Rating::isPayGradeValid($payGrade2Check, $this->branch, $this->getRate());
+        } else {
+            // No rating or branch or pay grade does not have ratings, check the Grade collection
+            return Grade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
         }
     }
 
