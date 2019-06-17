@@ -437,6 +437,8 @@ Route::get('/chapter/{chapter}/promotions', 'PromotionController@index')
      ->middleware('auth')->name('promotions');
 Route::post('/bulkpromote', 'PromotionController@promote')->middleware('auth');
 
+Route::get('/paygrades', 'PaygradeController@index')->middleware('auth')->name('paygrades');
+
 // Import routes
 
 AdvancedRoute::controller('/upload', 'UploadController');
@@ -522,6 +524,11 @@ Route::get(
     '/api/ribbonrack/{memberid}',
     ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']
 );
+
+Route::get('/api/paygradesforuser/{memberid}', 'ApiController@getPayGradesForUser');
+Route::get('/api/branchforuser/{memberid}', 'ApiController@getBranchForUser');
+Route::get('/api/checktransferrank/{memberid}/{branch}', 'ApiController@checkTransferRank');
+Route::get('/api/promotioninfo/{memberid}/{paygrade}', 'ApiController@getPromotableInfo');
 
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 

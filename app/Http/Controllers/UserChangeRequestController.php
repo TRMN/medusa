@@ -266,24 +266,25 @@ class UserChangeRequestController extends Controller
                 $message = '<li>This was a transfer from another military branch to the RMN.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
-            if (in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array(
+            if (in_array($oldValue, ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array(
                 $newValue,
-                ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']
+                ['CIVIL', 'SFC', 'RMMM', 'RMACS']
             ) === true) {
                 $message = '<li>This was a transfer from a military branch to a civilian branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
-            if (in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array(
+            if (in_array($newValue, ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array(
                 $oldValue,
-                ['CIVIL', 'INTEL', 'SFS', 'RMMM', 'RMASC']
+                ['CIVIL', 'SFC', 'RMMM', 'RMACS']
             ) === true) {
                 $message = '<li>This was a transfer from a civilian branch to a military branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
             }
 
             // SFS notice
 
-            if ($newValue == 'SFS') {
-                $message .= '<li>This was a transfer to the Sphinx Forestry Service.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s age to ensure that their new rank is appropriate for their age.</li>";
+            if ($newValue == 'SFC') {
+                $message .= '<li>This was a transfer to the Sphinx Forestry Commision.  Please check '.$greeting.' '
+                            .$user->first_name.' '.$user->last_name."'s age to ensure that their new rank is appropriate for their age.</li>";
             }
 
             // Look up the equivalent rank

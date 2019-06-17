@@ -50,6 +50,7 @@ class ApiController extends Controller
         $ratings = Rating::where('rate_code', $rating)->first();
 
         $ratingsForBranch = $ratings->rate[$branch];
+        ksort($ratingsForBranch, SORT_NATURAL);
 
         return [$ratings->rate['description'] => $this->parseRatingsForBranch($ratingsForBranch)];
     }
@@ -461,6 +462,48 @@ class ApiController extends Controller
             );
         } else {
             return Response::json(['status' => 'ok']);
+        }
+    }
+
+    public function getPromotableInfo($id, $payGradeToCheck)
+    {
+        return Response::json(User::find($id)->getPromotableInfo($payGradeToCheck));
+    }
+
+    public function getPayGradesForUser($id)
+    {
+        $user = User::find($id);
+        $rate = $user->getRate();
+
+        if (is_null($rate) === true) {
+            return Response::json(Grade::getGradesForBranch($user->branch));
+        } else {
+            return Response::json($this->getGradesForRating($rate, $user->branch));
+        }
+    }
+
+    public function getBranchForUser($id)
+    {
+        $user = User::find($id);
+
+        return Response::json(Branch::getBranchName($user->branch));
+    }
+
+    public function checkTransferRank($id, $newBranch)
+    {
+        $user = User::find($id);
+
+        $branchInfo = Branch::where('branch', $user->branch)->first();
+
+        if (isset($branchInfo->equivalent[$newBranch][$user->rank['grade']]) === true) {
+            return "Transferring from " . Branch::getBranchName($user->branch) . " to " .
+                   Branch::getBranchName($newBranch) . " will change the members rank from " .
+                   Grade::getRankTitle($user->rank['grade'], null, $user->branch) . " (" . $user->rank['grade'] . ")" .
+                   " to " .
+                   Grade::getRankTitle($branchInfo->equivalent[$newBranch][$user->rank['grade']], null, $newBranch) .
+                   " (" . $branchInfo->equivalent[$newBranch][$user->rank['grade']] . ")";
+        } else {
+            return "Unable to determine the new rank for the member";
         }
     }
 

@@ -2037,7 +2037,7 @@ class UserController extends Controller
         $groups = Arr::where(
             $data,
             function ($value, $key) {
-                return substr($key, 0, 5) == 'group';
+                return substr($key, 0, 5) == 'group' && isset($value) === true;
             }
         );
 

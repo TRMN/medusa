@@ -193,7 +193,7 @@ class UpdateCivilianPromotionPoints extends Migration
                         'line'    => [
                                 'points' => 3,
                                 'exam'   => [
-                                        'Core-02',
+                                        'CORE-02',
                                     ],
                             ],
                         'staff'   => [
@@ -210,7 +210,7 @@ class UpdateCivilianPromotionPoints extends Migration
                         'line'    => [
                                 'points' => 3,
                                 'exam'   => [
-                                        'Core-02',
+                                        'CORE-02',
                                     ],
                             ],
                         'staff'   => [
@@ -246,7 +246,7 @@ class UpdateCivilianPromotionPoints extends Migration
                         'line'    => [
                                 'points' => 6,
                                 'exam'   => [
-                                        'Core-03',
+                                        'CORE-03',
                                     ],
                             ],
                         'staff'   => [
@@ -263,7 +263,7 @@ class UpdateCivilianPromotionPoints extends Migration
                         'line'    => [
                                 'points' => 6,
                                 'exam'   => [
-                                        'Core-03',
+                                        'CORE-03',
                                     ],
                             ],
                         'staff'   => [
@@ -299,19 +299,19 @@ class UpdateCivilianPromotionPoints extends Migration
                         'line'    => [
                                 'points' => 9,
                                 'exam'   => [
-                                        'Core-04',
+                                        'CORE-04',
                                     ],
                             ],
                         'staff'   => [
                                 'points' => 9,
                                 'exam'   => [
-                                        'Core-01',
+                                        'CORE-01',
                                     ],
                             ],
                         'service' => [
                                 'points' => 9,
                                 'exam'   => [
-                                        'Core-01',
+                                        'CORE-01',
                                     ],
                             ],
                     ],
@@ -320,19 +320,19 @@ class UpdateCivilianPromotionPoints extends Migration
                         'line'    => [
                                 'points' => 9,
                                 'exam'   => [
-                                        'Core-04',
+                                        'CORE-04',
                                     ],
                             ],
                         'staff'   => [
                                 'points' => 9,
                                 'exam'   => [
-                                        'Core-01',
+                                        'CORE-01',
                                     ],
                             ],
                         'service' => [
                                 'points' => 9,
                                 'exam'   => [
-                                        'Core-01',
+                                        'CORE-01',
                                     ],
                             ],
                     ],
@@ -349,13 +349,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 12,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 11,
                                     'exam'   => [
-                                            'Core-01',
+                                            'CORE-01',
                                         ],
                                 ],
                         ],
@@ -370,7 +370,7 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 12,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                             'service' => [
@@ -410,13 +410,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 15,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 13,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                         ],
@@ -431,13 +431,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 15,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 13,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                         ],
@@ -492,13 +492,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 18,
                                     'exam'   => [
-                                            'Core-03',
+                                            'CORE-03',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 15,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                         ],
@@ -513,13 +513,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 18,
                                     'exam'   => [
-                                            'Core-03',
+                                            'CORE-03',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 15,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                         ],
@@ -527,7 +527,7 @@ class UpdateCivilianPromotionPoints extends Migration
                             'line'    => [
                                     'points' => 9,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                             'staff'   => [
@@ -594,13 +594,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 21,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 18,
                                     'exam'   => [
-                                            'Core-03',
+                                            'CORE-03',
                                         ],
                                 ],
                         ],
@@ -615,13 +615,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 21,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 18,
                                     'exam'   => [
-                                            'Core-03',
+                                            'CORE-03',
                                         ],
                                 ],
                         ],
@@ -680,13 +680,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 24,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 21,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                         ],
@@ -701,13 +701,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 24,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 21,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                         ],
@@ -716,13 +716,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'line'    => [
                                     'points' => 18,
                                     'exam'   => [
-                                            'Core-03',
+                                            'CORE-03',
                                         ],
                                 ],
                             'staff'   => [
                                     'points' => 14,
                                     'exam'   => [
-                                            'Core-01',
+                                            'CORE-01',
                                         ],
                                 ],
                             'service' => [
@@ -764,13 +764,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 27,
                                     'exam'   => [
-                                            'Core-05',
+                                            'CORE-05',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 26,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                         ],
@@ -785,13 +785,13 @@ class UpdateCivilianPromotionPoints extends Migration
                             'staff'   => [
                                     'points' => 27,
                                     'exam'   => [
-                                            'Core-05',
+                                            'CORE-05',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 26,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                         ],
@@ -800,19 +800,19 @@ class UpdateCivilianPromotionPoints extends Migration
                             'line'    => [
                                     'points' => 36,
                                     'exam'   => [
-                                            'Core-04',
+                                            'CORE-04',
                                         ],
                                 ],
                             'staff'   => [
                                     'points' => 26,
                                     'exam'   => [
-                                            'Core-02',
+                                            'CORE-02',
                                         ],
                                 ],
                             'service' => [
                                     'points' => 12,
                                     'exam'   => [
-                                            'Core-01',
+                                            'CORE-01',
                                         ],
                                 ],
                         ],
