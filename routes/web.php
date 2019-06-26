@@ -47,10 +47,10 @@ Route::get(
             \App\MedusaConfig::get(
                 'openid-configuration',
                 [
-                'issuer'                 => 'https://medusa.trmn.org',
-                'authorization_endpoint' => 'https://medusa.trmn.org/oauth/authorize',
-                'token_endpoint'         => 'https://medusa.trmn.org/oauth/token',
-                'userinfo_endpoint'      => 'https://medusa.trmn.org/oauth/profile',
+                'issuer'                 => secure_url("/"),
+                'authorization_endpoint' => secure_url("/") . '/oauth/authorize',
+                'token_endpoint'         => secure_url("/") . '/oauth/token',
+                'userinfo_endpoint'      => secure_url("/") . '/oauth/profile',
                 ]
             )
         );
