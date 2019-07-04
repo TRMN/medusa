@@ -15,9 +15,8 @@
         {
             parent::setUp();
             Log::debug('Unit/UserTest setUp');
-            $timberId = '5b786115a016bd1d8a34cb93';
-            $testUser = \App\User::find($timberId);
-            $this->user = $testUser;
+            $testUserID = '5b786115a016bd1d8a34cb93';
+            $this->user = \App\User::find($testUserID);
         }
         
         public function testgetNextAvailableMemberId()
@@ -114,5 +113,5 @@
             $this->assertTrue(strpos($greeting, 'Class') > 0);
         }
         
-        // 294: getGreetingArray
+        // getGreetingArray
     }
