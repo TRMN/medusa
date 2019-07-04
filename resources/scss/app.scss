@@ -1333,3 +1333,9 @@ input:checked + .slider:before {
   padding-left: 5px;
   font-size: 150%;
 }
+
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}

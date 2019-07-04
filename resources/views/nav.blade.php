@@ -67,6 +67,7 @@
                     <a href="{!!route('user.dups', 'CO')!!}">Show COs</a><br/>
                     <a href="{!!route('user.dups', 'XO')!!}">Show XOs</a><br/>
                     <a href="{!!route('user.dups', 'BOSUN')!!}">Show Bosuns</a><br/>
+                    <a href="{!! route('paygrades') !!}">Pay Grade Tools</a><br />
                 @endif
                 @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) === true)
                     <a href="{!! route('user.review') !!}">Approve Applications</a><br/>
@@ -83,9 +84,9 @@
                 @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true)
                     <a href="{!! route('billet.index') !!}">Billet List</a><br/>
                 @endif
-                @if($permsObj->hasPermissions(['MANAGE_AWARDS']) === true)
-                    <a href="{{ route('awards.index') }}">Manage Awards</a>
-                @endif
+{{--                @if($permsObj->hasPermissions(['MANAGE_AWARDS']) === true)--}}
+{{--                    <a href="{{ route('awards.index') }}">Manage Awards</a>--}}
+{{--                @endif--}}
             </div>
         @endif
 

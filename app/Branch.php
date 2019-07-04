@@ -4,6 +4,17 @@ namespace App;
 
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
+/**
+ * Class Branch
+ * @package App
+ *
+ * @property string id
+ * @property string branch
+ * @property string branch_name
+ * @property array equivalent
+ * @property object created_at
+ * @property object updated_at
+ */
 class Branch extends Eloquent
 {
     protected $fillable = ['branch', 'branch_name'];

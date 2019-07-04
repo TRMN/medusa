@@ -34,6 +34,9 @@ class Grade extends Eloquent
 
     public static function getRankTitle($grade, $rate = null, $branch = 'RMN')
     {
+        if (is_null($rate) === true && $branch == 'CIVIL') {
+            $rate = 'DIPLOMATIC';
+        }
         $gradeDetails = self::where('grade', '=', $grade)->first();
 
         $rateDetail = Rating::where('rate_code', '=', $rate)->first();

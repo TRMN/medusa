@@ -228,10 +228,6 @@ trait MedusaPromotions
                                    ($requirements['tig'] - 3));
             }
 
-            if (empty($requirements['tig']) === true) {
-                $flags['tig'] = false;
-            }
-
             // No requirements for a members path == not eligible
             if (empty($requirements[$path]) === false) {
                 // Check Points
@@ -255,7 +251,7 @@ trait MedusaPromotions
 
             // Include what the next paygrade is
 
-            if ($specialTig > 0) {
+            if ($specialTig > 0 || is_null($payGrade2Check) === false) {
                 $flags['next'][] = $payGrade2Check;
             } else {
                 $next = $this->getNextGrade($this->rank['grade']);
@@ -304,7 +300,7 @@ trait MedusaPromotions
      */
     private function sfcIsPromotable($payGrade2Check = null)
     {
-        $age = Carbon::now()->diffInYears(Carbon::parse($this->dob));
+        $age = $this->getAge();
 
         switch ($age) {
             case $age <= 8:
@@ -325,6 +321,13 @@ trait MedusaPromotions
                 break;
             default:
                 // Adult member
+                if (is_null($payGrade2Check) === true) {
+                    // Adult members of the SFC start at C-7.  Check that they are at least a C-7
+                    list($tmp, $payGrade) = explode('-', $this->getPayGrade());
+                    if ($payGrade < 7) {
+                        $payGrade2Check = 'C-7';
+                    }
+                }
                 return $this->getPromotableInfo($payGrade2Check, false);
         }
     }
@@ -387,6 +390,15 @@ trait MedusaPromotions
     }
 
     /**
+     * Return the pay grade of an individual
+     *
+     * @return string
+     */
+    public function getPayGrade() {
+        return $this->rank['grade'];
+    }
+
+    /**
      * Check if the pay grade is valid for the user.
      *
      * @param $payGrade2Check
@@ -395,12 +407,19 @@ trait MedusaPromotions
      */
     public function isGradeValidForUser($payGrade2Check)
     {
-        if (empty($this->rating) === true) {
-            // No rating, check the Grade collection
-            return Grade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
-        } else {
+        $branchesWithRatings = [
+            'CIVIL',
+            'RMMM'
+        ];
+
+        if (empty($this->rating) === false && (
+            substr($this->getPayGrade(), 0, 1) === 'E' ||
+            in_array($this->branch, $branchesWithRatings))) {
             // Check the available ranks for this rating
             return Rating::isPayGradeValid($payGrade2Check, $this->branch, $this->getRate());
+        } else {
+            // No rating or branch or pay grade does not have ratings, check the Grade collection
+            return Grade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
         }
     }
 

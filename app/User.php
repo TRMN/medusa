@@ -188,6 +188,16 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     ];
 
     /**
+     * Get the current age of the member
+     *
+     * @return int
+     */
+    public function getAge()
+    {
+        return Carbon::now()->diffInYears(Carbon::parse($this->dob));
+    }
+
+    /**
      * Get the number of exams with a passing score for a member.
      *
      * @return int
@@ -367,6 +377,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         } elseif ($this->branch == 'CIVIL') {
             return 'DIPLOMATIC';
         }
+        return null;
     }
 
     /**

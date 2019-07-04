@@ -47,10 +47,10 @@ Route::get(
             \App\MedusaConfig::get(
                 'openid-configuration',
                 [
-                'issuer'                 => 'https://medusa.trmn.org',
-                'authorization_endpoint' => 'https://medusa.trmn.org/oauth/authorize',
-                'token_endpoint'         => 'https://medusa.trmn.org/oauth/token',
-                'userinfo_endpoint'      => 'https://medusa.trmn.org/oauth/profile',
+                'issuer'                 => secure_url("/"),
+                'authorization_endpoint' => secure_url("/") . '/oauth/authorize',
+                'token_endpoint'         => secure_url("/") . '/oauth/token',
+                'userinfo_endpoint'      => secure_url("/") . '/oauth/profile',
                 ]
             )
         );
@@ -437,6 +437,8 @@ Route::get('/chapter/{chapter}/promotions', 'PromotionController@index')
      ->middleware('auth')->name('promotions');
 Route::post('/bulkpromote', 'PromotionController@promote')->middleware('auth');
 
+Route::get('/paygrades', 'PaygradeController@index')->middleware('auth')->name('paygrades');
+
 // Import routes
 
 AdvancedRoute::controller('/upload', 'UploadController');
@@ -522,6 +524,11 @@ Route::get(
     '/api/ribbonrack/{memberid}',
     ['as' => 'ribbonrack', 'uses' => 'ApiController@getRibbonRack']
 );
+
+Route::get('/api/paygradesforuser/{memberid}', 'ApiController@getPayGradesForUser');
+Route::get('/api/branchforuser/{memberid}', 'ApiController@getBranchForUser');
+Route::get('/api/checktransferrank/{memberid}/{branch}', 'ApiController@checkTransferRank');
+Route::get('/api/promotioninfo/{memberid}/{paygrade}', 'ApiController@getPromotableInfo');
 
 Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 
