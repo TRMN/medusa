@@ -38,8 +38,8 @@ jobs:
             mkdir -p storage/framework/cache
             php composer.phar create-project
       - run:
-        name: "What is the DB name?"
-        command: echo $DB_DATABASE
+          name: "What is the DB name?"
+          command: echo $DB_DATABASE
       - run:
           name: Run CS tests
           command: |
