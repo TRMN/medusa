@@ -7,6 +7,11 @@ jobs:
       - image: circleci/mongo:latest
         environment:
           APP_ENV: development
+    environment:
+      VAR: .circleci/config.env
+    branches:
+      only:
+        - circleci-test
     steps:
       - run:
           name: Install system packages
@@ -32,6 +37,9 @@ jobs:
             mkdir -p storage/framework/views
             mkdir -p storage/framework/cache
             php composer.phar create-project
+      -run:
+        name: "What is the DB name?"
+        command: echo $DB_DATABASE
       - run:
           name: Run CS tests
           command: |
