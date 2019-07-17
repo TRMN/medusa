@@ -37,7 +37,7 @@ jobs:
             mkdir -p storage/framework/views
             mkdir -p storage/framework/cache
             php composer.phar create-project
-      -run:
+      - run:
         name: "What is the DB name?"
         command: echo $DB_DATABASE
       - run:
