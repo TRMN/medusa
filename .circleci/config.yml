@@ -38,8 +38,16 @@ jobs:
             mkdir -p storage/framework/cache
             php composer.phar create-project
       - run:
-          name: "What is the DB name?"
-          command: echo $DB_DATABASE
+          name: Create .env file
+          command: |
+            cp .env.circleci .env
+            echo $DB_DATABASE >> .env
+            echo $DB_HOST >> .env
+            echo $DB_OPTIONS >> .env
+            echo $CODE_NAME >> .env
+            echo $VERSION >> .env
+            php artisan key:generate
+            cat .env
       - run:
           name: Run CS tests
           command: |
