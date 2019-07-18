@@ -42,13 +42,8 @@ jobs:
           command: |
             cp .env.circleci .env
             source ${VAR}
-            echo "DB_DATABASE="$DB_DATABASE >> .env
-            echo "DB_HOST="$DB_HOST >> .env
-            echo "DB_OPTIONS="$DB_OPTIONS >> .env
             echo "CODE_NAME="$CODE_NAME >> .env
             echo "VERSION="$VERSION >> .env
-            echo "DB_USERNAME="$DB_USERNAME >> .env
-            echo "DB_PASSWORD="$DB_PASSWORD >> .env
             php artisan key:generate
       - run:
           name: Run CS tests
