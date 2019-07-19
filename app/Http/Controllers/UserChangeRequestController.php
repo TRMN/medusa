@@ -164,12 +164,48 @@ class UserChangeRequestController extends Controller
         }
 
         $user = User::find($request->user);
-        $checkRank = false;
         $message = '';
 
         switch ($request->req_type) {
             case 'branch':
                 $greeting = $user->getGreeting();
+
+                $oldValue = $request->old_value;
+                $newValue = $request->new_value;
+
+                $oldBranch = Branch::where('branch', $oldValue)->first();
+                $newBranch = Branch::where('branch', $newValue)->first();
+
+                $newRank = Grade::getPayGradeEquiv($user, $newValue);
+
+                if ($oldBranch->isMilitaryBranch() === true &&
+                    $newBranch->isCivilianBranch() === true) {
+                    // Transferring from military to civilian, save their current branch and rank
+                    $user->previous = [
+                        'branch' => $user->branch,
+                        'pay_grade' => $user->rank['grade'],
+                    ];
+                }
+
+                if ($oldBranch->isCivilianBranch() === true &&
+                    $newBranch->isMilitaryBranch() === true &&
+                    isset($user->previous) === true) {
+                    // Transferring from civilian to military, and they were previously military.  Check if their
+                    // current civilian rank is a match for their old military rank.  If it is, use that to find
+                    // the new rank for the new branch, which might be the same as their last branch before this.
+                    $userCopy = $user;
+                    $userCopy->branch = $user->previous['branch'];
+                    $userCopy->rank = [
+                        'date_of_rank' => $user->rank['date_of_rank'],
+                        'grade' => $user->previous['pay_grade'],
+                    ];
+
+                    if ($user->previous['pay_grade'] === Grade::getPayGradeEquiv($userCopy, $user->branch)) {
+                        // Previous rank converts to their current civilian rank, so use the previous rank for
+                        // the new rank lookup
+                        $newRank = Grade::getPayGradeEquiv($userCopy, $newValue);
+                    }
+                }
 
                 if ($user->branch == $request->old_value) {
                     $user->branch = $request->new_value;
@@ -187,8 +223,7 @@ class UserChangeRequestController extends Controller
                     $cc = [];
                 }
 
-                $oldValue = $request->old_value;
-                $newValue = $request->new_value;
+
 
                 $checkRank = true;
 
@@ -255,6 +290,8 @@ class UserChangeRequestController extends Controller
         if ($checkRank === true) {
             // Get Branch info for the original branch
             $branchInfo = Branch::where('branch', '=', $oldValue)->first();
+
+
 
             // Check for situations that require a members record to be checked
 

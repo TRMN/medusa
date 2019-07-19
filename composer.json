@@ -77,7 +77,8 @@
         "nunomaduro/collision": "^2.0",
         "beyondcode/laravel-dump-server": "^1.0",
         "phpmd/phpmd" : "@stable",
-        "laravel/homestead": "^8.5"
+        "laravel/homestead": "^8.5",
+        "phploc/phploc": "^5.0"
     },
     "autoload": {
         "classmap": [

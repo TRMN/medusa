@@ -52,4 +52,40 @@ class Branch extends Eloquent
 
         return $res['branch_name'];
     }
+
+    /**
+     * Check if this is a military branch
+     *
+     * @return bool
+     */
+    public function isMilitaryBranch()
+    {
+        $militaryBranches = [
+            'RMN',
+            'RMMC',
+            'RMA',
+            'GSN',
+            'RHN',
+            'IAN'
+        ];
+
+        return in_array($this->branch, $militaryBranches);
+    }
+
+    /**
+     * Check if this is a civilian branch
+     *
+     * @return bool
+     */
+    public function isCivilianBranch()
+    {
+        $civilianBranches = [
+            'CIVIL',
+            'SFC',
+            'RMMM',
+            'RMACS'
+        ];
+
+        return in_array($this->branch, $civilianBranches);
+    }
 }

@@ -247,4 +247,43 @@ class Grade extends Eloquent
             return false;
         }
     }
+
+    /**
+     * Get the equivalent paygrade for the specified branch
+     *
+     * @param \App\User $user
+     * @param $newBranch
+     *
+     * @return string|false
+     */
+    public static function getPayGradeEquiv(User $user, $newBranch)
+    {
+        $rankEquivChart = MedusaConfig::get('rank.equiv');
+
+        $payGrade = $user->getPayGrade();
+        $rate = $user->getRate();
+
+        $branchToCheck = $user->branch;
+
+        // Special handling for civilian and merchant marine
+        switch ($user->branch) {
+            case 'CIVIL':
+                // Rating is required.  If not rating present, the default is 'DIPLOMATIC'
+                $branchToCheck = $rate;
+                break;
+            case 'RMMM':
+                // RMMM requires a rating a higher levels
+                if (is_null($rate) === false) {
+                    $branchToCheck = $rate;
+                }
+                break;
+        }
+
+        foreach ($rankEquivChart as $row) {
+            if ($row[$branchToCheck] == $payGrade) {
+                return $row[$newBranch];
+            }
+        }
+        return false;
+    }
 }

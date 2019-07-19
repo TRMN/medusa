@@ -72,6 +72,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * @property string member_id
  * @property object updated_at
  * @property string promotionStatus
+ * @property array previous
  */
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -185,6 +186,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'path',
         'history',
         'promotionStatus',
+        'previous',
     ];
 
     /**

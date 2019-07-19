@@ -51,10 +51,10 @@ return [
 
         'memcached' => [
             'driver'        => 'memcached',
-            'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),
+//            'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),
             'sasl'          => [
-                env('MEMCACHED_USERNAME'),
-                env('MEMCACHED_PASSWORD'),
+//                env('MEMCACHED_USERNAME'),
+//                env('MEMCACHED_PASSWORD'),
             ],
             'options' => [
                 // Memcached::OPT_CONNECT_TIMEOUT  => 2000,
@@ -70,7 +70,7 @@ return [
 
         'redis' => [
             'driver'     => 'redis',
-            'connection' => 'default',
+            'connection' => 'cache',
         ],
 
         'dynamodb' => [
