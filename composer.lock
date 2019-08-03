@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccd5fa82bbab9c6cc9e87153231d72d5",
+    "content-hash": "8ab32090a43f4e6b4d9a81f920c20874",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -3263,16 +3263,16 @@
         },
         {
             "name": "radic/blade-extensions",
-            "version": "7.1.0",
+            "version": "7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobinRadic/blade-extensions.git",
-                "reference": "5af8fcee2475074d9a14d4541c940fb29a62d495"
+                "reference": "cf95306fae5d9b148e25361fa9c9f8c77d282f83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinRadic/blade-extensions/zipball/5af8fcee2475074d9a14d4541c940fb29a62d495",
-                "reference": "5af8fcee2475074d9a14d4541c940fb29a62d495",
+                "url": "https://api.github.com/repos/RobinRadic/blade-extensions/zipball/cf95306fae5d9b148e25361fa9c9f8c77d282f83",
+                "reference": "cf95306fae5d9b148e25361fa9c9f8c77d282f83",
                 "shasum": ""
             },
             "require": {
@@ -3327,7 +3327,7 @@
                 "laravel",
                 "loop"
             ],
-            "time": "2018-08-16T03:04:39+00:00"
+            "time": "2019-01-25T10:17:52+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

@@ -60,7 +60,7 @@
     "laravel/tinker": "^1.0",
     "genealabs/laravel-caffeine": "^0.5.0",
     "lesichkovm/laravel-advanced-route": "dev-master",
-    "radic/blade-extensions": "~7.1",
+    "radic/blade-extensions": "~7.2",
     "guzzlehttp/guzzle": "^6.3",
     "predis/predis": "^1.1"
   },
@@ -93,12 +93,7 @@
       "php artisan key:generate"
     ],
     "post-install-cmd": [
-      "mkdir -p storage/framework/sessions",
-      "mkdir -p storage/framework/views",
-      "mkdir -p storage/framework/cache",
-      "Illuminate\\Foundation\\ComposerScripts::postInstall",
-      "php artisan optimize",
-      "php artisan key:generate"
+      "Illuminate\\Foundation\\ComposerScripts::postInstall"
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
