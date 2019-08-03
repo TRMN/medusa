@@ -31,6 +31,7 @@
             <p>Change Branch from&nbsp;<span class="bg-primary"> {!!$branches[$user->branch]!!} </span>&nbsp;to</p>
             {!! Form::select('new_branch', $branches, null, ['class' => 'selectize']) !!}
             {!! Form::hidden('old_branch', $user->branch) !!}
+            <p class="hidden">If approved, your new rank will be <span class="bg-info" id="new-rank"></span>.</p>
         </fieldset>
 
         <fieldset>

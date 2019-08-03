@@ -176,36 +176,8 @@ class UserChangeRequestController extends Controller
                 $oldBranch = Branch::where('branch', $oldValue)->first();
                 $newBranch = Branch::where('branch', $newValue)->first();
 
-                $newRank = Grade::getPayGradeEquiv($user, $newValue);
-
-                if ($oldBranch->isMilitaryBranch() === true &&
-                    $newBranch->isCivilianBranch() === true) {
-                    // Transferring from military to civilian, save their current branch and rank
-                    $user->previous = [
-                        'branch' => $user->branch,
-                        'pay_grade' => $user->rank['grade'],
-                    ];
-                }
-
-                if ($oldBranch->isCivilianBranch() === true &&
-                    $newBranch->isMilitaryBranch() === true &&
-                    isset($user->previous) === true) {
-                    // Transferring from civilian to military, and they were previously military.  Check if their
-                    // current civilian rank is a match for their old military rank.  If it is, use that to find
-                    // the new rank for the new branch, which might be the same as their last branch before this.
-                    $userCopy = $user;
-                    $userCopy->branch = $user->previous['branch'];
-                    $userCopy->rank = [
-                        'date_of_rank' => $user->rank['date_of_rank'],
-                        'grade' => $user->previous['pay_grade'],
-                    ];
-
-                    if ($user->previous['pay_grade'] === Grade::getPayGradeEquiv($userCopy, $user->branch)) {
-                        // Previous rank converts to their current civilian rank, so use the previous rank for
-                        // the new rank lookup
-                        $newRank = Grade::getPayGradeEquiv($userCopy, $newValue);
-                    }
-                }
+                $newRank = Grade::getNewPayGrade($user, $oldBranch, $newBranch);
+                $user = User::find($user->id); // User may have been updated, reload the object just in case
 
                 if ($user->branch == $request->old_value) {
                     $user->branch = $request->new_value;
@@ -223,11 +195,8 @@ class UserChangeRequestController extends Controller
                     $cc = [];
                 }
 
-
-
-                $checkRank = true;
-
-                $events[] = 'Transferred from '.Branch::getBranchName($oldValue).' to '.Branch::getBranchName($newValue).' on '.date('d M Y');
+                $events[] = 'Transferred from ' . Branch::getBranchName($oldValue) . ' to ' .
+                            Branch::getBranchName($newValue) . ' on ' . date('d M Y');
 
                 break;
             case 'assignment.chapter':
@@ -244,7 +213,8 @@ class UserChangeRequestController extends Controller
                     case 'platoon':
                     case 'battalion':
                         // We have a MARDET, get the parent chapter CO's email address.
-                        $cc[] = Chapter::find(Chapter::find($user->getAssignedShip())->assigned_to)->getCO()->email_address;
+                        $cc[] = Chapter::find(Chapter::find($user->getAssignedShip())
+                                ->assigned_to)->getCO()->email_address;
                         break;
                 }
 
@@ -287,73 +257,16 @@ class UserChangeRequestController extends Controller
                 break;
         }
 
-        if ($checkRank === true) {
-            // Get Branch info for the original branch
-            $branchInfo = Branch::where('branch', '=', $oldValue)->first();
-
-
-
-            // Check for situations that require a members record to be checked
-
-            if ($oldValue == 'RMN' && in_array($newValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true) {
-                $message = '<li>This was a transfer from the RMN to another military branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
-            }
-
-            if ($newValue == 'RMN' && in_array($oldValue, ['RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true) {
-                $message = '<li>This was a transfer from another military branch to the RMN.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
-            }
-
-            if (in_array($oldValue, ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array(
-                $newValue,
-                ['CIVIL', 'SFC', 'RMMM', 'RMACS']
-            ) === true) {
-                $message = '<li>This was a transfer from a military branch to a civilian branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
-            }
-
-            if (in_array($newValue, ['RMN', 'RMMC', 'RMA', 'GSN', 'RHN', 'IAN']) === true && in_array(
-                $oldValue,
-                ['CIVIL', 'SFC', 'RMMM', 'RMACS']
-            ) === true) {
-                $message = '<li>This was a transfer from a civilian branch to a military branch.  Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
-            }
-
-            // SFS notice
-
-            if ($newValue == 'SFC') {
-                $message .= '<li>This was a transfer to the Sphinx Forestry Commision.  Please check '.$greeting.' '
-                            .$user->first_name.' '.$user->last_name."'s age to ensure that their new rank is appropriate for their age.</li>";
-            }
-
-            // Look up the equivalent rank
-
+        if (isset($newRank) === true) {
             $oldRank = $user->rank['grade'];
-            $newRank = $branchInfo->equivalent[$newValue][$user->rank['grade']];
 
-            // Now check for instances where the equiv rank is E-1/C-1 and the original rank is not E-1/C-1
+            $user->rank = [
+                'date_of_rank' => $user->rank['date_of_rank'],
+                'grade' => $newRank,
+            ];
 
-            switch ($newRank) {
-                case 'C-1':
-                case 'E-1':
-                    if (in_array($user->rank['grade'], ['E-1', 'C-1']) === false) {
-                        $message .= '<li>There was no direct equivalent rank found. Please check '.$greeting.' '.$user->first_name.' '.$user->last_name."'s record to ensure that their new rank is correct.</li>";
-                    }
-                    break;
-                default:
-            }
-
-            $rank = $user->rank;
-            $rank['grade'] = $newRank;
-            $user->rank = $rank;
-
-            $events[] = 'Rank changed from '.Grade::getRankTitle(
-                $oldRank,
-                null,
-                $oldValue
-            ).' ('.$oldRank.') to '.Grade::getRankTitle(
-                $newRank,
-                null,
-                $newValue
-            ).' ('.$newRank.') on '.date('d M Y');
+            $events[] = 'Rank changed from ' . Grade::getRankTitle($oldRank, null, $oldValue) . ' ('.$oldRank.') to ' .
+                        Grade::getRankTitle($newRank, null, $newValue) . ' ('.$newRank.') on ' . date('d M Y');
         }
 
         if (empty($message) === false) {

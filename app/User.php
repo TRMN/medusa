@@ -1924,7 +1924,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         $lastMemberId = self::getMemberIds();
 
         if (empty($uniqueMemberIds) === true) {
-            return '-0000-'.date('y');
+            return '-0001-'.date('y');
         }
 
         $newNumber = $lastMemberId + 1;

@@ -307,9 +307,7 @@ class ChapterController extends Controller
 
         asort($chapters);
 
-        $crew =
-            User::where('assignment.chapter_id', '=', (string) $chapter->_id)
-                ->get();
+        $crew = $chapter->getActiveCrewCount();
 
         return view(
             'chapter.edit',
@@ -318,7 +316,7 @@ class ChapterController extends Controller
                 'chapter'      => $chapter,
                 'chapterList'  => $chapters,
                 'branches'     => Branch::getNavalBranchList(),
-                'numCrew'      => count($crew),
+                'numCrew'      => $crew,
             ]
         );
     }
