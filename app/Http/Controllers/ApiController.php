@@ -585,4 +585,16 @@ class ApiController extends Controller
 
         return '<img src="'.asset($ribbonImage).'" alt="'.$ribbonName.'"'.$suffix;
     }
+
+    public function getNewRank(User $user, string $old, string $new)
+    {
+        $oldBranch = Branch::where('branch', strtoupper($old))->first();
+        $newBranch = Branch::where('branch', strtoupper($new))->first();
+
+        $newPayGrade = Grade::getNewPayGrade($user, $oldBranch, $newBranch, false);
+
+        return Response::json(
+          ['new_rank' => Grade::getRankTitle($newPayGrade, null, strtoupper($new)) . ' (' . $newPayGrade . ')']
+        );
+    }
 }

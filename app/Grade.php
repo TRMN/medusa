@@ -279,6 +279,10 @@ class Grade extends Eloquent
                 break;
         }
 
+        if ($newBranch === 'CIVIL') {
+            $newBranch = 'DIPLOMATIC';
+        }
+
         foreach ($rankEquivChart as $row) {
             if ($row[$branchToCheck] == $payGrade) {
                 return $row[$newBranch];

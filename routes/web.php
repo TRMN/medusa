@@ -552,6 +552,8 @@ Route::get('/api/lastexam/{memberid}', function ($memberid) {
     }
 });
 
+Route::get('/api/rank/transfer/{user}/{old}/{new}')->uses('ApiController@getNewRank')->middleware('auth');
+
 Route::get(
     '/getRoutes',
     function () {

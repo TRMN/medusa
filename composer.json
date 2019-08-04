@@ -58,7 +58,7 @@
         "themsaid/laravel-routes-publisher": "^1.0",
         "laravel/tinker": "^1.0",
         "lesichkovm/laravel-advanced-route": "dev-master",
-        "radic/blade-extensions": "~7.1",
+        "radic/blade-extensions": "~7.2",
         "guzzlehttp/guzzle": "^6.3",
         "predis/predis": "^1.1",
         "fideloper/proxy": "^4.0",
