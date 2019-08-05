@@ -23,7 +23,26 @@
                     </div>
                     @if(($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || $permsObj->hasPermissions(['EDIT_MEMBER']) || $permsObj->isInChainOfCommand($user))
                         <div class="Incised901Light">
-                            Path: {{Form::select('path', ['service' => 'Service', 'staff' => 'Staff', 'line' => 'Line'], $user->path, ['id' => 'path', 'data-id' => $user->id, 'title' => 'Click to change path'])}} <span class="fa fa-info-circle info" title="Click your path to change it"></span>
+                            Path: {{
+                            Form::select(
+                                    'path',
+                                    [
+                                        'service' => 'Service',
+                                        'staff' => 'Staff',
+                                        'line' => 'Line',
+                                    ],
+                                    $user->path,
+                                    [
+                                        'id' => 'path',
+                                        'data-id' => $user->id,
+                                        'title' => 'Click to change path',
+                                        'data-paygrade' => $user->getPayGrade(),
+                                        'data-member-id' => $user->member_id,
+                                        'data-old-path' => $user->path,
+                                    ]
+                                )
+                            }}
+                            <span class="fa fa-info-circle info" title="Click your path to change it"></span>
                         </div>
                     @endif
                 </div>

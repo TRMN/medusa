@@ -112,7 +112,7 @@ trait MedusaPromotions
      *
      * @return array
      */
-    public function getPromotableInfo($payGrade2Check = null, $sfcCheck = true)
+    public function getPromotableInfo($payGrade2Check = null, $sfcCheck = true, $path = null)
     {
         $flags = [
             'tig'    => false,
@@ -211,7 +211,9 @@ trait MedusaPromotions
                 $requirements['tig'] = $specialTig;
             }
 
-            $path = $this->getPath();
+            if (is_null($path) === true) {
+                $path = $this->getPath();
+            }
 
             // Check TiG requirements.
             $flags['tig'] = empty($requirements['tig']) ? true :

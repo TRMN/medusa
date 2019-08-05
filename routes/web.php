@@ -535,10 +535,7 @@ Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 // Update award display order
 Route::post('/api/awards/updateOrder', 'ApiController@updateAwardDisplayOrder');
 
-Route::post(
-    '/api/rankcheck',
-    ['uses' => 'ApiController@checkRankQual']
-); //->middleware('auth');
+Route::post('/api/rankcheck')->uses('ApiController@checkRankQual')->middleware('auth');
 
 Route::get('/api/awards/get_ribbon_image/{ribbonCode}/{ribbonCount}/{ribbonName}', 'ApiController@getRibbonImage');
 

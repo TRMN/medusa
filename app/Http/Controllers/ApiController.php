@@ -514,6 +514,7 @@ class ApiController extends Controller
         $pointCheck = $request->input('ppCheck');
         $earlyPromotion = $request->input('ep');
         $payGrade2Check = $request->input('payGrade');
+        $userPath = $request->input('path', null);
         $msg = null;
 
         if ($tigCheck === true) {
@@ -521,7 +522,7 @@ class ApiController extends Controller
                 null; // If we're checking TiG, we want to look up the next paygrade
         }
 
-        $promotionInfo = $member->getPromotableInfo($payGrade2Check);
+        $promotionInfo = $member->getPromotableInfo($payGrade2Check, true, $userPath);
 
         $canPromote = $promotionInfo['exams']; // Always have to have the exams
 
