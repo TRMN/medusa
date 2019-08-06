@@ -117,7 +117,7 @@ class Grade extends Eloquent
                     $retVal[] = [$grade, $title];
                 }
             }
-            return self::formatPayGradesForDataTables($payGrades);
+            return $retVal;
         } else {
             switch($branch) {
                 case 'INTEL':
