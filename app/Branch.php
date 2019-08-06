@@ -32,6 +32,28 @@ class Branch extends Eloquent
         return $branches;
     }
 
+    public static function getEnhancedBranchList()
+    {
+        $branches = [];
+
+        foreach (self::where('branch', '!=', 'CIVIL')->get(['branch', 'branch_name']) as $branch) {
+            $branches[$branch['branch']] = $branch['branch_name'];
+        }
+
+        $branches['DIPLOMATIC'] = 'Diplomatic Corps';
+        $branches['INTEL'] = 'Intelligence Corps';
+        $branches['MEDICAL'] = "RMMM Medical Division";
+        $branches['CATERING'] = "RMMM Catering Division";
+        $branches['ENG'] = "RMMM Engineering Division";
+        $branches['DECK'] = "RMMM Deck Division";
+
+        asort($branches);
+
+        $branches = ['' => 'Select a Branch'] + $branches;
+
+        return $branches;
+    }
+
     public static function getNavalBranchList()
     {
         foreach (self::whereIn('branch', MedusaConfig::get('chapter.naval', ['RMN', 'GSN', 'IAN', 'RHN']))

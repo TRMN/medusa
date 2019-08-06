@@ -17,7 +17,7 @@ class Grade extends Eloquent
      */
     protected $fillable = ['grade', 'rank'];
 
-    private static $gradeFilters = [
+    public static $gradeFilters = [
         'E' => 'Enlisted',
         'W' => 'Warrant Officer',
         'O' => 'Officer',
@@ -87,18 +87,63 @@ class Grade extends Eloquent
      *
      * @return array
      */
-    private static function gradesForBranchForSelect($branchID, $filter)
+    public static function gradesForBranchForSelect($branchID, $filter, $suffix = true)
     {
         $grades = [];
 
         foreach (self::gradesForBranch($branchID, $filter) as $grade) {
-            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]) . ' (' . $grade->grade . ')';
+            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]) . ($suffix ? ' (' . $grade->grade . ')' :
+                    '');
         }
 
         // Sort by the array key, which is the paygrade
         ksort($grades, SORT_NATURAL);
 
         return $grades;
+    }
+
+    public static function getGradesForBranchUnFiltered($branch)
+    {
+        $branches = MedusaConfig::get('memberlist.branches');
+
+        $retVal = [];
+
+        if (isset($branches[$branch]) === true) {
+            // It's not a Civil or RMMM Division
+            foreach (self::$gradeFilters as $filter => $filterName) {
+                $payGrades = self::gradesForBranchForSelect($branch, $filter, false);
+
+                foreach ($payGrades as $grade => $title) {
+                    $retVal[] = [$grade, $title];
+                }
+            }
+            return self::formatPayGradesForDataTables($payGrades);
+        } else {
+            switch($branch) {
+                case 'INTEL':
+                case 'DIPLOMATIC':
+                    $payGrades = Rating::where('rate_code', $branch)->first()->rate['CIVIL'];
+                    ksort($payGrades, SORT_NATURAL);
+                    break;
+
+                default:
+                    $payGrades = Rating::where('rate_code', $branch)->first()->rate['RMMM'];
+                    ksort($payGrades, SORT_NATURAL);
+                    break;
+            }
+        }
+        return self::formatPayGradesForDataTables($payGrades);;
+    }
+
+    private static function formatPayGradesForDataTables($payGrades)
+    {
+        $retVal = [];
+
+        foreach ($payGrades as $grade => $title) {
+            $retVal[] = [$grade, $title];
+        }
+
+        return $retVal;
     }
 
     /**

@@ -22,6 +22,11 @@ class ApiController extends Controller
         return Response::json(Branch::getBranchList());
     }
 
+    public function getEnhancedBranchList()
+    {
+        return Response::json(Branch::getEnhancedBranchList());
+    }
+
     public function getCountries()
     {
         $countryModel = new Countries();
@@ -597,5 +602,10 @@ class ApiController extends Controller
         return Response::json(
           ['new_rank' => Grade::getRankTitle($newPayGrade, null, strtoupper($new)) . ' (' . $newPayGrade . ')']
         );
+    }
+
+    public function getUnfilteredPayGrades($branch)
+    {
+        return Response::json(Grade::getGradesForBranchUnFiltered($branch));
     }
 }
