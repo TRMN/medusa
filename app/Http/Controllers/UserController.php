@@ -422,62 +422,6 @@ class UserController extends Controller
         $user->registration_date = date('Y-m-d');
         $user->active = 1;
 
-        switch ($user->branch) {
-            case 'RMN':
-            case 'GSN':
-            case 'RHN':
-            case 'IAN':
-                $billet = 'Crewman';
-
-                $dob = new \DateTime($user->dob);
-                $ageCutOff = new \DateTime('now');
-                $ageCutOff->modify('-18 year');
-
-                if ($ageCutOff < $dob) {
-                    $billet = 'Midshipman';
-                }
-
-                $assignment = $user->assignment;
-                $assignment[0]['billet'] = $billet;
-                $user->assignment = $assignment;
-
-                break;
-            case 'RMMC':
-                $assignment = $user->assignment;
-                $assignment[0]['billet'] = 'Marine';
-                $user->assignment = $assignment;
-
-                break;
-            case 'RMA':
-                $assignment = $user->assignment;
-                $assignment[0]['billet'] = 'Soldier';
-                $user->assignment = $assignment;
-
-                break;
-            case 'RMMM':
-                $assignment = $user->assignment;
-                $assignment[0]['billet'] = 'Crewman';
-                $user->assignment = $assignment;
-
-                break;
-            case 'RMACS':
-                $assignment = $user->assignment;
-                $assignment[0]['billet'] = 'Trainee';
-                $user->assignment = $assignment;
-
-                break;
-            case 'SFC':
-                $assignment = $user->assignment;
-                //$assignment[0]['billet'] = 'Cadet Ranger';
-                $user->assignment = $assignment;
-
-                break;
-            default:
-                $assignment = $user->assignment;
-                $assignment[0]['billet'] = 'Civilian';
-                $user->assignment = $assignment;
-        }
-
         $rank = $user['rank'];
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
@@ -861,33 +805,41 @@ class UserController extends Controller
         }
 
         $data['rank'] = ['grade' => 'E-1', 'date_of_rank' => date('Y-m-d')];
+        $age = Carbon::now()->diffInYears(Carbon::parse($data['dob']));
+
+        if ($age < 18) {
+          $data['branch'] = 'SFC'; // Anyone under 18 has to be in the SFC
+        }
 
         switch ($data['branch']) {
-            case 'CIVIL':
+            case 'DIPLOMATIC':
             case 'INTEL':
                 $data['rank']['grade'] = 'C-1';
-                $billet = 'Civilian One';
+                $billet = 'Civilian';
+                $data['rating'] = $data['branch'];
+                $data['branch'] = 'CIVIL';
                 break;
             case 'SFC':
-                $age = Carbon::now()->diffInYears(Carbon::parse($data['dob']));
-
                 switch ($age) {
                     case $age <= 8:
                         $data['rank']['grade'] = 'C-1';
-                        $billet = 'Cadet Ranger One';
+                        $billet = 'Cadet Ranger';
                         break;
                     case $age <= 12:
                         $data['rank']['grade'] = 'C-2';
-                        $billet = 'Cadet Ranger Two';
+                        $billet = 'Cadet Ranger';
                         break;
                     case $age <= 15:
                         $data['rank']['grade'] = 'C-3';
-                        $billet = 'Cadet Ranger Three';
+                        $billet = 'Cadet Ranger';
                         break;
                     case $age <= 17:
                         $data['rank']['grade'] = 'C-6';
                         $billet = 'Senior Cadet Ranger';
                         break;
+                  case $age > 17:
+                        $data['rank']['grade'] = 'C-7';
+                        $billet = 'Ranger';
                 }
                 break;
             case 'RMMM':
@@ -959,8 +911,6 @@ class UserController extends Controller
         );
 
         $user = User::create($data);
-
-        Event::fire('user.registered', $user);
 
         if (isset($data['mobile']) === true) {
             if (empty($user->id)) {
@@ -1618,7 +1568,7 @@ class UserController extends Controller
         $viewData = [
             'user'      => new User(),
             'countries' => Country::getCountries(),
-            'branches'  => $branches,
+            'branches'  => Branch::getEnhancedBranchList(['include_rmmm_divisions' => false]),
             'chapters'  => ['' => 'Start typing to search for a chapter'] +
                            Chapter::getFullChapterList(false),
             'register'  => true,

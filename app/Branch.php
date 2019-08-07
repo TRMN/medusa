@@ -32,20 +32,39 @@ class Branch extends Eloquent
         return $branches;
     }
 
-    public static function getEnhancedBranchList()
+    public static function getEnhancedBranchList(array $options = [])
     {
+        // Default options
+        $includeCivilDivisions = true;
+        $includeRmmmDivisions = true;
+
+        if (array_key_exists('include_civil_divisions', $options) === true) {
+          $includeCivilDivisions = $options['include_civil_divisions'];
+        }
+
+        if (array_key_exists('include_rmmm_divisions', $options) === true) {
+          $includeRmmmDivisions = $options['include_rmmm_divisions'];
+        }
+
         $branches = [];
 
         foreach (self::where('branch', '!=', 'CIVIL')->get(['branch', 'branch_name']) as $branch) {
             $branches[$branch['branch']] = $branch['branch_name'];
         }
 
-        $branches['DIPLOMATIC'] = 'Diplomatic Corps';
-        $branches['INTEL'] = 'Intelligence Corps';
-        $branches['MEDICAL'] = "RMMM Medical Division";
-        $branches['CATERING'] = "RMMM Catering Division";
-        $branches['ENG'] = "RMMM Engineering Division";
-        $branches['DECK'] = "RMMM Deck Division";
+        if ($includeCivilDivisions === true) {
+          $branches['DIPLOMATIC'] = 'Diplomatic Corps';
+          $branches['INTEL'] = 'Intelligence Corps';
+        } else {
+          $branches['CIVIL'] = 'Civil Service';
+        }
+
+        if ($includeRmmmDivisions) {
+          $branches['MEDICAL'] = "RMMM Medical Division";
+          $branches['CATERING'] = "RMMM Catering Division";
+          $branches['ENG'] = "RMMM Engineering Division";
+          $branches['DECK'] = "RMMM Deck Division";
+        }
 
         asort($branches);
 
