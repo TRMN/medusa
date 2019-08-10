@@ -330,6 +330,11 @@
                             <input type="checkbox" name="ep" id="ep" value="1"> Early Promotion
                         </label>
                     </div>
+                    <div>
+                        <label>
+                            <input type="checkbox" name="oqe" id="oqe" value="1"> OQE Promotion
+                        </label>
+                    </div>
                 @endif
 
             </fieldset>
@@ -482,7 +487,24 @@
             });
         });
 
+        $('#oqe').on('click', function() {
+           if ($('#oqe').prop('checked')) {
+               $('#tigCheck').prop('checked', false);
+               $('#ppCheck').prop('checked', false);
+               $('#ep').prop('checked', false);
+           }
+        });
+
+        $('#tigCheck, #ppCheck, #ep').on('click', function() {
+            if ($(this).prop('checked')) {
+                $('#oqe').prop('checked', false);
+            }
+        });
+
         $('#rank').on('change', function () {
+            if ($('#oqe').prop('checked')) {
+                return;
+            }
             let payload = {
                 "member_id": $('#member_id').val(),
                 "tigCheck": $('#tigCheck').prop('checked') ? true : false,
