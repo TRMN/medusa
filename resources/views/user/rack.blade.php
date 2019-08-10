@@ -42,16 +42,20 @@
         </div>
     </div>
     <br clear="both"/>
+
     @foreach(App\Award::getLeftSleeve() as $badge)
-        @if(file_exists(public_path('images/' . $badge->code . '.svg')))
-            <div class="row ribbon-row">
+            <div class="row ribbon-row clearfix">
                 <div class="col-sm-1">
                     {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null)}}
                 </div>
                 <div class="col-sm-2 text-center">
-                    <img src="{{asset('images/' . $badge->code . '.svg')}}" alt="{{$badge->name}}">
+                    @if(file_exists(public_path('images/' . $badge->code . '.svg')))
+                        <img src="{{asset('images/' . $badge->code . '.svg')}}" alt="{{$badge->name}}" class="height54px">
+                    @else
+                        {{ $badge->name }}
+                    @endif
                 </div>
-                <div class="col-sm-5 ">
+                <div class="col-sm-5">
                     @if($badge->multiple)
                         {{Form::number($badge->code . '_quantity', isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:0, ['min' => 0])}}
                     @else
@@ -59,8 +63,8 @@
                     @endif
                 </div>
             </div>
-        @endif
     @endforeach
+
 
     <br clear="both"/>
     <div class="row text-center"><h3>Unit Patch</h3></div>
