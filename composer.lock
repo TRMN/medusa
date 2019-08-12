@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f865e787d62b4b7a8291ba669f145d1",
+    "content-hash": "40a871b3d34e5002769ebcb8b9c447fc",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -645,6 +645,64 @@
                 "symmetric key cryptography"
             ],
             "time": "2018-07-24T23:27:56+00:00"
+        },
+        {
+            "name": "designmynight/laravel-mongodb-passport",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dweinerATL/laravel-mongodb-passport.git",
+                "reference": "13355c2e15b600191e49cd37ce43f715cd1adf4a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dweinerATL/laravel-mongodb-passport/zipball/13355c2e15b600191e49cd37ce43f715cd1adf4a",
+                "reference": "13355c2e15b600191e49cd37ce43f715cd1adf4a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.5",
+                "jenssegers/mongodb": "3.3.* || 3.4.* || 3.5.*",
+                "laravel/passport": "4.0.* || 5.0.* || 6.0.* || 7.0.*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DesignMyNight\\Mongodb\\MongodbPassportServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DesignMyNight\\Mongodb\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Steve Porter",
+                    "email": "steve@designmynight.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A package to allow laravel/passport use with jenssegers/laravel-mongodb",
+            "homepage": "https://github.com/designmynight/laravel-mongodb-passport",
+            "keywords": [
+                "designmynight",
+                "laravel",
+                "laravel-mongodb",
+                "laravel-mongodb-passport",
+                "laravel-passport",
+                "mongodb",
+                "passport"
+            ],
+            "support": {
+                "source": "https://github.com/dweinerATL/laravel-mongodb-passport/tree/master"
+            },
+            "time": "2019-08-12T01:43:23+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -8457,6 +8515,7 @@
     "stability-flags": {
         "webpatser/laravel-countries": 20,
         "lesichkovm/laravel-advanced-route": 20,
+        "designmynight/laravel-mongodb-passport": 20,
         "phpmd/phpmd": 0
     },
     "prefer-stable": true,

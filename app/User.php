@@ -12,7 +12,6 @@ use App\Enums\MedusaDefaults;
 use App\Awards\AwardQualification;
 use Laravel\Passport\HasApiTokens;
 use App\Promotions\MedusaPromotions;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Permissions\MedusaPermissions;
@@ -20,7 +19,7 @@ use Illuminate\Notifications\Notifiable;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use DesignMyNight\Mongodb\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
@@ -74,12 +73,11 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * @property string promotionStatus
  * @property array previous
  */
-class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
+class User extends Authenticatable implements CanResetPasswordContract
 {
     use Notifiable,
         MedusaAudit,
         MedusaPermissions,
-        Authenticatable,
         HasApiTokens,
         CanResetPassword,
         AwardQualification,
