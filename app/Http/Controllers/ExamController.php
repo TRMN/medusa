@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\GradeEntered;
 use App\Exam;
-use App\ExamList;
-use App\Message;
 use App\User;
-use Illuminate\Support\Facades\Artisan;
+use App\Message;
+use App\ExamList;
+use Illuminate\Support\Arr;
+use App\Events\GradeEntered;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
@@ -168,8 +169,8 @@ class ExamController extends Controller
             $message =
                 '<span class="fi-alert alert">'.strtoupper($data['exam']).' updated in academy coursework for '.
                 $member->first_name.' '.
-                (!empty($member->middle_name) ? $member->middle_name.' ' : '').$member->last_name.
-                (!empty($member->suffix) ? ' '.$member->suffix : '').
+                (! empty($member->middle_name) ? $member->middle_name.' ' : '').$member->last_name.
+                (! empty($member->suffix) ? ' '.$member->suffix : '').
                 ' ('.$member->member_id.')'.'</span>';
         } else {
             if (empty($record) === false) {
@@ -201,8 +202,8 @@ class ExamController extends Controller
             $message =
                 '<span class="fi-alert yellow">'.strtoupper($data['exam']).' added to academy coursework for '.
                 $member->first_name.' '.
-                (!empty($member->middle_name) ? $member->middle_name.' ' : '').$member->last_name.
-                (!empty($member->suffix) ? ' '.$member->suffix : '').
+                (! empty($member->middle_name) ? $member->middle_name.' ' : '').$member->last_name.
+                (! empty($member->suffix) ? ' '.$member->suffix : '').
                 ' ('.$member->member_id.')'.'</span>';
         }
         $this->writeAuditTrail(
@@ -310,7 +311,7 @@ class ExamController extends Controller
                 return $redirect;
             }
 
-            $exams = array_except((array) $examRecord->exams, (string) $examId);
+            $exams = Arr::except((array) $examRecord->exams, (string) $examId);
 
             $examRecord->exams = $exams;
 

@@ -2,9 +2,9 @@
 
 namespace App\Utility;
 
+use App\User;
 use App\Chapter;
 use App\MedusaConfig;
-use App\User;
 
 class MedusaUtility
 {
@@ -37,7 +37,7 @@ class MedusaUtility
         $search = [
             '%CHAPTER%',
             '%CO%',
-            '%COEMAIL',
+            '%COEMAIL%',
             '%5SL%',
             '%MOTA%',
             '%DANT%',

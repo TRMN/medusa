@@ -3,8 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Exam;
-use App\Message;
 use App\User;
+use App\Message;
+use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -41,7 +42,7 @@ class ImportGrades extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // Get the current setting
 
@@ -603,7 +604,7 @@ class ImportGrades extends Command
 
     protected function importLandingUExams(array $record)
     {
-        $landingUExams = array_where($record, function ($value, $key) {
+        $landingUExams = Arr::where($record, function ($value, $key) {
             return strtoupper(substr($key, 0, 2)) == 'LU';
         });
 
@@ -621,7 +622,7 @@ class ImportGrades extends Command
 
     protected function importGsnSpecialityExams(array $record)
     {
-        $exams = array_where($record, function ($value, $key) {
+        $exams = Arr::where($record, function ($value, $key) {
             return preg_match('/IMNA_(STC|AFLTC|GTSC)_.+$/', strtoupper($key));
         });
 

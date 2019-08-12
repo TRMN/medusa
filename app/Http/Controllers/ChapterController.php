@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Type;
+use App\User;
 use App\Branch;
 use App\Chapter;
 use App\MedusaConfig;
-use App\Permissions\MedusaPermissions;
-use App\Type;
-use App\User;
+use League\Csv\Writer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use App\Permissions\MedusaPermissions;
 use Illuminate\Support\Facades\Redirect;
-use League\Csv\Writer;
 
 class ChapterController extends Controller
 {
@@ -121,7 +121,7 @@ class ChapterController extends Controller
         $ret['recordsFiltered'] = $filteredRecords;
         $ret['data'] = [];
 
-        /**
+        /*
          * Process the results.
          *
          * @var User
@@ -238,7 +238,8 @@ class ChapterController extends Controller
         $types =
             Type::whereIn(
                 'chapter_type',
-                MedusaConfig::get('chapter.types', ['ship', 'station']))
+                MedusaConfig::get('chapter.types', ['ship', 'station'])
+            )
                 ->orderBy('chapter_description')
                 ->get(
                     ['chapter_type', 'chapter_description']
@@ -306,9 +307,7 @@ class ChapterController extends Controller
 
         asort($chapters);
 
-        $crew =
-            User::where('assignment.chapter_id', '=', (string) $chapter->_id)
-                ->get();
+        $crew = $chapter->getActiveCrewCount();
 
         return view(
             'chapter.edit',
@@ -317,7 +316,7 @@ class ChapterController extends Controller
                 'chapter'      => $chapter,
                 'chapterList'  => $chapters,
                 'branches'     => Branch::getNavalBranchList(),
-                'numCrew'      => count($crew),
+                'numCrew'      => $crew,
             ]
         );
     }
@@ -494,10 +493,10 @@ class ChapterController extends Controller
 
             foreach ($commandTriad as $billetInfo) {
                 if (is_object($billetInfo['user']) &&
-                    get_class($billetInfo['user']) == 'App\User') {
+                    get_class($billetInfo['user']) == \App\User::class) {
                     $user = $billetInfo['user'];
                     switch (substr($user->rank['grade'], 0, 1)) {
-                        case 'E' :
+                        case 'E':
                             $exam = $user->getHighestEnlistedExam();
                             break;
                         case 'W':
@@ -613,6 +612,7 @@ class ChapterController extends Controller
                 ' ',
                 '_',
                 $chapter->chapter_name
-            ).'_roster.csv');
+            ).'_roster.csv'
+        );
     }
 }

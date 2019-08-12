@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Chapter;
 use App\User;
+use App\Chapter;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -40,7 +40,7 @@ class AddFleetCoPermission extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         $user = User::where('member_id', '=', $this->argument('member_id'))->first();
 

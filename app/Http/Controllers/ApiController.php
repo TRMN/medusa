@@ -2,24 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Award;
-use App\Branch;
-use App\Chapter;
-use App\ExamList;
-use App\Grade;
-use App\Korders;
-use App\MedusaConfig;
-use App\Rating;
 use App\User;
+use App\Award;
+use App\Grade;
+use App\Branch;
+use App\Rating;
+use App\Chapter;
+use App\Korders;
+use App\ExamList;
+use App\MedusaConfig;
+use Webpatser\Countries\Countries;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Webpatser\Countries\Countries;
 
 class ApiController extends Controller
 {
     public function getBranchList()
     {
         return Response::json(Branch::getBranchList());
+    }
+
+    public function getEnhancedBranchList()
+    {
+        return Response::json(Branch::getEnhancedBranchList());
     }
 
     public function getCountries()
@@ -50,6 +55,7 @@ class ApiController extends Controller
         $ratings = Rating::where('rate_code', $rating)->first();
 
         $ratingsForBranch = $ratings->rate[$branch];
+        ksort($ratingsForBranch, SORT_NATURAL);
 
         return [$ratings->rate['description'] => $this->parseRatingsForBranch($ratingsForBranch)];
     }
@@ -289,10 +295,10 @@ class ApiController extends Controller
             $suggestions[] =
                 [
                     'value' => $member->member_id.' '.$member->first_name.' '.
-                               (!empty($member->middle_name) ?
+                               (! empty($member->middle_name) ?
                                    $member->middle_name.' ' : '').
                                $member->last_name.
-                               (!empty($member->suffix) ? ' '.$member->suffix :
+                               (! empty($member->suffix) ? ' '.$member->suffix :
                                    '').' ('.$member->getAssignmentName(
                                        'primary'
                                    ).')',
@@ -464,6 +470,48 @@ class ApiController extends Controller
         }
     }
 
+    public function getPromotableInfo($id, $payGradeToCheck)
+    {
+        return Response::json(User::find($id)->getPromotableInfo($payGradeToCheck));
+    }
+
+    public function getPayGradesForUser($id)
+    {
+        $user = User::find($id);
+        $rate = $user->getRate();
+
+        if (is_null($rate) === true) {
+            return Response::json(Grade::getGradesForBranch($user->branch));
+        } else {
+            return Response::json($this->getGradesForRating($rate, $user->branch));
+        }
+    }
+
+    public function getBranchForUser($id)
+    {
+        $user = User::find($id);
+
+        return Response::json(Branch::getBranchName($user->branch));
+    }
+
+    public function checkTransferRank($id, $newBranch)
+    {
+        $user = User::find($id);
+
+        $branchInfo = Branch::where('branch', $user->branch)->first();
+
+        if (isset($branchInfo->equivalent[$newBranch][$user->rank['grade']]) === true) {
+            return "Transferring from " . Branch::getBranchName($user->branch) . " to " .
+                   Branch::getBranchName($newBranch) . " will change the members rank from " .
+                   Grade::getRankTitle($user->rank['grade'], null, $user->branch) . " (" . $user->rank['grade'] . ")" .
+                   " to " .
+                   Grade::getRankTitle($branchInfo->equivalent[$newBranch][$user->rank['grade']], null, $newBranch) .
+                   " (" . $branchInfo->equivalent[$newBranch][$user->rank['grade']] . ")";
+        } else {
+            return "Unable to determine the new rank for the member";
+        }
+    }
+
     public function checkRankQual(\Illuminate\Http\Request $request)
     {
         $member = User::getUserByMemberId($request->input('member_id'));
@@ -471,6 +519,7 @@ class ApiController extends Controller
         $pointCheck = $request->input('ppCheck');
         $earlyPromotion = $request->input('ep');
         $payGrade2Check = $request->input('payGrade');
+        $userPath = $request->input('path', null);
         $msg = null;
 
         if ($tigCheck === true) {
@@ -478,7 +527,7 @@ class ApiController extends Controller
                 null; // If we're checking TiG, we want to look up the next paygrade
         }
 
-        $promotionInfo = $member->getPromotableInfo($payGrade2Check);
+        $promotionInfo = $member->getPromotableInfo($payGrade2Check, true, $userPath);
 
         $canPromote = $promotionInfo['exams']; // Always have to have the exams
 
@@ -524,5 +573,39 @@ class ApiController extends Controller
             ['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check,
              'pinfo' => $promotionInfo, ]
         );
+    }
+
+    public function getRibbonImage($ribbonCode, $ribbonCount, $ribbonName)
+    {
+        $prefix = 'ribbons/';
+        $suffix = ' class="ribbon">';
+
+        if (in_array($ribbonCode, ['MT', 'MID', 'WS'])) {
+            $prefix = 'awards/stripes/';
+            $suffix = '>';
+        }
+        $ribbonImage = $prefix.$ribbonCode.'-1.svg';
+        if (file_exists(public_path($prefix.$ribbonCode.'-'.$ribbonCount.'.svg'))) {
+            $ribbonImage = $prefix.$ribbonCode.'-'.$ribbonCount.'.svg';
+        }
+
+        return '<img src="'.asset($ribbonImage).'" alt="'.$ribbonName.'"'.$suffix;
+    }
+
+    public function getNewRank(User $user, string $old, string $new)
+    {
+        $oldBranch = Branch::where('branch', strtoupper($old))->first();
+        $newBranch = Branch::where('branch', strtoupper($new))->first();
+
+        $newPayGrade = Grade::getNewPayGrade($user, $oldBranch, $newBranch, false);
+
+        return Response::json(
+          ['new_rank' => Grade::getRankTitle($newPayGrade, null, strtoupper($new)) . ' (' . $newPayGrade . ')']
+        );
+    }
+
+    public function getUnfilteredPayGrades($branch)
+    {
+        return Response::json(Grade::getGradesForBranchUnFiltered($branch));
     }
 }

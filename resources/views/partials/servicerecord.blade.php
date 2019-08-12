@@ -23,7 +23,26 @@
                     </div>
                     @if(($permsObj->hasPermissions(['EDIT_SELF']) && Auth::user()->id == $user->id) || $permsObj->hasPermissions(['EDIT_MEMBER']) || $permsObj->isInChainOfCommand($user))
                         <div class="Incised901Light">
-                            Path: {{Form::select('path', ['service' => 'Service', 'staff' => 'Staff', 'line' => 'Line'], $user->path, ['id' => 'path', 'data-id' => $user->id, 'title' => 'Click to change path'])}} <span class="fa fa-info-circle info" title="Click your path to change it"></span>
+                            Path: {{
+                            Form::select(
+                                    'path',
+                                    [
+                                        'service' => 'Service',
+                                        'staff' => 'Staff',
+                                        'line' => 'Line',
+                                    ],
+                                    $user->path,
+                                    [
+                                        'id' => 'path',
+                                        'data-id' => $user->id,
+                                        'title' => 'Click to change path',
+                                        'data-paygrade' => $user->getPayGrade(),
+                                        'data-member-id' => $user->member_id,
+                                        'data-old-path' => $user->path,
+                                    ]
+                                )
+                            }}
+                            <span class="fa fa-info-circle info" title="Click your path to change it"></span>
                         </div>
                     @endif
                 </div>
@@ -155,12 +174,12 @@
                                     @if($permsObj->hasPermissions(['EDIT_PEERAGE']))
                                         <a href="#" data-peerage-id="{{$peerage['peerage_id']}}"
                                            data-peerage-title="{{$peerage['title']}}"
-                                           data-peerage-generation="{{$peerage['generation'] or ''}}"
-                                           data-peerage-lands="{{$peerage['lands'] or ''}}"
-                                           data-peerage-order="{{$orderInfo->id or ''}}"
-                                           data-peerage-class="{{$peerage['postnominal'] or ''}}"
-                                           data-peerage-courtesy="{{$peerage['courtesy'] or "0"}}"
-                                           data-peerage-filename="{{$peerage['filename'] or ''}}"
+                                           data-peerage-generation="{{$peerage['generation'] ?? ''}}"
+                                           data-peerage-lands="{{$peerage['lands'] ?? ''}}"
+                                           data-peerage-order="{{$orderInfo->id ?? ''}}"
+                                           data-peerage-class="{{$peerage['postnominal'] ?? ''}}"
+                                           data-peerage-courtesy="{{$peerage['courtesy'] ?? "0"}}"
+                                           data-peerage-filename="{{$peerage['filename'] ?? ''}}"
                                            class="edit_peerage fa fa-pencil green">&nbsp;</a>
                                     @endif
                                     @if($permsObj->hasPermissions(['DEL_PEERAGE']))

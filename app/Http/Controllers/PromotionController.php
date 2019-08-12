@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Chapter;
-use App\Grade;
-use App\Permissions\MedusaPermissions;
 use App\User;
+use App\Grade;
+use App\Chapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Permissions\MedusaPermissions;
 
 class PromotionController extends Controller
 {
@@ -124,7 +124,9 @@ class PromotionController extends Controller
 
         if (($redirect = $this->canPromote($chapterId)) !== true) {
             return redirect(URL::previous())->with(
-                'message', 'You do not have permission to view that page');
+                'message',
+                'You do not have permission to view that page'
+            );
         }
 
         $payload = json_decode($request->payload, true);
@@ -135,8 +137,10 @@ class PromotionController extends Controller
             }
         }
 
-        $promoted = array_merge($this->_processPromotionRequests($payload['early'], true),
-            $this->_processPromotionRequests($payload['promotable']));
+        $promoted = array_merge(
+            $this->_processPromotionRequests($payload['early'], true),
+            $this->_processPromotionRequests($payload['promotable'])
+        );
 
         return view('promotions.results', ['chapter' => Chapter::find($chapterId), 'promotions' => $promoted]);
     }
@@ -148,13 +152,19 @@ class PromotionController extends Controller
         foreach ($promotions as $member) {
             $user = User::find($member['memberId']);
 
-            $from = Grade::getRankTitle($user->rank['grade'], $user->getRate(),
-                    $user->branch).' ('.$user->rank['grade'].')';
+            $from = Grade::getRankTitle(
+                $user->rank['grade'],
+                $user->getRate(),
+                $user->branch
+            ).' ('.$user->rank['grade'].')';
 
             $user->promoteMember($member['grade'], $early);
 
-            $to = Grade::getRankTitle($member['grade'], $user->getRate(),
-                    $user->branch).' ('.$member['grade'].')';
+            $to = Grade::getRankTitle(
+                $member['grade'],
+                $user->getRate(),
+                $user->branch
+            ).' ('.$member['grade'].')';
 
             $promoted[] = [
                 'name'      => $user->getFullName(),

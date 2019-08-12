@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Auth;
-use Moloquent\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
  * Class UploadLog.
@@ -111,7 +111,7 @@ class UploadLog extends Eloquent
      *
      * @param string $id
      *
-     * @return \Moloquent\Eloquent\Model|null
+     * @return \Jenssegers\Mongodb\Eloquent\Model|null
      */
     public static function getEntryByChapterId(string $id)
     {

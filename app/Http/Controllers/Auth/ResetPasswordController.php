@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class ResetPasswordController extends BaseController
 {
@@ -72,7 +72,10 @@ class ResetPasswordController extends BaseController
     protected function credentials(Request $request)
     {
         return $request->only(
-            'email_address', 'password', 'password_confirmation', 'token'
+            'email_address',
+            'password',
+            'password_confirmation',
+            'token'
         );
     }
 

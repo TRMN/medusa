@@ -2,16 +2,16 @@
 
 namespace App\Permissions;
 
-use App\Chapter;
 use App\User;
-use Illuminate\Support\Facades\Auth;
+use App\Chapter;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 
 trait MedusaPermissions
 {
-    public function checkPermissions($permissions)
+    public function checkPermissions($permissions, $skipAll = false)
     {
-        if ($this->hasPermissions($permissions) === false) {
+        if ($this->hasPermissions($permissions, $skipAll) === false) {
             return redirect(URL::previous())->with(
                 'message',
                 'You do not have permission to view that page'
@@ -54,6 +54,11 @@ trait MedusaPermissions
         }
 
         return true;
+    }
+
+    public function hasPermission($permissions, $skipAll = false)
+    {
+        return $this->hasPermissions($permissions, $skipAll);
     }
 
     public function hasPermissions($permissions, $skipAll = false)

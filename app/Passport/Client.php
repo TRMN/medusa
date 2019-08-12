@@ -2,9 +2,9 @@
 
 namespace App\Passport;
 
-use Moloquent\Eloquent\Model;
-use Moloquent\Passport\AuthCode;
 use Moloquent\Passport\Token;
+use Moloquent\Passport\AuthCode;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class Client extends Model
 {

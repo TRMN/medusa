@@ -3,9 +3,9 @@
 namespace App\Awards;
 
 use App\AwardLog;
+use Carbon\Carbon;
 use App\MedusaConfig;
 use App\Utility\MedusaUtility;
-use Carbon\Carbon;
 
 /**
  * Trait AwardQualification.
@@ -79,7 +79,8 @@ trait AwardQualification
                         'award_date' => $awardDates,
                         'display'    => true,
                     ],
-                ]);
+                ]
+            );
 
             if ($results === true && $isNewAward === true && $newMCAM > 0) {
                 // MCAM awarded and it's a new award.  Add it to their history and
@@ -285,7 +286,8 @@ trait AwardQualification
                             'award_date' => [$awardDate],
                             'display'    => false,
                         ],
-                    ]);
+                    ]
+                );
 
                 if ($results === true && $isNewAward === true) {
                     // SWP successfully added and it's a new award.  Add it to
