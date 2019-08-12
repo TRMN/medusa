@@ -7,6 +7,10 @@
    - Added confirmation dialog for sending chapter reports
    - Fixed icon for editing chapter reports
    - Made list of additional recipients for chapter reports part of the MEDUSA configuration system
+   - Fixed issue with rank equivalencies when a member changes branches
+   - Added ability for admins to bypass all promotion requirements for OQE promotions
+   - Added Privy Council Member to awards/ribbon rack
+   - Enhanced new member signup to allow direct signups for both Diplomatic and Intel divisions and adult SFC members
     
 ## 2.0.6 (Release combined with 2.0.7)
    - Updates to Ribbon Rack Builder
