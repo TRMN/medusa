@@ -65,7 +65,8 @@
         "laravel/passport": "~5.0",
         "genealabs/laravel-caffeine": "^0.8.0",
         "jenssegers/mongodb": "^3.5",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "*",
+        "designmynight/laravel-mongodb-passport":"dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
@@ -117,6 +118,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/lesichkovm/laravel-advanced-route.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:dweinerATL/laravel-mongodb-passport.git"
         }
     ],
     "minimum-stability": "dev",
