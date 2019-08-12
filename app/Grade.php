@@ -119,7 +119,7 @@ class Grade extends Eloquent
             }
             return $retVal;
         } else {
-            switch($branch) {
+            switch ($branch) {
                 case 'INTEL':
                 case 'DIPLOMATIC':
                     $payGrades = Rating::where('rate_code', $branch)->first()->rate['CIVIL'];
@@ -132,7 +132,7 @@ class Grade extends Eloquent
                     break;
             }
         }
-        return self::formatPayGradesForDataTables($payGrades);;
+        return self::formatPayGradesForDataTables($payGrades);
     }
 
     private static function formatPayGradesForDataTables($payGrades)
