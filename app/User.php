@@ -18,8 +18,8 @@ use App\Permissions\MedusaPermissions;
 use Illuminate\Notifications\Notifiable;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use DesignMyNight\Mongodb\Auth\User as Authenticatable;
+//use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Medusa\Mongodb\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
