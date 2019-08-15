@@ -26,11 +26,6 @@
             "email": "bill.knight@conalscorner.com",
             "homepage": "http://www.conalscorner.com/trmn",
             "role": "Award Graphics"
-        },
-        {
-            "name": "Jerry Ablan",
-            "email": "jerryablan@gmail.com",
-            "role": "Refactoring and optimization"
         }
     ],
     "description": "Project MEDUSA (Manticoran Enhanced Data Usability Service Architecture)",
@@ -65,7 +60,7 @@
         "genealabs/laravel-caffeine": "^0.8.0",
         "jenssegers/mongodb": "^3.5",
         "squizlabs/php_codesniffer": "*",
-        "designmynight/laravel-mongodb-passport":"dev-master"
+        "medusa/laravel-mongodb-passport":"~1.1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
@@ -112,15 +107,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/dweinerATL/moloquent"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/lesichkovm/laravel-advanced-route.git"
         },
         {
             "type": "vcs",
-            "url": "git@github.com:dweinerATL/laravel-mongodb-passport.git"
+            "url": "https://github.com/TRMN/laravel-mongodb-passport.git"
         }
     ],
     "minimum-stability": "dev",
