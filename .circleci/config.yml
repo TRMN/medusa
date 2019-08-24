@@ -7,6 +7,12 @@ jobs:
       - image: circleci/mongo:latest
         environment:
           APP_ENV: development
+    parallelism: 4
+    environment:
+      VAR: .circleci/config.env
+    branches:
+      only:
+        - circleci-test
     steps:
       - run:
           name: Install system packages
@@ -33,6 +39,14 @@ jobs:
             mkdir -p storage/framework/cache
             php composer.phar create-project
       - run:
+          name: Create .env file
+          command: |
+            cp .env.circleci .env
+            source ${VAR}
+            echo "CODE_NAME="$CODE_NAME >> .env
+            echo "VERSION="$VERSION >> .env
+            php artisan key:generate
+      - run:
           name: Run CS tests
           command: |
             mkdir reports
@@ -41,6 +55,6 @@ jobs:
           path: /var/www/html/reports
       - store_artifacts:
           path: /var/www/html/reports
-#      - run:
-#          name: Run Unit tests
-#          command: vendor/bin/phpunit
+      - run:
+          name: Run Unit tests
+          command: vendor/bin/phpunit
