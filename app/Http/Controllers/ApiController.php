@@ -19,7 +19,7 @@ class ApiController extends Controller
 {
     public function getBranchList()
     {
-        return Response::json(Branch::getBranchList());
+        return Response::json(Branch::getEnhancedBranchList(['include_rmmm_divisions' => false]));
     }
 
     public function getEnhancedBranchList()
