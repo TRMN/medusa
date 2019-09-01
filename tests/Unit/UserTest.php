@@ -28,6 +28,7 @@
             $this->assertEquals('-', substr($namID, 5, 1));
             $this->assertTrue(is_numeric(substr($namID,1,4)));
             $this->assertTrue(is_numeric(substr($namID,6,2)));
+            Log::debug('Unit/UserTest testgetNextAvailableMemberId '.$namID);
         }
         
         public function testgetFirstAvailableMemberId()
@@ -39,6 +40,7 @@
             $this->assertEquals('-', substr($namID, 5, 1));
             $this->assertTrue(is_numeric(substr($namID,1,4)));
             $this->assertTrue(is_numeric(substr($namID,6,2)));
+            Log::debug('Unit/UserTest testgetFirstAvailableMemberId '.$namID);
         }
         
         public function testgetLastLogin()

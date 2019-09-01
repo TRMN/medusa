@@ -6,6 +6,7 @@
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Support\Facades\Log;
     use App\MedusaConfig;
+    use App\User;
     use App\Utility\MedusaUtility;
     use App\Promotions\MedusaPromotions;
     
@@ -13,29 +14,82 @@
     {
         use MedusaPromotions;
         
+        private $testUserID;
+        private $testUser;
+        
         public function setUp(): void
         {
             parent::setUp();
-            Log::debug('Unit/UserTest setUp');
+            $this->testUserID = 'RMN'.\App\User::getNextAvailableMemberId();
+            Log::debug('Unit/MedusaPromotionsTest setUp '.$this->testUserID).'-------------------';
+
+            $createdDate =  date('Y-m-d', strtotime(date('Y-m-d'). ' - 62 days'));
+            Log::debug('Unit/MedusaPromotionsTest $createdDate '.$createdDate);
+
+            
+            $user['member_id'] = $this->testUserID;
+            $user['email_address'] = strval(microtime(true)).'@trmn.org';
+            
+            $user['rank']['grade'] = 'E-1'; // C-1
+            $user['rank']['date_of_rank'] = $createdDate;
+            $user['assignment'][] =
+            ['chapter_id'   => '', //$this->getChapterByName('HMS Medusa')[0]['_id'], // protected function
+            'billet'       => '', //$user['primary_billet'],
+            'primary'      => true,
+            'chapter_name' => 'HMS Medusa',
+            ];
+            $user['awards'] = [];
+            $user['path'] = 'line';
+
+            $user['permissions'] = [
+            'LOGOUT',
+            'CHANGE_PWD',
+            'EDIT_SELF',
+            'ROSTER',
+            'TRANSFER',
+            ];
+            
+            $user['registration_status'] = 'Active';
+            $user['registration_date'] = $createdDate;
+            $user['application_date'] = date('Y-m-d');
+            $user['country'] = 'USA';
+            $user['state_province'] = 'CA';
+            $user['postal_code'] = '94102';
+            
+            $this->testUser = \App\User::create($user);
+            Log::debug('Unit/MedusaPromotionsTest setUp result '.$this->testUser);
+            $u = \App\User::find($this->testUser['_id']);
+            foreach ($user as $key => $value) {
+                $u[$key] = $value;
+            }
+            $u->save();
+            
+            Log::debug('Unit/MedusaPromotionsTest setUp done');
         }
         
         // trivial test - needs real data setup
         public function testIsPromotable1()
         {
-            Log::debug('Unit/MedusaPromotionsTest testIsPromotable1');
-            $testUserID = '5b786115a016bd1d8a34cb93'; // Timber
-            $this->user = \App\User::find($testUserID);
-            $this->assertFalse($this->user->isPromotable());
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable1 testuserid');
+            $this->assertFalse($this->testUser->isPromotable());
+        }
+        
+        // trivial test - needs real data setup
+        public function testIsPromotable2()
+        {
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid');
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid points '.$this->testUser->points);
+            $this->testUser->setPromotionPointValue('cpm','3');
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid points '.$this->testUser->points['cpm']);
+            $this->assertFalse($this->testUser->isPromotable());  // this should be true
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid done');
         }
         
         // trivial test of getPromotableInfo
         public function testGetPromotableInfo()
         {
             Log::debug('Unit/MedusaPromotionsTest testgetPromotableInfo');
-            $testUserID = '5b786115a016bd1d8a34cb93'; // Timber
-            $this->user = \App\User::find($testUserID);
-            
-            $flags = $this->user->getPromotableInfo(); // MedusaPromotions
+            $flags = $this->testUser->getPromotableInfo(); // MedusaPromotions
             
             $this->assertNotNull($flags);
             
@@ -72,5 +126,6 @@
             // inductively prove the simple sequential table-driven ones
             // special cases for any tricky code
             
+            Log::debug('Unit/MedusaPromotionsTest testgetPromotableInfo done');
         }
     }
