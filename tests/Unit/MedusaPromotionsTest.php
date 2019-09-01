@@ -16,16 +16,30 @@
         
         private $testUserID;
         private $testUser;
+        private $examUserID = 'RMN-5405-18';//'5b786115a016bd1d8a34cb93'; // timber
+
+        private function addTestResult($memberId, $exam_id, $date, $score, $entered_by, $date_entered): void
+        {
+            Log::debug('Unit/MedusaPromotionsTest addTestResult ('.$memberId.','.$exam_id.','.$date.','.$score.','.$entered_by.','.$date_entered.')');
+            $record = ['score' => $score, 'date' => $date, 'date_entered' => $date_entered];
+            Log::debug('Unit/MedusaPromotionsTest addTestResult $record '.implode(",", $record));
+            $examRecord = ['member_id' => $memberId, 'exams' => $record];
+            try {
+                \App\Exam::create($examRecord);
+            } catch (\Exception $e) {
+                $details = ['severity' => 'warning',
+                'msg' => 'Unable to add '.$res->first_name.' '.$res->last_name.'('.$memberId.')',];
+                Log::debug('Unit/MedusaPromotionsTest addTestResult Exam::create failed '.$details);
+            }
+        }
         
         public function setUp(): void
         {
             parent::setUp();
             $this->testUserID = 'RMN'.\App\User::getNextAvailableMemberId();
-            Log::debug('Unit/MedusaPromotionsTest setUp '.$this->testUserID).'-------------------';
+            Log::debug('Unit/MedusaPromotionsTest setUp '.$this->testUserID.' -------------------');
 
             $createdDate =  date('Y-m-d', strtotime(date('Y-m-d'). ' - 62 days'));
-            Log::debug('Unit/MedusaPromotionsTest $createdDate '.$createdDate);
-
             
             $user['member_id'] = $this->testUserID;
             $user['email_address'] = strval(microtime(true)).'@trmn.org';
@@ -51,20 +65,25 @@
             
             $user['registration_status'] = 'Active';
             $user['registration_date'] = $createdDate;
-            $user['application_date'] = date('Y-m-d');
+            $user['application_date'] = $createdDate;
             $user['country'] = 'USA';
             $user['state_province'] = 'CA';
             $user['postal_code'] = '94102';
             
+            // from UserController.php:751
             $this->testUser = \App\User::create($user);
-            Log::debug('Unit/MedusaPromotionsTest setUp result '.$this->testUser);
             $u = \App\User::find($this->testUser['_id']);
             foreach ($user as $key => $value) {
                 $u[$key] = $value;
             }
-            $u->save();
-            
-            Log::debug('Unit/MedusaPromotionsTest setUp done');
+            try {
+                $u->save(); // UserController.php:504, 761
+            } catch (\Exception $e) {
+                Log::debug('Unit/MedusaPromotionsTest setUp $u->save() failed ');
+            }
+            $this->testUser = $u; // needed to get ID into the record
+            Log::debug('Unit/MedusaPromotionsTest setUp testUser '.$this->testUser);
+            Log::debug('Unit/MedusaPromotionsTest setUp DONE');
         }
         
         // trivial test - needs real data setup
@@ -72,17 +91,38 @@
         {
             Log::debug('Unit/MedusaPromotionsTest testIsPromotable1 testuserid');
             $this->assertFalse($this->testUser->isPromotable());
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable1 PASS');
         }
         
         // trivial test - needs real data setup
         public function testIsPromotable2()
         {
-            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid');
-            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid points '.$this->testUser->points);
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid'.$this->testUser->member_id);
+            
+            // Promotable depends on points, exams, next, early, tig
+            // points: chapter meetings 3
             $this->testUser->setPromotionPointValue('cpm','3');
-            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid points '.$this->testUser->points['cpm']);
-            $this->assertFalse($this->testUser->isPromotable());  // this should be true
-            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid done');
+            $this->testUser->setPromotionPointValue('cpe','1');
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuser points cpm '.$this->testUser->points['cpm']);
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuser points cpe '.$this->testUser->points['cpe']);
+
+            // exams: add the first exam
+            $this->addTestResult($this->testUserID,
+                          'SIA-RMN-0001', // User.php:1148
+                          date('Y-m-d'), //date('Y-m-d', strtotime(date('Y-m-d').' - 2 days')),
+                          '100', // >70  AwardQualification.php:324
+                          $this->examUserID,
+                          date('Y-m-d'));
+            
+            // next, no; early, no
+            
+            // tig: set up in user by having its created-date two months ago
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuser getTimeInGrade '.
+                       $this->testUser->getTimeInGrade('months')); // 2
+            
+            $this->assertTrue($this->testUser->isPromotable());
+            // calls MedusaPromotions/getPromotableInfo
+            Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid PASS');
         }
         
         // trivial test of getPromotableInfo
@@ -126,6 +166,6 @@
             // inductively prove the simple sequential table-driven ones
             // special cases for any tricky code
             
-            Log::debug('Unit/MedusaPromotionsTest testgetPromotableInfo done');
+            Log::debug('Unit/MedusaPromotionsTest testgetPromotableInfo PASS');
         }
     }

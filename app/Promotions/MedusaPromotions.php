@@ -9,6 +9,8 @@ use App\Rating;
 use Carbon\Carbon;
 use App\MedusaConfig;
 use Illuminate\Support\Facades\Auth;
+    
+use Illuminate\Support\Facades\Log;
 
 /**
  * Trait MedusaPromotions.
@@ -123,6 +125,7 @@ trait MedusaPromotions
 
         if ($this->branch === 'SFC' && empty($this->dob) === true) {
             // Unable to determine if the member is under or over 18, so they are not promotable
+            Log::debug('getPromotableInfo Unable to determine if the member is under or over 18');
             return $flags;
         }
 
@@ -131,11 +134,13 @@ trait MedusaPromotions
             if (empty($nextGrade) === false) {
                 $payGrade2Check = $nextGrade['next'][0];
             } else {
+                Log::debug('getPromotableInfo Unable to determine what pay grade to check');
                 return $flags;  // Can't determine what pay grade to check
             }
         }
 
         if ($this->branch === 'SFC' && $sfcCheck === true) {
+            Log::debug('getPromotableInfo calling sfcIsPromotable');
             return $this->sfcIsPromotable($payGrade2Check);
         }
 
@@ -194,6 +199,7 @@ trait MedusaPromotions
                 // Set the Paygrade to check to the final match
                 $payGrade2Check = 'C-'.$step;
             } else {
+                Log::debug('getPromotableInfo gaps in civilian pay grades returning all false');
                 return [
                     'tig'    => false,
                     'points' => false,
@@ -262,7 +268,7 @@ trait MedusaPromotions
                 }
             }
         }
-
+        Log::debug('getPromotableInfo returns flags');
         return $flags;
     }
 
@@ -363,6 +369,7 @@ trait MedusaPromotions
      */
     public function isPromotable($tigCheck = true, $payGrade2Check = null)
     {
+        Log::debug('MedusaPromotions isPromotable'); // isPromotableisPromotableWhy is this not getting logged?
         $return = $flags = null;
 
         switch ($this->branch) {
