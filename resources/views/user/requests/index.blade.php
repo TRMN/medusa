@@ -28,9 +28,13 @@
         <fieldset>
             <legend>Branch Change Request</legend>
             <p>Only use this option if you are requesting a branch change.  If you are only requesting a chapter change, you do not need to select a branch.</p>
-            <p>Change Branch from&nbsp;<span class="bg-primary"> {!!$branches[$user->branch]!!} </span>&nbsp;to</p>
-            {!! Form::select('new_branch', $branches, null, ['class' => 'selectize']) !!}
-            {!! Form::hidden('old_branch', $user->branch) !!}
+            <div class="form-group form-inline">
+                {!! Form::label('Change branch from ' . $branches[$user->branch] . ' to ') !!} {!! Form::select('new_branch', $branches, null, ['class' => 'selectize form-control']) !!}
+            </div>
+{{--            <p>Change Branch from&nbsp;<span class="bg-primary"> {!!$branches[$user->branch]!!} </span>&nbsp;to--}}
+
+            {!! Form::hidden('old_branch', $user->branch) !!}</p>
+            <p id="new-rank-wrapper">If approved, your new rank will be <span class="bg-primary" id="new-rank"></span>.</p>
         </fieldset>
 
         <fieldset>
@@ -56,3 +60,35 @@
     {!! Form::close() !!}
 @stop
 
+@section('scriptFooter')
+<script type="text/ecmascript">
+    $(function () {
+        $('#new-rank-wrapper').hide();
+
+        $(':input[name="new_branch"]').on('change', function () {
+            $.ajax('/api/rank/transfer/{{ $user->id }}/' + $(':input[name="old_branch"]').val() + '/' + $(':input[name="new_branch"]').val())
+                .done(function (data) {
+                    $('#new-rank').html(data.new_rank);
+                    $('#new-rank-wrapper').show();
+                })
+        });
+    });
+</script>
+
+<style>
+    .selectize-input {
+        width: 400px;
+        min-height: 1.5em;
+    }
+
+    .selectize-dropdown {
+        background: black !important;
+        color: #f5f5f5 !important;
+    }
+
+    #new-rank {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+</style>
+@stop

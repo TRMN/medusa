@@ -26,11 +26,6 @@
             "email": "bill.knight@conalscorner.com",
             "homepage": "http://www.conalscorner.com/trmn",
             "role": "Award Graphics"
-        },
-        {
-            "name": "Jerry Ablan",
-            "email": "jerryablan@gmail.com",
-            "role": "Refactoring and optimization"
         }
     ],
     "description": "Project MEDUSA (Manticoran Enhanced Data Usability Service Architecture)",
@@ -48,7 +43,6 @@
         "doctrine/dbal": "~2.3",
         "barryvdh/laravel-ide-helper": "^2.2",
         "webpatser/laravel-countries": "dev-master",
-        "mnshankar/csv": "*",
         "maatwebsite/excel": "^3.1.8",
         "simplesoftwareio/simple-qrcode": "~1",
         "intervention/image": "^2.3",
@@ -58,14 +52,15 @@
         "themsaid/laravel-routes-publisher": "^1.0",
         "laravel/tinker": "^1.0",
         "lesichkovm/laravel-advanced-route": "dev-master",
-        "radic/blade-extensions": "~7.1",
+        "radic/blade-extensions": "~7.2",
         "guzzlehttp/guzzle": "^6.3",
         "predis/predis": "^1.1",
         "fideloper/proxy": "^4.0",
-        "laravel/passport": "~5.0",
+        "laravel/passport": "~7.3",
         "genealabs/laravel-caffeine": "^0.8.0",
         "jenssegers/mongodb": "^3.5",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "*",
+        "medusa/laravel-mongodb-passport":"~1.1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
@@ -77,7 +72,8 @@
         "nunomaduro/collision": "^2.0",
         "beyondcode/laravel-dump-server": "^1.0",
         "phpmd/phpmd" : "@stable",
-        "laravel/homestead": "^8.5"
+        "laravel/homestead": "^8.5",
+        "phploc/phploc": "^5.0"
     },
     "autoload": {
         "classmap": [
@@ -111,11 +107,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/dweinerATL/moloquent"
+            "url": "https://github.com/lesichkovm/laravel-advanced-route.git"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/lesichkovm/laravel-advanced-route.git"
+            "url": "https://github.com/TRMN/laravel-mongodb-passport.git"
         }
     ],
     "minimum-stability": "dev",

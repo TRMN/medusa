@@ -79,12 +79,52 @@
 
 @section('scriptFooter')
     <script>
-        $('.nav-tabs a').click(function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-            if ($('.tab-content').height() > $('#right').height()) {
-                $('#right').height($('.tab-content').height() + 50);
-            }
-        })
+        $(function() {
+            $('.nav-tabs a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+                if ($('.tab-content').height() > $('#right').height()) {
+                    $('#right').height($('.tab-content').height() + 50);
+                }
+            });
+
+            $('#path').on('change', function () {
+                var path = $('#path :selected').val();
+                var user_id = $('#path').data('id');
+                var paygrade = $('#path').data('paygrade');
+                var member_id = $('#path').data('member-id');
+                var path = $('#path').val();
+                var old_path = $('#path').data('old-path');
+
+                let payload = {
+                    "user_id": user_id,
+                    "tigCheck": true,
+                    "ppCheck": true,
+                    "ep": true,
+                    "payGrade": paygrade,
+                    "member_id": member_id,
+                    "path": path
+                };
+
+                $.post("/api/rankcheck", payload)
+                    .done(function (data) {
+                        if (data.valid === false) {
+                            alert("We're sorry, but you don't meet the requirements for that particular rank and path combination or it is not a valid path for your current rank.");
+                            $('#path').val(old_path);
+                        } else {
+                            $.post("/api/path", {user_id: user_id, path: path})
+                                .done(function (data) {
+                                    if (data.status === 'ok') {
+                                        alert('Your path has been changed to ' + path);
+                                        $('#path').data('old-path', path);
+                                    } else {
+                                        alert('There was a problem changing your path to ' + path + '. Please open a help desk(bolthole) ticket.');
+                                    }
+                                });
+                        }
+                    });
+            });
+        });
+
     </script>
 @stop

@@ -12,15 +12,14 @@ use App\Enums\MedusaDefaults;
 use App\Awards\AwardQualification;
 use Laravel\Passport\HasApiTokens;
 use App\Promotions\MedusaPromotions;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Permissions\MedusaPermissions;
 use Illuminate\Notifications\Notifiable;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+//use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Medusa\Mongodb\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
@@ -72,13 +71,13 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * @property string member_id
  * @property object updated_at
  * @property string promotionStatus
+ * @property array previous
  */
-class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
+class User extends Authenticatable implements CanResetPasswordContract
 {
     use Notifiable,
         MedusaAudit,
         MedusaPermissions,
-        Authenticatable,
         HasApiTokens,
         CanResetPassword,
         AwardQualification,
@@ -185,6 +184,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
         'path',
         'history',
         'promotionStatus',
+        'previous',
     ];
 
     /**
@@ -1921,8 +1921,8 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     {
         $lastMemberId = self::getMemberIds();
 
-        if (empty($uniqueMemberIds) === true) {
-            return '-0000-'.date('y');
+        if (empty($lastMemberId) === true) {
+            return '-0001-'.date('y');
         }
 
         $newNumber = $lastMemberId + 1;
@@ -1954,8 +1954,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 
     /**
      * Return all member id's.
-     *
-     * @TODO Refactor
      *
      * @return array
      */

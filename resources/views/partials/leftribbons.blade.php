@@ -2,12 +2,14 @@
     @if((!empty($user->unitPatchPath) && file_exists(public_path($user->unitPatchPath))) || $user->getRibbons('LS'))
         <div>
             @foreach($user->getRibbons('LS') as $ribbon)
-                <img src="{!!asset('images/' . $ribbon['code'] . '.svg')!!}" alt="{!!$ribbon['name']!!}"
-                     data-toggle="tooltip" title="{!!$ribbon['name']!!}" class="{!!$ribbon['code']!!}"><br/>
+                @if(file_exists(public_path('images/' . $ribbon['code'] . '.svg')))
+                    <img src="{!!asset('images/' . $ribbon['code'] . '.svg')!!}" alt="{!!$ribbon['name']!!}"
+                         data-toggle="tooltip" title="{!!$ribbon['name']!!}" class="{!!$ribbon['code']!!}"><br/>
+                @endif
             @endforeach
             @if(!empty($user->unitPatchPath) && file_exists(public_path($user->unitPatchPath)))
                 <img src="{!!asset($user->unitPatchPath)!!}"
-                     class="patch{!!$user->getRibbons('LS')?' patch-with-unc' : ''!!}"><br/>
+                     class="patch{!!$user->hasAward('UNC')?' patch-with-unc' : ''!!}"><br/>
             @endif
         </div>
     @endif

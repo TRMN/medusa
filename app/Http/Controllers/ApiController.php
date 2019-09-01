@@ -19,7 +19,12 @@ class ApiController extends Controller
 {
     public function getBranchList()
     {
-        return Response::json(Branch::getBranchList());
+        return Response::json(Branch::getEnhancedBranchList(['include_rmmm_divisions' => false]));
+    }
+
+    public function getEnhancedBranchList()
+    {
+        return Response::json(Branch::getEnhancedBranchList());
     }
 
     public function getCountries()
@@ -514,6 +519,7 @@ class ApiController extends Controller
         $pointCheck = $request->input('ppCheck');
         $earlyPromotion = $request->input('ep');
         $payGrade2Check = $request->input('payGrade');
+        $userPath = $request->input('path', null);
         $msg = null;
 
         if ($tigCheck === true) {
@@ -521,7 +527,7 @@ class ApiController extends Controller
                 null; // If we're checking TiG, we want to look up the next paygrade
         }
 
-        $promotionInfo = $member->getPromotableInfo($payGrade2Check);
+        $promotionInfo = $member->getPromotableInfo($payGrade2Check, true, $userPath);
 
         $canPromote = $promotionInfo['exams']; // Always have to have the exams
 
@@ -584,5 +590,22 @@ class ApiController extends Controller
         }
 
         return '<img src="'.asset($ribbonImage).'" alt="'.$ribbonName.'"'.$suffix;
+    }
+
+    public function getNewRank(User $user, string $old, string $new)
+    {
+        $oldBranch = Branch::where('branch', strtoupper($old))->first();
+        $newBranch = Branch::where('branch', strtoupper($new))->first();
+
+        $newPayGrade = Grade::getNewPayGrade($user, $oldBranch, $newBranch, false);
+
+        return Response::json(
+          ['new_rank' => Grade::getRankTitle($newPayGrade, null, strtoupper($new)) . ' (' . $newPayGrade . ')']
+        );
+    }
+
+    public function getUnfilteredPayGrades($branch)
+    {
+        return Response::json(Grade::getGradesForBranchUnFiltered($branch));
     }
 }

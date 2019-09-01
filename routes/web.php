@@ -450,6 +450,7 @@ Route::get(
     '/api/branch',
     'ApiController@getBranchList'
 ); // Get a list of all the tRMN branches
+Route::get('/api/branch/enhanced')->uses('ApiController@getEnhancedBranchList');
 Route::get(
     '/api/country',
     'ApiController@getCountries'
@@ -458,6 +459,8 @@ Route::get(
     '/api/branch/{branchID}/grade',
     'ApiController@getGradesForBranch'
 ); // Get a list of pay grades for that branch
+Route::get('/api/branch/{branchID}/grade/unfiltered')->uses('ApiController@getUnfilteredPayGrades');
+
 Route::get('/api/branch/{rating}/{branchID}', 'ApiController@getGradesForRating');
 Route::get(
     '/api/chapter',
@@ -496,6 +499,7 @@ Route::post(
     'ApiController@savePhoto',
     ['middleware' => 'auth']
 ); // File Photo upload
+Route::post('/api/apply')->uses('UserController@apply')->name('mobile.apply')->middleware('guest');
 
 Route::post('/api/path', 'ApiController@setPath', ['middleware' => 'auth']);
 
@@ -535,10 +539,7 @@ Route::get('/api/chapterselection', 'ApiController@getChapterSelections');
 // Update award display order
 Route::post('/api/awards/updateOrder', 'ApiController@updateAwardDisplayOrder');
 
-Route::post(
-    '/api/rankcheck',
-    ['uses' => 'ApiController@checkRankQual']
-); //->middleware('auth');
+Route::post('/api/rankcheck')->uses('ApiController@checkRankQual')->middleware('auth');
 
 Route::get('/api/awards/get_ribbon_image/{ribbonCode}/{ribbonCount}/{ribbonName}', 'ApiController@getRibbonImage');
 
@@ -551,6 +552,8 @@ Route::get('/api/lastexam/{memberid}', function ($memberid) {
         return false;
     }
 });
+
+Route::get('/api/rank/transfer/{user}/{old}/{new}')->uses('ApiController@getNewRank')->middleware('auth');
 
 Route::get(
     '/getRoutes',

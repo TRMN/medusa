@@ -17,7 +17,7 @@ class Grade extends Eloquent
      */
     protected $fillable = ['grade', 'rank'];
 
-    private static $gradeFilters = [
+    public static $gradeFilters = [
         'E' => 'Enlisted',
         'W' => 'Warrant Officer',
         'O' => 'Officer',
@@ -87,18 +87,63 @@ class Grade extends Eloquent
      *
      * @return array
      */
-    private static function gradesForBranchForSelect($branchID, $filter)
+    public static function gradesForBranchForSelect($branchID, $filter, $suffix = true)
     {
         $grades = [];
 
         foreach (self::gradesForBranch($branchID, $filter) as $grade) {
-            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]).' ('.$grade->grade.')';
+            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]) . ($suffix ? ' (' . $grade->grade . ')' :
+                    '');
         }
 
         // Sort by the array key, which is the paygrade
         ksort($grades, SORT_NATURAL);
 
         return $grades;
+    }
+
+    public static function getGradesForBranchUnFiltered($branch)
+    {
+        $branches = MedusaConfig::get('memberlist.branches');
+
+        $retVal = [];
+
+        if (isset($branches[$branch]) === true) {
+            // It's not a Civil or RMMM Division
+            foreach (self::$gradeFilters as $filter => $filterName) {
+                $payGrades = self::gradesForBranchForSelect($branch, $filter, false);
+
+                foreach ($payGrades as $grade => $title) {
+                    $retVal[] = [$grade, $title];
+                }
+            }
+            return $retVal;
+        } else {
+            switch ($branch) {
+                case 'INTEL':
+                case 'DIPLOMATIC':
+                    $payGrades = Rating::where('rate_code', $branch)->first()->rate['CIVIL'];
+                    ksort($payGrades, SORT_NATURAL);
+                    break;
+
+                default:
+                    $payGrades = Rating::where('rate_code', $branch)->first()->rate['RMMM'];
+                    ksort($payGrades, SORT_NATURAL);
+                    break;
+            }
+        }
+        return self::formatPayGradesForDataTables($payGrades);
+    }
+
+    private static function formatPayGradesForDataTables($payGrades)
+    {
+        $retVal = [];
+
+        foreach ($payGrades as $grade => $title) {
+            $retVal[] = [$grade, $title];
+        }
+
+        return $retVal;
     }
 
     /**
@@ -175,7 +220,7 @@ class Grade extends Eloquent
      */
     private static function mbTrim($string, $trim_chars = '\s')
     {
-        return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
+        return preg_replace('/^[' . $trim_chars . ']*(?U)(.*)[' . $trim_chars . ']*$/u', '\\1', $string);
     }
 
     /**
@@ -246,5 +291,109 @@ class Grade extends Eloquent
             // Paygrade doesn't exist
             return false;
         }
+    }
+
+    /**
+     * Get the equivalent paygrade for the specified branch
+     *
+     * @param \App\User $user
+     * @param $newBranch
+     *
+     * @return string|false
+     */
+    public static function getPayGradeEquiv(User $user, $newBranch)
+    {
+        $rankEquivChart = MedusaConfig::get('rank.equiv');
+
+        $payGrade = $user->getPayGrade();
+        $rate = $user->getRate();
+
+        $branchToCheck = $user->branch;
+
+        // Special handling for civilian and merchant marine
+        switch ($user->branch) {
+            case 'CIVIL':
+                // Rating is required.  If not rating present, the default is 'DIPLOMATIC'
+                $branchToCheck = $rate;
+                break;
+            case 'RMMM':
+                // RMMM requires a rating a higher levels
+                if (is_null($rate) === false) {
+                    $branchToCheck = $rate;
+                }
+                break;
+        }
+
+        if ($newBranch === 'CIVIL') {
+            $newBranch = 'DIPLOMATIC';
+        }
+
+        foreach ($rankEquivChart as $row) {
+            if ($row[$branchToCheck] == $payGrade) {
+                return $row[$newBranch];
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get a members new paygrade, taking into account possible military->civilian->military branch changes. By default
+     * it will update the members record to record the their current military rank for military->civilian changes or
+     * removing the record of their old
+     *
+     * @param \App\User $user
+     * @param \App\Branch $oldBranch
+     * @param \App\Branch $newBranch
+     * @param bool $updateUser
+     *
+     * @return string
+     */
+    public static function getNewPayGrade(User $user, Branch $oldBranch, Branch $newBranch, $updateUser = true)
+    {
+        if ($oldBranch->isMilitaryBranch() === true &&
+            $newBranch->isCivilianBranch() === true) {
+            if ($updateUser === true) {
+                // Transferring from military to civilian, save their current branch and rank
+                $user->previous = [
+                    'branch'    => $user->branch,
+                    'pay_grade' => $user->rank['grade'],
+                ];
+
+                $user->save();
+            }
+            return self::getPayGradeEquiv($user, $newBranch->branch);
+        }
+
+        if ($oldBranch->isCivilianBranch() === true &&
+            $newBranch->isMilitaryBranch() === true &&
+            isset($user->previous) === true) {
+            if ($updateUser === true) {
+                // Whack the previous property since they're transferring back to a military branch
+                $user->previous = [];
+
+                $user->save();
+            }
+
+            // Transferring from civilian to military, and they were previously military.  Check if their
+            // current civilian rank is a match for their old military rank.  If it is, use that to find
+            // the new rank for the new branch, which might be the same as their last branch before this.
+
+            $userCopy = clone $user;
+            $userCopy->branch = $user->previous['branch'];
+            $userCopy->rank = [
+                'date_of_rank' => $user->rank['date_of_rank'],
+                'grade'        => $user->previous['pay_grade'],
+            ];
+
+            // Check to see if they've been promoted as a civilian to a pay-grade that has a higher equivalency
+            // This is done by getting the pay grade equivalent for their current branch using their old rank
+            // and branch
+            if ($user->previous['pay_grade'] === self::getPayGradeEquiv($userCopy, $oldBranch->branch)) {
+                // Previous rank converts to their current civilian rank, so use the previous rank for
+                // the new rank lookup
+                return Grade::getPayGradeEquiv($userCopy, $newBranch->branch);
+            }
+        }
+        return self::getPayGradeEquiv($user, $newBranch->branch);
     }
 }
