@@ -44,6 +44,7 @@
             $user['member_id'] = $this->testUserID;
             $user['email_address'] = strval(microtime(true)).'@trmn.org';
             
+            $user['branch'] = 'RMN';
             $user['rank']['grade'] = 'E-1'; // C-1
             $user['rank']['date_of_rank'] = $createdDate;
             $user['assignment'][] =
@@ -86,6 +87,20 @@
             Log::debug('Unit/MedusaPromotionsTest setUp DONE');
         }
         
+        // pp.nextGrade is a required configuration for promotions to work. 
+        public function testPromotionConfigs()
+        {                        
+            $config = json_decode('{ "E-1": {"next": [ "E-2" ]}}', true);
+            $this->assertNotEmpty(MedusaConfig::set('pp.nextGrade', $config)); 
+            
+            $ppNextGrade = MedusaConfig::get('pp.nextGrade');
+            $this->assertNotEmpty($ppNextGrade);
+            
+            $nextGrade = $this->testUser->getNextGrade("E-1");
+            $this->assertNotEmpty($nextGrade);
+            
+        }
+        
         // trivial test - needs real data setup
         public function testIsPromotable1()
         {
@@ -98,6 +113,10 @@
         public function testIsPromotable2()
         {
             Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid'.$this->testUser->member_id);
+            
+            // this needs to be set but apparently isn't. 
+            $config = json_decode('{ "E-1": {"next": [ "E-2" ]}}', true);
+            $this->assertNotEmpty(MedusaConfig::set('pp.nextGrade', $config));
             
             // Promotable depends on points, exams, next, early, tig
             // points: chapter meetings 3
@@ -148,7 +167,7 @@
             Log::debug('testgetPromotableInfo exams ' . $exams);
             Log::debug('testgetPromotableInfo early ' . $early);
             
-            $this->assertFalse($flags['tig']);
+            $this->assertTrue($flags['tig']); // Branch=RMN
             $this->assertFalse($flags['points']);
             $this->assertFalse($flags['exams']);
             $this->assertFalse($flags['early']);

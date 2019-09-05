@@ -125,7 +125,7 @@ trait MedusaPromotions
 
         if ($this->branch === 'SFC' && empty($this->dob) === true) {
             // Unable to determine if the member is under or over 18, so they are not promotable
-            Log::debug('getPromotableInfo Unable to determine if the member is under or over 18');
+            Log::debug('MedusaPromotions getPromotableInfo Unable to determine if the member is under or over 18');
             return $flags;
         }
 
@@ -133,19 +133,21 @@ trait MedusaPromotions
             $nextGrade = $this->getNextGrade($this->rank['grade']);
             if (empty($nextGrade) === false) {
                 $payGrade2Check = $nextGrade['next'][0];
+                Log::debug('MedusaPromotions getPromotableInfo $payGrade2Check:'.$payGrade2Check);
             } else {
-                Log::debug('getPromotableInfo Unable to determine what pay grade to check');
+                Log::debug('MedusaPromotions getPromotableInfo Unable to determine what pay grade to check');
                 return $flags;  // Can't determine what pay grade to check
             }
         }
 
         if ($this->branch === 'SFC' && $sfcCheck === true) {
-            Log::debug('getPromotableInfo calling sfcIsPromotable');
+            Log::debug('MedusaPromotions getPromotableInfo calling sfcIsPromotable');
             return $this->sfcIsPromotable($payGrade2Check);
         }
 
         $specialTig = 0;
 
+        Log::debug('MedusaPromotions getPromotableInfo $this->rank[\'grade\']:'.$this->rank['grade']);
         // Check for special promotion capabilities
         switch ($this->rank['grade']) {
             case 'E-4':
@@ -166,6 +168,7 @@ trait MedusaPromotions
 
         // Check for gaps in some of the civilian pay grades
         if ($this->isGradeValidForUser($payGrade2Check) === false) {
+            Log::debug('MedusaPromotions getPromotableInfo $this->isGradeValidForUser($payGrade2Check) === false');
             if (substr($payGrade2Check, 0, 1) == 'C') {
                 // Civilian, determine what the next grade is and if they're eligible
                 list($component, $step) = explode('-', $payGrade2Check);
@@ -199,7 +202,7 @@ trait MedusaPromotions
                 // Set the Paygrade to check to the final match
                 $payGrade2Check = 'C-'.$step;
             } else {
-                Log::debug('getPromotableInfo gaps in civilian pay grades returning all false');
+                Log::debug('MedusaPromotions getPromotableInfo gaps in civilian pay grades returning all false');
                 return [
                     'tig'    => false,
                     'points' => false,
@@ -209,8 +212,10 @@ trait MedusaPromotions
             }
         }
 
+        Log::debug('MedusaPromotions getPromotableInfo $payGrade2Check again:'.$payGrade2Check);
         if (empty($payGrade2Check) === false) {
             $requirements = $this->getRequirements($this->getBranchForReq())[$payGrade2Check];
+            Log::debug('MedusaPromotions getPromotableInfo got requirements');
 
             // Steps were skipped, us that tig
             if ($specialTig > 0) {
@@ -270,7 +275,10 @@ trait MedusaPromotions
                 }
             }
         }
-        Log::debug('getPromotableInfo returns flags');
+        Log::debug('getPromotableInfo returns flags tig:'.$flags['tig']);
+        Log::debug('getPromotableInfo returns flags points:'.$flags['points']);
+        Log::debug('getPromotableInfo returns flags exams:'.$flags['exams']);
+        Log::debug('getPromotableInfo returns flags early:'.$flags['early']);
         return $flags;
     }
 
