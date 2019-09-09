@@ -643,7 +643,7 @@ class Chapter extends Eloquent
         if (empty($id) === true) {
             $id = $this->id;
         }
-        $children = self::where('assigned_to', '=', $id)->where('decommission_date', '')->get();
+        $children = self::where('assigned_to', '=', $id)->whereNull('decommission_date')->get();
 
         $results = [];
         foreach ($children as $child) {
@@ -655,6 +655,28 @@ class Chapter extends Eloquent
         }
 
         return array_unique(array_merge([$id], $results));
+    }
+
+    /**
+     * Generate a hierarchical tree of a chapters children
+     *
+     * @return array
+     */
+    public function getChildHierarchy() {
+        $children = self::where('assigned_to', '=', $this->id)->whereNull('decommission_date')->get();
+
+        $results = [];
+
+        foreach ($children as $child) {
+            $c = self::where('assigned_to', $child->id)->whereNull('decommission_date')->get();
+            if (count($c) > 0) {
+                $results[] = ['chapter' => $child, 'children' => $child->getChildHierarchy()];
+            } else {
+                $results[] = ['chapter' => $child, 'children' => []];
+            }
+        }
+
+        return $results;
     }
 
     /**

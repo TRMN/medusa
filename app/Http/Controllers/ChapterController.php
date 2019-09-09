@@ -205,11 +205,7 @@ class ChapterController extends Controller
             $parentChapter = false;
         }
 
-        $includes =
-            Chapter::where('assigned_to', '=', $chapter->_id)
-                   ->whereNull('decommission_date')
-                   ->orderBy('chapter_name')
-                   ->get();
+        $includes = $chapter->getChildHierarchy();
 
         $commandCrew = $chapter->getCommandCrew();
 
