@@ -499,6 +499,7 @@ Route::post(
     'ApiController@savePhoto',
     ['middleware' => 'auth']
 ); // File Photo upload
+Route::post('/api/apply')->uses('UserController@apply')->name('mobile.apply')->middleware('guest');
 
 Route::post('/api/path', 'ApiController@setPath', ['middleware' => 'auth']);
 

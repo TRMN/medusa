@@ -163,6 +163,7 @@ class UserChangeRequestController extends Controller
             return $redirect;
         }
 
+        /** @var User $user */
         $user = User::find($request->user);
         $message = '';
 
@@ -170,58 +171,47 @@ class UserChangeRequestController extends Controller
             case 'branch':
                 $greeting = $user->getGreeting();
 
-                $oldValue = $request->old_value;
-                $newValue = $request->new_value;
+                $oldBranchId = $request->old_value;
+                $newBranchId = $request->new_value;
 
-                $oldBranch = Branch::where('branch', $oldValue)->first();
-                $newBranch = Branch::where('branch', $newValue)->first();
+                /** @var Branch $oldBranch */
+                $oldBranch = Branch::where('branch', $oldBranchId)->first();
+                /** @var Branch $newBranch */
+                $newBranch = Branch::where('branch', $newBranchId)->first();
 
                 $newRank = Grade::getNewPayGrade($user, $oldBranch, $newBranch);
                 $user = User::find($user->id); // User may have been updated, reload the object just in case
 
-                if ($user->branch == $request->old_value) {
-                    $user->branch = $request->new_value;
+                if ($user->branch == $oldBranchId) {
+                    $user->branch = $newBranchId;
                 }
 
                 $email = 'emails.branch-change';
                 $subject = 'Your branch transfer request has been approved';
+                $fromValue = $oldBranchId;
+                $toValue = $newBranchId;
 
-                // CO's email
-                $co = Chapter::find($user->getAssignedShip())->getCO();
+                $cc[] = $this->getCoEmailForTransferReq(Chapter::find($user->getAssignedShip()));
 
-                if (empty($co) === false) {
-                    $cc = [$co->email_address];
-                } else {
-                    $cc = [];
-                }
-
-                $events[] = 'Transferred from ' . Branch::getBranchName($oldValue) . ' to ' .
-                            Branch::getBranchName($newValue) . ' on ' . date('d M Y');
+                $events[] = 'Transferred from ' . $oldBranch->branch_name . ' to ' .
+                            $newBranch->branch_name . ' on ' . date('d M Y');
 
                 break;
             case 'assignment.chapter':
                 $assignments = $user->assignment;
+                /** @var Chapter $oldChapter */
+                $oldChapter = Chapter::find($request->old_value);
 
-                // Old CO's email
-                $cc = [Chapter::find($user->getAssignedShip())->getCO()->email_address];
+                /** @var Chapter $newChapter */
+                $newChapter = Chapter::find($request->new_value);
 
-                // Is this a MARDET?
-                switch (Chapter::find($user->getAssignedShip())->chapter_type) {
-                    case 'shuttle':
-                    case 'section':
-                    case 'squad':
-                    case 'platoon':
-                    case 'battalion':
-                        // We have a MARDET, get the parent chapter CO's email address.
-                        $cc[] = Chapter::find(Chapter::find($user->getAssignedShip())
-                                ->assigned_to)->getCO()->email_address;
-                        break;
-                }
+                $cc[] = $this->getCoEmailForTransferReq($oldChapter);
+                $cc[] = $this->getCoEmailForTransferReq($newChapter);
 
                 foreach ($assignments as $key => $assignment) {
-                    if ($assignment['chapter_id'] == $request->old_value) {
-                        $assignments[$key]['chapter_id'] = $request->new_value;
-                        $assignments[$key]['chapter_name'] = Chapter::find($request->new_value)->chapter_name;
+                    if ($assignment['chapter_id'] == $oldChapter->id) {
+                        $assignments[$key]['chapter_id'] = $newChapter->id;
+                        $assignments[$key]['chapter_name'] = $newChapter->chapter_name;
                         $assignments[$key]['date_assigned'] = date('Y-m-d');
                     }
                 }
@@ -229,30 +219,10 @@ class UserChangeRequestController extends Controller
 
                 $email = 'emails.chapter-change';
                 $subject = 'Your chapter transfer request has been approved';
+                $fromValue = $oldChapter->chapter_name;
+                $toValue = $newChapter->chapter_name;
 
-                $oldValue = Chapter::find($request->old_value)->chapter_name;
-                $newValue = Chapter::find($request->new_value)->chapter_name;
-
-                // New CO's email
-                $newChapterCO = Chapter::find($request->new_value)->getCO();
-
-                if (empty($newChapterCO) === false) {
-                    $cc[] = $newChapterCO->email_address;
-                }
-
-                // Is this a MARDET?
-                switch (Chapter::find($request->new_value)->chapter_type) {
-                    case 'shuttle':
-                    case 'section':
-                    case 'squad':
-                    case 'platoon':
-                    case 'battalion':
-                        // We have a MARDET, get the parent chapter CO's email address.
-                        $cc[] = Chapter::find(Chapter::find($request->new_value)->assigned_to)->getCO()->email_address;
-                        break;
-                }
-
-                $events[] = 'Primary assignment changed to '.$newValue.' on '.date('d M Y');
+                $events[] = 'Primary assignment changed to '. $newChapter->chapter_name .' on '.date('d M Y');
 
                 break;
         }
@@ -265,8 +235,8 @@ class UserChangeRequestController extends Controller
                 'grade' => $newRank,
             ];
 
-            $events[] = 'Rank changed from ' . Grade::getRankTitle($oldRank, null, $oldValue) . ' ('.$oldRank.') to ' .
-                        Grade::getRankTitle($newRank, null, $newValue) . ' ('.$newRank.') on ' . date('d M Y');
+            $events[] = 'Rank changed from ' . Grade::getRankTitle($oldRank, null, $oldBranchId) . ' (' . $oldRank . ') to ' .
+                        Grade::getRankTitle($newRank, null, $newBranchId) . ' (' . $newRank . ') on ' . date('d M Y');
         }
 
         if (empty($message) === false) {
@@ -310,7 +280,7 @@ class UserChangeRequestController extends Controller
         // Send approved email
         Mail::send(
             $email,
-            ['user' => $user, 'fromValue' => $oldValue, 'toValue' => $newValue],
+            ['user' => $user, 'fromValue' => $fromValue, 'toValue' => $toValue],
             function ($message) use ($user, $cc, $subject) {
                 $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');
 
@@ -325,6 +295,30 @@ class UserChangeRequestController extends Controller
         );
 
         return Redirect::route('user.change.review')->with('message', $message);
+    }
+
+    private function getCoEmailForTransferReq(Chapter $chapter)
+    {
+      switch ($chapter->chapter_type) {
+        // Is this a MARDET?
+        case 'shuttle':
+        case 'section':
+        case 'squad':
+        case 'platoon':
+        case 'battalion':
+          // We have a MARDET, get the parent chapter CO's email address.
+          /** @var Chapter $parent */
+          $parent = Chapter::find($chapter->assigned_to);
+          return $parent->getCO()->email_address;
+          break;
+        default:
+          // Everything else
+          try {
+            return $chapter->getCO()->email_address;
+          } catch (\Exception $exception) {
+            return null;
+          }
+      }
     }
 
     public function deny(ChangeRequest $request)

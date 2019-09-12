@@ -704,7 +704,7 @@ class UserController extends Controller
 
         $u->save();
 
-        Event::fire('user.created', $user);
+        Event::dispatch('user.created', $user);
 
         return Redirect::route('user.index');
     }
