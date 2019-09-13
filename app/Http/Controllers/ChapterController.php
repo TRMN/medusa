@@ -134,7 +134,7 @@ class ChapterController extends Controller
                 }
 
                 $name = '<a href="/user/'.$user->id.'"'.
-                        (is_null($user->promotionStatus) === true ? '' : ' class="promotable"').
+                        (is_null($user->promotionStatus) === true || $user->promotionStatus === false ? '' : ' class="promotable"').
                         '>'.$user->getFullName(true).'</a>';
 
                 $ret['data'][] = [
