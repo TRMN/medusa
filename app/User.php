@@ -563,6 +563,10 @@ class User extends Authenticatable implements CanResetPasswordContract
                     case 'lac':
                     case 'theater':
                     case 'headquarters':
+                    case 'jstation':
+                    case 'jfort':
+                    case 'tug':
+                    case 'mship':
                         return $assignment['chapter_id'];
                         break;
                 }
