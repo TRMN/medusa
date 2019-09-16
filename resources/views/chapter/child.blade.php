@@ -1,7 +1,4 @@
-<li>
-{{--    @if($collapse && $element['children'])--}}
-{{--        <strong>--}}
-{{--    @endif--}}
+<li class="tree">
     <a href="{{route('chapter.show', [$element['chapter']->id])}}">
         {{ $element['chapter']->chapter_name }}
         @if((in_array($element['chapter']->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
