@@ -14,8 +14,12 @@
 
             <form action="{{ url('/password/email') }}" method="POST">
                 {{ Form::token() }}
-                <input type="email" name="email_address" id="email_address">
-                <button type="submit" class="btn btn-success"><span class="fa fa-envelope"></span> Send Reminder</button>
+                <div class="row form-group">
+                    <input type="email" name="email_address" id="email_address" class="form-control">
+                </div>
+                <div class="row form-group">
+                    <button type="submit" class="btn btn-success"><span class="fa fa-envelope"></span> Send Reminder</button>
+                </div>
             </form>
         </div>
     </div>

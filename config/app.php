@@ -165,17 +165,14 @@ return [
          * Application Service Providers
          */
         App\Providers\AppServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
         App\Services\MedusaHasherServiceProvider::class,
-//        Moloquent\MongodbServiceProvider::class,
-//        Moloquent\Auth\PasswordResetServiceProvider::class,
-//        Moloquent\Passport\PassportServiceProvider::class,
-        'Webpatser\Countries\CountriesServiceProvider',
-        'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
+        Webpatser\Countries\CountriesServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Jenssegers\Mongodb\Auth\PasswordResetServiceProvider::class,
         App\Services\MedusaServiceProvider::class,
         Radic\BladeExtensions\BladeExtensionsServiceProvider::class,
     ],
