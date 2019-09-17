@@ -591,7 +591,7 @@ class Chapter extends Eloquent
     /**
      * Get the fleet a ship is assigned to.
      *
-     * @return string
+     * @return string|null
      */
     public function getAssignedFleet($idOnly = false)
     {
@@ -610,6 +610,7 @@ class Chapter extends Eloquent
                 return ucfirst($nf->format($fleet->hull_number)).' Fleet';
             }
         }
+        return null;
     }
 
     /**
