@@ -7,10 +7,10 @@
         list-style: none !important;
         line-height: 2em !important;
     }
-    ul li {
+    ul li.tree {
         position: relative !important;
     }
-    ul li:before {
+    ul li.tree:before {
         position: absolute !important;
         left: -15px !important;
         top: 0 !important;
@@ -21,7 +21,7 @@
         border-bottom: 1px solid #ddd !important;
         width: 10px !important;
     }
-    ul li:after {
+    ul li.tree:after {
         position: absolute !important;
         left: -15px !important;
         bottom: -7px !important;

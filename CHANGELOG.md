@@ -1,5 +1,9 @@
 # MEDUSA CHANGELOG
 
+## 2.0.8 (Hotfix)
+   - Fixed incorrect highlighting of members that were not promotable
+   - Fixed css for chapter tree
+    
 ## 2.0.7
    - Laravel updated to 5.8
    - Fixed issue with current crew showing up as new in chapter reports
