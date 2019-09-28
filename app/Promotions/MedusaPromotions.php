@@ -40,7 +40,7 @@ trait MedusaPromotions
             foreach (Branch::all() as $branch) {
                 if ($branch->branch === 'CIVIL') {
                     // Civilian branch has special handling
-                    foreach (['DIPLOMATIC', 'INTEL'] as $cbranch) {
+                    foreach (['DIPLOMATIC', 'INTEL', 'COMMONS', 'LORDS'] as $cbranch) {
                         if ($req = $this->loadRequirements($cbranch)) {
                             self::$promotionRequirements[$cbranch] = $req;
                         }
