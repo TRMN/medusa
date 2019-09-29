@@ -20,7 +20,7 @@ class MardetController extends Controller
 
     private function getCommands()
     {
-        $types = ['ship', 'corps', 'exp_force', 'regiment'];
+        $types = ['ship', 'corps', 'exp_force', 'regiment', 'brigade'];
 
         foreach ($types as $type) {
             if (empty($chapters) == true) {
