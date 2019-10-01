@@ -204,7 +204,19 @@ trait MedusaPromotions
         }
 
         if (empty($payGrade2Check) === false) {
-            $requirements = $this->getRequirements($this->getBranchForReq())[$payGrade2Check];
+            $requirements = $this->getRequirements($this->getBranchForReq());
+
+            if (empty($requirements[$payGrade2Check]) === true) {
+                // No requirement listed, just starting
+                return [
+                    'tig' => true,
+                    'points' => true,
+                    'exams' => true,
+                    'early' => true,
+                ];
+            } else {
+                $requirements = $requirements[$payGrade2Check];
+            }
 
             // Steps were skipped, us that tig
             if ($specialTig > 0) {
