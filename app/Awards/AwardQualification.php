@@ -57,7 +57,7 @@ trait AwardQualification
 
             $awardDate = (
             $isNewAward === true ?
-                Carbon::create()->firstOfMonth()->addMonth()->toDateString() :
+                Carbon::now()->firstOfMonth()->addMonth()->toDateString() :
                 '1970-01-01'
             );
 
@@ -274,7 +274,7 @@ trait AwardQualification
             if ($required === true && count($departments) >= $swpQual['NumDepts']) {
                 // Yes they do, add it.
 
-                $awardDate = $isNewAward === true ? Carbon::create()->firstOfMonth()
+                $awardDate = $isNewAward === true ? Carbon::now()->firstOfMonth()
                                                           ->addMonth()
                                                           ->toDateString() : '1970-01-01';
 
