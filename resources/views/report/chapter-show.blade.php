@@ -336,7 +336,7 @@
     <br/>
     <div class="row">
         <div class=" col-sm-3">
-            Awards Given/Requested:
+            Crew Accomplishments:
         </div>
         <div class=" col-sm-9">
             @if(empty($report->award_actions) === false)
