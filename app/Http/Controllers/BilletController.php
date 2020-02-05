@@ -19,7 +19,7 @@ class BilletController extends Controller
      */
     public function index()
     {
-        if (($redirect = $this->checkPermissions('EDIT_BILLET', 'DEL_BILLET')) !== true) {
+        if (($redirect = $this->checkPermissions(['EDIT_BILLET', 'DEL_BILLET'])) !== true) {
             return $redirect;
         }
 
