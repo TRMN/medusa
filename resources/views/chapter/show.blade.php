@@ -1,5 +1,49 @@
 @extends('layout')
 
+@section('dochead')
+<style>
+    ul {
+        margin: 0 0 0 20px !important;
+        list-style: none !important;
+        line-height: 2em !important;
+    }
+    ul li.tree {
+        position: relative !important;
+    }
+    ul li.tree:before {
+        position: absolute !important;
+        left: -15px !important;
+        top: 0 !important;
+        content: '' !important;
+        display: block !important;
+        border-left: 1px solid #ddd !important;
+        height: 1em !important;
+        border-bottom: 1px solid #ddd !important;
+        width: 10px !important;
+    }
+    ul li.tree:after {
+        position: absolute !important;
+        left: -15px !important;
+        bottom: -7px !important;
+        content: '' !important;
+        display: block !important;
+        border-left: 1px solid #ddd !important;
+        height: 100% !important;
+    }
+    ul li.root {
+        margin: 0 0 0 -20px !important;
+    }
+    ul li.root:before {
+        display: none !important;
+    }
+    ul li.root:after {
+        display: none !important;
+    }
+    ul li:last-child:after {
+        display: none !important;
+    }
+</style>
+@stop
 @section('pageTitle')
     {!! $detail->chapter_name !!} @if((in_array($detail->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
         isset($detail->hull_number) === true) ({!!$detail->hull_number!!}) @endif
@@ -77,12 +121,12 @@
             <div class="col-sm-2  Incised901Light ninety text-right">
                 Elements:
             </div>
-            <div class="col-sm-10  Incised901Light ninety">
-                @foreach($includes as $chapter)
-                    <a href="{!!route('chapter.show', [$chapter->id])!!}">{!! $chapter->chapter_name !!}@if((in_array($chapter->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
-        isset($chapter->hull_number) === true) ({!!$chapter->hull_number!!}) @endif</a>
-                    &nbsp;<br/>
-                @endforeach
+            <div class="col-sm-10  Incised901Light">
+                <ul id="elements">
+                    @foreach($includes as $element)
+                        @include('chapter.child', ['element' => $element, 'collapse' => true])
+                    @endforeach
+                </ul>
             </div>
         </div>
     @endif
@@ -212,6 +256,23 @@
 @section('scriptFooter')
     <script type="text/javascript">
         $(document).ready(function ($) {
+            $('#elements').accordion({
+                active: true,
+                collapsible: true,
+                header: "strong",
+                heightStyle: "content",
+                icons: false,
+                activate: function (event, ui) {
+                    if (typeof ui.oldHeader[0] !== 'undefined') {
+                        ui.oldHeader[0].innerText = '(Expand)';
+                    }
+
+                    if (typeof ui.newHeader[0] !== 'undefined') {
+                        ui.newHeader[0].innerText = '(Collapse)';
+                    }
+                }
+            });
+
             $('#crewRoster').DataTable({
                 "autoWidth": false,
                 "pageLength": 10,

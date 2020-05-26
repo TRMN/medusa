@@ -166,9 +166,9 @@
         <span class="text-center"><img src="{!!asset('images/project-medusa.svg')!!}" width="150px" height="150px"
                                        data-src="{!!asset('images/project-medusa.svg')!!}"></span>
         <p>{!! Config::get('app.version') !!}</p>
-        @if(in_array($_SERVER['SERVER_NAME'],  ["medusa.dev", "medusa-dev.trmn.org", "medusa.local", "localhost"]))
+        @if(in_array($_SERVER['SERVER_NAME'],  ["dev.medusa.trmn.org", "medusa.dev", "medusa-dev.trmn.org", "medusa.local", "localhost"]))
             <div class="alert alert-info text-center alert-text">
-                @if($_SERVER['SERVER_NAME'] == "medusa-dev.trmn.org")
+                @if(in_array($_SERVER['SERVER_NAME'], ["dev.medusa.trmn.org", "medusa-dev.trmn.org"]))
                     DEVELOPMENT / TEST SERVER
                 @else
                     LOCAL SANDBOX SERVER
