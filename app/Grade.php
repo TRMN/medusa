@@ -164,10 +164,10 @@ class Grade extends Eloquent
         $payGrades = self::filterGrades($filter);
 
         foreach ($payGrades as $grade) {
-        if (empty($grade->rank[$branchID]) === false) {
-            $grades[] = $grade;
+            if (empty($grade->rank[$branchID]) === false) {
+                $grades[] = $grade;
+            }
         }
-    }
 
         return $grades;
     }

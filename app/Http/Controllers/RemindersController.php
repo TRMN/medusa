@@ -39,7 +39,7 @@ class RemindersController extends Controller
         );
 
         switch ($response) {
-            case (Password::INVALID_USER || Password::REMINDER_SENT):
+            case Password::INVALID_USER || Password::REMINDER_SENT:
                 return Redirect::back()->with('message', Lang::get($response));
         }
     }

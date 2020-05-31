@@ -104,36 +104,38 @@ class Award extends Eloquent
      * @return array
      * @todo Refactor to use the config table
      */
-    public static function getAerospaceWings(
-        array $limit = [
-            'SAW',
-            'EAW',
-            'OAW',
-            'ESAW',
-            'OSAW',
-            'EMAW',
-            'OMAW',
-            'ENW',
-            'ONW',
-            'ESNW',
-            'OSNW',
-            'EMNW',
-            'OMNW',
-            'EOW',
-            'OOW',
-            'ESOW',
-            'OSOW',
-            'EMOW',
-            'OMOW',
-            'ESW',
-            'OSW',
-            'ESSW',
-            'OSSW',
-            'EMSW',
-            'OMSW',
-        ]
-    )
+    public static function getAerospaceWings(array $limit)
     {
+        if (empty($limit)) {
+            $limit = [
+                'SAW',
+                'EAW',
+                'OAW',
+                'ESAW',
+                'OSAW',
+                'EMAW',
+                'OMAW',
+                'ENW',
+                'ONW',
+                'ESNW',
+                'OSNW',
+                'EMNW',
+                'OMNW',
+                'EOW',
+                'OOW',
+                'ESOW',
+                'OSOW',
+                'EMOW',
+                'OMOW',
+                'ESW',
+                'OSW',
+                'ESSW',
+                'OSSW',
+                'EMSW',
+                'OMSW',
+            ];
+        }
+
         return self::_getAwards('TL', $limit);
     }
 

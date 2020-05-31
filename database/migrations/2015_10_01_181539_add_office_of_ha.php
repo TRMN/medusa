@@ -27,15 +27,7 @@ class AddOfficeOfHa extends Migration
         //
     }
 
-    public function createChapter(
-        $name,
-        $type = 'ship',
-        $hull_number = '',
-        $branch = '',
-        $assignedTo = null,
-        $joinable = true,
-        $commissionDate = null
-    )
+    public function createChapter($name, $type = 'ship', $hull_number = '', $branch = '', $assignedTo = null, $joinable = true, $commissionDate = null)
     {
         $query = Chapter::where('chapter_name', '=', $name)->first();
 

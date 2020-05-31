@@ -30,7 +30,6 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
-use Webpatser\Countries\Countries;
 
 class UserController extends Controller
 {
@@ -440,7 +439,6 @@ class UserController extends Controller
         ];
 
         $user->lastUpdate = time();
-
 
         try {
             $user->member_id = 'RMN'.User::getNextAvailableMemberId();

@@ -132,11 +132,7 @@ class Chapter extends Eloquent
      *
      * @return array
      */
-    public static function getChapters(
-        $branch = '',
-        $location = 0,
-        $joinableOnly = true
-    )
+    public static function getChapters($branch = '', $location = 0, $joinableOnly = true)
     {
         $nf = new NumberFormatter('en_US', NumberFormatter::ORDINAL);
 
@@ -609,7 +605,6 @@ class Chapter extends Eloquent
                 return ucfirst($nf->format($fleet->hull_number)).' Fleet';
             }
         }
-        return null;
     }
 
     /**

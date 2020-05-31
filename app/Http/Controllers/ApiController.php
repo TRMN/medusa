@@ -375,13 +375,7 @@ class ApiController extends Controller
         );
     }
 
-    public function checkInMember(
-        $event,
-        $user,
-        $member,
-        $continent = null,
-        $city = null
-    )
+    public function checkInMember($event, $user, $member, $continent = null, $city = null)
     {
         if (is_object($user) === false) {
             return Response::json(['error' => 'Invalid User']);
@@ -463,8 +457,7 @@ class ApiController extends Controller
 
         if ($errors > 0) {
             return Response::json(
-                ['status' => 'error',
-                    'msg' => 'There was a problem updating one or more awards',]
+                ['status' => 'error', 'msg' => 'There was a problem updating one or more awards']
             );
         } else {
             return Response::json(['status' => 'ok']);

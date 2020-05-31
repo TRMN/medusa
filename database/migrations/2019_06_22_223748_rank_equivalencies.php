@@ -2,9 +2,6 @@
 
 use App\MedusaConfig;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
-use League\Csv\Reader;
 
 class RankEquivalencies extends Migration
 {

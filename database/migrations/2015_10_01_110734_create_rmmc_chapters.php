@@ -140,15 +140,7 @@ class CreateRmmcChapters extends Migration
         //
     }
 
-    public function createChapter(
-        $name,
-        $type = 'ship',
-        $hull_number = '',
-        $branch = '',
-        $assignedTo = null,
-        $joinable = true,
-        $commisionDate = null
-    )
+    public function createChapter($name, $type = 'ship', $hull_number = '', $branch = '', $assignedTo = null, $joinable = true, $commisionDate = null)
     {
         $query = \App\Chapter::where('chapter_name', '=', $name)->first();
 
