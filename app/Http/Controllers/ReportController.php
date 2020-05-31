@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Report;
 use App\Chapter;
 use App\MedusaConfig;
+use App\Report;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 
 class ReportController extends Controller
 {
@@ -58,12 +58,14 @@ class ReportController extends Controller
 
         $validTypes = MedusaConfig::get('report.valid_types', ['ship', 'station', 'small_craft', 'lac']);
 
-        foreach ([
-                     'primary',
-                     'secondary',
-                     'additional',
-                     'extra',
-                 ] as $assignment) {
+        $assignments = [
+            'primary',
+            'secondary',
+            'additional',
+            'extra',
+        ];
+
+        foreach ($assignments as $assignment) {
             $chapter =
                 Chapter::find(Auth::user()->getAssignmentId($assignment));
 

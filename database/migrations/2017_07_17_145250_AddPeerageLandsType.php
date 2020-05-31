@@ -1,6 +1,5 @@
 <?php
 
-use App\Type;
 use App\Audit\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 

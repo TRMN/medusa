@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Arr;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Arr;
 
 class AddRankEquivInfo extends Migration
 {

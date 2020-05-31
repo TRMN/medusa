@@ -2,24 +2,24 @@
 
 namespace App\Services;
 
-use App\User;
-use App\Korders;
-use App\ExamList;
-use OAuth2\Server;
-use MongoDB\Client;
-use App\OauthClient;
-use OAuth2\Storage\Mongo;
 use App\Audit\MedusaAudit;
-use OAuth2\GrantType\RefreshToken;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use OAuth2\GrantType\UserCredentials;
+use App\ExamList;
+use App\Korders;
+use App\Oauth\Storage\MedusaUserCredentials;
+use App\OauthClient;
 use App\Permissions\PermissionsHelper;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use MongoDB\Client;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
+use OAuth2\GrantType\RefreshToken;
+use OAuth2\GrantType\UserCredentials;
 use OAuth2\HttpFoundationBridge\Request;
 use OAuth2\HttpFoundationBridge\Response;
-use App\Oauth\Storage\MedusaUserCredentials;
+use OAuth2\Server;
+use OAuth2\Storage\Mongo;
 
 /**
  * OAuth2 wrapper service.
@@ -90,7 +90,7 @@ class OAuthService
 
         $this->server->validateAuthorizeRequest($_request, $_response);
 
-        if (!$_response) {
+        if (! $_response) {
             return $_response;
         }
 
@@ -360,7 +360,7 @@ class OAuthService
                 $_newExams = false;
 
                 foreach ($_examList as $_id => $_grades) {
-                    if (!empty($_grades['date_entered']) && strtotime($_grades['date_entered']) >= $_lastLogin) {
+                    if (! empty($_grades['date_entered']) && strtotime($_grades['date_entered']) >= $_lastLogin) {
                         $_examList[$_id]['new'] = true;
                         $_newExams = true;
                     }
@@ -368,7 +368,7 @@ class OAuthService
                     /** @noinspection PhpUndefinedMethodInspection */
                     $_exam = ExamList::where('exam_id', '=', $_id)->first();
 
-                    if (!is_null($_exam)) {
+                    if (! is_null($_exam)) {
                         $_examList[$_id]['name'] = $_exam->name;
                     }
 
@@ -393,11 +393,11 @@ class OAuthService
             $_user->greeting =
                 $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
 
-            if (!file_exists(public_path().$_user->filePhoto)) {
+            if (! file_exists(public_path().$_user->filePhoto)) {
                 unset($_user->filePhoto);
             }
 
-            if (!empty($_user->awards)) {
+            if (! empty($_user->awards)) {
                 $_user->leftRibbonCount = count($_user->getRibbons('L'));
                 $_user->leftRibbons = $_user->getRibbons('L');
                 $_user->ribbonrack = view('partials.leftribbons', ['user' => $_user])->render();

@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Exam;
-use App\User;
 use App\Message;
-use Illuminate\Support\Arr;
+use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportGrades extends Command
@@ -55,18 +55,18 @@ class ImportGrades extends Command
         $examRecords = []; // start with a clean array
 
         foreach ([
-                     'RMN Exam Grading Sheet' => 'importMainLineExams',
-                     'RMN Specialist Exam Grades' => 'importRmnSpecialityExams',
-                     'IMNA Exam Grades' => 'importGsnMainLineExams',
-                     'RMMC Exam Grading Sheet' => 'importRmmcMainLineExams',
-                     'RMMC Specialist Exam Grades' => 'importRmmcSpecialityExams',
-                     'RMA Exam Grading Sheet' => 'importRmaMainLineExams',
-                     'RMA Specialist Exam Grades' => 'importRmaSpecialityExams',
-                     'Landing U Core' => 'importLandingUExams',
-                     'Landing King\'s ' => 'importLandingUExams',
-                     'Landing Queen\'s' => 'importLandingUExams',
-                     'IMNA Specialist Exam Grades' => 'importGsnSpecialityExams',
-                 ] as $sheet => $importRoutine) {
+            'RMN Exam Grading Sheet' => 'importMainLineExams',
+            'RMN Specialist Exam Grades' => 'importRmnSpecialityExams',
+            'IMNA Exam Grades' => 'importGsnMainLineExams',
+            'RMMC Exam Grading Sheet' => 'importRmmcMainLineExams',
+            'RMMC Specialist Exam Grades' => 'importRmmcSpecialityExams',
+            'RMA Exam Grading Sheet' => 'importRmaMainLineExams',
+            'RMA Specialist Exam Grades' => 'importRmaSpecialityExams',
+            'Landing U Core' => 'importLandingUExams',
+            'Landing King\'s ' => 'importLandingUExams',
+            'Landing Queen\'s' => 'importLandingUExams',
+            'IMNA Specialist Exam Grades' => 'importGsnSpecialityExams',
+        ] as $sheet => $importRoutine) {
             $examRecords = $this->processExams($examRecords, $sheet, $importRoutine);
         }
 

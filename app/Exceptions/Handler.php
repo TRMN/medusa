@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof TokenMismatchException) {
             return redirect()
                 ->back()
-                ->withErrors(["The form has expired due to inactivity. Please try again."]);
+                ->withErrors(['The form has expired due to inactivity. Please try again.']);
         }
 
         return parent::render($request, $exception);

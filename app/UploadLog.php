@@ -58,11 +58,7 @@ class UploadLog extends Eloquent
      *
      * @return mixed
      */
-    public function addNewFile(
-        string $filename,
-        string $status,
-        string $originalFileName
-    )
+    public function addNewFile(string $filename, string $status, string $originalFileName)
     {
         $files = $this->files;
 

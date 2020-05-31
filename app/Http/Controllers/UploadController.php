@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Award;
 use App\Chapter;
-use App\Message;
 use App\ImportLog;
-use App\UploadLog;
 use App\Log\MedusaLog;
-use League\Csv\Reader;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Auth;
+use App\Message;
+use App\UploadLog;
+use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
+use League\Csv\Reader;
 
 class UploadController extends Controller
 {

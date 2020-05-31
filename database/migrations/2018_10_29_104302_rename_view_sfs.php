@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Arr;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Arr;
 
 class RenameViewSfs extends Migration
 {
@@ -12,7 +12,6 @@ class RenameViewSfs extends Migration
      *
      * @return void
      * @throws \Exception
-     *
      */
     public function up()
     {

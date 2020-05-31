@@ -103,7 +103,6 @@ class Award extends Eloquent
      *
      * @return array
      * @todo Refactor to use the config table
-     *
      */
     public static function getAerospaceWings(
         array $limit = [

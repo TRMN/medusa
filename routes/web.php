@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 $request = Request::capture();
 
@@ -47,10 +47,10 @@ Route::get(
             \App\MedusaConfig::get(
                 'openid-configuration',
                 [
-                    'issuer' => secure_url("/"),
-                    'authorization_endpoint' => secure_url("/").'/oauth/authorize',
-                    'token_endpoint' => secure_url("/").'/oauth/token',
-                    'userinfo_endpoint' => secure_url("/").'/oauth/profile',
+                    'issuer' => secure_url('/'),
+                    'authorization_endpoint' => secure_url('/').'/oauth/authorize',
+                    'token_endpoint' => secure_url('/').'/oauth/token',
+                    'userinfo_endpoint' => secure_url('/').'/oauth/profile',
                 ]
             )
         );

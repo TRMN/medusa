@@ -11,7 +11,6 @@ class AddSenator extends Migration
      *
      * @return void
      * @throws \Exception
-     *
      */
     public function up()
     {
@@ -40,7 +39,6 @@ class AddSenator extends Migration
      *
      * @return void
      * @throws \Exception
-     *
      */
     public function down()
     {

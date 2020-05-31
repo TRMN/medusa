@@ -35,7 +35,6 @@ class SWPCheck extends Command
      *
      * @return mixed
      * @throws \Exception
-     *
      */
     public function handle()
     {

@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\User;
 use App\Chapter;
+use App\User;
 use Illuminate\Console\Command;
-use Webpatser\Countries\Countries;
 use Maatwebsite\Excel\Facades\Excel;
+use Webpatser\Countries\Countries;
 
 /*
  * Query to export member database

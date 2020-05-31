@@ -5,8 +5,7 @@ namespace App;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
- * Class Branch
- * @package App
+ * Class Branch.
  *
  * @property string id
  * @property string branch
@@ -60,10 +59,10 @@ class Branch extends Eloquent
         }
 
         if ($includeRmmmDivisions) {
-            $branches['MEDICAL'] = "RMMM Medical Division";
-            $branches['CATERING'] = "RMMM Catering Division";
-            $branches['ENG'] = "RMMM Engineering Division";
-            $branches['DECK'] = "RMMM Deck Division";
+            $branches['MEDICAL'] = 'RMMM Medical Division';
+            $branches['CATERING'] = 'RMMM Catering Division';
+            $branches['ENG'] = 'RMMM Engineering Division';
+            $branches['DECK'] = 'RMMM Deck Division';
         }
 
         asort($branches);
@@ -95,7 +94,7 @@ class Branch extends Eloquent
     }
 
     /**
-     * Check if this is a military branch
+     * Check if this is a military branch.
      *
      * @return bool
      */
@@ -114,7 +113,7 @@ class Branch extends Eloquent
     }
 
     /**
-     * Check if this is a civilian branch
+     * Check if this is a civilian branch.
      *
      * @return bool
      */

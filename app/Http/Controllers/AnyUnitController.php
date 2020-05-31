@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Branch;
 use App\Chapter;
-use App\MedusaConfig;
 use App\Echelons\MedusaEchelons;
+use App\MedusaConfig;
 
 class AnyUnitController extends Controller
 {

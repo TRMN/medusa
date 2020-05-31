@@ -2,10 +2,10 @@
 
 namespace App;
 
-use NumberFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use NumberFormatter;
 
 class Chapter extends Eloquent
 {
@@ -222,8 +222,6 @@ class Chapter extends Eloquent
      * Get all users/members assigned to a specific chapter excluding the command crew.
      *
      * @TODO Refactor this
-     *
-     * @param $chapterId
      *
      * @return mixed
      */
@@ -660,7 +658,7 @@ class Chapter extends Eloquent
     }
 
     /**
-     * Generate a hierarchical tree of a chapters children
+     * Generate a hierarchical tree of a chapter's children.
      *
      * @return array
      */
@@ -701,7 +699,6 @@ class Chapter extends Eloquent
      *
      * @return array
      * @deprecated
-     *
      */
     public static function getChapterLocations()
     {

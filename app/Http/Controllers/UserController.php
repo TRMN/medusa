@@ -2,37 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Award;
-use App\Grade;
 use App\Billet;
 use App\Branch;
-use App\Rating;
 use App\Chapter;
 use App\Country;
-use App\Korders;
-use App\Ptitles;
-use Carbon\Carbon;
-use App\MedusaConfig;
-use Illuminate\Support\Arr;
 use App\Events\EmailChanged;
-use Illuminate\Http\Request;
 use App\Events\LoginComplete;
-use Illuminate\Support\Facades\DB;
-use Webpatser\Countries\Countries;
-use Illuminate\Support\Facades\URL;
+use App\Grade;
+use App\Korders;
+use App\MedusaConfig;
+use App\Permissions\MedusaPermissions;
+use App\Ptitles;
+use App\Rating;
+use App\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Event;
-
-//use Illuminate\Support\Facades\Request;
-use App\Permissions\MedusaPermissions;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use Webpatser\Countries\Countries;
 
 class UserController extends Controller
 {
@@ -772,12 +770,17 @@ class UserController extends Controller
                     ->withInput();
             }
 
+            $developmentDomains = [
+                'localhost',
+                'medusa-dev.trmn.org',
+                'medusa.dev',
+                'medusa.local',
+                'medusa.test',
+            ];
+
             if (in_array(
                     $_SERVER['SERVER_NAME'],
-                    ['medusa.dev',
-                        'medusa-dev.trmn.org',
-                        'medusa.local',
-                        'localhost',]
+                    $developmentDomains
                 ) === false) {
                 // Check Captcha
                 $secret = config('recaptcha.secret');
@@ -1177,7 +1180,7 @@ class UserController extends Controller
                         $user->rank['grade'].') to '.
                         Grade::getRankTitle(
                             $data['display_rank'],
-                            !empty($data['rating']) ? $data['rating'] : null,
+                            ! empty($data['rating']) ? $data['rating'] : null,
                             $data['branch']
                         ).' ('.$data['display_rank'].') on '.
                         date('d M Y', $transfer == 0 ? strtotime($data['dor']) : $transfer),
@@ -1476,6 +1479,7 @@ class UserController extends Controller
      * Process acceptance of the Official Secrets Act.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function osa(Request $request)

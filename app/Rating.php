@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
  * Rating Model.

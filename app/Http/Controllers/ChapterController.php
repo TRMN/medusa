@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Type;
-use App\User;
 use App\Branch;
 use App\Chapter;
 use App\MedusaConfig;
-use League\Csv\Writer;
+use App\Permissions\MedusaPermissions;
+use App\Type;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use App\Permissions\MedusaPermissions;
 use Illuminate\Support\Facades\Redirect;
+use League\Csv\Writer;
 
 class ChapterController extends Controller
 {
@@ -436,7 +436,7 @@ class ChapterController extends Controller
     /**
      * Remove the specified Chapter.
      *
-     * @param  $chapterID
+     * @param $chapter
      *
      * @return Response
      */
@@ -540,11 +540,10 @@ class ChapterController extends Controller
     /**
      * Export a chapters roster.
      *
-     * @param \App\Chapter $chapter
+     * @param Chapter $chapter
      *
      * @return bool|\Illuminate\Http\RedirectResponse
      * @throws \League\Csv\CannotInsertRecord
-     *
      */
     public function exportRoster(Chapter $chapter)
     {

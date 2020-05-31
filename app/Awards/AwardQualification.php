@@ -3,9 +3,9 @@
 namespace App\Awards;
 
 use App\AwardLog;
-use Carbon\Carbon;
 use App\MedusaConfig;
 use App\Utility\MedusaUtility;
+use Carbon\Carbon;
 
 /**
  * Trait AwardQualification.
@@ -19,7 +19,6 @@ trait AwardQualification
      *
      * @return bool
      * @throws \Exception
-     *
      */
     public function mcamQual($isNewAward = true)
     {
@@ -147,7 +146,6 @@ trait AwardQualification
      *
      * @return bool
      * @throws \Exception
-     *
      */
     public function swpQual($isNewAward = true)
     {
@@ -347,7 +345,6 @@ trait AwardQualification
      *
      * @return bool
      * @throws \Exception
-     *
      */
     private function logAward($award, $qty, $event)
     {

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Award;
-use App\Grade;
 use App\Branch;
-use App\Rating;
 use App\Chapter;
-use App\Korders;
 use App\ExamList;
+use App\Grade;
+use App\Korders;
 use App\MedusaConfig;
-use Webpatser\Countries\Countries;
+use App\Rating;
+use App\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Webpatser\Countries\Countries;
 
 class ApiController extends Controller
 {
@@ -295,10 +295,10 @@ class ApiController extends Controller
             $suggestions[] =
                 [
                     'value' => $member->member_id.' '.$member->first_name.' '.
-                        (!empty($member->middle_name) ?
+                        (! empty($member->middle_name) ?
                             $member->middle_name.' ' : '').
                         $member->last_name.
-                        (!empty($member->suffix) ? ' '.$member->suffix :
+                        (! empty($member->suffix) ? ' '.$member->suffix :
                             '').' ('.$member->getAssignmentName(
                             'primary'
                         ).')',
@@ -502,14 +502,14 @@ class ApiController extends Controller
         $branchInfo = Branch::where('branch', $user->branch)->first();
 
         if (isset($branchInfo->equivalent[$newBranch][$user->rank['grade']]) === true) {
-            return "Transferring from ".Branch::getBranchName($user->branch)." to ".
-                Branch::getBranchName($newBranch)." will change the members rank from ".
-                Grade::getRankTitle($user->rank['grade'], null, $user->branch)." (".$user->rank['grade'].")".
-                " to ".
+            return 'Transferring from '.Branch::getBranchName($user->branch).' to '.
+                Branch::getBranchName($newBranch).' will change the members rank from '.
+                Grade::getRankTitle($user->rank['grade'], null, $user->branch).' ('.$user->rank['grade'].')'.
+                ' to '.
                 Grade::getRankTitle($branchInfo->equivalent[$newBranch][$user->rank['grade']], null, $newBranch).
-                " (".$branchInfo->equivalent[$newBranch][$user->rank['grade']].")";
+                ' ('.$branchInfo->equivalent[$newBranch][$user->rank['grade']].')';
         } else {
-            return "Unable to determine the new rank for the member";
+            return 'Unable to determine the new rank for the member';
         }
     }
 
@@ -570,10 +570,14 @@ class ApiController extends Controller
             }
         }
 
-        return Response::json(
-            ['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check,
-                'pinfo' => $promotionInfo,]
-        );
+        $rankQualificationResponse = [
+            'valid' => $canPromote,
+            'msg' => $msg,
+            'grade2check' => $payGrade2Check,
+            'pinfo' => $promotionInfo,
+        ];
+
+        return Response::json($rankQualificationResponse);
     }
 
     public function getRibbonImage($ribbonCode, $ribbonCount, $ribbonName)

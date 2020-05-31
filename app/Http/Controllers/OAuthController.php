@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use Response;
-
-//use Illuminate\Support\Facades\Request;
 use App\OAuthClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Log;
+use Response;
 
 class OAuthController extends Controller
 {
@@ -250,14 +248,14 @@ class OAuthController extends Controller
             $_newExams = false;
 
             foreach ($_examList as $_id => $_grades) {
-                if (!empty($_grades['date_entered']) && strtotime($_grades['date_entered']) >= $_lastLogin) {
+                if (! empty($_grades['date_entered']) && strtotime($_grades['date_entered']) >= $_lastLogin) {
                     $_examList[$_id]['new'] = true;
                     $_newExams = true;
                 }
 
                 $_exam = \App\ExamList::where('exam_id', '=', $_id)->first();
 
-                if (!is_null($_exam)) {
+                if (! is_null($_exam)) {
                     $_examList[$_id]['name'] = $_exam->name;
                 }
 
@@ -282,11 +280,11 @@ class OAuthController extends Controller
         $_user->greeting =
             $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
 
-        if (!file_exists(public_path().$_user->filePhoto)) {
+        if (! file_exists(public_path().$_user->filePhoto)) {
             unset($_user->filePhoto);
         }
 
-        if (!empty($_user->awards)) {
+        if (! empty($_user->awards)) {
             $_user->leftRibbonCount = count($_user->getRibbons('L'));
             $_user->leftRibbons = $_user->getRibbons('L');
             $_user->numAcross = 3;

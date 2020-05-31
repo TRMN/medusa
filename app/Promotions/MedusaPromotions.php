@@ -2,12 +2,12 @@
 
 namespace App\Promotions;
 
-use App\Grade;
-use Exception;
 use App\Branch;
+use App\Grade;
+use App\MedusaConfig;
 use App\Rating;
 use Carbon\Carbon;
-use App\MedusaConfig;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -342,6 +342,7 @@ trait MedusaPromotions
                         $payGrade2Check = 'C-7';
                     }
                 }
+
                 return $this->getPromotableInfo($payGrade2Check, false);
         }
     }
@@ -404,7 +405,7 @@ trait MedusaPromotions
     }
 
     /**
-     * Return the pay grade of an individual
+     * Return the pay grade of an individual.
      *
      * @return string
      */

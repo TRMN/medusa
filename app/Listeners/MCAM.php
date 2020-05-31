@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Mail\McamNotice;
 use App\Events\GradeEntered;
+use App\Mail\McamNotice;
 use Illuminate\Support\Facades\Mail;
 
 class MCAM
@@ -25,7 +25,6 @@ class MCAM
      *
      * @return void
      * @throws \Exception
-     *
      */
     public function handle($event)
     {

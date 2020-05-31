@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Grade;
 use App\Branch;
-use App\Chapter;
 use App\ChangeRequest;
+use App\Chapter;
+use App\Grade;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class UserChangeRequestController extends Controller
 {
@@ -309,6 +309,7 @@ class UserChangeRequestController extends Controller
                 // We have a MARDET, get the parent chapter CO's email address.
                 /** @var Chapter $parent */
                 $parent = Chapter::find($chapter->assigned_to);
+
                 return $parent->getCO()->email_address;
                 break;
             default:
@@ -316,7 +317,7 @@ class UserChangeRequestController extends Controller
                 try {
                     return $chapter->getCO()->email_address;
                 } catch (\Exception $exception) {
-                    return null;
+                    return;
                 }
         }
     }
