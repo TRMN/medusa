@@ -238,23 +238,21 @@ class Chapter extends Eloquent
                 )
                 ->get();
 
+        $commandBillets = [
+            'Commanding Officer',
+            'Executive Officer',
+            'Bosun',
+            'Fleet Commander',
+            'Deputy Fleet Commander',
+            'Fleet Bosun',
+            'Space Lord',
+            'Deputy Space Lord',
+        ];
+
         // Because of the way that mongo stores arrays, need to post process
         foreach ($users as $key => $user) {
             foreach ($user->assignment as $assignment) {
-                if ($assignment['chapter_id'] == $this->id && in_array(
-                        $assignment['billet'],
-                        [
-                            'Commanding Officer',
-                            'Executive Officer',
-                            'Bosun',
-                            'Fleet Commander',
-                            'Deputy Fleet Commander',
-                            'Fleet Bosun',
-                            'Space Lord',
-                            'Deputy Space Lord',
-                        ]
-                    ) === true
-                ) {
+                if ($assignment['chapter_id'] == $this->id && in_array($assignment['billet'], $commandBillets) === true) {
                     unset($users[$key]);
                 }
             }
