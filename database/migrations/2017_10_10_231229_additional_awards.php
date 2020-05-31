@@ -48,7 +48,7 @@ class AdditionalAwards extends Migration
 
         foreach ($quals as $qual) {
             foreach ($weapons as $code => $weapon) {
-                App\Award::where('code', 'A' . $code . $qual)->delete();
+                App\Award::where('code', 'A'.$code.$qual)->delete();
             }
         }
 
@@ -160,7 +160,7 @@ class AdditionalAwards extends Migration
             $award = App\Award::where('code', $code)->first();
             $award->display_order = $display_order;
             if ($display_order < 115) {
-                $award->replaces = $award->replaces . ',' . substr($code, 0, 2) . 'MC';
+                $award->replaces = $award->replaces.','.substr($code, 0, 2).'MC';
             }
             $award->save();
         }
@@ -191,14 +191,14 @@ class AdditionalAwards extends Migration
             foreach ($weapons as $code => $weapon) {
                 App\Award::create([
                     'display_order' => $display_order,
-                    'name' => 'Army ' . $weapon . ' ' . $typeInfo['suffix'],
-                    'code' => 'A' . $code . $suffix,
+                    'name' => 'Army '.$weapon.' '.$typeInfo['suffix'],
+                    'code' => 'A'.$code.$suffix,
                     'post_nominal' => '',
-                    'replaces' => str_replace('@', 'A' . $code, $typeInfo['replaces']),
+                    'replaces' => str_replace('@', 'A'.$code, $typeInfo['replaces']),
                     'location' => 'AWQ',
                     'multiple' => false,
                     'points' => $typeInfo['points'],
-                    'group_label' => 'Army ' . $weapon . ' Marksmanship',
+                    'group_label' => 'Army '.$weapon.' Marksmanship',
                     'image' => $typeInfo['image'],
                 ]);
                 $display_order++;

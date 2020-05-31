@@ -134,11 +134,11 @@ class CivilianDivisions extends Migration
         for ($i = 1; $i <= 23; $i++) {
             $fmt = new \NumberFormatter('en_US', \NumberFormatter::SPELLOUT);
 
-            $record = \App\Grade::where('grade', 'C-' . $i)->first();
+            $record = \App\Grade::where('grade', 'C-'.$i)->first();
 
             $rank = $record->rank;
             unset($rank['INTEL']);
-            $rank['CIVIL'] = 'Civilian ' . ucfirst($fmt->format($i));
+            $rank['CIVIL'] = 'Civilian '.ucfirst($fmt->format($i));
 
             $record->rank = $rank;
             $record->save();

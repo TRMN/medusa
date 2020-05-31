@@ -30,13 +30,13 @@
         $count = 0;
         foreach (['secondary', 'additional', 'extra'] as $position) {
             if (empty($user->getAssignmentName($position)) === false) {
-                echo '<a href="' . route('chapter.show', $user->getAssignmentId($position)) . '">' .
-                    $user->getAssignmentName($position) . '</a>';
+                echo '<a href="'.route('chapter.show', $user->getAssignmentId($position)).'">'.
+                    $user->getAssignmentName($position).'</a>';
                 $count++;
             }
 
             if (empty($user->getBillet($position)) === false) {
-                echo ', ' . $user->getBillet($position) . '<br>';
+                echo ', '.$user->getBillet($position).'<br>';
             }
         }
 

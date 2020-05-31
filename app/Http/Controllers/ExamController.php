@@ -137,7 +137,7 @@ class ExamController extends Controller
         }
 
         if (preg_match('/^\d*$/', trim($data['score'])) === 1) {
-            $data['score'] = trim($data['score']) . '%';
+            $data['score'] = trim($data['score']).'%';
         } else {
             $data['score'] = strtoupper(trim($data['score']));
         }
@@ -167,11 +167,11 @@ class ExamController extends Controller
             $record->exams = $exams;
 
             $message =
-                '<span class="fi-alert alert">' . strtoupper($data['exam']) . ' updated in academy coursework for ' .
-                $member->first_name . ' ' .
-                (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name .
-                (!empty($member->suffix) ? ' ' . $member->suffix : '') .
-                ' (' . $member->member_id . ')' . '</span>';
+                '<span class="fi-alert alert">'.strtoupper($data['exam']).' updated in academy coursework for '.
+                $member->first_name.' '.
+                (!empty($member->middle_name) ? $member->middle_name.' ' : '').$member->last_name.
+                (!empty($member->suffix) ? ' '.$member->suffix : '').
+                ' ('.$member->member_id.')'.'</span>';
         } else {
             if (empty($record) === false) {
                 $exams = $record->exams;
@@ -200,11 +200,11 @@ class ExamController extends Controller
             $record->exams = $exams;
 
             $message =
-                '<span class="fi-alert yellow">' . strtoupper($data['exam']) . ' added to academy coursework for ' .
-                $member->first_name . ' ' .
-                (!empty($member->middle_name) ? $member->middle_name . ' ' : '') . $member->last_name .
-                (!empty($member->suffix) ? ' ' . $member->suffix : '') .
-                ' (' . $member->member_id . ')' . '</span>';
+                '<span class="fi-alert yellow">'.strtoupper($data['exam']).' added to academy coursework for '.
+                $member->first_name.' '.
+                (!empty($member->middle_name) ? $member->middle_name.' ' : '').$member->last_name.
+                (!empty($member->suffix) ? ' '.$member->suffix : '').
+                ' ('.$member->member_id.')'.'</span>';
         }
         $this->writeAuditTrail(
             Auth::user()->id,
@@ -240,7 +240,7 @@ class ExamController extends Controller
                 return Redirect::route('exam.index')->with('message', 'Only .xlsx files will be accepted');
             }
 
-            Request::file('file')->move(app_path() . '/database', 'TRMN Exam grading spreadsheet.xlsx');
+            Request::file('file')->move(app_path().'/database', 'TRMN Exam grading spreadsheet.xlsx');
 
             $max_execution_time = ini_get('max_execution_time');
             set_time_limit(0);
@@ -311,7 +311,7 @@ class ExamController extends Controller
                 return $redirect;
             }
 
-            $exams = Arr::except((array)$examRecord->exams, (string)$examId);
+            $exams = Arr::except((array) $examRecord->exams, (string) $examId);
 
             $examRecord->exams = $exams;
 
@@ -326,10 +326,10 @@ class ExamController extends Controller
 
             $examRecord->save();
 
-            return back()->with('status', $examId . ' has been removed from the members academic record.');
+            return back()->with('status', $examId.' has been removed from the members academic record.');
         } catch (\Exception $e) {
             return back()
-                ->with('status', 'There was a problem removing ' . $examId . ' from the members academic record');
+                ->with('status', 'There was a problem removing '.$examId.' from the members academic record');
         }
     }
 }

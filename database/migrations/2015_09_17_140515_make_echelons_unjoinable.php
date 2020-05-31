@@ -25,7 +25,7 @@ class MakeEchelonsUnjoinable extends Migration
                     'system user',
                     'update',
                     'chapters',
-                    (string)$echelon->_id,
+                    (string) $echelon->_id,
                     $echelon->toJson(),
                     'make_echelons_unjoinable'
                 );

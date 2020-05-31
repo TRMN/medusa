@@ -92,7 +92,7 @@ class Grade extends Eloquent
         $grades = [];
 
         foreach (self::gradesForBranch($branchID, $filter) as $grade) {
-            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]) . ($suffix ? ' (' . $grade->grade . ')' :
+            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]).($suffix ? ' ('.$grade->grade.')' :
                     '');
         }
 
@@ -220,7 +220,7 @@ class Grade extends Eloquent
      */
     private static function mbTrim($string, $trim_chars = '\s')
     {
-        return preg_replace('/^[' . $trim_chars . ']*(?U)(.*)[' . $trim_chars . ']*$/u', '\\1', $string);
+        return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
     }
 
     /**

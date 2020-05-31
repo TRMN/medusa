@@ -48,7 +48,7 @@ class ChapterController extends Controller
 
         if (empty($search['value']) === false) {
             // Have search term, filter the results
-            $searchTerm = '%' . $search['value'] . '%';
+            $searchTerm = '%'.$search['value'].'%';
 
             $query = $query->where(
                 function ($query) use ($searchTerm) {
@@ -130,27 +130,27 @@ class ChapterController extends Controller
             if ($isInChainOfCommand === true || $viewMembers === true) {
                 $highestExams = '';
                 foreach ($user->getHighestExams() as $class => $exam) {
-                    $highestExams .= $class . ': ' . $exam . '<br />';
+                    $highestExams .= $class.': '.$exam.'<br />';
                 }
 
-                $name = '<a href="/user/' . $user->id . '"' .
-                    (is_null($user->promotionStatus) === true || $user->promotionStatus === false ? '' : ' class="promotable"') .
-                    '>' . $user->getFullName(true) . '</a>';
+                $name = '<a href="/user/'.$user->id.'"'.
+                    (is_null($user->promotionStatus) === true || $user->promotionStatus === false ? '' : ' class="promotable"').
+                    '>'.$user->getFullName(true).'</a>';
 
                 $ret['data'][] = [
-                    '<span class="promotable">' . $user->promotionStatus . '</span>',
+                    '<span class="promotable">'.$user->promotionStatus.'</span>',
                     $name,
                     $user->member_id,
                     $user->path ? ucfirst($user->path) : 'Service',
-                    number_format((float)$user->getTotalPromotionPoints(), 2),
+                    number_format((float) $user->getTotalPromotionPoints(), 2),
                     $highestExams,
-                    $user->rank['grade'] . '<br />' . $user->getGreeting(),
+                    $user->rank['grade'].'<br />'.$user->getGreeting(),
                     is_null($tig = $user->getTimeInGrade(true)) ? 'N/A' : $tig,
                     $user->getBilletForChapter($chapter->id),
-                    $user->branch .
+                    $user->branch.
                     (($user->branch == 'RMMM' || $user->branch == 'CIVIL') &&
                     empty($user->rating) === false ?
-                        ' <span class="volkhov">( ' . substr($user->getRate(), 0, 1) .
+                        ' <span class="volkhov">( '.substr($user->getRate(), 0, 1).
                         ' )</span>' : ''),
                     $user->city,
                     $user->state_province,
@@ -158,7 +158,7 @@ class ChapterController extends Controller
             } else {
                 $ret['data'][] = [
                     $user->getFullName(true),
-                    $user->rank['grade'] . '<br />' . $user->getGreeting(),
+                    $user->rank['grade'].'<br />'.$user->getGreeting(),
                     is_null($tig = $user->getTimeInGrade(true)) ? 'N/A' : $tig,
                     $user->getBilletForChapter($chapter->id),
                     $user->branch,
@@ -360,10 +360,10 @@ class ChapterController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
             'ChapterController@update'
         );
@@ -397,7 +397,7 @@ class ChapterController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'create',
             'chapters',
             null,
@@ -452,10 +452,10 @@ class ChapterController extends Controller
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
             'ChapterController@destroy'
         );
@@ -525,7 +525,7 @@ class ChapterController extends Controller
         header('Pragma: public');   // required
         header('Expires: 0');       // no cache
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s'));
+        header('Last-Modified: '.gmdate('D, d M Y H:i:s'));
         header('Cache-Control: private', false);
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="triad_report.csv"');
@@ -604,11 +604,11 @@ class ChapterController extends Controller
         }
 
         $csv->output(
-            date('Y-m-d') . '_' . str_replace(
+            date('Y-m-d').'_'.str_replace(
                 ' ',
                 '_',
                 $chapter->chapter_name
-            ) . '_roster.csv'
+            ).'_roster.csv'
         );
     }
 }

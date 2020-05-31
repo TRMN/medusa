@@ -243,7 +243,7 @@ class User extends Authenticatable implements CanResetPasswordContract
      */
     public function getGreetingAndName()
     {
-        return $this->getGreeting() . ' ' . $this->getFullName();
+        return $this->getGreeting().' '.$this->getFullName();
     }
 
     /**
@@ -258,18 +258,18 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         if ($lastFirst === true) {
             return trim(
-                $this->last_name .
-                (empty($this->suffix) ? '' : $this->suffix) . ', ' .
-                $this->first_name . ' ' .
+                $this->last_name.
+                (empty($this->suffix) ? '' : $this->suffix).', '.
+                $this->first_name.' '.
                 (empty($this->middle_name) ? '' :
-                    $this->middle_name . ' ')
+                    $this->middle_name.' ')
             );
         } else {
             return trim(
-                $this->first_name . ' ' .
+                $this->first_name.' '.
                 (empty($this->middle_name) ? '' :
-                    $this->middle_name . ' ') .
-                $this->last_name . ' ' .
+                    $this->middle_name.' ').
+                $this->last_name.' '.
                 (empty($this->suffix) ? '' : $this->suffix)
             );
         }
@@ -451,7 +451,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         if (count($postnominals) > 0) {
             ksort($postnominals);
 
-            return ', ' . implode(', ', $postnominals);
+            return ', '.implode(', ', $postnominals);
         }
     }
 
@@ -475,7 +475,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         if (count($postnominals) > 0) {
             ksort($postnominals);
 
-            return ', ' . implode(', ', $postnominals);
+            return ', '.implode(', ', $postnominals);
         }
     }
 
@@ -966,8 +966,8 @@ class User extends Authenticatable implements CanResetPasswordContract
                     }
                 }
                 if ($short === true) {
-                    return $years < 1 ? $months . ' Mo' :
-                        $years . ' Yr ' . $months . ' Mo';
+                    return $years < 1 ? $months.' Mo' :
+                        $years.' Yr '.$months.' Mo';
                 } elseif ($short === 'months') {
                     return ($years * 12) + $months;
                 }
@@ -1012,7 +1012,7 @@ class User extends Authenticatable implements CanResetPasswordContract
                     }
                 }
 
-                return $years . ' Yr ' . $months . ' Mo';
+                return $years.' Yr '.$months.' Mo';
             }
 
             if (isset($options['format']) === true) {
@@ -1228,12 +1228,12 @@ class User extends Authenticatable implements CanResetPasswordContract
                 } else {
                     $college = 'QC';
                 }
-                $options['pattern'] = '/^.*-' . $college . '-.*/';
-                $options['except'] = '/^.*-' . $college . '-0113|^.*-' . $college . '-0115/';
+                $options['pattern'] = '/^.*-'.$college.'-.*/';
+                $options['except'] = '/^.*-'.$college.'-0113|^.*-'.$college.'-0115/';
                 break;
             default:
-                $options['pattern'] = '/^.*-' . $this->branch . '-.*/';
-                $options['except'] = '/^.*-' . $this->branch . '-0113|^.*-' . $this->branch . '-0115/';
+                $options['pattern'] = '/^.*-'.$this->branch.'-.*/';
+                $options['except'] = '/^.*-'.$this->branch.'-0113|^.*-'.$this->branch.'-0115/';
         }
 
         if (empty($class) === false) {
@@ -1514,7 +1514,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         if (is_null(Auth::user())) {
             $user = 'system user';
         } else {
-            $user = (string)Auth::user()->id;
+            $user = (string) Auth::user()->id;
         }
 
         $this->osa = false;
@@ -1525,7 +1525,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             $user,
             'update',
             'users',
-            (string)$this->id,
+            (string) $this->id,
             json_encode($this->permissions),
             'User@updatePerms'
         );
@@ -1556,7 +1556,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         if (is_null(Auth::user())) {
             $user = 'system user';
         } else {
-            $user = (string)Auth::user()->id;
+            $user = (string) Auth::user()->id;
         }
 
         $this->osa = false;
@@ -1566,7 +1566,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             $user,
             'update',
             'users',
-            (string)$this->id,
+            (string) $this->id,
             json_encode($this->permissions),
             'User@deletePerms'
         );
@@ -1623,7 +1623,7 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function buildIdCard($showFullGrade = false)
     {
         $idCard =
-            Image::make(public_path() . '/images/TRMN-membership-card.png');
+            Image::make(public_path().'/images/TRMN-membership-card.png');
 
         $name = $this->getFullName();
         $fontSize = strlen($name) < 28 ? 48 : 38;
@@ -1634,7 +1634,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             330,
             function ($font) use ($fontSize) {
                 $font->file(
-                    public_path() .
+                    public_path().
                     '/fonts/24bd1ba4-1474-491a-91f2-a13940159b6d.ttf'
                 );
                 $font->size($fontSize);
@@ -1648,7 +1648,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             432,
             function ($font) {
                 $font->file(
-                    public_path() .
+                    public_path().
                     '/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf'
                 );
                 $font->align('center');
@@ -1665,7 +1665,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             527,
             function ($font) use ($fontSize) {
                 $font->file(
-                    public_path() .
+                    public_path().
                     '/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf'
                 );
                 $font->align('center');
@@ -1761,7 +1761,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             628,
             function ($font) {
                 $font->file(
-                    public_path() .
+                    public_path().
                     '/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf'
                 );
                 $font->align('center');
@@ -1796,7 +1796,7 @@ class User extends Authenticatable implements CanResetPasswordContract
                 628,
                 function ($font) {
                     $font->file(
-                        public_path() .
+                        public_path().
                         '/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf'
                     );
                     $font->align('center');
@@ -1812,7 +1812,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             628,
             function ($font) {
                 $font->file(
-                    public_path() .
+                    public_path().
                     '/fonts/cfaa819f-cd58-49ce-b24e-99bbb04fa859.ttf'
                 );
                 $font->align('center');
@@ -1827,7 +1827,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             250,
             function ($font) {
                 $font->file(
-                    public_path() .
+                    public_path().
                     '/fonts/de9a96b8-d3ad-4521-91a2-a44556dab791.ttf'
                 );
                 $font->align('center');
@@ -1849,7 +1849,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         );
 
         $idCard->insert(
-            public_path() . '/seals/' . $seal,
+            public_path().'/seals/'.$seal,
             'top-left',
             747,
             400
@@ -1884,7 +1884,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             ) == '.'
         ) {
             // We have a 2 letter abbreviation with periods between the letters, like D.C. or B.C.
-            return strtoupper(substr($state, 0, 1) . substr($state, -2, 1));
+            return strtoupper(substr($state, 0, 1).substr($state, -2, 1));
         }
 
         if (substr($state, 2, 2) == ' -') {
@@ -1927,7 +1927,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         $lastMemberId = self::getMemberIds();
 
         if (empty($lastMemberId) === true) {
-            return '-0001-' . date('y');
+            return '-0001-'.date('y');
         }
 
         $newNumber = $lastMemberId + 1;
@@ -2185,14 +2185,14 @@ class User extends Authenticatable implements CanResetPasswordContract
 
                     $this->setTimeZone($currentTz);
 
-                    return ['success' => $user->getFullName() .
-                        ' has been checked in to ' .
+                    return ['success' => $user->getFullName().
+                        ' has been checked in to '.
                         $event->event_name,];
                 } catch (Exception $e) {
                     $this->setTimeZone($currentTz);
 
-                    return ['error' => 'There was a problem checking ' .
-                        $user->getFullName() . ' in to ' .
+                    return ['error' => 'There was a problem checking '.
+                        $user->getFullName().' in to '.
                         $event->event_name,];
                 }
             }
@@ -2222,7 +2222,7 @@ class User extends Authenticatable implements CanResetPasswordContract
                 // $continent has the full tz spec
                 date_default_timezone_set($continent);
             } else {
-                date_default_timezone_set($continent . '/' . $city);
+                date_default_timezone_set($continent.'/'.$city);
             }
 
             return $currentTz;
@@ -2255,7 +2255,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         foreach ($this->awards as $code => $award) {
             foreach ($award['award_date'] as $date) {
-                $awardDate = Carbon::createFromFormat('Y-m-d H', $date . ' 0')
+                $awardDate = Carbon::createFromFormat('Y-m-d H', $date.' 0')
                     ->addDays(config('awards.display_days'));
 
                 if ($today->lt($awardDate)) {
@@ -2294,7 +2294,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             $onDisk = true;
 
             if (($location == 'L' || $location == 'R') &&
-                file_exists(public_path('/ribbons/' . $code . '-1.svg')) ===
+                file_exists(public_path('/ribbons/'.$code.'-1.svg')) ===
                 false) {
                 $onDisk = false;
             }
@@ -2305,7 +2305,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
                 foreach ($award['award_date'] as $date) {
                     $awardDate =
-                        Carbon::createFromFormat('Y-m-d H', $date . ' 0')
+                        Carbon::createFromFormat('Y-m-d H', $date.' 0')
                             ->addDays(config('awards.display_days'));
 
                     if ($today->lt($awardDate)) {
@@ -2405,10 +2405,10 @@ class User extends Authenticatable implements CanResetPasswordContract
         // Check to see if we have a patch for this chapter
         foreach ($chapters as $item) {
             $chapter = Chapter::find($item);
-            $path = 'patches/' . $chapter->chapter_type . '/' .
+            $path = 'patches/'.$chapter->chapter_type.'/'.
                 (empty($chapter->branch) ||
                 $chapter->chapter_type == 'bureau' ? '' :
-                    $chapter->branch . '/') . trim($chapter->hull_number) .
+                    $chapter->branch.'/').trim($chapter->hull_number).
                 '.svg';
 
             if (file_exists(public_path($path)) === true) {
@@ -2556,7 +2556,7 @@ class User extends Authenticatable implements CanResetPasswordContract
                 if ($awardInfo->points > 0) {
                     foreach ($award['award_date'] as $date) {
                         $awardDate =
-                            Carbon::createFromFormat('Y-m-d H', $date . ' 0')
+                            Carbon::createFromFormat('Y-m-d H', $date.' 0')
                                 ->addDays(config('awards.display_days'));
 
                         if ($today->lt($awardDate)) {
@@ -2736,7 +2736,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         $results = [];
 
         foreach ($coursePatterns as $course => $pattern) {
-            $results[$course] = $this->getGPA($servicePattern . $pattern);
+            $results[$course] = $this->getGPA($servicePattern.$pattern);
 
             if ($results[$course] === 0) {
                 unset($results[$course]);
@@ -2768,7 +2768,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         $numFalse = 0;
 
         foreach ($exams as $exam) {
-            $examMatches = $this->getExamList(['pattern' => '/^.*-' . $exam . '$/']);
+            $examMatches = $this->getExamList(['pattern' => '/^.*-'.$exam.'$/']);
 
             $passedExams = 0;
 
@@ -2826,10 +2826,10 @@ class User extends Authenticatable implements CanResetPasswordContract
             $this->save();
 
             $this->writeAuditTrail(
-                (string)Auth::user()->id,
+                (string) Auth::user()->id,
                 'update',
                 'users',
-                (string)$this->id,
+                (string) $this->id,
                 json_encode($this),
                 'User@addServiceHistoryEntry'
             );

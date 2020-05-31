@@ -79,6 +79,6 @@ class Events extends Eloquent
             );
         }
 
-        $csv->output(date('Y-m-d') . '_' . str_replace(' ', '_', $this->event_name) . '_roster.csv');
+        $csv->output(date('Y-m-d').'_'.str_replace(' ', '_', $this->event_name).'_roster.csv');
     }
 }

@@ -123,11 +123,11 @@ class UploadController extends Controller
         return view(
             'upload.index',
             [
-                'title' => 'Upload Chapter Promotion Point Spreadsheet for ' .
+                'title' => 'Upload Chapter Promotion Point Spreadsheet for '.
                     $chapter->chapter_name,
                 'note' => 'Processing the uploaded Promotion Point Spreadsheet is not an automated process.  A BuComm staff member will download your Promotion Point Spreadsheet, parse it on-line and then upload it for processing.  You will be able to check the status of this process by clicking on the &qoute;Promotion Point Status&qoute; button on your roster.',
                 'method' => 'processSheet',
-                'source' => '/upload/sheet/' . $chapter->id,
+                'source' => '/upload/sheet/'.$chapter->id,
                 'accept' => 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,*.xls,*.xlsx',
                 'hidden' => [
                     'chapter' => $chapter->id,
@@ -188,7 +188,7 @@ class UploadController extends Controller
         $numFiles = empty($log->files) === false ? count($log->files) : 0;
 
         $slug = Str::slug($request->chaptername, '_');
-        $filename = $slug . '_' . ($numFiles + 1) . '.' . $ext;
+        $filename = $slug.'_'.($numFiles + 1).'.'.$ext;
 
         if ($log->isDuplicate($originalFileName) === false) {
             try {
@@ -203,7 +203,7 @@ class UploadController extends Controller
 
                 return redirect($request->source)->with(
                     'message',
-                    $originalFileName .
+                    $originalFileName.
                     ' has been upload.  You may upload additional files if needed.'
                 );
             } catch (\Exception $e) {
@@ -237,11 +237,11 @@ class UploadController extends Controller
         $slug = Str::slug($log['chapter_name'], '_');
 
         $file = $request->file('file');
-        $file->storeAs($slug, $fileinfo['filename'] . '.csv', 'points');
+        $file->storeAs($slug, $fileinfo['filename'].'.csv', 'points');
 
         $import = Reader::createFromPath(
             storage_path(
-                'app/points/' . $slug . '/' . $fileinfo['filename'] . '.csv'
+                'app/points/'.$slug.'/'.$fileinfo['filename'].'.csv'
             ),
             'r'
         );
@@ -261,7 +261,7 @@ class UploadController extends Controller
                 $member = User::getUserByMemberId($record['RMN']);
                 $name = $member->getFullName();
             } catch (ModelNotFoundException $e) {
-                $name = '<span class="red">' . $record['RMN'] . ' : Invalid</span>';
+                $name = '<span class="red">'.$record['RMN'].' : Invalid</span>';
             }
 
             $preview[] = [
@@ -274,8 +274,8 @@ class UploadController extends Controller
             'upload.preview',
             [
                 'log' => $log,
-                'csv' => 'app/points/' . $slug . '/' .
-                    $fileinfo['filename'] . '.csv',
+                'csv' => 'app/points/'.$slug.'/'.
+                    $fileinfo['filename'].'.csv',
                 'preview' => $preview,
                 'filename' => $filename,
             ]
@@ -297,7 +297,7 @@ class UploadController extends Controller
             [
                 'source' => 'import_points',
                 'severity' => 'info',
-                'msg' => 'Promotion point import started ' .
+                'msg' => 'Promotion point import started '.
                     date('F j, Y @ g:i a'),
             ]
         );
@@ -373,9 +373,9 @@ class UploadController extends Controller
                     [
                         'source' => 'import_points',
                         'severity' => 'info',
-                        'msg' => 'Imported ' . $member->getFullName() . ' (' .
-                            $member->member_id . ') of the ' .
-                            $record['chapter'] . ' at ' .
+                        'msg' => 'Imported '.$member->getFullName().' ('.
+                            $member->member_id.') of the '.
+                            $record['chapter'].' at '.
                             date('F j, Y @ g:i a'),
                     ]
                 );
@@ -384,11 +384,11 @@ class UploadController extends Controller
                     [
                         'source' => 'import_points',
                         'severity' => 'info',
-                        'msg' => 'Promblem Importing ' .
-                            $member->getFullName() .
-                            ' (' .
-                            $member->member_id . ') of the ' .
-                            $record['chapter'] . ' at ' .
+                        'msg' => 'Promblem Importing '.
+                            $member->getFullName().
+                            ' ('.
+                            $member->member_id.') of the '.
+                            $record['chapter'].' at '.
                             date('F j, Y @ g:i a'),
                     ]
                 );
@@ -399,7 +399,7 @@ class UploadController extends Controller
             [
                 'source' => 'import_points',
                 'severity' => 'info',
-                'msg' => 'Promotion point import ended ' .
+                'msg' => 'Promotion point import ended '.
                     date('F j, Y @ g:i a'),
             ]
         );

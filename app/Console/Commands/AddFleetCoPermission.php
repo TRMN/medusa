@@ -54,7 +54,7 @@ class AddFleetCoPermission extends Command
             'system user',
             'update',
             'users',
-            (string)$user->_id,
+            (string) $user->_id,
             $user->toJson(),
             'AddFleetCoPermission'
         );

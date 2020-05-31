@@ -105,7 +105,7 @@ class ImportGrades extends Command
                     $details =
                         [
                             'severity' => 'warning',
-                            'msg' => 'Unable to update ' . $res->first_name . ' ' . $res->last_name . '(' . $memberId . ')',
+                            'msg' => 'Unable to update '.$res->first_name.' '.$res->last_name.'('.$memberId.')',
                         ];
 
                     $this->logMsg($details);
@@ -127,7 +127,7 @@ class ImportGrades extends Command
                     $details =
                         [
                             'severity' => 'warning',
-                            'msg' => 'Unable to add ' . $res->first_name . ' ' . $res->last_name . '(' . $memberId . ')',
+                            'msg' => 'Unable to add '.$res->first_name.' '.$res->last_name.'('.$memberId.')',
                         ];
 
                     $this->logMsg($details);
@@ -149,7 +149,7 @@ class ImportGrades extends Command
         $this->logMsg($details);
 
         $exams = Excel::selectSheets($sheet)->load(
-            app_path() . '/database/TRMN Exam grading spreadsheet.xlsx',
+            app_path().'/database/TRMN Exam grading spreadsheet.xlsx',
             'UTF-8'
         )
             ->formatDates(true, 'Y-m-d')
@@ -261,8 +261,8 @@ class ImportGrades extends Command
                             date(
                                 'y-m-d',
                                 strtotime(
-                                    substr($scoreAndDate[1], 0, 2) . '/' .
-                                    substr($scoreAndDate[1], 2, 2) . '/' .
+                                    substr($scoreAndDate[1], 0, 2).'/'.
+                                    substr($scoreAndDate[1], 2, 2).'/'.
                                     substr($scoreAndDate[1], 4)
                                 )
                             )
@@ -506,7 +506,7 @@ class ImportGrades extends Command
         $exams = [];
 
         foreach ($fieldNames as $fieldName) {
-            $exams[$fieldName] = 'KR1MA-' . str_replace('_', '-', strtoupper($fieldName));
+            $exams[$fieldName] = 'KR1MA-'.str_replace('_', '-', strtoupper($fieldName));
         }
 
         $exam = [];
@@ -648,8 +648,8 @@ class ImportGrades extends Command
             $examNumber = str_pad($exam, 2, '0', STR_PAD_LEFT);
 
             foreach (['A', 'C', 'W', 'D'] as $examLevel) {
-                $rmnSpecialityExams['srn_' . $examNumber . strtolower($examLevel)] =
-                    'SIA-SRN-' . $examNumber . $examLevel;
+                $rmnSpecialityExams['srn_'.$examNumber.strtolower($examLevel)] =
+                    'SIA-SRN-'.$examNumber.$examLevel;
             }
         }
 
@@ -674,8 +674,8 @@ class ImportGrades extends Command
             $examNumber = str_pad($exam, 2, '0', STR_PAD_LEFT);
 
             foreach (['A', 'C', 'W', 'D'] as $examLevel) {
-                $rmmcSpecialityExams['srmc_' . $examNumber . strtolower($examLevel)] =
-                    'SIA-SRMC-' . $examNumber . $examLevel;
+                $rmmcSpecialityExams['srmc_'.$examNumber.strtolower($examLevel)] =
+                    'SIA-SRMC-'.$examNumber.$examLevel;
             }
         }
 
@@ -714,7 +714,7 @@ class ImportGrades extends Command
         }
 
         $users =
-            User::where('first_name', 'like', substr(trim($firstName[0]), 0, 2) . '%')
+            User::where('first_name', 'like', substr(trim($firstName[0]), 0, 2).'%')
                 ->where('last_name', '=', trim($memberExamRecord['last_name']))
                 ->get();
 
@@ -724,7 +724,7 @@ class ImportGrades extends Command
             $details =
                 [
                     'severity' => 'warning',
-                    'msg' => 'Invalid MemberID(' . $memberExamRecord['member_number'] . ') for ' . $memberExamRecord['first_name'] . ' ' . $memberExamRecord['last_name'] . ' and I was unable to find a definitive match in the User database.',
+                    'msg' => 'Invalid MemberID('.$memberExamRecord['member_number'].') for '.$memberExamRecord['first_name'].' '.$memberExamRecord['last_name'].' and I was unable to find a definitive match in the User database.',
                 ];
 
             $this->logMsg($details);

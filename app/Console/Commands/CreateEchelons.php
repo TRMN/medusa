@@ -97,7 +97,7 @@ class CreateEchelons extends Command
     {
         // Iterate over the array of ship names
         foreach ($ships as $ship) {
-            $this->info(' Looking up ' . $ship);
+            $this->info(' Looking up '.$ship);
             // Get ship info
             $shipInfo = Chapter::where('chapter_name', '=', $ship)->First();
 
@@ -115,7 +115,7 @@ class CreateEchelons extends Command
 
             // Save it
             $shipInfo->save();
-            $this->info(' Assigned ' . $ship . ' to echelon');
+            $this->info(' Assigned '.$ship.' to echelon');
         }
 
         return true;
@@ -167,14 +167,14 @@ class CreateEchelons extends Command
         // Assign CO permissions
         //$member->assignCoPerms();
 
-        $this->info(' CO for ' . $name . ' set');
+        $this->info(' CO for '.$name.' set');
 
         return true;
     }
 
     protected function createEchelon($name, $type, $cdate, $designation, $branch, $co, array $elements, $fleet = null)
     {
-        $this->info('Creating echelon ' . $name);
+        $this->info('Creating echelon '.$name);
         // Build the echelon record
         $echelonRecord = [
             'chapter_name' => $name,
@@ -188,7 +188,7 @@ class CreateEchelons extends Command
         // Assign this echelon directly to a fleet
         if (is_null($fleet) === false) {
             $fleet = Chapter::where('chapter_type', '=', 'fleet')->where('hull_number', '=', $fleet)->First();
-            $echelonRecord['assigned_to'] = (string)$fleet->_id;
+            $echelonRecord['assigned_to'] = (string) $fleet->_id;
         }
 
         // Create the echelon unless it already exists
@@ -208,10 +208,10 @@ class CreateEchelons extends Command
         }
 
         // Assign the CO of the echelon
-        $this->assignEchelonCO((string)$echelon->_id, $name, $co);
+        $this->assignEchelonCO((string) $echelon->_id, $name, $co);
 
         // Assign the elements to the echelon
-        $this->assignChaptersToEchelon((string)$echelon->_id, $elements);
+        $this->assignChaptersToEchelon((string) $echelon->_id, $elements);
 
         return true;
     }

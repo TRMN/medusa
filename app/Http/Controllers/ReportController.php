@@ -80,12 +80,12 @@ class ReportController extends Controller
             );
         }
 
-        $first = strtotime(date('Y') . '-' . date('m') . '-01');
+        $first = strtotime(date('Y').'-'.date('m').'-01');
 
         if (date('n') & 1 == 1) {
             $ts = strtotime('-1 month', $first);
             $month =
-                date('F, Y', strtotime(date('Y') . '-' . (date('n') + 1) . '-01'));
+                date('F, Y', strtotime(date('Y').'-'.(date('n') + 1).'-01'));
         } else {
             $ts = strtotime('-2 month', $first);
             $month = date('F, Y');
@@ -93,7 +93,7 @@ class ReportController extends Controller
 
         // Check and make sure that there's no pending requests
 
-        $reportDate = date('n') & 1 ? date('Y-m', strtotime(date('Y') . '-' . (date('n') + 1) . '-01')) : date('Y-m');
+        $reportDate = date('n') & 1 ? date('Y-m', strtotime(date('Y').'-'.(date('n') + 1).'-01')) : date('Y-m');
 
         $report = $this->doesReportExists($chapter, $reportDate);
 
@@ -166,13 +166,13 @@ class ReportController extends Controller
                 $ts =
                     strtotime(
                         '-1 month',
-                        strtotime(date('Y') . '-' . date('m') . '-01')
+                        strtotime(date('Y').'-'.date('m').'-01')
                     );
             } else {
                 $ts =
                     strtotime(
                         '-2 month',
-                        strtotime(date('Y') . '-' . date('m') . '-01')
+                        strtotime(date('Y').'-'.date('m').'-01')
                     );
             }
         }
@@ -185,7 +185,7 @@ class ReportController extends Controller
             $completed = $member->getCompletedExams(date('Y-m-d', $ts));
 
             if (empty($completed) === false) {
-                $examsCompleted .= $member->first_name . ' ' . $member->last_name . ' (' . $member->member_id . ') ' . $completed . '; ';
+                $examsCompleted .= $member->first_name.' '.$member->last_name.' ('.$member->member_id.') '.$completed.'; ';
             }
         }
 
@@ -281,7 +281,7 @@ class ReportController extends Controller
 
             return Redirect::route('report.index')->with(
                 'message',
-                date('F, Y', strtotime($report->report_date)) . ' Report Sent'
+                date('F, Y', strtotime($report->report_date)).' Report Sent'
             );
         }
 
@@ -415,7 +415,7 @@ class ReportController extends Controller
 
         $data = Request::all();
 
-        $msg = date('F, Y', strtotime($report->report_date)) . ' Report Saved';
+        $msg = date('F, Y', strtotime($report->report_date)).' Report Saved';
 
         foreach ($data as $key => $value) {
             $report->$key = $value;
@@ -430,7 +430,7 @@ class ReportController extends Controller
             $report->report_sent = date('Y-m-d');
 
             $msg =
-                date('F, Y', strtotime($report->report_date)) . ' Report Sent';
+                date('F, Y', strtotime($report->report_date)).' Report Sent';
         }
 
         $this->writeAuditTrail(
@@ -465,10 +465,10 @@ class ReportController extends Controller
         $report->delete();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'delete',
             'reports',
-            (string)$report->_id,
+            (string) $report->_id,
             $report->toJson(),
             'ReportController@destroy'
         );
@@ -504,7 +504,7 @@ class ReportController extends Controller
 
         return Redirect::route('report.index')->with(
             'message',
-            date('F, Y', strtotime($report->report_date)) . ' Report Sent'
+            date('F, Y', strtotime($report->report_date)).' Report Sent'
         );
     }
 
@@ -568,7 +568,7 @@ class ReportController extends Controller
             function ($message) use ($report, $echelonEmails) {
                 $message->from(
                     'bucomm@trmn.org',
-                    'On behalf of CO, ' . $report['chapter_info']['chapter_name']
+                    'On behalf of CO, '.$report['chapter_info']['chapter_name']
                 );
 
                 $message->to($report->command_crew['Commanding Officer']['email_address']);
@@ -590,7 +590,7 @@ class ReportController extends Controller
                     date(
                         'F, Y',
                         strtotime($report->report_date)
-                    ) . ' Chapter Report for ' . $report['chapter_info']['chapter_name']
+                    ).' Chapter Report for '.$report['chapter_info']['chapter_name']
                 );
             }
         );

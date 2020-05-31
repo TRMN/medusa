@@ -110,7 +110,7 @@ class EchelonController extends Controller
         $data['joinable'] = false;
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'create',
             'chapters',
             null,
@@ -196,9 +196,9 @@ class EchelonController extends Controller
 
         asort($chapters);
 
-        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
 
         return view(
             'echelon.edit',
@@ -259,10 +259,10 @@ class EchelonController extends Controller
         $chapter->joinable = false;
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
             'EchelonController@update'
         );
@@ -292,10 +292,10 @@ class EchelonController extends Controller
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
             'EchelonController@update'
         );

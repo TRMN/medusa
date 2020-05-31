@@ -1954,7 +1954,7 @@ class UpdateCivilianPromotionPoints extends Migration
         // Setup the civilian promotion point requirement entries
 
         foreach (['RMACS', 'RMMM', 'SFC', 'DIPLOMATIC', 'INTEL'] as $branch) {
-            MedusaConfig::set('pp.requirements.' . $branch, $$branch);
+            MedusaConfig::set('pp.requirements.'.$branch, $$branch);
         }
     }
 
@@ -1972,7 +1972,7 @@ class UpdateCivilianPromotionPoints extends Migration
         MedusaConfig::remove('pp.requirements.bak');
 
         foreach (['RMACS', 'RMMM', 'SFC', 'DIPLOMATIC', 'INTEL'] as $branch) {
-            MedusaConfig::remove('pp.requirements.' . $branch);
+            MedusaConfig::remove('pp.requirements.'.$branch);
         }
     }
 }

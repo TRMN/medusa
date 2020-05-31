@@ -56,20 +56,20 @@ class ImportChapters extends Command
         // Open the Master Berthing Registry.  Only import sheets with values
 
         $trmn = [
-            'RMN' => Excel::selectSheets('RMN Ships')->load(app_path() . '/database/berthing_registry.xlsx')
+            'RMN' => Excel::selectSheets('RMN Ships')->load(app_path().'/database/berthing_registry.xlsx')
                 ->formatDates(true, 'Y-m-d')
                 ->toArray(),
-            'GSN' => Excel::selectSheets('GSN Ships')->load(app_path() . '/database/berthing_registry.xlsx')
+            'GSN' => Excel::selectSheets('GSN Ships')->load(app_path().'/database/berthing_registry.xlsx')
                 ->formatDates(true, 'Y-m-d')
                 ->toArray(),
-            'IAN' => Excel::selectSheets('IAN Ships')->load(app_path() . '/database/berthing_registry.xlsx')
+            'IAN' => Excel::selectSheets('IAN Ships')->load(app_path().'/database/berthing_registry.xlsx')
                 ->formatDates(true, 'Y-m-d')
                 ->toArray(),
         ];
 
         $decomissioned =
             Excel::selectSheets('Decommissioned Ships')
-                ->load(app_path() . '/database/berthing_registry.xlsx')
+                ->load(app_path().'/database/berthing_registry.xlsx')
                 ->formatDates(true, 'Y-m-d')
                 ->toArray();
 
@@ -83,7 +83,7 @@ class ImportChapters extends Command
                     // Make sure that the ship doesn't already exist
                     if (count(Chapter::where('chapter_name', '=', $ship['name'])->get()->toArray()) === 0) {
                         $this->comment(
-                            'Creating ' . $ship['name'] . ', assigned to ' . $fleets[$ship['fleet']]['chapter_name']
+                            'Creating '.$ship['name'].', assigned to '.$fleets[$ship['fleet']]['chapter_name']
                         );
                         $this->writeAuditTrail('import', 'create', 'chapters', null, json_encode(
                             [
@@ -115,7 +115,7 @@ class ImportChapters extends Command
                         $chapter['branch'] = $branch;
                         $chapter->save();
                     } else {
-                        $this->comment($ship['name'] . ' already exists, skipping');
+                        $this->comment($ship['name'].' already exists, skipping');
                     }
                 }
             }
@@ -132,7 +132,7 @@ class ImportChapters extends Command
             // Make sure that the ship doesn't already exist
             if (count(Chapter::where('chapter_name', '=', $ship['name'])->get()->toArray()) === 0) {
                 $this->comment(
-                    'Creating ' . $ship['name'] . ', assigned to ' . $fleets[$ship['fleet']]['chapter_name']
+                    'Creating '.$ship['name'].', assigned to '.$fleets[$ship['fleet']]['chapter_name']
                 );
 
                 $this->writeAuditTrail(
@@ -170,7 +170,7 @@ class ImportChapters extends Command
                 $chapter['branch'] = $ship['branch'];
                 $chapter->save();
             } else {
-                $this->comment($ship['name'] . ' already exists, skipping');
+                $this->comment($ship['name'].' already exists, skipping');
             }
         }
     }

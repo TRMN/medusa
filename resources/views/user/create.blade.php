@@ -15,7 +15,7 @@
     if (!empty($errors->all())) {
         echo "<p>Please correct the following errors:</p>\n<ul>\n";
         foreach ($errors->all() as $message) {
-            echo "<li>" . $message . "</li>\n";
+            echo "<li>".$message."</li>\n";
         }
     }
     echo "</ul>\n";

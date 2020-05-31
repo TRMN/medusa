@@ -27,7 +27,7 @@ class BranchSeeder extends Seeder
         ];
 
         foreach ($branches as $branch => $name) {
-            $this->command->comment('Creating ' . $name . ' branch');
+            $this->command->comment('Creating '.$name.' branch');
 
             $this->writeAuditTrail(
                 'db:seed',

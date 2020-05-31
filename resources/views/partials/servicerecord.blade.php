@@ -137,18 +137,18 @@
                                 if ($peerage['code'] != 'K' && $peerage['title'] != 'Knight' && $peerage['title'] != 'Dame') {
                                     $path = null;
                                     if (empty($peerage['filename']) === false) {
-                                        $path = '/arms/peerage/' . $peerage['filename'];
+                                        $path = '/arms/peerage/'.$peerage['filename'];
                                     }
                                     $fullTitle =
-                                        $peerage['generation'] . ' ' . $peerage['title'] . ' of ' . $peerage['lands'];
-                                    $toolTip = 'Arms for ' . $fullTitle;
+                                        $peerage['generation'].' '.$peerage['title'].' of '.$peerage['lands'];
+                                    $toolTip = 'Arms for '.$fullTitle;
                                 } else {
                                     $orderInfo =
                                         \App\Korders::where('classes.postnominal', '=', $peerage['postnominal'])
                                             ->first();
-                                    $path = '/awards/orders/medals/' . $orderInfo->filename;
+                                    $path = '/awards/orders/medals/'.$orderInfo->filename;
                                     $fullTitle =
-                                        $orderInfo->getClassName($peerage['postnominal']) . ', ' . $orderInfo->order;
+                                        $orderInfo->getClassName($peerage['postnominal']).', '.$orderInfo->order;
                                     $toolTip = $orderInfo->order;
                                 }
                                 ?>

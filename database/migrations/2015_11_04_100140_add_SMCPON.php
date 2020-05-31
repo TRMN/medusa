@@ -69,7 +69,7 @@ class AddSMCPON extends Migration
 
             return \App\Chapter::create($record);
         } else {
-            echo 'Skipping ' . $name . ", unit already exists.\n";
+            echo 'Skipping '.$name.", unit already exists.\n";
 
             return $query;
         }

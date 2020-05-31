@@ -411,7 +411,7 @@ class GradeSeeder extends Seeder
         ];
 
         foreach ($grades as $grade => $ranks) {
-            $this->command->comment('Creating ' . $grade);
+            $this->command->comment('Creating '.$grade);
             $this->writeAuditTrail(
                 'db:seed',
                 'create',

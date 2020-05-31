@@ -75,7 +75,7 @@ class UploadLog extends Eloquent
         ];
 
         $files[str_replace('.', '_', $filename)]['log'][] =
-            self::LOG_MESSAGES[$status] . ' ' . date('F j, Y @ g:i a');
+            self::LOG_MESSAGES[$status].' '.date('F j, Y @ g:i a');
 
         $this->files = $files;
 
@@ -98,7 +98,7 @@ class UploadLog extends Eloquent
         $file['current_status'] = $status;
         $file['status_ts'] = time();
 
-        $file['log'][] = self::LOG_MESSAGES[$status] . ' ' . date('F j, Y @ g:i a');
+        $file['log'][] = self::LOG_MESSAGES[$status].' '.date('F j, Y @ g:i a');
 
         $files[str_replace('.', '_', $filename)] = $file;
 

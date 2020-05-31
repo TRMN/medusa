@@ -38,7 +38,7 @@ class CountriesSeeder extends Seeder
                         'name' => $country['name'],
                         'region_code' => $country['region-code'],
                         'sub_region_code' => $country['sub-region-code'],
-                        'eea' => (bool)$country['eea'],
+                        'eea' => (bool) $country['eea'],
                     ]
                 ),
                 'contries'
@@ -58,7 +58,7 @@ class CountriesSeeder extends Seeder
                 'name' => $country['name'],
                 'region_code' => $country['region-code'],
                 'sub_region_code' => $country['sub-region-code'],
-                'eea' => (bool)$country['eea'],
+                'eea' => (bool) $country['eea'],
             ]);
         }
     }

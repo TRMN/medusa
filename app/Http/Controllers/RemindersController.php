@@ -83,10 +83,10 @@ class RemindersController extends Controller
             $user->password = Hash::make($password);
 
             $this->writeAuditTrail(
-                'password reset from ' . Request::ip(),
+                'password reset from '.Request::ip(),
                 'update',
                 'users',
-                (string)$user->_id,
+                (string) $user->_id,
                 'Password Update',
                 'RemindersController@postReset'
             );

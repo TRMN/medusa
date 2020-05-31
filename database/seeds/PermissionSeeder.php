@@ -52,7 +52,7 @@ class PermissionSeeder extends Seeder
         ];
 
         foreach ($perms as $perm => $desc) {
-            $this->command->comment('Adding ' . $perm);
+            $this->command->comment('Adding '.$perm);
 
             $this->writeAuditTrail(
                 'db:seed',

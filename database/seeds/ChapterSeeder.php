@@ -40,7 +40,7 @@ class ChapterSeeder extends Seeder
 
         foreach ($districts as $district) {
             $district['joinable'] = false;
-            $this->command->comment('Creating ' . $district['chapter_name']);
+            $this->command->comment('Creating '.$district['chapter_name']);
 
             $this->writeAuditTrail(
                 'db:seed',
@@ -57,7 +57,7 @@ class ChapterSeeder extends Seeder
 
         foreach ($fleets as $fleet) {
             $fleet['joinable'] = false;
-            $this->command->comment('Creating ' . $fleet['chapter_name'] . ' assigned to ' . $districts[$fleet['hull_number']]['chapter_name']);
+            $this->command->comment('Creating '.$fleet['chapter_name'].' assigned to '.$districts[$fleet['hull_number']]['chapter_name']);
 
             $this->writeAuditTrail(
                 'db:seed',
@@ -89,7 +89,7 @@ class ChapterSeeder extends Seeder
 
         foreach ($bureaus as $num => $bureau) {
             $record = ['chapter_name' => $bureau, 'chapter_type' => 'bureau', 'hull_number' => $num, 'assigned_to' => $ah->_id, 'joinable' => false];
-            $this->command->comment('Creating ' . $bureau);
+            $this->command->comment('Creating '.$bureau);
 
             $this->writeAuditTrail(
                 'db:seed',
@@ -121,7 +121,7 @@ class ChapterSeeder extends Seeder
 
     public function createChapter($name, $type = 'ship', $hull_number = '', $branch = '', $joinable = true)
     {
-        $this->command->comment('Creating ' . $name);
+        $this->command->comment('Creating '.$name);
 
         $this->writeAuditTrail(
             'db:seed',

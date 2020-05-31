@@ -94,12 +94,12 @@ trait MedusaEchelons
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'create',
             'chapters',
             null,
             json_encode($data),
-            $this->auditName . '@store'
+            $this->auditName.'@store'
         );
 
         Chapter::create($data);
@@ -169,9 +169,9 @@ trait MedusaEchelons
 
         $chapterTypes = ['' => $this->select] + $chapterTypes;
 
-        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
 
         return view(
             'unit.edit',
@@ -236,12 +236,12 @@ trait MedusaEchelons
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
-            $this->auditName . '@update'
+            $this->auditName.'@update'
         );
 
         $chapter->save();
@@ -269,12 +269,12 @@ trait MedusaEchelons
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'chapters',
-            (string)$chapter->_id,
+            (string) $chapter->_id,
             $chapter->toJson(),
-            $this->auditName . '@destroy'
+            $this->auditName.'@destroy'
         );
 
         $chapter->save();
@@ -288,9 +288,9 @@ trait MedusaEchelons
             return $redirect;
         }
 
-        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
 
         return view(
             'unit.confirm-deactivate',

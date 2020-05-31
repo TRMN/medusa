@@ -156,7 +156,7 @@ class PromotionController extends Controller
                     $user->rank['grade'],
                     $user->getRate(),
                     $user->branch
-                ) . ' (' . $user->rank['grade'] . ')';
+                ).' ('.$user->rank['grade'].')';
 
             $user->promoteMember($member['grade'], $early);
 
@@ -164,7 +164,7 @@ class PromotionController extends Controller
                     $member['grade'],
                     $user->getRate(),
                     $user->branch
-                ) . ' (' . $member['grade'] . ')';
+                ).' ('.$member['grade'].')';
 
             $promoted[] = [
                 'name' => $user->getFullName(),

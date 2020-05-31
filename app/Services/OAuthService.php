@@ -48,7 +48,7 @@ class OAuthService
 
         $this->mongo =
             new Client(
-                'mongodb://' . implode(',', $_hosts),
+                'mongodb://'.implode(',', $_hosts),
                 config('database.connections.mongodb.options', [])
             );
 
@@ -250,7 +250,7 @@ class OAuthService
                     $_user->id,
                     'update',
                     'users',
-                    (string)$_user->_id,
+                    (string) $_user->_id,
                     json_encode($_data),
                     'OAuthService@updateUser'
                 );
@@ -317,15 +317,15 @@ class OAuthService
 
                 if ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                     if (empty($_peerage['filename']) === false && file_exists(
-                            public_path() . '/arms/peerage/' . $_peerage['filename']
+                            public_path().'/arms/peerage/'.$_peerage['filename']
                         )
                     ) {
                         $_peerage['path'] =
-                            '/arms/peerage/' . $_peerage['filename'];
+                            '/arms/peerage/'.$_peerage['filename'];
                     }
 
                     $_peerage['fullTitle'] =
-                        $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
+                        $_peerage['generation'].' '.$_peerage['title'].' of '.$_peerage['lands'];
                 } else {
                     /** @noinspection PhpUndefinedMethodInspection */
                     /** @var \Korders $orderInfo */
@@ -335,7 +335,7 @@ class OAuthService
                             '=',
                             $_peerage['postnominal']
                         )->first();
-                    if (file_exists(public_path() . '/awards/orders/medals/' . $orderInfo->filename)) {
+                    if (file_exists(public_path().'/awards/orders/medals/'.$orderInfo->filename)) {
                         $_peerage['path'] =
                             substr(
                                 $orderInfo->filename,
@@ -345,7 +345,7 @@ class OAuthService
                     }
 
                     $_peerage['fullTitle'] =
-                        $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
+                        $orderInfo->getClassName($_peerage['postnominal']).', '.$orderInfo->order;
                 }
 
                 unset($_peerage['peerage_id']);
@@ -391,9 +391,9 @@ class OAuthService
             $_user->exams = $_exams;
 
             $_user->greeting =
-                $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
+                $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
 
-            if (!file_exists(public_path() . $_user->filePhoto)) {
+            if (!file_exists(public_path().$_user->filePhoto)) {
                 unset($_user->filePhoto);
             }
 
@@ -491,7 +491,7 @@ class OAuthService
             $_token = $this->server->getAccessTokenData($_request);
             $_tz = Request::get('tz', null);
 
-            Log::info('TZ=' . $_tz);
+            Log::info('TZ='.$_tz);
 
             return Response::json([
                 'events' => User::where(
@@ -523,7 +523,7 @@ class OAuthService
 
             $_data = Request::all();
 
-            Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
+            Log::info('Attempting to check '.$_data['member'].' in to '.$_data['event']);
 
             return Response::json(User::where(
                 'email_address',

@@ -11,7 +11,7 @@ $protocol = ($request->secure()) ? 'https:' : 'http:';
 
 $host = $request->server('HTTP_HOST');
 
-$hostFull = $protocol . '//' . $host;
+$hostFull = $protocol.'//'.$host;
 
 if (Auth::check()) {
     $authUser = Auth::user();
@@ -48,9 +48,9 @@ Route::get(
                 'openid-configuration',
                 [
                     'issuer' => secure_url("/"),
-                    'authorization_endpoint' => secure_url("/") . '/oauth/authorize',
-                    'token_endpoint' => secure_url("/") . '/oauth/token',
-                    'userinfo_endpoint' => secure_url("/") . '/oauth/profile',
+                    'authorization_endpoint' => secure_url("/").'/oauth/authorize',
+                    'token_endpoint' => secure_url("/").'/oauth/token',
+                    'userinfo_endpoint' => secure_url("/").'/oauth/profile',
                 ]
             )
         );
@@ -560,7 +560,7 @@ Route::get(
     function () {
         foreach (app()->router->getRoutes() as $route) {
             if (in_array('GET', $route->methods()) === true) {
-                echo dirname($route->uri()) . "<br />\n";
+                echo dirname($route->uri())."<br />\n";
             }
         }
     }

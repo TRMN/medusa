@@ -79,7 +79,7 @@ class UserChangeRequestController extends Controller
             $record['new_value'] = $data['new_branch'];
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'create',
                 'change_request',
                 null,
@@ -96,7 +96,7 @@ class UserChangeRequestController extends Controller
             $record['new_value'] = $data['primary_billet'];
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'create',
                 'change_request',
                 null,
@@ -113,7 +113,7 @@ class UserChangeRequestController extends Controller
             $record['new_value'] = $data['primary_assignment'];
 
             $this->writeAuditTrail(
-                (string)Auth::user()->_id,
+                (string) Auth::user()->_id,
                 'create',
                 'change_request',
                 null,
@@ -193,8 +193,8 @@ class UserChangeRequestController extends Controller
 
                 $cc[] = $this->getCoEmailForTransferReq(Chapter::find($user->getAssignedShip()));
 
-                $events[] = 'Transferred from ' . $oldBranch->branch_name . ' to ' .
-                    $newBranch->branch_name . ' on ' . date('d M Y');
+                $events[] = 'Transferred from '.$oldBranch->branch_name.' to '.
+                    $newBranch->branch_name.' on '.date('d M Y');
 
                 break;
             case 'assignment.chapter':
@@ -222,7 +222,7 @@ class UserChangeRequestController extends Controller
                 $fromValue = $oldChapter->chapter_name;
                 $toValue = $newChapter->chapter_name;
 
-                $events[] = 'Primary assignment changed to ' . $newChapter->chapter_name . ' on ' . date('d M Y');
+                $events[] = 'Primary assignment changed to '.$newChapter->chapter_name.' on '.date('d M Y');
 
                 break;
         }
@@ -235,16 +235,16 @@ class UserChangeRequestController extends Controller
                 'grade' => $newRank,
             ];
 
-            $events[] = 'Rank changed from ' . Grade::getRankTitle($oldRank, null, $oldBranchId) . ' (' . $oldRank . ') to ' .
-                Grade::getRankTitle($newRank, null, $newBranchId) . ' (' . $newRank . ') on ' . date('d M Y');
+            $events[] = 'Rank changed from '.Grade::getRankTitle($oldRank, null, $oldBranchId).' ('.$oldRank.') to '.
+                Grade::getRankTitle($newRank, null, $newBranchId).' ('.$newRank.') on '.date('d M Y');
         }
 
         if (empty($message) === false) {
-            $message = '<ul>' . $message . '</ul>';
+            $message = '<ul>'.$message.'</ul>';
         }
         // Update the user
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'update',
             'users',
             $user->id,
@@ -255,7 +255,7 @@ class UserChangeRequestController extends Controller
         $user->save();
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'soft delete',
             'change_request',
             $request->id,
@@ -344,7 +344,7 @@ class UserChangeRequestController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string)Auth::user()->_id,
+            (string) Auth::user()->_id,
             'soft delete',
             'change_request',
             $request->id,
@@ -368,7 +368,7 @@ class UserChangeRequestController extends Controller
 
                 $message->to($user->email_address)->cc('bupers@trmn.org');
 
-                $message->subject('Your ' . strtolower($type) . ' change request has been denied');
+                $message->subject('Your '.strtolower($type).' change request has been denied');
             }
         );
 

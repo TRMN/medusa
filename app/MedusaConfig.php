@@ -36,7 +36,7 @@ class MedusaConfig extends Eloquent
 
             return $item->id;
         } catch (\Exception $e) {
-            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            Log::error($e->getMessage()."\n".$e->getTraceAsString());
 
             return false;
         }
@@ -56,7 +56,7 @@ class MedusaConfig extends Eloquent
 
             return true;
         } catch (\Exception $e) {
-            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            Log::error($e->getMessage()."\n".$e->getTraceAsString());
 
             return false;
         }
@@ -80,7 +80,7 @@ class MedusaConfig extends Eloquent
 
                 return isset($item->value) === true ? $item->value : $default;
             } catch (\Exception $e) {
-                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+                Log::error($e->getMessage()."\n".$e->getTraceAsString());
 
                 return false;
             }
@@ -92,7 +92,7 @@ class MedusaConfig extends Eloquent
                     $item->value[$subkey] :
                     $default;
             } catch (\Exception $e) {
-                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+                Log::error($e->getMessage()."\n".$e->getTraceAsString());
 
                 return false;
             }

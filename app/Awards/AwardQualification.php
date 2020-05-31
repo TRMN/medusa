@@ -39,7 +39,7 @@ trait AwardQualification
 
                 $numExams -= 40;
 
-                $numMCAM += (int)($numExams / 35);
+                $numMCAM += (int) ($numExams / 35);
             }
         }
 
@@ -91,8 +91,8 @@ trait AwardQualification
                     $numMCAM,
                     [
                         'timestamp' => strtotime($awardDate),
-                        'event' => MedusaUtility::ordinal($numMCAM) .
-                            ' Manticore Combat Action Medal earned on ' .
+                        'event' => MedusaUtility::ordinal($numMCAM).
+                            ' Manticore Combat Action Medal earned on '.
                             $awardDate,
                     ]
                 );
@@ -183,7 +183,7 @@ trait AwardQualification
                 try {
                     $this->addUpdateAward(
                         [
-                            $type . 'SWP' => [
+                            $type.'SWP' => [
                                 'count' => 1,
                                 'location' => 'TL',
                                 'award_date' => ['1970-01-01'],
@@ -280,7 +280,7 @@ trait AwardQualification
 
                 $results = $this->addUpdateAward(
                     [
-                        substr($swpType, 0, 1) . 'SWP' => [
+                        substr($swpType, 0, 1).'SWP' => [
                             'count' => 1,
                             'location' => 'TL',
                             'award_date' => [$awardDate],
@@ -294,12 +294,12 @@ trait AwardQualification
                     // their history and log it for BuTrain
 
                     $this->logAward(
-                        substr($swpType, 0, 1) . 'SWP',
+                        substr($swpType, 0, 1).'SWP',
                         1,
                         [
                             'timestamp' => strtotime($awardDate),
-                            'event' => $this->branch . ' ' . $swpType .
-                                ' Space Warfare Pin earned on ' .
+                            'event' => $this->branch.' '.$swpType.
+                                ' Space Warfare Pin earned on '.
                                 $awardDate,
                         ]
                     );

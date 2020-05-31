@@ -46,13 +46,13 @@ class SWPCheck extends Command
             // because you can get a MCAM unless you have a SWP
             try {
                 if ($user->swpQual(false)) {
-                    $this->info('Adding SWP to ' . $user->getFullName());
+                    $this->info('Adding SWP to '.$user->getFullName());
                     $count++;
                 }
             } catch (\Exception $e) {
                 throw $e;
             }
         }
-        $this->info("Total SWP's added: " . $count);
+        $this->info("Total SWP's added: ".$count);
     }
 }

@@ -186,7 +186,7 @@ class OAuthController extends Controller
     {
         $_user = $this->getUserFromRequest($request);
 
-        Log::info('User Info Request for ' . $_user->member_id);
+        Log::info('User Info Request for '.$_user->member_id);
 
         unset($_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos);
 
@@ -205,19 +205,19 @@ class OAuthController extends Controller
             $_peerage['path'] = null;
 
             if ($_peerage['code'] == 'L') {
-                $_peerage['fullTitle'] = $_peerage['title'] . ' for ' . $_peerage['lands'];
+                $_peerage['fullTitle'] = $_peerage['title'].' for '.$_peerage['lands'];
                 $_peerage['path'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
             } elseif ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                 if (empty($_peerage['filename']) === false && file_exists(
-                        public_path() . '/arms/peerage/' . $_peerage['filename']
+                        public_path().'/arms/peerage/'.$_peerage['filename']
                     )
                 ) {
                     $_peerage['path'] =
-                        '/arms/peerage/' . $_peerage['filename'];
+                        '/arms/peerage/'.$_peerage['filename'];
                 }
 
                 $_peerage['fullTitle'] =
-                    $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
+                    $_peerage['generation'].' '.$_peerage['title'].' of '.$_peerage['lands'];
             } else {
                 $orderInfo =
                     \App\Korders::where(
@@ -225,7 +225,7 @@ class OAuthController extends Controller
                         '=',
                         $_peerage['postnominal']
                     )->first();
-                if (file_exists(public_path() . '/awards/orders/medals/' . $orderInfo->filename)) {
+                if (file_exists(public_path().'/awards/orders/medals/'.$orderInfo->filename)) {
                     $_peerage['path'] =
                         substr(
                             $orderInfo->filename,
@@ -235,7 +235,7 @@ class OAuthController extends Controller
                 }
 
                 $_peerage['fullTitle'] =
-                    $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
+                    $orderInfo->getClassName($_peerage['postnominal']).', '.$orderInfo->order;
             }
 
             unset($_peerage['peerage_id']);
@@ -280,9 +280,9 @@ class OAuthController extends Controller
         $_user->exams = $_exams;
 
         $_user->greeting =
-            $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
+            $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
 
-        if (!file_exists(public_path() . $_user->filePhoto)) {
+        if (!file_exists(public_path().$_user->filePhoto)) {
             unset($_user->filePhoto);
         }
 
@@ -344,7 +344,7 @@ class OAuthController extends Controller
 
         $_tz = $request->tz;
 
-        Log::info('TZ=' . $_tz);
+        Log::info('TZ='.$_tz);
 
         return Response::json(
             [
@@ -358,7 +358,7 @@ class OAuthController extends Controller
     {
         $_data = $request->all();
 
-        Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
+        Log::info('Attempting to check '.$_data['member'].' in to '.$_data['event']);
 
         return Response::json(
             $this->getUserFromRequest($request)
@@ -387,7 +387,7 @@ class OAuthController extends Controller
                 $_user->id,
                 'update',
                 'users',
-                (string)$_user->_id,
+                (string) $_user->_id,
                 json_encode($_data),
                 'OAuthControllere@updateUser'
             );
