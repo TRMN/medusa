@@ -65,7 +65,7 @@ class ApiController extends Controller
         $grades = [];
 
         foreach ($ratings as $grade => $rate) {
-            $grades[$grade] = $this->mbTrim($rate).' ('.$grade.')';
+            $grades[$grade] = $this->mbTrim($rate) . ' (' . $grade . ')';
         }
 
         return $grades;
@@ -81,7 +81,7 @@ class ApiController extends Controller
      */
     private function mbTrim($string, $trim_chars = '\s')
     {
-        return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
+        return preg_replace('/^[' . $trim_chars . ']*(?U)(.*)[' . $trim_chars . ']*$/u', '\\1', $string);
     }
 
     public function getChapters()
@@ -200,18 +200,18 @@ class ApiController extends Controller
                 User::where('member_id', '=', \Request::get('member_id'))->first();
 
             $ext = \Request::file('file')->getClientOriginalExtension();
-            $fileName = $user->member_id.'.'.$ext;
+            $fileName = $user->member_id . '.' . $ext;
 
-            \Request::file('file')->move(public_path().'/photos', $fileName);
+            \Request::file('file')->move(public_path() . '/photos', $fileName);
 
             // File uploaded, add filename to user record
-            $user->filePhoto = '/photos/'.$fileName;
+            $user->filePhoto = '/photos/' . $fileName;
 
             $this->writeAuditTrail(
-                (string) \Auth::user()->id,
+                (string)\Auth::user()->id,
                 'update',
                 'users',
-                (string) $user->_id,
+                (string)$user->_id,
                 $user->toJson(),
                 'ApiController@savePhoto'
             );
@@ -258,32 +258,32 @@ class ApiController extends Controller
                                 $query->where(
                                     'member_id',
                                     'like',
-                                    '%'.$terms[0].'%'
+                                    '%' . $terms[0] . '%'
                                 )
-                                      ->orWhere(
-                                          'first_name',
-                                          'like',
-                                          $terms[0].'%'
-                                      )
-                                      ->orWhere(
-                                          'last_name',
-                                          'like',
-                                          $terms[0].'%'
-                                      );
+                                    ->orWhere(
+                                        'first_name',
+                                        'like',
+                                        $terms[0] . '%'
+                                    )
+                                    ->orWhere(
+                                        'last_name',
+                                        'like',
+                                        $terms[0] . '%'
+                                    );
                             }
                         );
                 break;
             case 2:
                 $query =
-                    User::where('first_name', 'like', $terms[0].'%')
-                        ->where('last_name', 'like', $terms[1].'%')
+                    User::where('first_name', 'like', $terms[0] . '%')
+                        ->where('last_name', 'like', $terms[1] . '%')
                         ->where('registration_status', '=', 'Active');
                 break;
             default:
                 $query =
-                    User::where('first_name', 'like', $terms[0].'%')
-                        ->where('middle_name', 'like', $terms[1].'%')
-                        ->where('last_name', 'like', $terms[2].'%')
+                    User::where('first_name', 'like', $terms[0] . '%')
+                        ->where('middle_name', 'like', $terms[1] . '%')
+                        ->where('last_name', 'like', $terms[2] . '%')
                         ->where('registration_status', '=', 'Active');
         }
 
@@ -294,15 +294,15 @@ class ApiController extends Controller
         foreach ($results as $member) {
             $suggestions[] =
                 [
-                    'value' => $member->member_id.' '.$member->first_name.' '.
-                               (! empty($member->middle_name) ?
-                                   $member->middle_name.' ' : '').
-                               $member->last_name.
-                               (! empty($member->suffix) ? ' '.$member->suffix :
-                                   '').' ('.$member->getAssignmentName(
-                                       'primary'
-                                   ).')',
-                    'data'  => $member->id,
+                    'value' => $member->member_id . ' ' . $member->first_name . ' ' .
+                        (!empty($member->middle_name) ?
+                            $member->middle_name . ' ' : '') .
+                        $member->last_name .
+                        (!empty($member->suffix) ? ' ' . $member->suffix :
+                            '') . ' (' . $member->getAssignmentName(
+                            'primary'
+                        ) . ')',
+                    'data' => $member->id,
                 ];
         }
 
@@ -321,9 +321,9 @@ class ApiController extends Controller
 
         $results =
             Chapter::orderBy('chapter_name', 'asc')
-                   ->where('chapter_name', 'like', '%'.$query.'%')
-                   ->whereNull('decommission_date')
-                   ->get();
+                ->where('chapter_name', 'like', '%' . $query . '%')
+                ->whereNull('decommission_date')
+                ->get();
 
         $suggestions = [];
 
@@ -331,7 +331,7 @@ class ApiController extends Controller
             $suggestions[] =
                 [
                     'value' => $chapter->chapter_name,
-                    'data'  => $chapter->id,
+                    'data' => $chapter->id,
                 ];
         }
 
@@ -347,9 +347,9 @@ class ApiController extends Controller
         }
 
         $results =
-            ExamList::where('name', 'like', '%'.$query.'%')
-                    ->orWhere('exam_id', 'like', '%'.$query.'%')
-                    ->get();
+            ExamList::where('name', 'like', '%' . $query . '%')
+                ->orWhere('exam_id', 'like', '%' . $query . '%')
+                ->get();
 
         $suggestions = [];
 
@@ -357,8 +357,8 @@ class ApiController extends Controller
             if ($exam->enabled === true) {
                 $suggestions[] =
                     [
-                        'value' => $exam->name.' ('.$exam->exam_id.')',
-                        'data'  => $exam->exam_id,
+                        'value' => $exam->name . ' (' . $exam->exam_id . ')',
+                        'data' => $exam->exam_id,
                     ];
             }
         }
@@ -381,7 +381,8 @@ class ApiController extends Controller
         $member,
         $continent = null,
         $city = null
-    ) {
+    )
+    {
         if (is_object($user) === false) {
             return Response::json(['error' => 'Invalid User']);
         }
@@ -434,9 +435,9 @@ class ApiController extends Controller
 
             if ($status === true) {
                 $user->addServiceHistoryEntry([
-                      'timestamp' => time(),
-                      'event'     => ucfirst($request->input('path')).' path selected',
-                      ]);
+                    'timestamp' => time(),
+                    'event' => ucfirst($request->input('path')) . ' path selected',
+                ]);
             }
 
             return Response::json(['status' => $status === true ? 'ok' : 'error']);
@@ -463,7 +464,7 @@ class ApiController extends Controller
         if ($errors > 0) {
             return Response::json(
                 ['status' => 'error',
-                 'msg'    => 'There was a problem updating one or more awards', ]
+                    'msg' => 'There was a problem updating one or more awards',]
             );
         } else {
             return Response::json(['status' => 'ok']);
@@ -502,11 +503,11 @@ class ApiController extends Controller
 
         if (isset($branchInfo->equivalent[$newBranch][$user->rank['grade']]) === true) {
             return "Transferring from " . Branch::getBranchName($user->branch) . " to " .
-                   Branch::getBranchName($newBranch) . " will change the members rank from " .
-                   Grade::getRankTitle($user->rank['grade'], null, $user->branch) . " (" . $user->rank['grade'] . ")" .
-                   " to " .
-                   Grade::getRankTitle($branchInfo->equivalent[$newBranch][$user->rank['grade']], null, $newBranch) .
-                   " (" . $branchInfo->equivalent[$newBranch][$user->rank['grade']] . ")";
+                Branch::getBranchName($newBranch) . " will change the members rank from " .
+                Grade::getRankTitle($user->rank['grade'], null, $user->branch) . " (" . $user->rank['grade'] . ")" .
+                " to " .
+                Grade::getRankTitle($branchInfo->equivalent[$newBranch][$user->rank['grade']], null, $newBranch) .
+                " (" . $branchInfo->equivalent[$newBranch][$user->rank['grade']] . ")";
         } else {
             return "Unable to determine the new rank for the member";
         }
@@ -571,7 +572,7 @@ class ApiController extends Controller
 
         return Response::json(
             ['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check,
-             'pinfo' => $promotionInfo, ]
+                'pinfo' => $promotionInfo,]
         );
     }
 
@@ -584,12 +585,12 @@ class ApiController extends Controller
             $prefix = 'awards/stripes/';
             $suffix = '>';
         }
-        $ribbonImage = $prefix.$ribbonCode.'-1.svg';
-        if (file_exists(public_path($prefix.$ribbonCode.'-'.$ribbonCount.'.svg'))) {
-            $ribbonImage = $prefix.$ribbonCode.'-'.$ribbonCount.'.svg';
+        $ribbonImage = $prefix . $ribbonCode . '-1.svg';
+        if (file_exists(public_path($prefix . $ribbonCode . '-' . $ribbonCount . '.svg'))) {
+            $ribbonImage = $prefix . $ribbonCode . '-' . $ribbonCount . '.svg';
         }
 
-        return '<img src="'.asset($ribbonImage).'" alt="'.$ribbonName.'"'.$suffix;
+        return '<img src="' . asset($ribbonImage) . '" alt="' . $ribbonName . '"' . $suffix;
     }
 
     public function getNewRank(User $user, string $old, string $new)
@@ -600,7 +601,7 @@ class ApiController extends Controller
         $newPayGrade = Grade::getNewPayGrade($user, $oldBranch, $newBranch, false);
 
         return Response::json(
-          ['new_rank' => Grade::getRankTitle($newPayGrade, null, strtoupper($new)) . ' (' . $newPayGrade . ')']
+            ['new_rank' => Grade::getRankTitle($newPayGrade, null, strtoupper($new)) . ' (' . $newPayGrade . ')']
         );
     }
 

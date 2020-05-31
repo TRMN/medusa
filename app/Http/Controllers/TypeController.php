@@ -122,10 +122,10 @@ class TypeController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string) Auth::user()->_id,
+            (string)Auth::user()->_id,
             'update',
             'types',
-            (string) $type->_id,
+            (string)$type->_id,
             json_encode($data),
             'TypeController@update'
         );

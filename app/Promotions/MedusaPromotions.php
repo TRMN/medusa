@@ -72,7 +72,7 @@ trait MedusaPromotions
      */
     protected function loadRequirements($branch)
     {
-        return MedusaConfig::get('pp.requirements.'.$branch, false);
+        return MedusaConfig::get('pp.requirements.' . $branch, false);
     }
 
     /**
@@ -115,10 +115,10 @@ trait MedusaPromotions
     public function getPromotableInfo($payGrade2Check = null, $sfcCheck = true, $path = null)
     {
         $flags = [
-            'tig'    => false,
+            'tig' => false,
             'points' => false,
-            'exams'  => false,
-            'early'  => false,
+            'exams' => false,
+            'early' => false,
         ];
 
         if ($this->branch === 'SFC' && empty($this->dob) === true) {
@@ -163,7 +163,7 @@ trait MedusaPromotions
         if ($this->isGradeValidForUser($payGrade2Check) === false) {
             if (substr($payGrade2Check, 0, 1) == 'C') {
                 // Civilian, determine what the next grade is and if they're eligible
-                list($component, $step) = explode('-', $payGrade2Check);
+                [$component, $step] = explode('-', $payGrade2Check);
 
                 // Promotion requirements for this CIVIL branch
                 $cReq = $this->getRequirements($this->getBranchForReq());
@@ -173,32 +173,32 @@ trait MedusaPromotions
                 $step++; // Start the check and the next one in sequence
 
                 // Get the TiG of all the missing steps
-                while ($this->isGradeValidForUser('C-'.$step) === false) {
+                while ($this->isGradeValidForUser('C-' . $step) === false) {
                     if ($step > 23) {
                         // No next one found
                         return [
-                            'tig'    => false,
+                            'tig' => false,
                             'points' => false,
-                            'exams'  => false,
-                            'early'  => false,
+                            'exams' => false,
+                            'early' => false,
                         ];
                     }
-                    $specialTig += isset($cReq['C-'.$step]['tig']) ?
-                        $cReq['C-'.$step]['tig'] : 0;
+                    $specialTig += isset($cReq['C-' . $step]['tig']) ?
+                        $cReq['C-' . $step]['tig'] : 0;
                     $step++;
                 }
                 // Get the Tig of the final step
-                $specialTig += isset($cReq['C-'.$step]['tig']) ?
-                    $cReq['C-'.$step]['tig'] : 0;
+                $specialTig += isset($cReq['C-' . $step]['tig']) ?
+                    $cReq['C-' . $step]['tig'] : 0;
 
                 // Set the Paygrade to check to the final match
-                $payGrade2Check = 'C-'.$step;
+                $payGrade2Check = 'C-' . $step;
             } else {
                 return [
-                    'tig'    => false,
+                    'tig' => false,
                     'points' => false,
-                    'exams'  => false,
-                    'early'  => false,
+                    'exams' => false,
+                    'early' => false,
                 ];
             }
         }
@@ -239,7 +239,7 @@ trait MedusaPromotions
                 empty($this->rank['early']) === true &&
                 $flags['tig'] === false) {
                 $flags['early'] = ($this->getTimeInGrade('months') >=
-                                   ($requirements['tig'] - 3));
+                    ($requirements['tig'] - 3));
             }
 
             // No requirements for a members path == not eligible
@@ -247,7 +247,7 @@ trait MedusaPromotions
                 // Check Points
                 if (empty($requirements[$path]['points']) === false) {
                     $flags['points'] = ($this->getTotalPromotionPoints() >=
-                                        $requirements[$path]['points']);
+                        $requirements[$path]['points']);
                 } else {
                     // By appointment only
                     $flags['points'] = true;
@@ -337,7 +337,7 @@ trait MedusaPromotions
                 // Adult member
                 if (is_null($payGrade2Check) === true) {
                     // Adult members of the SFC start at C-7.  Check that they are at least a C-7
-                    list($tmp, $payGrade) = explode('-', $this->getPayGrade());
+                    [$tmp, $payGrade] = explode('-', $this->getPayGrade());
                     if ($payGrade < 7) {
                         $payGrade2Check = 'C-7';
                     }
@@ -363,7 +363,7 @@ trait MedusaPromotions
                 $flags = $this->getPromotableInfo($payGrade2Check);
 
                 return ($flags['points'] && $flags['exams'] &&
-                        $flags['early']) === true ? $flags['next'] : null;
+                    $flags['early']) === true ? $flags['next'] : null;
         }
     }
 
@@ -394,9 +394,9 @@ trait MedusaPromotions
 
         if ($flags['points'] && $flags['exams'] && isset($flags['next']) === true) {
             if ($flags['early'] === true) {
-                $return = 'P-E [ '.implode(', ', $flags['next']).' ]';
+                $return = 'P-E [ ' . implode(', ', $flags['next']) . ' ]';
             } elseif ($flags['tig'] === true || $tigCheck === false) {
-                $return = 'P [ '.implode(', ', $flags['next']).' ]';
+                $return = 'P [ ' . implode(', ', $flags['next']) . ' ]';
             }
         }
 
@@ -408,7 +408,8 @@ trait MedusaPromotions
      *
      * @return string
      */
-    public function getPayGrade() {
+    public function getPayGrade()
+    {
         return $this->rank['grade'];
     }
 
@@ -423,12 +424,12 @@ trait MedusaPromotions
     {
         $branchesWithRatings = [
             'CIVIL',
-            'RMMM'
+            'RMMM',
         ];
 
         if (empty($this->rating) === false && (
-            substr($this->getPayGrade(), 0, 1) === 'E' ||
-            in_array($this->branch, $branchesWithRatings))) {
+                substr($this->getPayGrade(), 0, 1) === 'E' ||
+                in_array($this->branch, $branchesWithRatings))) {
             // Check the available ranks for this rating
             return Rating::isPayGradeValid($payGrade2Check, $this->branch, $this->getRate());
         } else {
@@ -466,7 +467,7 @@ trait MedusaPromotions
         }
 
         $rank = [
-            'grade'        => $rank,
+            'grade' => $rank,
             'date_of_rank' => date('Y-m-d'),
         ];
 
@@ -482,16 +483,16 @@ trait MedusaPromotions
                 $points['ep'] = 0;
             }
             $points['ep'] -= $requirements['tig'] -
-                             $this->getTimeInGrade('months');
+                $this->getTimeInGrade('months');
             $this->points = $points;
         }
 
-        $event = 'Rank changed from '.
-                 Grade::getRankTitle(
-                     $this->rank['grade'],
-                     $this->getRate(),
-                     $this->branch
-                 ).' ('.$this->rank['grade'].') to ';
+        $event = 'Rank changed from ' .
+            Grade::getRankTitle(
+                $this->rank['grade'],
+                $this->getRate(),
+                $this->branch
+            ) . ' (' . $this->rank['grade'] . ') to ';
 
         $this->rank = $rank;
         $this->promotionStatus = null;
@@ -500,21 +501,21 @@ trait MedusaPromotions
             $this->save();
 
             $this->writeAuditTrail(
-                (string) Auth::user()->id,
+                (string)Auth::user()->id,
                 'update',
                 'users',
-                (string) $this->id,
+                (string)$this->id,
                 json_encode($this),
                 'User@promoteMember'
             );
 
             $history = [
                 'timestamp' => time(),
-                'event'     => $event.Grade::getRankTitle(
-                    $rank['grade'],
-                    $this->getRate(),
-                    $this->branch
-                ).' ('.$rank['grade'].') on '.date('d M Y'),
+                'event' => $event . Grade::getRankTitle(
+                        $rank['grade'],
+                        $this->getRate(),
+                        $this->branch
+                    ) . ' (' . $rank['grade'] . ') on ' . date('d M Y'),
             ];
 
             $this->addServiceHistoryEntry($history);

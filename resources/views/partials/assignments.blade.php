@@ -10,14 +10,17 @@
             @endif
         </a>
         @if(!empty($showPrimary))
-            <br />{!!$user->getPrimaryBillet()!!}
-            <br /><span class="Incised901Bold">{!!$user->member_id!!}</span>
+            <br/>{!!$user->getPrimaryBillet()!!}
+            <br/><span class="Incised901Bold">{!!$user->member_id!!}</span>
         @endif
         @if($user->checkRostersForNewExams())
-            <br /><span class="fa fa-exclamation-triangle orange"></span> <strong class="Incised901Light orange">One or more crew members have had new exams posted since your last login.<br />View your <a href="{!!route('chapter.show',$user->getPrimaryAssignmentId())!!}">roster</a> for more information</strong>
+            <br/><span class="fa fa-exclamation-triangle orange"></span> <strong class="Incised901Light orange">One or
+                more crew members have had new exams posted since your last login.<br/>View your <a
+                        href="{!!route('chapter.show',$user->getPrimaryAssignmentId())!!}">roster</a> for more
+                information</strong>
         @endif
     </div>
-    <br />
+    <br/>
     <div class="Incised901Black ninety">
         Additional Assignments:
     </div>
@@ -26,13 +29,13 @@
         <?php
         $count = 0;
         foreach (['secondary', 'additional', 'extra'] as $position) {
-            if (empty( $user->getAssignmentName($position) ) === false) {
+            if (empty($user->getAssignmentName($position)) === false) {
                 echo '<a href="' . route('chapter.show', $user->getAssignmentId($position)) . '">' .
-                        $user->getAssignmentName($position) . '</a>';
+                    $user->getAssignmentName($position) . '</a>';
                 $count++;
             }
 
-            if (empty( $user->getBillet($position) ) === false) {
+            if (empty($user->getBillet($position)) === false) {
                 echo ', ' . $user->getBillet($position) . '<br>';
             }
         }
@@ -43,7 +46,7 @@
 
         ?>
     </div>
-    <br />
+    <br/>
 @endif
 @if(!empty($showPrimary))
     <div class="Incised901Light whitesmoke">{!!$user->email_address!!}</div>

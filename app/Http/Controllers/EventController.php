@@ -45,9 +45,9 @@ class EventController extends Controller
         return view(
             'events.event',
             [
-            'action'    => 'add',
-            'event'     => new Events(),
-            'countries' => Country::getCountries(),
+                'action' => 'add',
+                'event' => new Events(),
+                'countries' => Country::getCountries(),
             ]
         );
     }
@@ -79,7 +79,7 @@ class EventController extends Controller
             $event = Events::create($data);
 
             $this->writeAuditTrail(
-                (string) Auth::user()->_id,
+                (string)Auth::user()->_id,
                 'create',
                 'events',
                 $event->id,
@@ -89,10 +89,10 @@ class EventController extends Controller
 
             $this->_updateUsers($event);
 
-            $msg = 'Your event "'.$event->event_name.'" has been scheduled';
+            $msg = 'Your event "' . $event->event_name . '" has been scheduled';
         } catch (\Exception $e) {
             $msg =
-              'There was a problem scheduling "'.$data['event_name'].'"';
+                'There was a problem scheduling "' . $data['event_name'] . '"';
             Log::error($e->getTraceAsString());
         }
 
@@ -104,7 +104,7 @@ class EventController extends Controller
 
     private function _updateUsers(Events $event)
     {
-        Log::debug('Updating requestor and registrars of '.$event->event_name);
+        Log::debug('Updating requestor and registrars of ' . $event->event_name);
 
         try {
             // Flag the record of the requestor and any registrars so the mobile app
@@ -135,7 +135,7 @@ class EventController extends Controller
             $user->save();
 
             $this->writeAuditTrail(
-                (string) Auth::user()->_id,
+                (string)Auth::user()->_id,
                 'update',
                 'users',
                 $user->id,
@@ -166,8 +166,8 @@ class EventController extends Controller
         return view(
             'events.show',
             [
-            'event'     => $event,
-            'countries' => Country::getCountries(),
+                'event' => $event,
+                'countries' => Country::getCountries(),
             ]
         );
     }
@@ -198,9 +198,9 @@ class EventController extends Controller
         return view(
             'events.event',
             [
-            'action'    => 'edit',
-            'event'     => $event,
-            'countries' => Country::getCountries(),
+                'action' => 'edit',
+                'event' => $event,
+                'countries' => Country::getCountries(),
             ]
         );
     }
@@ -227,7 +227,7 @@ class EventController extends Controller
             $event->update(Request::all());
 
             $this->writeAuditTrail(
-                (string) Auth::user()->_id,
+                (string)Auth::user()->_id,
                 'update',
                 'events',
                 $event->id,
@@ -235,12 +235,12 @@ class EventController extends Controller
                 'EventController@update'
             );
 
-            $msg = 'Your event "'.$event->event_name.'" has been updated';
+            $msg = 'Your event "' . $event->event_name . '" has been updated';
 
             $this->_updateUsers($event);
         } catch (\Exception $e) {
             $msg =
-              'There was a problem saving the update to "'.$event->event_name.'"';
+                'There was a problem saving the update to "' . $event->event_name . '"';
             Log::error($e->getTraceAsString());
         }
 

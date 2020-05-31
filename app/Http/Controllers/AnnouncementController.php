@@ -53,7 +53,7 @@ class AnnouncementController extends Controller
 
         // @todo: ACL will probably do more checking
         if (Auth::id() != $announcement->user->id) {
-            return redirect('announcement/'.$id);
+            return redirect('announcement/' . $id);
         }
 
         $viewData = [
@@ -73,7 +73,7 @@ class AnnouncementController extends Controller
 
         // @todo: ACL will probably do more checking
         if (Auth::id() != $announcementUserId) {
-            return redirect('announcement/'.$id);
+            return redirect('announcement/' . $id);
         }
 
         $announcement->update($data);

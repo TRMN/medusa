@@ -40,10 +40,10 @@ trait MedusaEchelons
 
         $types =
             Type::whereIn('chapter_type', $this->chapterTypes)
-                 ->orderBy('chapter_description')
-                 ->get(
-                     ['chapter_type', 'chapter_description']
-                 );
+                ->orderBy('chapter_description')
+                ->get(
+                    ['chapter_type', 'chapter_description']
+                );
         $chapterTypes = [];
 
         foreach ($types as $chapterType) {
@@ -56,11 +56,11 @@ trait MedusaEchelons
             'unit.create',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => new Chapter(),
-                'commands'     => ['' => 'Select a Command/Unit'] + $this->getCommands(),
-                'title'        => $this->title,
-                'route'        => $this->routePrefix,
-                'branches'     => $this->getBranches(),
+                'chapter' => new Chapter(),
+                'commands' => ['' => 'Select a Command/Unit'] + $this->getCommands(),
+                'title' => $this->title,
+                'route' => $this->routePrefix,
+                'branches' => $this->getBranches(),
             ]
         );
     }
@@ -94,12 +94,12 @@ trait MedusaEchelons
         }
 
         $this->writeAuditTrail(
-            (string) Auth::user()->_id,
+            (string)Auth::user()->_id,
             'create',
             'chapters',
             null,
             json_encode($data),
-            $this->auditName.'@store'
+            $this->auditName . '@store'
         );
 
         Chapter::create($data);
@@ -132,11 +132,11 @@ trait MedusaEchelons
         return view(
             'chapter.show',
             [
-                'detail'   => $chapter,
-                'higher'   => $parentChapter,
+                'detail' => $chapter,
+                'higher' => $parentChapter,
                 'includes' => $includes,
-                'command'  => $commandCrew,
-                'crew'     => $crew,
+                'command' => $commandCrew,
+                'crew' => $crew,
             ]
         );
     }
@@ -157,10 +157,10 @@ trait MedusaEchelons
 
         $types =
             Type::whereIn('chapter_type', $this->chapterTypes)
-                 ->orderBy('chapter_description')
-                 ->get(
-                     ['chapter_type', 'chapter_description']
-                 );
+                ->orderBy('chapter_description')
+                ->get(
+                    ['chapter_type', 'chapter_description']
+                );
         $chapterTypes = [];
 
         foreach ($types as $chapterType) {
@@ -169,20 +169,20 @@ trait MedusaEchelons
 
         $chapterTypes = ['' => $this->select] + $chapterTypes;
 
-        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
 
         return view(
             'unit.edit',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => $chapter,
-                'chapterList'  => ['' => 'Select a Command/Unit'] + $this->getCommands(),
-                'numCrew'      => count($crew) + count($childUnits),
-                'title'        => $this->title,
-                'route'        => $this->routePrefix,
-                'branches'     => $this->getBranches(),
+                'chapter' => $chapter,
+                'chapterList' => ['' => 'Select a Command/Unit'] + $this->getCommands(),
+                'numCrew' => count($crew) + count($childUnits),
+                'title' => $this->title,
+                'route' => $this->routePrefix,
+                'branches' => $this->getBranches(),
             ]
         );
     }
@@ -236,12 +236,12 @@ trait MedusaEchelons
         }
 
         $this->writeAuditTrail(
-            (string) Auth::user()->_id,
+            (string)Auth::user()->_id,
             'update',
             'chapters',
-            (string) $chapter->_id,
+            (string)$chapter->_id,
             $chapter->toJson(),
-            $this->auditName.'@update'
+            $this->auditName . '@update'
         );
 
         $chapter->save();
@@ -269,12 +269,12 @@ trait MedusaEchelons
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string) Auth::user()->_id,
+            (string)Auth::user()->_id,
             'update',
             'chapters',
-            (string) $chapter->_id,
+            (string)$chapter->_id,
             $chapter->toJson(),
-            $this->auditName.'@destroy'
+            $this->auditName . '@destroy'
         );
 
         $chapter->save();
@@ -288,9 +288,9 @@ trait MedusaEchelons
             return $redirect;
         }
 
-        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
+        $crew = User::where('assignment.chapter_id', '=', (string)$chapter->_id)->get();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
+        $childUnits = Chapter::where('assigned_to', '=', (string)$chapter->_id)->get();
 
         return view(
             'unit.confirm-deactivate',

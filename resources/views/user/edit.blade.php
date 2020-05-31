@@ -128,7 +128,8 @@
             </fieldset>
 
             <fieldset>
-                <legend>Primary Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="primary">(Clear)</a> @endif </legend>
+                <legend>Primary Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a
+                            class="del_assignment" data-position="primary">(Clear)</a> @endif </legend>
 
                 <div class="row">
                     <div class=" col-sm-6  ninety Incised901Light form-group">
@@ -162,7 +163,8 @@
             </fieldset>
 
             <fieldset>
-                <legend>Secondary Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="secondary">(Clear)</a> @endif </legend>
+                <legend>Secondary Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a
+                            class="del_assignment" data-position="secondary">(Clear)</a> @endif </legend>
 
                 @if(empty($user->secondary_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -202,7 +204,8 @@
             </fieldset>
 
             <fieldset>
-                <legend>Additional Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="additional">(Clear)</a> @endif </legend>
+                <legend>Additional Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a
+                            class="del_assignment" data-position="additional">(Clear)</a> @endif </legend>
 
                 @if(empty($user->additional_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -242,7 +245,8 @@
             </fieldset>
 
             <fieldset>
-                <legend>Supplemental Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a class="del_assignment" data-position="extra">(Clear)</a> @endif </legend>
+                <legend>Supplemental Assignment Information @if($permsObj->hasPermissions(['EDIT_MEMBER']))<a
+                            class="del_assignment" data-position="extra">(Clear)</a> @endif </legend>
 
                 @if(empty($user->extra_assignment) === false || $permsObj->hasPermissions(['EDIT_MEMBER']) === true)
                     <div class="row">
@@ -392,7 +396,8 @@
                 </div>
             </div>
 
-            <a class="btn btn-danger" href="{!! route('user.show', ['user' => $user->id]) !!}"><span class="fa fa-times"></span> Cancel </a>
+            <a class="btn btn-danger" href="{!! route('user.show', ['user' => $user->id]) !!}"><span
+                        class="fa fa-times"></span> Cancel </a>
             <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button>
 
             {!! Form::close() !!}
@@ -406,7 +411,7 @@
                     @if(file_exists(public_path() . $user->filePhoto) && isset($user->filePhoto) === true)
                         <img src="{!!$user->filePhoto!!}?ts={{time()}}" alt="Official File Photo">
                     @else
-                        <img />
+                        <img/>
                     @endif
                     <div class="ofpt">
                         <form action='/api/photo' class='dropzone' id='trmnDropzone' method='post'
@@ -487,15 +492,15 @@
             });
         });
 
-        $('#oqe').on('click', function() {
-           if ($('#oqe').prop('checked')) {
-               $('#tigCheck').prop('checked', false);
-               $('#ppCheck').prop('checked', false);
-               $('#ep').prop('checked', false);
-           }
+        $('#oqe').on('click', function () {
+            if ($('#oqe').prop('checked')) {
+                $('#tigCheck').prop('checked', false);
+                $('#ppCheck').prop('checked', false);
+                $('#ep').prop('checked', false);
+            }
         });
 
-        $('#tigCheck, #ppCheck, #ep').on('click', function() {
+        $('#tigCheck, #ppCheck, #ep').on('click', function () {
             if ($(this).prop('checked')) {
                 $('#oqe').prop('checked', false);
             }
@@ -550,11 +555,11 @@
             }
         });
 
-        $('.del_assignment').on('click', function() {
-           let position=$(this).data('position');
-           $("#" + position + "_date_assigned").val('');
+        $('.del_assignment').on('click', function () {
+            let position = $(this).data('position');
+            $("#" + position + "_date_assigned").val('');
 
-            $.each([ '_assignment', '_billet' ], function( index, value ) {
+            $.each(['_assignment', '_billet'], function (index, value) {
                 let $select = $('#' + position + value).selectize();
                 let $control = $select[0].selectize;
                 $control.clear();

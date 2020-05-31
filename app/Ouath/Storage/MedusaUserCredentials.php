@@ -11,8 +11,8 @@ class MedusaUserCredentials implements UserCredentialsInterface
     {
         return Auth::attempt([
             'email_address' => strtolower(str_replace(' ', '+', $username)),
-            'password'      => $password,
-            'active'        => 1,
+            'password' => $password,
+            'active' => 1,
         ]);
     }
 

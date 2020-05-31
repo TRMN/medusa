@@ -355,7 +355,7 @@ class Grade extends Eloquent
             if ($updateUser === true) {
                 // Transferring from military to civilian, save their current branch and rank
                 $user->previous = [
-                    'branch'    => $user->branch,
+                    'branch' => $user->branch,
                     'pay_grade' => $user->rank['grade'],
                 ];
 
@@ -382,7 +382,7 @@ class Grade extends Eloquent
             $userCopy->branch = $user->previous['branch'];
             $userCopy->rank = [
                 'date_of_rank' => $user->rank['date_of_rank'],
-                'grade'        => $user->previous['pay_grade'],
+                'grade' => $user->previous['pay_grade'],
             ];
 
             // Check to see if they've been promoted as a civilian to a pay-grade that has a higher equivalency

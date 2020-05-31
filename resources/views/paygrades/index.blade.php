@@ -103,16 +103,16 @@
             <div class="row" id="rank-chart-wrapper">
                 <table class="compact row-border" id="rank-chart">
                     <thead>
-                        <tr>
-                            <th class="text-center">Pay Grade</th>
-                            <th class="text-center">Rank Title</th>
-                        </tr>
+                    <tr>
+                        <th class="text-center">Pay Grade</th>
+                        <th class="text-center">Rank Title</th>
+                    </tr>
                     </thead>
                     <tfoot>
-                        <tr>
-                            <th class="text-center">Pay Grade</th>
-                            <th class="text-center">Rank Title</th>
-                        </tr>
+                    <tr>
+                        <th class="text-center">Pay Grade</th>
+                        <th class="text-center">Rank Title</th>
+                    </tr>
                     </tfoot>
                 </table>
             </div>
@@ -190,7 +190,7 @@
                 width: 600
             });
 
-            $('#btnPayGradeChart').on('click', function() {
+            $('#btnPayGradeChart').on('click', function () {
                 $('#tools').hide();
                 let branch = $('#branches :selected').val();
                 $.get('/api/branch/' + branch + '/grade/unfiltered')

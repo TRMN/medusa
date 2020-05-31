@@ -59,9 +59,10 @@
             <div class="Incised901Black ninety">
                 Time In Service: {{$user->getTimeInService()}}
             </div>
-        <div class="Incised901Black ninety">
-            Highest Main Line Exam for Branch: <span class="Incised901Light">{{$user->getHighestMainLineExamForBranch() ?  $user->getHighestMainLineExamForBranch() : "None"}}</span>
-        </div>
+            <div class="Incised901Black ninety">
+                Highest Main Line Exam for Branch: <span
+                        class="Incised901Light">{{$user->getHighestMainLineExamForBranch() ?  $user->getHighestMainLineExamForBranch() : "None"}}</span>
+            </div>
 
 
             @if($permsObj->hasPermissions(['VIEW_NOTE']))
@@ -288,7 +289,8 @@
                             @elseif($permsObj->hasPermissions(['PROC_APPLICATIONS']))
                                 <a href="{{route('user.approve', [$user->_id])}}"
                                    class="btn btn-success"><span class="fa fa-check"></span> Approve</a>
-                                <a href="{{route('user.deny', [$user->_id])}}" class="btn btn-warning"><span class="fa fa-times"></span> DENY</a>
+                                <a href="{{route('user.deny', [$user->_id])}}" class="btn btn-warning"><span
+                                            class="fa fa-times"></span> DENY</a>
                             @endif
                         </div>
                     </div>

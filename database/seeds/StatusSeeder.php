@@ -11,7 +11,7 @@ class StatusSeeder extends Seeder
         $statuses = ['Active', 'Denied', 'Pending', 'Suspended', 'Expelled'];
 
         foreach ($statuses as $status) {
-            $this->command->comment('Adding '.$status);
+            $this->command->comment('Adding ' . $status);
 
             $this->writeAuditTrail(
                 'db:seed',

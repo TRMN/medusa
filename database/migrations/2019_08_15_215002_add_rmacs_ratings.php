@@ -18,7 +18,7 @@ class AddRmacsRatings extends Migration
             $rmacs = [];
             $oldPayGrade = null;
             $ratings = $rating->rate;
-            foreach($ratings['RMN'] as $payGrade => $rankTitle) {
+            foreach ($ratings['RMN'] as $payGrade => $rankTitle) {
                 $user = new \App\User();
                 $user->rank = [
                     'grade' => $payGrade,

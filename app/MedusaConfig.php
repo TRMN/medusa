@@ -8,8 +8,8 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 class MedusaConfig extends Eloquent
 {
     protected $fillable = [
-      'key',
-      'value',
+        'key',
+        'value',
     ];
 
     protected $table = 'config';
@@ -17,8 +17,8 @@ class MedusaConfig extends Eloquent
     /**
      * Add or update a config value in the database.
      *
-     * @param string $key   Config key to set
-     * @param mixed  $value What to set the config key to
+     * @param string $key Config key to set
+     * @param mixed $value What to set the config key to
      *
      * @return bool
      */
@@ -36,7 +36,7 @@ class MedusaConfig extends Eloquent
 
             return $item->id;
         } catch (\Exception $e) {
-            Log::error($e->getMessage()."\n".$e->getTraceAsString());
+            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
 
             return false;
         }
@@ -56,7 +56,7 @@ class MedusaConfig extends Eloquent
 
             return true;
         } catch (\Exception $e) {
-            Log::error($e->getMessage()."\n".$e->getTraceAsString());
+            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
 
             return false;
         }
@@ -65,9 +65,9 @@ class MedusaConfig extends Eloquent
     /**
      * Get a config value.
      *
-     * @param string            $key     Config key to retrieve
+     * @param string $key Config key to retrieve
      * @param string|array|null $default Default value to return
-     * @param string|null       $subkey  If the config value is an array, return
+     * @param string|null $subkey If the config value is an array, return
      *                                   this key
      *
      * @return bool|null|mixed
@@ -80,7 +80,7 @@ class MedusaConfig extends Eloquent
 
                 return isset($item->value) === true ? $item->value : $default;
             } catch (\Exception $e) {
-                Log::error($e->getMessage()."\n".$e->getTraceAsString());
+                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
 
                 return false;
             }
@@ -92,7 +92,7 @@ class MedusaConfig extends Eloquent
                     $item->value[$subkey] :
                     $default;
             } catch (\Exception $e) {
-                Log::error($e->getMessage()."\n".$e->getTraceAsString());
+                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
 
                 return false;
             }

@@ -21,7 +21,7 @@ class ChapterController extends Controller
     /**
      * Get sorted and filtered slice of roster via ajax.
      *
-     * @param \App\Chapter             $chapter
+     * @param \App\Chapter $chapter
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -37,8 +37,8 @@ class ChapterController extends Controller
 
         // Base query
         $query = User::where('active', 1)
-                     ->where('registration_status', 'Active')
-                     ->where('assignment.chapter_id', '=', $chapter->id);
+            ->where('registration_status', 'Active')
+            ->where('assignment.chapter_id', '=', $chapter->id);
 
         $totalRecords = $filteredRecords = $query->count();
 
@@ -48,19 +48,19 @@ class ChapterController extends Controller
 
         if (empty($search['value']) === false) {
             // Have search term, filter the results
-            $searchTerm = '%'.$search['value'].'%';
+            $searchTerm = '%' . $search['value'] . '%';
 
             $query = $query->where(
                 function ($query) use ($searchTerm) {
                     $query->where('last_name', 'like', $searchTerm)
-                          ->orWhere('first_name', 'like', $searchTerm)
-                          ->orWhere('rank.grade', 'like', $searchTerm)
-                          ->orWhere('member_id', 'like', $searchTerm)
-                          ->orWhere('path', 'like', $searchTerm)
-                          ->orWhere('branch', 'like', $searchTerm)
-                          ->orWhere('city', 'like', $searchTerm)
-                          ->orWhere('state_province', 'like', $searchTerm)
-                          ->orWhere('assignment.billet', 'like', $searchTerm);
+                        ->orWhere('first_name', 'like', $searchTerm)
+                        ->orWhere('rank.grade', 'like', $searchTerm)
+                        ->orWhere('member_id', 'like', $searchTerm)
+                        ->orWhere('path', 'like', $searchTerm)
+                        ->orWhere('branch', 'like', $searchTerm)
+                        ->orWhere('city', 'like', $searchTerm)
+                        ->orWhere('state_province', 'like', $searchTerm)
+                        ->orWhere('assignment.billet', 'like', $searchTerm);
                 }
             );
 
@@ -130,38 +130,38 @@ class ChapterController extends Controller
             if ($isInChainOfCommand === true || $viewMembers === true) {
                 $highestExams = '';
                 foreach ($user->getHighestExams() as $class => $exam) {
-                    $highestExams .= $class.': '.$exam.'<br />';
+                    $highestExams .= $class . ': ' . $exam . '<br />';
                 }
 
-                $name = '<a href="/user/'.$user->id.'"'.
-                        (is_null($user->promotionStatus) === true || $user->promotionStatus === false ? '' : ' class="promotable"').
-                        '>'.$user->getFullName(true).'</a>';
+                $name = '<a href="/user/' . $user->id . '"' .
+                    (is_null($user->promotionStatus) === true || $user->promotionStatus === false ? '' : ' class="promotable"') .
+                    '>' . $user->getFullName(true) . '</a>';
 
                 $ret['data'][] = [
-                    '<span class="promotable">'.$user->promotionStatus.'</span>',
+                    '<span class="promotable">' . $user->promotionStatus . '</span>',
                     $name,
                     $user->member_id,
                     $user->path ? ucfirst($user->path) : 'Service',
-                    number_format((float) $user->getTotalPromotionPoints(), 2),
+                    number_format((float)$user->getTotalPromotionPoints(), 2),
                     $highestExams,
-                    $user->rank['grade'].'<br />'.$user->getGreeting(),
+                    $user->rank['grade'] . '<br />' . $user->getGreeting(),
                     is_null($tig = $user->getTimeInGrade(true)) ? 'N/A' : $tig,
                     $user->getBilletForChapter($chapter->id),
-                    $user->branch.
+                    $user->branch .
                     (($user->branch == 'RMMM' || $user->branch == 'CIVIL') &&
                     empty($user->rating) === false ?
-                        ' <span class="volkhov">( '.substr($user->getRate(), 0, 1).
+                        ' <span class="volkhov">( ' . substr($user->getRate(), 0, 1) .
                         ' )</span>' : ''),
                     $user->city,
                     $user->state_province,
                 ];
             } else {
                 $ret['data'][] = [
-                  $user->getFullName(true),
-                  $user->rank['grade'].'<br />'.$user->getGreeting(),
-                  is_null($tig = $user->getTimeInGrade(true)) ? 'N/A' : $tig,
-                  $user->getBilletForChapter($chapter->id),
-                  $user->branch,
+                    $user->getFullName(true),
+                    $user->rank['grade'] . '<br />' . $user->getGreeting(),
+                    is_null($tig = $user->getTimeInGrade(true)) ? 'N/A' : $tig,
+                    $user->getBilletForChapter($chapter->id),
+                    $user->branch,
                 ];
             }
         }
@@ -212,10 +212,10 @@ class ChapterController extends Controller
         return view(
             'chapter.show',
             [
-                'detail'   => $chapter,
-                'higher'   => $parentChapter,
+                'detail' => $chapter,
+                'higher' => $parentChapter,
                 'includes' => $includes,
-                'command'  => $commandCrew,
+                'command' => $commandCrew,
             ]
         );
     }
@@ -257,9 +257,9 @@ class ChapterController extends Controller
             'chapter.create',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => new Chapter(),
-                'branches'     => Branch::getNavalBranchList(),
-                'fleets'       => ['' => 'Select a Fleet'] + $chapters,
+                'chapter' => new Chapter(),
+                'branches' => Branch::getNavalBranchList(),
+                'fleets' => ['' => 'Select a Fleet'] + $chapters,
             ]
         );
     }
@@ -309,10 +309,10 @@ class ChapterController extends Controller
             'chapter.edit',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => $chapter,
-                'chapterList'  => $chapters,
-                'branches'     => Branch::getNavalBranchList(),
-                'numCrew'      => $crew,
+                'chapter' => $chapter,
+                'chapterList' => $chapters,
+                'branches' => Branch::getNavalBranchList(),
+                'numCrew' => $crew,
             ]
         );
     }
@@ -360,10 +360,10 @@ class ChapterController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string) Auth::user()->_id,
+            (string)Auth::user()->_id,
             'update',
             'chapters',
-            (string) $chapter->_id,
+            (string)$chapter->_id,
             $chapter->toJson(),
             'ChapterController@update'
         );
@@ -397,7 +397,7 @@ class ChapterController extends Controller
         }
 
         $this->writeAuditTrail(
-            (string) Auth::user()->_id,
+            (string)Auth::user()->_id,
             'create',
             'chapters',
             null,
@@ -452,10 +452,10 @@ class ChapterController extends Controller
         $chapter->decommission_date = date('Y-m-d');
 
         $this->writeAuditTrail(
-            (string) Auth::user()->_id,
+            (string)Auth::user()->_id,
             'update',
             'chapters',
-            (string) $chapter->_id,
+            (string)$chapter->_id,
             $chapter->toJson(),
             'ChapterController@destroy'
         );
@@ -479,8 +479,8 @@ class ChapterController extends Controller
         //get list of ships and stations
         $results =
             Chapter::where('chapter_type', '=', 'ship')
-                   ->orWhere('chapter_type', '=', 'station')
-                   ->get();
+                ->orWhere('chapter_type', '=', 'station')
+                ->get();
 
         $output[] =
             "'Member Number','Fleet','Name','Rank','Date of Rank','Billet','Ship','Highest Exam','Exam Date'\n";
@@ -525,7 +525,7 @@ class ChapterController extends Controller
         header('Pragma: public');   // required
         header('Expires: 0');       // no cache
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Last-Modified: '.gmdate('D, d M Y H:i:s'));
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s'));
         header('Cache-Control: private', false);
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="triad_report.csv"');
@@ -542,9 +542,9 @@ class ChapterController extends Controller
      *
      * @param \App\Chapter $chapter
      *
+     * @return bool|\Illuminate\Http\RedirectResponse
      * @throws \League\Csv\CannotInsertRecord
      *
-     * @return bool|\Illuminate\Http\RedirectResponse
      */
     public function exportRoster(Chapter $chapter)
     {
@@ -604,11 +604,11 @@ class ChapterController extends Controller
         }
 
         $csv->output(
-            date('Y-m-d').'_'.str_replace(
+            date('Y-m-d') . '_' . str_replace(
                 ' ',
                 '_',
                 $chapter->chapter_name
-            ).'_roster.csv'
+            ) . '_roster.csv'
         );
     }
 }

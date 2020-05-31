@@ -31,6 +31,6 @@ class McamNotice extends Mailable
     public function build()
     {
         return $this->from(config('awards.from.address'), config('awards.from.name'))
-        ->subject(config('awards.MCAM-notification.subject'))->text('emails.mcam');
+            ->subject(config('awards.MCAM-notification.subject'))->text('emails.mcam');
     }
 }

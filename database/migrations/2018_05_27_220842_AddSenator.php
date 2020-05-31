@@ -9,9 +9,9 @@ class AddSenator extends Migration
     /**
      * Run the migrations.
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function up()
     {
@@ -38,9 +38,9 @@ class AddSenator extends Migration
     /**
      * Reverse the migrations.
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function down()
     {

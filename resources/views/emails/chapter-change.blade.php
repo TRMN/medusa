@@ -12,7 +12,8 @@
 </table>
 <p>Dear {!!$user->getGreeting()!!} {!!$user->first_name!!} {!!$user->last_name!!},</p>
 
-<p>I have processed your transfer and I am including your old and new CO @if($user->branch == 'RMMC') as well as COMFORCECOM @endif so
+<p>I have processed your transfer and I am including your old and new CO @if($user->branch == 'RMMC') as well as
+    COMFORCECOM @endif so
     they can update their records.</p>
 
 <table border="1">

@@ -23,9 +23,9 @@ class MCAM
      *
      * @param GradeEntered $event
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function handle($event)
     {

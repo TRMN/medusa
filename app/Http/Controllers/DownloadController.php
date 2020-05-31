@@ -25,9 +25,9 @@ class DownloadController extends Controller
 
         if ($log->updateLog($filename, UploadLog::UPLOAD_STATUS_PROCESSING)) {
             // Download file
-            return response()->download(storage_path('app/points/'.
-                                                     Str::slug($log['chapter_name'], '_').
-                                                     '/'.$filename));
+            return response()->download(storage_path('app/points/' .
+                Str::slug($log['chapter_name'], '_') .
+                '/' . $filename));
         }
     }
 }

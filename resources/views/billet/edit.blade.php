@@ -22,7 +22,8 @@
     <div class="row">
         <div class="col-sm-6 Incised901Light text-center">
             <a class="btn btn-warning"
-               href="{!! URL::previous() !!}"><span class="fa fa-times"></span> Cancel </a> <button type="submit" class="btn btn-success"><span class="fa fa-save"><span
+               href="{!! URL::previous() !!}"><span class="fa fa-times"></span> Cancel </a>
+            <button type="submit" class="btn btn-success"><span class="fa fa-save"><span
                             class="Incised901Light"> Save </span></span></button>
         </div>
     </div>

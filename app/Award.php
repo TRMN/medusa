@@ -84,8 +84,8 @@ class Award extends Eloquent
 
                     $ribbons[] = [
                         'group' => [
-                            'label'    => $ribbon->group_label,
-                            'awards'   => $tmp,
+                            'label' => $ribbon->group_label,
+                            'awards' => $tmp,
                             'multiple' => $multiple,
                         ],
                     ];
@@ -99,11 +99,11 @@ class Award extends Eloquent
     /**
      * Get any a list of all Aerospace Wings.
      *
-     * @todo Refactor to use the config table
-     *
      * @param array $limit
      *
      * @return array
+     * @todo Refactor to use the config table
+     *
      */
     public static function getAerospaceWings(
         array $limit = [
@@ -133,7 +133,8 @@ class Award extends Eloquent
             'EMSW',
             'OMSW',
         ]
-    ) {
+    )
+    {
         return self::_getAwards('TL', $limit);
     }
 
@@ -221,7 +222,7 @@ class Award extends Eloquent
     public static function getAwardByCode($code)
     {
         return self::where('code', '=', $code)
-                   ->first();
+            ->first();
     }
 
     /**

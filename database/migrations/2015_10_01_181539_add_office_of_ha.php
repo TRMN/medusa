@@ -34,7 +34,8 @@ class AddOfficeOfHa extends Migration
         $assignedTo = null,
         $joinable = true,
         $commisionDate = null
-    ) {
+    )
+    {
         $query = \App\Chapter::where('chapter_name', '=', $name)->first();
 
         if (empty($query->id) === true) {
@@ -42,9 +43,9 @@ class AddOfficeOfHa extends Migration
                 [
                     'chapter_name' => $name,
                     'chapter_type' => $type,
-                    'hull_number'  => $hull_number,
-                    'branch'       => $branch,
-                    'joinable'     => $joinable,
+                    'hull_number' => $hull_number,
+                    'branch' => $branch,
+                    'joinable' => $joinable,
                 ];
 
             if (is_null($assignedTo) === false) {
@@ -66,7 +67,7 @@ class AddOfficeOfHa extends Migration
 
             return \App\Chapter::create($record);
         } else {
-            echo 'Skipping '.$name.", unit already exists.\n";
+            echo 'Skipping ' . $name . ", unit already exists.\n";
 
             return $query;
         }

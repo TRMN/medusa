@@ -23,7 +23,7 @@ class Rating extends Eloquent
             if (isset($rating->rate[$branchID]) == true &&
                 empty($rating->rate[$branchID]) === false) {
                 $ratings[$rating->rate_code] =
-                    $rating->rate['description'].' ('.$rating->rate_code.')';
+                    $rating->rate['description'] . ' (' . $rating->rate_code . ')';
             }
         }
 
@@ -49,7 +49,8 @@ class Rating extends Eloquent
 
     public static function getRateName(
         $rateCode
-    ) {
+    )
+    {
         $rating = self::where('rate_code', '=', $rateCode)->first();
 
         return $rating->rate['description'];

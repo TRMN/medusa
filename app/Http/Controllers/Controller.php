@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Permissions\MedusaPermissions;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+
 //use Illuminate\Support\Facades\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -36,7 +37,7 @@ class Controller extends BaseController
      */
     protected function setupLayout()
     {
-        if (! is_null($this->layout)) {
+        if (!is_null($this->layout)) {
             $this->layout = view($this->layout);
         }
     }

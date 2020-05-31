@@ -23,15 +23,15 @@ class AddRMACiB extends Migration
         // Now add the CiB
         $cib = [
             'display_order' => 1028,
-            'name'          => 'Royal Manticoran Army Combat Infantry Badge',
-            'code'          => 'CIB',
-            'post_nominal'  => '',
-            'replaces'      => 'OSWP,ESWP,HS,SAW,EAW,OAW,ESAW,OSAW,EMAW,OMAW,ENW,ONW,ESNW,OSNW,EMNW,OMNW,EOW,OOW,ESOW,OSOW,EMOW,OMOW,ESW,OSW,ESSW,OSSW,EMSW,OMSW',
-            'location'      => 'TL',
-            'multiple'      => false,
-            'group_label'   => 'Qualification Badges',
-            'star_nation'   => 'manticore',
-            'points'        => 0,
+            'name' => 'Royal Manticoran Army Combat Infantry Badge',
+            'code' => 'CIB',
+            'post_nominal' => '',
+            'replaces' => 'OSWP,ESWP,HS,SAW,EAW,OAW,ESAW,OSAW,EMAW,OMAW,ENW,ONW,ESNW,OSNW,EMNW,OMNW,EOW,OOW,ESOW,OSOW,EMOW,OMOW,ESW,OSW,ESSW,OSSW,EMSW,OMSW',
+            'location' => 'TL',
+            'multiple' => false,
+            'group_label' => 'Qualification Badges',
+            'star_nation' => 'manticore',
+            'points' => 0,
         ];
 
         \App\Award::create($cib);

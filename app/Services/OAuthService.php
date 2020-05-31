@@ -47,18 +47,18 @@ class OAuthService
         $_dbName = config('database.connections.mongodb.database');
 
         $this->mongo =
-          new Client(
-              'mongodb://'.implode(',', $_hosts),
-              config('database.connections.mongodb.options', [])
-          );
+            new Client(
+                'mongodb://' . implode(',', $_hosts),
+                config('database.connections.mongodb.options', [])
+            );
 
         $_store = new Mongo($this->mongo->selectDatabase($_dbName));
 
         $this->server = new Server(
             $_store,
             [
-            'always_issue_new_refresh_token' => true,
-            'refresh_token_lifetime'         => 2419200,
+                'always_issue_new_refresh_token' => true,
+                'refresh_token_lifetime' => 2419200,
             ]
         );
 
@@ -72,8 +72,8 @@ class OAuthService
             new RefreshToken(
                 $_store,
                 [
-                'always_issue_new_refresh_token' => true,
-                'unset_refresh_token_after_use'  => true,
+                    'always_issue_new_refresh_token' => true,
+                    'unset_refresh_token_after_use' => true,
                 ]
             )
         );
@@ -90,21 +90,21 @@ class OAuthService
 
         $this->server->validateAuthorizeRequest($_request, $_response);
 
-        if (! $_response) {
+        if (!$_response) {
             return $_response;
         }
 
         $_params = $_request->getAllQueryParameters();
         /** @noinspection PhpUndefinedMethodInspection */
         $_client =
-          OauthClient::where('client_id', '=', $_params['client_id'])->first();
+            OauthClient::where('client_id', '=', $_params['client_id'])->first();
 
         return view(
             'oauth.authorization-form',
             [
-            'client'   => $_client,
-            'params'   => $_params,
-            'permsObj' => new PermissionsHelper(),
+                'client' => $_client,
+                'params' => $_params,
+                'permsObj' => new PermissionsHelper(),
             ]
         );
     }
@@ -164,17 +164,17 @@ class OAuthService
 
             return Response::json(
                 [
-                'uid'            => $_token['user_id'],
-                'email'          => $_user->email_address,
-                'firstname'      => $_user->first_name,
-                'lastname'       => $_user->last_name,
-                'city'           => $_user->city,
-                'state_province' => $_user->state_province,
-                'country'        => $_user->country,
-                'imageurl'       => $_user->filePhoto,
-                'user_id'        => $_token['user_id'],
-                'client'         => $_token['client_id'],
-                'expires'        => $_token['expires'],
+                    'uid' => $_token['user_id'],
+                    'email' => $_user->email_address,
+                    'firstname' => $_user->first_name,
+                    'lastname' => $_user->last_name,
+                    'city' => $_user->city,
+                    'state_province' => $_user->state_province,
+                    'country' => $_user->country,
+                    'imageurl' => $_user->filePhoto,
+                    'user_id' => $_token['user_id'],
+                    'client' => $_token['client_id'],
+                    'expires' => $_token['expires'],
                 ]
             );
         }
@@ -199,16 +199,16 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )->first();
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )->first();
 
             return Response::json(
                 [
-                'tig' => $_user->getTimeInGrade(true),
-                'tis' => $_user->getTimeInService(true),
+                    'tig' => $_user->getTimeInGrade(true),
+                    'tis' => $_user->getTimeInService(true),
                 ]
             );
         }
@@ -233,11 +233,11 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )->first();
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )->first();
 
             $_data = Request::all();
 
@@ -250,7 +250,7 @@ class OAuthService
                     $_user->id,
                     'update',
                     'users',
-                    (string) $_user->_id,
+                    (string)$_user->_id,
                     json_encode($_data),
                     'OAuthService@updateUser'
                 );
@@ -259,8 +259,8 @@ class OAuthService
 
                 return Response::json(
                     [
-                    'status'  => 'success',
-                    'message' => 'Profile updated',
+                        'status' => 'success',
+                        'message' => 'Profile updated',
                     ]
                 );
                 Log::info('We should never get here');
@@ -269,8 +269,8 @@ class OAuthService
 
                 return Response::json(
                     [
-                    'status'  => 'error',
-                    'message' => 'Unable to update profile',
+                        'status' => 'error',
+                        'message' => 'Unable to update profile',
                     ],
                     500
                 );
@@ -295,11 +295,11 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )->first();
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )->first();
             unset($_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos);
 
             $_assignments = $_user->assignment;
@@ -317,35 +317,35 @@ class OAuthService
 
                 if ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                     if (empty($_peerage['filename']) === false && file_exists(
-                        public_path().'/arms/peerage/'.$_peerage['filename']
-                    )
+                            public_path() . '/arms/peerage/' . $_peerage['filename']
+                        )
                     ) {
                         $_peerage['path'] =
-                          '/arms/peerage/'.$_peerage['filename'];
+                            '/arms/peerage/' . $_peerage['filename'];
                     }
 
                     $_peerage['fullTitle'] =
-                      $_peerage['generation'].' '.$_peerage['title'].' of '.$_peerage['lands'];
+                        $_peerage['generation'] . ' ' . $_peerage['title'] . ' of ' . $_peerage['lands'];
                 } else {
                     /** @noinspection PhpUndefinedMethodInspection */
                     /** @var \Korders $orderInfo */
                     $orderInfo =
-                      Korders::where(
-                          'classes.postnominal',
-                          '=',
-                          $_peerage['postnominal']
-                      )->first();
-                    if (file_exists(public_path().'/awards/orders/medals/'.$orderInfo->filename)) {
+                        Korders::where(
+                            'classes.postnominal',
+                            '=',
+                            $_peerage['postnominal']
+                        )->first();
+                    if (file_exists(public_path() . '/awards/orders/medals/' . $orderInfo->filename)) {
                         $_peerage['path'] =
-                          substr(
-                              $orderInfo->filename,
-                              0,
-                              strrpos($orderInfo->filename, '.')
-                          );
+                            substr(
+                                $orderInfo->filename,
+                                0,
+                                strrpos($orderInfo->filename, '.')
+                            );
                     }
 
                     $_peerage['fullTitle'] =
-                      $orderInfo->getClassName($_peerage['postnominal']).', '.$orderInfo->order;
+                        $orderInfo->getClassName($_peerage['postnominal']) . ', ' . $orderInfo->order;
                 }
 
                 unset($_peerage['peerage_id']);
@@ -360,7 +360,7 @@ class OAuthService
                 $_newExams = false;
 
                 foreach ($_examList as $_id => $_grades) {
-                    if (! empty($_grades['date_entered']) && strtotime($_grades['date_entered']) >= $_lastLogin) {
+                    if (!empty($_grades['date_entered']) && strtotime($_grades['date_entered']) >= $_lastLogin) {
                         $_examList[$_id]['new'] = true;
                         $_newExams = true;
                     }
@@ -368,36 +368,36 @@ class OAuthService
                     /** @noinspection PhpUndefinedMethodInspection */
                     $_exam = ExamList::where('exam_id', '=', $_id)->first();
 
-                    if (! is_null($_exam)) {
+                    if (!is_null($_exam)) {
                         $_examList[$_id]['name'] = $_exam->name;
                     }
 
                     if ($_grades['date'] != 'UNKNOWN') {
                         $_examList[$_id]['date'] =
-                          date('d M Y', strtotime($_grades['date']));
+                            date('d M Y', strtotime($_grades['date']));
                     }
 
                     unset($_examList[$_id]['entered_by']);
 
                     $_exams[str_replace(' ', '_', $_label)] =
-                      [
-                        'label'    => $_label,
-                        'new'      => $_newExams,
-                        'examlist' => $_examList,
-                      ];
+                        [
+                            'label' => $_label,
+                            'new' => $_newExams,
+                            'examlist' => $_examList,
+                        ];
                 }
             }
 
             $_user->exams = $_exams;
 
             $_user->greeting =
-              $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
+                $_user->getGreeting() . ' ' . $_user->getFullName() . $_user->getPostnominals();
 
-            if (! file_exists(public_path().$_user->filePhoto)) {
+            if (!file_exists(public_path() . $_user->filePhoto)) {
                 unset($_user->filePhoto);
             }
 
-            if (! empty($_user->awards)) {
+            if (!empty($_user->awards)) {
                 $_user->leftRibbonCount = count($_user->getRibbons('L'));
                 $_user->leftRibbons = $_user->getRibbons('L');
                 $_user->ribbonrack = view('partials.leftribbons', ['user' => $_user])->render();
@@ -407,7 +407,7 @@ class OAuthService
 
             if (empty($_user->lastUpdate)) {
                 $_user->lastUpdate =
-                  strtotime($_user->updated_at->toDateTimeString());
+                    strtotime($_user->updated_at->toDateTimeString());
             }
 
             return Response::json($_user);
@@ -433,13 +433,13 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_lastUpdated =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )
-                   ->first()
-                   ->getLastUpdated();
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )
+                    ->first()
+                    ->getLastUpdated();
 
             return Response::json(['lastUpdate' => $_lastUpdated]);
         }
@@ -462,13 +462,13 @@ class OAuthService
             $_token = $this->server->getAccessTokenData($_request);
 
             $_idCard =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )
-                   ->first()
-                   ->buildIdCard(true);
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )
+                    ->first()
+                    ->buildIdCard(true);
 
             return $_idCard->response('png');
         }
@@ -491,16 +491,16 @@ class OAuthService
             $_token = $this->server->getAccessTokenData($_request);
             $_tz = Request::get('tz', null);
 
-            Log::info('TZ='.$_tz);
+            Log::info('TZ=' . $_tz);
 
             return Response::json([
-              'events' => User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )
-                               ->first()
-                               ->getScheduledEvents($_tz),
+                'events' => User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )
+                    ->first()
+                    ->getScheduledEvents($_tz),
             ]);
         }
 
@@ -523,19 +523,19 @@ class OAuthService
 
             $_data = Request::all();
 
-            Log::info('Attempting to check '.$_data['member'].' in to '.$_data['event']);
+            Log::info('Attempting to check ' . $_data['member'] . ' in to ' . $_data['event']);
 
             return Response::json(User::where(
                 'email_address',
                 '=',
                 strtolower(str_replace(' ', '+', $_token['user_id']))
             )
-                                        ->first()
-                                        ->checkMemberIn(
-                                            $_data['event'],
-                                            $_data['member'],
-                                            $_data['tz']
-                                        ));
+                ->first()
+                ->checkMemberIn(
+                    $_data['event'],
+                    $_data['member'],
+                    $_data['tz']
+                ));
         }
 
         return Response::json(

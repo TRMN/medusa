@@ -27,25 +27,28 @@
         @endif
         <fieldset>
             <legend>Branch Change Request</legend>
-            <p>Only use this option if you are requesting a branch change.  If you are only requesting a chapter change, you do not need to select a branch.</p>
+            <p>Only use this option if you are requesting a branch change. If you are only requesting a chapter change,
+                you do not need to select a branch.</p>
             <div class="form-group form-inline">
                 {!! Form::label('Change branch from ' . $branches[$user->branch] . ' to ') !!} {!! Form::select('new_branch', $branches, null, ['class' => 'selectize form-control']) !!}
             </div>
-{{--            <p>Change Branch from&nbsp;<span class="bg-primary"> {!!$branches[$user->branch]!!} </span>&nbsp;to--}}
+            {{--            <p>Change Branch from&nbsp;<span class="bg-primary"> {!!$branches[$user->branch]!!} </span>&nbsp;to--}}
 
             {!! Form::hidden('old_branch', $user->branch) !!}</p>
-            <p id="new-rank-wrapper">If approved, your new rank will be <span class="bg-primary" id="new-rank"></span>.</p>
+            <p id="new-rank-wrapper">If approved, your new rank will be <span class="bg-primary" id="new-rank"></span>.
+            </p>
         </fieldset>
 
         <fieldset>
             <legend>Chapter Change Request</legend>
-            <p>Only use this option if you are requesting a change to your primary chapter.  If you are only requesting a branch change, you do not need to select a chapter.</p>
+            <p>Only use this option if you are requesting a change to your primary chapter. If you are only requesting a
+                branch change, you do not need to select a chapter.</p>
             <p>Change Chapter From&nbsp;<span class="bg-primary">
                 @if($user->getAssignmentName('primary') == 'HMS Charon')
-                    HMS Charon
-                @else
-                    {!!$allchapters[$user->getAssignmentId('primary')]!!}
-                @endif
+                        HMS Charon
+                    @else
+                        {!!$allchapters[$user->getAssignmentId('primary')]!!}
+                    @endif
                 </span>&nbsp;to</p>
             <div class="row">
                 <div class=" col-sm-6  ninety Incised901Light">
@@ -61,34 +64,34 @@
 @stop
 
 @section('scriptFooter')
-<script type="text/ecmascript">
-    $(function () {
-        $('#new-rank-wrapper').hide();
+    <script type="text/ecmascript">
+        $(function () {
+            $('#new-rank-wrapper').hide();
 
-        $(':input[name="new_branch"]').on('change', function () {
-            $.ajax('/api/rank/transfer/{{ $user->id }}/' + $(':input[name="old_branch"]').val() + '/' + $(':input[name="new_branch"]').val())
-                .done(function (data) {
-                    $('#new-rank').html(data.new_rank);
-                    $('#new-rank-wrapper').show();
-                })
+            $(':input[name="new_branch"]').on('change', function () {
+                $.ajax('/api/rank/transfer/{{ $user->id }}/' + $(':input[name="old_branch"]').val() + '/' + $(':input[name="new_branch"]').val())
+                    .done(function (data) {
+                        $('#new-rank').html(data.new_rank);
+                        $('#new-rank-wrapper').show();
+                    })
+            });
         });
-    });
-</script>
+    </script>
 
-<style>
-    .selectize-input {
-        width: 400px;
-        min-height: 1.5em;
-    }
+    <style>
+        .selectize-input {
+            width: 400px;
+            min-height: 1.5em;
+        }
 
-    .selectize-dropdown {
-        background: black !important;
-        color: #f5f5f5 !important;
-    }
+        .selectize-dropdown {
+            background: black !important;
+            color: #f5f5f5 !important;
+        }
 
-    #new-rank {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-</style>
+        #new-rank {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    </style>
 @stop

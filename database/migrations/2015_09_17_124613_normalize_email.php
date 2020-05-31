@@ -22,7 +22,7 @@ class NormalizeEmail extends Migration
                 'system user',
                 'update',
                 'users',
-                (string) $user->_id,
+                (string)$user->_id,
                 $user->toJson(),
                 'normalize email addresses'
             );

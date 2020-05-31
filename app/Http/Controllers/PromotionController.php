@@ -50,7 +50,7 @@ class PromotionController extends Controller
 
                 $flags = [
                     'promotable' => $pi['tig'] && $pi['exams'] && $pi['points'],
-                    'early'      => $pi['exams'] && $pi['points'] && $pi['early'],
+                    'early' => $pi['exams'] && $pi['points'] && $pi['early'],
                 ];
 
                 if ($flags['promotable'] === true || $flags['early'] === true) {
@@ -94,8 +94,8 @@ class PromotionController extends Controller
                                 if ($paygrade[1] == 1) {
                                     $merit[] = $memberCopy;
                                 } elseif ($paygrade[1] == 2 &&
-                                          Auth::user()->hasPermissions(['PROMOTE_E6O2']) === true &&
-                                          Auth::user()->isFleetCO() === true) {
+                                    Auth::user()->hasPermissions(['PROMOTE_E6O2']) === true &&
+                                    Auth::user()->isFleetCO() === true) {
                                     $promotable[] = $memberCopy;
                                 } else {
                                     $board[] = $memberCopy;
@@ -109,12 +109,12 @@ class PromotionController extends Controller
         }
 
         return view('promotions.index', [
-            'chapter'    => $chapter,
-            'early'      => $early,
+            'chapter' => $chapter,
+            'early' => $early,
             'promotable' => $promotable,
-            'board'      => $board,
-            'warrant'    => $warrant,
-            'merit'      => $merit,
+            'board' => $board,
+            'warrant' => $warrant,
+            'merit' => $merit,
         ]);
     }
 
@@ -153,23 +153,23 @@ class PromotionController extends Controller
             $user = User::find($member['memberId']);
 
             $from = Grade::getRankTitle(
-                $user->rank['grade'],
-                $user->getRate(),
-                $user->branch
-            ).' ('.$user->rank['grade'].')';
+                    $user->rank['grade'],
+                    $user->getRate(),
+                    $user->branch
+                ) . ' (' . $user->rank['grade'] . ')';
 
             $user->promoteMember($member['grade'], $early);
 
             $to = Grade::getRankTitle(
-                $member['grade'],
-                $user->getRate(),
-                $user->branch
-            ).' ('.$member['grade'].')';
+                    $member['grade'],
+                    $user->getRate(),
+                    $user->branch
+                ) . ' (' . $member['grade'] . ')';
 
             $promoted[] = [
-                'name'      => $user->getFullName(),
-                'from'      => $from,
-                'to'        => $to,
+                'name' => $user->getFullName(),
+                'from' => $from,
+                'to' => $to,
                 'member_id' => $user->member_id,
             ];
         }

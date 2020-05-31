@@ -15,41 +15,41 @@ class UpdateCivilianValidGrades extends Migration
         // Explicitly remove invalid ranks
 
         $remove = [
-          'C-2' => [
-              'RMACS',
-          ],
-          'C-3' => [
-              'RMACS',
-          ],
-          'C-4' => [
-              'SFC',
-              'RMMM',
-          ],
-          'C-5' => [
-              'SFC',
-              'RMMM',
-          ],
-          'C-8' => [
-              'SFC',
-          ],
-          'C-9' => [
-              'RMMM',
-          ],
-          'C-10' => [
-              'RMMM',
-              'RMACS',
-          ],
-          'C-11' => [
-              'SFC',
-              'RMMM',
-              'RMACS',
-          ],
-          'C-12' => [
-              'SFC',
-          ],
-          'C-14' => [
-              'RMMM',
-          ],
+            'C-2' => [
+                'RMACS',
+            ],
+            'C-3' => [
+                'RMACS',
+            ],
+            'C-4' => [
+                'SFC',
+                'RMMM',
+            ],
+            'C-5' => [
+                'SFC',
+                'RMMM',
+            ],
+            'C-8' => [
+                'SFC',
+            ],
+            'C-9' => [
+                'RMMM',
+            ],
+            'C-10' => [
+                'RMMM',
+                'RMACS',
+            ],
+            'C-11' => [
+                'SFC',
+                'RMMM',
+                'RMACS',
+            ],
+            'C-12' => [
+                'SFC',
+            ],
+            'C-14' => [
+                'RMMM',
+            ],
         ];
 
         foreach ($remove as $grade => $branches) {

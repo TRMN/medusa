@@ -14,7 +14,7 @@ class EditRibbonRackPerm extends Migration
     public function up()
     {
         $newPerms = [
-            'EDIT_RR'  => 'Edit Users Ribbon Rack',
+            'EDIT_RR' => 'Edit Users Ribbon Rack',
         ];
 
         foreach ($newPerms as $perm => $desc) {

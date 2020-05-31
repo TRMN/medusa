@@ -13,19 +13,19 @@ class GpaPatterns extends Migration
     {
         $config = [
             'services' => [
-                'RMN'   => '/^SIA-RMN-',
-                'RMMC'  => '/^SIA-RMMC-',
-                'RMA'   => '/^KR1MA-RMA-',
-                'GSN'   => '/^IMNA-GSN-',
+                'RMN' => '/^SIA-RMN-',
+                'RMMC' => '/^SIA-RMMC-',
+                'RMA' => '/^KR1MA-RMA-',
+                'GSN' => '/^IMNA-GSN-',
                 'RMACS' => '/^SIA-RMACS-',
-                'IAN'   => '/^PAA-IAN-',
-                'RMMM'  => '/^SIA-RMMM-',
+                'IAN' => '/^PAA-IAN-',
+                'RMMM' => '/^SIA-RMMM-',
             ],
             'courses' => [
                 'enlisted' => '000[1-9]/',
-                'warrant'  => '001[1-9]$/',
-                'officer'  => '01[0-9][1-9]$/',
-                'flag'     => '[12]00[1-9]S?$/',
+                'warrant' => '001[1-9]$/',
+                'officer' => '01[0-9][1-9]$/',
+                'flag' => '[12]00[1-9]S?$/',
             ],
         ];
 

@@ -96,10 +96,10 @@
     <div class="row pp-row margin-bottom-10 padding-bottom-10">
         <div class="col-sm-4">Investiture as a</div>
         <div class="col-sm-4 text-right">
-        {{Form::select('points[peerage]', ['B' => 'Baron/Baroness', 'E' => 'Earl/Countess', 'S' => 'Steadholder', 'D' => 'Duke/Duchess', 'L' => 'Senator for Life', 'G' => 'Grand Duke/Grand Duchess'], empty($user->points['peerage']) ? null : $user->points['peerage'], ['placeholder' => 'Select Peerage', 'class' => 'pp-calc-select', 'data-target' => 'peerage', 'disabled' => !$permsObj->hasPermissions(['EDIT_MEMBER'])])}}
-        @if(!$permsObj->hasPermissions(['EDIT_MEMBER']))
-            {{Form::hidden('points[peerage]', empty($user->points['peerage']) ? null : $user->points['peerage'])}}
-        @endif
+            {{Form::select('points[peerage]', ['B' => 'Baron/Baroness', 'E' => 'Earl/Countess', 'S' => 'Steadholder', 'D' => 'Duke/Duchess', 'L' => 'Senator for Life', 'G' => 'Grand Duke/Grand Duchess'], empty($user->points['peerage']) ? null : $user->points['peerage'], ['placeholder' => 'Select Peerage', 'class' => 'pp-calc-select', 'data-target' => 'peerage', 'disabled' => !$permsObj->hasPermissions(['EDIT_MEMBER'])])}}
+            @if(!$permsObj->hasPermissions(['EDIT_MEMBER']))
+                {{Form::hidden('points[peerage]', empty($user->points['peerage']) ? null : $user->points['peerage'])}}
+            @endif
         </div>
         <div class="col-sm-4 text-right"><span class="pp" id="peerage"></span></div>
     </div>
@@ -121,12 +121,14 @@
     </div>
     <div class="row pp-row margin-bottom-10 padding-bottom-10">
         <div class="col-sm-4">Promotion Points from Awards</div>
-        <div class="col-sm-4 text-right"><input type="number" class="pp-calc text-right" value="{{$user->getPointsFromAwards()}}" disabled="true"></div>
+        <div class="col-sm-4 text-right"><input type="number" class="pp-calc text-right"
+                                                value="{{$user->getPointsFromAwards()}}" disabled="true"></div>
         <div class="col-sm-4 text-right"><span class="pp">{{$user->getPointsFromAwards()}}</span></div>
     </div>
     <div class="row pp-row margin-bottom-10 padding-bottom-10">
         <div class="col-sm-4">Promotion Points from Coursework</div>
-        <div class="col-sm-4 text-right"><input type="number" class="pp-calc text-right" value="{{$user->getPointsFromExams()}}" disabled="true"></div>
+        <div class="col-sm-4 text-right"><input type="number" class="pp-calc text-right"
+                                                value="{{$user->getPointsFromExams()}}" disabled="true"></div>
         <div class="col-sm-4 text-right"><span class="pp">{{$user->getPointsFromExams()}}</span></div>
     </div>
 </div>
@@ -139,8 +141,9 @@
     </div>
     <div class="row pp-row margin-bottom-10 padding-bottom-10">
         <div class="col-sm-4">Promotion Points used for early promotion</div>
-        <div class="col-sm-4 text-right"> </div>
-        <div class="col-sm-4 text-right"><span class="pp">{{empty($user->points['ep'])? 0 : $user->points['ep']}}</span></div>
+        <div class="col-sm-4 text-right"></div>
+        <div class="col-sm-4 text-right"><span class="pp">{{empty($user->points['ep'])? 0 : $user->points['ep']}}</span>
+        </div>
     </div>
 </div>
 

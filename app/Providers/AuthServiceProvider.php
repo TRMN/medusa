@@ -28,8 +28,8 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
 
         Passport::tokensCan([
-           'profile' => 'Request User Profile',
-           'email'   => 'Request User email',
+            'profile' => 'Request User Profile',
+            'email' => 'Request User email',
         ]);
     }
 }

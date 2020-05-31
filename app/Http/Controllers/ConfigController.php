@@ -42,8 +42,8 @@ class ConfigController extends Controller
         return view(
             'config.config',
             [
-            'action' => 'add',
-            'config' => new MedusaConfig(),
+                'action' => 'add',
+                'config' => new MedusaConfig(),
             ]
         );
     }
@@ -76,7 +76,7 @@ class ConfigController extends Controller
             $config->save();
 
             $this->writeAuditTrail(
-                (string) Auth::user()->_id,
+                (string)Auth::user()->_id,
                 'create',
                 'config',
                 null,
@@ -84,10 +84,10 @@ class ConfigController extends Controller
                 'ConfigController@update'
             );
 
-            $msg = '"'.$config->key.'" has been added';
+            $msg = '"' . $config->key . '" has been added';
         } catch (\Exception $e) {
             $msg =
-              'There was a problem saving "'.$config->key.'"';
+                'There was a problem saving "' . $config->key . '"';
             Log::error($e->getTraceAsString());
         }
 
@@ -126,8 +126,8 @@ class ConfigController extends Controller
         return view(
             'config.config',
             [
-            'action' => 'edit',
-            'config' => $config,
+                'action' => 'edit',
+                'config' => $config,
             ]
         );
     }
@@ -160,7 +160,7 @@ class ConfigController extends Controller
             $config->save();
 
             $this->writeAuditTrail(
-                (string) Auth::user()->_id,
+                (string)Auth::user()->_id,
                 'update',
                 'config',
                 $config->id,
@@ -168,10 +168,10 @@ class ConfigController extends Controller
                 'ConfigController@update'
             );
 
-            $msg = '"'.$config->key.'" has been updated';
+            $msg = '"' . $config->key . '" has been updated';
         } catch (\Exception $e) {
             $msg =
-              'There was a problem saving the update to "'.$config->key.'"';
+                'There was a problem saving the update to "' . $config->key . '"';
             Log::error($e->getTraceAsString());
         }
 
@@ -196,7 +196,7 @@ class ConfigController extends Controller
             $config->delete();
 
             $this->writeAuditTrail(
-                (string) Auth::user()->_id,
+                (string)Auth::user()->_id,
                 'delete',
                 'config',
                 $config->id,

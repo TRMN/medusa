@@ -24,9 +24,9 @@ class UploadLog extends Eloquent
     const UPLOAD_STATUS_PROCESSING = 'In Process';
     const UPLOAD_STATUS_IMPORTED = 'Imported';
     const LOG_MESSAGES = [
-        'Uploaded'   => 'Uploaded',
+        'Uploaded' => 'Uploaded',
         'In Process' => 'Downloaded for processing',
-        'Imported'   => 'Imported',
+        'Imported' => 'Imported',
     ];
 
     /**
@@ -62,19 +62,20 @@ class UploadLog extends Eloquent
         string $filename,
         string $status,
         string $originalFileName
-    ) {
+    )
+    {
         $files = $this->files;
 
         $files[str_replace('.', '_', $filename)] = [
-            'filename'       => $filename,
+            'filename' => $filename,
             'current_status' => $status,
-            'original_name'  => $originalFileName,
-            'status_ts'      => time(),
-            'uploaded_by'    => Auth::user()->id,
+            'original_name' => $originalFileName,
+            'status_ts' => time(),
+            'uploaded_by' => Auth::user()->id,
         ];
 
         $files[str_replace('.', '_', $filename)]['log'][] =
-            self::LOG_MESSAGES[$status].' '.date('F j, Y @ g:i a');
+            self::LOG_MESSAGES[$status] . ' ' . date('F j, Y @ g:i a');
 
         $this->files = $files;
 
@@ -97,7 +98,7 @@ class UploadLog extends Eloquent
         $file['current_status'] = $status;
         $file['status_ts'] = time();
 
-        $file['log'][] = self::LOG_MESSAGES[$status].' '.date('F j, Y @ g:i a');
+        $file['log'][] = self::LOG_MESSAGES[$status] . ' ' . date('F j, Y @ g:i a');
 
         $files[str_replace('.', '_', $filename)] = $file;
 

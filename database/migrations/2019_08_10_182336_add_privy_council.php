@@ -20,7 +20,7 @@ class AddPrivyCouncil extends Migration
             'post_nominal' => 'PC',
             'location' => 'LS',
             'multiple' => false,
-            'star_nation' => 'manticore'
+            'star_nation' => 'manticore',
         ];
 
         App\Award::create($privyCouncil);

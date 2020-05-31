@@ -77,17 +77,17 @@ class Chapter extends Eloquent
             switch ($type) {
                 case 'SU':
                     $name =
-                        $chapter->chapter_name.' ('.$chapter->hull_number.')';
+                        $chapter->chapter_name . ' (' . $chapter->hull_number . ')';
                     break;
                 case 'headquarters':
                     $name =
-                        $chapter->chapter_name.' ('.$chapter->branch.')';
+                        $chapter->chapter_name . ' (' . $chapter->branch . ')';
                     break;
                 case 'fleet':
                     $fleet =
                         new NumberFormatter('en_US', NumberFormatter::ORDINAL);
                     $name =
-                        $chapter->chapter_name.' ('.$fleet->format($chapter->hull_number).')';
+                        $chapter->chapter_name . ' (' . $fleet->format($chapter->hull_number) . ')';
                     break;
                 default:
                     $name = $chapter->chapter_name;
@@ -127,8 +127,8 @@ class Chapter extends Eloquent
      * Get chapters filtered by branch and location.
      *
      * @param string $branch
-     * @param int    $location
-     * @param bool   $joinableOnly
+     * @param int $location
+     * @param bool $joinableOnly
      *
      * @return array
      */
@@ -136,7 +136,8 @@ class Chapter extends Eloquent
         $branch = '',
         $location = 0,
         $joinableOnly = true
-    ) {
+    )
+    {
         $nf = new NumberFormatter('en_US', NumberFormatter::ORDINAL);
 
         $holdingChapters =
@@ -193,16 +194,16 @@ class Chapter extends Eloquent
                 $append = '';
                 if (empty($co) === false && empty($co['city']) === false && empty($co['state_province']) == false) {
                     $append =
-                        ' ('.$co['city'].', '.$co['state_province'].')';
+                        ' (' . $co['city'] . ', ' . $co['state_province'] . ')';
                 }
 
                 if ($chapter->chapter_type == 'fleet') {
                     $append =
-                        ' ('.$nf->format($chapter->hull_number).' Fleet)';
+                        ' (' . $nf->format($chapter->hull_number) . ' Fleet)';
                 }
 
                 if ($location == '0' || $co['state_province'] == $location) {
-                    $chapters[$chapter->_id] = $chapter->chapter_name.$append;
+                    $chapters[$chapter->_id] = $chapter->chapter_name . $append;
                 }
             }
         }
@@ -229,7 +230,7 @@ class Chapter extends Eloquent
     public function getCrew($forReport = false, $ts = null)
     {
         $users =
-            User::where('assignment.chapter_id', '=', (string) $this->_id)
+            User::where('assignment.chapter_id', '=', (string)$this->_id)
                 ->where('active', '=', 1)
                 ->where(
                     'registration_status',
@@ -247,8 +248,8 @@ class Chapter extends Eloquent
         foreach ($users as $key => $user) {
             foreach ($user->assignment as $assignment) {
                 if ($assignment['chapter_id'] == $this->id && in_array(
-                    $assignment['billet'],
-                    [
+                        $assignment['billet'],
+                        [
                             'Commanding Officer',
                             'Executive Officer',
                             'Bosun',
@@ -258,7 +259,7 @@ class Chapter extends Eloquent
                             'Space Lord',
                             'Deputy Space Lord',
                         ]
-                ) === true
+                    ) === true
                 ) {
                     unset($users[$key]);
                 }
@@ -272,7 +273,7 @@ class Chapter extends Eloquent
             foreach ($users as $key => $user) {
                 foreach ($user['assignment'] as $assignment) {
                     $include = true;
-                    if ($assignment['chapter_id'] == (string) $this->id) {
+                    if ($assignment['chapter_id'] == (string)$this->id) {
                         if (empty($assignment['date_assigned']) === false && $assignment['date_assigned'] != '1969-01-01') {
                             if (strtotime($assignment['date_assigned']) < $ts) {
                                 $include = false;
@@ -552,9 +553,9 @@ class Chapter extends Eloquent
             }
 
             if (is_a($user, \App\User::class) === true) {
-                $commandCrew[(int) $billetInfo['display_order']] = [
+                $commandCrew[(int)$billetInfo['display_order']] = [
                     'display' => $display,
-                    'user'    => $user,
+                    'user' => $user,
                 ];
             }
         }
@@ -607,7 +608,7 @@ class Chapter extends Eloquent
                     '%spellout-ordinal'
                 );
 
-                return ucfirst($nf->format($fleet->hull_number)).' Fleet';
+                return ucfirst($nf->format($fleet->hull_number)) . ' Fleet';
             }
         }
         return null;
@@ -663,7 +664,8 @@ class Chapter extends Eloquent
      *
      * @return array
      */
-    public function getChildHierarchy() {
+    public function getChildHierarchy()
+    {
         $children = self::where('assigned_to', '=', $this->id)->whereNull('decommission_date')->get();
 
         $results = [];
@@ -697,9 +699,9 @@ class Chapter extends Eloquent
     /**
      * Get a list of all chapter locations.
      *
+     * @return array
      * @deprecated
      *
-     * @return array
      */
     public static function getChapterLocations()
     {

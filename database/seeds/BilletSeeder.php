@@ -34,8 +34,8 @@ class BilletSeeder extends Seeder
             'Staff Logistics Officer, FLA',
             'Chief of Staff, FLA',
             'Staff Intelligence Officer, FLA',
-            'Sargeant Major, RMA',
-            'Sargeant Major, RMMC',
+            'Sergeant Major, RMA',
+            'Sergeant Major, RMMC',
             'OC, Company',
             'Deputy Commandant, RMMC',
             'CO, Talbott Fleet',
@@ -74,7 +74,7 @@ class BilletSeeder extends Seeder
             'Chief of Staff, 7SL',
             'Publications Editor, 7SL',
             'GSN Liaison, 7SL',
-            'RMMC Liaision, 7SL',
+            'RMMC Liaison, 7SL',
             'RMA Liaison, 7SL',
             'TRMN Official Mascot',
             'CO, Task Force',
@@ -308,7 +308,7 @@ class BilletSeeder extends Seeder
         ];
 
         foreach ($billets as $billet) {
-            $this->command->comment('Adding '.$billet);
+            $this->command->comment('Adding ' . $billet);
             $this->writeAuditTrail('db:seed', 'create', 'billets', null, json_encode(['billet_name' => $billet]), 'billet');
             Billet::create(['billet_name' => $billet]);
         }

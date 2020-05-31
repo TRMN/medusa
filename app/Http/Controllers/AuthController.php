@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function signin(Request $request)
     {
         $rules = [
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required',
         ];
 

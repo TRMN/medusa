@@ -111,7 +111,7 @@ class ImportUsers extends Command
         // Get the users
 
         $this->comment('Reading user file');
-        $users = Excel::load(app_path().'/database/users.xlsx')->formatDates(true, 'Y-m-d')->toArray();
+        $users = Excel::load(app_path() . '/database/users.xlsx')->formatDates(true, 'Y-m-d')->toArray();
         $this->comment('User file loaded, started to process');
 
         foreach ($users as $user) {
@@ -129,10 +129,10 @@ class ImportUsers extends Command
                 }
 
                 $user['assignment'][] =
-                    ['chapter_id'   => $this->getChapterByName($user['ship_name'])[0]['_id'],
-                     'billet'       => $user['primary_billet'],
-                     'primary'      => true,
-                     'chapter_name' => $user['ship_name'],
+                    ['chapter_id' => $this->getChapterByName($user['ship_name'])[0]['_id'],
+                        'billet' => $user['primary_billet'],
+                        'primary' => true,
+                        'chapter_name' => $user['ship_name'],
                     ];
 
                 if ($user['secondary_billet'] !== 'NULL') {
@@ -168,18 +168,18 @@ class ImportUsers extends Command
             }
 
             if ((empty($user['secondary_billet']) === false) &&
-                  $user['secondary_billet'] == 'Commanding Officer') {
+                $user['secondary_billet'] == 'Commanding Officer') {
                 $user['permissions'] = array_merge(
                     $user['permissions'],
                     [
-                            'DUTY_ROSTER',
-                            'EXPORT_ROSTER',
-                            'EDIT_WEBSITE',
-                            'ASSIGN_NONCOMMAND_BILLET',
-                            'PROMOTE_E601',
-                            'REQUEST_PROMOTION',
-                            'CHAPTER_REPORT',
-                          ]
+                        'DUTY_ROSTER',
+                        'EXPORT_ROSTER',
+                        'EDIT_WEBSITE',
+                        'ASSIGN_NONCOMMAND_BILLET',
+                        'PROMOTE_E601',
+                        'REQUEST_PROMOTION',
+                        'CHAPTER_REPORT',
+                    ]
                 );
             }
 
@@ -222,7 +222,7 @@ class ImportUsers extends Command
             }
 
             if (isset($user['postal_code']) === true && empty($user['postal_code']) === false) {
-                $user['postal_code'] = (string) $user['postal_code'];
+                $user['postal_code'] = (string)$user['postal_code'];
             } else {
                 $user['postal_code'] = '';
             }
@@ -241,7 +241,7 @@ class ImportUsers extends Command
 
                 $u->save();
             } else {
-                $this->error('Duplicate user found! '.$user['member_id'].' already exists in the database!');
+                $this->error('Duplicate user found! ' . $user['member_id'] . ' already exists in the database!');
             }
         }
     }
@@ -276,7 +276,7 @@ class ImportUsers extends Command
         if (count($results) > 0) {
             return $results;
         } else {
-            $this->info('Chapter '.$name.' not found, creating...');
+            $this->info('Chapter ' . $name . ' not found, creating...');
             $branch = '';
             $type = 'ship';
 
@@ -320,9 +320,9 @@ class ImportUsers extends Command
         // Normalize Pinnace names
         if (($pos = strpos($name, $pnum)) > 0) {
             if (substr($name, 0, 3) == 'Pin') {
-                $name = substr($name, 0, $pos).' '.$pid;
+                $name = substr($name, 0, $pos) . ' ' . $pid;
             } else {
-                $name = 'Pinnace '.substr($name, 0, $pos).' '.$pid;
+                $name = 'Pinnace ' . substr($name, 0, $pos) . ' ' . $pid;
             }
         }
 

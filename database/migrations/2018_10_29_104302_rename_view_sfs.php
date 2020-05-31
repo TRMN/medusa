@@ -10,9 +10,9 @@ class RenameViewSfs extends Migration
     /**
      * Run the migrations.
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function up()
     {

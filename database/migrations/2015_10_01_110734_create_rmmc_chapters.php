@@ -108,12 +108,12 @@ class CreateRmmcChapters extends Migration
 
         foreach ($mardets as $mardet) {
             // Look up the ship
-            $ship = \App\Chapter::where('chapter_name', '=', 'HMS '.$mardet[0])->firstOrFail();
+            $ship = \App\Chapter::where('chapter_name', '=', 'HMS ' . $mardet[0])->firstOrFail();
 
             $mardet[1] = date('Y-m-d', strtotime($mardet[1]));
 
             $this->createChapter(
-                'MARDET '.$mardet[0],
+                'MARDET ' . $mardet[0],
                 $rmmcEchelonTypes[$mardet[2]],
                 '',
                 'RMMC',
@@ -148,7 +148,8 @@ class CreateRmmcChapters extends Migration
         $assignedTo = null,
         $joinable = true,
         $commisionDate = null
-    ) {
+    )
+    {
         $query = \App\Chapter::where('chapter_name', '=', $name)->first();
 
         if (empty($query->id) === true) {
@@ -156,9 +157,9 @@ class CreateRmmcChapters extends Migration
                 [
                     'chapter_name' => $name,
                     'chapter_type' => $type,
-                    'hull_number'  => $hull_number,
-                    'branch'       => $branch,
-                    'joinable'     => $joinable,
+                    'hull_number' => $hull_number,
+                    'branch' => $branch,
+                    'joinable' => $joinable,
                 ];
 
             if (is_null($assignedTo) === false) {
@@ -180,7 +181,7 @@ class CreateRmmcChapters extends Migration
 
             return \App\Chapter::create($record);
         } else {
-            echo 'Skipping '.$name.", unit already exists.\n";
+            echo 'Skipping ' . $name . ", unit already exists.\n";
 
             return $query;
         }

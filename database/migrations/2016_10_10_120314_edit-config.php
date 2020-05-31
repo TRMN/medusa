@@ -16,7 +16,7 @@ class EditConfig extends Migration
         // Add the new permissions
 
         $newPerms = [
-            'CONFIG'  => 'Manage system config settings',
+            'CONFIG' => 'Manage system config settings',
         ];
 
         foreach ($newPerms as $perm => $desc) {

@@ -42,7 +42,7 @@ class CodeTest extends Command
     {
         $user = User::getUserByMemberId('RMN-1094-12');
 
-        echo $user->isPromotable()."\n";
+        echo $user->isPromotable() . "\n";
     }
 
     /**

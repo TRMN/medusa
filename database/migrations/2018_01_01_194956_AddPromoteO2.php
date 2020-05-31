@@ -14,7 +14,7 @@ class AddPromoteO2 extends Migration
     public function up()
     {
         $newPerms = [
-            'PROMOTE_E6O2'  => 'Promote to E6/O2',
+            'PROMOTE_E6O2' => 'Promote to E6/O2',
         ];
 
         foreach ($newPerms as $perm => $desc) {

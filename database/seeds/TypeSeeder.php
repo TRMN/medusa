@@ -32,7 +32,7 @@ class TypeSeeder extends Seeder
 
     public function createChapterType($type, $description, array $can_have = [])
     {
-        $this->command->comment('Creating '.$description.' type');
+        $this->command->comment('Creating ' . $description . ' type');
 
         $this->writeAuditTrail(
             'db:seed',
