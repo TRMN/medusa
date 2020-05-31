@@ -24,8 +24,6 @@ class Controller extends BaseController
         }
         View::share('permsObj', $this);
         View::share('user', Auth::user());
-
-//        $this->middleware('osatos');
     }
 
     /**

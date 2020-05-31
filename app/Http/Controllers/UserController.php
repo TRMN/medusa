@@ -424,7 +424,6 @@ class UserController extends Controller
         $rank['date_of_rank'] = date('Y-m-d');
         $user->rank = $rank;
 
-
         $events[] = 'Application approved by BuPers; Enlisted at rank of '.
             Grade::getRankTitle($user->rank['grade'], null, $user->branch).
             ' ('.$user->rank['grade'].') and assigned to '.
