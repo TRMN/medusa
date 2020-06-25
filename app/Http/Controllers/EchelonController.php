@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Type;
-use App\User;
 use App\Branch;
 use App\Chapter;
+use App\Type;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -76,9 +76,9 @@ class EchelonController extends Controller
             'echelon.create',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => new Chapter(),
-                'branches'     => Branch::getNavalBranchList(),
-                'fleets'       => ['' => 'Select an Echelon'] + $chapters,
+                'chapter' => new Chapter(),
+                'branches' => Branch::getNavalBranchList(),
+                'fleets' => ['' => 'Select an Echelon'] + $chapters,
             ]
         );
     }
@@ -148,11 +148,11 @@ class EchelonController extends Controller
         return view(
             'chapter.show',
             [
-                'detail'   => $chapter,
-                'higher'   => $parentChapter,
+                'detail' => $chapter,
+                'higher' => $parentChapter,
                 'includes' => $includes,
-                'command'  => $commandCrew,
-                'crew'     => $crew,
+                'command' => $commandCrew,
+                'crew' => $crew,
             ]
         );
     }
@@ -204,10 +204,10 @@ class EchelonController extends Controller
             'echelon.edit',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => $chapter,
-                'chapterList'  => $chapters,
-                'branches'     => Branch::getNavalBranchList(),
-                'numCrew'      => count($crew) + count($childUnits),
+                'chapter' => $chapter,
+                'chapterList' => $chapters,
+                'branches' => Branch::getNavalBranchList(),
+                'numCrew' => count($crew) + count($childUnits),
             ]
         );
     }

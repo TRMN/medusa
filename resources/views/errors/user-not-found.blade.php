@@ -3,15 +3,16 @@
 <head>
     <title>User or Chapter not found | Royal Manticoran Navy Database</title>
     <META HTTP-EQUIV="cache-control" CONTENT="no-cache">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.16/sc-1.4.3/datatables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/vendor.css') !!}?{{ time() }}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/app.css') !!}?{{ time() }}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/overrides.css') !!}?{{ time() }}">
-    <link href="https://fonts.googleapis.com/css?family=Volkhov" rel="stylesheet">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/v/bs/dt-1.10.16/sc-1.4.3/datatables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{!! asset('css/vendor.css') !!}?{{ time() }}">
+        <link rel="stylesheet" type="text/css" href="{!! asset('css/app.css') !!}?{{ time() }}">
+        <link rel="stylesheet" type="text/css" href="{!! asset('css/overrides.css') !!}?{{ time() }}">
+        <link href="https://fonts.googleapis.com/css?family=Volkhov" rel="stylesheet">
 
-    <link rel="shortcut icon" href="{!! asset('favicon.ico') !!}">
-    @yield('dochead')
-</head>
+        <link rel="shortcut icon" href="{!! asset('favicon.ico') !!}">
+        @yield('dochead')
+        </head>
 <body>
 <div class="container-fluid">
     <div class="row inset-bottom flex-vert-center navbar-fixed-top black-background header">
@@ -33,7 +34,10 @@
                 <h5 class="Incised901Light ninety">Last
                     Login: {!!date('d M Y @ g:i A T', strtotime(Auth::user()->getLastLogin()))!!}</h5>
 
-                <h5 class="Incised901Light ninety"><span class="fa fa-exclamation-triangle yellow" data-toggle="tooltip" data-placement="bottom" title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums"></span>&nbsp;Last Forum
+                <h5 class="Incised901Light ninety"><span class="fa fa-exclamation-triangle yellow" data-toggle="tooltip"
+                                                         data-placement="bottom"
+                                                         title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums"></span>&nbsp;Last
+                    Forum
                     Login:
                     @if(Auth::user()->forum_last_login)
                         {{date('d M Y @ g:i A T', Auth::user()->forum_last_login)}}
@@ -57,7 +61,8 @@
             <h3>The officers you requested are currently unavailable for assignment at this time.&rdquo;</h3>
             <p>&nbsp;</p>
 
-            <p class="text-center"><strong>Ok, ok. We couldn't find the member or chapter you were looking for... </strong></p>
+            <p class="text-center"><strong>Ok, ok. We couldn't find the member or chapter you were looking
+                    for... </strong></p>
             <p><a href="/home" class="btn btn-lg btn-primary">Return to the main page</a></p>
         </div>
     </div>

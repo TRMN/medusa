@@ -10,24 +10,28 @@
     <hr>
     <p><em>Last Updated: November 16, 2015</em></p>
 
-@if($showform === true)
-    <p>{!!$greeting['rank']!!} {!!$greeting['last_name']!!}, your access has changed. Please read the following and indicate
-        your agreement to this policy.</p>
+    @if($showform === true)
+        <p>{!!$greeting['rank']!!} {!!$greeting['last_name']!!}, your access has changed. Please read the following and
+            indicate
+            your agreement to this policy.</p>
 
-    <p>By reading this document and agreeing to the policy (by clicking that you have read and agree below) you are
-        acknowledging that you have been granted permission to view confidential information by The Royal Manticoran
-        Navy (TRMN). By agreeing you acknowledge that you are bound by TRMN regulations (Admiralty Orders) on
-        confidentiality. You further acknowledge that if you disseminate any information you have been granted without
-        permission from the Judge Advocate General or the First Lord of the Admiralty that you will be subject to
-        discipline up to and including revocation and denial of membership. Accidental dissemination of information may
-        be cause for discipline at the discretion of the Royal Council depending on the circumstances regarding the
-        dissemination.</p>
+        <p>By reading this document and agreeing to the policy (by clicking that you have read and agree below) you are
+            acknowledging that you have been granted permission to view confidential information by The Royal Manticoran
+            Navy (TRMN). By agreeing you acknowledge that you are bound by TRMN regulations (Admiralty Orders) on
+            confidentiality. You further acknowledge that if you disseminate any information you have been granted
+            without
+            permission from the Judge Advocate General or the First Lord of the Admiralty that you will be subject to
+            discipline up to and including revocation and denial of membership. Accidental dissemination of information
+            may
+            be cause for discipline at the discretion of the Royal Council depending on the circumstances regarding the
+            dissemination.</p>
 
-    <p>The following information is taken from the Official Secrets Act, which is the TRMN regulation regarding
-        confidential information. By agreeing you acknowledge that it is your responsibility to follow this and any
-        subsequent Admiralty Orders regarding confidentiality, regardless of whether or not this acknowledgment has been
-        updated or you have been asked to accept again.</p>
-@endif
+        <p>The following information is taken from the Official Secrets Act, which is the TRMN regulation regarding
+            confidential information. By agreeing you acknowledge that it is your responsibility to follow this and any
+            subsequent Admiralty Orders regarding confidentiality, regardless of whether or not this acknowledgment has
+            been
+            updated or you have been asked to accept again.</p>
+    @endif
     <h2 style="text-align: center;" class="trmn">THE OFFICIAL SECRETS ACT</h2>
 
     <p>The following Documents and Databases are to be considered classified Royal Manticoran Navy/Marine Corps/Army
@@ -66,19 +70,22 @@
         membership termination, with no refund of remaining pro-rated membership dues.</p>
 
     <p>The information in this section can also be found in relevant Admiralty Orders</p>
-@if($showform === true)
-    {!! Form::open(['route' => 'osa', 'method' => 'post']) !!}
-    {!! Form::hidden('id', Auth::user()->id) !!}
-    {!! Form::hidden('osa',1) !!}
+    @if($showform === true)
+        {!! Form::open(['route' => 'osa', 'method' => 'post']) !!}
+        {!! Form::hidden('id', Auth::user()->id) !!}
+        {!! Form::hidden('osa',1) !!}
 
-    <p><em>By clicking "I Agree", you agee that you have read and understand this policy. If you click "I do not agree",
-            you will be logged out and will be unable to use Medusa until you agree. For more information on why you
-            must agree to this policy, contact <a href="mailto:bupers@trmn.org">The Fifth Space Lord</a> (BuPers)</em>
-    </p>
-    <div>
-        <a class="btn btn-danger"
-           href="{!! route('signout') !!}"><span class="fa fa-times"></span> I do not agree </a> <button type="submit" class="btn btn-success"><span class="fa fa-check"></span> I Agree </button>
-    </div>
-    {!! Form::close() !!}
-@endif
+        <p><em>By clicking "I Agree", you agee that you have read and understand this policy. If you click "I do not
+                agree",
+                you will be logged out and will be unable to use Medusa until you agree. For more information on why you
+                must agree to this policy, contact <a href="mailto:bupers@trmn.org">The Fifth Space Lord</a>
+                (BuPers)</em>
+        </p>
+        <div>
+            <a class="btn btn-danger"
+               href="{!! route('signout') !!}"><span class="fa fa-times"></span> I do not agree </a>
+            <button type="submit" class="btn btn-success"><span class="fa fa-check"></span> I Agree</button>
+        </div>
+        {!! Form::close() !!}
+    @endif
 @stop

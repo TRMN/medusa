@@ -69,7 +69,7 @@
                 "$UI": true
             });
 
-            $('.trmnUserTable-{{$branch}}').on('draw.dt', function() {
+            $('.trmnUserTable-{{$branch}}').on('draw.dt', function () {
                 $('#right').height(240 + $('.trmnUserTable-{{$branch}}').height());
 
                 if ($('#right').height() < $('#left').height()) {

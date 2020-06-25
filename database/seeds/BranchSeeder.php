@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: dweiner
@@ -14,15 +15,15 @@ class BranchSeeder extends Seeder
         DB::collection('branches')->delete();
 
         $branches = [
-            'RMA'   => 'Royal Manticoran Army',
-            'RMMC'  => 'Royal Manticoran Marine Corp',
-            'RMN'   => 'Royal Manticoran Navy',
-            'GSN'   => 'Grayson Space Navy',
-            'IAN'   => 'Imperial Andermani Navy',
-            'RHN'   => 'Republic of Haven Navy',
+            'RMA' => 'Royal Manticoran Army',
+            'RMMC' => 'Royal Manticoran Marine Corp',
+            'RMN' => 'Royal Manticoran Navy',
+            'GSN' => 'Grayson Space Navy',
+            'IAN' => 'Imperial Andermani Navy',
+            'RHN' => 'Republic of Haven Navy',
             'CIVIL' => 'Civil Service/Government and Diplomatic Corp',
             'INTEL' => 'Civil Service/Espionage and Intelligence',
-            'SFS'   => 'Civil Service/Sphinx Forestry Service',
+            'SFS' => 'Civil Service/Sphinx Forestry Service',
         ];
 
         foreach ($branches as $branch => $name) {

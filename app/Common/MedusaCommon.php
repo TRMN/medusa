@@ -16,7 +16,7 @@ trait MedusaCommon
      *
      * Filter an array using a regular expression.  Return only elements of the array that the key matches the regex
      *
-     * @param array  $array
+     * @param array $array
      * @param string $search
      *
      * @return array $list

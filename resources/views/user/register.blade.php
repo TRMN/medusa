@@ -1,15 +1,15 @@
 @extends( 'layout' )
 
 @section( 'pageTitle' )
-Membership Application
+    Membership Application
 @stop
 
 @section('dochead')
-<script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 @stop
 
 @section( 'bodyclasses' )
-registerform
+    registerform
 @stop
 
 @section( 'content' )
@@ -127,7 +127,8 @@ registerform
         <legend>Terms of Service</legend>
         <div class="row">
             <div class="col-sm-12 text-left">
-                <em><strong>I have read and agree to the <a href="#" data-target="#tos" data-toggle="modal">Terms of Service</a></strong></em>
+                <em><strong>I have read and agree to the <a href="#" data-target="#tos" data-toggle="modal">Terms of
+                            Service</a></strong></em>
             </div>
         </div>
         <div class="row">
@@ -155,14 +156,18 @@ registerform
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-title">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="text-center">Terms of Service</h4>
                 </div>
                 <div class="modal-body">
                     @include('partials.tos')
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"></span> <storng>Close</storng> </button>
+                    <button class="btn btn-danger" data-dismiss="modal" aria-label="Close"><span
+                                class="fa fa-times"></span>
+                        <storng>Close</storng>
+                    </button>
                 </div>
             </div>
         </div>
@@ -170,14 +175,14 @@ registerform
 @stop
 @section ('scriptFooter')
     <script type="text/javascript">
-        $(function(){
-           $('#tosAgree').on('change', function() {
-              if ($(this).prop('checked')) {
-                  $('#btnSubmit').removeAttr('disabled');
-              } else {
-                  $('#btnSubmit').prop('disabled', true);
-              }
-           });
+        $(function () {
+            $('#tosAgree').on('change', function () {
+                if ($(this).prop('checked')) {
+                    $('#btnSubmit').removeAttr('disabled');
+                } else {
+                    $('#btnSubmit').prop('disabled', true);
+                }
+            });
         });
     </script>
 @stop

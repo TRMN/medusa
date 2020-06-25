@@ -26,10 +26,10 @@
                 "orderable": false,
                 "searchable": false
             },
-            {
-                className: 'nowrap',
-                targets: [8]
-            }
+                {
+                    className: 'nowrap',
+                    targets: [8]
+                }
             ],
             "order": [[3, 'asc']],
             "$UI": true

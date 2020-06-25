@@ -21,13 +21,14 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-<p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington Fan
-    Association,
-    Inc. Some Rights Reserved.
-    Honor Harrington and all related materials are &copy; David Weber.</p>
-<span class="text-center"><img src="{!!asset('images/project-medusa.svg')!!}" width="150px" height="150px"
-                               data-src="{!!asset('images/project-medusa.svg')!!}"></span>
-<p>{!! Config::get('app.version') !!}</p>
+            <p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington
+                Fan
+                Association,
+                Inc. Some Rights Reserved.
+                Honor Harrington and all related materials are &copy; David Weber.</p>
+            <span class="text-center"><img src="{!!asset('images/project-medusa.svg')!!}" width="150px" height="150px"
+                                           data-src="{!!asset('images/project-medusa.svg')!!}"></span>
+            <p>{!! Config::get('app.version') !!}</p>
         @endcomponent
     @endslot
 @endcomponent

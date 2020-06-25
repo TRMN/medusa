@@ -5,8 +5,7 @@ namespace App;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
- * Class Branch
- * @package App
+ * Class Branch.
  *
  * @property string id
  * @property string branch
@@ -39,11 +38,11 @@ class Branch extends Eloquent
         $includeRmmmDivisions = true;
 
         if (array_key_exists('include_civil_divisions', $options) === true) {
-          $includeCivilDivisions = $options['include_civil_divisions'];
+            $includeCivilDivisions = $options['include_civil_divisions'];
         }
 
         if (array_key_exists('include_rmmm_divisions', $options) === true) {
-          $includeRmmmDivisions = $options['include_rmmm_divisions'];
+            $includeRmmmDivisions = $options['include_rmmm_divisions'];
         }
 
         $branches = [];
@@ -53,17 +52,17 @@ class Branch extends Eloquent
         }
 
         if ($includeCivilDivisions === true) {
-          $branches['DIPLOMATIC'] = 'Diplomatic Corps';
-          $branches['INTEL'] = 'Intelligence Corps';
+            $branches['DIPLOMATIC'] = 'Diplomatic Corps';
+            $branches['INTEL'] = 'Intelligence Corps';
         } else {
-          $branches['CIVIL'] = 'Civil Service';
+            $branches['CIVIL'] = 'Civil Service';
         }
 
         if ($includeRmmmDivisions) {
-          $branches['MEDICAL'] = "RMMM Medical Division";
-          $branches['CATERING'] = "RMMM Catering Division";
-          $branches['ENG'] = "RMMM Engineering Division";
-          $branches['DECK'] = "RMMM Deck Division";
+            $branches['MEDICAL'] = 'RMMM Medical Division';
+            $branches['CATERING'] = 'RMMM Catering Division';
+            $branches['ENG'] = 'RMMM Engineering Division';
+            $branches['DECK'] = 'RMMM Deck Division';
         }
 
         asort($branches);
@@ -76,7 +75,7 @@ class Branch extends Eloquent
     public static function getNavalBranchList()
     {
         foreach (self::whereIn('branch', MedusaConfig::get('chapter.naval', ['RMN', 'GSN', 'IAN', 'RHN']))
-                ->get(['branch', 'branch_name']) as $branch) {
+                     ->get(['branch', 'branch_name']) as $branch) {
             $branches[$branch['branch']] = $branch['branch_name'];
         }
 
@@ -95,7 +94,7 @@ class Branch extends Eloquent
     }
 
     /**
-     * Check if this is a military branch
+     * Check if this is a military branch.
      *
      * @return bool
      */
@@ -107,14 +106,14 @@ class Branch extends Eloquent
             'RMA',
             'GSN',
             'RHN',
-            'IAN'
+            'IAN',
         ];
 
         return in_array($this->branch, $militaryBranches);
     }
 
     /**
-     * Check if this is a civilian branch
+     * Check if this is a civilian branch.
      *
      * @return bool
      */
@@ -124,7 +123,7 @@ class Branch extends Eloquent
             'CIVIL',
             'SFC',
             'RMMM',
-            'RMACS'
+            'RMACS',
         ];
 
         return in_array($this->branch, $civilianBranches);

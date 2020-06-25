@@ -26,20 +26,20 @@ Email: {!!$report->command_crew['Commanding Officer']['email_address']!!}<br>
 EXECUTIVE OFFICER<br>
 <br>
 @if(empty($report->command_crew['Executive Officer']) === false)
-Name: {!!$report->command_crew['Executive Officer']['first_name']!!} @if(empty($report->command_crew['Executive Officer']->middile_name) === false) {!!$report->command_crew['Executive Officer']['middle_name']!!} @endif {!!$report->command_crew['Executive Officer']['last_name']!!} @if(empty($report->command_crew['Executive Officer']->suffix) === false) {!!$report->command_crew['Executive Officer']->suffix!!} @endif
-<br>
-SID#: {!!$report->command_crew['Executive Officer']['member_id']!!}<br>
-Rank: {!!$report->command_crew['Executive Officer']['rank']['grade']!!}<br>
-<br>
-Last Course Completed: {!!$report->command_crew['Executive Officer']['last_course']!!}<br>
-<br>
-Date of Birth: {!!date('m/d/Y', strtotime($report->command_crew['Executive Officer']['dob']))!!}<br>
-<br>
-Phone:@if(empty($report->command_crew['Executive Officer']['phone_number']) === true)
-    N/A @else {!!$report->command_crew['Executive Officer']['phone_number']!!} @endif <br>
-Email: {!!$report->command_crew['Executive Officer']['email_address']!!}<br>
+    Name: {!!$report->command_crew['Executive Officer']['first_name']!!} @if(empty($report->command_crew['Executive Officer']->middile_name) === false) {!!$report->command_crew['Executive Officer']['middle_name']!!} @endif {!!$report->command_crew['Executive Officer']['last_name']!!} @if(empty($report->command_crew['Executive Officer']->suffix) === false) {!!$report->command_crew['Executive Officer']->suffix!!} @endif
+    <br>
+    SID#: {!!$report->command_crew['Executive Officer']['member_id']!!}<br>
+    Rank: {!!$report->command_crew['Executive Officer']['rank']['grade']!!}<br>
+    <br>
+    Last Course Completed: {!!$report->command_crew['Executive Officer']['last_course']!!}<br>
+    <br>
+    Date of Birth: {!!date('m/d/Y', strtotime($report->command_crew['Executive Officer']['dob']))!!}<br>
+    <br>
+    Phone:@if(empty($report->command_crew['Executive Officer']['phone_number']) === true)
+        N/A @else {!!$report->command_crew['Executive Officer']['phone_number']!!} @endif <br>
+    Email: {!!$report->command_crew['Executive Officer']['email_address']!!}<br>
 @else
-None Found
+    None Found
 @endif
 <br>
 
@@ -47,20 +47,20 @@ None Found
 CHIEF PETTY OFFICER<br>
 <br>
 @if(empty($report->command_crew['Bosun']) === false)
-Name: {!!$report->command_crew['Bosun']['first_name']!!} @if(empty($report->command_crew['Bosun']->middile_name) === false) {!!$report->command_crew['Bosun']['middle_name']!!} @endif {!!$report->command_crew['Bosun']['last_name']!!} @if(empty($report->command_crew['Bosun']->suffix) === false) {!!$report->command_crew['Bosun']->suffix!!} @endif
-<br>
-SID#: {!!$report->command_crew['Bosun']['member_id']!!}<br>
-Rank: {!!$report->command_crew['Bosun']['rank']['grade']!!}<br>
-<br>
-Last Course Completed: {!!$report->command_crew['Bosun']['last_course']!!}<br>
-<br>
-Date of Birth: {!!date('m/d/Y', strtotime($report->command_crew['Bosun']['dob']))!!}<br>
-<br>
-Phone:@if(empty($report->command_crew['Bosun']['phone_number']) === true)
-    N/A @else {!!$report->command_crew['Bosun']['phone_number']!!} @endif <br>
-Email: {!!$report->command_crew['Bosun']['email_address']!!}<br>
+    Name: {!!$report->command_crew['Bosun']['first_name']!!} @if(empty($report->command_crew['Bosun']->middile_name) === false) {!!$report->command_crew['Bosun']['middle_name']!!} @endif {!!$report->command_crew['Bosun']['last_name']!!} @if(empty($report->command_crew['Bosun']->suffix) === false) {!!$report->command_crew['Bosun']->suffix!!} @endif
+    <br>
+    SID#: {!!$report->command_crew['Bosun']['member_id']!!}<br>
+    Rank: {!!$report->command_crew['Bosun']['rank']['grade']!!}<br>
+    <br>
+    Last Course Completed: {!!$report->command_crew['Bosun']['last_course']!!}<br>
+    <br>
+    Date of Birth: {!!date('m/d/Y', strtotime($report->command_crew['Bosun']['dob']))!!}<br>
+    <br>
+    Phone:@if(empty($report->command_crew['Bosun']['phone_number']) === true)
+        N/A @else {!!$report->command_crew['Bosun']['phone_number']!!} @endif <br>
+    Email: {!!$report->command_crew['Bosun']['email_address']!!}<br>
 @else
-None Found
+    None Found
 @endif
 <br>
 
@@ -82,22 +82,28 @@ NEW REGULAR CREW SINCE LAST REPORT<br><br>
 
 
 SHIP INFORMATION<br><br>
-Class: @if(empty($report->chapter_info['ship_class']) === false) {!!$report->chapter_info['ship_class']!!} @else N/A @endif <br>
-Class Code: @if(empty($report->chapter_info['hull_number']) === false) {!!$report->chapter_info['hull_number']!!} @else N/A @endif
+Class: @if(empty($report->chapter_info['ship_class']) === false) {!!$report->chapter_info['ship_class']!!} @else
+    N/A @endif <br>
+Class Code: @if(empty($report->chapter_info['hull_number']) === false) {!!$report->chapter_info['hull_number']!!} @else
+    N/A @endif
 <br>
 <br>
 Ship Name: {!!$report->chapter_info['chapter_name']!!}<br>
 <br>
-Location: {!!$report->command_crew['Commanding Officer']['city']!!}, {!!$report->command_crew['Commanding Officer']['state_province']!!}<br>
+Location: {!!$report->command_crew['Commanding Officer']['city']!!}
+, {!!$report->command_crew['Commanding Officer']['state_province']!!}<br>
 @if(empty($report->chapter_info['url']) === false)
     <br>Web Site: {!!$report->chapter_info['url']!!} <br>
 @endif
 <br>
 REPORT INFORMATION<br><br>
-Promotions Awarded/Requested: @if(empty($report->promotion_actions) === false) {!!nl2br($report->promotion_actions)!!} @endif<br><br>
+Promotions
+Awarded/Requested: @if(empty($report->promotion_actions) === false) {!!nl2br($report->promotion_actions)!!} @endif
+<br><br>
 Crew Accomplishments: @if(empty($report->award_actions) === false) {!!nl2br($report->award_actions)!!} @endif<br><br>
 Courses Completed: @if(empty($report->courses) === false) {!!nl2br($report->courses)!!} @endif<br><br>
-Chapter Activities, Last 60 Days: @if(empty($report->activities) === false) {!!nl2br($report->activities)!!} @endif<br><br>
+Chapter Activities, Last 60 Days: @if(empty($report->activities) === false) {!!nl2br($report->activities)!!} @endif
+<br><br>
 Problems: @if(empty($report->problems) === false) {!!nl2br($report->problems)!!} @endif<br><br>
 General Questions: @if(empty($report->questions) === false) {!!nl2br($report->questions)!!} @endif
 

@@ -40,7 +40,7 @@
         .selectize-control.single .selectize-input,
         .selectize-control.single .selectize-input.input-active {
             background: #1c1c1d;
-            color:  whitesmoke;
+            color: whitesmoke;
         }
 
         .selectize-control.single .selectize-input,
@@ -97,14 +97,15 @@
                 </li>
                 <li>Event Registrars and the Event Coordinator will use the MEDUSA Mobile app to scan ID cards to check
                     people into events. A Registrar or Event Coordinator will be the only people that can access the
-                    event on the mobile app to check members in for attendance.  The event will not show up in the mobile
-                    app until the date(s) of the event.  If your event is not showing up, try signing out of the mobile
+                    event on the mobile app to check members in for attendance. The event will not show up in the mobile
+                    app until the date(s) of the event. If your event is not showing up, try signing out of the mobile
                     app and signing back in, or reloading your profile from the Profile menu.
                 </li>
                 <li>
                     The Event Coordinator will be able to edit the event until the first attendee has been checked in.
                 </li>
-                <li>The Event Coordinator will be able to download a .csv of the event attendance at any time the event the
+                <li>The Event Coordinator will be able to download a .csv of the event attendance at any time the event
+                    the
                     event has started by logging into MEDUSA and selecting their event.
                 </li>
             </ol>
@@ -158,7 +159,7 @@
                     </div>
                 </div>
             </fieldset>
-<br />
+            <br/>
             <fieldset id="dates" class="padding-top-10">
                 <legend>Dates and Event Registrars</legend>
                 <div class="row">
@@ -216,7 +217,7 @@
             onInitialize: function () {
                 var self = this;
                 @foreach($event->registrars as $registrar)
-                    self.addOption({
+                self.addOption({
                     data: '{!!$registrar!!}',
                     value: '{!!App\User::find($registrar)->getFullName()!!} ({!!App\User::find($registrar)->getAssignmentName('primary')!!})'
                 });

@@ -20,7 +20,8 @@
     </div>
     <div class="row">
         <div class="col-sm-6  ninety Incised901Light form-group text-center">
-            <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> <strong>Save</strong> </button>
+            <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> <strong>Save</strong>
+            </button>
             {!! Form::close() !!}
         </div>
     </div>

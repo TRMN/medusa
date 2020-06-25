@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\LoginComplete;
 use App\Awards\DateQualification;
+use App\Events\LoginComplete;
 
 /**
  * Class QE3GJM.

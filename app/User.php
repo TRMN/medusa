@@ -2,76 +2,75 @@
 
 namespace App;
 
-use DateTime;
-use Exception;
-use Carbon\Carbon;
 use App\Audit\MedusaAudit;
-use Illuminate\Support\Arr;
+use App\Awards\AwardQualification;
 use App\Common\MedusaCommon;
 use App\Enums\MedusaDefaults;
-use App\Awards\AwardQualification;
-use Laravel\Passport\HasApiTokens;
+use App\Permissions\MedusaPermissions;
 use App\Promotions\MedusaPromotions;
+use Carbon\Carbon;
+use DateTime;
+use Exception;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use App\Permissions\MedusaPermissions;
-use Illuminate\Notifications\Notifiable;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Auth\Passwords\CanResetPassword;
-//use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Laravel\Passport\HasApiTokens;
 use Medusa\Mongodb\Auth\User as Authenticatable;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /**
  * MEDUSA User model.
  *
- * @property string id
- * @property string forum_last_login
- * @property string first_name
- * @property string middle_name
- * @property string last_name
- * @property string suffix
+ * @property array assignment
+ * @property array awards
+ * @property array history
+ * @property array peerages
+ * @property array permissions
+ * @property array points
+ * @property array previous
+ * @property array rank
+ * @property array|string rating
+ * @property object updated_at
+ * @property string active
  * @property string address1
  * @property string address2
- * @property string city
- * @property string state_province
- * @property string postal_code
- * @property string country
- * @property string phone_number
- * @property string email_address
- * @property string branch
- * @property array|string rating
- * @property array rank
- * @property array assignment
- * @property array peerages
- * @property array awards
- * @property string password
- * @property array permissions
- * @property string duty_roster
- * @property string registration_status
  * @property string application_date
- * @property string registration_date
- * @property string active
+ * @property string branch
+ * @property string city
+ * @property string country
  * @property string dob
- * @property string osa
- * @property string idcard_printed
- * @property string note
- * @property string last_login
- * @property string previous_login
- * @property string lastUpdate
+ * @property string duty_roster
+ * @property string email_address
+ * @property string extraPadding
+ * @property string first_name
+ * @property string forum_last_login
  * @property string hasEvents
+ * @property string id
+ * @property string idcard_printed
+ * @property string last_forum_login
+ * @property string last_login
+ * @property string last_name
+ * @property string lastUpdate
+ * @property string member_id
+ * @property string middle_name
+ * @property string note
+ * @property string osa
+ * @property string password
+ * @property string path
+ * @property string phone_number
+ * @property string postal_code
+ * @property string previous_login
+ * @property string promotionStatus
+ * @property string rank_title
+ * @property string registration_date
+ * @property string registration_status
+ * @property string state_province
+ * @property string suffix
  * @property string unitPatchPath
  * @property string usePeerageLands
- * @property string extraPadding
- * @property string last_forum_login
- * @property array points
- * @property string path
- * @property array history
- * @property string rank_title
- * @property string member_id
- * @property object updated_at
- * @property string promotionStatus
- * @property array previous
  */
 class User extends Authenticatable implements CanResetPasswordContract
 {
@@ -85,110 +84,110 @@ class User extends Authenticatable implements CanResetPasswordContract
         MedusaPromotions;
 
     public static $rules = [
-        'first_name'         => 'required|min:2',
-        'last_name'          => 'required|min:2',
-        'address1'           => 'required|min:4',
-        'city'               => 'required|min:2',
-        'state_province'     => 'required|min:2',
-        'postal_code'        => 'required|min:2',
-        'country'            => 'required',
-        'email_address'      => 'required|email|unique:users',
-        'password'           => 'confirmed',
-        'branch'             => 'required',
+        'address1' => 'required|min:4',
+        'branch' => 'required',
+        'city' => 'required|min:2',
+        'country' => 'required',
+        'email_address' => 'required|email|unique:users',
+        'first_name' => 'required|min:2',
+        'last_name' => 'required|min:2',
+        'password' => 'confirmed',
+        'phone_number' => 'nullable|sometimes|regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
+        'postal_code' => 'required|min:2',
         'primary_assignment' => 'required',
-        'phone_number'       => 'nullable|sometimes|regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
+        'state_province' => 'required|min:2',
     ];
 
     public static $updateRules = [
-        'first_name'            => 'required|min:2',
-        'last_name'             => 'required|min:2',
-        'address1'              => 'required|min:4',
-        'city'                  => 'required|min:2',
-        'state_province'        => 'required|min:2',
-        'postal_code'           => 'required|min:2',
-        'country'               => 'required',
-        'email_address'         => 'required|email',
-        'password'              => 'confirmed',
-        'branch'                => 'required',
-        'phone_number'          => 'nullable|sometimes|regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
-        'primary_assignment'    => 'required',
-        'primary_billet'        => 'required',
+        'address1' => 'required|min:4',
+        'application_date' => 'required',
+        'branch' => 'required',
+        'city' => 'required|min:2',
+        'country' => 'required',
+        'dob' => 'required',
+        'email_address' => 'required|email',
+        'first_name' => 'required|min:2',
+        'last_name' => 'required|min:2',
+        'password' => 'confirmed',
+        'phone_number' => 'nullable|sometimes|regex:/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/',
+        'postal_code' => 'required|min:2',
+        'primary_assignment' => 'required',
+        'primary_billet' => 'required',
         'primary_date_assigned' => 'required',
-        'dob'                   => 'required',
-        'registration_status'   => 'required',
-        'registration_date'     => 'required',
-        'application_date'      => 'required',
+        'registration_date' => 'required',
+        'registration_status' => 'required',
+        'state_province' => 'required|min:2',
     ];
 
     public static $error_message = [
-        'min'                            => 'The members :attribute must be at least :min characters long',
-        'address1.required'              => 'Please enter the members street address',
-        'address1.min'                   => 'The street address must be at least :size characters long',
-        'required'                       => 'Please enter the members :attribute',
-        'state_province.required'        => 'Please enter the members state or province',
-        'state_province.min'             => 'The members state or province must be at least :size character long',
-        'date_format'                    => 'Please enter a date in the format YYYY-MM-DD',
-        'branch.required'                => 'Please select the members branch',
-        'email_address.unique'           => 'That email address is already in use',
-        'primary_assignment.required'    => 'Please select a chapter',
-        'primary_billet.required'        => 'Please select a billet',
+        'address1.min' => 'The street address must be at least :size characters long',
+        'address1.required' => 'Please enter the members street address',
+        'application_date' => 'Please enter the date of application',
+        'branch.required' => 'Please select the members branch',
+        'date_format' => 'Please enter a date in the format YYYY-MM-DD',
+        'dob.required' => 'Please enter a date of birth',
+        'email_address.unique' => 'That email address is already in use',
+        'min' => 'The members :attribute must be at least :min characters long',
+        'phone_number' => 'Please enter a valid telephone number',
+        'primary_assignment.required' => 'Please select a chapter',
+        'primary_billet.required' => 'Please select a billet',
         'primary_date_assigned.required' => 'Please specify the date assigned',
-        'dob.required'                   => 'Please enter a date of birth',
-        'phone_number'                   => 'Please enter a valid telephone number',
-        'registration_status'            => 'Please select a registration status',
-        'registration_date'              => 'Please enter the date of registration',
-        'application_date'               => 'Please enter the date of application',
+        'registration_date' => 'Please enter the date of registration',
+        'registration_status' => 'Please select a registration status',
+        'required' => 'Please enter the members :attribute',
+        'state_province.min' => 'The members state or province must be at least :size character long',
+        'state_province.required' => 'Please enter the members state or province',
     ];
 
     protected $hidden = ['password', 'remember_token'];
 
     protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
-        'suffix',
+        'active',
         'address1',
         'address2',
-        'city',
-        'state_province',
-        'postal_code',
-        'country',
-        'phone_number',
-        'email_address',
-        'branch',
-        'rating',
-        'rank',
-        'assignment',
-        'peerages',
-        'awards',
-        'password',
-        'permissions',
-        'duty_roster',
-        'registration_status',
         'application_date',
-        'registration_date',
-        'active',
+        'assignment',
+        'awards',
+        'branch',
+        'city',
+        'country',
         'dob',
-        'osa',
-        'idcard_printed',
-        'note',
-        'last_login',
-        'previous_login',
-        'lastUpdate',
+        'duty_roster',
+        'email_address',
+        'extraPadding',
+        'first_name',
         'hasEvents',
+        'history',
+        'idcard_printed',
+        'last_forum_login',
+        'last_login',
+        'last_name',
+        'lastUpdate',
+        'middle_name',
+        'note',
+        'osa',
+        'password',
+        'path',
+        'peerages',
+        'permissions',
+        'phone_number',
+        'points',
+        'postal_code',
+        'previous',
+        'previous_login',
+        'promotionStatus',
+        'rank',
+        'rating',
+        'registration_date',
+        'registration_status',
+        'state_province',
+        'suffix',
         'unitPatchPath',
         'usePeerageLands',
-        'extraPadding',
-        'last_forum_login',
-        'points',
-        'path',
-        'history',
-        'promotionStatus',
-        'previous',
     ];
 
     /**
-     * Get the current age of the member
+     * Get the current age of the member.
      *
      * @return int
      */
@@ -236,7 +235,7 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * Get users name with rank.
+     * Get the user's name with rank.
      *
      * @return string
      */
@@ -246,7 +245,7 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * Get the users full name.
+     * Get the user's full name.
      *
      * @param bool $lastFirst Return name is Last, First Middle instead of
      *                        First Middle Last
@@ -341,7 +340,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         if (! empty($this->rating)) {
             if (is_array($this->rating) === true) {
                 $results = Rating::where('rate_code', '=', $this->rating['rate'])
-                                 ->first();
+                    ->first();
             } else {
                 $results = Rating::where('rate_code', '=', $this->rating)->first();
             }
@@ -353,7 +352,7 @@ class User extends Authenticatable implements CanResetPasswordContract
             }
 
             $this->rating = [
-                'rate'        => $currentRating,
+                'rate' => $currentRating,
                 'description' => $results->rate['description'],
             ];
         }
@@ -377,7 +376,6 @@ class User extends Authenticatable implements CanResetPasswordContract
         } elseif ($this->branch == 'CIVIL') {
             return 'DIPLOMATIC';
         }
-        return null;
     }
 
     /**
@@ -618,7 +616,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         if (is_null($chapterCO) === false &&
             ($chapterCO['id'] == $this->id ||
-             Auth::user()->hasAllPermissions() === true)) {
+                Auth::user()->hasAllPermissions() === true)) {
             return true;
         }
 
@@ -628,7 +626,7 @@ class User extends Authenticatable implements CanResetPasswordContract
     /**
      * Find an assignment associated with this user.
      *
-     * @param $chapterId - The chapter ID of the chapter we want to look for
+     * @param $chapterID - The chapter ID of the chapter we want to look for
      *
      * @return array
      */
@@ -707,9 +705,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     /**
      * Get the primary assignment chapter id.
      *
-     * @deprecated
-     *
      * @return bool|string
+     * @deprecated
      */
     public function getPrimaryAssignmentId()
     {
@@ -721,9 +718,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     /**
      * Get the secondary assignment chapter id.
      *
-     * @deprecated
-     *
      * @return bool|string
+     * @deprecated
      */
     public function getSecondaryAssignmentId()
     {
@@ -745,9 +741,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * @deprecated
-     *
      * @return bool|mixed
+     * @deprecated
      */
     public function getPrimaryAssignmentName()
     {
@@ -757,9 +752,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * @deprecated
-     *
      * @return bool|mixed
+     * @deprecated
      */
     public function getSecondaryAssignmentName()
     {
@@ -811,9 +805,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * @deprecated
-     *
      * @return bool|mixed
+     * @deprecated
      */
     public function getPrimaryAssignmentDesignation()
     {
@@ -823,9 +816,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * @deprecated
-     *
      * @return bool|mixed
+     * @deprecated
      */
     public function getSecondaryAssignmentDesignation()
     {
@@ -847,9 +839,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * @deprecated
-     *
      * @return bool|mixed
+     * @deprecated
      */
     public function getPrimaryBillet()
     {
@@ -859,9 +850,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * @deprecated
-     *
      * @return bool|mixed
+     * @deprecated
      */
     public function getSecondaryBillet()
     {
@@ -886,9 +876,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * @deprecated
-     *
      * @return bool|mixed
+     * @deprecated
      */
     public function getPrimaryDateAssigned()
     {
@@ -898,9 +887,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
-     * @deprecated
-     *
      * @return bool|mixed
+     * @deprecated
      */
     public function getSecondaryDateAssigned()
     {
@@ -946,8 +934,8 @@ class User extends Authenticatable implements CanResetPasswordContract
     {
         if (empty($this->rank['date_of_rank']) === false) {
             $dorObj = new DateTime();
-            list(
-                $year, $month, $day) =
+            [
+                $year, $month, $day] =
                 explode('-', $this->rank['date_of_rank']);
             $dorObj->setDate($year, $month, $day);
 
@@ -1035,8 +1023,6 @@ class User extends Authenticatable implements CanResetPasswordContract
             }
 
             return $timeInService->format('%y Year(s), %m Month(s), %d Day(s)');
-        } else {
-            return;
         }
     }
 
@@ -1837,10 +1823,10 @@ class User extends Authenticatable implements CanResetPasswordContract
         $idCard->insert(
             base64_encode(
                 QrCode::format('png')
-                      ->margin(1)
-                      ->size(150)
-                      ->errorCorrection('H')
-                      ->generate($this->member_id)
+                    ->margin(1)
+                    ->size(150)
+                    ->errorCorrection('H')
+                    ->generate($this->member_id)
             ),
             'top-left',
             780,
@@ -1945,11 +1931,10 @@ class User extends Authenticatable implements CanResetPasswordContract
     /**
      * Find the lowest unused member id.
      *
-     * @deprecated Operation too expensive. Will now return the next available member id.
-     *
      * @param bool $honorary
      *
      * @return string
+     * @deprecated Operation too expensive. Will now return the next available member id.
      */
     public static function getFirstAvailableMemberId($honorary = false)
     {
@@ -2082,15 +2067,15 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         $events =
             Events::where('start_date', '<=', date('Y-m-d'))
-                  ->where('end_date', '>=', date('Y-m-d'))
-                  ->where(
-                      function ($query) {
-                          $query->where('requestor', '=', $this->id)
-                                ->orWhere('registrars', '=', $this->id);
-                      }
-                  )
-                  ->orderBy('start_date', 'ASC')
-                  ->get(['id', 'event_name']);
+                ->where('end_date', '>=', date('Y-m-d'))
+                ->where(
+                    function ($query) {
+                        $query->where('requestor', '=', $this->id)
+                            ->orWhere('registrars', '=', $this->id);
+                    }
+                )
+                ->orderBy('start_date', 'ASC')
+                ->get(['id', 'event_name']);
 
         $this->setTimeZone($currentTz);
 
@@ -2107,12 +2092,8 @@ class User extends Authenticatable implements CanResetPasswordContract
      *
      * @return array
      */
-    public function checkMemberIn(
-        $event,
-        $member,
-        $continent = null,
-        $city = null
-    ) {
+    public function checkMemberIn($event, $member, $continent = null, $city = null)
+    {
         $currentTz = $this->setTimeZone($continent, $city);
 
         // Event sanity checks
@@ -2183,15 +2164,13 @@ class User extends Authenticatable implements CanResetPasswordContract
 
                     $this->setTimeZone($currentTz);
 
-                    return ['success' => $user->getFullName().
-                                         ' has been checked in to '.
-                                         $event->event_name, ];
+                    return ['success' => $user->getFullName().' has been checked in to '.$event->event_name];
                 } catch (Exception $e) {
                     $this->setTimeZone($currentTz);
 
-                    return ['error' => 'There was a problem checking '.
-                                       $user->getFullName().' in to '.
-                                       $event->event_name, ];
+                    $message = 'There was a problem checking '.$user->getFullName().' in to '.$event->event_name;
+
+                    return ['error' => $message];
                 }
             }
         } else {
@@ -2254,7 +2233,7 @@ class User extends Authenticatable implements CanResetPasswordContract
         foreach ($this->awards as $code => $award) {
             foreach ($award['award_date'] as $date) {
                 $awardDate = Carbon::createFromFormat('Y-m-d H', $date.' 0')
-                                   ->addDays(config('awards.display_days'));
+                    ->addDays(config('awards.display_days'));
 
                 if ($today->lt($awardDate)) {
                     // Reduce the count by one, the date of this award instance + 2 days is still in the future
@@ -2304,7 +2283,7 @@ class User extends Authenticatable implements CanResetPasswordContract
                 foreach ($award['award_date'] as $date) {
                     $awardDate =
                         Carbon::createFromFormat('Y-m-d H', $date.' 0')
-                              ->addDays(config('awards.display_days'));
+                            ->addDays(config('awards.display_days'));
 
                     if ($today->lt($awardDate)) {
                         // Reduce the count by one, the date of this award instance + 2 days is still in the future
@@ -2404,10 +2383,10 @@ class User extends Authenticatable implements CanResetPasswordContract
         foreach ($chapters as $item) {
             $chapter = Chapter::find($item);
             $path = 'patches/'.$chapter->chapter_type.'/'.
-                    (empty($chapter->branch) ||
-                     $chapter->chapter_type == 'bureau' ? '' :
-                        $chapter->branch.'/').trim($chapter->hull_number).
-                    '.svg';
+                (empty($chapter->branch) ||
+                $chapter->chapter_type == 'bureau' ? '' :
+                    $chapter->branch.'/').trim($chapter->hull_number).
+                '.svg';
 
             if (file_exists(public_path($path)) === true) {
                 return $path;
@@ -2520,7 +2499,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         if (in_array($key, $validKeys) === true &&
             (is_numeric($value) === true ||
-             in_array($value, ['B', 'E', 'S', 'D', 'G']) === true
+                in_array($value, ['B', 'E', 'S', 'D', 'G']) === true
             )) {
             // Valid promotion point key and is a number
             $points = $this->points;
@@ -2555,7 +2534,7 @@ class User extends Authenticatable implements CanResetPasswordContract
                     foreach ($award['award_date'] as $date) {
                         $awardDate =
                             Carbon::createFromFormat('Y-m-d H', $date.' 0')
-                                  ->addDays(config('awards.display_days'));
+                                ->addDays(config('awards.display_days'));
 
                         if ($today->lt($awardDate)) {
                             // Reduce the count by one, the date of this award instance + 2 days is still in the future
@@ -2789,9 +2768,8 @@ class User extends Authenticatable implements CanResetPasswordContract
      *
      * @param array $entry
      *
-     * @throws \Exception
-     *
      * @return bool
+     * @throws \Exception
      */
     public function addServiceHistoryEntry(array $entry)
     {
@@ -2841,12 +2819,12 @@ class User extends Authenticatable implements CanResetPasswordContract
     /**
      * Get all active users.
      *
-     * @return \App\User[]
+     * @return User[]
      */
     public static function activeUsers()
     {
         return self::where('registration_status', 'Active')->where('active', 1)
-                   ->get();
+            ->get();
     }
 
     /**

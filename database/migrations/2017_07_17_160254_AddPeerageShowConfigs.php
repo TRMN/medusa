@@ -16,15 +16,15 @@ class AddPeerageShowConfigs extends Migration
 
         $showConfig['keep'] = [
             'Knight' => [
-                'billet'        => 'Knight',
+                'billet' => 'Knight',
                 'display_order' => 1,
             ],
             'Dame' => [
-                'billet'        => 'Dame',
+                'billet' => 'Dame',
                 'display_order' => 1,
             ],
             'Majordomo' => [
-                'billet'        => 'Majordomo',
+                'billet' => 'Majordomo',
                 'display_order' => 2,
             ],
 
@@ -32,14 +32,14 @@ class AddPeerageShowConfigs extends Migration
 
         $showConfig['barony'] = [
             'Baron|Baroness' => [
-                'display_order'  => 1,
+                'display_order' => 1,
                 'allow_courtesy' => false,
             ],
             'Baroness|Baron' => [
                 'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet'        => 'Majordomo',
+                'billet' => 'Majordomo',
                 'display_order' => 3,
             ],
 
@@ -48,13 +48,13 @@ class AddPeerageShowConfigs extends Migration
         $showConfig['county'] = [
             'Earl|Countess' => [
                 'allow_courtesy' => false,
-                'display_order'  => 1,
+                'display_order' => 1,
             ],
             'Countess|Earl' => [
                 'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet'        => 'Majordomo',
+                'billet' => 'Majordomo',
                 'display_order' => 3,
             ],
 
@@ -63,13 +63,13 @@ class AddPeerageShowConfigs extends Migration
         $showConfig['duchy'] = [
             'Duke|Duchess' => [
                 'allow_courtesy' => false,
-                'display_order'  => 1,
+                'display_order' => 1,
             ],
             'Duchess|Duke' => [
                 'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet'        => 'Majordomo',
+                'billet' => 'Majordomo',
                 'display_order' => 3,
             ],
 
@@ -77,14 +77,14 @@ class AddPeerageShowConfigs extends Migration
 
         $showConfig['steading'] = [
             'Steadholder' => [
-                'billet'        => 'Steadholder',
+                'billet' => 'Steadholder',
                 'display_order' => 1,
             ],
             'Lord|Lady' => [
                 'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet'        => 'Majordomo',
+                'billet' => 'Majordomo',
                 'display_order' => 3,
             ],
 
@@ -93,13 +93,13 @@ class AddPeerageShowConfigs extends Migration
         $showConfig['grand_duchy'] = [
             'Grand Duke|Grand Duchess' => [
                 'allow_courtesy' => false,
-                'display_order'  => 1,
+                'display_order' => 1,
             ],
             'Grand Duchess|Grand Duke' => [
                 'display_order' => 2,
             ],
             'Majordomo' => [
-                'billet'        => 'Majordomo',
+                'billet' => 'Majordomo',
                 'display_order' => 3,
             ],
 

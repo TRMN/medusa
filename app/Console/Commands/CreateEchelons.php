@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\User;
 use App\Chapter;
+use App\User;
 use Illuminate\Console\Command;
 
 class CreateEchelons extends Command
@@ -142,8 +142,8 @@ class CreateEchelons extends Command
         if ($makeCO === true) {
             // Build the new assignment
             $assignments[] = [
-                'chapter_id'   => $echelon,
-                'billet'       => 'Commanding Officer',
+                'chapter_id' => $echelon,
+                'billet' => 'Commanding Officer',
                 'Chapter Name' => $name,
             ];
 
@@ -177,12 +177,12 @@ class CreateEchelons extends Command
         $this->info('Creating echelon '.$name);
         // Build the echelon record
         $echelonRecord = [
-            'chapter_name'    => $name,
-            'chapter_type'    => $type,
+            'chapter_name' => $name,
+            'chapter_type' => $type,
             'commission_date' => $cdate,
-            'hull_number'     => $designation,
-            'branch'          => $branch,
-            'joinable'        => false,
+            'hull_number' => $designation,
+            'branch' => $branch,
+            'joinable' => false,
         ];
 
         // Assign this echelon directly to a fleet

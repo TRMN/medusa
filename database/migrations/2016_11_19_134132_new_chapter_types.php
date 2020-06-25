@@ -20,15 +20,15 @@ class NewChapterTypes extends Migration
         // Update Pinnace's and LAC's to the new types
 
         $small_craft =
-          \App\Chapter::where('chapter_name', 'like', 'Pinnace%')->get();
+            \App\Chapter::where('chapter_name', 'like', 'Pinnace%')->get();
 
         foreach ($small_craft as $pinnace) {
             $this->updateChapter($pinnace, 'small_craft');
         }
 
         $lacs = \App\Chapter::where('chapter_name', 'like', 'HMLAC%')
-              ->orWhere('chapter_name', 'like', 'GSNLAC%')
-              ->get();
+            ->orWhere('chapter_name', 'like', 'GSNLAC%')
+            ->get();
 
         foreach ($lacs as $lac) {
             $this->updateChapter($lac, 'lac');
@@ -69,17 +69,17 @@ class NewChapterTypes extends Migration
             'types',
             null,
             json_encode([
-            'chapter_type'        => $type,
-            'chapter_description' => $description,
-            'can_have'            => $can_have,
+                'chapter_type' => $type,
+                'chapter_description' => $description,
+                'can_have' => $can_have,
             ]),
             'new_chapter_types'
         );
 
         \App\Type::create([
-          'chapter_type'        => $type,
-          'chapter_description' => $description,
-          'can_have'            => $can_have,
+            'chapter_type' => $type,
+            'chapter_description' => $description,
+            'can_have' => $can_have,
         ]);
     }
 }

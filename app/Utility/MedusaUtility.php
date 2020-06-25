@@ -2,9 +2,9 @@
 
 namespace App\Utility;
 
-use App\User;
 use App\Chapter;
 use App\MedusaConfig;
+use App\User;
 
 class MedusaUtility
 {

@@ -59,9 +59,10 @@
             <div class="Incised901Black ninety">
                 Time In Service: {{$user->getTimeInService()}}
             </div>
-        <div class="Incised901Black ninety">
-            Highest Main Line Exam for Branch: <span class="Incised901Light">{{$user->getHighestMainLineExamForBranch() ?  $user->getHighestMainLineExamForBranch() : "None"}}</span>
-        </div>
+            <div class="Incised901Black ninety">
+                Highest Main Line Exam for Branch: <span
+                        class="Incised901Light">{{$user->getHighestMainLineExamForBranch() ?  $user->getHighestMainLineExamForBranch() : "None"}}</span>
+            </div>
 
 
             @if($permsObj->hasPermissions(['VIEW_NOTE']))
@@ -136,18 +137,18 @@
                                 if ($peerage['code'] != 'K' && $peerage['title'] != 'Knight' && $peerage['title'] != 'Dame') {
                                     $path = null;
                                     if (empty($peerage['filename']) === false) {
-                                        $path = '/arms/peerage/' . $peerage['filename'];
+                                        $path = '/arms/peerage/'.$peerage['filename'];
                                     }
                                     $fullTitle =
-                                        $peerage['generation'] . ' ' . $peerage['title'] . ' of ' . $peerage['lands'];
-                                    $toolTip = 'Arms for ' . $fullTitle;
+                                        $peerage['generation'].' '.$peerage['title'].' of '.$peerage['lands'];
+                                    $toolTip = 'Arms for '.$fullTitle;
                                 } else {
                                     $orderInfo =
                                         \App\Korders::where('classes.postnominal', '=', $peerage['postnominal'])
                                             ->first();
-                                    $path = '/awards/orders/medals/' . $orderInfo->filename;
+                                    $path = '/awards/orders/medals/'.$orderInfo->filename;
                                     $fullTitle =
-                                        $orderInfo->getClassName($peerage['postnominal']) . ', ' . $orderInfo->order;
+                                        $orderInfo->getClassName($peerage['postnominal']).', '.$orderInfo->order;
                                     $toolTip = $orderInfo->order;
                                 }
                                 ?>
@@ -288,7 +289,8 @@
                             @elseif($permsObj->hasPermissions(['PROC_APPLICATIONS']))
                                 <a href="{{route('user.approve', [$user->_id])}}"
                                    class="btn btn-success"><span class="fa fa-check"></span> Approve</a>
-                                <a href="{{route('user.deny', [$user->_id])}}" class="btn btn-warning"><span class="fa fa-times"></span> DENY</a>
+                                <a href="{{route('user.deny', [$user->_id])}}" class="btn btn-warning"><span
+                                            class="fa fa-times"></span> DENY</a>
                             @endif
                         </div>
                     </div>

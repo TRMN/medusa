@@ -22,7 +22,7 @@
             {!!$countries[$event->country]!!}
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class=" col-sm-1 Incised901Light">Dates:</div>
         <div class=" col-sm-11 Incised901Light">
@@ -32,7 +32,7 @@
     </div>
 
     @if(!empty($event->registrars))
-        <br />
+        <br/>
         <div class="row">
             <div class=" col-sm-1 Incised901Light">Registrars:</div>
             <div class=" col-sm-11 Incised901Light">

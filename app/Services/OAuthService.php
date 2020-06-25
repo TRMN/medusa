@@ -2,24 +2,24 @@
 
 namespace App\Services;
 
-use App\User;
-use App\Korders;
-use App\ExamList;
-use OAuth2\Server;
-use MongoDB\Client;
-use App\OauthClient;
-use OAuth2\Storage\Mongo;
 use App\Audit\MedusaAudit;
-use OAuth2\GrantType\RefreshToken;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use OAuth2\GrantType\UserCredentials;
+use App\ExamList;
+use App\Korders;
+use App\Oauth\Storage\MedusaUserCredentials;
+use App\OauthClient;
 use App\Permissions\PermissionsHelper;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use MongoDB\Client;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
+use OAuth2\GrantType\RefreshToken;
+use OAuth2\GrantType\UserCredentials;
 use OAuth2\HttpFoundationBridge\Request;
 use OAuth2\HttpFoundationBridge\Response;
-use App\Oauth\Storage\MedusaUserCredentials;
+use OAuth2\Server;
+use OAuth2\Storage\Mongo;
 
 /**
  * OAuth2 wrapper service.
@@ -47,18 +47,18 @@ class OAuthService
         $_dbName = config('database.connections.mongodb.database');
 
         $this->mongo =
-          new Client(
-              'mongodb://'.implode(',', $_hosts),
-              config('database.connections.mongodb.options', [])
-          );
+            new Client(
+                'mongodb://'.implode(',', $_hosts),
+                config('database.connections.mongodb.options', [])
+            );
 
         $_store = new Mongo($this->mongo->selectDatabase($_dbName));
 
         $this->server = new Server(
             $_store,
             [
-            'always_issue_new_refresh_token' => true,
-            'refresh_token_lifetime'         => 2419200,
+                'always_issue_new_refresh_token' => true,
+                'refresh_token_lifetime' => 2419200,
             ]
         );
 
@@ -72,8 +72,8 @@ class OAuthService
             new RefreshToken(
                 $_store,
                 [
-                'always_issue_new_refresh_token' => true,
-                'unset_refresh_token_after_use'  => true,
+                    'always_issue_new_refresh_token' => true,
+                    'unset_refresh_token_after_use' => true,
                 ]
             )
         );
@@ -97,14 +97,14 @@ class OAuthService
         $_params = $_request->getAllQueryParameters();
         /** @noinspection PhpUndefinedMethodInspection */
         $_client =
-          OauthClient::where('client_id', '=', $_params['client_id'])->first();
+            OauthClient::where('client_id', '=', $_params['client_id'])->first();
 
         return view(
             'oauth.authorization-form',
             [
-            'client'   => $_client,
-            'params'   => $_params,
-            'permsObj' => new PermissionsHelper(),
+                'client' => $_client,
+                'params' => $_params,
+                'permsObj' => new PermissionsHelper(),
             ]
         );
     }
@@ -164,17 +164,17 @@ class OAuthService
 
             return Response::json(
                 [
-                'uid'            => $_token['user_id'],
-                'email'          => $_user->email_address,
-                'firstname'      => $_user->first_name,
-                'lastname'       => $_user->last_name,
-                'city'           => $_user->city,
-                'state_province' => $_user->state_province,
-                'country'        => $_user->country,
-                'imageurl'       => $_user->filePhoto,
-                'user_id'        => $_token['user_id'],
-                'client'         => $_token['client_id'],
-                'expires'        => $_token['expires'],
+                    'uid' => $_token['user_id'],
+                    'email' => $_user->email_address,
+                    'firstname' => $_user->first_name,
+                    'lastname' => $_user->last_name,
+                    'city' => $_user->city,
+                    'state_province' => $_user->state_province,
+                    'country' => $_user->country,
+                    'imageurl' => $_user->filePhoto,
+                    'user_id' => $_token['user_id'],
+                    'client' => $_token['client_id'],
+                    'expires' => $_token['expires'],
                 ]
             );
         }
@@ -199,16 +199,16 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )->first();
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )->first();
 
             return Response::json(
                 [
-                'tig' => $_user->getTimeInGrade(true),
-                'tis' => $_user->getTimeInService(true),
+                    'tig' => $_user->getTimeInGrade(true),
+                    'tis' => $_user->getTimeInService(true),
                 ]
             );
         }
@@ -233,11 +233,11 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )->first();
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )->first();
 
             $_data = Request::all();
 
@@ -259,8 +259,8 @@ class OAuthService
 
                 return Response::json(
                     [
-                    'status'  => 'success',
-                    'message' => 'Profile updated',
+                        'status' => 'success',
+                        'message' => 'Profile updated',
                     ]
                 );
                 Log::info('We should never get here');
@@ -269,8 +269,8 @@ class OAuthService
 
                 return Response::json(
                     [
-                    'status'  => 'error',
-                    'message' => 'Unable to update profile',
+                        'status' => 'error',
+                        'message' => 'Unable to update profile',
                     ],
                     500
                 );
@@ -295,11 +295,11 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_user =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )->first();
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )->first();
             unset($_user->duty_roster, $_user->password, $_user->osa, $_user->remember_token, $_user->tos);
 
             $_assignments = $_user->assignment;
@@ -317,35 +317,35 @@ class OAuthService
 
                 if ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                     if (empty($_peerage['filename']) === false && file_exists(
-                        public_path().'/arms/peerage/'.$_peerage['filename']
-                    )
+                            public_path().'/arms/peerage/'.$_peerage['filename']
+                        )
                     ) {
                         $_peerage['path'] =
-                          '/arms/peerage/'.$_peerage['filename'];
+                            '/arms/peerage/'.$_peerage['filename'];
                     }
 
                     $_peerage['fullTitle'] =
-                      $_peerage['generation'].' '.$_peerage['title'].' of '.$_peerage['lands'];
+                        $_peerage['generation'].' '.$_peerage['title'].' of '.$_peerage['lands'];
                 } else {
                     /** @noinspection PhpUndefinedMethodInspection */
                     /** @var \Korders $orderInfo */
                     $orderInfo =
-                      Korders::where(
-                          'classes.postnominal',
-                          '=',
-                          $_peerage['postnominal']
-                      )->first();
+                        Korders::where(
+                            'classes.postnominal',
+                            '=',
+                            $_peerage['postnominal']
+                        )->first();
                     if (file_exists(public_path().'/awards/orders/medals/'.$orderInfo->filename)) {
                         $_peerage['path'] =
-                          substr(
-                              $orderInfo->filename,
-                              0,
-                              strrpos($orderInfo->filename, '.')
-                          );
+                            substr(
+                                $orderInfo->filename,
+                                0,
+                                strrpos($orderInfo->filename, '.')
+                            );
                     }
 
                     $_peerage['fullTitle'] =
-                      $orderInfo->getClassName($_peerage['postnominal']).', '.$orderInfo->order;
+                        $orderInfo->getClassName($_peerage['postnominal']).', '.$orderInfo->order;
                 }
 
                 unset($_peerage['peerage_id']);
@@ -374,24 +374,24 @@ class OAuthService
 
                     if ($_grades['date'] != 'UNKNOWN') {
                         $_examList[$_id]['date'] =
-                          date('d M Y', strtotime($_grades['date']));
+                            date('d M Y', strtotime($_grades['date']));
                     }
 
                     unset($_examList[$_id]['entered_by']);
 
                     $_exams[str_replace(' ', '_', $_label)] =
-                      [
-                        'label'    => $_label,
-                        'new'      => $_newExams,
-                        'examlist' => $_examList,
-                      ];
+                        [
+                            'label' => $_label,
+                            'new' => $_newExams,
+                            'examlist' => $_examList,
+                        ];
                 }
             }
 
             $_user->exams = $_exams;
 
             $_user->greeting =
-              $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
+                $_user->getGreeting().' '.$_user->getFullName().$_user->getPostnominals();
 
             if (! file_exists(public_path().$_user->filePhoto)) {
                 unset($_user->filePhoto);
@@ -407,7 +407,7 @@ class OAuthService
 
             if (empty($_user->lastUpdate)) {
                 $_user->lastUpdate =
-                  strtotime($_user->updated_at->toDateTimeString());
+                    strtotime($_user->updated_at->toDateTimeString());
             }
 
             return Response::json($_user);
@@ -433,13 +433,13 @@ class OAuthService
             /** @var \User $_user */
             /** @noinspection PhpUndefinedMethodInspection */
             $_lastUpdated =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )
-                   ->first()
-                   ->getLastUpdated();
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )
+                    ->first()
+                    ->getLastUpdated();
 
             return Response::json(['lastUpdate' => $_lastUpdated]);
         }
@@ -462,13 +462,13 @@ class OAuthService
             $_token = $this->server->getAccessTokenData($_request);
 
             $_idCard =
-              User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )
-                   ->first()
-                   ->buildIdCard(true);
+                User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )
+                    ->first()
+                    ->buildIdCard(true);
 
             return $_idCard->response('png');
         }
@@ -494,13 +494,13 @@ class OAuthService
             Log::info('TZ='.$_tz);
 
             return Response::json([
-              'events' => User::where(
-                  'email_address',
-                  '=',
-                  strtolower(str_replace(' ', '+', $_token['user_id']))
-              )
-                               ->first()
-                               ->getScheduledEvents($_tz),
+                'events' => User::where(
+                    'email_address',
+                    '=',
+                    strtolower(str_replace(' ', '+', $_token['user_id']))
+                )
+                    ->first()
+                    ->getScheduledEvents($_tz),
             ]);
         }
 
@@ -530,12 +530,12 @@ class OAuthService
                 '=',
                 strtolower(str_replace(' ', '+', $_token['user_id']))
             )
-                                        ->first()
-                                        ->checkMemberIn(
-                                            $_data['event'],
-                                            $_data['member'],
-                                            $_data['tz']
-                                        ));
+                ->first()
+                ->checkMemberIn(
+                    $_data['event'],
+                    $_data['member'],
+                    $_data['tz']
+                ));
         }
 
         return Response::json(

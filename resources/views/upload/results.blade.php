@@ -17,7 +17,7 @@
         @endforeach
         <div class="row">
             <div class="col-sm-12 text-center">
-                <br />
+                <br/>
                 <a href="/upload/admin" class="btn btn-primary"><span class="fa fa-backward"></span> Return to Admin
                     Page</a>
             </div>

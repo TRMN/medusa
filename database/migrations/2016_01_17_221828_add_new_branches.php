@@ -14,7 +14,7 @@ class AddNewBranches extends Migration
     public function up()
     {
         $newBranches = [
-            'RMMM'  => 'Royal Manticoran Merchant Marines',
+            'RMMM' => 'Royal Manticoran Merchant Marines',
             'RMACS' => 'Royal Manticoran Astro Control Service',
         ];
 

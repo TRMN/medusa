@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Report;
 use App\Chapter;
 use App\MedusaConfig;
+use App\Report;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 
 class ReportController extends Controller
 {
@@ -39,8 +39,8 @@ class ReportController extends Controller
         return view(
             'report.index',
             [
-            'reports' => Report::where('chapter_id', '=', $chapter->id)->orderBy('report_date')->get(),
-            'chapterName' => $chapter->chapter_name,
+                'reports' => Report::where('chapter_id', '=', $chapter->id)->orderBy('report_date')->get(),
+                'chapterName' => $chapter->chapter_name,
             ]
         );
     }
@@ -58,14 +58,16 @@ class ReportController extends Controller
 
         $validTypes = MedusaConfig::get('report.valid_types', ['ship', 'station', 'small_craft', 'lac']);
 
-        foreach ([
-                   'primary',
-                   'secondary',
-                   'additional',
-                   'extra',
-                 ] as $assignment) {
+        $assignments = [
+            'primary',
+            'secondary',
+            'additional',
+            'extra',
+        ];
+
+        foreach ($assignments as $assignment) {
             $chapter =
-              Chapter::find(Auth::user()->getAssignmentId($assignment));
+                Chapter::find(Auth::user()->getAssignmentId($assignment));
 
             if (empty($chapter->chapter_type) === false && in_array($chapter->chapter_type, $validTypes) === true) {
                 break;
@@ -85,7 +87,7 @@ class ReportController extends Controller
         if (date('n') & 1 == 1) {
             $ts = strtotime('-1 month', $first);
             $month =
-              date('F, Y', strtotime(date('Y').'-'.(date('n') + 1).'-01'));
+                date('F, Y', strtotime(date('Y').'-'.(date('n') + 1).'-01'));
         } else {
             $ts = strtotime('-2 month', $first);
             $month = date('F, Y');
@@ -104,7 +106,7 @@ class ReportController extends Controller
         if (isset($report) === true && empty($report->report_sent) === false) {
             // The current report has been sent and they want to start the next one
             $month =
-              date('F, Y', strtotime('+2 months', strtotime($report->report_date)));
+                date('F, Y', strtotime('+2 months', strtotime($report->report_date)));
             $ts = strtotime('-2 months', strtotime($month));
 
             // Just in case this is not the first time they've done this
@@ -122,12 +124,12 @@ class ReportController extends Controller
         }
 
         $viewData = [
-          'month'     => $month,
-          'user'      => Auth::user(),
-          'chapter'   => $chapter,
-          'command'   => $chapter->getCommandCrew(),
-          'newCrew'   => $chapter->getCrew(true, $ts),
-          'completed' => $this->getCompletedExamsForCrew($chapter->id, $ts),
+            'month' => $month,
+            'user' => Auth::user(),
+            'chapter' => $chapter,
+            'command' => $chapter->getCommandCrew(),
+            'newCrew' => $chapter->getCrew(true, $ts),
+            'completed' => $this->getCompletedExamsForCrew($chapter->id, $ts),
         ];
 
         return Response::view('report.chapter-create', $viewData);
@@ -164,16 +166,16 @@ class ReportController extends Controller
         if (is_null($ts) === true) {
             if (date('n') & 1 == 1) {
                 $ts =
-                  strtotime(
-                      '-1 month',
-                      strtotime(date('Y').'-'.date('m').'-01')
-                  );
+                    strtotime(
+                        '-1 month',
+                        strtotime(date('Y').'-'.date('m').'-01')
+                    );
             } else {
                 $ts =
-                  strtotime(
-                      '-2 month',
-                      strtotime(date('Y').'-'.date('m').'-01')
-                  );
+                    strtotime(
+                        '-2 month',
+                        strtotime(date('Y').'-'.date('m').'-01')
+                    );
             }
         }
 
@@ -212,24 +214,24 @@ class ReportController extends Controller
 
             $member->last_course = $member->getHighestMainLineExamForBranch();
             $data['command_crew'][$billetInfo['display']] =
-              Arr::only(
-                  $member->toArray(),
-                  [
-                  'branch',
-                  'member_id',
-                  'first_name',
-                  'last_name',
-                  'middle_name',
-                  'suffix',
-                  'last_course',
-                  'email_address',
-                  'dob',
-                  'city',
-                  'state_province',
-                  'phone_number',
-                  'rank',
-                  ]
-              );
+                Arr::only(
+                    $member->toArray(),
+                    [
+                        'branch',
+                        'member_id',
+                        'first_name',
+                        'last_name',
+                        'middle_name',
+                        'suffix',
+                        'last_course',
+                        'email_address',
+                        'dob',
+                        'city',
+                        'state_province',
+                        'phone_number',
+                        'rank',
+                    ]
+                );
         }
 
         $data['chapter_info'] = $chapter->toArray();
@@ -240,15 +242,15 @@ class ReportController extends Controller
 
         foreach ($newCrew as $crew) {
             $data['new_crew'][] =
-              Arr::only($crew, [
-                'first_name',
-                'last_name',
-                'middle_name',
-                'suffix',
-                'member_id',
-                'branch',
-                'rank',
-              ]);
+                Arr::only($crew, [
+                    'first_name',
+                    'last_name',
+                    'middle_name',
+                    'suffix',
+                    'member_id',
+                    'branch',
+                    'rank',
+                ]);
         }
 
         $this->writeAuditTrail(
@@ -373,15 +375,15 @@ class ReportController extends Controller
 
         foreach ($newCrew as $crew) {
             $new_crew[] =
-              Arr::only($crew, [
-                'first_name',
-                'last_name',
-                'middle_name',
-                'suffix',
-                'member_id',
-                'branch',
-                'rank',
-              ]);
+                Arr::only($crew, [
+                    'first_name',
+                    'last_name',
+                    'middle_name',
+                    'suffix',
+                    'member_id',
+                    'branch',
+                    'rank',
+                ]);
         }
 
         $report->new_crew = $new_crew;
@@ -430,7 +432,7 @@ class ReportController extends Controller
             $report->report_sent = date('Y-m-d');
 
             $msg =
-              date('F, Y', strtotime($report->report_date)).' Report Sent';
+                date('F, Y', strtotime($report->report_date)).' Report Sent';
         }
 
         $this->writeAuditTrail(
@@ -534,17 +536,17 @@ class ReportController extends Controller
             $tmpChapter = Chapter::find($chapterId);
 
             if (in_array(
-                $tmpChapter->chapter_type,
-                [
-                  'ship',
-                  'division',
-                  'squadron',
-                  'task_group',
-                  'task_force',
-                  'fleet',
-                  'station',
-                ]
-            ) === true
+                    $tmpChapter->chapter_type,
+                    [
+                        'ship',
+                        'division',
+                        'squadron',
+                        'task_group',
+                        'task_force',
+                        'fleet',
+                        'station',
+                    ]
+                ) === true
             ) {
                 if ($chapter->id != $tmpChapter->id) {
                     if (empty($tmpChapter->getCO()) === false) {
@@ -563,7 +565,7 @@ class ReportController extends Controller
         Mail::send(
             'report.chapter-email',
             [
-            'report' => $report,
+                'report' => $report,
             ],
             function ($message) use ($report, $echelonEmails) {
                 $message->from(

@@ -24,9 +24,10 @@
             @foreach(\App\MedusaConfig::all() as $item)
                 <tr>
                     <td class="border-right">{!! $item->key !!}</td>
-                    <td class="border-right cpreview">@if(is_array($item->value)) <pre class="json preview"> @endif
-                        {!! is_array($item->value)?json_encode($item->value):$item->value !!}
-                        @if(is_array($item->value)) </pre> @endif
+                    <td class="border-right cpreview">@if(is_array($item->value))
+                            <pre class="json preview"> @endif
+                                {!! is_array($item->value)?json_encode($item->value):$item->value !!}
+                                @if(is_array($item->value)) </pre> @endif
                     </td>
                     <td><a href="{!!route('config.edit', [$item->id])!!}" class="tiny fa fa-pencil green size-24"
                            data-toggle="tooltip" title="Edit Config"></a>
@@ -74,7 +75,7 @@
 
             var table = $("#config-table").DataTable();
 
-            table.on('draw', function() {
+            table.on('draw', function () {
                 formatJson();
             });
         });
@@ -85,7 +86,7 @@
                 elm.html(JSON.stringify(JSON.parse(elm.html()), undefined, 4));
             });
 
-            $('.preview').on('click', function() {
+            $('.preview').on('click', function () {
 
                 if ($(this).hasClass('preview')) {
                     $(this).removeClass('preview');

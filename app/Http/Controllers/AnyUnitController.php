@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Branch;
 use App\Chapter;
-use App\MedusaConfig;
 use App\Echelons\MedusaEchelons;
+use App\MedusaConfig;
 
 class AnyUnitController extends Controller
 {
@@ -73,7 +73,7 @@ class AnyUnitController extends Controller
     {
         return '<div class="row">
     <div class="col-sm-6  ninety Incised901Light form-group">'.
-        \Form::label('branch', 'Branch').' '.\Form::select('branch', Branch::getBranchList(), null, ['class' => 'selectize']).'
+            \Form::label('branch', 'Branch').' '.\Form::select('branch', Branch::getBranchList(), null, ['class' => 'selectize']).'
     </div>
 </div>';
     }
