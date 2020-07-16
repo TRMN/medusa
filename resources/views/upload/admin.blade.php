@@ -26,22 +26,24 @@
                 </tr>
                 </thead>
                 @foreach($logs as $log)
-                    @foreach($log['files'] as $file)
-                        <tr>
-                            <td>{{$log['chapter_name']}}</td>
-                            <td>{{$file['filename']}}</td>
-                            <td>{{$file['current_status']}}</td>
-                            <td>{{date("F j, Y @ g:i a", $file['status_ts'])}}</td>
-                            <td class="nowrap">
-                                <a href="/download/sheet/{{$log['chapter_id']}}/{{$file['filename']}}"
-                                   class="btn btn-xs btn-danger" title="Download {{$file['filename']}}"><span
-                                            class="fa fa-download"></span></a>
-                                <a href="/upload/points/{{$log['_id']}}/{{$file['filename']}}"
-                                   class="btn btn-xs btn-success" title="Upload CSV for processing">
-                                    <span class="fa fa-upload"></span></a>
-                            </td>
-                        </tr>
-                    @endforeach
+                    @if(!is_null($log['files']))
+                        @foreach($log['files'] as $file)
+                            <tr>
+                                <td>{{$log['chapter_name']}}</td>
+                                <td>{{$file['filename']}}</td>
+                                <td>{{$file['current_status']}}</td>
+                                <td>{{date("F j, Y @ g:i a", $file['status_ts'])}}</td>
+                                <td class="nowrap">
+                                    <a href="/download/sheet/{{$log['chapter_id']}}/{{$file['filename']}}"
+                                       class="btn btn-xs btn-danger" title="Download {{$file['filename']}}"><span
+                                                class="fa fa-download"></span></a>
+                                    <a href="/upload/points/{{$log['_id']}}/{{$file['filename']}}"
+                                       class="btn btn-xs btn-success" title="Upload CSV for processing">
+                                        <span class="fa fa-upload"></span></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 @endforeach
                 <tfoot>
                 <tr>

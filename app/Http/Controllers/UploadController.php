@@ -20,6 +20,15 @@ class UploadController extends Controller
 {
     use MedusaLog;
 
+    private $suffixes = [
+        "JR",
+        "SR",
+        "II",
+        "III",
+        "IV",
+        "V"
+    ];
+
     /**
      * Show the Admin page.
      *
@@ -104,6 +113,24 @@ class UploadController extends Controller
         );
     }
 
+    public function getCzech() {
+        if (($redirect = $this->checkPermissions('CONFIG')) !== true) {
+            return $redirect;
+        }
+
+        return view(
+            'upload.index',
+            [
+                'title'  => 'Import Czech Members',
+                'method' => 'previewPoints',
+                'source' => '/upload/points',
+                'accept' => 'text/csv,*.csv',
+                'hidden' => [
+                    'lookupRMN'    => TRUE,
+                ],
+            ]
+        );
+    }
     /**
      * Show the Promotion Point Spreadsheet upload page.
      *
@@ -169,6 +196,20 @@ class UploadController extends Controller
     }
 
     /**
+     * Locate an existing Upload log entry or create it.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return mixed
+     */
+    private function findOrCreateLog(Request $request)
+    {
+        return UploadLog::firstOrCreate(
+            ['chapter_id' => $request->chapter],
+            ['chapter_name' => $request->chaptername]
+        );
+    }
+    /**
      * Process the uplaoded promotion points spreadsheet.
      *
      * @param \Illuminate\Http\Request $request
@@ -177,10 +218,7 @@ class UploadController extends Controller
      */
     private function processSheet(Request $request)
     {
-        $log = UploadLog::firstOrCreate(
-            ['chapter_id' => $request->chapter],
-            ['chapter_name' => $request->chaptername]
-        );
+        $log = $this->findOrCreateLog($request);
 
         $file = $request->file('file');
         $originalFileName = $file->getClientOriginalName();
@@ -229,12 +267,19 @@ class UploadController extends Controller
      */
     private function previewPoints(Request $request)
     {
-        $log = UploadLog::find($request->logID);
-        $filename = $request->filename;
+        $lookupRMN = false;
+
+        if ($request->lookupRMN == true) {
+            $lookupRMN = true;
+            $log = null;
+            $filename = $slug = Str::uuid()->toString();
+        } else {
+            $log = UploadLog::find($request->logID);
+            $slug = Str::slug($log['chapter_name'], '_');
+            $filename = $request->filename;
+        }
 
         $fileinfo = pathinfo($filename);
-
-        $slug = Str::slug($log['chapter_name'], '_');
 
         $file = $request->file('file');
         $file->storeAs($slug, $fileinfo['filename'].'.csv', 'points');
@@ -256,18 +301,37 @@ class UploadController extends Controller
 
         // Parse each record
         foreach ($import->getRecords($header) as $index => $record) {
-            // Try and retrieve the user by their RMN number.
-            try {
-                $member = User::getUserByMemberId($record['RMN']);
-                $name = $member->getFullName();
-            } catch (ModelNotFoundException $e) {
-                $name = '<span class="red">'.$record['RMN'].' : Invalid</span>';
+            if (is_null($log) && $lookupRMN === true) {
+                // This is a new member import, create a log entry
+                $chapterName = $record['chapter'];
+                $chapterId = Chapter::getIdByName(trim($chapterName));
+
+                $request->merge(['chapter' => $chapterId, 'chaptername' => $chapterName]);
+                $log = $this->findOrCreateLog($request);
             }
 
-            $preview[] = [
+            if ($lookupRMN === true) {
+                $memberStatus = $this->lookUpRMN($record);
+            } else {
+                // Try and retrieve the user by their RMN number.
+                try {
+                    $member = User::getUserByMemberId($record['RMN']);
+                    $name = $member->getFullName();
+                } catch (ModelNotFoundException $e) {
+                    $name = '<span class="red">'.$record['RMN'].' : Invalid</span>';
+                }
+            }
+
+            $row = [
                 'name'    => $name,
                 'chapter' => $record['chapter'],
             ];
+
+            if ($lookupRMN === true) {
+                $row['status'] = $memberStatus['status'];
+            }
+
+            $preview[] = $row;
         }
 
         return view(
@@ -278,6 +342,7 @@ class UploadController extends Controller
                               $fileinfo['filename'].'.csv',
                 'preview'  => $preview,
                 'filename' => $filename,
+                'lookupRMN' => $lookupRMN,
             ]
         );
     }
@@ -314,8 +379,50 @@ class UploadController extends Controller
 
         // Parse each record
         foreach ($import->getRecords($header) as $index => $record) {
-            // Instantiate a user model
-            $member = User::getUserByMemberId($record['RMN']);
+            $memberFound = false;
+            if ($request->lookupRMN === true) {
+//                list($firstName, $lastName) = explode(' ', $record['name']);
+                $names = explode(' ', $record['Name']);
+                $lookup = $this->lookUpRMN($record);
+
+                if ($lookup['record'] instanceof User) {
+                    // We have a member.  Update their personal info as needed.
+                    $memberFound = true;
+
+                    $member = $lookup['record'];
+                    $matchType = $lookup['status'];
+
+                    // If the first name doesn't match, update the member record to match the spreadsheet
+                    $member->first_name = trim($member->first_name) !== trim($firstName) ? trim($firstName) :
+                        trim($member->first_name);
+
+                    if ($matchType == 'email') {
+                        // Found by email address, check if the last name matches.  If it doesn't, update it.
+                        $member->last_name = trim($member->last_name) !== trim($lastName) ? trim($lastName) :
+                            trim($member->last_name);
+                    } else {
+                        // Unable to locate member by email address, but got a hit on last name + the first 2
+                        // letters of their first name. Update the email address.
+                        $member->email_address = trim($member->email_address) !== trim($record['email']) ? trim
+                        ($record['email']) : trim($member->email_address);
+                    }
+
+                    $member->save();
+
+                } else {
+                    // Need to add the user
+                    // chapter,Name,email,rank,billet,Service,JoinDate,RankDate,path,peerage,lands
+
+
+                    $record = [
+                        'first_name' => ''
+                    ];
+                }
+            } else {
+                // Instantiate a user model
+                $member = User::getUserByMemberId($record['RMN']);
+            }
+
 
             try {
                 // Iterate through the columns
@@ -439,5 +546,75 @@ class UploadController extends Controller
         } catch (\MongoException $e) {
             throw new \MongoException($e->getMessage());
         }
+    }
+
+    private function parseName(string $name) {
+        $names = explode(' ', $name);
+
+        $firstName = $names[0];
+
+        $middleName = $suffix = null;
+
+        if (count($names) > 2) {
+            // Either have First Middle Last or First Last Suffix
+
+            if (in_array(strtoupper($names[2]), $this->suffixes)) {
+                $lastName = $names[1];
+                $suffix = $names[2];
+            } else {
+                $middleName = $names[1];
+                $lastName = $names[2];
+            }
+        } else {
+            $lastName = $names[1];
+        }
+
+        $returnObj = new class {
+            public $firstName;
+            public $middleName;
+            public $lastName;
+            public $suffix;
+        };
+
+        $returnObj->firstName = $firstName;
+        $returnObj->middleName = $middleName;
+        $returnObj->lastName = $lastName;
+        $returnObj->suffix = $suffix;
+
+        return $returnObj;
+    }
+
+    private function lookUpRMN(array $record)
+    {
+        $names = explode(' ', $record['Name']);
+
+        $firstName = $names[0];
+
+        if (count($names) > 2) {
+            // Either have First Middle Last or First Last Suffix
+
+            if (in_array(strtoupper($names[2]), $this->suffixes)) {
+                $lastName = $names[1];
+            } else {
+                $lastName = $names[2];
+            }
+        }
+
+        // Check to see if their is already a member record
+        $memberStatus = $results = null;
+
+        if ($results = User::findByEmail($record['email'])) {
+            $memberStatus = 'email';
+        } elseif($results = User::findByName($firstName, $lastName)) {
+            $memberStatus = 'name';
+        }
+
+        if (!($results instanceof User)) {
+            $results = null;
+        }
+        return [
+            'status' => $memberStatus,
+            'record' => $results
+        ];
     }
 }

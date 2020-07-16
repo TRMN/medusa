@@ -1675,7 +1675,7 @@ class UserController extends Controller
         $currentPeerages = $user->peerages;
         $currentPeerages[] = $peerage;
 
-        $user->peerages = $currentPeerages;
+        $user->peerages = array_values($currentPeerages);
 
         $this->writeAuditTrail(
             (string) Auth::user()->id,
