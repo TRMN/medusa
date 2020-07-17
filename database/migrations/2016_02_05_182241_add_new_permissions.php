@@ -14,8 +14,8 @@ class AddNewPermissions extends Migration
     public function up()
     {
         $newPerms = [
-            'ADD_PEERAGE'  => 'Add a peerage',
-            'DEL_PEERAGE'  => 'Delete a peerage',
+            'ADD_PEERAGE' => 'Add a peerage',
+            'DEL_PEERAGE' => 'Delete a peerage',
             'EDIT_PEERAGE' => 'Edit a peerage',
         ];
 

@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-sm-6  ninety Incised901Light ">
             <a class="btn round"
-       href="{!! URL::previous() !!}">Cancel</a>
+               href="{!! URL::previous() !!}">Cancel</a>
             {!! Form::submit( 'Save', [ 'class' => 'btn round'] ) !!}
             {!! Form::close() !!}
         </div>

@@ -1,4 +1,3 @@
-
 <div class="row padding-5">
     <div class="col-sm-2  Incised901Light">
         Subordinate Crew Roster:
@@ -15,18 +14,24 @@
                 <th>Branch</th>
             </tr>
             </thead>
-        <tbody>
-        @foreach($crew as $member)
-            <tr>
-                <td><a class="fa fa-list blue size-48" href="{!! route('user.show' , [$member->_id]) !!}" data-toggle="tooltip" title="{!! $member->getPrimaryAssignmentName() !!} <br> {!! $member->getSecondaryAssignmentName() !!} "></a></td>
-                <td><a href="{!! route('user.show', [$member->_id]) !!}">{!! $member->last_name !!}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}, {!! $member->first_name !!}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}</a></td>
-                <td>{!! $member->getGreeting() !!}</td>
-                <td>{!!is_null($tig = $member->getTimeInGrade())?'N/A':$tig!!}</td>
-                <td>{!! $member->getBilletForChapter($detail->id) !!}</td>
-                <td>{!!$member->branch!!}</td>
-            </tr>
-        @endforeach
-        </tbody>
+            <tbody>
+            @foreach($crew as $member)
+                <tr>
+                    <td><a class="fa fa-list blue size-48" href="{!! route('user.show' , [$member->_id]) !!}"
+                           data-toggle="tooltip"
+                           title="{!! $member->getPrimaryAssignmentName() !!} <br> {!! $member->getSecondaryAssignmentName() !!} "></a>
+                    </td>
+                    <td>
+                        <a href="{!! route('user.show', [$member->_id]) !!}">{!! $member->last_name !!}{{ !empty($member->suffix) ? ' ' . $member->suffix : '' }}
+                            , {!! $member->first_name !!}{{ isset($member->middle_name) ? ' ' . $member->middle_name : '' }}</a>
+                    </td>
+                    <td>{!! $member->getGreeting() !!}</td>
+                    <td>{!!is_null($tig = $member->getTimeInGrade())?'N/A':$tig!!}</td>
+                    <td>{!! $member->getBilletForChapter($detail->id) !!}</td>
+                    <td>{!!$member->branch!!}</td>
+                </tr>
+            @endforeach
+            </tbody>
             <tfoot>
             <tr>
                 <th></th>

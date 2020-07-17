@@ -14,9 +14,9 @@ class AddNotePerm extends Migration
     public function up()
     {
         $newPerms = [
-            'VIEW_NOTE'  => 'Add a BuPers Note',
-            'EDIT_NOTE'  => 'Edit a BuPers Note',
-            ];
+            'VIEW_NOTE' => 'Add a BuPers Note',
+            'EDIT_NOTE' => 'Edit a BuPers Note',
+        ];
 
         foreach ($newPerms as $perm => $desc) {
             $this->writeAuditTrail(

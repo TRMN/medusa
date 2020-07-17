@@ -14,8 +14,8 @@ class Korders extends Eloquent
     {
         if (is_array($options) === false) {
             $options = [
-              'type'  => 'postnominal',
-              'value' => $options,
+                'type' => 'postnominal',
+                'value' => $options,
             ];
         }
 

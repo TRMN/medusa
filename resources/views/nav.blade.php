@@ -10,7 +10,7 @@
             <a href="{!! route('chapter.index') !!}">Ship/Unit List</a><br/>
             <a href="{!!route('user.getReset', [Auth::user()->id])!!}">Change Password</a>
             <hr class="hr">
-            <a href="https://bolthole.trmn.org/open.php" target="_blank">New Bolthole Request</a><br />
+            <a href="https://bolthole.trmn.org/open.php" target="_blank">New Bolthole Request</a><br/>
             <a href="https://bolthole.trmn.org/open.php?topicId=12" target="_blank">GDPR Removal Request</a>
             @if(session('orig_user'))
                 <br/><a href="{{route('switch.stop')}}">Return to Original User</a>
@@ -67,7 +67,7 @@
                     <a href="{!!route('user.dups', 'CO')!!}">Show COs</a><br/>
                     <a href="{!!route('user.dups', 'XO')!!}">Show XOs</a><br/>
                     <a href="{!!route('user.dups', 'BOSUN')!!}">Show Bosuns</a><br/>
-                    <a href="{!! route('paygrades') !!}">Pay Grade Tools</a><br />
+                    <a href="{!! route('paygrades') !!}">Pay Grade Tools</a><br/>
                 @endif
                 @if($permsObj->hasPermissions(['PROC_APPLICATIONS']) === true)
                     <a href="{!! route('user.review') !!}">Approve Applications</a><br/>
@@ -84,9 +84,9 @@
                 @if($permsObj->hasPermissions(['DEL_BILLET','EDIT_BILLET']) === true)
                     <a href="{!! route('billet.index') !!}">Billet List</a><br/>
                 @endif
-{{--                @if($permsObj->hasPermissions(['MANAGE_AWARDS']) === true)--}}
-{{--                    <a href="{{ route('awards.index') }}">Manage Awards</a>--}}
-{{--                @endif--}}
+                {{--                @if($permsObj->hasPermissions(['MANAGE_AWARDS']) === true)--}}
+                {{--                    <a href="{{ route('awards.index') }}">Manage Awards</a>--}}
+                {{--                @endif--}}
             </div>
         @endif
 
@@ -184,7 +184,7 @@
                 <a href="{!! route('oauthclient.index') !!}">List OAuth Clients</a><br/>
                 <a href="{!! route('oauthclient.create') !!}">Add OAuth Client</a>
                 @if($permsObj->hasPermissions('CONFIG', true))<br/>
-                <a href="/upload/admin">Promotion Points Admin</a><br />
+                <a href="/upload/admin">Promotion Points Admin</a><br/>
                 <a href="{!! route('config.index') !!}">Configuration Settings</a><br/>
                 <a href="{!!route('config.create')!!}">Add Setting</a>
                 @endif

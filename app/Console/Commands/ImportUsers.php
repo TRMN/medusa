@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\User;
 use App\Chapter;
+use App\User;
 use Illuminate\Console\Command;
-use Webpatser\Countries\Countries;
 use Maatwebsite\Excel\Facades\Excel;
+use Webpatser\Countries\Countries;
 
 /*
  * Query to export member database
@@ -129,10 +129,10 @@ class ImportUsers extends Command
                 }
 
                 $user['assignment'][] =
-                    ['chapter_id'   => $this->getChapterByName($user['ship_name'])[0]['_id'],
-                     'billet'       => $user['primary_billet'],
-                     'primary'      => true,
-                     'chapter_name' => $user['ship_name'],
+                    ['chapter_id' => $this->getChapterByName($user['ship_name'])[0]['_id'],
+                        'billet' => $user['primary_billet'],
+                        'primary' => true,
+                        'chapter_name' => $user['ship_name'],
                     ];
 
                 if ($user['secondary_billet'] !== 'NULL') {
@@ -168,18 +168,18 @@ class ImportUsers extends Command
             }
 
             if ((empty($user['secondary_billet']) === false) &&
-                  $user['secondary_billet'] == 'Commanding Officer') {
+                $user['secondary_billet'] == 'Commanding Officer') {
                 $user['permissions'] = array_merge(
                     $user['permissions'],
                     [
-                            'DUTY_ROSTER',
-                            'EXPORT_ROSTER',
-                            'EDIT_WEBSITE',
-                            'ASSIGN_NONCOMMAND_BILLET',
-                            'PROMOTE_E601',
-                            'REQUEST_PROMOTION',
-                            'CHAPTER_REPORT',
-                          ]
+                        'DUTY_ROSTER',
+                        'EXPORT_ROSTER',
+                        'EDIT_WEBSITE',
+                        'ASSIGN_NONCOMMAND_BILLET',
+                        'PROMOTE_E601',
+                        'REQUEST_PROMOTION',
+                        'CHAPTER_REPORT',
+                    ]
                 );
             }
 

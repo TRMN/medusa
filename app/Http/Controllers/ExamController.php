@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Exam;
-use App\User;
-use App\Message;
-use App\ExamList;
-use Illuminate\Support\Arr;
 use App\Events\GradeEntered;
-use Illuminate\Support\Facades\URL;
+use App\Exam;
+use App\ExamList;
+use App\Message;
+use App\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
@@ -115,17 +115,17 @@ class ExamController extends Controller
 
         $rules = [
             'member_id' => 'required|size:11|not_self',
-            'exam'      => 'required|is_grader|exists:exam_list,exam_id',
-            'date'      => 'required|date|date_format:Y-m-d|post_dated',
-            'score'     => 'required|valid_grade',
+            'exam' => 'required|is_grader|exists:exam_list,exam_id',
+            'date' => 'required|date|date_format:Y-m-d|post_dated',
+            'score' => 'required|valid_grade',
         ];
 
         $errorMessages = [
             'member_id.required' => "The member's RMN number is required",
-            'exam.required'      => 'The Exam ID is required',
-            'exam.exists'         => 'You have entered an invalid exam id',
-            'date.required'      => 'You must provide the date the exam was graded',
-            'date_format'        => 'Dates must be formated Y-M-D',
+            'exam.required' => 'The Exam ID is required',
+            'exam.exists' => 'You have entered an invalid exam id',
+            'date.required' => 'You must provide the date the exam was graded',
+            'date_format' => 'Dates must be formated Y-M-D',
         ];
 
         $data = Request::all();
@@ -158,9 +158,9 @@ class ExamController extends Controller
             $exams = $record->exams;
 
             $exams[strtoupper($data['exam'])] = [
-                'score'        => $data['score'],
-                'date'         => $data['date'],
-                'entered_by'   => Auth::user()->id,
+                'score' => $data['score'],
+                'date' => $data['date'],
+                'entered_by' => Auth::user()->id,
                 'date_entered' => date('Y-m-d'),
             ];
 
@@ -191,9 +191,9 @@ class ExamController extends Controller
             // Massage the score, make sure that it's reasonably formated
 
             $exams[strtoupper($data['exam'])] = [
-                'score'        => $data['score'],
-                'date'         => $data['date'],
-                'entered_by'   => Auth::user()->id,
+                'score' => $data['score'],
+                'date' => $data['date'],
+                'entered_by' => Auth::user()->id,
                 'date_entered' => date('Y-m-d'),
             ];
 
@@ -267,7 +267,7 @@ class ExamController extends Controller
 
         $rules = [
             'exam_id' => 'required|unique:exam_list',
-            'name'    => 'required',
+            'name' => 'required',
         ];
 
         $data = Request::all();

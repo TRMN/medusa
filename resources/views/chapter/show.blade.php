@@ -1,48 +1,55 @@
 @extends('layout')
 
 @section('dochead')
-<style>
-    ul {
-        margin: 0 0 0 20px !important;
-        list-style: none !important;
-        line-height: 2em !important;
-    }
-    ul li.tree {
-        position: relative !important;
-    }
-    ul li.tree:before {
-        position: absolute !important;
-        left: -15px !important;
-        top: 0 !important;
-        content: '' !important;
-        display: block !important;
-        border-left: 1px solid #ddd !important;
-        height: 1em !important;
-        border-bottom: 1px solid #ddd !important;
-        width: 10px !important;
-    }
-    ul li.tree:after {
-        position: absolute !important;
-        left: -15px !important;
-        bottom: -7px !important;
-        content: '' !important;
-        display: block !important;
-        border-left: 1px solid #ddd !important;
-        height: 100% !important;
-    }
-    ul li.root {
-        margin: 0 0 0 -20px !important;
-    }
-    ul li.root:before {
-        display: none !important;
-    }
-    ul li.root:after {
-        display: none !important;
-    }
-    ul li:last-child:after {
-        display: none !important;
-    }
-</style>
+    <style>
+        ul {
+            margin: 0 0 0 20px !important;
+            list-style: none !important;
+            line-height: 2em !important;
+        }
+
+        ul li.tree {
+            position: relative !important;
+        }
+
+        ul li.tree:before {
+            position: absolute !important;
+            left: -15px !important;
+            top: 0 !important;
+            content: '' !important;
+            display: block !important;
+            border-left: 1px solid #ddd !important;
+            height: 1em !important;
+            border-bottom: 1px solid #ddd !important;
+            width: 10px !important;
+        }
+
+        ul li.tree:after {
+            position: absolute !important;
+            left: -15px !important;
+            bottom: -7px !important;
+            content: '' !important;
+            display: block !important;
+            border-left: 1px solid #ddd !important;
+            height: 100% !important;
+        }
+
+        ul li.root {
+            margin: 0 0 0 -20px !important;
+        }
+
+        ul li.root:before {
+            display: none !important;
+        }
+
+        ul li.root:after {
+            display: none !important;
+        }
+
+        ul li:last-child:after {
+            display: none !important;
+        }
+    </style>
 @stop
 @section('pageTitle')
     {!! $detail->chapter_name !!} @if((in_array($detail->chapter_type, ['task_force', 'task_group', 'squadron', 'division', 'ship', 'station']) === true) &&
@@ -185,15 +192,33 @@
             <div class="col-sm-10 Incised901Bold ninety">
                 <div class="btn-group text-center padding-bottom-10 btn-group-sm" role="group">
                     @if($viewMembers || $isInChainOfCommand === true)
-                        <br/><a href="{!!route('roster.export', [$detail->id])!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Download Roster</button></a>
+                        <br/><a href="{!!route('roster.export', [$detail->id])!!}">
+                            <button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Download Roster
+                            </button>
+                        </a>
                     @endif
                     @if($permsObj->canPromote($detail->id))
-                            <a href="{{ route('promotions', [$detail->id]) }}"><button class="btn btn-sm btn-primary"><span class="fa fa-thumbs-up"></span> Promotions</button></a>
+                        <a href="{{ route('promotions', [$detail->id]) }}">
+                            <button class="btn btn-sm btn-primary"><span class="fa fa-thumbs-up"></span> Promotions
+                            </button>
+                        </a>
                     @endif
                     @if(Auth::user()->hasPermissions(['CHAPTER_REPORT',]) === true)
-                            <a href="{!!route('report.index')!!}"><button class="btn btn-sm btn-primary"><span class="fa fa-file-text-o"></span> Chapter Reports</button></a>
-                            <a href="/upload/sheet/{{$detail->id}}"><button class="btn btn-sm btn-primary"><span class="fa fa-upload"></span> Upload Promotion Points</button></a>
-                            <a href="/upload/status/{{$detail->id}}"><button class="btn btn-sm btn-primary"><span class="fa fa-question-circle"></span> Promotion Point Status</button></a>
+                        <a href="{!!route('report.index')!!}">
+                            <button class="btn btn-sm btn-primary"><span class="fa fa-file-text-o"></span> Chapter
+                                Reports
+                            </button>
+                        </a>
+                        <a href="/upload/sheet/{{$detail->id}}">
+                            <button class="btn btn-sm btn-primary"><span class="fa fa-upload"></span> Upload Promotion
+                                Points
+                            </button>
+                        </a>
+                        <a href="/upload/status/{{$detail->id}}">
+                            <button class="btn btn-sm btn-primary"><span class="fa fa-question-circle"></span> Promotion
+                                Point Status
+                            </button>
+                        </a>
                     @endif
                 </div>
             </div>
@@ -293,7 +318,7 @@
                     "orderable": false,
                     "searchable": false
                 },
-                    @if($viewMembers || $isInChainOfCommand)
+                        @if($viewMembers || $isInChainOfCommand)
                     {
                         className: 'text-right', targets: [4]
                     },
@@ -303,7 +328,7 @@
                     {
                         className: 'nowrap roster-narrow-1300', targets: [5]
                     },
-                    @endif
+                        @endif
                     {
                         @if($viewMembers || $isInChainOfCommand)
                         targets: [7],
@@ -330,7 +355,7 @@
                 "stripeClasses": ['zebra-odd']
             });
 
-            $('#crewRoster').on('draw.dt', function() {
+            $('#crewRoster').on('draw.dt', function () {
                 $('#right').height(240 + $('#crewRoster').height());
 
                 if ($('#right').height() < $('#left').height()) {
@@ -338,7 +363,7 @@
                 }
             });
 
-            if ( $( window ).width() < 1560) {
+            if ($(window).width() < 1560) {
                 $('#left').toggle();
 
                 var toggleState = $('#toggle-btn').hasClass('fa-angle-double-left');

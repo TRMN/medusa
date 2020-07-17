@@ -4,15 +4,16 @@
 
     <title>@yield('pageTitle') | Royal Manticoran Navy Database</title>
     <META HTTP-EQUIV="cache-control" CONTENT="no-cache">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.16/sc-1.4.3/datatables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/vendor.css') !!}?{{ time() }}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/app.css') !!}?{{ time() }}">
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/overrides.css') !!}?{{ time() }}">
-    <link href="https://fonts.googleapis.com/css?family=Volkhov" rel="stylesheet">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/v/bs/dt-1.10.16/sc-1.4.3/datatables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{!! asset('css/vendor.css') !!}?{{ time() }}">
+        <link rel="stylesheet" type="text/css" href="{!! asset('css/app.css') !!}?{{ time() }}">
+        <link rel="stylesheet" type="text/css" href="{!! asset('css/overrides.css') !!}?{{ time() }}">
+        <link href="https://fonts.googleapis.com/css?family=Volkhov" rel="stylesheet">
 
-    <link rel="shortcut icon" href="{!! asset('favicon.ico') !!}">
-    @yield('dochead')
-</head>
+        <link rel="shortcut icon" href="{!! asset('favicon.ico') !!}">
+        @yield('dochead')
+        </head>
 <body class="@yield('bodyclasses')">
 <div class="container-fluid">
     <div class="row inset-bottom flex-vert-center navbar-fixed-top black-background header">
@@ -28,13 +29,16 @@
         <div class="col-sm-4 text-right text-nowrap">
             @if(Auth::check())
                 <a href="/home" title="Return to your Service Record">
-                <strong>{{ Auth::user()->getGreeting() }}
-                    {{ substr(Auth::user()->first_name, 0, 1) }}
-                    .{{ strlen(Auth::user()->middle_name) ? ' ' . substr(Auth::user()->middle_name, 0, 1) . '. ' : ' ' }} {{ Auth::user()->last_name }}</strong></a>
+                    <strong>{{ Auth::user()->getGreeting() }}
+                        {{ substr(Auth::user()->first_name, 0, 1) }}
+                        .{{ strlen(Auth::user()->middle_name) ? ' ' . substr(Auth::user()->middle_name, 0, 1) . '. ' : ' ' }} {{ Auth::user()->last_name }}</strong></a>
                 <h5 class="Incised901Light ninety">Last
                     Login: {!!date('d M Y @ g:i A T', strtotime(Auth::user()->getLastLogin()))!!}</h5>
 
-                <h5 class="Incised901Light ninety"><span class="fa fa-exclamation-triangle yellow" data-toggle="tooltip" data-placement="bottom" title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums"></span>&nbsp;Last Forum
+                <h5 class="Incised901Light ninety"><span class="fa fa-exclamation-triangle yellow" data-toggle="tooltip"
+                                                         data-placement="bottom"
+                                                         title="Accuracy is effected by the use of 'Remember Me' when logging in to the Forums"></span>&nbsp;Last
+                    Forum
                     Login:
                     @if(Auth::user()->forum_last_login)
                         {{date('d M Y @ g:i A T', Auth::user()->forum_last_login)}}
@@ -75,13 +79,15 @@
                             @if( $errors->any() )
                                 <ul class="medusa-error">
                                     @foreach( $errors->all() as $error )
-                                        <li class="alert-text Incised901Light"><span class="fa fa-exclamation-triangle"></span> {!! $error !!}</li>
+                                        <li class="alert-text Incised901Light"><span
+                                                    class="fa fa-exclamation-triangle"></span> {!! $error !!}</li>
                                     @endforeach
                                 </ul>
                             @endif
 
                             @if(Session::has('error'))
-                                <p class="alert-text Incised901Light"><span class="fa fa-exclamation-triangle"></span> {{Session::get('error')}}</p>
+                                <p class="alert-text Incised901Light"><span
+                                            class="fa fa-exclamation-triangle"></span> {{Session::get('error')}}</p>
                             @endif
 
                             @if(Session::has('message'))
@@ -126,7 +132,9 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group col-sm-6 text-right"><a href="{{ url('/password/reset') }}" class="text-right btn btn-lg btn-warning">Reset Password <span class="fa fa-lock"></span></a>
+                                    <div class="form-group col-sm-6 text-right"><a href="{{ url('/password/reset') }}"
+                                                                                   class="text-right btn btn-lg btn-warning">Reset
+                                            Password <span class="fa fa-lock"></span></a>
                                         <button class="btn btn-success btn-lg text-right Incised901Light" type="submit">
                                             Sign In
                                             <span
@@ -147,8 +155,10 @@
 
                                 <div class="row">
                                     <div class="col-sm-6 text-right">
-                                        <br clear="right" />
-                                        <a href="https://bolthole.trmn.org/open.php?topicId=12" class="btn btn-lg btn-danger">GDPR Removal Request <span class="fa fa-address-card"></span></a>
+                                        <br clear="right"/>
+                                        <a href="https://bolthole.trmn.org/open.php?topicId=12"
+                                           class="btn btn-lg btn-danger">GDPR Removal Request <span
+                                                    class="fa fa-address-card"></span></a>
                                     </div>
 
                                 </div>
@@ -158,31 +168,31 @@
         </div>
     </div>
 </div>
-    <footer class="inset-top">
-        <p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington Fan
-            Association,
-            Inc. Some Rights Reserved.
-            Honor Harrington and all related materials are &copy; David Weber.</p>
-        <span class="text-center"><img src="{!!asset('images/project-medusa.svg')!!}" width="150px" height="150px"
-                                       data-src="{!!asset('images/project-medusa.svg')!!}"></span>
-        <p>{!! Config::get('app.version') !!}</p>
-        @if(in_array($_SERVER['SERVER_NAME'],  ["dev.medusa.trmn.org", "medusa.dev", "medusa-dev.trmn.org", "medusa.local", "localhost"]))
-            <div class="alert alert-info text-center alert-text">
-                @if(in_array($_SERVER['SERVER_NAME'], ["dev.medusa.trmn.org", "medusa-dev.trmn.org"]))
-                    DEVELOPMENT / TEST SERVER
-                @else
-                    LOCAL SANDBOX SERVER
-                @endif
-            </div>
-        @endif
-        <span id="siteseal"><script type="text/javascript"
-                                    src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
-    </footer>
+<footer class="inset-top">
+    <p>Copyright &copy; 2008 &ndash; {!! date('Y') !!} The Royal Manticoran Navy: The Official Honor Harrington Fan
+        Association,
+        Inc. Some Rights Reserved.
+        Honor Harrington and all related materials are &copy; David Weber.</p>
+    <span class="text-center"><img src="{!!asset('images/project-medusa.svg')!!}" width="150px" height="150px"
+                                   data-src="{!!asset('images/project-medusa.svg')!!}"></span>
+    <p>{!! Config::get('app.version') !!}</p>
+    @if(in_array($_SERVER['SERVER_NAME'],  ["dev.medusa.trmn.org", "medusa.dev", "medusa-dev.trmn.org", "medusa.local", "localhost"]))
+        <div class="alert alert-info text-center alert-text">
+            @if(in_array($_SERVER['SERVER_NAME'], ["dev.medusa.trmn.org", "medusa-dev.trmn.org"]))
+                DEVELOPMENT / TEST SERVER
+            @else
+                LOCAL SANDBOX SERVER
+            @endif
+        </div>
+    @endif
+    <span id="siteseal"><script type="text/javascript"
+                                src="https://seal.starfieldtech.com/getSeal?sealID=v0CA19iS5KO2zCDMQWVQcf848PG2A4U0OWBVbTgzfEuk6Lrf8ASy84CTVQ5M"></script></span>
+</footer>
 
-    <script type="text/javascript" src="{!! asset('js/vendor.js')!!}?{{ time() }}"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/sc-1.4.3/datatables.min.js"></script>
+<script type="text/javascript" src="{!! asset('js/vendor.js')!!}?{{ time() }}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.16/sc-1.4.3/datatables.min.js"></script>
 
-    <script src="{!! asset('js/app.js')!!}?{{ time() }}"></script>
+<script src="{!! asset('js/app.js')!!}?{{ time() }}"></script>
 @yield( 'scriptFooter' )
 </body>
 </html>

@@ -1,6 +1,5 @@
 <?php
 
-use App\Billet;
 use App\Audit\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 
@@ -15,20 +14,22 @@ class AddPeerageBillets extends Migration
      */
     public function up()
     {
-        foreach ([
-                     'Knight',
-                     'Dame',
-                     'Baron',
-                     'Baroness',
-                     'Earl',
-                     'Countess',
-                     'Duke',
-                     'Duchess',
-                     'Grand Duke',
-                     'Grand Duchess',
-                     'Steadholder',
-                     'Majordomo',
-                 ] as $billet) {
+        $billets = [
+            'Knight',
+            'Dame',
+            'Baron',
+            'Baroness',
+            'Earl',
+            'Countess',
+            'Duke',
+            'Duchess',
+            'Grand Duke',
+            'Grand Duchess',
+            'Steadholder',
+            'Majordomo',
+        ];
+
+        foreach ($billets as $billet) {
             try {
                 App\Billet::create(['billet_name' => $billet]);
 
@@ -52,20 +53,22 @@ class AddPeerageBillets extends Migration
      */
     public function down()
     {
-        foreach ([
-                     'Knight',
-                     'Dame',
-                     'Baron',
-                     'Baroness',
-                     'Earl',
-                     'Countess',
-                     'Duke',
-                     'Duchess',
-                     'Grand Duke',
-                     'Grand Duchess',
-                     'Steadholder',
-                     'Majordomo',
-                 ] as $billet) {
+        $billets = [
+            'Knight',
+            'Dame',
+            'Baron',
+            'Baroness',
+            'Earl',
+            'Countess',
+            'Duke',
+            'Duchess',
+            'Grand Duke',
+            'Grand Duchess',
+            'Steadholder',
+            'Majordomo',
+        ];
+
+        foreach ($billets as $billet) {
             try {
                 $billetId = App\Billet::where('billet_name', $billet)->first()->id;
 

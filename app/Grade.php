@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
  * Grade Model.
@@ -55,7 +55,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Get the paygrades for a branch.
+     * Get the pay grades for a branch.
      *
      * @param $branchID
      * @param null $filter Valid values are null, E, O, F, W and C
@@ -92,7 +92,7 @@ class Grade extends Eloquent
         $grades = [];
 
         foreach (self::gradesForBranch($branchID, $filter) as $grade) {
-            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]) . ($suffix ? ' (' . $grade->grade . ')' :
+            $grades[$grade->grade] = self::mbTrim($grade->rank[$branchID]).($suffix ? ' ('.$grade->grade.')' :
                     '');
         }
 
@@ -117,6 +117,7 @@ class Grade extends Eloquent
                     $retVal[] = [$grade, $title];
                 }
             }
+
             return $retVal;
         } else {
             switch ($branch) {
@@ -132,6 +133,7 @@ class Grade extends Eloquent
                     break;
             }
         }
+
         return self::formatPayGradesForDataTables($payGrades);
     }
 
@@ -159,9 +161,9 @@ class Grade extends Eloquent
     {
         $grades = [];
 
-        $paygrades = self::filterGrades($filter);
+        $payGrades = self::filterGrades($filter);
 
-        foreach ($paygrades as $grade) {
+        foreach ($payGrades as $grade) {
             if (empty($grade->rank[$branchID]) === false) {
                 $grades[] = $grade;
             }
@@ -171,8 +173,8 @@ class Grade extends Eloquent
     }
 
     /**
-     * Helper method to filter paygrades by Enlisted, Officer, Flag Officer, Warrant Officer, Civilian or all
-     * paygrades (null).
+     * Helper method to filter pay grades by Enlisted, Officer, Flag Officer, Warrant Officer, Civilian or all
+     * pay grades (null).
      *
      * @param null $filter Valid values are null, E, O, F, W and C
      *
@@ -198,7 +200,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Helper method to return T/F if a paygrade matches the filter.
+     * Helper method to return T/F if a pay grade matches the filter.
      *
      * @param $filter
      * @param $grade
@@ -220,11 +222,11 @@ class Grade extends Eloquent
      */
     private static function mbTrim($string, $trim_chars = '\s')
     {
-        return preg_replace('/^[' . $trim_chars . ']*(?U)(.*)[' . $trim_chars . ']*$/u', '\\1', $string);
+        return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
     }
 
     /**
-     * Shortcut method to get enlisted paygrades.
+     * Shortcut method to get enlisted pay grades.
      *
      * @return array
      */
@@ -234,7 +236,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Shortcut method to get warrant officer paygrades.
+     * Shortcut method to get warrant officer pay grades.
      *
      * @return array
      */
@@ -244,7 +246,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Shortcut method to get officer paygrades.
+     * Shortcut method to get officer pay grades.
      *
      * @return array
      */
@@ -254,7 +256,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Shortcut method to get flag officer paygrades.
+     * Shortcut method to get flag officer pay grades.
      *
      * @return array
      */
@@ -264,7 +266,7 @@ class Grade extends Eloquent
     }
 
     /**
-     * Shortcut method to get civilian paygrades.
+     * Shortcut method to get civilian pay grades.
      *
      * @return array
      */
@@ -288,13 +290,13 @@ class Grade extends Eloquent
 
             return isset($gradeInfo->rank[$branch]);
         } catch (ModelNotFoundException $e) {
-            // Paygrade doesn't exist
+            // Pay grade doesn't exist
             return false;
         }
     }
 
     /**
-     * Get the equivalent paygrade for the specified branch
+     * Get the equivalent paygrade for the specified branch.
      *
      * @param \App\User $user
      * @param $newBranch
@@ -333,13 +335,14 @@ class Grade extends Eloquent
                 return $row[$newBranch];
             }
         }
+
         return false;
     }
 
     /**
-     * Get a members new paygrade, taking into account possible military->civilian->military branch changes. By default
+     * Get a members new pay grade, taking into account possible military->civilian->military branch changes. By default
      * it will update the members record to record the their current military rank for military->civilian changes or
-     * removing the record of their old
+     * removing the record of their old.
      *
      * @param \App\User $user
      * @param \App\Branch $oldBranch
@@ -355,12 +358,13 @@ class Grade extends Eloquent
             if ($updateUser === true) {
                 // Transferring from military to civilian, save their current branch and rank
                 $user->previous = [
-                    'branch'    => $user->branch,
+                    'branch' => $user->branch,
                     'pay_grade' => $user->rank['grade'],
                 ];
 
                 $user->save();
             }
+
             return self::getPayGradeEquiv($user, $newBranch->branch);
         }
 
@@ -382,7 +386,7 @@ class Grade extends Eloquent
             $userCopy->branch = $user->previous['branch'];
             $userCopy->rank = [
                 'date_of_rank' => $user->rank['date_of_rank'],
-                'grade'        => $user->previous['pay_grade'],
+                'grade' => $user->previous['pay_grade'],
             ];
 
             // Check to see if they've been promoted as a civilian to a pay-grade that has a higher equivalency
@@ -391,9 +395,10 @@ class Grade extends Eloquent
             if ($user->previous['pay_grade'] === self::getPayGradeEquiv($userCopy, $oldBranch->branch)) {
                 // Previous rank converts to their current civilian rank, so use the previous rank for
                 // the new rank lookup
-                return Grade::getPayGradeEquiv($userCopy, $newBranch->branch);
+                return self::getPayGradeEquiv($userCopy, $newBranch->branch);
             }
         }
+
         return self::getPayGradeEquiv($user, $newBranch->branch);
     }
 }

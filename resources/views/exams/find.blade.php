@@ -31,7 +31,10 @@
             <div class="row">
                 <div class=" col-sm-9 ninety Incised901Light text-center">
                     <a class="btn btn-warning"
-                       href="{!! URL::route('exam.find', ['user' => $user->id]) !!}"><span class="fa fa-times"></span> <strong>Cancel</strong> </a> <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> <strong>Save</strong> </button>
+                       href="{!! URL::route('exam.find', ['user' => $user->id]) !!}"><span class="fa fa-times"></span>
+                        <strong>Cancel</strong> </a>
+                    <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> <strong>Save</strong>
+                    </button>
                 </div>
                 {!!Form::close()!!}
             </div>

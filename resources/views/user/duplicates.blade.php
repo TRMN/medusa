@@ -26,17 +26,20 @@
                         {!! isset($user->middle_name) ? ' ' . $user->middle_name : '' !!}
                     </td>
                     <td>{!! $user->member_id !!}</td>
-                    <td>{!! $user->getAssignmentName('primary') !!} <br /> <em>{!!$user->getBillet('primary')!!}</em></td>
+                    <td>{!! $user->getAssignmentName('primary') !!} <br/> <em>{!!$user->getBillet('primary')!!}</em>
+                    </td>
                     <td>
                         @if(empty($user->getAssignmentName('secondary')) === false)
-                            {!! $user->getAssignmentName('secondary') !!}  <br /> <em>{!!$user->getBillet('secondary')!!}</em>
+                            {!! $user->getAssignmentName('secondary') !!}  <br/>
+                            <em>{!!$user->getBillet('secondary')!!}</em>
                         @else
                             No assignment
                         @endif
                     </td>
                     <td>
                         @if(empty($user->getAssignmentName('additional')) === false)
-                            {!! $user->getAssignmentName('additional') !!}  <br /> <em>{!!$user->getBillet('additional')!!}</em>
+                            {!! $user->getAssignmentName('additional') !!}  <br/>
+                            <em>{!!$user->getBillet('additional')!!}</em>
                         @else
                             No assignment
                         @endif

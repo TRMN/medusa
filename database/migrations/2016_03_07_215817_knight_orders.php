@@ -15,161 +15,161 @@ class KnightOrders extends Migration
     {
         $orders = [
             [
-                'order'    => 'Most Noble Order of the Star Kingdom',
+                'order' => 'Most Noble Order of the Star Kingdom',
                 'filename' => 'Order-of-the-Star-Kingdom.svg',
-                'classes'  => [
+                'classes' => [
                     [
-                        'class'       => 'Knight',
-                        'precedence'  => 3,
+                        'class' => 'Knight',
+                        'precedence' => 3,
                         'postnominal' => 'KSK',
                     ],
                 ],
             ],
             [
-                'order'    => 'Most Honorable Order of King Roger',
+                'order' => 'Most Honorable Order of King Roger',
                 'filename' => 'Order-of-King-Roger.svg',
-                'classes'  => [
+                'classes' => [
                     [
-                        'class'       => 'Knight Grand Cross',
-                        'precedence'  => 4,
+                        'class' => 'Knight Grand Cross',
+                        'precedence' => 4,
                         'postnominal' => 'GCR',
                     ],
                     [
-                        'class'       => 'Knight Commander',
-                        'precedence'  => 7,
+                        'class' => 'Knight Commander',
+                        'precedence' => 7,
                         'postnominal' => 'KDR',
                     ],
                     [
-                        'class'       => 'Knight Companion',
-                        'precedence'  => 9,
+                        'class' => 'Knight Companion',
+                        'precedence' => 9,
                         'postnominal' => 'KCR',
                     ],
                     [
-                        'class'       => 'Knight',
-                        'precedence'  => 13,
+                        'class' => 'Knight',
+                        'precedence' => 13,
                         'postnominal' => 'KR',
                     ],
                     [
-                        'class'       => 'Companion',
-                        'precedence'  => 15,
+                        'class' => 'Companion',
+                        'precedence' => 15,
                         'postnominal' => 'CR',
                     ],
                     [
-                        'class'       => 'Officer',
-                        'precedence'  => 19,
+                        'class' => 'Officer',
+                        'precedence' => 19,
                         'postnominal' => 'OR',
                     ],
                     [
-                        'class'       => 'Member',
-                        'precedence'  => 24,
+                        'class' => 'Member',
+                        'precedence' => 24,
                         'postnominal' => 'MR',
                     ],
                     [
-                        'class'       => 'Medal',
-                        'precedence'  => 35,
+                        'class' => 'Medal',
+                        'precedence' => 35,
                         'postnominal' => 'RM',
                     ],
                 ],
             ],
             [
-                'order'    => 'The Most Eminent Order of the Golden Lion',
+                'order' => 'The Most Eminent Order of the Golden Lion',
                 'filename' => 'Order-of-the-Golden-Lion.svg',
-                'classes'  => [
+                'classes' => [
                     [
-                        'class'       => 'Knight Grand Cross',
-                        'precedence'  => 4.5,
+                        'class' => 'Knight Grand Cross',
+                        'precedence' => 4.5,
                         'postnominal' => 'GCGL',
                     ],
                     [
-                        'class'       => 'Knight Commander',
-                        'precedence'  => 7.6,
+                        'class' => 'Knight Commander',
+                        'precedence' => 7.6,
                         'postnominal' => 'KDGL',
                     ],
                     [
-                        'class'       => 'Knight Companion',
-                        'precedence'  => 9.5,
+                        'class' => 'Knight Companion',
+                        'precedence' => 9.5,
                         'postnominal' => 'KCGL',
                     ],
                     [
-                        'class'       => 'Knight',
-                        'precedence'  => 13.5,
+                        'class' => 'Knight',
+                        'precedence' => 13.5,
                         'postnominal' => 'KGL',
                     ],
                     [
-                        'class'       => 'Companion',
-                        'precedence'  => 15.5,
+                        'class' => 'Companion',
+                        'precedence' => 15.5,
                         'postnominal' => 'CGL',
                     ],
                     [
-                        'class'       => 'Officer',
-                        'precedence'  => 19.5,
+                        'class' => 'Officer',
+                        'precedence' => 19.5,
                         'postnominal' => 'OGL',
                     ],
                     [
-                        'class'       => 'Member',
-                        'precedence'  => 24.5,
+                        'class' => 'Member',
+                        'precedence' => 24.5,
                         'postnominal' => 'MGL',
                     ],
                     [
-                        'class'       => 'Medal',
-                        'precedence'  => 35.5,
+                        'class' => 'Medal',
+                        'precedence' => 35.5,
                         'postnominal' => 'GLM',
                     ],
                 ],
             ],
             [
-                'order'    => 'Most Regal Order of Queen Elizabeth',
+                'order' => 'Most Regal Order of Queen Elizabeth',
                 'filename' => 'Order-of-Queen-Elizabeth.svg',
-                'classes'  => [
+                'classes' => [
                     [
-                        'class'       => 'Knight Grand Cross',
-                        'precedence'  => 5,
+                        'class' => 'Knight Grand Cross',
+                        'precedence' => 5,
                         'postnominal' => 'GCE',
                     ],
                     [
-                        'class'       => 'Knight Commander',
-                        'precedence'  => 8,
+                        'class' => 'Knight Commander',
+                        'precedence' => 8,
                         'postnominal' => 'KDE',
                     ],
                     [
-                        'class'       => 'Knight Companion',
-                        'precedence'  => 10,
+                        'class' => 'Knight Companion',
+                        'precedence' => 10,
                         'postnominal' => 'KCE',
                     ],
                     [
-                        'class'       => 'Knight',
-                        'precedence'  => 14,
+                        'class' => 'Knight',
+                        'precedence' => 14,
                         'postnominal' => 'KE',
                     ],
                     [
-                        'class'       => 'Companion',
-                        'precedence'  => 16,
+                        'class' => 'Companion',
+                        'precedence' => 16,
                         'postnominal' => 'CE',
                     ],
                     [
-                        'class'       => 'Officer',
-                        'precedence'  => 20,
+                        'class' => 'Officer',
+                        'precedence' => 20,
                         'postnominal' => 'OE',
                     ],
                     [
-                        'class'       => 'Member',
-                        'precedence'  => 25,
+                        'class' => 'Member',
+                        'precedence' => 25,
                         'postnominal' => 'ME',
                     ],
                     [
-                        'class'       => 'Medal',
-                        'precedence'  => 36,
+                        'class' => 'Medal',
+                        'precedence' => 36,
                         'postnominal' => 'EM',
                     ],
                 ],
             ],
             [
-                'order'    => 'The Most Distinguished Order of Merit',
+                'order' => 'The Most Distinguished Order of Merit',
                 'filename' => 'Order-of-Merit.svg',
-                'classes'  => [
+                'classes' => [
                     [
-                        'class'       => 'Knight',
-                        'precedence'  => 6,
+                        'class' => 'Knight',
+                        'precedence' => 6,
                         'postnominal' => 'OM',
                     ],
                 ],

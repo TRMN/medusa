@@ -12,8 +12,8 @@ class AddChapterShowConfig extends Migration
     public function up()
     {
         App\MedusaConfig::create([
-          'key'   => 'chapter.show',
-          'value' => json_decode('
+            'key' => 'chapter.show',
+            'value' => json_decode('
                 {
     "university_system": {
         "Regent": {

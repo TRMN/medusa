@@ -14,16 +14,16 @@ class AddBranchMemberViewPerms extends Migration
     public function up()
     {
         $newPerms = [
-            'VIEW_RMN'   => 'View RMN members',
-            'VIEW_RMMC'  => 'View RMMC members',
-            'VIEW_RMA'   => 'View RMA members',
-            'VIEW_GSN'   => 'View GSN members',
-            'VIEW_IAN'   => 'View IAN members',
-            'VIEW_RHN'   => 'View RHN members',
+            'VIEW_RMN' => 'View RMN members',
+            'VIEW_RMMC' => 'View RMMC members',
+            'VIEW_RMA' => 'View RMA members',
+            'VIEW_GSN' => 'View GSN members',
+            'VIEW_IAN' => 'View IAN members',
+            'VIEW_RHN' => 'View RHN members',
             'VIEW_CIVIL' => 'View CIVIL members',
-            'VIEW_SFS'   => 'View SFS members',
+            'VIEW_SFS' => 'View SFS members',
             'VIEW_RMACS' => 'View RMACS members',
-            'VIEW_RMMM'  => 'View RMMM members',
+            'VIEW_RMMM' => 'View RMMM members',
             'VIEW_INTEL' => 'View INTEL members',
         ];
 

@@ -14,7 +14,7 @@ class AddExamPerms extends Migration
     public function up()
     {
         $newPerms = [
-            'ADD_GRADE'  => 'Add an exam grade or edit a grade they entered',
+            'ADD_GRADE' => 'Add an exam grade or edit a grade they entered',
             'EDIT_GRADE' => 'Edit any exam grade',
         ];
 

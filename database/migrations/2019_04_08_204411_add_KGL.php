@@ -43,13 +43,13 @@ class AddKGL extends Migration
 
         // Make sure that the rest of the GL have the right replaces
         $gl = [
-          'GCGL' => 'KDGL,KCGL,KGL,CGL,OGL,MGL,GLM',
-          'KDGL' => 'GCGL,KCGL,KGL,CGL,OGL,MGL,GLM',
-          'KCGL' => 'GCGL,KDGL,KGL,CGL,OGL,MGL,GLM',
-          'CGL'  => 'GCGL,KDGL,KCGL,KGL,OGL,MGL,GLM',
-          'OGL'  => 'GCGL,KDGL,KCGL,KGL,CGL,MGL,GLM',
-          'MGL'  => 'GCGL,KDGL,KCGL,KGL,CGL,OGL,GLM',
-          'GLM'  => 'GCGL,KDGL,KCGL,KGL,CGL,OGL,MGL',
+            'GCGL' => 'KDGL,KCGL,KGL,CGL,OGL,MGL,GLM',
+            'KDGL' => 'GCGL,KCGL,KGL,CGL,OGL,MGL,GLM',
+            'KCGL' => 'GCGL,KDGL,KGL,CGL,OGL,MGL,GLM',
+            'CGL' => 'GCGL,KDGL,KCGL,KGL,OGL,MGL,GLM',
+            'OGL' => 'GCGL,KDGL,KCGL,KGL,CGL,MGL,GLM',
+            'MGL' => 'GCGL,KDGL,KCGL,KGL,CGL,OGL,GLM',
+            'GLM' => 'GCGL,KDGL,KCGL,KGL,CGL,OGL,MGL',
         ];
 
         foreach ($gl as $code => $replaces) {

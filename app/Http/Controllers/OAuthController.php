@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use Response;
-//use Illuminate\Support\Facades\Request;
 use App\OAuthClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Log;
+use Response;
 
 class OAuthController extends Controller
 {
@@ -168,15 +167,15 @@ class OAuthController extends Controller
 
         return \Response::json(
             [
-                'uid'            => $user->_id,
-                'email'          => $user->email_address,
-                'firstname'      => $user->first_name,
-                'lastname'       => $user->last_name,
-                'city'           => $user->city,
+                'uid' => $user->_id,
+                'email' => $user->email_address,
+                'firstname' => $user->first_name,
+                'lastname' => $user->last_name,
+                'city' => $user->city,
                 'state_province' => $user->state_province,
-                'country'        => $user->country,
-                'imageurl'       => $user->filePhoto,
-                'user_id'        => $user->_id,
+                'country' => $user->country,
+                'imageurl' => $user->filePhoto,
+                'user_id' => $user->_id,
             ]
         );
     }
@@ -208,8 +207,8 @@ class OAuthController extends Controller
                 $_peerage['path'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
             } elseif ($_peerage['code'] != 'K' && $_peerage['title'] != 'Knight' && $_peerage['title'] != 'Dame') {
                 if (empty($_peerage['filename']) === false && file_exists(
-                    public_path().'/arms/peerage/'.$_peerage['filename']
-                )
+                        public_path().'/arms/peerage/'.$_peerage['filename']
+                    )
                 ) {
                     $_peerage['path'] =
                         '/arms/peerage/'.$_peerage['filename'];
@@ -269,8 +268,8 @@ class OAuthController extends Controller
 
                 $_exams[str_replace(' ', '_', $_label)] =
                     [
-                        'label'    => $_label,
-                        'new'      => $_newExams,
+                        'label' => $_label,
+                        'new' => $_newExams,
                         'examlist' => $_examList,
                     ];
             }
@@ -348,7 +347,7 @@ class OAuthController extends Controller
         return Response::json(
             [
                 'events' => $this->getUserFromRequest($request)
-                                 ->getScheduledEvents($_tz),
+                    ->getScheduledEvents($_tz),
             ]
         );
     }
@@ -361,11 +360,11 @@ class OAuthController extends Controller
 
         return Response::json(
             $this->getUserFromRequest($request)
-                 ->checkMemberIn(
-                     $_data['event'],
-                     $_data['member'],
-                     empty($_data['tz']) ? null : $_data['tz']
-                 )
+                ->checkMemberIn(
+                    $_data['event'],
+                    $_data['member'],
+                    empty($_data['tz']) ? null : $_data['tz']
+                )
         );
     }
 
@@ -395,7 +394,7 @@ class OAuthController extends Controller
 
             return Response::json(
                 [
-                    'status'  => 'success',
+                    'status' => 'success',
                     'message' => 'Profile updated',
                 ]
             );
@@ -404,7 +403,7 @@ class OAuthController extends Controller
 
             return Response::json(
                 [
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => 'Unable to update profile',
                 ],
                 500

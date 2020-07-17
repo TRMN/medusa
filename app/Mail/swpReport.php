@@ -37,6 +37,6 @@ class swpReport extends Mailable
     public function build()
     {
         return $this->from(config('awards.from.address'), config('awards.from.name'))
-                    ->subject(config('awards.SWP-notification.subject'))->markdown('emails.swpReport');
+            ->subject(config('awards.SWP-notification.subject'))->markdown('emails.swpReport');
     }
 }

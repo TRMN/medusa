@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class RemindersController extends Controller
 {
@@ -39,10 +39,7 @@ class RemindersController extends Controller
         );
 
         switch ($response) {
-            case Password::INVALID_USER:
-                return Redirect::back()->with('message', Lang::get($response));
-
-            case Password::REMINDER_SENT:
+            case Password::INVALID_USER || Password::REMINDER_SENT:
                 return Redirect::back()->with('message', Lang::get($response));
         }
     }

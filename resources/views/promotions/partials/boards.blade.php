@@ -3,19 +3,23 @@
 
     <div class="text-center">
         <div class="btn-group text-center padding-bottom-10 btn-group-lg" role="group">
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#enlistedBoard" aria-expanded="false" aria-controls="enlistedBoard">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#enlistedBoard"
+                    aria-expanded="false" aria-controls="enlistedBoard">
                 <span class="fa fa-info-circle"></span> View Enlisted Information
             </button>
 
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#woBoard" aria-expanded="false" aria-controls="woBoard">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#woBoard"
+                    aria-expanded="false" aria-controls="woBoard">
                 <span class="fa fa-info-circle"></span> View Warrant Officer Information
             </button>
 
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#officerBoard" aria-expanded="false" aria-controls="officerBoard">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#officerBoard"
+                    aria-expanded="false" aria-controls="officerBoard">
                 <span class="fa fa-info-circle"></span> View Officer Information
             </button>
 
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#flagBoard" aria-expanded="false" aria-controls="flagBoard">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#flagBoard"
+                    aria-expanded="false" aria-controls="flagBoard">
                 <span class="fa fa-info-circle"></span> View Flag Officer Information
             </button>
         </div>

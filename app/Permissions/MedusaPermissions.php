@@ -2,10 +2,10 @@
 
 namespace App\Permissions;
 
-use App\User;
 use App\Chapter;
-use Illuminate\Support\Facades\URL;
+use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 trait MedusaPermissions
 {
@@ -37,11 +37,11 @@ trait MedusaPermissions
     public function hasDutyRosterForAssignedShip()
     {
         return Auth::user()->hasAllPermissions() === true ? true :
-                Auth::user()->hasPermissions(['DUTY_ROSTER']) &&
-                in_array(
-                    Auth::user()->getAssignedShip(),
-                    explode(',', Auth::user()->duty_roster)
-                );
+            Auth::user()->hasPermissions(['DUTY_ROSTER']) &&
+            in_array(
+                Auth::user()->getAssignedShip(),
+                explode(',', Auth::user()->duty_roster)
+            );
     }
 
     public function loginValid()
@@ -180,7 +180,7 @@ trait MedusaPermissions
     public function promotionPointsEditAccess(User $user)
     {
         if ((Auth::user()->hasPermissions(['EDIT_SELF']) === true &&
-             Auth::user()->id == $user->id)
+                Auth::user()->id == $user->id)
             || Auth::user()->hasPermissions(['EDIT_MEMBER'])
             || Auth::user()->isInChainOfCommand($user) === true) {
             return true;
@@ -192,7 +192,7 @@ trait MedusaPermissions
     public function canPromote($chapterId)
     {
         if ((Auth::user()->hasPermissions(['PROMOTE_E6O1']) === true &&
-             (Auth::user()->isCoAssignedShip() === true) || Auth::user()->isCommandingOfficer($chapterId))
+                (Auth::user()->isCoAssignedShip() === true) || Auth::user()->isCommandingOfficer($chapterId))
             || Auth::user()->hasAllPermissions()
             || (Auth::user()->isFleetCO() === true &&
                 Auth::user()->hasPermissions(['PROMOTE_E6O2']) === true)) {

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\ForumUser;
 use App\Events\LoginComplete;
+use App\ForumUser;
+use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function signin(Request $request)
     {
         $rules = [
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required',
         ];
 
