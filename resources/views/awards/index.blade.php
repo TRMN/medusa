@@ -26,11 +26,13 @@
                         @endif
                         {{$award->name}}<br/>
                         <div class="padding-top-10 btn-group-xs">
-                            <button id="editBtn" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#awardForm"
+                            <button id="editBtn" class="btn btn-xs btn-primary" data-toggle="modal"
+                                    data-target="#awardForm"
                                     data-code="{{$award->code}}" data-name="{{$award->name}}"
                                     data-postnom="{{$award->post_nominal}}" data-location="{{$award->location}}"
                                     data-replaces="{{$award->replaces}}" data-multiple="{{$award->multiple}}"
-                                    data-points="{{$award->points}}" data-nation="{{$award->star_nation}}"><span class="fa fa-edit"></span> Edit
+                                    data-points="{{$award->points}}" data-nation="{{$award->star_nation}}"><span
+                                        class="fa fa-edit"></span> Edit
                             </button>
                             <button id="addBtn" class="btn btn-xs btn-success"> Insert award below <span
                                         class="fa fa-arrow-down"></span></button>

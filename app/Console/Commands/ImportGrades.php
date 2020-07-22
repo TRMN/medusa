@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Exam;
-use App\User;
 use App\Message;
-use Illuminate\Support\Arr;
+use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportGrades extends Command
@@ -55,18 +55,18 @@ class ImportGrades extends Command
         $examRecords = []; // start with a clean array
 
         foreach ([
-                     'RMN Exam Grading Sheet'      => 'importMainLineExams',
-                     'RMN Specialist Exam Grades'  => 'importRmnSpecialityExams',
-                     'IMNA Exam Grades'            => 'importGsnMainLineExams',
-                     'RMMC Exam Grading Sheet'     => 'importRmmcMainLineExams',
-                     'RMMC Specialist Exam Grades' => 'importRmmcSpecialityExams',
-                     'RMA Exam Grading Sheet'      => 'importRmaMainLineExams',
-                     'RMA Specialist Exam Grades'  => 'importRmaSpecialityExams',
-                     'Landing U Core'              => 'importLandingUExams',
-                     'Landing King\'s '            => 'importLandingUExams',
-                     'Landing Queen\'s'            => 'importLandingUExams',
-                     'IMNA Specialist Exam Grades' => 'importGsnSpecialityExams',
-                 ] as $sheet => $importRoutine) {
+            'RMN Exam Grading Sheet' => 'importMainLineExams',
+            'RMN Specialist Exam Grades' => 'importRmnSpecialityExams',
+            'IMNA Exam Grades' => 'importGsnMainLineExams',
+            'RMMC Exam Grading Sheet' => 'importRmmcMainLineExams',
+            'RMMC Specialist Exam Grades' => 'importRmmcSpecialityExams',
+            'RMA Exam Grading Sheet' => 'importRmaMainLineExams',
+            'RMA Specialist Exam Grades' => 'importRmaSpecialityExams',
+            'Landing U Core' => 'importLandingUExams',
+            'Landing King\'s ' => 'importLandingUExams',
+            'Landing Queen\'s' => 'importLandingUExams',
+            'IMNA Specialist Exam Grades' => 'importGsnSpecialityExams',
+        ] as $sheet => $importRoutine) {
             $examRecords = $this->processExams($examRecords, $sheet, $importRoutine);
         }
 
@@ -105,7 +105,7 @@ class ImportGrades extends Command
                     $details =
                         [
                             'severity' => 'warning',
-                            'msg'      => 'Unable to update '.$res->first_name.' '.$res->last_name.'('.$memberId.')',
+                            'msg' => 'Unable to update '.$res->first_name.' '.$res->last_name.'('.$memberId.')',
                         ];
 
                     $this->logMsg($details);
@@ -127,7 +127,7 @@ class ImportGrades extends Command
                     $details =
                         [
                             'severity' => 'warning',
-                            'msg'      => 'Unable to add '.$res->first_name.' '.$res->last_name.'('.$memberId.')',
+                            'msg' => 'Unable to add '.$res->first_name.' '.$res->last_name.'('.$memberId.')',
                         ];
 
                     $this->logMsg($details);
@@ -143,7 +143,7 @@ class ImportGrades extends Command
         $details =
             [
                 'severity' => 'info',
-                'msg'      => $sheet,
+                'msg' => $sheet,
             ];
 
         $this->logMsg($details);
@@ -152,8 +152,8 @@ class ImportGrades extends Command
             app_path().'/database/TRMN Exam grading spreadsheet.xlsx',
             'UTF-8'
         )
-                      ->formatDates(true, 'Y-m-d')
-                      ->toArray();
+            ->formatDates(true, 'Y-m-d')
+            ->toArray();
 
         foreach ($exams as $userRecord) {
             if (empty($userRecord['last_name']) === true) {
@@ -305,27 +305,27 @@ class ImportGrades extends Command
                 'sia_rmn_0001_e_2e_3' => 'SIA-RMN-0001',
                 'sia_rmn_0002_e_4e_5' => 'SIA-RMN-0002',
                 'sia_rmn_0003_e_6e_7' => 'SIA-RMN-0003',
-                'sia_rmn_0004_e_8'    => 'SIA-RMN-0004',
-                'sia_rmn_0005_e_9'    => 'SIA-RMN-0005',
-                'sia_rmn_0006_e_10'   => 'SIA-RMN-0006',
+                'sia_rmn_0004_e_8' => 'SIA-RMN-0004',
+                'sia_rmn_0005_e_9' => 'SIA-RMN-0005',
+                'sia_rmn_0006_e_10' => 'SIA-RMN-0006',
                 'sia_rmn_0011_w_1w_2' => 'SIA-RMN-0011',
                 'sia_rmn_0012_w_3w_4' => 'SIA-RMN-0012',
-                'sia_rmn_0013_w_5'    => 'SIA-RMN-0013',
-                'ensign_0101'         => 'SIA-RMN-0101',
-                'lt_jg_0102'          => 'SIA-RMN-0102',
-                'lt_sg_0103'          => 'SIA-RMN-0103',
-                'intro_to_mgmt_0113'  => 'SIA-RMN-0113',
-                'lt_cmd_0104'         => 'SIA-RMN-0104',
-                'cdr_0105'            => 'SIA-RMN-0105',
-                'intro_to_ldr_0115'   => 'SIA-RMN-0115',
-                'capt_jg_0106'        => 'SIA-RMN-0106',
-                'sia_rmn_1001'        => 'SIA-RMN-1001',
-                'sia_rmn_1002'        => 'SIA-RMN-1002',
-                'sia_rmn_1003'        => 'SIA-RMN-1003',
-                'sia_rmn_1004'        => 'SIA-RMN-1004',
-                'sia_rmn_1005'        => 'SIA-RMN-1005',
-                'sia_rmn_2001'        => 'SIA-RMN-2001',
-                'sia_rmn_2001s_sits'  => 'SIA-RMN-2001S',
+                'sia_rmn_0013_w_5' => 'SIA-RMN-0013',
+                'ensign_0101' => 'SIA-RMN-0101',
+                'lt_jg_0102' => 'SIA-RMN-0102',
+                'lt_sg_0103' => 'SIA-RMN-0103',
+                'intro_to_mgmt_0113' => 'SIA-RMN-0113',
+                'lt_cmd_0104' => 'SIA-RMN-0104',
+                'cdr_0105' => 'SIA-RMN-0105',
+                'intro_to_ldr_0115' => 'SIA-RMN-0115',
+                'capt_jg_0106' => 'SIA-RMN-0106',
+                'sia_rmn_1001' => 'SIA-RMN-1001',
+                'sia_rmn_1002' => 'SIA-RMN-1002',
+                'sia_rmn_1003' => 'SIA-RMN-1003',
+                'sia_rmn_1004' => 'SIA-RMN-1004',
+                'sia_rmn_1005' => 'SIA-RMN-1005',
+                'sia_rmn_2001' => 'SIA-RMN-2001',
+                'sia_rmn_2001s_sits' => 'SIA-RMN-2001S',
             ];
 
         $exam = [];
@@ -342,32 +342,32 @@ class ImportGrades extends Command
     protected function importRmaMainLineExams(array $record)
     {
         $mainLineExams = [
-            '0001_exam_e_1'                => 'KR1MA-RMA-0001',
-            '0002_exam_e_2'                => 'KR1MA-RMA-0002',
-            '0003_exam_e_3'                => 'KR1MA-RMA-0003',
-            '0004_exam_e_4'                => 'KR1MA-RMA-0004',
-            '0005_exam_e_6'                => 'KR1MA-RMA-0005',
-            '0006_exam_e_7'                => 'KR1MA-RMA-0006',
-            '0007_exam_e_8'                => 'KR1MA-RMA-0007',
-            '0008_exam_e_9'                => 'KR1MA-RMA-0008',
-            'wo_0011_exam_wo1'             => 'KR1MA-RMA-0011',
-            'cwo_0012_exam_wo2'            => 'KR1MA-RMA-0012',
-            'scwo_0013_exam'               => 'KR1MA-RMA-0013',
-            'mcwo_0014_exam'               => 'KR1MA-RMA-0014',
-            '0101_o_1_exam_2nd_lt'         => 'KR1MA-RMA-0101',
-            '0102_o_2_exam_1st_lt'         => 'KR1MA-RMA-0102',
-            '0103_o_3_exam_cpt'            => 'KR1MA-RMA-0103',
-            'rma_2001_military_admin'      => 'KR1MA-RMA-2001',
-            '0104_o_4_exam_maj'            => 'KR1MA-RMA-0104',
-            'rma_2002_large_unit_tactics'  => 'KR1MA-RMA-2002',
-            '0105_o_5_ltcol'               => 'KR1MA-RMA-0105',
-            '0106_o_6_exam_col'            => 'KR1MA-RMA-0106',
+            '0001_exam_e_1' => 'KR1MA-RMA-0001',
+            '0002_exam_e_2' => 'KR1MA-RMA-0002',
+            '0003_exam_e_3' => 'KR1MA-RMA-0003',
+            '0004_exam_e_4' => 'KR1MA-RMA-0004',
+            '0005_exam_e_6' => 'KR1MA-RMA-0005',
+            '0006_exam_e_7' => 'KR1MA-RMA-0006',
+            '0007_exam_e_8' => 'KR1MA-RMA-0007',
+            '0008_exam_e_9' => 'KR1MA-RMA-0008',
+            'wo_0011_exam_wo1' => 'KR1MA-RMA-0011',
+            'cwo_0012_exam_wo2' => 'KR1MA-RMA-0012',
+            'scwo_0013_exam' => 'KR1MA-RMA-0013',
+            'mcwo_0014_exam' => 'KR1MA-RMA-0014',
+            '0101_o_1_exam_2nd_lt' => 'KR1MA-RMA-0101',
+            '0102_o_2_exam_1st_lt' => 'KR1MA-RMA-0102',
+            '0103_o_3_exam_cpt' => 'KR1MA-RMA-0103',
+            'rma_2001_military_admin' => 'KR1MA-RMA-2001',
+            '0104_o_4_exam_maj' => 'KR1MA-RMA-0104',
+            'rma_2002_large_unit_tactics' => 'KR1MA-RMA-2002',
+            '0105_o_5_ltcol' => 'KR1MA-RMA-0105',
+            '0106_o_6_exam_col' => 'KR1MA-RMA-0106',
             'rma_2003_advanced_leadership' => 'KR1MA-RMA-2003',
-            '1001_f_1_exam_briggen'        => 'KR1MA-RMA-1001',
-            '1002_f_2_exam_mg'             => 'KR1MA-RMA-1002',
-            '1003_f_3_exam_lg'             => 'KR1MA-RMA-1003',
-            '1004_f_4_exam_gen'            => 'KR1MA-RMA-1004',
-            '1005_f_5_exam_fm'             => 'KR1MA-RMA-1005',
+            '1001_f_1_exam_briggen' => 'KR1MA-RMA-1001',
+            '1002_f_2_exam_mg' => 'KR1MA-RMA-1002',
+            '1003_f_3_exam_lg' => 'KR1MA-RMA-1003',
+            '1004_f_4_exam_gen' => 'KR1MA-RMA-1004',
+            '1005_f_5_exam_fm' => 'KR1MA-RMA-1005',
         ];
 
         $exam = [];
@@ -526,23 +526,23 @@ class ImportGrades extends Command
             'imna_gsn_0001_e_2e_3' => 'IMNA-GSN-0001',
             'imna_gsn_0002_e_4e_5' => 'IMNA-GSN-0002',
             'imna_gsn_0003_e_6e_7' => 'IMNA-GSN-0003',
-            'imna_gsn_0004_e_8'    => 'IMNA-GSN-0004',
-            'imna_gsn_0005_e_9'    => 'IMNA-GSN-0005',
-            'imna_gsn_0006_e_10'   => 'IMNA-GSN-0006',
+            'imna_gsn_0004_e_8' => 'IMNA-GSN-0004',
+            'imna_gsn_0005_e_9' => 'IMNA-GSN-0005',
+            'imna_gsn_0006_e_10' => 'IMNA-GSN-0006',
             'wo1wo2_imna_gsn_0011' => 'IMNA-GSN-0011',
             'wo3wo4_imna_gsn_0012' => 'IMNA-GSN-0012',
-            'wo5_imna_gsn_0013'    => 'IMNA-GSN-0013',
-            'mid_imna_gsn_0100'    => 'IMNA-GSN-0100',
-            'ens_imna_gsn_0101'    => 'IMNA-GSN-0101',
-            'lt_jg_imna_gsn_0102'  => 'IMNA-GSN-0102',
-            'lt_sg_imna_gsn_0103'  => 'IMNA-GSN-0103',
-            'lcdr_imna_gsn_0104'   => 'IMNA-GSN-0104',
-            'cdr_imna_gsn_0105'    => 'IMNA-GSN-0105',
-            'cpt_imna_gsn_0106'    => 'IMNA-GSN-0106',
-            'com_imna_gsn_1001'    => 'IMNA-GSN-1001',
-            'radm_imna_gsn_1002'   => 'IMNA-GSN-1002',
-            'vadm_imna_gsn_1003'   => 'IMNA-GSN-1003',
-            'adm_imna_gsn_1004'    => 'IMNA-GSN-1004',
+            'wo5_imna_gsn_0013' => 'IMNA-GSN-0013',
+            'mid_imna_gsn_0100' => 'IMNA-GSN-0100',
+            'ens_imna_gsn_0101' => 'IMNA-GSN-0101',
+            'lt_jg_imna_gsn_0102' => 'IMNA-GSN-0102',
+            'lt_sg_imna_gsn_0103' => 'IMNA-GSN-0103',
+            'lcdr_imna_gsn_0104' => 'IMNA-GSN-0104',
+            'cdr_imna_gsn_0105' => 'IMNA-GSN-0105',
+            'cpt_imna_gsn_0106' => 'IMNA-GSN-0106',
+            'com_imna_gsn_1001' => 'IMNA-GSN-1001',
+            'radm_imna_gsn_1002' => 'IMNA-GSN-1002',
+            'vadm_imna_gsn_1003' => 'IMNA-GSN-1003',
+            'adm_imna_gsn_1004' => 'IMNA-GSN-1004',
         ];
 
         $exam = [];
@@ -559,33 +559,33 @@ class ImportGrades extends Command
     protected function importRmmcMainLineExams(array $record)
     {
         $mainLineExams = [
-            'rmmc_0001'  => 'SIA-RMMC-0001',
-            'rmmc_0002'  => 'SIA-RMMC-0002',
-            'rmmc_0003'  => 'SIA-RMMC-0003',
-            'rmmc_0004'  => 'SIA-RMMC-0004',
-            'rmmc_0005'  => 'SIA-RMMC-0005',
-            'rmmc_0006'  => 'SIA-RMMC-0006',
-            'rmmc_0011'  => 'SIA-RMMC-0011',
-            'rmmc_0012'  => 'SIA-RMMC-0012',
-            'rmmc_0013'  => 'SIA-RMMC-0013',
-            'rmmc_0101'  => 'SIA-RMMC-0101',
-            'rmmc_0102'  => 'SIA-RMMC-0102',
-            'rmmc_0103'  => 'SIA-RMMC-0103',
-            'rmmc_0113'  => 'SIA-RMMC-0113',
-            'rmmc_0104'  => 'SIA-RMMC-0104',
-            'rmmc_0105'  => 'SIA-RMMC-0105',
-            'rmmc_0115'  => 'SIA-RMMC-0115',
-            'rmmc_0106'  => 'SIA-RMMC-0106',
-            'rmmc_1001'  => 'SIA-RMMC-1001',
-            'rmmc_1002'  => 'SIA-RMMC-1002',
-            'rmmc_1003'  => 'SIA-RMMC-1003',
-            'rmmc_1004'  => 'SIA-RMMC-1004',
-            'rmmc_s_a'   => 'SIA-RMMC-S-A',
-            'rmmc_s_b'   => 'SIA-RMMC-S-B',
-            'rmmc_s_c'   => 'SIA-RMMC-S-C',
-            'rmmc_g_a'   => 'SIA-RMMC-G-A',
-            'rmmc_g_b'   => 'SIA-RMMC-G-B',
-            'rmmc_g_c'   => 'SIA-RMMC-G-C',
+            'rmmc_0001' => 'SIA-RMMC-0001',
+            'rmmc_0002' => 'SIA-RMMC-0002',
+            'rmmc_0003' => 'SIA-RMMC-0003',
+            'rmmc_0004' => 'SIA-RMMC-0004',
+            'rmmc_0005' => 'SIA-RMMC-0005',
+            'rmmc_0006' => 'SIA-RMMC-0006',
+            'rmmc_0011' => 'SIA-RMMC-0011',
+            'rmmc_0012' => 'SIA-RMMC-0012',
+            'rmmc_0013' => 'SIA-RMMC-0013',
+            'rmmc_0101' => 'SIA-RMMC-0101',
+            'rmmc_0102' => 'SIA-RMMC-0102',
+            'rmmc_0103' => 'SIA-RMMC-0103',
+            'rmmc_0113' => 'SIA-RMMC-0113',
+            'rmmc_0104' => 'SIA-RMMC-0104',
+            'rmmc_0105' => 'SIA-RMMC-0105',
+            'rmmc_0115' => 'SIA-RMMC-0115',
+            'rmmc_0106' => 'SIA-RMMC-0106',
+            'rmmc_1001' => 'SIA-RMMC-1001',
+            'rmmc_1002' => 'SIA-RMMC-1002',
+            'rmmc_1003' => 'SIA-RMMC-1003',
+            'rmmc_1004' => 'SIA-RMMC-1004',
+            'rmmc_s_a' => 'SIA-RMMC-S-A',
+            'rmmc_s_b' => 'SIA-RMMC-S-B',
+            'rmmc_s_c' => 'SIA-RMMC-S-C',
+            'rmmc_g_a' => 'SIA-RMMC-G-A',
+            'rmmc_g_b' => 'SIA-RMMC-G-B',
+            'rmmc_g_c' => 'SIA-RMMC-G-C',
             'rmmc_jtf_a' => 'SIA-RMMC-JTF-A',
             'rmmc_jtf_b' => 'SIA-RMMC-JTF-B',
             'rmmc_jtf_c' => 'SIA-RMMC-JTF-C',
@@ -704,9 +704,9 @@ class ImportGrades extends Command
 
             if (is_null($user) === false) {
                 if (stripos(trim($user['first_name']), substr(trim($firstName[0]), 0, 2)) === 0 && stripos(
-                    trim($user['last_name']),
-                    trim($lastName[0])
-                ) === 0
+                        trim($user['last_name']),
+                        trim($lastName[0])
+                    ) === 0
                 ) {
                     return $memberExamRecord;
                 }
@@ -724,7 +724,7 @@ class ImportGrades extends Command
             $details =
                 [
                     'severity' => 'warning',
-                    'msg'      => 'Invalid MemberID('.$memberExamRecord['member_number'].') for '.$memberExamRecord['first_name'].' '.$memberExamRecord['last_name'].' and I was unable to find a definitive match in the User database.',
+                    'msg' => 'Invalid MemberID('.$memberExamRecord['member_number'].') for '.$memberExamRecord['first_name'].' '.$memberExamRecord['last_name'].' and I was unable to find a definitive match in the User database.',
                 ];
 
             $this->logMsg($details);

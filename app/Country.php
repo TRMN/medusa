@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Webpatser\Countries\Countries;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Webpatser\Countries\Countries;
 
 class Country extends Eloquent
 {
@@ -11,8 +11,8 @@ class Country extends Eloquent
 
     public static function getCountries()
     {
-        $contries = new Countries();
-        $results = $contries->getList();
+        $countryLister = new Countries();
+        $results = $countryLister->getList();
         $countries = [];
 
         foreach ($results as $country) {

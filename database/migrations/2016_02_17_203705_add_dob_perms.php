@@ -14,7 +14,7 @@ class AddDobPerms extends Migration
     public function up()
     {
         $newPerms = [
-            'DOB'  => 'See Date of Birth',
+            'DOB' => 'See Date of Birth',
         ];
 
         foreach ($newPerms as $perm => $desc) {

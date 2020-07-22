@@ -18,11 +18,11 @@ class FixEmptyAssignments extends Migration
         $hmssGreenwich = \App\Chapter::where('hull_number', '=', 'SS-001')->first();
 
         $assignment[] = [
-            'chapter_id'    => $hmssGreenwich->id,
-            'chapter_name'  => $hmssGreenwich->chapter_name,
+            'chapter_id' => $hmssGreenwich->id,
+            'chapter_name' => $hmssGreenwich->chapter_name,
             'date_assigned' => date('Y-m-d'),
-            'billet'        => 'Crewman',
-            'primary'       => true,
+            'billet' => 'Crewman',
+            'primary' => true,
         ];
 
         foreach ($users as $user) {

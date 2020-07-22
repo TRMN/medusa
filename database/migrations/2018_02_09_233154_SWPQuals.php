@@ -13,18 +13,18 @@ class SWPQuals extends Migration
     {
         // SWP Qualifications
         $swpQual = [
-            'RMN'  => [
+            'RMN' => [
                 'Enlisted' => [
-                    'NumDepts'    => 3,
-                    'Required'    => [
+                    'NumDepts' => 3,
+                    'Required' => [
                         'SIA-SRN-01A',
                         'SIA-SRN-04A',
                     ],
                     'Departments' => [
-                        'FlightOps'      => [
+                        'FlightOps' => [
                             'SIA-SRN-05C',
                         ],
-                        'Astrogation'    => [
+                        'Astrogation' => [
                             'SIA-SRN-06C',
                             'SIA-SRN-07C',
                         ],
@@ -33,7 +33,7 @@ class SWPQuals extends Migration
                             'SIA-SRN-12C',
                             'SIA-SRN-13C',
                         ],
-                        'Engineering'    => [
+                        'Engineering' => [
                             'SIA-SRN-14C',
                             'SIA-SRN-15C',
                             'SIA-SRN-16C',
@@ -41,7 +41,7 @@ class SWPQuals extends Migration
                             'SIA-SRN-18C',
                             'SIA-SRN-19C',
                         ],
-                        'Tactical'       => [
+                        'Tactical' => [
                             'SIA-SRN-08C',
                             'SIA-SRN-09C',
                             'SIA-SRN-10C',
@@ -52,17 +52,17 @@ class SWPQuals extends Migration
                         ],
                     ],
                 ],
-                'Officer'  => [
-                    'NumDepts'    => 4,
-                    'Required'    => [
+                'Officer' => [
+                    'NumDepts' => 4,
+                    'Required' => [
                         'SIA-SRN-01C',
                         'SIA-SRN-31C',
                     ],
                     'Departments' => [
-                        'FlightOps'      => [
+                        'FlightOps' => [
                             'SIA-SRN-05D',
                         ],
-                        'Astrogation'    => [
+                        'Astrogation' => [
                             'SIA-SRN-06D',
                             'SIA-SRN-07D',
                         ],
@@ -71,7 +71,7 @@ class SWPQuals extends Migration
                             'SIA-SRN-12D',
                             'SIA-SRN-13D',
                         ],
-                        'Engineering'    => [
+                        'Engineering' => [
                             'SIA-SRN-14D',
                             'SIA-SRN-15D',
                             'SIA-SRN-16D',
@@ -79,7 +79,7 @@ class SWPQuals extends Migration
                             'SIA-SRN-18D',
                             'SIA-SRN-19D',
                         ],
-                        'Tactical'       => [
+                        'Tactical' => [
                             'SIA-SRN-08D',
                             'SIA-SRN-09D',
                             'SIA-SRN-10D',
@@ -93,63 +93,63 @@ class SWPQuals extends Migration
             ],
             'RMMC' => [
                 'Enlisted' => [
-                    'NumDepts'    => 3,
-                    'Required'    => [
+                    'NumDepts' => 3,
+                    'Required' => [
                         'SIA-SRMC-07A',
                         'SIA-SRMC-19A',
                     ],
                     'Departments' => [
-                        'Armorer'       => [
+                        'Armorer' => [
                             'SIA-SRMC-01C',
                         ],
                         'AssaultMarine' => [
                             'SIA-SRMC-05C',
                         ],
-                        'HeavyWeapons'  => [
+                        'HeavyWeapons' => [
                             'SIA-SRMC-08C',
                         ],
-                        'LaserGraser'   => [
+                        'LaserGraser' => [
                             'SIA-SRMC-04C',
                         ],
-                        'MP'            => [
+                        'MP' => [
                             'SIA-SRMC-02C',
                         ],
-                        'Missile'       => [
+                        'Missile' => [
                             'SIA-SRMC-03C',
                         ],
-                        'Recon'         => [
+                        'Recon' => [
                             'SIA-SRMC-06C',
                         ],
                     ],
                 ],
-                'Officer'  => [
-                    'NumDepts'    => 3,
-                    'Required'    => [
+                'Officer' => [
+                    'NumDepts' => 3,
+                    'Required' => [
                         'SIA-SRMC-07D',
                         'SIA-SRMC-19C',
                         'SIA-SRMC-09C',
                         'SIA-SRMC-02C',
                     ],
                     'Departments' => [
-                        'Armorer'       => [
+                        'Armorer' => [
                             'SIA-SRMC-01D',
                         ],
                         'AssaultMarine' => [
                             'SIA-SRMC-05D',
                         ],
-                        'HeavyWeapons'  => [
+                        'HeavyWeapons' => [
                             'SIA-SRMC-08D',
                         ],
-                        'LaserGraser'   => [
+                        'LaserGraser' => [
                             'SIA-SRMC-04D',
                         ],
-                        'MP'            => [
+                        'MP' => [
                             'SIA-SRMC-02D',
                         ],
-                        'Missile'       => [
+                        'Missile' => [
                             'SIA-SRMC-03D',
                         ],
-                        'Recon'         => [
+                        'Recon' => [
                             'SIA-SRMC-06D',
                         ],
                     ],

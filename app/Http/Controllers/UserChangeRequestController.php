@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Grade;
 use App\Branch;
-use App\Chapter;
 use App\ChangeRequest;
+use App\Chapter;
+use App\Grade;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class UserChangeRequestController extends Controller
 {
@@ -36,10 +36,10 @@ class UserChangeRequestController extends Controller
         return view(
             'user.requests.index',
             [
-                'user'        => $user,
-                'req'         => Auth::user(),
-                'branches'    => Branch::getBranchList(),
-                'chapters'    => Chapter::getFullChapterList(false),
+                'user' => $user,
+                'req' => Auth::user(),
+                'branches' => Branch::getBranchList(),
+                'chapters' => Chapter::getFullChapterList(false),
                 'allchapters' => Chapter::getChapters(null, 0, false),
             ]
         );
@@ -66,9 +66,9 @@ class UserChangeRequestController extends Controller
         // database
 
         $record = [
-            'user'      => $user->id,
+            'user' => $user->id,
             'requestor' => $requestor->id,
-            'status'    => 'open',
+            'status' => 'open',
         ];
 
         // Branch Change
@@ -193,8 +193,8 @@ class UserChangeRequestController extends Controller
 
                 $cc[] = $this->getCoEmailForTransferReq(Chapter::find($user->getAssignedShip()));
 
-                $events[] = 'Transferred from ' . $oldBranch->branch_name . ' to ' .
-                            $newBranch->branch_name . ' on ' . date('d M Y');
+                $events[] = 'Transferred from '.$oldBranch->branch_name.' to '.
+                    $newBranch->branch_name.' on '.date('d M Y');
 
                 break;
             case 'assignment.chapter':
@@ -222,7 +222,7 @@ class UserChangeRequestController extends Controller
                 $fromValue = $oldChapter->chapter_name;
                 $toValue = $newChapter->chapter_name;
 
-                $events[] = 'Primary assignment changed to '. $newChapter->chapter_name .' on '.date('d M Y');
+                $events[] = 'Primary assignment changed to '.$newChapter->chapter_name.' on '.date('d M Y');
 
                 break;
         }
@@ -235,8 +235,8 @@ class UserChangeRequestController extends Controller
                 'grade' => $newRank,
             ];
 
-            $events[] = 'Rank changed from ' . Grade::getRankTitle($oldRank, null, $oldBranchId) . ' (' . $oldRank . ') to ' .
-                        Grade::getRankTitle($newRank, null, $newBranchId) . ' (' . $newRank . ') on ' . date('d M Y');
+            $events[] = 'Rank changed from '.Grade::getRankTitle($oldRank, null, $oldBranchId).' ('.$oldRank.') to '.
+                Grade::getRankTitle($newRank, null, $newBranchId).' ('.$newRank.') on '.date('d M Y');
         }
 
         if (empty($message) === false) {
@@ -299,26 +299,27 @@ class UserChangeRequestController extends Controller
 
     private function getCoEmailForTransferReq(Chapter $chapter)
     {
-      switch ($chapter->chapter_type) {
-        // Is this a MARDET?
-        case 'shuttle':
-        case 'section':
-        case 'squad':
-        case 'platoon':
-        case 'battalion':
-          // We have a MARDET, get the parent chapter CO's email address.
-          /** @var Chapter $parent */
-          $parent = Chapter::find($chapter->assigned_to);
-          return $parent->getCO()->email_address;
-          break;
-        default:
-          // Everything else
-          try {
-            return $chapter->getCO()->email_address;
-          } catch (\Exception $exception) {
-            return null;
-          }
-      }
+        switch ($chapter->chapter_type) {
+            // Is this a MARDET?
+            case 'shuttle':
+            case 'section':
+            case 'squad':
+            case 'platoon':
+            case 'battalion':
+                // We have a MARDET, get the parent chapter CO's email address.
+                /** @var Chapter $parent */
+                $parent = Chapter::find($chapter->assigned_to);
+
+                return $parent->getCO()->email_address;
+                break;
+            default:
+                // Everything else
+                try {
+                    return $chapter->getCO()->email_address;
+                } catch (\Exception $exception) {
+                    return;
+                }
+        }
     }
 
     public function deny(ChangeRequest $request)
@@ -358,10 +359,10 @@ class UserChangeRequestController extends Controller
         Mail::send(
             'emails.change-denied',
             [
-                'user'      => $user,
-                'type'      => $type,
+                'user' => $user,
+                'type' => $type,
                 'fromValue' => $oldValue,
-                'toValue'   => $newValue,
+                'toValue' => $newValue,
             ],
             function ($message) use ($user, $type) {
                 $message->from('bupers@trmn.org', 'TRMN Bureau of Personnel');

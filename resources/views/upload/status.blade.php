@@ -34,8 +34,9 @@
 
         <div class="row">
             <div class="col-sm-12 text-left">
-                <br />
-                <a href="{{route('chapter.show', [$chapter_id])}}" class="btn btn-primary"><span class="fa fa-arrow-left"></span> Return to roster</a>
+                <br/>
+                <a href="{{route('chapter.show', [$chapter_id])}}" class="btn btn-primary"><span
+                            class="fa fa-arrow-left"></span> Return to roster</a>
             </div>
         </div>
     </div>

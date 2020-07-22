@@ -12,12 +12,12 @@ class FixRMMMRanks extends Migration
     public function up()
     {
         $lookup = [
-            'C-1'  => 'Apprentice Spacer',
-            'C-2'  => 'Spacer 2',
-            'C-3'  => 'Spacer 3',
-            'C-6'  => 'Spacer 4',
-            'C-7'  => 'Spacer 5',
-            'C-8'  => 'Spacer 6',
+            'C-1' => 'Apprentice Spacer',
+            'C-2' => 'Spacer 2',
+            'C-3' => 'Spacer 3',
+            'C-6' => 'Spacer 4',
+            'C-7' => 'Spacer 5',
+            'C-8' => 'Spacer 6',
             'C-12' => 'Fourth Officer',
             'C-13' => 'Civilian 13',
             'C-15' => 'Civilian 15',

@@ -20,6 +20,6 @@ class Announcement extends Eloquent
 
     public function getPublishLabels()
     {
-        return [0  => 'Unpublished', 1 => 'Publish'];
+        return [0 => 'Unpublished', 1 => 'Publish'];
     }
 }

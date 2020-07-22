@@ -2,13 +2,13 @@
 
 namespace App\Echelons;
 
+use App\Chapter;
 use App\Type;
 use App\User;
-use App\Chapter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 trait MedusaEchelons
@@ -40,10 +40,10 @@ trait MedusaEchelons
 
         $types =
             Type::whereIn('chapter_type', $this->chapterTypes)
-                 ->orderBy('chapter_description')
-                 ->get(
-                     ['chapter_type', 'chapter_description']
-                 );
+                ->orderBy('chapter_description')
+                ->get(
+                    ['chapter_type', 'chapter_description']
+                );
         $chapterTypes = [];
 
         foreach ($types as $chapterType) {
@@ -56,11 +56,11 @@ trait MedusaEchelons
             'unit.create',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => new Chapter(),
-                'commands'     => ['' => 'Select a Command/Unit'] + $this->getCommands(),
-                'title'        => $this->title,
-                'route'        => $this->routePrefix,
-                'branches'     => $this->getBranches(),
+                'chapter' => new Chapter(),
+                'commands' => ['' => 'Select a Command/Unit'] + $this->getCommands(),
+                'title' => $this->title,
+                'route' => $this->routePrefix,
+                'branches' => $this->getBranches(),
             ]
         );
     }
@@ -132,11 +132,11 @@ trait MedusaEchelons
         return view(
             'chapter.show',
             [
-                'detail'   => $chapter,
-                'higher'   => $parentChapter,
+                'detail' => $chapter,
+                'higher' => $parentChapter,
                 'includes' => $includes,
-                'command'  => $commandCrew,
-                'crew'     => $crew,
+                'command' => $commandCrew,
+                'crew' => $crew,
             ]
         );
     }
@@ -157,10 +157,10 @@ trait MedusaEchelons
 
         $types =
             Type::whereIn('chapter_type', $this->chapterTypes)
-                 ->orderBy('chapter_description')
-                 ->get(
-                     ['chapter_type', 'chapter_description']
-                 );
+                ->orderBy('chapter_description')
+                ->get(
+                    ['chapter_type', 'chapter_description']
+                );
         $chapterTypes = [];
 
         foreach ($types as $chapterType) {
@@ -177,12 +177,12 @@ trait MedusaEchelons
             'unit.edit',
             [
                 'chapterTypes' => $chapterTypes,
-                'chapter'      => $chapter,
-                'chapterList'  => ['' => 'Select a Command/Unit'] + $this->getCommands(),
-                'numCrew'      => count($crew) + count($childUnits),
-                'title'        => $this->title,
-                'route'        => $this->routePrefix,
-                'branches'     => $this->getBranches(),
+                'chapter' => $chapter,
+                'chapterList' => ['' => 'Select a Command/Unit'] + $this->getCommands(),
+                'numCrew' => count($crew) + count($childUnits),
+                'title' => $this->title,
+                'route' => $this->routePrefix,
+                'branches' => $this->getBranches(),
             ]
         );
     }

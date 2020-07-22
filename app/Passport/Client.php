@@ -2,9 +2,9 @@
 
 namespace App\Passport;
 
-use Moloquent\Passport\Token;
-use Moloquent\Passport\AuthCode;
 use Jenssegers\Mongodb\Eloquent\Model;
+use Moloquent\Passport\AuthCode;
+use Moloquent\Passport\Token;
 
 class Client extends Model
 {
@@ -45,8 +45,8 @@ class Client extends Model
      */
     protected $casts = [
         'personal_access_client' => 'bool',
-        'password_client'        => 'bool',
-        'revoked'                => 'bool',
+        'password_client' => 'bool',
+        'revoked' => 'bool',
     ];
 
     /**

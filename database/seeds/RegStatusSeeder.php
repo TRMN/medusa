@@ -1,6 +1,5 @@
 <?php
 
-
 class RegStatusSeeder extends Seeder
 {
     use \Medusa\Audit\MedusaAudit;

@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Audit\MedusaAudit;
+use App\Permissions\MedusaPermissions;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-use App\Permissions\MedusaPermissions;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-//use Illuminate\Support\Facades\Request;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
@@ -25,8 +24,6 @@ class Controller extends BaseController
         }
         View::share('permsObj', $this);
         View::share('user', Auth::user());
-
-//        $this->middleware('osatos');
     }
 
     /**

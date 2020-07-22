@@ -12,9 +12,9 @@ class UpdateUnitCitations extends Migration
     public function up()
     {
         $transform = [
-          'LHC' => 'LOH',
-          'RUC' => 'RUCG',
-          'RMU' => 'RMUC',
+            'LHC' => 'LOH',
+            'RUC' => 'RUCG',
+            'RMU' => 'RMUC',
         ];
 
         foreach ($transform as $old => $new) {
@@ -37,9 +37,9 @@ class UpdateUnitCitations extends Migration
     public function down()
     {
         $transform = [
-          'LHC' => 'LOH',
-          'RUC' => 'RUCG',
-          'RMU' => 'RMUC',
+            'LHC' => 'LOH',
+            'RUC' => 'RUCG',
+            'RMU' => 'RMUC',
         ];
 
         foreach ($transform as $old => $new) {

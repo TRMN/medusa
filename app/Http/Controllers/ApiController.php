@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Award;
-use App\Grade;
 use App\Branch;
-use App\Rating;
 use App\Chapter;
-use App\Korders;
 use App\ExamList;
+use App\Grade;
+use App\Korders;
 use App\MedusaConfig;
-use Webpatser\Countries\Countries;
+use App\Rating;
+use App\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Webpatser\Countries\Countries;
 
 class ApiController extends Controller
 {
@@ -260,16 +260,16 @@ class ApiController extends Controller
                                     'like',
                                     '%'.$terms[0].'%'
                                 )
-                                      ->orWhere(
-                                          'first_name',
-                                          'like',
-                                          $terms[0].'%'
-                                      )
-                                      ->orWhere(
-                                          'last_name',
-                                          'like',
-                                          $terms[0].'%'
-                                      );
+                                    ->orWhere(
+                                        'first_name',
+                                        'like',
+                                        $terms[0].'%'
+                                    )
+                                    ->orWhere(
+                                        'last_name',
+                                        'like',
+                                        $terms[0].'%'
+                                    );
                             }
                         );
                 break;
@@ -295,14 +295,14 @@ class ApiController extends Controller
             $suggestions[] =
                 [
                     'value' => $member->member_id.' '.$member->first_name.' '.
-                               (! empty($member->middle_name) ?
-                                   $member->middle_name.' ' : '').
-                               $member->last_name.
-                               (! empty($member->suffix) ? ' '.$member->suffix :
-                                   '').' ('.$member->getAssignmentName(
-                                       'primary'
-                                   ).')',
-                    'data'  => $member->id,
+                        (! empty($member->middle_name) ?
+                            $member->middle_name.' ' : '').
+                        $member->last_name.
+                        (! empty($member->suffix) ? ' '.$member->suffix :
+                            '').' ('.$member->getAssignmentName(
+                            'primary'
+                        ).')',
+                    'data' => $member->id,
                 ];
         }
 
@@ -321,9 +321,9 @@ class ApiController extends Controller
 
         $results =
             Chapter::orderBy('chapter_name', 'asc')
-                   ->where('chapter_name', 'like', '%'.$query.'%')
-                   ->whereNull('decommission_date')
-                   ->get();
+                ->where('chapter_name', 'like', '%'.$query.'%')
+                ->whereNull('decommission_date')
+                ->get();
 
         $suggestions = [];
 
@@ -331,7 +331,7 @@ class ApiController extends Controller
             $suggestions[] =
                 [
                     'value' => $chapter->chapter_name,
-                    'data'  => $chapter->id,
+                    'data' => $chapter->id,
                 ];
         }
 
@@ -348,8 +348,8 @@ class ApiController extends Controller
 
         $results =
             ExamList::where('name', 'like', '%'.$query.'%')
-                    ->orWhere('exam_id', 'like', '%'.$query.'%')
-                    ->get();
+                ->orWhere('exam_id', 'like', '%'.$query.'%')
+                ->get();
 
         $suggestions = [];
 
@@ -358,7 +358,7 @@ class ApiController extends Controller
                 $suggestions[] =
                     [
                         'value' => $exam->name.' ('.$exam->exam_id.')',
-                        'data'  => $exam->exam_id,
+                        'data' => $exam->exam_id,
                     ];
             }
         }
@@ -375,13 +375,8 @@ class ApiController extends Controller
         );
     }
 
-    public function checkInMember(
-        $event,
-        $user,
-        $member,
-        $continent = null,
-        $city = null
-    ) {
+    public function checkInMember($event, $user, $member, $continent = null, $city = null)
+    {
         if (is_object($user) === false) {
             return Response::json(['error' => 'Invalid User']);
         }
@@ -434,9 +429,9 @@ class ApiController extends Controller
 
             if ($status === true) {
                 $user->addServiceHistoryEntry([
-                      'timestamp' => time(),
-                      'event'     => ucfirst($request->input('path')).' path selected',
-                      ]);
+                    'timestamp' => time(),
+                    'event' => ucfirst($request->input('path')).' path selected',
+                ]);
             }
 
             return Response::json(['status' => $status === true ? 'ok' : 'error']);
@@ -462,8 +457,7 @@ class ApiController extends Controller
 
         if ($errors > 0) {
             return Response::json(
-                ['status' => 'error',
-                 'msg'    => 'There was a problem updating one or more awards', ]
+                ['status' => 'error', 'msg' => 'There was a problem updating one or more awards']
             );
         } else {
             return Response::json(['status' => 'ok']);
@@ -501,14 +495,14 @@ class ApiController extends Controller
         $branchInfo = Branch::where('branch', $user->branch)->first();
 
         if (isset($branchInfo->equivalent[$newBranch][$user->rank['grade']]) === true) {
-            return "Transferring from " . Branch::getBranchName($user->branch) . " to " .
-                   Branch::getBranchName($newBranch) . " will change the members rank from " .
-                   Grade::getRankTitle($user->rank['grade'], null, $user->branch) . " (" . $user->rank['grade'] . ")" .
-                   " to " .
-                   Grade::getRankTitle($branchInfo->equivalent[$newBranch][$user->rank['grade']], null, $newBranch) .
-                   " (" . $branchInfo->equivalent[$newBranch][$user->rank['grade']] . ")";
+            return 'Transferring from '.Branch::getBranchName($user->branch).' to '.
+                Branch::getBranchName($newBranch).' will change the members rank from '.
+                Grade::getRankTitle($user->rank['grade'], null, $user->branch).' ('.$user->rank['grade'].')'.
+                ' to '.
+                Grade::getRankTitle($branchInfo->equivalent[$newBranch][$user->rank['grade']], null, $newBranch).
+                ' ('.$branchInfo->equivalent[$newBranch][$user->rank['grade']].')';
         } else {
-            return "Unable to determine the new rank for the member";
+            return 'Unable to determine the new rank for the member';
         }
     }
 
@@ -569,10 +563,14 @@ class ApiController extends Controller
             }
         }
 
-        return Response::json(
-            ['valid' => $canPromote, 'msg' => $msg, 'grade2check' => $payGrade2Check,
-             'pinfo' => $promotionInfo, ]
-        );
+        $rankQualificationResponse = [
+            'valid' => $canPromote,
+            'msg' => $msg,
+            'grade2check' => $payGrade2Check,
+            'pinfo' => $promotionInfo,
+        ];
+
+        return Response::json($rankQualificationResponse);
     }
 
     public function getRibbonImage($ribbonCode, $ribbonCount, $ribbonName)
@@ -600,7 +598,7 @@ class ApiController extends Controller
         $newPayGrade = Grade::getNewPayGrade($user, $oldBranch, $newBranch, false);
 
         return Response::json(
-          ['new_rank' => Grade::getRankTitle($newPayGrade, null, strtoupper($new)) . ' (' . $newPayGrade . ')']
+            ['new_rank' => Grade::getRankTitle($newPayGrade, null, strtoupper($new)).' ('.$newPayGrade.')']
         );
     }
 

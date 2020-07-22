@@ -7,7 +7,9 @@
 @section('content')
     <div class="row">
         <div class=" col-sm-12 text-center">
-            <div class="text-center"><img src="https://s-media-cache-ak0.pinimg.com/236x/5b/53/02/5b53023a0e6eda295a1a74dd0ce9e92c--dark-helmet-role-models.jpg" width="300px"></div>
+            <div class="text-center"><img
+                        src="https://s-media-cache-ak0.pinimg.com/236x/5b/53/02/5b53023a0e6eda295a1a74dd0ce9e92c--dark-helmet-role-models.jpg"
+                        width="300px"></div>
         </div>
     </div>
 

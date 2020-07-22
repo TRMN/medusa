@@ -9,7 +9,9 @@
     @endif
 </h4>
 
-<h4>Space Warfare Pin earned: {!!  ($user->hasAward('ESWP') || $user->hasAward('OSWP')) ? 'Yes <span class="fa fa-check green"></span>': 'No' !!}<br/>
+<h4>Space Warfare Pin
+    earned: {!!  ($user->hasAward('ESWP') || $user->hasAward('OSWP')) ? 'Yes <span class="fa fa-check green"></span>': 'No' !!}
+    <br/>
     Manticoran Combat Action Medals earned: {!! $user->hasAward('MCAM') ? $user->awards['MCAM']['count'] .
     '<br />Number of courses need for next MCAM:&nbsp;<div class="progress" style="width: 25%; height: 25px">
   <div class="progress-bar progress-bar-success progress-bar-striped" style="width: ' . $user->percentNextMcamDone() .'%">
@@ -96,7 +98,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-title">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="text-center">Delete Exam</h4>
             </div>
             <div class="modal-body">
@@ -112,8 +115,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"></span> <storng>No</storng> </button>
-                <button class="btn btn-success" type="submit" id="examDeleteYes"><span class="fa fa-save"></span> <strong>Yes</strong> </button>
+                <button class="btn btn-danger" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"></span>
+                    <storng>No</storng>
+                </button>
+                <button class="btn btn-success" type="submit" id="examDeleteYes"><span class="fa fa-save"></span>
+                    <strong>Yes</strong></button>
             </div>
         </div>
     </div>

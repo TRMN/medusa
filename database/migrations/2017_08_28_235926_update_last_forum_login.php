@@ -17,8 +17,8 @@ class UpdateLastForumLogin extends Migration
                     'user_email',
                     strtolower($user->email_address)
                 )
-                ->firstOrFail(['user_lastvisit'])
-                ->toArray();
+                    ->firstOrFail(['user_lastvisit'])
+                    ->toArray();
 
                 $user->forum_last_login = $lastForumLogin['user_lastvisit'];
             } catch (Exception $e) {

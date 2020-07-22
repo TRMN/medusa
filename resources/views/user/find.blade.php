@@ -28,9 +28,14 @@
                     is a <span class="alert">super user</span> and has permission to do everything.
                 @else
                     @if(in_array('ADD_GRADE', $user->permissions))
-                        has permission to add grades. <a href="{!!route('user.perm.del', [$user->id, 'ADD_GRADE'])!!}"><span class="fa fa-trash red" data-toggle="tooltip" title="Remove Permission">&nbsp;</span></a>
+                        has permission to add grades. <a
+                                href="{!!route('user.perm.del', [$user->id, 'ADD_GRADE'])!!}"><span
+                                    class="fa fa-trash red" data-toggle="tooltip"
+                                    title="Remove Permission">&nbsp;</span></a>
                     @else
-                        does not have permission to add grades. <a href="{!!route('user.perm.add', [$user->id, 'ADD_GRADE'])!!}"><span class="fa fa-plus green" data-toggle="tooltip" title="Add Permission">&nbsp;</span></a>
+                        does not have permission to add grades. <a
+                                href="{!!route('user.perm.add', [$user->id, 'ADD_GRADE'])!!}"><span
+                                    class="fa fa-plus green" data-toggle="tooltip" title="Add Permission">&nbsp;</span></a>
                     @endif
                 @endif
             </div>
