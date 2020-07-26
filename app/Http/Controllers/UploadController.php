@@ -381,8 +381,7 @@ class UploadController extends Controller
         foreach ($import->getRecords($header) as $index => $record) {
             $memberFound = false;
             if ($request->lookupRMN === true) {
-//                list($firstName, $lastName) = explode(' ', $record['name']);
-                $names = explode(' ', $record['Name']);
+                list($firstName, $lastName) = explode(' ', $record['name']);
                 $lookup = $this->lookUpRMN($record);
 
                 if ($lookup['record'] instanceof User) {
