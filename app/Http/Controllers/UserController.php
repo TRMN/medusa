@@ -625,7 +625,7 @@ class UserController extends Controller
             }
         }
         $history = array_values(
-            array_sort(
+            Arr::sort(
                 $history,
                 function ($value) {
                     return $value['timestamp'];
