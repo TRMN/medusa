@@ -2892,12 +2892,16 @@ class User extends Authenticatable implements CanResetPasswordContract
      */
     public static function findByName(string $firstName, string $lastName)
     {
-        $users =
-            self::where('first_name', 'like', substr(trim($firstName), 0, 2) . '%')
-                ->where('last_name', '=', trim($lastName))
-                ->where('active', 1)
-                ->where('registration_status', 'Active')
-                ->get();
+        try {
+            $users =
+                self::where('first_name', 'like', mb_substr(trim($firstName), 0, 2) . '%')
+                    ->where('last_name', '=', trim($lastName))
+                    ->where('active', 1)
+                    ->where('registration_status', 'Active')
+                    ->get();
+        } catch (Exception $e) {
+            return null;
+        }
 
         if (count($users) === 1) {
             return $users->first();
