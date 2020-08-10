@@ -212,9 +212,28 @@ class Chapter extends Eloquent
         return $chapters;
     }
 
+    /**
+     * Get the name of chapter given an id.
+     *
+     * @param $chapterId
+     *
+     * @return mixed
+     */
     public static function getName($chapterId)
     {
         return self::find($chapterId)->chapter_name;
+    }
+
+    /**
+     * Get the id of a chapter by the chapters name.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public static function getIdByName(string $name)
+    {
+        return self::where('chapter_name', $name)->first()->_id;
     }
 
     /**
@@ -529,7 +548,7 @@ class Chapter extends Eloquent
 
             if (strpos($position, '|') > 0) {
                 // Currently used for peerage lands, as there are two possible billets for the top two slots, but
-                // A courtesty title can't hold the first slot
+                // A courtesy title can't hold the first slot
 
                 foreach (explode('|', $position) as $display) {
                     $user = $this->getCommandBillet(

@@ -335,7 +335,7 @@
 
     <div class="row form-group">
         <div class=" col-sm-3">
-            Awards Given/Requested:
+            Crew Accomplishments:
         </div>
         <div class=" col-sm-9">
             {!!Form::textarea('award_actions', $report->award_actions, ['class' => 'form-control'])!!}

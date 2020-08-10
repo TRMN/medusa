@@ -123,7 +123,7 @@ class ExamController extends Controller
         $errorMessages = [
             'member_id.required' => "The member's RMN number is required",
             'exam.required'      => 'The Exam ID is required',
-            'exam.exits'         => 'You have entered an invalid exam id',
+            'exam.exists'         => 'You have entered an invalid exam id',
             'date.required'      => 'You must provide the date the exam was graded',
             'date_format'        => 'Dates must be formated Y-M-D',
         ];
