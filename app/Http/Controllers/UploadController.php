@@ -447,28 +447,23 @@ class UploadController extends Controller
 
                     $chapter = Chapter::where('chapter_name', '=', $record['chapter'])->first();
 
-                    $assignment = [];
-                    $history = [];
+                    $assignment = [
+                        'chapter_id' => $chapter->id,
+                        'chapter_name' => $chapter->chapter_name,
+                        'date_assigned' => $joinDate,
+                        'billet' => $record['billet'],
+                        'primary' => true,
+                    ];
 
-                    foreach (['primary', 'secondary', 'additional', 'extra'] as $position) {
-                        $assignment[] = [
-                            'chapter_id' => $chapter->id,
-                            'chapter_name' => $chapter->chapter_name,
-                            'date_assigned' => $joinDate,
-                            'billet' => $record['billet'],
-                            $position => true,
-                        ];
-
-                        $history[] = [
-                            'timestamp' => strtotime($joinDate),
-                            'event' => 'Assigned to ' .
-                                $chapter->chapter_name . ' as ' .
-                                $record['billet'] . ' on ' . date(
-                                    'd M Y',
-                                    strtotime($joinDate)
-                                ),
-                        ];
-                    }
+                    $history = [
+                        'timestamp' => strtotime($joinDate),
+                        'event' => 'Assigned to ' .
+                            $chapter->chapter_name . ' as ' .
+                            $record['billet'] . ' on ' . date(
+                                'd M Y',
+                                strtotime($joinDate)
+                            ),
+                    ];
 
                     $history = array_values(
                         Arr::sort(
@@ -479,9 +474,9 @@ class UploadController extends Controller
                         )
                     );
 
-                    $data['history'] = $history;
+                    $data['history'] = [$history];
 
-                    $data['assignment'] = $assignment;
+                    $data['assignment'] = [$assignment];
 
                     if ($record['Service'] == 'Diplomatic Corps') {
                         $data['branch'] = 'CIVIL';
