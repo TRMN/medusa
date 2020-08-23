@@ -455,7 +455,7 @@ class UploadController extends Controller
                         'primary' => true,
                     ];
 
-                    $history = [
+                    $history[] = [
                         'timestamp' => strtotime($joinDate),
                         'event' => 'Assigned to ' .
                             $chapter->chapter_name . ' as ' .
@@ -474,7 +474,7 @@ class UploadController extends Controller
                         )
                     );
 
-                    $data['history'] = [$history];
+                    $data['history'] = $history;
 
                     $data['assignment'] = [$assignment];
 
