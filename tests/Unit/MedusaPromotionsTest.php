@@ -105,7 +105,9 @@
         public function testIsPromotable1()
         {
             Log::debug('Unit/MedusaPromotionsTest testIsPromotable1 testuserid');
-            $this->assertFalse($this->testUser->isPromotable());
+            $result = $this->testUser->isPromotable();
+            $this->assertTrue($result != null); // fails
+            $this->assertFalse($result);
             Log::debug('Unit/MedusaPromotionsTest testIsPromotable1 PASS');
         }
         
@@ -139,8 +141,10 @@
             Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuser getTimeInGrade '.
                        $this->testUser->getTimeInGrade('months')); // 2
             
-            $this->assertTrue($this->testUser->isPromotable());
-            // calls MedusaPromotions/getPromotableInfo
+            $result = $this->testUser->isPromotable();
+            $this->assertTrue($result != null); // fails
+            $this->assertTrue($result);
+            // calls MedusaPromotions/getPromotableInfo which can return null.
             Log::debug('Unit/MedusaPromotionsTest testIsPromotable2 testuserid PASS');
         }
         
@@ -168,9 +172,9 @@
             Log::debug('testgetPromotableInfo early ' . $early);
             
             $this->assertTrue($flags['tig']); // Branch=RMN
-            $this->assertFalse($flags['points']);
-            $this->assertFalse($flags['exams']);
-            $this->assertFalse($flags['early']);
+            $this->assertTrue($flags['points']);
+            $this->assertTrue($flags['exams']);
+            $this->assertTrue($flags['early']);
             
             // These flags are set by logic in getPromotableInfo
             // based on the states of other data
