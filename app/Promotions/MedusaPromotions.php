@@ -9,8 +9,6 @@ use App\Rating;
 use Carbon\Carbon;
 use App\MedusaConfig;
 use Illuminate\Support\Facades\Auth;
-    
-use Illuminate\Support\Facades\Log;
 
 /**
  * Trait MedusaPromotions.
@@ -23,12 +21,12 @@ trait MedusaPromotions
      * @var array Promotion requirements
      */
     public static $promotionRequirements = [];
-
+    
     /**
      * @var array Look up next paygrade
      */
     public static $nextGrade = [];
-
+    
     /**
      * Get either ALL promotion requirements or for the branch/service specified.
      *
@@ -53,18 +51,18 @@ trait MedusaPromotions
                     }
                 }
             }
-
+            
             self::$promotionRequirements['default'] = MedusaConfig::get('pp.requirements');
         }
-
+        
         if (is_null($want) === true) {
             return self::$promotionRequirements;
         }
-
+        
         return isset(self::$promotionRequirements[$want]) === true ? self::$promotionRequirements[$want] :
-            self::$promotionRequirements['default'];
+        self::$promotionRequirements['default'];
     }
-
+    
     /**
      * Load the promotion requirements for a specific branch/service from the config collection.
      *
@@ -76,7 +74,7 @@ trait MedusaPromotions
     {
         return MedusaConfig::get('pp.requirements.'.$branch, false);
     }
-
+    
     /**
      * Get the next pay grade for the specified pay grade.
      *
@@ -89,14 +87,14 @@ trait MedusaPromotions
         if (empty(self::$nextGrade) === true) {
             self::$nextGrade = MedusaConfig::get('pp.nextGrade');
         }
-
+        
         if (isset(self::$nextGrade[$payGrade]) === true) {
             return self::$nextGrade[$payGrade];
         }
-
+        
         return false;
     }
-
+    
     /**
      * Get the member's branch to use for the requirements.  If the member's branch is CIVIL, return the rating.
      *
@@ -106,7 +104,7 @@ trait MedusaPromotions
     {
         return $this->branch === 'CIVIL' ? $this->getRate() : $this->branch;
     }
-
+    
     /**
      * Get promotion qualifications information for a user.
      *
@@ -122,32 +120,27 @@ trait MedusaPromotions
             'exams'  => false,
             'early'  => false,
         ];
-
+        
         if ($this->branch === 'SFC' && empty($this->dob) === true) {
             // Unable to determine if the member is under or over 18, so they are not promotable
-            Log::debug('MedusaPromotions getPromotableInfo Unable to determine if the member is under or over 18');
             return $flags;
         }
-
+        
         if (is_null($payGrade2Check) === true) {
             $nextGrade = $this->getNextGrade($this->rank['grade']);
             if (empty($nextGrade) === false) {
                 $payGrade2Check = $nextGrade['next'][0];
-                Log::debug('MedusaPromotions getPromotableInfo $payGrade2Check:'.$payGrade2Check);
             } else {
-                Log::debug('MedusaPromotions getPromotableInfo Unable to determine what pay grade to check');
                 return $flags;  // Can't determine what pay grade to check
             }
         }
-
+        
         if ($this->branch === 'SFC' && $sfcCheck === true) {
-            Log::debug('MedusaPromotions getPromotableInfo calling sfcIsPromotable');
             return $this->sfcIsPromotable($payGrade2Check);
         }
-
+        
         $specialTig = 0;
-
-        Log::debug('MedusaPromotions getPromotableInfo $this->rank[\'grade\']:'.$this->rank['grade']);
+        
         // Check for special promotion capabilities
         switch ($this->rank['grade']) {
             case 'E-4':
@@ -165,21 +158,20 @@ trait MedusaPromotions
                 }
                 break;
         }
-
+        
         // Check for gaps in some of the civilian pay grades
         if ($this->isGradeValidForUser($payGrade2Check) === false) {
-            Log::debug('MedusaPromotions getPromotableInfo $this->isGradeValidForUser($payGrade2Check) === false');
             if (substr($payGrade2Check, 0, 1) == 'C') {
                 // Civilian, determine what the next grade is and if they're eligible
                 list($component, $step) = explode('-', $payGrade2Check);
-
+                
                 // Promotion requirements for this CIVIL branch
                 $cReq = $this->getRequirements($this->getBranchForReq());
                 // Tig for grade being checked
                 $specialTig = isset($cReq[$payGrade2Check]['tig']) ?
-                    $cReq[$payGrade2Check]['tig'] : 0;
+                $cReq[$payGrade2Check]['tig'] : 0;
                 $step++; // Start the check and the next one in sequence
-
+                
                 // Get the TiG of all the missing steps
                 while ($this->isGradeValidForUser('C-'.$step) === false) {
                     if ($step > 23) {
@@ -192,17 +184,16 @@ trait MedusaPromotions
                         ];
                     }
                     $specialTig += isset($cReq['C-'.$step]['tig']) ?
-                        $cReq['C-'.$step]['tig'] : 0;
+                    $cReq['C-'.$step]['tig'] : 0;
                     $step++;
                 }
                 // Get the Tig of the final step
                 $specialTig += isset($cReq['C-'.$step]['tig']) ?
-                    $cReq['C-'.$step]['tig'] : 0;
-
+                $cReq['C-'.$step]['tig'] : 0;
+                
                 // Set the Paygrade to check to the final match
                 $payGrade2Check = 'C-'.$step;
             } else {
-                Log::debug('MedusaPromotions getPromotableInfo gaps in civilian pay grades returning all false');
                 return [
                     'tig'    => false,
                     'points' => false,
@@ -211,12 +202,10 @@ trait MedusaPromotions
                 ];
             }
         }
-
-        Log::debug('MedusaPromotions getPromotableInfo $payGrade2Check again:'.$payGrade2Check);
+        
         if (empty($payGrade2Check) === false) {
             $requirements = $this->getRequirements($this->getBranchForReq());
-            Log::debug('MedusaPromotions getPromotableInfo got requirements');
-
+            
             if (empty($requirements[$payGrade2Check]) === true) {
                 // No requirement listed, just starting
                 return [
@@ -228,72 +217,69 @@ trait MedusaPromotions
             } else {
                 $requirements = $requirements[$payGrade2Check];
             }
-
+            
             // Steps were skipped, us that tig
             if ($specialTig > 0) {
                 $requirements['tig'] = $specialTig;
             }
-
+            
             if (is_null($path) === true) {
                 $path = $this->getPath();
             }
-
+            
             // Check TiG requirements.
             $flags['tig'] = empty($requirements['tig']) ? true :
-                ($this->getTimeInGrade('months') >= $requirements['tig']);
-
+            ($this->getTimeInGrade('months') >= $requirements['tig']);
+            
             // They are at least an E-3/C-3 and their last promotion was not an early
             // one, check if they are promotable early
-
+            
             if (in_array($this->rank['grade'], ['E-1', 'E-2', 'C-1', 'C-2']) ===
                 false &&
                 empty($this->rank['early']) === true &&
                 $flags['tig'] === false) {
-                $flags['early'] = ($this->getTimeInGrade('months') >=
-                                   ($requirements['tig'] - 3));
-            }
-
-            // No requirements for a members path == not eligible
-            if (empty($requirements[$path]) === false) {
-                // Check Points
-                if (empty($requirements[$path]['points']) === false) {
-                    $flags['points'] = ($this->getTotalPromotionPoints() >=
-                                        $requirements[$path]['points']);
-                } else {
-                    // By appointment only
-                    $flags['points'] = true;
+                    $flags['early'] = ($this->getTimeInGrade('months') >=
+                        ($requirements['tig'] - 3));
                 }
-
-                // Check exams
-                if (empty($requirements[$path]['exam']) === false) {
-                    $flags['exams'] =
+                
+                // No requirements for a members path == not eligible
+                if (empty($requirements[$path]) === false) {
+                    // Check Points
+                    if (empty($requirements[$path]['points']) === false) {
+                        $flags['points'] = ($this->getTotalPromotionPoints() >=
+                            $requirements[$path]['points']);
+                    } else {
+                        // By appointment only
+                        $flags['points'] = true;
+                    }
+                    
+                    // Check exams
+                    if (empty($requirements[$path]['exam']) === false) {
+                        $flags['exams'] =
                         $this->hasRequiredExams($requirements[$path]['exam']);
+                    } else {
+                        // No exam requirement
+                        $flags['exams'] = true;
+                    }
+                }
+                
+                // Include what the next paygrade is
+                
+                if ($specialTig > 0 || is_null($payGrade2Check) === false) {
+                    $flags['next'][] = $payGrade2Check;
                 } else {
-                    // No exam requirement
-                    $flags['exams'] = true;
+                    $next = $this->getNextGrade($this->rank['grade']);
+                    $flags['next'][] = $next['next'][0];
+                    
+                    if (count($next['next']) > 1) {
+                        $flags['next'][] = $next['next'][1];
+                    }
                 }
-            }
-
-            // Include what the next paygrade is
-
-            if ($specialTig > 0 || is_null($payGrade2Check) === false) {
-                $flags['next'][] = $payGrade2Check;
-            } else {
-                $next = $this->getNextGrade($this->rank['grade']);
-                $flags['next'][] = $next['next'][0];
-
-                if (count($next['next']) > 1) {
-                    $flags['next'][] = $next['next'][1];
-                }
-            }
         }
-        Log::debug('getPromotableInfo returns flags tig:'.$flags['tig']);
-        Log::debug('getPromotableInfo returns flags points:'.$flags['points']);
-        Log::debug('getPromotableInfo returns flags exams:'.$flags['exams']);
-        Log::debug('getPromotableInfo returns flags early:'.$flags['early']);
+        
         return $flags;
     }
-
+    
     /**
      * Check eligibility for meritorious promotions.
      *
@@ -305,21 +291,21 @@ trait MedusaPromotions
     {
         $path = $this->getPath();
         $ret = [];
-
+        
         foreach ($grades as $grade) {
             $specialReq = $this->getRequirements($this->getBranchForReq())[$grade];
-
+            
             if ($this->getTotalPromotionPoints() >=
                 $specialReq[$path]['points'] &&
                 $this->hasRequiredExams($specialReq[$path]['exam']) === true &&
                 $this->getTimeInGrade('months') >= $specialReq['tig']) {
-                $ret[] = $grade;
-            }
+                    $ret[] = $grade;
+                }
         }
-
+        
         return $ret;
     }
-
+    
     /**
      * Check if a SFC cadet or member is promotable based on age (< 18) or regular
      * requirements.
@@ -329,23 +315,23 @@ trait MedusaPromotions
     private function sfcIsPromotable($payGrade2Check = null)
     {
         $age = $this->getAge();
-
+        
         switch ($age) {
             case $age <= 8:
                 return $this->rank['grade'] != 'C-1' ?
-                    ['next' => ['C-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                ['next' => ['C-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             case $age <= 12:
                 return $this->rank['grade'] != 'C-2' ?
-                    ['next' => ['C-2'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                ['next' => ['C-2'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             case $age <= 15:
                 return $this->rank['grade'] != 'C-3' ?
-                    ['next' => ['C-3'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                ['next' => ['C-3'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             case $age <= 17:
                 return $this->rank['grade'] != 'C-6' ?
-                    ['next' => ['C-6'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                ['next' => ['C-6'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             default:
                 // Adult member
@@ -359,7 +345,7 @@ trait MedusaPromotions
                 return $this->getPromotableInfo($payGrade2Check, false);
         }
     }
-
+    
     /**
      * Can this member be promoted early?
      *
@@ -375,12 +361,12 @@ trait MedusaPromotions
                 break;
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
-
+                
                 return ($flags['points'] && $flags['exams'] &&
-                        $flags['early']) === true ? $flags['next'] : null;
+                    $flags['early']) === true ? $flags['next'] : null;
         }
     }
-
+    
     /**
      * Can this member be promoted?
      *
@@ -391,9 +377,8 @@ trait MedusaPromotions
      */
     public function isPromotable($tigCheck = true, $payGrade2Check = null)
     {
-        Log::debug('MedusaPromotions isPromotable'); // isPromotableisPromotableWhy is this not getting logged?
         $return = $flags = null;
-
+        
         switch ($this->branch) {
             case 'SFC':
                 $flags = $this->sfcIsPromotable($payGrade2Check);
@@ -401,12 +386,12 @@ trait MedusaPromotions
             default:
                 $flags = $this->getPromotableInfo($payGrade2Check);
         }
-
+        
         // If there are no exams and no points, they are not promotable.
         if (empty($flags['points']) === true || empty($flags['exams']) === true) {
             return false;
         }
-
+        
         if ($flags['points'] && $flags['exams'] && isset($flags['next']) === true) {
             if ($flags['early'] === true) {
                 $return = 'P-E [ '.implode(', ', $flags['next']).' ]';
@@ -414,10 +399,10 @@ trait MedusaPromotions
                 $return = 'P [ '.implode(', ', $flags['next']).' ]';
             }
         }
-
+        
         return $return;
     }
-
+    
     /**
      * Return the pay grade of an individual
      *
@@ -426,7 +411,7 @@ trait MedusaPromotions
     public function getPayGrade() {
         return $this->rank['grade'];
     }
-
+    
     /**
      * Check if the pay grade is valid for the user.
      *
@@ -440,18 +425,18 @@ trait MedusaPromotions
             'CIVIL',
             'RMMM'
         ];
-
+        
         if (empty($this->rating) === false && (
             substr($this->getPayGrade(), 0, 1) === 'E' ||
             in_array($this->branch, $branchesWithRatings))) {
-            // Check the available ranks for this rating
-            return Rating::isPayGradeValid($payGrade2Check, $this->branch, $this->getRate());
-        } else {
-            // No rating or branch or pay grade does not have ratings, check the Grade collection
-            return Grade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
-        }
+                // Check the available ranks for this rating
+                return Rating::isPayGradeValid($payGrade2Check, $this->branch, $this->getRate());
+            } else {
+                // No rating or branch or pay grade does not have ratings, check the Grade collection
+                return Grade::isPayGradeValidForBranch($payGrade2Check, $this->branch);
+            }
     }
-
+    
     /**
      * Promote the member to the specified rank and if needed, update promotion points for an early promotion.
      *
@@ -465,78 +450,78 @@ trait MedusaPromotions
     {
         // Check for valid rank
         $parsedRank = explode('-', $rank);
-
+        
         if (in_array($parsedRank[0], ['E', 'WO', 'C', 'O', 'F']) === false ||
             is_numeric($parsedRank[1]) === false) {
-            // Not a valid rank
-            return false;
-        }
-
-        // Special check for RMN
-
-        if (empty($parsedRank[2]) === false &&
-            in_array($parsedRank[2], ['A', 'B']) === false) {
-            // Not a valid RMN rank
-            return false;
-        }
-
-        $rank = [
-            'grade'        => $rank,
-            'date_of_rank' => date('Y-m-d'),
-        ];
-
-        if ($early === true) {
-            $rank['early'] = $rank['date_of_rank'];
-            // Get TiG requirement of new grade
-            $requirements = $this->getRequirements($this->getBranchForReq())[$rank['grade']];
-
-            // Calculate how many months early the promotion is and update the number of points
-            $points = $this->points;
-
-            if (empty($points['ep']) === true) {
-                $points['ep'] = 0;
+                // Not a valid rank
+                return false;
             }
-            $points['ep'] -= $requirements['tig'] -
-                             $this->getTimeInGrade('months');
-            $this->points = $points;
-        }
-
-        $event = 'Rank changed from '.
-                 Grade::getRankTitle(
-                     $this->rank['grade'],
-                     $this->getRate(),
-                     $this->branch
-                 ).' ('.$this->rank['grade'].') to ';
-
-        $this->rank = $rank;
-        $this->promotionStatus = null;
-
-        try {
-            $this->save();
-
-            $this->writeAuditTrail(
-                (string) Auth::user()->id,
-                'update',
-                'users',
-                (string) $this->id,
-                json_encode($this),
-                'User@promoteMember'
-            );
-
-            $history = [
-                'timestamp' => time(),
-                'event'     => $event.Grade::getRankTitle(
-                    $rank['grade'],
-                    $this->getRate(),
-                    $this->branch
-                ).' ('.$rank['grade'].') on '.date('d M Y'),
-            ];
-
-            $this->addServiceHistoryEntry($history);
-
-            return true;
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+            
+            // Special check for RMN
+            
+            if (empty($parsedRank[2]) === false &&
+                in_array($parsedRank[2], ['A', 'B']) === false) {
+                    // Not a valid RMN rank
+                    return false;
+                }
+                
+                $rank = [
+                    'grade'        => $rank,
+                    'date_of_rank' => date('Y-m-d'),
+                ];
+                
+                if ($early === true) {
+                    $rank['early'] = $rank['date_of_rank'];
+                    // Get TiG requirement of new grade
+                    $requirements = $this->getRequirements($this->getBranchForReq())[$rank['grade']];
+                    
+                    // Calculate how many months early the promotion is and update the number of points
+                    $points = $this->points;
+                    
+                    if (empty($points['ep']) === true) {
+                        $points['ep'] = 0;
+                    }
+                    $points['ep'] -= $requirements['tig'] -
+                    $this->getTimeInGrade('months');
+                    $this->points = $points;
+                }
+                
+                $event = 'Rank changed from '.
+                    Grade::getRankTitle(
+                        $this->rank['grade'],
+                        $this->getRate(),
+                        $this->branch
+                        ).' ('.$this->rank['grade'].') to ';
+                        
+                        $this->rank = $rank;
+                        $this->promotionStatus = null;
+                        
+                        try {
+                            $this->save();
+                            
+                            $this->writeAuditTrail(
+                                (string) Auth::user()->id,
+                                'update',
+                                'users',
+                                (string) $this->id,
+                                json_encode($this),
+                                'User@promoteMember'
+                                );
+                            
+                            $history = [
+                                'timestamp' => time(),
+                                'event'     => $event.Grade::getRankTitle(
+                                    $rank['grade'],
+                                    $this->getRate(),
+                                    $this->branch
+                                    ).' ('.$rank['grade'].') on '.date('d M Y'),
+                            ];
+                            
+                            $this->addServiceHistoryEntry($history);
+                            
+                            return true;
+                        } catch (Exception $e) {
+                            throw new Exception($e->getMessage());
+                        }
     }
 }
