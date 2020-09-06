@@ -10,7 +10,6 @@ use App\ImportLog;
 use App\Log\MedusaLog;
 use App\Message;
 use App\UploadLog;
-use App\Log\MedusaLog;
 use Illuminate\Support\Facades\Event;
 use League\Csv\Reader;
 use Illuminate\Support\Str;
@@ -18,12 +17,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use League\Csv\Reader;
 
 class UploadController extends Controller
 {
