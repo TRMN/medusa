@@ -54,12 +54,12 @@ class Branch extends Eloquent
 
         if ($includeCivilDivisions === true) {
           $branches['DIPLOMATIC'] = 'Diplomatic Corps';
-          $branches['INTEL'] = 'Intelligence Corps';
+          $branches['INTEL'] = 'Special Intelligence Service';
         } else {
           $branches['CIVIL'] = 'Civil Service';
         }
 
-        if ($includeRmmmDivisions) {
+        if ($includeRmmmDivisions === true) {
           $branches['MEDICAL'] = "RMMM Medical Division";
           $branches['CATERING'] = "RMMM Catering Division";
           $branches['ENG'] = "RMMM Engineering Division";
