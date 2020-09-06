@@ -301,7 +301,8 @@
             Location:
         </div>
         <div class=" col-sm-4">
-            {!!$report->command_crew['Commanding Officer']['city']!!}, {!!$report->command_crew['Commanding Officer']['state_province']!!}
+            {!!$report->command_crew['Commanding Officer']['city']!!}
+            , {!!$report->command_crew['Commanding Officer']['state_province']!!}
         </div>
     </div>
 
@@ -383,7 +384,9 @@
     <div class="text-center button-bar">
         <a href="{!! URL::previous() !!}" class="btn btn-warning"><span class="fa fa-times"></span> Cancel </a>
         <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button>
-        <button type="submit" class="btn btn-primary" name="send_report" value="send_report" onclick="return ConfirmSend()"><span class="fa fa-envelope"></span> Send </button>
+        <button type="submit" class="btn btn-primary" name="send_report" value="send_report"
+                onclick="return ConfirmSend()"><span class="fa fa-envelope"></span> Send
+        </button>
     </div>
 
 
@@ -393,11 +396,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-title">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="text-center">Current Completed Exams</h4>
                 </div>
                 <div class="modal-body">
-                    <p>You may copy and paste select elements from this or click the 'Append to Report' button to add it to the end
+                    <p>You may copy and paste select elements from this or click the 'Append to Report' button to add it
+                        to the end
                         of what is already in the input box.</p>
 
                     <div class="row">
@@ -418,8 +423,7 @@
 
 @section('scriptFooter')
     <script>
-        function ConfirmSend()
-        {
+        function ConfirmSend() {
             return confirm('Click Ok to send the {!!date('F, Y', strtotime($report->report_date))!!} Chapter Report');
         }
     </script>

@@ -7,7 +7,7 @@
 @section('content')
     <div class="row">
         <div class=" col-sm-12 text-center">
-            <div class="text-center"><img src="/images/swedish-chef.jpg" /></div>
+            <div class="text-center"><img src="/images/swedish-chef.jpg"/></div>
         </div>
     </div>
 

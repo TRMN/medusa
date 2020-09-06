@@ -25,7 +25,8 @@
                     <input type="password" name="password_confirmation" class="form-control">
                 </div>
                 <div class="row form-group">
-                    <button type="submit" class="btn btn-success"><span class="fa fa-envelope"></span> Reset Password</button>
+                    <button type="submit" class="btn btn-success"><span class="fa fa-envelope"></span> Reset Password
+                    </button>
                 </div>
 
             </form>

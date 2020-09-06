@@ -24,9 +24,9 @@ class UploadLog extends Eloquent
     const UPLOAD_STATUS_PROCESSING = 'In Process';
     const UPLOAD_STATUS_IMPORTED = 'Imported';
     const LOG_MESSAGES = [
-        'Uploaded'   => 'Uploaded',
+        'Uploaded' => 'Uploaded',
         'In Process' => 'Downloaded for processing',
-        'Imported'   => 'Imported',
+        'Imported' => 'Imported',
     ];
 
     /**
@@ -58,19 +58,16 @@ class UploadLog extends Eloquent
      *
      * @return mixed
      */
-    public function addNewFile(
-        string $filename,
-        string $status,
-        string $originalFileName
-    ) {
+    public function addNewFile(string $filename, string $status, string $originalFileName)
+    {
         $files = $this->files;
 
         $files[str_replace('.', '_', $filename)] = [
-            'filename'       => $filename,
+            'filename' => $filename,
             'current_status' => $status,
-            'original_name'  => $originalFileName,
-            'status_ts'      => time(),
-            'uploaded_by'    => Auth::user()->id,
+            'original_name' => $originalFileName,
+            'status_ts' => time(),
+            'uploaded_by' => Auth::user()->id,
         ];
 
         $files[str_replace('.', '_', $filename)]['log'][] =

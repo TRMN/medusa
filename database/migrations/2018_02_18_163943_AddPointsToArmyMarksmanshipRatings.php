@@ -15,10 +15,10 @@ class AddPointsToArmyMarksmanshipRatings extends Migration
     public function up()
     {
         $patterns = [
-          'A%ER'  => 3,
-          'A%SR'  => 2,
-          'A%MR'  => 1,
-          'A%HER' => 4,
+            'A%ER' => 3,
+            'A%SR' => 2,
+            'A%MR' => 1,
+            'A%HER' => 4,
         ];
 
         foreach ($patterns as $pattern => $points) {

@@ -73,17 +73,17 @@
 @stop
 
 @section('scriptFooter')
-<script type="text/javascript">
-    $(function() {
-        $('#preview').DataTable({
-            "autoWidth": true,
-            "pageLength": 10,
-            "columnDefs": [{type: 'natural-nohtml', targets: '_all'}],
-            "language": {
-                "emptyTable": "No records found"
-            },
-            "$UI": true
+    <script type="text/javascript">
+        $(function () {
+            $('#preview').DataTable({
+                "autoWidth": true,
+                "pageLength": 10,
+                "columnDefs": [{type: 'natural-nohtml', targets: '_all'}],
+                "language": {
+                    "emptyTable": "No records found"
+                },
+                "$UI": true
+            });
         });
-    });
-</script>
+    </script>
 @stop

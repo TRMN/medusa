@@ -384,7 +384,9 @@
     <div class="text-center button-bar">
         <a href="{!! URL::previous() !!}" class="btn btn-warning"><span class="fa fa-times"></span> Cancel </a>
         <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save</button>
-        <button type="submit" class="btn btn-primary" name="send_report" value="send_report" onclick="return ConfirmSend()"><span class="fa fa-envelope"></span> Send </button>
+        <button type="submit" class="btn btn-primary" name="send_report" value="send_report"
+                onclick="return ConfirmSend()"><span class="fa fa-envelope"></span> Send
+        </button>
     </div>
 
 
@@ -393,8 +395,7 @@
 
 @section('scriptFooter')
     <script>
-        function ConfirmSend()
-        {
+        function ConfirmSend() {
             return confirm('Click Ok to send the {!!$month!!} Chapter Report');
         }
     </script>

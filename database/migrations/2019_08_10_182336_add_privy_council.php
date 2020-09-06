@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddPrivyCouncil extends Migration
@@ -20,7 +18,7 @@ class AddPrivyCouncil extends Migration
             'post_nominal' => 'PC',
             'location' => 'LS',
             'multiple' => false,
-            'star_nation' => 'manticore'
+            'star_nation' => 'manticore',
         ];
 
         App\Award::create($privyCouncil);

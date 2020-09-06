@@ -57,21 +57,21 @@ class ImportChapters extends Command
 
         $trmn = [
             'RMN' => Excel::selectSheets('RMN Ships')->load(app_path().'/database/berthing_registry.xlsx')
-                          ->formatDates(true, 'Y-m-d')
-                          ->toArray(),
+                ->formatDates(true, 'Y-m-d')
+                ->toArray(),
             'GSN' => Excel::selectSheets('GSN Ships')->load(app_path().'/database/berthing_registry.xlsx')
-                          ->formatDates(true, 'Y-m-d')
-                          ->toArray(),
+                ->formatDates(true, 'Y-m-d')
+                ->toArray(),
             'IAN' => Excel::selectSheets('IAN Ships')->load(app_path().'/database/berthing_registry.xlsx')
-                          ->formatDates(true, 'Y-m-d')
-                          ->toArray(),
+                ->formatDates(true, 'Y-m-d')
+                ->toArray(),
         ];
 
         $decomissioned =
             Excel::selectSheets('Decommissioned Ships')
-                 ->load(app_path().'/database/berthing_registry.xlsx')
-                 ->formatDates(true, 'Y-m-d')
-                 ->toArray();
+                ->load(app_path().'/database/berthing_registry.xlsx')
+                ->formatDates(true, 'Y-m-d')
+                ->toArray();
 
         foreach ($trmn as $branch => $ships) {
             if (count($ships) !== 0) {
@@ -87,25 +87,25 @@ class ImportChapters extends Command
                         );
                         $this->writeAuditTrail('import', 'create', 'chapters', null, json_encode(
                             [
-                                'branch'          => $branch,
-                                'chapter_name'    => $ship['name'],
-                                'chapter_type'    => 'ship',
-                                'hull_number'     => $ship['hull_number'],
-                                'ship_class'      => $ship['class'],
+                                'branch' => $branch,
+                                'chapter_name' => $ship['name'],
+                                'chapter_type' => 'ship',
+                                'hull_number' => $ship['hull_number'],
+                                'ship_class' => $ship['class'],
                                 'commission_date' => $ship['commissioned'],
-                                'assigned_to'     => $fleets[$ship['fleet']]['_id'],
+                                'assigned_to' => $fleets[$ship['fleet']]['_id'],
                             ]
                         ), 'import.chapters');
 
                         $result = Chapter::create(
                             [
-                                'branch'          => $branch,
-                                'chapter_name'    => $ship['name'],
-                                'chapter_type'    => 'ship',
-                                'hull_number'     => $ship['hull_number'],
-                                'ship_class'      => $ship['class'],
+                                'branch' => $branch,
+                                'chapter_name' => $ship['name'],
+                                'chapter_type' => 'ship',
+                                'hull_number' => $ship['hull_number'],
+                                'ship_class' => $ship['class'],
                                 'commission_date' => $ship['commissioned'],
-                                'assigned_to'     => $fleets[$ship['fleet']]['_id'],
+                                'assigned_to' => $fleets[$ship['fleet']]['_id'],
                             ]
                         );
 
@@ -142,12 +142,12 @@ class ImportChapters extends Command
                     null,
                     json_encode(
                         [
-                            'branch'            => $ship['branch'],
-                            'chapter_name'      => $ship['name'],
-                            'chapter_type'      => 'ship',
-                            'hull_number'       => $ship['hull_number'],
+                            'branch' => $ship['branch'],
+                            'chapter_name' => $ship['name'],
+                            'chapter_type' => 'ship',
+                            'hull_number' => $ship['hull_number'],
                             'decommission_date' => $ship['decommissioned'],
-                            'assigned_to'       => $fleets[$ship['fleet']]['_id'],
+                            'assigned_to' => $fleets[$ship['fleet']]['_id'],
                         ]
                     ),
                     'import.chapters'
@@ -155,12 +155,12 @@ class ImportChapters extends Command
 
                 $result = Chapter::create(
                     [
-                        'branch'            => $ship['branch'],
-                        'chapter_name'      => $ship['name'],
-                        'chapter_type'      => 'ship',
-                        'hull_number'       => $ship['hull_number'],
+                        'branch' => $ship['branch'],
+                        'chapter_name' => $ship['name'],
+                        'chapter_type' => 'ship',
+                        'hull_number' => $ship['hull_number'],
                         'decommission_date' => $ship['decommissioned'],
-                        'assigned_to'       => $fleets[$ship['fleet']]['_id'],
+                        'assigned_to' => $fleets[$ship['fleet']]['_id'],
                     ]
                 );
 

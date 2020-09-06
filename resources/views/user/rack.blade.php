@@ -9,8 +9,8 @@
 
 @section('content')
     @php
-    $groupCount = 0;
-    $hasEdit_RR = Auth::user()->hasPermission(['EDIT_RR']);
+        $groupCount = 0;
+        $hasEdit_RR = Auth::user()->hasPermission(['EDIT_RR']);
     @endphp
     <div class="row">
         <h1 class="text-center">Ribbon Rack Builder
@@ -44,25 +44,25 @@
     <br clear="both"/>
 
     @foreach(App\Award::getLeftSleeve() as $badge)
-            <div class="row ribbon-row clearfix">
-                <div class="col-sm-1">
-                    {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null)}}
-                </div>
-                <div class="col-sm-2 text-center">
-                    @if(file_exists(public_path('images/' . $badge->code . '.svg')))
-                        <img src="{{asset('images/' . $badge->code . '.svg')}}" alt="{{$badge->name}}" class="height54px">
-                    @else
-                        {{ $badge->name }}
-                    @endif
-                </div>
-                <div class="col-sm-5">
-                    @if($badge->multiple)
-                        {{Form::number($badge->code . '_quantity', isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:0, ['min' => 0])}}
-                    @else
-                        {{Form::hidden($badge->code . '_quantity', '1')}}
-                    @endif
-                </div>
+        <div class="row ribbon-row clearfix">
+            <div class="col-sm-1">
+                {{Form::checkbox('ribbon[]', $badge->code, isset($user->awards[$badge->code])?true:null)}}
             </div>
+            <div class="col-sm-2 text-center">
+                @if(file_exists(public_path('images/' . $badge->code . '.svg')))
+                    <img src="{{asset('images/' . $badge->code . '.svg')}}" alt="{{$badge->name}}" class="height54px">
+                @else
+                    {{ $badge->name }}
+                @endif
+            </div>
+            <div class="col-sm-5">
+                @if($badge->multiple)
+                    {{Form::number($badge->code . '_quantity', isset($user->awards[$badge->code])?$user->awards[$badge->code]['count']:0, ['min' => 0])}}
+                @else
+                    {{Form::hidden($badge->code . '_quantity', '1')}}
+                @endif
+            </div>
+        </div>
     @endforeach
 
 
@@ -104,7 +104,8 @@
                     <div class="col-sm-2 text-center" id="{{$badge->code}}">
                         @set('ribbon_image', null)
                         @if(isset($user->awards[$badge->code]) && file_exists(public_path('awards/stripes/' . $badge->code . '-' . $user->awards[$badge->code]['count'] . '.svg')))
-                            @set('ribbon_image', 'awards/stripes/' . $badge->code . '-' . $user->awards[$badge->code]['count'] . '.svg')
+                            @set('ribbon_image', 'awards/stripes/' . $badge->code . '-' .
+                            $user->awards[$badge->code]['count'] . '.svg')
                         @elseif (file_exists(public_path('awards/stripes/' . $badge->code . '-1.svg')))
                             @set('ribbon_image, 'awards/stripes/' . $badge->code . '-1.svg')
                         @endif
@@ -137,7 +138,8 @@
                     <div class="col-sm-2 text-center" id="{{$ribbon->code}}">
                         @set('ribbon_image', null)
                         @if(isset($user->awards[$ribbon->code]) && file_exists(public_path('ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')))
-                            @set('ribbon_image', 'ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')
+                            @set('ribbon_image', 'ribbons/' . $ribbon->code . '-' .
+                            $user->awards[$ribbon->code]['count'] . '.svg')
                         @elseif (file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
                             @set('ribbon_image, 'ribbons/' . $ribbon->code . '-1.svg')
                         @endif
@@ -211,7 +213,7 @@
             @endif
             <br clear="both"/>
             @php
-            $groupCount++;
+                $groupCount++;
             @endphp
         @endforeach
     </div>
@@ -308,7 +310,7 @@
             @endforeach
 
             @php
-            $groupCount++;
+                $groupCount++;
             @endphp
 
         @endforeach
@@ -338,7 +340,7 @@
                 </div>
 
                 @php
-                $groupCount++;
+                    $groupCount++;
                 @endphp
             @endforeach
         @endif
@@ -348,40 +350,41 @@
     @foreach(App\Award::getLeftRibbons() as $index => $ribbon)
 
         @if(is_object($ribbon))
-                <div class="row ribbon-row">
-                    <div class="col-sm-1">
-                        @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
-                            @if(isset($user->awards[$ribbon->code]))
-                                {{Form::hidden('ribbon[]', $ribbon->code)}}
-                            @endif
-                            &nbsp;@else
-                            {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check', 'id' => $ribbon->code . '-select', 'data-code' => $ribbon->code])}}
+            <div class="row ribbon-row">
+                <div class="col-sm-1">
+                    @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
+                        @if(isset($user->awards[$ribbon->code]))
+                            {{Form::hidden('ribbon[]', $ribbon->code)}}
                         @endif
-                    </div>
-                    <div class="col-sm-2 text-center" id="{{$ribbon->code}}">
-                        @set('ribbon_image', null)
-                        @if(isset($user->awards[$ribbon->code]) && file_exists(public_path('ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')))
-                            @set('ribbon_image', 'ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')
-                        @elseif (file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
-                            @set('ribbon_image, 'ribbons/' . $ribbon->code . '-1.svg')
-                        @endif
-                        @if(!is_null($ribbon_image))
-                            <img src="{{asset($ribbon_image)}}" alt="{{$ribbon->name}}" class="ribbon">
-                        @endif
-                    </div>
-                    <div class="col-sm-4">{{$ribbon->name}}</div>
-                    <div class="col-sm-1 ">
-                        @if($ribbon->multiple)
-                            @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
-                                {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
-                            @else
-                                {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0, 'data-code' => $ribbon->code, 'data-name' => $ribbon->name, 'class' => 'ribbon-quantity'])}}
-                            @endif
-                        @else
-                            {{Form::hidden($ribbon->code . '_quantity', '1')}}
-                        @endif
-                    </div>
+                        &nbsp;@else
+                        {{Form::checkbox('ribbon[]', $ribbon->code, isset($user->awards[$ribbon->code])?true:null, ['class' => 'ribbon-check', 'id' => $ribbon->code . '-select', 'data-code' => $ribbon->code])}}
+                    @endif
                 </div>
+                <div class="col-sm-2 text-center" id="{{$ribbon->code}}">
+                    @set('ribbon_image', null)
+                    @if(isset($user->awards[$ribbon->code]) && file_exists(public_path('ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] . '.svg')))
+                        @set('ribbon_image', 'ribbons/' . $ribbon->code . '-' . $user->awards[$ribbon->code]['count'] .
+                        '.svg')
+                    @elseif (file_exists(public_path('ribbons/' . $ribbon->code . '-1.svg')))
+                        @set('ribbon_image, 'ribbons/' . $ribbon->code . '-1.svg')
+                    @endif
+                    @if(!is_null($ribbon_image))
+                        <img src="{{asset($ribbon_image)}}" alt="{{$ribbon->name}}" class="ribbon">
+                    @endif
+                </div>
+                <div class="col-sm-4">{{$ribbon->name}}</div>
+                <div class="col-sm-1 ">
+                    @if($ribbon->multiple)
+                        @if(in_array($ribbon->code, $restricted) && !$hasEdit_RR)
+                            {{Form::hidden($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:'1')}}
+                        @else
+                            {{Form::number($ribbon->code . '_quantity', isset($user->awards[$ribbon->code])?$user->awards[$ribbon->code]['count']:0, ['min' => 0, 'data-code' => $ribbon->code, 'data-name' => $ribbon->name, 'class' => 'ribbon-quantity'])}}
+                        @endif
+                    @else
+                        {{Form::hidden($ribbon->code . '_quantity', '1')}}
+                    @endif
+                </div>
+            </div>
         @else
             @if($ribbon['group']['multiple'])
                 <div class="ribbon-group">
@@ -394,7 +397,8 @@
                             <div class="col-sm-2 text-center" id="{{$group->code}}">
                                 @set('ribbon_image', null)
                                 @if(isset($user->awards[$group->code]) && file_exists(public_path('ribbons/' . $group->code . '-' . $user->awards[$group->code]['count'] . '.svg')))
-                                    @set('ribbon_image', 'ribbons/' . $group->code . '-' . $user->awards[$group->code]['count'] . '.svg')
+                                    @set('ribbon_image', 'ribbons/' . $group->code . '-' .
+                                    $user->awards[$group->code]['count'] . '.svg')
                                 @elseif (file_exists(public_path('ribbons/' . $group->code . '-1.svg')))
                                     @set('ribbon_image, 'ribbons/' . $group->code . '-1.svg')
                                 @endif
@@ -440,7 +444,7 @@
             @endif
 
             @php
-            $groupCount++;
+                $groupCount++;
             @endphp
         @endif
     @endforeach
@@ -605,18 +609,18 @@
                 updateRibbon(ribbonCode, ribbonCount, ribbonName);
             });
 
-            $('.ribbon-check').on('click', function() {
-               var el = $(this);
+            $('.ribbon-check').on('click', function () {
+                var el = $(this);
 
-               validateSelection(el);
+                validateSelection(el);
             });
-            
+
             $('.check-check').on('change', function () {
                 var el = $(this);
 
                 validateSelection(el);
 
-                $('input[name="' + el.prop('name') + '"]').each(function() {
+                $('input[name="' + el.prop('name') + '"]').each(function () {
                     var item = $(this);
                     if (!item.prop('checked') === true) {
                         $('input[name="' + item.data('code') + '_quantity"]').val(0);
@@ -639,7 +643,7 @@
 
             function updateRibbon(ribbonCode, ribbonCount, ribbonName) {
                 $.ajax({
-                    url: "/api/awards/get_ribbon_image/" + ribbonCode + "/" + ribbonCount + "/" + encodeURIComponent(ribbonName) ,
+                    url: "/api/awards/get_ribbon_image/" + ribbonCode + "/" + ribbonCount + "/" + encodeURIComponent(ribbonName),
                     type: "GET",
                     dataType: "html",
                     success: function (data) {

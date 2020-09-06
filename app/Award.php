@@ -84,8 +84,8 @@ class Award extends Eloquent
 
                     $ribbons[] = [
                         'group' => [
-                            'label'    => $ribbon->group_label,
-                            'awards'   => $tmp,
+                            'label' => $ribbon->group_label,
+                            'awards' => $tmp,
                             'multiple' => $multiple,
                         ],
                     ];
@@ -99,41 +99,43 @@ class Award extends Eloquent
     /**
      * Get any a list of all Aerospace Wings.
      *
-     * @todo Refactor to use the config table
-     *
      * @param array $limit
      *
      * @return array
+     * @todo Refactor to use the config table
      */
-    public static function getAerospaceWings(
-        array $limit = [
-            'SAW',
-            'EAW',
-            'OAW',
-            'ESAW',
-            'OSAW',
-            'EMAW',
-            'OMAW',
-            'ENW',
-            'ONW',
-            'ESNW',
-            'OSNW',
-            'EMNW',
-            'OMNW',
-            'EOW',
-            'OOW',
-            'ESOW',
-            'OSOW',
-            'EMOW',
-            'OMOW',
-            'ESW',
-            'OSW',
-            'ESSW',
-            'OSSW',
-            'EMSW',
-            'OMSW',
-        ]
-    ) {
+    public static function getAerospaceWings(array $limit)
+    {
+        if (empty($limit)) {
+            $limit = [
+                'SAW',
+                'EAW',
+                'OAW',
+                'ESAW',
+                'OSAW',
+                'EMAW',
+                'OMAW',
+                'ENW',
+                'ONW',
+                'ESNW',
+                'OSNW',
+                'EMNW',
+                'OMNW',
+                'EOW',
+                'OOW',
+                'ESOW',
+                'OSOW',
+                'EMOW',
+                'OMOW',
+                'ESW',
+                'OSW',
+                'ESSW',
+                'OSSW',
+                'EMSW',
+                'OMSW',
+            ];
+        }
+
         return self::_getAwards('TL', $limit);
     }
 
@@ -221,7 +223,7 @@ class Award extends Eloquent
     public static function getAwardByCode($code)
     {
         return self::where('code', '=', $code)
-                   ->first();
+            ->first();
     }
 
     /**

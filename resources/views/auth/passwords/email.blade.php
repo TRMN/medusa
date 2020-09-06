@@ -18,7 +18,8 @@
                     <input type="email" name="email_address" id="email_address" class="form-control">
                 </div>
                 <div class="row form-group">
-                    <button type="submit" class="btn btn-success"><span class="fa fa-envelope"></span> Send Reminder</button>
+                    <button type="submit" class="btn btn-success"><span class="fa fa-envelope"></span> Send Reminder
+                    </button>
                 </div>
             </form>
         </div>
@@ -26,10 +27,10 @@
 @stop
 
 @section('scriptFooter')
-<script type="text/javascript">
-    $('#email_address').on('change', function() {
-        var email = $('#email_address').val();
-        $('#email_address').val(email.toLowerCase());
-    })
-</script>
+    <script type="text/javascript">
+        $('#email_address').on('change', function () {
+            var email = $('#email_address').val();
+            $('#email_address').val(email.toLowerCase());
+        })
+    </script>
 @stop

@@ -24,9 +24,7 @@
             </div>
 
 
-
-
-                {!! Form::submit( 'Reset Password', [ 'class' => 'btn btn-success text-center' ] ) !!}
+            {!! Form::submit( 'Reset Password', [ 'class' => 'btn btn-success text-center' ] ) !!}
 
             {!!Form::close()!!}
         </div>

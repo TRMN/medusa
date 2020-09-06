@@ -12,8 +12,8 @@ class ExamRegex extends Migration
     public function up()
     {
         App\MedusaConfig::create([
-          'key'   => 'exam.regex',
-          'value' => json_decode('
+            'key' => 'exam.regex',
+            'value' => json_decode('
                 {
                     "RMN" : "/^SIA-RMN-.*/",
                     "RMN Speciality": "/^SIA-SRN-.*/",

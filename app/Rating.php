@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
  * Rating Model.
@@ -47,9 +47,8 @@ class Rating extends Eloquent
         return $ratings;
     }
 
-    public static function getRateName(
-        $rateCode
-    ) {
+    public static function getRateName($rateCode)
+    {
         $rating = self::where('rate_code', '=', $rateCode)->first();
 
         return $rating->rate['description'];

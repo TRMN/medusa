@@ -15,7 +15,7 @@
     if (!empty($errors->all())) {
         echo "<p>Please correct the following errors:</p>\n<ul>\n";
         foreach ($errors->all() as $message) {
-            echo "<li>" . $message . "</li>\n";
+            echo "<li>".$message."</li>\n";
         }
     }
     echo "</ul>\n";
@@ -158,8 +158,10 @@
 
     <div class="row">
         <div class="col-sm-8 Incised901Light text-center">
-            <a class="btn btn-danger" href="{!! URL::previous() !!}"><span class="fa fa-times"></span> <strong>Cancel</strong> </a>
-            <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> <strong>Save</strong> </button>
+            <a class="btn btn-danger" href="{!! URL::previous() !!}"><span class="fa fa-times"></span>
+                <strong>Cancel</strong> </a>
+            <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> <strong>Save</strong>
+            </button>
         </div>
     </div>
 

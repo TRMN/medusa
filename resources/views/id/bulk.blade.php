@@ -24,7 +24,8 @@
 @foreach($chapters as $chapter)
     @foreach(\App\Chapter::find($chapter)->getAllCrew() as $member)
         @if(empty($member->idcard_printed))
-            <div style="page-break-before: always"><img src="data::image/png;base64, {{ base64_encode($member->buildIdCard()->encode('png')) }}"></div>
+            <div style="page-break-before: always"><img
+                        src="data::image/png;base64, {{ base64_encode($member->buildIdCard()->encode('png')) }}"></div>
             <div style="page-break-before: always"><img src="{!!asset('images/TRMN-membership-card-back.png')!!}"></div>
         @endif
     @endforeach

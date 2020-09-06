@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Events;
 use App\Country;
-use Illuminate\Support\Facades\Log;
+use App\Events;
+use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class EventController extends Controller
 {
@@ -45,9 +45,9 @@ class EventController extends Controller
         return view(
             'events.event',
             [
-            'action'    => 'add',
-            'event'     => new Events(),
-            'countries' => Country::getCountries(),
+                'action' => 'add',
+                'event' => new Events(),
+                'countries' => Country::getCountries(),
             ]
         );
     }
@@ -92,7 +92,7 @@ class EventController extends Controller
             $msg = 'Your event "'.$event->event_name.'" has been scheduled';
         } catch (\Exception $e) {
             $msg =
-              'There was a problem scheduling "'.$data['event_name'].'"';
+                'There was a problem scheduling "'.$data['event_name'].'"';
             Log::error($e->getTraceAsString());
         }
 
@@ -166,8 +166,8 @@ class EventController extends Controller
         return view(
             'events.show',
             [
-            'event'     => $event,
-            'countries' => Country::getCountries(),
+                'event' => $event,
+                'countries' => Country::getCountries(),
             ]
         );
     }
@@ -198,9 +198,9 @@ class EventController extends Controller
         return view(
             'events.event',
             [
-            'action'    => 'edit',
-            'event'     => $event,
-            'countries' => Country::getCountries(),
+                'action' => 'edit',
+                'event' => $event,
+                'countries' => Country::getCountries(),
             ]
         );
     }
@@ -240,7 +240,7 @@ class EventController extends Controller
             $this->_updateUsers($event);
         } catch (\Exception $e) {
             $msg =
-              'There was a problem saving the update to "'.$event->event_name.'"';
+                'There was a problem saving the update to "'.$event->event_name.'"';
             Log::error($e->getTraceAsString());
         }
 

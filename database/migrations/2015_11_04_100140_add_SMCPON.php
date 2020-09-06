@@ -1,5 +1,6 @@
 <?php
 
+use App\Chapter;
 use Illuminate\Database\Migrations\Migration;
 
 class AddSMCPON extends Migration
@@ -13,7 +14,7 @@ class AddSMCPON extends Migration
      */
     public function up()
     {
-        $firstSL = \App\Chapter::where('chapter_name', '=', 'Office of the First Space Lord')->first();
+        $firstSL = Chapter::where('chapter_name', '=', 'Office of the First Space Lord')->first();
 
         $this->createChapter('Office of the Senior Master Chief Petty Officer of the Navy', 'bureau', '', 'RMN', $firstSL->id, false);
     }
@@ -28,33 +29,25 @@ class AddSMCPON extends Migration
         //
     }
 
-    public function createChapter(
-        $name,
-        $type = 'ship',
-        $hull_number = '',
-        $branch = '',
-        $assignedTo = null,
-        $joinable = true,
-        $commisionDate = null
-    ) {
-        $query = \App\Chapter::where('chapter_name', '=', $name)->first();
+    public function createChapter($name, $type = 'ship', $hull_number = '', $branch = '', $assignedTo = null, $joinable = true, $commissionDate = null)
+    {
+        $query = Chapter::where('chapter_name', '=', $name)->first();
 
         if (empty($query->id) === true) {
-            $record =
-                [
-                    'chapter_name' => $name,
-                    'chapter_type' => $type,
-                    'hull_number'  => $hull_number,
-                    'branch'       => $branch,
-                    'joinable'     => $joinable,
-                ];
+            $record = [
+                'chapter_name' => $name,
+                'chapter_type' => $type,
+                'hull_number' => $hull_number,
+                'branch' => $branch,
+                'joinable' => $joinable,
+            ];
 
             if (is_null($assignedTo) === false) {
                 $record['assigned_to'] = $assignedTo;
             }
 
-            if (is_null($commisionDate) === false) {
-                $record['commission_date'] = $commisionDate;
+            if (is_null($commissionDate) === false) {
+                $record['commission_date'] = $commissionDate;
             }
 
             $this->writeAuditTrail(
@@ -66,11 +59,11 @@ class AddSMCPON extends Migration
                 'create rmmc chapters'
             );
 
-            return \App\Chapter::create($record);
-        } else {
-            echo 'Skipping '.$name.", unit already exists.\n";
-
-            return $query;
+            return Chapter::create($record);
         }
+
+        echo "Skipping $name, unit already exists.\n";
+
+        return $query;
     }
 }

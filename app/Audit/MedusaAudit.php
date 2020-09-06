@@ -19,12 +19,12 @@ trait MedusaAudit
     protected function writeAuditTrail($memberId, $action, $collection, $docId, $values, $from_where)
     {
         $auditRecord = [
-          'member_id'       => $memberId,
-          'action'          => $action,
-          'collection_name' => $collection,
-          'document_id'     => $docId,
-          'document_values' => $values,
-          'from_where'      => $from_where,
+            'member_id' => $memberId,
+            'action' => $action,
+            'collection_name' => $collection,
+            'document_id' => $docId,
+            'document_values' => $values,
+            'from_where' => $from_where,
         ];
 
         Audit::create($auditRecord);

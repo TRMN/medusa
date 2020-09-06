@@ -3,19 +3,19 @@
 namespace App\Validators;
 
 use App\Exam;
+use App\Permissions\MedusaPermissions;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
-use App\Permissions\MedusaPermissions;
 
 class MedusaValidators extends Validator
 {
     use MedusaPermissions;
 
     private $custom_messages = [
-        'is_grader'   => 'You may only edit exam scores that you have entered or do not have a failing grade',
-        'not_self'    => 'You may not enter an exam score for yourself',
-        'post_dated'  => 'You may not enter an exam score with a date in the future',
+        'is_grader' => 'You may only edit exam scores that you have entered or do not have a failing grade',
+        'not_self' => 'You may not enter an exam score for yourself',
+        'post_dated' => 'You may not enter an exam score with a date in the future',
         'valid_grade' => 'Only PASS, BETA, CREATE, 0 or a score between 70 and 100 are valid',
     ];
 
@@ -77,8 +77,8 @@ class MedusaValidators extends Validator
         $value = date('Y-m-d', strtotime($value));
 
         return Carbon::createFromFormat('Y-m-d', $value)->
-                lte(Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->
-                toDateString()));
+        lte(Carbon::createFromFormat('Y-m-d', Carbon::tomorrow()->
+        toDateString()));
     }
 
     protected function validateValidGrade($attribute, $value, $param)

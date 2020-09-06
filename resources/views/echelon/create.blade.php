@@ -47,7 +47,8 @@
     </div>
 
 
-    <button type="submit" class="btn btn-success"><span class="fa fa-save"><span class="Incised901Light"> Save </span></span></button>
+    <button type="submit" class="btn btn-success"><span class="fa fa-save"><span
+                    class="Incised901Light"> Save </span></span></button>
 
     {!! Form::close() !!}
 @stop

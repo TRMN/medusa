@@ -13,11 +13,11 @@ class RMMMDivisions extends Migration
     {
         $medical = [
             'rate_code' => 'MEDICAL',
-            'rate'      => [
+            'rate' => [
                 'description' => 'RMMM Medical Division',
-                'RMMM'        => [
-                    'C-6'  => 'Sick Berth Attendant',
-                    'C-8'  => 'Senior Sick Berth Attendant',
+                'RMMM' => [
+                    'C-6' => 'Sick Berth Attendant',
+                    'C-8' => 'Senior Sick Berth Attendant',
                     'C-12' => 'Nurse',
                     'C-13' => 'Senior Nurse',
                     'C-15' => 'Assistant Merchant Surgeon',
@@ -33,14 +33,14 @@ class RMMMDivisions extends Migration
 
         $catering = [
             'rate_code' => 'CATERING',
-            'rate'      => [
+            'rate' => [
                 'description' => 'RMMM Catering Division',
-                'RMMM'        => [
-                    'C-2'  => 'Steward\'s Assistant',
-                    'C-3'  => 'Pantry Attendant',
-                    'C-6'  => 'Baker',
-                    'C-7'  => 'Chief Cook',
-                    'C-8'  => 'Chief Steward',
+                'RMMM' => [
+                    'C-2' => 'Steward\'s Assistant',
+                    'C-3' => 'Pantry Attendant',
+                    'C-6' => 'Baker',
+                    'C-7' => 'Chief Cook',
+                    'C-8' => 'Chief Steward',
                     'C-12' => 'Junior Purser',
                     'C-13' => 'Purser',
                     'C-15' => 'Assistant Cruise Director',
@@ -56,14 +56,14 @@ class RMMMDivisions extends Migration
 
         $eng = [
             'rate_code' => 'ENG',
-            'rate'      => [
+            'rate' => [
                 'description' => 'RMMM Engineering Division',
-                'RMMM'        => [
-                    'C-2'  => 'Wiper',
-                    'C-3'  => 'Technician 3',
-                    'C-6'  => 'Technician 4',
-                    'C-7'  => 'Technician 5',
-                    'C-8'  => 'Technician 6',
+                'RMMM' => [
+                    'C-2' => 'Wiper',
+                    'C-3' => 'Technician 3',
+                    'C-6' => 'Technician 4',
+                    'C-7' => 'Technician 5',
+                    'C-8' => 'Technician 6',
                     'C-12' => 'Fourth Engineer',
                     'C-13' => 'Third Engineer',
                     'C-15' => 'Second Engineer',
@@ -80,14 +80,14 @@ class RMMMDivisions extends Migration
 
         $deck = [
             'rate_code' => 'DECK',
-            'rate'      => [
+            'rate' => [
                 'description' => 'RMMM Deck Division',
-                'RMMM'        => [
-                    'C-2'  => 'Ordinary Spacer',
-                    'C-3'  => 'Efficient Spacer',
-                    'C-6'  => 'Able Spacer',
-                    'C-7'  => 'Leading Spacer',
-                    'C-8'  => 'Certified Bosun',
+                'RMMM' => [
+                    'C-2' => 'Ordinary Spacer',
+                    'C-3' => 'Efficient Spacer',
+                    'C-6' => 'Able Spacer',
+                    'C-7' => 'Leading Spacer',
+                    'C-8' => 'Certified Bosun',
                     'C-12' => 'Fourth Officer',
                     'C-13' => 'Third Officer',
                     'C-15' => 'Second Officer',
@@ -117,6 +117,6 @@ class RMMMDivisions extends Migration
     public function down()
     {
         \App\Rating::whereIn('rate_code', ['DECK', 'ENG', 'CATERING', 'MEDICAL'])
-                   ->delete();
+            ->delete();
     }
 }

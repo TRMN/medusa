@@ -46,7 +46,7 @@
                     method: "DELETE",
                     url: '/oauthclient/' + id,
                     headers: {
-                      'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
                 }).done(function (affectedRows) {
                     //if something was deleted, we redirect the user to the users page, and automatically the user that he deleted will disappear

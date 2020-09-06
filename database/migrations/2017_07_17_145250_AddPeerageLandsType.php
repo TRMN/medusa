@@ -1,6 +1,5 @@
 <?php
 
-use App\Type;
 use App\Audit\MedusaAudit;
 use Illuminate\Database\Migrations\Migration;
 
@@ -16,12 +15,12 @@ class AddPeerageLandsType extends Migration
     public function up()
     {
         $lands = [
-            'Keep'        => 'keep',
-            'Barony'      => 'barony',
-            'County'      => 'county',
-            'Duchy'       => 'duchy',
+            'Keep' => 'keep',
+            'Barony' => 'barony',
+            'County' => 'county',
+            'Duchy' => 'duchy',
             'Grand Duchy' => 'grand_duchy',
-            'Steading'    => 'steading',
+            'Steading' => 'steading',
         ];
 
         foreach ($lands as $desc => $type) {
@@ -49,12 +48,12 @@ class AddPeerageLandsType extends Migration
     public function down()
     {
         $lands = [
-            'Keep'        => 'keep',
-            'Barony'      => 'barony',
-            'County'      => 'county',
-            'Duchy'       => 'duchy',
+            'Keep' => 'keep',
+            'Barony' => 'barony',
+            'County' => 'county',
+            'Duchy' => 'duchy',
             'Grand Duchy' => 'grand_duchy',
-            'Steading'    => 'steading',
+            'Steading' => 'steading',
         ];
 
         foreach ($lands as $type) {

@@ -2,10 +2,10 @@
 
 namespace App;
 
-use NumberFormatter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use NumberFormatter;
 
 class Chapter extends Eloquent
 {
@@ -127,16 +127,13 @@ class Chapter extends Eloquent
      * Get chapters filtered by branch and location.
      *
      * @param string $branch
-     * @param int    $location
-     * @param bool   $joinableOnly
+     * @param int $location
+     * @param bool $joinableOnly
      *
      * @return array
      */
-    public static function getChapters(
-        $branch = '',
-        $location = 0,
-        $joinableOnly = true
-    ) {
+    public static function getChapters($branch = '', $location = 0, $joinableOnly = true)
+    {
         $nf = new NumberFormatter('en_US', NumberFormatter::ORDINAL);
 
         $holdingChapters =
@@ -241,8 +238,6 @@ class Chapter extends Eloquent
      *
      * @TODO Refactor this
      *
-     * @param $chapterId
-     *
      * @return mixed
      */
     public function getCrew($forReport = false, $ts = null)
@@ -262,23 +257,21 @@ class Chapter extends Eloquent
                 )
                 ->get();
 
+        $commandBillets = [
+            'Commanding Officer',
+            'Executive Officer',
+            'Bosun',
+            'Fleet Commander',
+            'Deputy Fleet Commander',
+            'Fleet Bosun',
+            'Space Lord',
+            'Deputy Space Lord',
+        ];
+
         // Because of the way that mongo stores arrays, need to post process
         foreach ($users as $key => $user) {
             foreach ($user->assignment as $assignment) {
-                if ($assignment['chapter_id'] == $this->id && in_array(
-                    $assignment['billet'],
-                    [
-                            'Commanding Officer',
-                            'Executive Officer',
-                            'Bosun',
-                            'Fleet Commander',
-                            'Deputy Fleet Commander',
-                            'Fleet Bosun',
-                            'Space Lord',
-                            'Deputy Space Lord',
-                        ]
-                ) === true
-                ) {
+                if ($assignment['chapter_id'] == $this->id && in_array($assignment['billet'], $commandBillets) === true) {
                     unset($users[$key]);
                 }
             }
@@ -573,7 +566,7 @@ class Chapter extends Eloquent
             if (is_a($user, \App\User::class) === true) {
                 $commandCrew[(int) $billetInfo['display_order']] = [
                     'display' => $display,
-                    'user'    => $user,
+                    'user' => $user,
                 ];
             }
         }
@@ -629,7 +622,6 @@ class Chapter extends Eloquent
                 return ucfirst($nf->format($fleet->hull_number)).' Fleet';
             }
         }
-        return null;
     }
 
     /**
@@ -678,11 +670,12 @@ class Chapter extends Eloquent
     }
 
     /**
-     * Generate a hierarchical tree of a chapters children
+     * Generate a hierarchical tree of a chapter's children.
      *
      * @return array
      */
-    public function getChildHierarchy() {
+    public function getChildHierarchy()
+    {
         $children = self::where('assigned_to', '=', $this->id)->whereNull('decommission_date')->get();
 
         $results = [];
@@ -716,9 +709,8 @@ class Chapter extends Eloquent
     /**
      * Get a list of all chapter locations.
      *
-     * @deprecated
-     *
      * @return array
+     * @deprecated
      */
     public static function getChapterLocations()
     {
