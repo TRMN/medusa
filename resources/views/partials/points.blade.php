@@ -1,4 +1,4 @@
-{{ Form::open(['route' => ['user.points', $user->id]]) }}
+{{ Form::open(['route' => ['user.points', $user->id], 'id' => 'pp-form']) }}
 {{ Form::hidden('id', $user->id) }}
 <div class="container-fluid zebra" id="service">
     <div class="row bottom-border-double margin-bottom-10 padding-top-10 padding-bottom-10">

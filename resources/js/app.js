@@ -701,6 +701,10 @@ $(document).ready(function ($) {
         calcPointsSelect($(this));
     })
 
+    $('#pp-form').submit(function( event ) {
+        $("input").prop('disabled', false);
+    });
+
     function calcTotalPromotionPoints() {
         var sum = 0;
 
