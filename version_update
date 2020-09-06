@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Get the version from the latest git tag
-TAG_VERSION=`git describe --tags`
+TAG_VERSION=`git describe --tags | cut -d'-' -f1`
 
 # Get the current version from .evn
 CUR_VERSION=`grep ^VERSION .env | cut -d'=' -f2`
