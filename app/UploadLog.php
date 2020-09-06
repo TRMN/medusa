@@ -89,14 +89,21 @@ class UploadLog extends Eloquent
     public function updateLog(string $filename, string $status)
     {
         $files = $this->files;
+        $modifiedFileName = str_replace('.', '_', $filename);
 
-        $file = $files[str_replace('.', '_', $filename)];
+        if (isset($files[$modifiedFileName])) {
+            $file = $files[$modifiedFileName];
+        } else {
+            $file = [];
+            $file['filename'] = $filename;
+        }
+
         $file['current_status'] = $status;
         $file['status_ts'] = time();
 
         $file['log'][] = self::LOG_MESSAGES[$status].' '.date('F j, Y @ g:i a');
 
-        $files[str_replace('.', '_', $filename)] = $file;
+        $files[$modifiedFileName] = $file;
 
         $this->files = $files;
 

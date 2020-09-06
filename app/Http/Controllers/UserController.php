@@ -621,7 +621,7 @@ class UserController extends Controller
             }
         }
         $history = array_values(
-            array_sort(
+            Arr::sort(
                 $history,
                 function ($value) {
                     return $value['timestamp'];
@@ -1677,7 +1677,7 @@ class UserController extends Controller
         $currentPeerages = $user->peerages;
         $currentPeerages[] = $peerage;
 
-        $user->peerages = $currentPeerages;
+        $user->peerages = array_values($currentPeerages);
 
         $this->writeAuditTrail(
             (string) Auth::user()->id,
