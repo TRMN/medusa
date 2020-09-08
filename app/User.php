@@ -2322,7 +2322,7 @@ class User extends Authenticatable implements CanResetPasswordContract
      */
     public function hasAwards()
     {
-        if (count($this->awards) > 0) {
+        if (count($this->awards ?? []) > 0) {
             return true;
         }
 
