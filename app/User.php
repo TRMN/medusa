@@ -2268,7 +2268,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         $today = Carbon::today('America/New_York');
 
-        foreach ($this->awards as $code => $award) {
+        foreach ($this->awards ?? [] as $code => $award) {
             $onDisk = true;
 
             if (($location == 'L' || $location == 'R') &&
@@ -2322,7 +2322,7 @@ class User extends Authenticatable implements CanResetPasswordContract
      */
     public function hasAwards()
     {
-        if (count($this->awards) > 0) {
+        if (count($this->awards ?? []) > 0) {
             return true;
         }
 
