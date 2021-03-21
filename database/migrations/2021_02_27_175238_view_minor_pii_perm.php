@@ -47,6 +47,27 @@ class ViewMinorPiiPerm extends Migration
      */
     public function down()
     {
-        //
+        $delPerms = [
+            'VIEW_MINOR_PII' => 'Can view the PII of minors',
+        ];
+
+        foreach ($delPerms as $perm => $desc) {
+
+            foreach (\App\User::where('permissions', $perm)->get() as $user) {
+                $user->deletePerm($perm);
+            }
+
+            $piiPerm = \App\Permission::where('name', $perm)->first();
+            \App\Permission::destroy($piiPerm->id);
+
+            $this->writeAuditTrail(
+                'system user',
+                'delete',
+                'permissions',
+                null,
+                json_encode(['name' => $perm, 'description' => $desc]),
+                'remove_new_permissions'
+            );
+        }
     }
 }

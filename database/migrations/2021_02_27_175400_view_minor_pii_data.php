@@ -7,6 +7,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class ViewMinorPiiData extends Migration
 {
+    use \App\Audit\MedusaAudit;
+
     /**
      * Run the migrations.
      *
@@ -35,6 +37,15 @@ class ViewMinorPiiData extends Migration
 	    ]
 	];
 
+        $this->writeAuditTrail(
+            'system user',
+            'create',
+            'config',
+            null,
+            json_encode(['name' => 'minor_pii_config']),
+            'add_new_config'
+        );
+
         MedusaConfig::set('minor_pii_config', $config);
     }
 
@@ -45,6 +56,15 @@ class ViewMinorPiiData extends Migration
      */
     public function down()
     {
-	MedusaConfig::remove('minor_pii_config');
+        $this->writeAuditTrail(
+            'system user',
+            'delete',
+            'config',
+            null,
+            json_encode(['name' => 'minor_pii_config']),
+            'remove_new_config'
+        );
+
+        MedusaConfig::remove('minor_pii_config');
     }
 }
