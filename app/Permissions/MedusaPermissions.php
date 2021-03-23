@@ -2,6 +2,7 @@
 
 namespace App\Permissions;
 
+use App\MedusaConfig;
 use App\Chapter;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -150,6 +151,40 @@ trait MedusaPermissions
         }
 
         return false;
+    }
+
+    /**
+     * Determine if the logged in user can view PII of the provided user.
+     *
+     * @param User $user The user which is being viewed.
+     *
+     * @returns bool True if viewable, false if not.
+     */
+    public function canViewMinorPii($user) {
+        if ($user instanceof User) {
+            $config = MedusaConfig::get('minor_pii_config');
+
+            $age = $user->getAge();
+
+            $ageAdult = $config['default'];
+            foreach ($config['data'] as $locale) {
+                if ($user->{$locale['field']} == $locale['value']) {
+                    $ageAdult = $locale['age'];
+                }
+            }
+
+            if ($age < $ageAdult) {
+                if (in_array('VIEW_MINOR_PII', Auth::user()->permissions) === true) {
+                    return true;	// Auth::user does have permission
+                }
+
+                return false;		// Auth::user does not have permission
+            }
+
+            return true;		// $user is an adult
+        } else {
+            return false;
+        }
     }
 
     /**

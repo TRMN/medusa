@@ -245,6 +245,7 @@
                 @endif
 
                 <div class="Incised901Black ninety">
+		@if($permsObj->canViewMinorPii($user) || Auth::user()->id == $user->id)
                     Contact:
                     <div class="row">
                         <div class="col-sm-1  Incised901Light ninety">&nbsp;</div>
@@ -258,6 +259,7 @@
                             {!! isset($user->phone_number) ? $user->phone_number . '<br />' : '' !!}
                         </div>
                     </div>
+		@endif
 
                     @if($permsObj->hasPermissions(['ASSIGN_PERMS'])  && !empty($user->permissions))
                         <br/>
