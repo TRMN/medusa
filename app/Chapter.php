@@ -677,11 +677,11 @@ class Chapter extends Eloquent
    * @return mixed
    */
     public function getNumActiveChildren(string $id = null) {
-      if (empty($id) === true) {
-        $id = $this->id;
-      }
+        if (empty($id) === true) {
+          $id = $this->id;
+        }
 
-      return self::where('assigned_to', '=', $id)->whereNull('decommission_date')->count();
+        return self::where('assigned_to', '=', $id)->whereNull('decommission_date')->count();
     }
 
     /**
