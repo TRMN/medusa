@@ -676,7 +676,8 @@ class Chapter extends Eloquent
    *
    * @return mixed
    */
-    public function getNumActiveChildren(string $id = null) {
+    public function getNumActiveChildren(string $id = null)
+    {
         if (empty($id) === true) {
             $id = $this->id;
         }
