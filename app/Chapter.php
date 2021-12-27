@@ -669,6 +669,21 @@ class Chapter extends Eloquent
         return array_unique(array_merge([$id], $results));
     }
 
+  /**
+   * Get the number of active child chapters for the given chapter
+   *
+   * @param string $id
+   *
+   * @return mixed
+   */
+    public function getNumActiveChildren(string $id = null) {
+      if (empty($id) === true) {
+        $id = $this->id;
+      }
+
+      return self::where('assigned_to', '=', $id)->whereNull('decommission_date')->count();
+    }
+
     /**
      * Generate a hierarchical tree of a chapter's children.
      *

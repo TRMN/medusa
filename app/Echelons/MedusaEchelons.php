@@ -169,9 +169,9 @@ trait MedusaEchelons
 
         $chapterTypes = ['' => $this->select] + $chapterTypes;
 
-        $crew = User::where('assignment.chapter_id', '=', (string) $chapter->_id)->get();
+        $crew = $chapter->getActiveCrewCount();
 
-        $childUnits = Chapter::where('assigned_to', '=', (string) $chapter->_id)->get();
+        $childUnits = $chapter->getNumActiveChildren();
 
         return view(
             'unit.edit',
@@ -179,7 +179,7 @@ trait MedusaEchelons
                 'chapterTypes' => $chapterTypes,
                 'chapter' => $chapter,
                 'chapterList' => ['' => 'Select a Command/Unit'] + $this->getCommands(),
-                'numCrew' => count($crew) + count($childUnits),
+                'numCrew' => $crew + $childUnits,
                 'title' => $this->title,
                 'route' => $this->routePrefix,
                 'branches' => $this->getBranches(),
