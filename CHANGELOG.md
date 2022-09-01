@@ -1,5 +1,19 @@
 # MEDUSA CHANGELOG
 
+## 2.0.11
+   - Moved source of chapter types for getAssignedShip in User.php to config record in the database rather than hardcoded
+
+## 2.0.10
+   - Rename QE3 Silver Jubilee ribbon svg
+
+## 2.0.9
+   - Updating Awards Given/Requested
+   - Reformat code for consistency
+   - Bump jquery from 3.4.1 to 3.5.0
+   - Czech import
+   - Remove extraneous assignments from upload
+   - Fix error in history
+
 ## 2.0.8 (Hotfix)
    - Fixed incorrect highlighting of members that were not promotable
    - Fixed css for chapter tree
