@@ -534,6 +534,7 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function getAssignedShip()
     {
         $holding = MedusaConfig::get('chapter.holding');
+        $assignable_types =  MedusaConfig::get('chapter.assignable');
 
         if (isset($this->assignment) == true) {
             foreach ($this->assignment as $assignment) {
@@ -544,29 +545,8 @@ class User extends Authenticatable implements CanResetPasswordContract
 
                 $chapter = Chapter::find($assignment['chapter_id']);
 
-                switch ($chapter->chapter_type) {
-                    case 'ship':
-                    case 'bivouac':
-                    case 'company':
-                    case 'station':
-                    case 'shuttle':
-                    case 'section':
-                    case 'squad':
-                    case 'platoon':
-                    case 'battalion':
-                    case 'barracks':
-                    case 'outpost':
-                    case 'fort':
-                    case 'small_craft':
-                    case 'lac':
-                    case 'theater':
-                    case 'headquarters':
-                    case 'jstation':
-                    case 'jfort':
-                    case 'tug':
-                    case 'mship':
-                        return $assignment['chapter_id'];
-                        break;
+                if (in_array($chapter->chapter_type, $assignable_types) === true) {
+                    return $assignment['chapter_id'];
                 }
             }
         }
