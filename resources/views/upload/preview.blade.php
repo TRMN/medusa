@@ -17,7 +17,15 @@
             </thead>
             @foreach($preview as $member)
                 <tr class="zebra-even">
-                    <td>{!! $member['name'] !!}</td>
+                    <td>
+                    @if($lookupRMN)
+                            <span class="green fa
+                                @if($member['status'] == 'email') {{'fa-envelope'}}
+                                    @elseif($member['status'] == 'name') {{'fa-address-card'}}
+                                    @else {{'fa-question-circle'}}
+                            @endif "></span>&nbsp;
+                    @endif
+                    {!! $member['name'] !!}</td>
                     <td>{{$member['chapter']}}</td>
                 </tr>
             @endforeach
@@ -29,7 +37,7 @@
             </tfoot>
         </table>
 
-        <div class="row">
+        <div class="row padding-bottom-10">
             <div class="col-sm-6 text-right">
                 <a href="/upload/admin" class="btn btn-danger"><span class="fa fa-times"></span> Cancel</a>
             </div>
@@ -38,9 +46,29 @@
                 {{Form::hidden('logId', $log['_id'])}}
                 {{Form::hidden('csv', $csv)}}
                 {{Form::hidden('filename', $filename)}}
+                @if($lookupRMN)
+                    {{Form::hidden('lookupRMN', $lookupRMN)}}
+                @endif
                 <button type="submit" class="btn btn-success"><span class="fa fa-upload"></span> Import</button>
             </div>
         </div>
+
+        @if($lookupRMN)
+            <div class="row padding-top-10 text-center">
+                <div class="col-sm-3">
+                    <span class="fa fa-envelope green"></span>
+                    Found by email address
+                </div>
+                <div class="col-sm-3">
+                    <span class="fa fa-address-card green"></span>
+                    Found by name
+                </div>
+                <div class="col-sm-3">
+                    <span class="fa fa-question-circle green"></span>
+                    Not found, will be added
+                </div>
+            </div>
+        @endif
     </div>
 @stop
 
