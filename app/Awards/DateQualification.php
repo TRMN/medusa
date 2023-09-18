@@ -3,6 +3,7 @@
 namespace App\Awards;
 
 use App\Audit\MedusaAudit;
+use App\User;
 
 /**
  * Trait DateQualification.
@@ -11,7 +12,7 @@ trait DateQualification
 {
     use MedusaAudit;
 
-    public function coronationAndJubilee(\App\User $user, $award, $date)
+    public function coronationAndJubilee(User $user, $award, $date)
     {
         if (is_int($date) === false) {
             $date = strtotime($date);
