@@ -316,6 +316,9 @@ trait MedusaPromotions
         $age = $this->getAge();
 
         switch ($age) {
+            case 0:
+                return null;
+                break;
             case $age <= 8:
                 return $this->rank['grade'] != 'C-1' ?
                     ['next' => ['C-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
