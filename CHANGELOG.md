@@ -1,5 +1,8 @@
 # MEDUSA CHANGELOG
 
+## 2.0.12
+  - Uncommitted SFC hotfix and don't expose sensative information fix
+
 ## 2.0.11
    - Moved source of chapter types for getAssignedShip in User.php to config record in the database rather than hardcoded
 
