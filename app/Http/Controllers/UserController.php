@@ -352,6 +352,14 @@ class UserController extends Controller
             // Everything is good, reset the password, update their record in the database
             $user->password = Hash::make($in['password']);
 
+            // Set the force password flag to false if it has been set to true
+            if ($user->forcepwd) {
+                $user->forcepwd = false;
+            }
+
+            // Set the timestamp for the last password change timestamp
+            $user->last_pwd_change = date('Y-m-d');
+
             $this->writeAuditTrail(
                 (string) Auth::user()->id,
                 'update',
@@ -970,6 +978,10 @@ class UserController extends Controller
                 'osa',
                 ['showform' => true, 'greeting' => Auth::user()->getGreetingArray()]
             );
+        }
+
+        if (Auth::user()->forcepwd === true) {
+            return \redirect(URL::route('user.getReset', [Auth::user()->id]));
         }
 
         $titles[''] = 'Select Peerage';

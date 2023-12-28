@@ -22,6 +22,15 @@ class Controller extends BaseController
         if (\Auth::check() !== true) {
             redirect()->action('HomeController@index');
         }
+
+//        if (isset(Auth::user()->forcepwd)) {
+//            return response()->view(
+//                'password.request',
+//                ['email_address' => Auth::user()->email_address,
+//                 'message'       => 'You are required to reset your password at this time.',
+//                ]);
+//        }
+
         View::share('permsObj', $this);
         View::share('user', Auth::user());
     }

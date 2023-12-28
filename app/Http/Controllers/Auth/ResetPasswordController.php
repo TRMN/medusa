@@ -94,6 +94,9 @@ class ResetPasswordController extends BaseController
             'remember_token' => Str::random(60),
         ])->save();
 
+        $user->forcepwd = false;
+        $user->save();
+
         $this->guard()->login($user);
     }
 }

@@ -235,6 +235,8 @@ return [
 
     'version' => sprintf('%s (Project MEDUSA v%s)', env('CODE_NAME', "Ellen D'Orville"), env('VERSION', '1.0.0')),
 
+    'max_pwd_age' => env('MAX_PASSWORD_AGE', 0),
+
     'debug_blacklist' => [
         '_ENV' => [
             'MYSQL_HOST',

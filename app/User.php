@@ -71,6 +71,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
  * @property string suffix
  * @property string unitPatchPath
  * @property string usePeerageLands
+ * @property boolean forcepwd
+ * @property integer last_pwd_change
  */
 class User extends Authenticatable implements CanResetPasswordContract
 {
@@ -184,6 +186,8 @@ class User extends Authenticatable implements CanResetPasswordContract
         'suffix',
         'unitPatchPath',
         'usePeerageLands',
+        'forcepwd',
+        'last_pwd_change',
     ];
 
     /**
@@ -194,6 +198,16 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function getAge()
     {
         return Carbon::now()->diffInYears(Carbon::parse($this->dob));
+    }
+
+    /**
+     * Get the current age of the password in days
+     *
+     * @return int
+     */
+    public function getPwdAge()
+    {
+        return Carbon::now()->diffInDays(Carbon::parse($this->last_pwd_change));
     }
 
     /**
