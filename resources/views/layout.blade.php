@@ -58,9 +58,7 @@
                     <a href="{!!$serverUrl!!}"><img src="/images/trmn-seal.png" alt="TRMN Seal" width="150px"
                                                     height="150px"></a>
                 </div>
-                @if(Auth::user()->forcepwd === false)
-                    @include( 'nav', ['permsObj' => $permsObj] )
-                @endif
+                @include( 'nav', ['permsObj' => $permsObj] )
             @endif
         </div>
 

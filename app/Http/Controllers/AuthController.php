@@ -28,13 +28,13 @@ class AuthController extends Controller
 
         $email = Request::get('email');
         $password = Request::get('password');
+        $redirect = Request::get('redirect_to');
 
         if (Auth::attempt([
             'email_address' => strtolower($email),
             'password' => $password,
             'active' => 1,
         ])) {
-            $redirect = Auth::user()->forcepwd ? '' : Request::get('redirect_to');
             User::find(Auth::user()->id)->updateLastLogin();
 
             event(new LoginComplete(Auth::user()));

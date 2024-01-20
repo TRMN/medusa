@@ -18,10 +18,6 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::user()->forcepwd) {
-            return redirect('/password/reset')->with(['email_password' => Auth::user()->email_address]);
-        }
-
         if (Auth::guard($guard)->check()) {
             return redirect('/home');
         }

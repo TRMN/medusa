@@ -8,9 +8,6 @@
     <div class="login-form row">
         <div class="col-sm-6 small-centered ">
             <h4 class="NordItalic">Change Your Password</h4>
-            @if($user->forcepwd)
-                <p>You are required to change your password at this time.</p>
-            @endif
 
             {!!Form::model($user, ['route' => ['user.postReset', $user->id]])!!}
             <div class="form-group">

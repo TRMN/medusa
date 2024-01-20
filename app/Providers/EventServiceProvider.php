@@ -19,7 +19,6 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\QE3GJM::class,
             \App\Listeners\SWP::class,
             \App\Listeners\MCAM::class,
-            \App\Listeners\ForcePasswordChange::class,
         ],
         \App\Events\EmailChanged::class => [
             \App\Listeners\UpdateForumEmail::class,
