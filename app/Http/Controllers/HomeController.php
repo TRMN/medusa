@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Config;
+
 class HomeController extends Controller
 {
     public function index($message = null)
@@ -10,6 +12,10 @@ class HomeController extends Controller
 
         if (\Auth::check()) {
             $user = \Auth::user();
+            $pwd_age = $user->getPwdAge();
+            if ($user->isRequiredToChangePwd()) {
+                return redirect()->secure('/user/' . $user->id . '/reset');
+            }
 
             if (empty($user->osa) === true) {
                 return view('osa', ['showform' => true, 'greeting' => $user->getGreetingArray()]);

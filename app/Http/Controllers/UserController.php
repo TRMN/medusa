@@ -949,7 +949,7 @@ class UserController extends Controller
      *
      * @param User $user
      *
-     * @return Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\Support\Facades\Response
      */
     public function show(User $user, $message = null)
     {
@@ -978,10 +978,6 @@ class UserController extends Controller
                 'osa',
                 ['showform' => true, 'greeting' => Auth::user()->getGreetingArray()]
             );
-        }
-
-        if (Auth::user()->forcepwd === true) {
-            return \redirect(URL::route('user.getReset', [Auth::user()->id]));
         }
 
         $titles[''] = 'Select Peerage';

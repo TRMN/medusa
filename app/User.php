@@ -9,6 +9,7 @@ use App\Enums\MedusaDefaults;
 use App\Permissions\MedusaPermissions;
 use App\Promotions\MedusaPromotions;
 use Carbon\Carbon;
+use Config;
 use DateTime;
 use Exception;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -72,7 +73,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
  * @property string unitPatchPath
  * @property string usePeerageLands
  * @property boolean forcepwd
- * @property integer last_pwd_change
+ * @property string last_pwd_change
  */
 class User extends Authenticatable implements CanResetPasswordContract
 {
@@ -208,6 +209,16 @@ class User extends Authenticatable implements CanResetPasswordContract
     public function getPwdAge()
     {
         return Carbon::now()->diffInDays(Carbon::parse($this->last_pwd_change));
+    }
+
+    public function getDaysToPwdExp()
+    {
+        return Config::get('app.max_pwd_age') - $this->getPwdAge();
+    }
+
+    public function isRequiredToChangePwd()
+    {
+        return $this->forcepwd || $this->getPwdAge() >= Config::get('app.max_pwd_age');
     }
 
     /**

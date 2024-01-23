@@ -37,7 +37,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.3",
         "ext-json": "*",
         "laravel/framework": "5.8.*",
         "doctrine/dbal": "~2.3",
@@ -60,7 +60,8 @@
         "genealabs/laravel-caffeine": "^0.8.0",
         "jenssegers/mongodb": "^3.5",
         "squizlabs/php_codesniffer": "*",
-        "medusa/laravel-mongodb-passport":"~1.1.0"
+        "medusa/laravel-mongodb-passport":"~1.1.0",
+        "ext-xdebug": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",

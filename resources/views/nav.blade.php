@@ -1,5 +1,5 @@
 <div id="left-nav">
-    @if(Auth::check())
+    @if(Auth::check() && Auth::user()->isRequiredToChangePwd() === false)
         <h3 class="nav-header lnav">MEMBER</h3>
         <div class="rnav">
 

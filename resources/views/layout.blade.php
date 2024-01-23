@@ -30,10 +30,11 @@
             @if(Auth::check())
                 <a href="/home" title="Return to your Service Record">
                     <strong>{{ Auth::user()->getGreeting() }}
-                        {{ substr(Auth::user()->first_name, 0, 1) }}
-                        .{{ strlen(Auth::user()->middle_name) ? ' ' . substr(Auth::user()->middle_name, 0, 1) . '. ' : ' ' }} {{ Auth::user()->last_name }}</strong></a>
+                        {{ substr(Auth::user()->first_name, 0, 1) }}.
+                        {{ strlen(Auth::user()->middle_name) ? ' ' . substr(Auth::user()->middle_name, 0, 1) . '. ' : ' ' }} {{ Auth::user()->last_name }}</strong></a>
                 <h5 class="Incised901Light ninety">Last
                     Login: {!!date('d M Y @ g:i A T', strtotime(Auth::user()->getLastLogin()))!!}</h5>
+                <h5>Your password will expire in {{ Auth::user()->getDaysToPwdExp() }} days</h5>
 
                 <h5 class="Incised901Light ninety"><span class="fa fa-exclamation-triangle yellow" data-toggle="tooltip"
                                                          data-placement="bottom"
