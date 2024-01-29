@@ -30,11 +30,13 @@ class AuthController extends Controller
         $password = Request::get('password');
         $redirect = Request::get('redirect_to');
 
-        if (Auth::attempt([
+        $auth_attempt = Auth::attempt([
             'email_address' => strtolower($email),
             'password' => $password,
             'active' => 1,
-        ])) {
+        ]);
+
+        if ($auth_attempt) {
             User::find(Auth::user()->id)->updateLastLogin();
 
             event(new LoginComplete(Auth::user()));

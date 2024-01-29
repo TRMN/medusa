@@ -196,29 +196,49 @@ class User extends Authenticatable implements CanResetPasswordContract
      *
      * @return int
      */
-    public function getAge()
+    public function getAge(): int
     {
         return Carbon::now()->diffInYears(Carbon::parse($this->dob));
     }
 
     /**
-     * Get the current age of the password in days
+     * Get the current age of the password in days.
      *
      * @return int
      */
-    public function getPwdAge()
+    public function getPwdAge(): int
     {
         return Carbon::now()->diffInDays(Carbon::parse($this->last_pwd_change));
     }
 
-    public function getDaysToPwdExp()
+    /**
+     * Get the number of days until the member's password expires.
+     *
+     * @return int
+     */
+    public function getDaysToPwdExp(): int
     {
-        return Config::get('app.max_pwd_age') - $this->getPwdAge();
+        return MedusaConfig::get('config.max_pwd_age') - $this->getPwdAge();
     }
 
-    public function isRequiredToChangePwd()
+    /**
+     * Get the value of the force password flag.
+     *
+     * @return bool
+     */
+    public function getForcePwd(): bool
     {
-        return $this->forcepwd || $this->getPwdAge() >= Config::get('app.max_pwd_age');
+        return isset($this->forcepwd) ? $this->forcepwd : false;
+    }
+
+    /**
+     * Is the member required to change their password?
+     *
+     * @return bool
+     */
+    public function isRequiredToChangePwd(): bool
+    {
+        return $this->getForcePwd() || $this->getPwdAge() >= MedusaConfig::get('config.max_pwd_age');
     }
 
     /**

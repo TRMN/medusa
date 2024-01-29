@@ -11,7 +11,7 @@
 @section('content')
     <div class="row">
         <div class=" col-sm-12 Incised901Light">
-            <h1>{!!$action == "add"? "Add": "Edit"!!} a Configuration Value</h1>
+            <h1>{!!$action == "add"? "Add" : "Edit"!!} a Configuration Value</h1>
         </div>
     </div>
 
@@ -22,19 +22,17 @@
     @endif
 
     <div class="row">
-        <div class="col-sm-8 form-group" Incised901Light
-        ">
+        <div class="col-sm-8 form-group Incised901Light">
         <label for="key" class="my Incised901Light">Key</label>
         {!!Form::text('key', empty($config->key)?null:$config->key, ['id' => 'key', 'placeholder' => 'Configuration Key', 'class' => 'form-control'])!!}
     </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-8 form-group" Incised901Light
-        ">
+        <div class="col-sm-8 form-group Incised901Light">
         <label for="value" class="my Incised901Light">Value</label>
 
-        {!!Form::textarea('value', empty($config->value)?null:is_array($config->value)?json_encode($config->value):$config->value, ['id' => 'value', 'class' => 'form-control'])!!}
+        {!! Form::textarea('value', empty($config->value)?null:(is_array($config->value)?json_encode($config->value):$config->value), ['id' => 'value', 'class' => 'form-control'])!!}
     </div>
     </div>
     <div class="row">

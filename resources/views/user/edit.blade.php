@@ -118,6 +118,13 @@
                             {!! Form::label('registration_date', 'Registration Date', ['class' => 'my required']) !!} {!!Form::date('registration_date', $user->registration_date, ['class' => 'form-control'])!!}
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-4 ninety Incised901Light form-group">
+                            <label>
+                                <input type="checkbox" name="forcepwd" id="forcepwd" value="1"{!! $user->forcepwd ? 'checked' : '' !!}> Force password change
+                            </label>
+                        </div>
+                    </div>
                 @else
                     {!!Form::hidden('registration_status', $user->registration_status)!!}
                     {{ Form::hidden('application_date', $user->application_date) }}

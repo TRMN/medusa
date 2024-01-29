@@ -237,6 +237,8 @@ return [
 
     'max_pwd_age' => env('MAX_PASSWORD_AGE', 30),
 
+    'ssl_available' => env('SSL_AVAILABLE', true),
+
     'debug_blacklist' => [
         '_ENV' => [
             'MYSQL_HOST',

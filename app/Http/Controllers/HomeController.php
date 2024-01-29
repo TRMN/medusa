@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Config;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -10,11 +10,13 @@ class HomeController extends Controller
     {
         session('url.intended', session('url.intended'));
 
-        if (\Auth::check()) {
-            $user = \Auth::user();
-            $pwd_age = $user->getPwdAge();
+        if (Auth::check()) {
+            /** @var  \App\User $user */
+            $user = Auth::user();
             if ($user->isRequiredToChangePwd()) {
-                return redirect()->secure('/user/' . $user->id . '/reset');
+                $path = '/user/' . $user->id . '/reset';
+                $ssl_available = config('app.ssl_available');
+                return redirect($path, 302, [], $ssl_available);
             }
 
             if (empty($user->osa) === true) {

@@ -1,7 +1,10 @@
 # MEDUSA CHANGELOG
 
+## 2.0.13
+  - Code to manage password age and enable a password change to be forced.
+
 ## 2.0.12
-  - Uncommitted SFC hotfix and don't expose sensative information fix
+  - Uncommitted SFC hotfix and don't expose sensitive information fix
 
 ## 2.0.11
    - Moved source of chapter types for getAssignedShip in User.php to config record in the database rather than hardcoded

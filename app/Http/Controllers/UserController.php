@@ -446,6 +446,10 @@ class UserController extends Controller
         ];
 
         $user->lastUpdate = time();
+        // Don't force the user to change their password
+        $user->forcepwd = false;
+        // Start the password clock from today
+        $user->last_pwd_change = date('Y-m-d');
 
         try {
             $user->member_id = 'RMN'.User::getNextAvailableMemberId();
@@ -1049,13 +1053,13 @@ class UserController extends Controller
                 $user->dor = '';
             }
 
-            $user->primary_assignment = $user->getPrimaryAssignmentId();
-            $user->primary_billet = $user->getPrimaryBillet();
-            $user->primary_date_assigned = $user->getPrimaryDateAssigned();
+            $user->primary_assignment = $user->getAssignmentId();
+            $user->primary_billet = $user->getBillet();
+            $user->primary_date_assigned = $user->getDateAssigned();
 
-            $user->secondary_assignment = $user->getSecondaryAssignmentId();
-            $user->secondary_billet = $user->getSecondaryBillet();
-            $user->secondary_date_assigned = $user->getSecondaryDateAssigned();
+            $user->secondary_assignment = $user->getAssignmentId('secondary');
+            $user->secondary_billet = $user->getBillet('secondary');
+            $user->secondary_date_assigned = $user->getDateAssigned('secondary');
 
             $user->additional_assignment = $user->getAssignmentId('additional');
             $user->additional_billet = $user->getBillet('additional');
@@ -1353,10 +1357,24 @@ class UserController extends Controller
             $data['history'] = $history;
         }
 
-        if (isset($data['password']) === true &&
-            empty($data['password']) === false) {
+        // Check for the force password change flag
+        if (empty($data['forcepwd']) === true) {
+            // Not in the payload, explicitly set it to false
+            $data['forcepwd'] = false;
+        } else {
+            // Explicitly set it, the checkbox was checked
+            $data['forcepwd'] = true;
+        }
+
+        if (empty($data['password']) === false) {
             // Hash the password
             $data['password'] = Hash::make($data['password']);
+
+            // Password has been changed, explicitly set the force password change flag to false
+            $data['forcepwd'] = false;
+
+            // Set the date of last password change to today
+            $data['last_pwd_change'] = date('Y-m-d');
         } else {
             unset($data['password']);
         }
