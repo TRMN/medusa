@@ -31,6 +31,6 @@ class QE3SJM
      */
     public function handle(LoginComplete $event)
     {
-        $this->checkAwardDateQualification($event->user, 'QE3SJM', '2022-02-01', '2023-02-01');
+        $this->coronationAndJubilee($event->user, 'QE3SJM', '2023-02-01');
     }
 }
