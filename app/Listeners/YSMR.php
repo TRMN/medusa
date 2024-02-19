@@ -3,12 +3,10 @@
 namespace App\Listeners;
 
 use App\Awards\DateQualification;
-use App\Events\LoginComplete;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-/**
- * Class KR3CM.
- */
-class KR3CM
+class YSMR
 {
     use DateQualification;
 
@@ -25,12 +23,12 @@ class KR3CM
     /**
      * Handle the event.
      *
-     * @param LoginComplete $event
-     *
+     * @param  object  $event
      * @return void
      */
-    public function handle(LoginComplete $event)
+    public function handle($event)
     {
-        $this->checkAwardDateQualification($event->user, 'KR3CM', '2011-02-05', '2012-02-05');
+        $this->checkAwardDateQualification($event->user, 'YSMR', '2020-01-01', '2023-03-01');
+
     }
 }
