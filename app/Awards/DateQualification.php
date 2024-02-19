@@ -59,8 +59,12 @@ trait DateQualification
 
         // If there is no start date, the start date is 1 year before the end date, as is the award date.
         if (empty($start_date) === true) {
-            $awardDate = strtotime('-1 year', $end_date);
-            time() > $awardDate;
+            $start_date = $awardDate = strtotime('-1 year', $end_date);
+        }
+
+        // Check that the start date is not greater than the end date
+        if ($start_date > $end_date) {
+            throw new \InvalidArgumentException('The start date must earlier than the end date');
         }
 
         // Qualification checks.
