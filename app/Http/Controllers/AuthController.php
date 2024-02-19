@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -58,7 +59,7 @@ class AuthController extends Controller
             if (basename($redirect) === 'signin') {
                 $redirect = '/';
             }
-
+            Log::debug("Redirecting to " . $redirect);
             return Redirect::to($redirect);
         } else {
             return Redirect::back()
