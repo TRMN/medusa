@@ -8,14 +8,40 @@
 @stop
 
 @section('content')
+    <h3 class="text-center">Manage Awards</h3>
     <div class="row">
         <div class="col-sm-6">
-            <h3 class="text-center">Manage Awards</h3>
             <p>Drag and drop awards to change the order that the ribbons will appear.</p>
         </div>
     </div>
-    <div class="row" id="awards_list">
+    <div class="row">
+        <div class="col-sm-6">
+            <ul class="list-group list-group-sortable-handles sortable">
+                @foreach(App\Award::where('display_order', '<', 1000)->where('location', '!=', 'AWQ')->orderBy('display_order')->get() as $award)
+                    <li class="list-group-item text-center nobackground" draggable="true"
+                        data-display_order="{{$award->display_order}}" data-code="{{$award->code}}">
+                        @if(file_exists(public_path('ribbons/' . $award->code . '-1.svg')))
+                            <img src="{!!asset('ribbons/' . $award->code . '-1.svg')!!}" alt="{!!$award->name!!}"
+                                 class="ribbon padding-bottom-10"><br/>
+                        @endif
+                        {{$award->name}}<br/>
+                        <div class="padding-top-10 btn-group-xs">
+                            <button id="editBtn" class="btn btn-xs btn-primary" data-toggle="modal"
+                                    data-target="#awardForm"
+                                    data-code="{{$award->code}}" data-name="{{$award->name}}"
+                                    data-postnom="{{$award->post_nominal}}" data-location="{{$award->location}}"
+                                    data-replaces="{{$award->replaces}}" data-multiple="{{$award->multiple}}"
+                                    data-points="{{$award->points}}" data-nation="{{$award->star_nation}}"><span
+                                        class="fa fa-edit"></span> Edit
+                            </button>
+                            <button id="addBtn" class="btn btn-xs btn-success"> Insert award below <span
+                                        class="fa fa-arrow-down"></span></button>
+                        </div>
 
+                    </li>
+                @endforeach
+            </ul>
+        </div>
     </div>
 
     <div id="awardForm" class="modal fade" tabindex="-1" role="dialog">
@@ -167,11 +193,6 @@
 @section('scriptFooter')
     <script type="text/javascript">
         $(function () {
-            var newAward = false;
-
-            // Initial load of the awards
-            getAwards();
-
             $('.sortable').sortable().bind('sortupdate', function (e, ui) {
                 console.log('Starting ribbon renumber');
                 var display_order = 1;
@@ -210,18 +231,10 @@
             $('#awardForm').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget); // Button that triggered the modal
 
-                // Get the award code early on
-                var awardCode = button.data('code');
-
-                $( "#awardFormSubmit" ).on( "click", function() {
-
-                });
-
                 if (typeof awardCode !== 'undefined') {
                     $('#formType').text('Edit');
                 } else {
                     $('#formType').text('Add');
-                    newAward = true;
                 }
 
                 var $select = $('#awardReplaces').selectize();
@@ -229,6 +242,7 @@
                 selectize.clear();
 
                 if (button.attr('id') === 'editBtn') {
+                    var awardCode = button.data('code');
                     var awardName = button.data('name');
                     var awardPostnom = button.data('postnom');
                     var location = button.data('location');
@@ -274,19 +288,6 @@
                         $(value).addClass('hidden')
                     }
                 });
-                // Clear any old values that might be there
-                $('#awardCode').val('');
-                $('#awardCode').attr('disabled', false);
-                $('#awardName').val('');
-                $('#postNominals').val('');
-                $('#ppoints').val(0);
-                $('#awardMultiple').prop('checked', false);
-                $('#awardLocation').val('');
-                $('#starNation').val('');
-
-                $.each([ 1, 2, 3, 4, 5, 10, 15 ], function( index, value ) {
-                    $('.img' + value).attr('src', '');
-                });
             });
 
             function getRibbons(ribbonList, awardCode) {
@@ -297,17 +298,6 @@
                             $('.img' + value).attr('src', image_url);
                         })
                 });
-            }
-
-            // Get the list of awards via ajax so we can reload the list without having to refresh the page
-            function getAwards() {
-                $.get(
-                    "awards-list",
-                    function (data) {
-                        $("#awards_list").html(data);
-                    }
-                );
-
             }
         });
     </script>

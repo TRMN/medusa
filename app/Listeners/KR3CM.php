@@ -31,6 +31,6 @@ class KR3CM
      */
     public function handle(LoginComplete $event)
     {
-        $this->checkAwardDateQualification($event->user, 'KR3CM', '2011-02-05', '2012-02-05');
+        $this->coronationAndJubilee($event->user, 'KR3CM', '2012-02-05');
     }
 }
