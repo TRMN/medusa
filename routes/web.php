@@ -407,8 +407,15 @@ Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
 
 // Awards
 
-Route::get('award', 'AwardController@index')->name('awards.index')
+Route::get('manage-awards', 'AwardsController@index')->name('awards.index')
     ->middleware('auth');
+
+Route::get('awards-list', function(){
+    // this returns the contents of the rendered template to the client as a string
+    return View::make("awards.body")
+               ->render();
+});
+
 
 // IdController
 Route::get('id/qrcode/{id}', 'IdController@getQrcode');
