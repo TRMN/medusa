@@ -37,7 +37,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "ext-json": "*",
         "laravel/framework": "5.8.*",
         "doctrine/dbal": "~2.3",
