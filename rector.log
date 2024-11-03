@@ -1,0 +1,45 @@
+Script started on 2024-11-02 20:26:06-04:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="177" LINES="60"]
+  0/19 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%[1G[2K 16/19 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░]  84%[1G[2K 19/19 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+2 files with changes
+====================
+
+1) app/Console/Commands/ImportGrades.php:702
+
+    ---------- begin diff ----------
+@@ @@
+                     ->first();
+
+             if (is_null($user) === false) {
+-                if (stripos(trim($user['first_name']), substr(trim($firstName[0]), 0, 2)) === 0 && stripos(
++                if (stripos(trim($user['first_name']), (string) substr(trim($firstName[0]), 0, 2)) === 0 && stripos(
+                         trim($user['last_name']),
+                         trim($lastName[0])
+                     ) === 0
+    ----------- end diff -----------
+
+Applied rules:
+ * StringifyStrNeedlesRector
+
+
+2) app/Console/Commands/ImportUsers.php:317
+
+    ---------- begin diff ----------
+@@ @@
+     protected function normalizePinnaceName($name, $pnum, $pid)
+     {
+         // Normalize Pinnace names
+-        if (($pos = strpos($name, $pnum)) > 0) {
++        if (($pos = strpos($name, (string) $pnum)) > 0) {
+             if (substr($name, 0, 3) == 'Pin') {
+                 $name = substr($name, 0, $pos).' '.$pid;
+             } else {
+    ----------- end diff -----------
+
+Applied rules:
+ * StringifyStrNeedlesRector
+
+
+ [OK] 2 files have been changed by Rector                                                                               
+
+
+Script done on 2024-11-02 20:26:11-04:00 [COMMAND_EXIT_CODE="0"]

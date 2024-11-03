@@ -18,6 +18,6 @@ return RectorConfig::configure()
     ])
     // uncomment to reach your current PHP version
     // ->withPhpSets()
-    ->withSets([SetList::PHP_72])
+    ->withSets([SetList::PHP_73])
     ->withSkip([AddClosureVoidReturnTypeWhereNoReturnRector::class])
     ->withTypeCoverageLevel(0);
