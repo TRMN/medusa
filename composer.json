@@ -77,7 +77,8 @@
         "phpmd/phpmd" : "@stable",
         "laravel/homestead": "^8.5",
         "phploc/phploc": "^5.0",
-        "rector/rector": "^1.2"
+        "rector/rector": "^1.2",
+        "driftingly/rector-laravel": "^1.2"
     },
     "autoload": {
         "classmap": [

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5fc9bcf4524662336f3e9ac737c7d7f",
+    "content-hash": "760700e558842d5cfb12f78d224053ef",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -263,16 +263,16 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "48a792895a2b7a6ee65dd5442c299d7b835b6137"
+                "reference": "3b1fc3f0be055baa7c6258b1467849c3e8204eb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/48a792895a2b7a6ee65dd5442c299d7b835b6137",
-                "reference": "48a792895a2b7a6ee65dd5442c299d7b835b6137",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/3b1fc3f0be055baa7c6258b1467849c3e8204eb2",
+                "reference": "3b1fc3f0be055baa7c6258b1467849c3e8204eb2",
                 "shasum": ""
             },
             "require": {
@@ -319,7 +319,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.5.2"
+                "source": "https://github.com/composer/ca-bundle/tree/1.5.3"
             },
             "funding": [
                 {
@@ -335,7 +335,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T07:49:53+00:00"
+            "time": "2024-11-04T10:15:26+00:00"
         },
         {
             "name": "composer/composer",
@@ -8276,6 +8276,41 @@
                 }
             ],
             "time": "2022-12-30T00:15:36+00:00"
+        },
+        {
+            "name": "driftingly/rector-laravel",
+            "version": "1.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/driftingly/rector-laravel.git",
+                "reference": "b55c3b374ba0eccdb9c5b1bc356749224ea13680"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/driftingly/rector-laravel/zipball/b55c3b374ba0eccdb9c5b1bc356749224ea13680",
+                "reference": "b55c3b374ba0eccdb9c5b1bc356749224ea13680",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0",
+                "rector/rector": "^1.0"
+            },
+            "type": "rector-extension",
+            "autoload": {
+                "psr-4": {
+                    "RectorLaravel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Rector upgrades rules for Laravel Framework",
+            "support": {
+                "issues": "https://github.com/driftingly/rector-laravel/issues",
+                "source": "https://github.com/driftingly/rector-laravel/tree/1.2.4"
+            },
+            "time": "2024-09-12T12:55:41+00:00"
         },
         {
             "name": "filp/whoops",
