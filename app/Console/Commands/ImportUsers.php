@@ -318,7 +318,7 @@ class ImportUsers extends Command
     protected function normalizePinnaceName($name, $pnum, $pid)
     {
         // Normalize Pinnace names
-        if (($pos = strpos($name, $pnum)) > 0) {
+        if (($pos = strpos($name, (string) $pnum)) > 0) {
             if (substr($name, 0, 3) == 'Pin') {
                 $name = substr($name, 0, $pos).' '.$pid;
             } else {

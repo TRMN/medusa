@@ -703,7 +703,7 @@ class ImportGrades extends Command
                     ->first();
 
             if (is_null($user) === false) {
-                if (stripos(trim($user['first_name']), substr(trim($firstName[0]), 0, 2)) === 0 && stripos(
+                if (stripos(trim($user['first_name']), (string) substr(trim($firstName[0]), 0, 2)) === 0 && stripos(
                         trim($user['last_name']),
                         trim($lastName[0])
                     ) === 0
