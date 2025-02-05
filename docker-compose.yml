@@ -1,0 +1,71 @@
+services:
+  forums:
+    image: mariadb
+    volumes:
+      - type: bind
+        source: ./mariadb/sql
+        target: /medusa/sql
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_DATABASE: '${DB_NAME:-medusa_db}'
+      MYSQL_USER: '${DB_USER:-medusa}'
+      MYSQL_PASSWORD: '${DB_PASSWORD:-medusa}'
+    ports:
+      - '${MYSQL_PORT:-3306}:3306'
+    networks:
+      - internal
+
+  mongodb:
+    image: mongodb/mongodb-community-server:6.0.20-ubi8
+    volumes:
+      - type: bind
+        source: ./data
+        target: /medusa/mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: '${DB_USER:-medusa}'
+      MONGO_INITDB_ROOT_PASSWORD: '${DB_PASSWORD:-medusa}'
+    ports:
+      - '${MONGO_PORT:-27017}:27017'
+    networks:
+      - internal
+
+  nginx:
+    build:
+      context: ./Docker/nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/var/www/html
+      - ./Docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - internal
+      - external
+    depends_on:
+      - web
+
+  web:
+    cap_add:
+      - SYS_PTRACE
+    build:
+      context: .
+      dockerfile: Docker/web/Dockerfile
+    environment:
+      MYSQL_HOST: forums
+      MYSQL_DATABASE: '${MYSQL_NAME:-medusa}'
+      MYSQL_USER: '${MYSQL_USER:-medusa}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD:-medusa}'
+    ports:
+      - 9000:9000
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - internal
+  #  depends_on:
+  #    - formumdb
+  #    - mongodb
+
+networks:
+  internal:
+  external:
