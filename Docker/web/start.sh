@@ -36,6 +36,4 @@ php artisan key:generate
 ## Clear the cache
 #php artisan cache:clear
 
-## Run the database migrations
-
 php-fpm
