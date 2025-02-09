@@ -2,9 +2,7 @@ services:
   forums:
     image: mariadb
     volumes:
-      - type: bind
-        source: ./mariadb/sql
-        target: /medusa/sql
+      - medusa_mariadb:/var/lib/mysql
     restart: always
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
@@ -19,9 +17,7 @@ services:
   mongodb:
     image: mongodb/mongodb-community-server:6.0.20-ubi8
     volumes:
-      - type: bind
-        source: ./data
-        target: /medusa/mongodb
+      - medusa_mongodb:/data/db
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: '${DB_USER:-medusa}'
@@ -59,13 +55,17 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - ./:/var/www/html
+      - .:/var/www/html
     networks:
       - internal
-  #  depends_on:
-  #    - formumdb
-  #    - mongodb
+    depends_on:
+      - forums
+      - mongodb
 
 networks:
   internal:
   external:
+
+volumes:
+  medusa_mariadb:
+  medusa_mongodb:
