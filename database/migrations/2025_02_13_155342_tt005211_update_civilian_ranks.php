@@ -1,12 +1,12 @@
 <?php
 
 use App\Grade;
-use App\MedusaConfig;
+use App\Rating;
 use Illuminate\Database\Migrations\Migration;
 
 class TT005211UpdateCivilianRanks extends Migration
 {
-    public function update_paygrades($paygrades, $branch)
+    public function update_paygrades(string $branch, array $paygrades)
     {
         foreach ($paygrades as $paygrade => $title) {
             $rec = Grade::where('grade', $paygrade)->first();
@@ -22,6 +22,21 @@ class TT005211UpdateCivilianRanks extends Migration
         }
     }
 
+    public function update_ratings(string $ratecode, string $branch, array $new_ratings)
+    {
+        $rec = Rating::where('grade', $ratecode)->first();
+
+        foreach ($new_ratings as $paygrade => $title) {
+            if (is_null($title)) {
+                unset($rec->rate[$branch][$paygrade]);
+            } else {
+                $rec->rate[$branch][$paygrade] = $title;
+            }
+        }
+
+        $rec->save();
+    }
+
     /**
      * Run the migrations.
      *
@@ -32,12 +47,13 @@ class TT005211UpdateCivilianRanks extends Migration
             'E-10' => 'Senior Master Chief Petty Officer',
         ];
 
-        $this->update_paygrades($paygrades, 'RHN');
+        $this->update_paygrades('RHN', $paygrades);
     }
 
-    public function up_diplo() {
+    public function up_diplomatic() {
 
-        $paygrades = [
+        $rate_code = 'DIPLOMATIC';
+        $ratings = [
             'C-1' => 'Consulate Staff',
             'C-2' => 'Senior Consulate Staff',
             'C-3' => 'Junior Attaché',
@@ -63,12 +79,13 @@ class TT005211UpdateCivilianRanks extends Migration
             'C-23' => null,
         ];
 
-        $this->update_paygrades($paygrades, 'DIPLO');
+        $this->update_ratings($rate_code, 'CIVIL', $ratings);
     }
 
     public function up_intel()
     {
-        $paygrades = [
+        $rate_code = 'INTEL';
+        $ratings = [
             'C-1' => 'Analyst',
             'C-2' => 'Senior Analyst',
             'C-3' => 'Junior Agent',
@@ -94,7 +111,7 @@ class TT005211UpdateCivilianRanks extends Migration
             'C-23' => null,
         ];
 
-        $this->update_paygrades($paygrades, 'INTEL');
+        $this->update_ratings($rate_code, 'CIVIL', $ratings);
     }
 
     public function up_rmacs()
@@ -125,30 +142,37 @@ class TT005211UpdateCivilianRanks extends Migration
             'C-23' => null,
         ];
 
-        $this->update_paygrades($paygrades, 'RMACS');
+        $this->update_paygrades('RMACS', $paygrades);
     }
 
     public function up_rmmm_basic()
     {
-        $paygrades = [
-            'C-1' => 'Apprentice Spacer',
-            'C-2' => 'General Vessel Assistant',
-            'C-3' => 'Spacer I',
-            'C-4' => 'Spacer II',
-            'C-5' => 'Spacer III',
-            'C-6' => 'Spacer IV',
-            'C-7' => 'Spacer V',
-            'C-8' => 'Spacer VI',
-            'C-9' => null,
-            'C-10' => null,
+        $ratings = [
+            'rate_code' => 'BASIC',
+            'rate' => [
+                'description' => 'RMMM Basic Division',
+                'RMMM' => [
+                    'C-1' => 'Apprentice Spacer',
+                    'C-2' => 'General Vessel Assistant',
+                    'C-3' => 'Spacer I',
+                    'C-4' => 'Spacer II',
+                    'C-5' => 'Spacer III',
+                    'C-6' => 'Spacer IV',
+                    'C-7' => 'Spacer V',
+                    'C-8' => 'Spacer VI',
+                    'C-9' => null,
+                    'C-10' => null,
+                ],
+            ],
         ];
 
-        $this->update_paygrades($paygrades, 'RMNM (Basic)');
+        Rating::insert($ratings);
     }
 
     public function up_rmmm_deck()
     {
-        $paygrades = [
+        $rate_code = 'DECK';
+        $ratings = [
             'C-1' => 'Apprentice Spacer',
             'C-2' => 'General Vessel Assistant',
             'C-3' => 'Ordinary Spacer',
@@ -174,12 +198,13 @@ class TT005211UpdateCivilianRanks extends Migration
             'C-23' => null,
         ];
 
-        $this->update_paygrades($paygrades, 'RMNM (Deck)');
+        $this->update_ratings($rate_code, 'RMMM', $ratings);
     }
 
     public function up_rmmm_engineering()
     {
-        $paygrades = [
+        $rate_code = 'ENG';
+        $ratings = [
             'C-1' => 'Apprentice Spacer',
             'C-2' => 'General Vessel Assistant',
             'C-3' => 'Wiper',
@@ -205,12 +230,13 @@ class TT005211UpdateCivilianRanks extends Migration
             'C-23' => null,
         ];
 
-        $this->update_paygrades($paygrades, 'RMNM (Engineering)');
+        $this->update_ratings($rate_code, 'RMMM', $ratings);
     }
 
     public function up_rmmm_catering()
     {
-        $paygrades = [
+        $rate_code = 'CATERING';
+        $ratings = [
             'C-1' => 'Apprentice Spacer',
             'C-2' => 'General Vessel Assistant',
             'C-3' => 'Steward Assistant',
@@ -236,12 +262,13 @@ class TT005211UpdateCivilianRanks extends Migration
             'C-23' => null,
         ];
 
-        $this->update_paygrades($paygrades, 'RMNM (Catering)');
+        $this->update_ratings($rate_code, 'RMMM', $ratings);
     }
 
     public function up_rmmm_medical()
     {
-        $paygrades = [
+        $rate_code = 'MEDICAL';
+        $ratings = [
             'C-1' => 'Apprentice Spacer',
             'C-2' => 'General Vessel Assistant',
             'C-3' => 'Medical Aide',
@@ -267,7 +294,7 @@ class TT005211UpdateCivilianRanks extends Migration
             'C-23' => null,
         ];
 
-        $this->update_paygrades($paygrades, 'RMNM (Medical)');
+        $this->update_ratings($rate_code, 'RMMM', $ratings);
     }
 
     public function up_sfc()
@@ -298,16 +325,14 @@ class TT005211UpdateCivilianRanks extends Migration
             'C-23' => null,
         ];
 
-        $this->update_paygrades($paygrades, 'SFC');
+        $this->update_paygrades('SFC', $paygrades);
     }
 
 
     public function up()
     {
-        MedusaConfig::set('pp.requirements.tt005211.bak', MedusaConfig::get('pp.requirements'));
-
         $this->up_rhn();
-        $this->up_diplo();
+        $this->up_diplomatic();
         $this->up_intel();
         $this->up_rmacs();
         $this->up_rmmm_basic();
@@ -325,10 +350,5 @@ class TT005211UpdateCivilianRanks extends Migration
      */
     public function down()
     {
-        // Restore the saved copy
-        MedusaConfig::set('pp.requirements', MedusaConfig::get('pp.requirements.tt005211.bak'));
-
-        // Delete the backup and the new entries
-        MedusaConfig::remove('pp.requirements.tt005211.bak');
     }
 }
