@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class TT005211MigrateRmmmRatings extends Migration
 {
+    use \App\Audit\MedusaAudit;
+
     protected $ratings = [
         'CATERING',
         'DECK',

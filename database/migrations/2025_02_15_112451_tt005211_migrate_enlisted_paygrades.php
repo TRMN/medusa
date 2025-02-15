@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class TT005211MigrateEnlistedPaygrades extends Migration
 {
+    use \App\Audit\MedusaAudit;
+
     protected $paygrades = [
         'E-1',
         'E-2',

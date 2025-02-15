@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class TT005211MigrateSrnRatings extends Migration
 {
+    use \App\Audit\MedusaAudit;
+
     protected $ratings = [
         'SRN-01',
         'SRN-02',
