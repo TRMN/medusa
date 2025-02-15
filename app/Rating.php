@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\MedusaConfig;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
@@ -73,5 +74,25 @@ class Rating extends Eloquent
             // Rating doesn't exist
             return false;
         }
+    }
+
+    public static function all($columns = ['*'])
+    {
+        $ret = MedusaConfig::where('key', 'like', 'rating-%')->get();
+        if ($ret->count() === 0) {
+            $ret = static::all($columns);
+        }
+
+        return $ret;
+    }
+
+    public static function where($column, $operator = null, $value = null, $boolean = 'and')
+    {
+        $qb = MedusaConfig::where($column, $operator, $value, $boolean);
+        $tmp = $qb->first();
+        if ($tmp->count() === 0) {
+            $qb = static::where($column, $operator, $value, $boolean);
+        }
+
     }
 }
