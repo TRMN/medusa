@@ -5,13 +5,14 @@ namespace App;
 use App\MedusaConfig;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use App\MongoRating;
 
 /**
  * Rating Model.
  *
  * Enlisted Ratings
  */
-class Rating extends Eloquent
+class Rating
 {
     protected $fillable = ['rate_code', 'rate'];
 
@@ -80,7 +81,7 @@ class Rating extends Eloquent
     {
         $ret = MedusaConfig::where('key', 'like', 'rating-%')->get();
         if ($ret->count() === 0) {
-            $ret = static::all($columns);
+            $ret = MongoRating::all($columns);
         }
 
         return $ret;
@@ -91,7 +92,7 @@ class Rating extends Eloquent
         $qb = MedusaConfig::where($column, $operator, $value, $boolean);
         $tmp = $qb->first();
         if ($tmp->count() === 0) {
-            $qb = static::where($column, $operator, $value, $boolean);
+            $qb = MongoRating::where($column, $operator, $value, $boolean);
         }
 
     }
