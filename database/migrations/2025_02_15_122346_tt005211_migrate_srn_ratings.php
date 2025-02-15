@@ -1,6 +1,6 @@
 <?php
 
-use App\Grade;
+use App\Rating;
 use App\MedusaConfig;
 use Illuminate\Database\Migrations\Migration;
 
