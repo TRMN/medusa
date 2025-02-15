@@ -29,7 +29,7 @@ class TT005211MigrateCivilianPaygrades extends Migration
         'C-20',
         'C-21',
         'C-22',
-        'C-22-B'
+        'C-22-B',
         'C-23',
     ];
 
