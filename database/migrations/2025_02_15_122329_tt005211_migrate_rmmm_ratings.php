@@ -34,11 +34,11 @@ class TT005211MigrateRmmmRatings extends Migration
                 'create',
                 'config',
                 null,
-                json_encode(['name' => 'rating-' . $rating ]),
+                json_encode(['name' => 'rating.' . $rating ]),
                 'migrate_rating'
             );
 
-            MedusaConfig::set('rating-' . $rating, $json);
+            MedusaConfig::set('rating.' . $rating, $json);
         }
     }
 
@@ -55,11 +55,11 @@ class TT005211MigrateRmmmRatings extends Migration
                 'create',
                 'config',
                 null,
-                json_encode(['name' => 'rating-' . $rating ]),
+                json_encode(['name' => 'rating.' . $rating ]),
                 'remove_migrated_rating'
             );
 
-            MedusaConfig::remove('rating-' . $rating);
+            MedusaConfig::remove('rating.' . $rating);
         }
     }
 }

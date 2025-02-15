@@ -38,11 +38,11 @@ class TT005211MigrateOfficerPaygrades extends Migration
                 'create',
                 'config',
                 null,
-                json_encode(['name' => 'paygrade-' . $paygrade ]),
+                json_encode(['name' => 'paygrade.' . $paygrade ]),
                 'migrate_paygrade'
             );
 
-            MedusaConfig::set('paygrade-' . $paygrade, $json);
+            MedusaConfig::set('paygrade.' . $paygrade, $json);
         }
     }
 
@@ -59,11 +59,11 @@ class TT005211MigrateOfficerPaygrades extends Migration
                 'create',
                 'config',
                 null,
-                json_encode(['name' => 'paygrade-' . $paygrade ]),
+                json_encode(['name' => 'paygrade.' . $paygrade ]),
                 'remove_migrated_paygrade'
             );
 
-            MedusaConfig::remove('paygrade-' . $paygrade);
+            MedusaConfig::remove('paygrade.' . $paygrade);
         }
     }
 }
