@@ -401,4 +401,25 @@ class Grade extends Eloquent
 
         return self::getPayGradeEquiv($user, $newBranch->branch);
     }
+
+    public static function all($columns = ['*'])
+    {
+        $ret = MedusaConfig::where('key', 'like', 'grade.%')->get();
+        if ($ret->count() === 0) {
+            $ret = MongoGrade::all($columns);
+        }
+
+        return $ret;
+    }
+
+    public static function where($column, $operator = null, $value = null, $boolean = 'and')
+    {
+        $qb = MedusaConfig::where($column, $operator, $value, $boolean);
+        $tmp = $qb->first();
+        if (is_null($tmp)) {
+            $qb = MongoGrade::where($column, $operator, $value, $boolean);
+        }
+
+        return $qb;
+    }
 }
