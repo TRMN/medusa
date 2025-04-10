@@ -60,10 +60,11 @@ class Branch extends Eloquent
         }
 
         if ($includeRmmmDivisions === true) {
-          $branches['MEDICAL'] = "RMMM Medical Division";
-          $branches['CATERING'] = "RMMM Catering Division";
-          $branches['ENG'] = "RMMM Engineering Division";
-          $branches['DECK'] = "RMMM Deck Division";
+            $branches['BASIC'] = "RMMM BASIC Division";
+            $branches['MEDICAL'] = "RMMM Medical Division";
+            $branches['CATERING'] = "RMMM Catering Division";
+            $branches['ENG'] = "RMMM Engineering Division";
+            $branches['DECK'] = "RMMM Deck Division";
         }
 
         asort($branches);
