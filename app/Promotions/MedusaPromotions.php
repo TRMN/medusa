@@ -320,28 +320,28 @@ trait MedusaPromotions
                 return null;
                 break;
             case $age <= 8:
-                return $this->rank['grade'] != 'C-1' ?
-                    ['next' => ['C-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                return $this->rank['grade'] != 'P-1' ?
+                    ['next' => ['P-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             case $age <= 12:
-                return $this->rank['grade'] != 'C-2' ?
-                    ['next' => ['C-2'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                return $this->rank['grade'] != 'P-2' ?
+                    ['next' => ['P-2'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             case $age <= 15:
-                return $this->rank['grade'] != 'C-3' ?
-                    ['next' => ['C-3'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                return $this->rank['grade'] != 'P-3' ?
+                    ['next' => ['P-3'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             case $age <= 17:
-                return $this->rank['grade'] != 'C-6' ?
-                    ['next' => ['C-6'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                return $this->rank['grade'] != 'P-4' ?
+                    ['next' => ['P-4'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             default:
                 // Adult member
                 if (is_null($payGrade2Check) === true) {
-                    // Adult members of the SFC start at C-7.  Check that they are at least a C-7
+                    // Adult members of the SFC start at C-1.  Check that they are at least a C-1
                     [$tmp, $payGrade] = explode('-', $this->getPayGrade());
-                    if ($payGrade < 7) {
-                        $payGrade2Check = 'C-7';
+                    if ($payGrade < 1) {
+                        $payGrade2Check = 'C-1';
                     }
                 }
 
