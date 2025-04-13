@@ -319,11 +319,11 @@ trait MedusaPromotions
             case 0:
                 return null;
                 break;
-            case $age <= 8:
+            case $age <= 11:
                 return $this->rank['grade'] != 'P-1' ?
                     ['next' => ['P-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
-            case $age <= 12:
+            case $age <= 13:
                 return $this->rank['grade'] != 'P-2' ?
                     ['next' => ['P-2'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
