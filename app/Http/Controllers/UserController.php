@@ -822,11 +822,11 @@ class UserController extends Controller
                 break;
             case 'SFC':
                 switch ($age) {
-                    case $age <= 8:
+                    case $age <= 11:
                         $data['rank']['grade'] = 'P-1';
                         $billet = 'Provisional Ranger I';
                         break;
-                    case $age <= 12:
+                    case $age <= 13:
                         $data['rank']['grade'] = 'P-2';
                         $billet = 'Provisional Ranger II';
                         break;

@@ -18,6 +18,7 @@ class Grade extends Eloquent
     protected $fillable = ['grade', 'rank'];
 
     public static $gradeFilters = [
+        'P' => 'Provisional',
         'E' => 'Enlisted',
         'W' => 'Warrant Officer',
         'O' => 'Officer',
@@ -58,7 +59,7 @@ class Grade extends Eloquent
      * Get the pay grades for a branch.
      *
      * @param $branchID
-     * @param null $filter Valid values are null, E, O, F, W and C
+     * @param null $filter Valid values are null, E, O, F, W, C, and P
      *
      * @return array
      */
@@ -173,10 +174,10 @@ class Grade extends Eloquent
     }
 
     /**
-     * Helper method to filter pay grades by Enlisted, Officer, Flag Officer, Warrant Officer, Civilian or all
+     * Helper method to filter pay grades by Enlisted, Officer, Flag Officer, Warrant Officer, Civilian, Provisional or all
      * pay grades (null).
      *
-     * @param null $filter Valid values are null, E, O, F, W and C
+     * @param null $filter Valid values are null, E, O, F, W, C and P
      *
      * @return array
      */
@@ -186,7 +187,7 @@ class Grade extends Eloquent
 
         // If $filter is set, validate it
 
-        if (is_null($filter) === false && in_array($filter, ['E', 'O', 'F', 'W', 'C']) === false) {
+        if (is_null($filter) === false && in_array($filter, ['E', 'O', 'F', 'W', 'C', 'P']) === false) {
             $filter = null;
         }
 
@@ -223,6 +224,16 @@ class Grade extends Eloquent
     private static function mbTrim($string, $trim_chars = '\s')
     {
         return preg_replace('/^['.$trim_chars.']*(?U)(.*)['.$trim_chars.']*$/u', '\\1', $string);
+    }
+
+    /**
+     * Shortcut method to get provisional SFC pay grades.
+     *
+     * @return array
+     */
+    public static function provisionalPayGrades()
+    {
+        return self::filterGrades('P');
     }
 
     /**
