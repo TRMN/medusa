@@ -9,19 +9,36 @@ class Tt005211FixupProvisionalPaygrades extends Migration
 {
     use App\Audit\MedusaAudit;
 
+    protected $fromGrades = [
+        'C-1' => 'Cadet Ranger One',
+        'C-2' => 'Cadet Ranger Two',
+        'C-3' => 'Cadet Ranger Three',
+        'C-6' => 'Senior Cadet Ranger'
+    ];
+
     /**
      * Update the user to change the rank and add a history entry.
      *
      * @param User $user
-     * @param string $toRank
+     * @param string $fromGrade
+     * @param string $toGrade
+     * @param string $billet
      * @param string $message
      * @return void
      */
-    protected function updateUser(User $user, string $toRank, string $message): void
+    protected function updateUser(User $user, string $fromGrade, string $toGrade, string $billet, string $message): void
     {
         $rank = $user->rank;
-        $rank['grade'] = $toRank;
+        $rank['grade'] = $toGrade;
         $user->rank = $rank;
+
+        $assignments = $user->assignment;
+        if (count($assignments) === 1) {
+            $assignments[0]['billet'] = $billet;
+            $user->assignment = $assignments;
+        } else {
+            echo "Multiple assignments for {$user->first_name} {$user->last_name} ({$user->member_id})... fix billet by hand!" . PHP_EOL;
+        }
 
         $history = $user->history;
         $history[] = [
@@ -33,12 +50,65 @@ class Tt005211FixupProvisionalPaygrades extends Migration
         $this->writeAuditTrail(
             'system user',
             'update',
-            'rank',
+            'user',
             null,
             $user->toJson(),
             'fixup_provisional_paygrades'
         );
         $user->save();
+    }
+
+    /**
+     * Logic for moving/adjusting paygrade for cadets.
+     *
+     * @param User $user
+     * @return array[string, string, string]
+     */
+    protected function getToGrade(User $user): array
+    {
+        $straightMap = [
+            'C-1' => 'P-1',
+            'C-2' => 'P-2',
+            'C-3' => 'P-3',
+            'C-6' => 'P-4',
+        ];
+
+        $time = now();
+        $timestr = $time->format('d M Y');
+
+        $fromGrade = $user->rank['grade'];
+
+        $age = $user->getAge();
+
+        switch ($age) {
+            case $age <= 11:
+                $toGrade = 'P-1';
+                $billet = 'Cadet Ranger';
+                break;
+            case $age <= 13:
+                $toGrade = 'P-2';
+                $billet = 'Cadet Ranger';
+                break;
+            case $age <= 15:
+                $toGrade = 'P-3';
+                $billet = 'Cadet Ranger';
+                break;
+            case $age <= 17:
+                $toGrade = 'P-4';
+                $billet = 'Cadet Ranger';
+                break;
+            default:
+                $toGrade = 'C-1';
+                $billet = 'Civilian';
+        }
+
+        $message = "Rank adjusted from {$this->fromGrades[$fromGrade]} ({$fromGrade}) to {$billet} ({$toGrade}) per PD-BOD-4100 on {$timestr}";
+
+        if ($straightMap[$fromGrade] != $toGrade) {
+            echo "Adjusted {$user->first_name} {$user->last_name} ({$user->member_id}) from {$straightMap[$fromGrade]} to $toGrade" . PHP_EOL;
+        }
+
+        return [$toGrade, $billet, $message];
     }
 
     /**
@@ -50,7 +120,7 @@ class Tt005211FixupProvisionalPaygrades extends Migration
      */
     protected function checkC6toC7(User $user): bool
     {
-        $lookingFor = 'Rank changed from Senior Cadet Ranger (C-6) to Ranger(C-7)';
+        $lookingFor = 'Rank adjusted from Senior Cadet Ranger (C-6) to Ranger(C-7)';
 
         $history = $user->history;
 
@@ -64,82 +134,21 @@ class Tt005211FixupProvisionalPaygrades extends Migration
     }
 
     /**
-     * Loop through users with C-1 status and convert them to P-1.
-     *
-     * @return void
-     */
-    protected function c1ToP1()
-    {
-        $fromRank = 'C-1';
-        $toRank = 'P-1';
-        $time = now();
-        $timestr = $time->format('d M Y');
-        $message = "Rank changed from Cadet Ranger One (C-1) to Provisional Ranger I (P-1) on {$timestr}";
-
-        $users = User::where('branch', 'SFC')->where('rank.grade', $fromRank)->get();
-
-        foreach ($users as $user) {
-            $this->updateUser($user, $toRank, $message);
-        }
-    }
-
-    /**
-     * Loop through users with C-2 status and convert them to P-2.
-     *
-     * @return void
-     */
-    protected function c2ToP2()
-    {
-        $fromRank = 'C-2';
-        $toRank = 'P-2';
-        $time = now();
-        $timestr = $time->format('d M Y');
-        $message = "Rank changed from Cadet Ranger Two (C-2) to Provisional Ranger II (P-2) on {$timestr}";
-
-        $users = User::where('branch', 'SFC')->where('rank.grade', $fromRank)->get();
-
-        foreach ($users as $user) {
-            $this->updateUser($user, $toRank, $message);
-        }
-    }
-
-    /**
-     * Loop through users with C-3 status and convert them to P-3.
-     *
-     * @return void
-     */
-    protected function c3ToP3()
-    {
-        $fromRank = 'C-3';
-        $toRank = 'P-3';
-        $time = now();
-        $timestr = $time->format('d M Y');
-        $message = "Rank changed from Cadet Ranger Three (C-3) to Provisional Ranger III (P-3) on {$timestr}";
-
-        $users = User::where('branch', 'SFC')->where('rank.grade', $fromRank)->get();
-
-        foreach ($users as $user) {
-            $this->updateUser($user, $toRank, $message);
-        }
-    }
-
-    /**
      * Loop through users with C-6 status and convert them to P-4.
      *
      * @return void
      */
-    protected function c6ToP4()
+    protected function civilianToProvisional()
     {
-        $fromRank = 'C-6';
-        $toRank = 'P-4';
-        $time = now();
-        $timestr = $time->format('d M Y');
-        $message = "Rank changed from Senior Cadet Ranger (C-6) to Senior Provisional Ranger (P-4) on {$timestr}";
+        foreach ($this->fromGrades as $fromGrade => $fromBillet) {
+            echo "Migrating {$fromGrade}..." . PHP_EOL;
+            $users = User::where('branch', 'SFC')->where('rank.grade', $fromGrade)->get();
 
-        $users = User::where('branch', 'SFC')->where('rank.grade', $fromRank)->get();
+            foreach ($users as $user) {
+                [$toGrade, $billet, $message] = $this->getToGrade($user);
 
-        foreach ($users as $user) {
-            $this->updateUser($user, $toRank, $message);
+                $this->updateUser($user, $fromGrade, $toGrade, $billet, $message);
+            }
         }
     }
 
@@ -151,17 +160,19 @@ class Tt005211FixupProvisionalPaygrades extends Migration
      */
     protected function c7toC1()
     {
-        $fromRank = 'C-7';
-        $toRank = 'C-1';
+        $fromGrade = 'C-7';
+        $toGrade = 'C-1';
         $time = now();
         $timestr = $time->format('d M Y');
-        $message = "Rank changed from Ranger (C-7) to Assistant Ranger (C-1) on {$timestr}";
+        $message = "Rank changed from Ranger (C-7) to Assistant Ranger (C-1) per PD-BOD-4100 on {$timestr}";
 
-        $users = User::where('branch', 'SFC')->where('rank.grade', $fromRank)->get();
+        echo "Migrating {$fromGrade}..." . PHP_EOL;
+
+        $users = User::where('branch', 'SFC')->where('rank.grade', $fromGrade)->get();
 
         foreach ($users as $user) {
             if ($this->checkC6toC7($user)) {
-                $this->updateUser($user, $toRank, $message);
+                $this->updateUser($user, $fromGrade, $toGrade, 'Civilian', $message);
             }
         }
     }
@@ -173,10 +184,7 @@ class Tt005211FixupProvisionalPaygrades extends Migration
      */
     public function up()
     {
-        $this->c1ToP1();
-        $this->c2ToP2();
-        $this->c3ToP3();
-        $this->c6ToP4();
+        $this->civilianToProvisional();
         $this->c7toC1();
     }
 
