@@ -104,6 +104,15 @@
             </div>
         @endif
 
+        @if($permsObj->hasPermissions(['VIEW_RMN']) === true)
+            <h3 class="nav-header lnav">RMN</h3>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_RMN']) === true)
+                    <a href="{!!route('showBranch', ['branch' => 'RMN'])!!}">Show RMN members</a><br/>
+                @endif
+            </div>
+        @endif
+
         @if($permsObj->hasPermissions(['ADD_MARDET','EDIT_MARDET','DELETE_MARDET', 'VIEW_RMMC']) === true)
             <h3 class="nav-header lnav">RMMC</h3>
             <div class="rnav">
@@ -161,6 +170,24 @@
             <div class="rnav">
                 @if($permsObj->hasPermissions(['VIEW_SFC']) === true)
                     <a href="{!!route('showBranch', ['branch' => 'SFC'])!!}">Show SFC members</a><br/>
+                @endif
+            </div>
+        @endif
+
+        @if($permsObj->hasPermissions(['VIEW_RMACS']) === true)
+            <h3 class="nav-header lnav">RMACS</h3>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_RMACS']) === true)
+                    <a href="{!!route('showBranch', ['branch' => 'RMACS'])!!}">Show RMACS members</a><br/>
+                @endif
+            </div>
+        @endif
+
+        @if($permsObj->hasPermissions(['VIEW_CIVIL']) === true)
+            <h3 class="nav-header lnav">CIVIL</h3>
+            <div class="rnav">
+                @if($permsObj->hasPermissions(['VIEW_CIVIL']) === true)
+                    <a href="{!!route('showBranch', ['branch' => 'CIVIL'])!!}">Show CIVIL members</a><br/>
                 @endif
             </div>
         @endif
