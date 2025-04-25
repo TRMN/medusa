@@ -107,9 +107,7 @@
         @if($permsObj->hasPermissions(['VIEW_RMN']) === true)
             <h3 class="nav-header lnav">RMN</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_RMN']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'RMN'])!!}">Show RMN members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'RMN'])!!}">Show RMN members</a><br/>
             </div>
         @endif
 
@@ -124,7 +122,6 @@
                 @endif
             </div>
         @endif
-
 
         @if($permsObj->hasPermissions(['ADD_UNIT','EDIT_UNIT','DELETE_UNIT', 'VIEW_RMA']) === true)
             <h3 class="nav-header lnav">RMA</h3>
@@ -141,63 +138,49 @@
         @if($permsObj->hasPermissions(['VIEW_GSN']) === true)
             <h3 class="nav-header lnav">GSN</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_GSN']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'GSN'])!!}">Show GSN members</a><br/>
-                @endif
+               <a href="{!!route('showBranch', ['branch' => 'GSN'])!!}">Show GSN members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_RHN']) === true)
             <h3 class="nav-header lnav">RHN</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_RHN']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'RHN'])!!}">Show RHN members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'RHN'])!!}">Show RHN members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_IAN']) === true)
             <h3 class="nav-header lnav">IAN</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_IAN']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'IAN'])!!}">Show IAN members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'IAN'])!!}">Show IAN members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_SFC']) === true)
             <h3 class="nav-header lnav">SFC</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_SFC']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'SFC'])!!}">Show SFC members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'SFC'])!!}">Show SFC members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_RMACS']) === true)
             <h3 class="nav-header lnav">RMACS</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_RMACS']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'RMACS'])!!}">Show RMACS members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'RMACS'])!!}">Show RMACS members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_CIVIL']) === true)
             <h3 class="nav-header lnav">CIVIL</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_CIVIL']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'CIVIL'])!!}">Show CIVIL members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'CIVIL'])!!}">Show CIVIL members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_RMMM']) === true)
             <h3 class="nav-header lnav">RMMM</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_RMMM']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'RMMM'])!!}">Show RMMM members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'RMMM'])!!}">Show RMMM members</a><br/>
             </div>
         @endif
 
