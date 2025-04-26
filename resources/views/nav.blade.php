@@ -194,15 +194,6 @@
 </div>
 <div class="text-center logout">
     <a href="/signout" class="lnav nav-header whitesmoke margin-5">Logout <span class="fa fa-sign-out"></span></a>
-    <br class="margin-5"/><br clear="both"/>
-    <h4 class="whitesmoke Incised901Light">MEDUSA Mobile</h4>
-    <a href='https://play.google.com/store/apps/details?id=org.trmn.medusa&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img
-                alt='Get it on Google Play'
-                src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="175px"/></a><br/>
-    <small class="Incised901Light">Google Play and the Google Play logo are trademarks of Google Inc.</small>
-    <br/><br/>
-    <a href="https://itunes.apple.com/us/app/medusa-mobile/id1153191437?ls=1&mt=8"><img
-                src="{!!asset('images/appstore.svg')!!}" alt="Download on the App Store" width="151px"/></a>
 </div>
 
 
