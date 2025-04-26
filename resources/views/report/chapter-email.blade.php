@@ -16,8 +16,6 @@ Rank: {!!$report->command_crew['Commanding Officer']['rank']['grade']!!}<br>
 <br>
 Last Course Completed: {!!$report->command_crew['Commanding Officer']['last_course']!!}<br>
 <br>
-Date of Birth: {!!date('m/d/Y', strtotime($report->command_crew['Commanding Officer']['dob']))!!}<br>
-<br>
 Phone:@if(empty($report->command_crew['Commanding Officer']['phone_number']) === true)
     N/A @else {!!$report->command_crew['Commanding Officer']['phone_number']!!} @endif <br>
 Email: {!!$report->command_crew['Commanding Officer']['email_address']!!}<br>
@@ -32,8 +30,6 @@ EXECUTIVE OFFICER<br>
     Rank: {!!$report->command_crew['Executive Officer']['rank']['grade']!!}<br>
     <br>
     Last Course Completed: {!!$report->command_crew['Executive Officer']['last_course']!!}<br>
-    <br>
-    Date of Birth: {!!date('m/d/Y', strtotime($report->command_crew['Executive Officer']['dob']))!!}<br>
     <br>
     Phone:@if(empty($report->command_crew['Executive Officer']['phone_number']) === true)
         N/A @else {!!$report->command_crew['Executive Officer']['phone_number']!!} @endif <br>
@@ -53,8 +49,6 @@ CHIEF PETTY OFFICER<br>
     Rank: {!!$report->command_crew['Bosun']['rank']['grade']!!}<br>
     <br>
     Last Course Completed: {!!$report->command_crew['Bosun']['last_course']!!}<br>
-    <br>
-    Date of Birth: {!!date('m/d/Y', strtotime($report->command_crew['Bosun']['dob']))!!}<br>
     <br>
     Phone:@if(empty($report->command_crew['Bosun']['phone_number']) === true)
         N/A @else {!!$report->command_crew['Bosun']['phone_number']!!} @endif <br>
