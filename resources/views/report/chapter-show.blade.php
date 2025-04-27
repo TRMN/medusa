@@ -56,12 +56,6 @@
         <div class=" col-sm-3">
             {!!$report->command_crew['Commanding Officer']['last_course']!!}
         </div>
-        <div class=" col-sm-2 my">
-            Date of Birth:
-        </div>
-        <div class=" col-sm-4">
-            {!!date('m/d/Y', strtotime($report->command_crew['Commanding Officer']['dob']))!!}
-        </div>
     </div>
 
     <div class="row">
@@ -123,12 +117,6 @@
             </div>
             <div class=" col-sm-3">
                 {!!$report->command_crew['Executive Officer']['last_course']!!}
-            </div>
-            <div class=" col-sm-2 my">
-                Date of Birth:
-            </div>
-            <div class=" col-sm-4">
-                {!!date('m/d/Y', strtotime($report->command_crew['Executive Officer']['dob']))!!}
             </div>
         </div>
 
@@ -197,12 +185,6 @@
             </div>
             <div class=" col-sm-3">
                 {!!$report->command_crew['Bosun']['last_course']!!}
-            </div>
-            <div class=" col-sm-2 my">
-                Date of Birth:
-            </div>
-            <div class=" col-sm-4">
-                {!!date('m/d/Y', strtotime($report->command_crew['Bosun']['dob']))!!}
             </div>
         </div>
 
