@@ -35,27 +35,25 @@ class MedusaUtility
         $letter = MedusaConfig::get('bupers.welcome', null);
 
         $search = [
+            '%GREETING%',
+            '%BRANCH%',
             '%CHAPTER%',
             '%CO%',
             '%COEMAIL%',
+            '%XO%',
+            '%XOEMAIL%',
             '%5SL%',
-            '%MOTA%',
-            '%DANT%',
-            '%HA%',
-            '%1SL%',
-            '%FLA%',
         ];
 
         $replace = [
+            $user->getGreetingAndName(),
+            $user['branch'],
             $user->getAssignmentName('primary'),
             Chapter::find($user->getAssignmentId('primary'))->getCO()->getGreetingAndName(),
             Chapter::find($user->getAssignmentId('primary'))->getCO()->email_address,
+            Chapter::find($user->getAssignmentId('primary'))->getXO()->getGreetingAndName(),
+            Chapter::find($user->getAssignmentId('primary'))->getXO()->email_address,
             User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b4970'), 	// Fifth Space Lord
-            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b4978'), 	// Marshal of the Army
-            User::getGreetingAndNameByBilletId('6518978f9c6b7f0bed2f6e56'),	// Marshal of the Corp
-            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b497c'),	// High Admiral, GSN
-            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b497e'),	// First Space Lord
-            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b4980'), 	// First Lord of the Admiralty
         ];
 
         if (is_null($letter) === false) {
