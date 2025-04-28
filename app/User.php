@@ -255,13 +255,13 @@ class User extends Authenticatable implements CanResetPasswordContract
      */
     public static function getByBilletId(string $billet_id)
     {
+        $billet_user = null;
+
         $billet = Billet::where('_id', $billet_id)->first();
 
-        $billet_user = User::where('assignment.billet', '=', $billet['billet_name'])
-            ->first();
-
-        if (isset($billet_user) === false) {
-            return null;
+        if (isset($billet) && isset($billet['billet_name'])) {
+            $billet_user = User::where('assignment.billet', '=', $billet['billet_name'])
+                ->first();
         }
 
         return $billet_user;
