@@ -50,13 +50,12 @@ class MedusaUtility
             $user->getAssignmentName('primary'),
             Chapter::find($user->getAssignmentId('primary'))->getCO()->getGreetingAndName(),
             Chapter::find($user->getAssignmentId('primary'))->getCO()->email_address,
-            User::where('assignment.billet', 'Fifth Space Lord')->first()->getGreetingAndName(),
-            User::where('assignment.billet', 'Marshal of the Army, RMA')->first()->getGreetingAndName(),
-            User::where('assignment.billet', 'Commandant, Royal Manticoran Marine Corps')->first()
-                ->getGreetingAndName(),
-            User::where('assignment.billet', 'High Admiral, GSN')->first()->getGreetingAndName(),
-            User::where('assignment.billet', 'First Space Lord')->first()->getGreetingAndName(),
-            User::where('assignment.billet', 'First Lord of the Admiralty')->first()->getGreetingAndName(),
+            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b4970'), 	// Fifth Space Lord
+            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b4978'), 	// Marshal of the Army
+            User::getGreetingAndNameByBilletId('6518978f9c6b7f0bed2f6e56'),	// Marshal of the Corp
+            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b497c'),	// High Admiral, GSN
+            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b497e'),	// First Space Lord
+            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b4980'), 	// First Lord of the Admiralty
         ];
 
         if (is_null($letter) === false) {
