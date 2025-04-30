@@ -259,8 +259,8 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         $billet = Billet::where('_id', $billet_id)->first();
 
-        if (isset($billet) && isset($billet['billet_name'])) {
-            $billet_user = User::where('assignment.billet', '=', $billet['billet_name'])
+        if ($billet instanceof Billet) {
+            $billet_user = User::where('assignment.billet', $billet['billet_name'])
                 ->first();
         }
 
