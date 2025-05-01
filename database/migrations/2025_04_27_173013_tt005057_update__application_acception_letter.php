@@ -62,7 +62,7 @@ EOT;
         $sig = MedusaConfig::get('bupers.sig');
 
         // Save a backup to be used by the rollback
-        MedusaConfig::set('bupers.sig.bak', sig);
+        MedusaConfig::set('bupers.sig.bak', $sig);
 
         $newSig = <<<EOT
  Geoff Zoeller
