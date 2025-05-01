@@ -58,7 +58,20 @@ EOT;
         // Update the welcome letter with the new content.
         MedusaConfig::set('bupers.welcome', $newWelcome);
 
+        // Get the current BuPers signature.
+        $sig = MedusaConfig::get('bupers.sig');
 
+        // Save a backup to be used by the rollback
+        MedusaConfig::set('bupers.sig.bak', sig);
+
+        $newSig = <<<EOT
+ Geoff Zoeller
+ Vizeadmiral, IAN
+ Interim Director, Office of Member Services - BuPers
+EOT;
+
+        // Update the welcome signature with the new content.
+        MedusaConfig::set('bupers.sig', $newSig);
     }
 
     /**
@@ -71,5 +84,9 @@ EOT;
         // Reset the welcome letter from the backup.
         MedusaConfig::set('bupers.welcome', MedusaConfig::get('bupers.welcome.bak'));
         MedusaConfig::remove('bupers.welcome.bak');
+
+        // Reset the signature from the backup.
+        MedusaConfig::set('bupers.sig', MedusaConfig::get('bupers.sig.bak'));
+        MedusaConfig::remove('bupers.sig.bak');
     }
 }
