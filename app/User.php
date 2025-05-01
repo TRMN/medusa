@@ -245,6 +245,49 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
+     * Get the user's record by Billet ID. For use in the retrieval of
+     * Space Lords and heads of branches, where a single user holds the
+     * specified billet.
+     *
+     * @param string $billet_id
+     *
+     * @return User|null
+     */
+    public static function getByBilletId(string $billet_id)
+    {
+        $billet_user = null;
+
+        $billet = Billet::where('_id', $billet_id)->first();
+
+        if ($billet instanceof Billet) {
+            $billet_user = User::where('assignment.billet', $billet['billet_name'])
+                ->first();
+        }
+
+        return $billet_user;
+    }
+
+    /**
+     * Get the user's name with rank by Billet ID, for use in the retrieval of
+     * Space Lords and heads of branches, where a single user holds the
+     * specified billet.
+     *
+     * @param string $billet_id
+     *
+     * @return string
+     */
+    public static function getGreetingAndNameByBilletId(string $billet_id): string
+    {
+        $billet_user = self::getByBilletId($billet_id);
+
+        if (isset($billet_user)) {
+            return $billet_user->getGreeting() . ' ' . $billet_user->getFullName();
+        } else {
+            return '';
+        }
+    }
+
+    /**
      * Get the user's full name.
      *
      * @param bool $lastFirst Return name is Last, First Middle instead of
