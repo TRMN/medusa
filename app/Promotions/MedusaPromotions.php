@@ -114,6 +114,7 @@ trait MedusaPromotions
     public function getPromotableInfo($payGrade2Check = null, $sfcCheck = true, $path = null)
     {
         $flags = [
+            'next' => [],
             'tig' => false,
             'points' => false,
             'exams' => false,
@@ -176,6 +177,7 @@ trait MedusaPromotions
                     if ($step > 23) {
                         // No next one found
                         return [
+                            'next' => [],
                             'tig' => false,
                             'points' => false,
                             'exams' => false,
@@ -194,6 +196,7 @@ trait MedusaPromotions
                 $payGrade2Check = 'C-'.$step;
             } else {
                 return [
+                    'next' => [],
                     'tig' => false,
                     'points' => false,
                     'exams' => false,
@@ -208,6 +211,7 @@ trait MedusaPromotions
             if (empty($requirements[$payGrade2Check]) === true) {
                 // No requirement listed, just starting
                 return [
+                    'next' => [],
                     'tig' => true,
                     'points' => true,
                     'exams' => true,
