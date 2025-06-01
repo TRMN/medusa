@@ -161,10 +161,10 @@ class Tt005211FixupProvisionalPaygrades extends Migration
     protected function c7toC1()
     {
         $fromGrade = 'C-7';
-        $toGrade = 'C-1';
+        $toGrade = 'C-3';
         $time = now();
         $timestr = $time->format('d M Y');
-        $message = "Rank changed from Ranger (C-7) to Assistant Ranger (C-1) per PD-BOD-4100 on {$timestr}";
+        $message = "Rank changed from Ranger (C-7) to Assistant Ranger (C-3) per PD-BOD-4100 on {$timestr}";
 
         echo "Migrating {$fromGrade}..." . PHP_EOL;
 
