@@ -459,7 +459,7 @@ trait MedusaPromotions
         // Check for valid rank
         $parsedRank = explode('-', $rank);
 
-        if (in_array($parsedRank[0], ['E', 'WO', 'C', 'O', 'F']) === false ||
+        if (in_array($parsedRank[0], ['P', 'E', 'WO', 'C', 'O', 'F']) === false ||
             is_numeric($parsedRank[1]) === false) {
             // Not a valid rank
             return false;

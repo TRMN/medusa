@@ -48,6 +48,11 @@ class PromotionController extends Controller
                 is_null($member->isPromotableEarly()) == false) {
                 $pi = $member->getPromotableInfo();
 
+                if (is_null($pi) === true) {
+                    // Provisional Ranger who is already at rank and thus not promotable, skip.
+                    continue;
+                }
+
                 $flags = [
                     'promotable' => $pi['tig'] && $pi['exams'] && $pi['points'],
                     'early' => $pi['exams'] && $pi['points'] && $pi['early'],
@@ -69,6 +74,9 @@ class PromotionController extends Controller
 
                         // Process based on Enlisted/Civilian/Warrant/Officer/Flag
                         switch ($paygrade[0]) {
+                            case 'P':
+                                $promotable[] = $memberCopy;
+                                break;
                             case 'E':
                             case 'C':
                                 if ($paygrade[1] < 7) {
@@ -100,6 +108,9 @@ class PromotionController extends Controller
                                 } else {
                                     $board[] = $memberCopy;
                                 }
+                                break;
+                            case 'F':
+                                $board[] = $memberCopy;
                                 break;
                         }
                         unset($memberCopy);
