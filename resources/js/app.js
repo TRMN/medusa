@@ -663,7 +663,13 @@ $(document).ready(function ($) {
             case 'B':
                 points = 1;
                 break;
+            case 'Fr':
+                points = 1;
+                break;
             case 'E':
+                points = 2;
+                break;
+            case 'Gr':
                 points = 2;
                 break;
             case 'S':
@@ -675,7 +681,13 @@ $(document).ready(function ($) {
             case 'D':
                 points = 4;
                 break;
+            case 'He':
+                points = 4;
+                break;
             case 'G':
+                points = 7;
+                break;
+            case 'Fu':
                 points = 7;
                 break;
             default:
