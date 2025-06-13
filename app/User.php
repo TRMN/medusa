@@ -604,7 +604,12 @@ class User extends Authenticatable implements CanResetPasswordContract
      */
     public function isFleetCO()
     {
-        $fleet = Chapter::find($this->getAssignedShip())->getAssignedFleet(true);
+        $chapter = Chapter::find($this->getAssignedShip());
+        $fleet = null;
+
+        if (!is_null($chapter)) {
+            $fleet = $chapter->getAssignedFleet(true);
+        }
 
         if (is_null($fleet) === false &&
             Chapter::find($fleet)->getCO()['id'] == $this->id) {
@@ -2523,7 +2528,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         if (in_array($key, $validKeys) === true &&
             (is_numeric($value) === true ||
-                in_array($value, ['B', 'E', 'S', 'D', 'G']) === true
+                in_array($value, ['B', 'Fr', 'E', 'Gr', 'S', 'L', 'He', 'D', 'G', 'Fu']) === true
             )) {
             // Valid promotion point key and is a number
             $points = $this->points;
