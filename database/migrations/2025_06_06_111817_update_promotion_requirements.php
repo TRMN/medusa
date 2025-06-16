@@ -180,9 +180,6 @@ class UpdatePromotionRequirements extends Migration
   "F-5": {
     "next": [ "F-6" ]
   },
-  "C-22": {
-    "next": [ "C-23" ]
-  },
   "F-5-A": {
     "next": [ "F-5-B" ]
   },

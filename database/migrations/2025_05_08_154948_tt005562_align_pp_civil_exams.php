@@ -364,7 +364,7 @@ class Tt005562AlignPpCivilExams extends Migration
             MedusaConfig::set('pp.requirements.'.$branch.'.bak', $oldpp);
 
             // Set the new requirements
-            MedusaConfig::set('pp.requirememts.'.$branch, $newpp);
+            MedusaConfig::set('pp.requirements.'.$branch, $newpp);
         }
     }
 
