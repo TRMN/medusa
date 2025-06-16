@@ -552,7 +552,7 @@ class Tt005562AlignPpDefaultExams extends Migration
         $oldpp = MedusaConfig::get('pp.requirements');
         MedusaConfig::set('pp.requirements.bak', $oldpp);
 
-        MedusaConfig::set('pp.requirememts', $newpp);
+        MedusaConfig::set('pp.requirements', $newpp);
     }
 
     /**
