@@ -35,7 +35,7 @@ class Tt005211UpdateRmacsPaygrades extends Migration
             'C-18' => 'Rear Admiral',
             'C-19' => 'Vice Admiral',
             'C-20' => 'Admiral',
-            'C-21' => 'Transport Minister',
+            'C-21' => 'Fleet Admiral',
             'C-22' => 'Home Secretary',
             'C-23' => null,
         ];
