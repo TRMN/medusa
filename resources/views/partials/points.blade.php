@@ -96,7 +96,18 @@
     <div class="row pp-row margin-bottom-10 padding-bottom-10">
         <div class="col-sm-4">Investiture as a</div>
         <div class="col-sm-4 text-right">
-            {{Form::select('points[peerage]', ['B' => 'Baron/Baroness', 'E' => 'Earl/Countess', 'S' => 'Steadholder', 'D' => 'Duke/Duchess', 'L' => 'Senator for Life', 'G' => 'Grand Duke/Grand Duchess'], empty($user->points['peerage']) ? null : $user->points['peerage'], ['placeholder' => 'Select Peerage', 'class' => 'pp-calc-select', 'data-target' => 'peerage', 'disabled' => !$permsObj->hasPermissions(['EDIT_MEMBER'])])}}
+            {{Form::select('points[peerage]', [
+                    'B' => 'Baron/Baroness',
+                    'Fr' => 'Freiherr/Freifrau',
+                    'E' => 'Earl/Countess',
+                    'Gr' => 'Graf/Gräfin',
+                    'S' => 'Steadholder',
+                    'D' => 'Duke/Duchess',
+                    'He' => 'Herzog/Herzogin',
+                    'L' => 'Senator for Life',
+                    'G' => 'Grand Duke/Grand Duchess',
+                    'Fu' => 'Fürst/Fürstin',
+                ], empty($user->points['peerage']) ? null : $user->points['peerage'], ['placeholder' => 'Select Peerage', 'class' => 'pp-calc-select', 'data-target' => 'peerage', 'disabled' => !$permsObj->hasPermissions(['EDIT_MEMBER'])])}}
             @if(!$permsObj->hasPermissions(['EDIT_MEMBER']))
                 {{Form::hidden('points[peerage]', empty($user->points['peerage']) ? null : $user->points['peerage'])}}
             @endif

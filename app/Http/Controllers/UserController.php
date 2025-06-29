@@ -822,25 +822,25 @@ class UserController extends Controller
                 break;
             case 'SFC':
                 switch ($age) {
-                    case $age <= 8:
-                        $data['rank']['grade'] = 'C-1';
-                        $billet = 'Cadet Ranger';
+                    case $age <= 11:
+                        $data['rank']['grade'] = 'P-1';
+                        $billet = 'Provisional Ranger I';
                         break;
-                    case $age <= 12:
-                        $data['rank']['grade'] = 'C-2';
-                        $billet = 'Cadet Ranger';
+                    case $age <= 13:
+                        $data['rank']['grade'] = 'P-2';
+                        $billet = 'Provisional Ranger II';
                         break;
                     case $age <= 15:
-                        $data['rank']['grade'] = 'C-3';
-                        $billet = 'Cadet Ranger';
+                        $data['rank']['grade'] = 'P-3';
+                        $billet = 'Provisional Ranger III';
                         break;
                     case $age <= 17:
-                        $data['rank']['grade'] = 'C-6';
-                        $billet = 'Senior Cadet Ranger';
+                        $data['rank']['grade'] = 'P-4';
+                        $billet = 'Senior Provisional Ranger';
                         break;
                     case $age > 17:
-                        $data['rank']['grade'] = 'C-7';
-                        $billet = 'Ranger';
+                        $data['rank']['grade'] = 'C-1';
+                        $billet = 'Assistant Ranger';
                 }
                 break;
             case 'RMMM':

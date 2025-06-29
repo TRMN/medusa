@@ -35,28 +35,25 @@ class MedusaUtility
         $letter = MedusaConfig::get('bupers.welcome', null);
 
         $search = [
+            '%GREETING%',
+            '%BRANCH%',
             '%CHAPTER%',
             '%CO%',
             '%COEMAIL%',
+            '%XO%',
+            '%XOEMAIL%',
             '%5SL%',
-            '%MOTA%',
-            '%DANT%',
-            '%HA%',
-            '%1SL%',
-            '%FLA%',
         ];
 
         $replace = [
+            $user->getGreetingAndName(),
+            $user['branch'],
             $user->getAssignmentName('primary'),
             Chapter::find($user->getAssignmentId('primary'))->getCO()->getGreetingAndName(),
             Chapter::find($user->getAssignmentId('primary'))->getCO()->email_address,
-            User::where('assignment.billet', 'Fifth Space Lord')->first()->getGreetingAndName(),
-            User::where('assignment.billet', 'Marshal of the Army, RMA')->first()->getGreetingAndName(),
-            User::where('assignment.billet', 'Commandant, Royal Manticoran Marine Corps')->first()
-                ->getGreetingAndName(),
-            User::where('assignment.billet', 'High Admiral, GSN')->first()->getGreetingAndName(),
-            User::where('assignment.billet', 'First Space Lord')->first()->getGreetingAndName(),
-            User::where('assignment.billet', 'First Lord of the Admiralty')->first()->getGreetingAndName(),
+            Chapter::find($user->getAssignmentId('primary'))->getXO()->getGreetingAndName(),
+            Chapter::find($user->getAssignmentId('primary'))->getXO()->email_address,
+            User::getGreetingAndNameByBilletId('55fa1800e4bed82e078b4970'), 	// Fifth Space Lord
         ];
 
         if (is_null($letter) === false) {

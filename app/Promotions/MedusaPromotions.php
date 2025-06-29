@@ -113,7 +113,8 @@ trait MedusaPromotions
      */
     public function getPromotableInfo($payGrade2Check = null, $sfcCheck = true, $path = null)
     {
-        $flags = [
+        $info = [
+            'next' => [],
             'tig' => false,
             'points' => false,
             'exams' => false,
@@ -122,7 +123,7 @@ trait MedusaPromotions
 
         if ($this->branch === 'SFC' && empty($this->dob) === true) {
             // Unable to determine if the member is under or over 18, so they are not promotable
-            return $flags;
+            return $info;
         }
 
         if (is_null($payGrade2Check) === true) {
@@ -130,7 +131,7 @@ trait MedusaPromotions
             if (empty($nextGrade) === false) {
                 $payGrade2Check = $nextGrade['next'][0];
             } else {
-                return $flags;  // Can't determine what pay grade to check
+                return $info;  // Can't determine what pay grade to check
             }
         }
 
@@ -152,8 +153,8 @@ trait MedusaPromotions
                 // Check for promotion to WO-1 and O-1
                 $special = $this->specialPromotionCheck(['WO-1', 'O-1']);
                 if (count($special) > 0) {
-                    $flags['next'] = $special;
-                    $flags['exams'] = $flags['points'] = $flags['tig'] = true;
+                    $info['next'] = $special;
+                    $info['exams'] = $info['points'] = $info['tig'] = true;
                 }
                 break;
         }
@@ -176,6 +177,7 @@ trait MedusaPromotions
                     if ($step > 23) {
                         // No next one found
                         return [
+                            'next' => [],
                             'tig' => false,
                             'points' => false,
                             'exams' => false,
@@ -194,6 +196,7 @@ trait MedusaPromotions
                 $payGrade2Check = 'C-'.$step;
             } else {
                 return [
+                    'next' => [],
                     'tig' => false,
                     'points' => false,
                     'exams' => false,
@@ -208,6 +211,7 @@ trait MedusaPromotions
             if (empty($requirements[$payGrade2Check]) === true) {
                 // No requirement listed, just starting
                 return [
+                    'next' => [],
                     'tig' => true,
                     'points' => true,
                     'exams' => true,
@@ -227,7 +231,7 @@ trait MedusaPromotions
             }
 
             // Check TiG requirements.
-            $flags['tig'] = empty($requirements['tig']) ? true :
+            $info['tig'] = empty($requirements['tig']) ? true :
                 ($this->getTimeInGrade('months') >= $requirements['tig']);
 
             // They are at least an E-3/C-3 and their last promotion was not an early
@@ -236,8 +240,8 @@ trait MedusaPromotions
             if (in_array($this->rank['grade'], ['E-1', 'E-2', 'C-1', 'C-2']) ===
                 false &&
                 empty($this->rank['early']) === true &&
-                $flags['tig'] === false) {
-                $flags['early'] = ($this->getTimeInGrade('months') >=
+                $info['tig'] === false) {
+                $info['early'] = ($this->getTimeInGrade('months') >=
                     ($requirements['tig'] - 3));
             }
 
@@ -245,38 +249,38 @@ trait MedusaPromotions
             if (empty($requirements[$path]) === false) {
                 // Check Points
                 if (empty($requirements[$path]['points']) === false) {
-                    $flags['points'] = ($this->getTotalPromotionPoints() >=
+                    $info['points'] = ($this->getTotalPromotionPoints() >=
                         $requirements[$path]['points']);
                 } else {
                     // By appointment only
-                    $flags['points'] = true;
+                    $info['points'] = true;
                 }
 
                 // Check exams
                 if (empty($requirements[$path]['exam']) === false) {
-                    $flags['exams'] =
+                    $info['exams'] =
                         $this->hasRequiredExams($requirements[$path]['exam']);
                 } else {
                     // No exam requirement
-                    $flags['exams'] = true;
+                    $info['exams'] = true;
                 }
             }
 
             // Include what the next paygrade is
 
             if ($specialTig > 0 || is_null($payGrade2Check) === false) {
-                $flags['next'][] = $payGrade2Check;
+                $info['next'][] = $payGrade2Check;
             } else {
                 $next = $this->getNextGrade($this->rank['grade']);
-                $flags['next'][] = $next['next'][0];
+                $info['next'][] = $next['next'][0];
 
                 if (count($next['next']) > 1) {
-                    $flags['next'][] = $next['next'][1];
+                    $info['next'][] = $next['next'][1];
                 }
             }
         }
 
-        return $flags;
+        return $info;
     }
 
     /**
@@ -319,29 +323,29 @@ trait MedusaPromotions
             case 0:
                 return null;
                 break;
-            case $age <= 8:
-                return $this->rank['grade'] != 'C-1' ?
-                    ['next' => ['C-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+            case $age <= 11:
+                return $this->rank['grade'] != 'P-1' ?
+                    ['next' => ['P-1'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
-            case $age <= 12:
-                return $this->rank['grade'] != 'C-2' ?
-                    ['next' => ['C-2'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+            case $age <= 13:
+                return $this->rank['grade'] != 'P-2' ?
+                    ['next' => ['P-2'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             case $age <= 15:
-                return $this->rank['grade'] != 'C-3' ?
-                    ['next' => ['C-3'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                return $this->rank['grade'] != 'P-3' ?
+                    ['next' => ['P-3'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             case $age <= 17:
-                return $this->rank['grade'] != 'C-6' ?
-                    ['next' => ['C-6'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
+                return $this->rank['grade'] != 'P-4' ?
+                    ['next' => ['P-4'], 'tig' => true, 'points' => true, 'exams' => true, 'early' => false] : null;
                 break;
             default:
                 // Adult member
                 if (is_null($payGrade2Check) === true) {
-                    // Adult members of the SFC start at C-7.  Check that they are at least a C-7
+                    // Adult members of the SFC start at C-1.  Check that they are at least a C-1
                     [$tmp, $payGrade] = explode('-', $this->getPayGrade());
-                    if ($payGrade < 7) {
-                        $payGrade2Check = 'C-7';
+                    if ($payGrade < 1) {
+                        $payGrade2Check = 'C-1';
                     }
                 }
 
@@ -363,10 +367,10 @@ trait MedusaPromotions
                 return $this->sfcIsPromotable($payGrade2Check);
                 break;
             default:
-                $flags = $this->getPromotableInfo($payGrade2Check);
+                $info = $this->getPromotableInfo($payGrade2Check);
 
-                return ($flags['points'] && $flags['exams'] &&
-                    $flags['early']) === true ? $flags['next'] : null;
+                return ($info['points'] && $info['exams'] &&
+                    $info['early']) === true ? $info['next'] : null;
         }
     }
 
@@ -380,26 +384,26 @@ trait MedusaPromotions
      */
     public function isPromotable($tigCheck = true, $payGrade2Check = null)
     {
-        $return = $flags = null;
+        $return = $info = null;
 
         switch ($this->branch) {
             case 'SFC':
-                $flags = $this->sfcIsPromotable($payGrade2Check);
+                $info = $this->sfcIsPromotable($payGrade2Check);
                 break;
             default:
-                $flags = $this->getPromotableInfo($payGrade2Check);
+                $info = $this->getPromotableInfo($payGrade2Check);
         }
 
         // If there are no exams and no points, they are not promotable.
-        if (empty($flags['points']) === true || empty($flags['exams']) === true) {
+        if (empty($info['points']) === true || empty($info['exams']) === true) {
             return false;
         }
 
-        if ($flags['points'] && $flags['exams'] && isset($flags['next']) === true) {
-            if ($flags['early'] === true) {
-                $return = 'P-E [ '.implode(', ', $flags['next']).' ]';
-            } elseif ($flags['tig'] === true || $tigCheck === false) {
-                $return = 'P [ '.implode(', ', $flags['next']).' ]';
+        if ($info['points'] && $info['exams'] && isset($info['next']) === true) {
+            if ($info['early'] === true) {
+                $return = 'P-E [ '.implode(', ', $info['next']).' ]';
+            } elseif ($info['tig'] === true || $tigCheck === false) {
+                $return = 'P [ '.implode(', ', $info['next']).' ]';
             }
         }
 
@@ -455,7 +459,7 @@ trait MedusaPromotions
         // Check for valid rank
         $parsedRank = explode('-', $rank);
 
-        if (in_array($parsedRank[0], ['E', 'WO', 'C', 'O', 'F']) === false ||
+        if (in_array($parsedRank[0], ['P', 'E', 'WO', 'C', 'O', 'F']) === false ||
             is_numeric($parsedRank[1]) === false) {
             // Not a valid rank
             return false;

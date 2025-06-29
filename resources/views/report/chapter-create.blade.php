@@ -57,12 +57,6 @@
         <div class=" col-sm-3">
             {!!$command[1]['user']->getHighestMainLineExamForBranch('officer+flag')!!}
         </div>
-        <div class=" col-sm-2 my">
-            Date of Birth:
-        </div>
-        <div class=" col-sm-4">
-            {!!date('m/d/Y', strtotime($command[1]['user']->dob))!!}
-        </div>
     </div>
 
     <div class="row">
@@ -124,12 +118,6 @@
             </div>
             <div class=" col-sm-3">
                 {!!$command[2]['user']->getHighestMainLineExamForBranch('officer+flag')!!}
-            </div>
-            <div class=" col-sm-2 my">
-                Date of Birth:
-            </div>
-            <div class=" col-sm-4">
-                {!!date('m/d/Y', strtotime($command[2]['user']->dob))!!}
             </div>
         </div>
 
@@ -199,12 +187,6 @@
             </div>
             <div class=" col-sm-3">
                 {!!$command[3]['user']->getHighestMainLineExamForBranch('enlisted')!!}
-            </div>
-            <div class=" col-sm-2 my">
-                Date of Birth:
-            </div>
-            <div class=" col-sm-4">
-                {!!date('m/d/Y', strtotime($command[3]['user']->dob))!!}
             </div>
         </div>
 

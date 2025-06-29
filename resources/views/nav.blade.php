@@ -104,6 +104,13 @@
             </div>
         @endif
 
+        @if($permsObj->hasPermissions(['VIEW_RMN']) === true)
+            <h3 class="nav-header lnav">RMN</h3>
+            <div class="rnav">
+                <a href="{!!route('showBranch', ['branch' => 'RMN'])!!}">Show RMN members</a><br/>
+            </div>
+        @endif
+
         @if($permsObj->hasPermissions(['ADD_MARDET','EDIT_MARDET','DELETE_MARDET', 'VIEW_RMMC']) === true)
             <h3 class="nav-header lnav">RMMC</h3>
             <div class="rnav">
@@ -115,7 +122,6 @@
                 @endif
             </div>
         @endif
-
 
         @if($permsObj->hasPermissions(['ADD_UNIT','EDIT_UNIT','DELETE_UNIT', 'VIEW_RMA']) === true)
             <h3 class="nav-header lnav">RMA</h3>
@@ -132,45 +138,49 @@
         @if($permsObj->hasPermissions(['VIEW_GSN']) === true)
             <h3 class="nav-header lnav">GSN</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_GSN']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'GSN'])!!}">Show GSN members</a><br/>
-                @endif
+               <a href="{!!route('showBranch', ['branch' => 'GSN'])!!}">Show GSN members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_RHN']) === true)
             <h3 class="nav-header lnav">RHN</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_RHN']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'RHN'])!!}">Show RHN members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'RHN'])!!}">Show RHN members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_IAN']) === true)
             <h3 class="nav-header lnav">IAN</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_IAN']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'IAN'])!!}">Show IAN members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'IAN'])!!}">Show IAN members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_SFC']) === true)
             <h3 class="nav-header lnav">SFC</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_SFC']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'SFC'])!!}">Show SFC members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'SFC'])!!}">Show SFC members</a><br/>
+            </div>
+        @endif
+
+        @if($permsObj->hasPermissions(['VIEW_RMACS']) === true)
+            <h3 class="nav-header lnav">RMACS</h3>
+            <div class="rnav">
+                <a href="{!!route('showBranch', ['branch' => 'RMACS'])!!}">Show RMACS members</a><br/>
+            </div>
+        @endif
+
+        @if($permsObj->hasPermissions(['VIEW_CIVIL']) === true)
+            <h3 class="nav-header lnav">CIVIL</h3>
+            <div class="rnav">
+                <a href="{!!route('showBranch', ['branch' => 'CIVIL'])!!}">Show CIVIL members</a><br/>
             </div>
         @endif
 
         @if($permsObj->hasPermissions(['VIEW_RMMM']) === true)
             <h3 class="nav-header lnav">RMMM</h3>
             <div class="rnav">
-                @if($permsObj->hasPermissions(['VIEW_RMMM']) === true)
-                    <a href="{!!route('showBranch', ['branch' => 'RMMM'])!!}">Show RMMM members</a><br/>
-                @endif
+                <a href="{!!route('showBranch', ['branch' => 'RMMM'])!!}">Show RMMM members</a><br/>
             </div>
         @endif
 
@@ -194,15 +204,6 @@
 </div>
 <div class="text-center logout">
     <a href="/signout" class="lnav nav-header whitesmoke margin-5">Logout <span class="fa fa-sign-out"></span></a>
-    <br class="margin-5"/><br clear="both"/>
-    <h4 class="whitesmoke Incised901Light">MEDUSA Mobile</h4>
-    <a href='https://play.google.com/store/apps/details?id=org.trmn.medusa&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img
-                alt='Get it on Google Play'
-                src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="175px"/></a><br/>
-    <small class="Incised901Light">Google Play and the Google Play logo are trademarks of Google Inc.</small>
-    <br/><br/>
-    <a href="https://itunes.apple.com/us/app/medusa-mobile/id1153191437?ls=1&mt=8"><img
-                src="{!!asset('images/appstore.svg')!!}" alt="Download on the App Store" width="151px"/></a>
 </div>
 
 

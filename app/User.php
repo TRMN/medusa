@@ -245,6 +245,49 @@ class User extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
+     * Get the user's record by Billet ID. For use in the retrieval of
+     * Space Lords and heads of branches, where a single user holds the
+     * specified billet.
+     *
+     * @param string $billet_id
+     *
+     * @return User|null
+     */
+    public static function getByBilletId(string $billet_id)
+    {
+        $billet_user = null;
+
+        $billet = Billet::where('_id', $billet_id)->first();
+
+        if ($billet instanceof Billet) {
+            $billet_user = User::where('assignment.billet', $billet['billet_name'])
+                ->first();
+        }
+
+        return $billet_user;
+    }
+
+    /**
+     * Get the user's name with rank by Billet ID, for use in the retrieval of
+     * Space Lords and heads of branches, where a single user holds the
+     * specified billet.
+     *
+     * @param string $billet_id
+     *
+     * @return string
+     */
+    public static function getGreetingAndNameByBilletId(string $billet_id): string
+    {
+        $billet_user = self::getByBilletId($billet_id);
+
+        if (isset($billet_user)) {
+            return $billet_user->getGreeting() . ' ' . $billet_user->getFullName();
+        } else {
+            return '';
+        }
+    }
+
+    /**
      * Get the user's full name.
      *
      * @param bool $lastFirst Return name is Last, First Middle instead of
@@ -561,7 +604,12 @@ class User extends Authenticatable implements CanResetPasswordContract
      */
     public function isFleetCO()
     {
-        $fleet = Chapter::find($this->getAssignedShip())->getAssignedFleet(true);
+        $chapter = Chapter::find($this->getAssignedShip());
+        $fleet = null;
+
+        if (!is_null($chapter)) {
+            $fleet = $chapter->getAssignedFleet(true);
+        }
 
         if (is_null($fleet) === false &&
             Chapter::find($fleet)->getCO()['id'] == $this->id) {
@@ -2480,7 +2528,7 @@ class User extends Authenticatable implements CanResetPasswordContract
 
         if (in_array($key, $validKeys) === true &&
             (is_numeric($value) === true ||
-                in_array($value, ['B', 'E', 'S', 'D', 'G']) === true
+                in_array($value, ['B', 'Fr', 'E', 'Gr', 'S', 'L', 'He', 'D', 'G', 'Fu']) === true
             )) {
             // Valid promotion point key and is a number
             $points = $this->points;
@@ -2608,7 +2656,13 @@ class User extends Authenticatable implements CanResetPasswordContract
                         case 'B':
                             $points += 1;
                             break;
+                        case 'Fr':
+                            $points += 1;
+                            break;
                         case 'E':
+                            $points += 2;
+                            break;
+                        case 'Gr':
                             $points += 2;
                             break;
                         case 'S':
@@ -2617,10 +2671,16 @@ class User extends Authenticatable implements CanResetPasswordContract
                         case 'L':
                             $points += 4;
                             break;
+                        case 'He':
+                            $points += 4;
+                            break;
                         case 'D':
                             $points += 4;
                             break;
                         case 'G':
+                            $points += 7;
+                            break;
+                        case 'Fu':
                             $points += 7;
                             break;
                     }
