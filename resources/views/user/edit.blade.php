@@ -291,7 +291,7 @@
 
                 <div class="row">
                     <div class=" col-sm-4  ninety Incised901Light form-group">
-                        {!! Form::label('display_rank', "Rank", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('display_rank', $grades, $user->display_rank, ['class' => 'form-control', 'id' => 'rank']) !!} {{Form::hidden('current_rank', $user->display_rank, ['id' => 'current_rank'])}}
+                        {!! Form::label('rank', "Rank", ['class' => 'my']) !!} @if($permsObj->hasPermissions(['EDIT_MEMBER']) === true){!! Form::select('display_rank', $grades, $user->display_rank, ['class' => 'form-control', 'id' => 'rank']) !!} {{Form::hidden('current_rank', $user->display_rank, ['id' => 'current_rank'])}}
                         @else
                             {!!Form::hidden('display_rank', $user->display_rank)!!} {{$user->getGreeting()}}
                             ({{$user->display_rank}})
@@ -464,9 +464,13 @@
             sortField: 'text'
         });
 
-        $('#rating').on('change', function () {
+        var loadRatings = function () {
             var rating = $('#rating').val();
             var branch = $('#branch').val();
+
+            if (rating === '' || (branch !== 'RMMM' && branch !== 'CIVIL')) {
+                return;
+            }
 
             $.getJSON('/api/branch/' + rating + '/' + branch, function (result) {
                 var grade = $('#rank').val();
@@ -490,7 +494,10 @@
                 });
                 $('#rank').append(options);
             });
-        });
+        };
+
+        $(document).on('ready', loadRatings);
+        $('#rating').on('change', loadRatings);
 
         $('#oqe').on('click', function () {
             if ($('#oqe').prop('checked')) {
