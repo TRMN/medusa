@@ -1116,9 +1116,11 @@ class User extends Authenticatable implements CanResetPasswordContract
             if ($onlyPassing === true) {
                 // Only return exams with a passing grade
                 $list = Arr::where(
-                    $list, function ($value, $key) {
+                    $list,
+                    function ($value, $key) {
                     return $this->isPassingGrade($value['score']);
-                });
+                    }
+                );
             }
 
             if (empty($after) === false) {
@@ -1790,16 +1792,16 @@ class User extends Authenticatable implements CanResetPasswordContract
             $pCode = $peerages[0]['code'];
 
             if ($pCode == 'K' && substr(
-                                     Korders::where(
-                                         'classes.postnominal',
-                                         '=',
-                                         $peerages[0]['postnominal']
-                                     )->first()->getClassName(
-                                         $peerages[0]['postnominal']
-                                     ),
-                                     0,
-                                     6
-                                 ) != 'Knight'
+                Korders::where(
+                    'classes.postnominal',
+                    '=',
+                    $peerages[0]['postnominal']
+                )->first()->getClassName(
+                    $peerages[0]['postnominal']
+                ),
+                0,
+                6
+            ) != 'Knight'
             ) {
                 $pCode = '';
             }
@@ -1892,10 +1894,10 @@ class User extends Authenticatable implements CanResetPasswordContract
         }
 
         if (strlen($state) == 4 && substr($state, -1) == '.' && substr(
-                                                                    $state,
-                                                                    -3,
-                                                                    1
-                                                                ) == '.'
+            $state,
+            -3,
+            1
+        ) == '.'
         ) {
             // We have a 2 letter abbreviation with periods between the letters, like D.C. or B.C.
             return strtoupper(substr($state, 0, 1) . substr($state, -2, 1));
@@ -1904,9 +1906,9 @@ class User extends Authenticatable implements CanResetPasswordContract
         if (substr($state, 2, 2) == ' -') {
             // We may have a 2 letter abbreviation followed by the full name, try and validate
             if (array_key_exists(
-                    strtoupper(substr($state, 0, 2)),
-                    MedusaDefaults::STATES_BY_ABREVIATION
-                ) === true
+                strtoupper(substr($state, 0, 2)),
+                MedusaDefaults::STATES_BY_ABREVIATION
+            ) === true
             ) {
                 return strtoupper(substr($state, 0, 2));
             }
@@ -1915,9 +1917,9 @@ class User extends Authenticatable implements CanResetPasswordContract
         // Nothing else hits, check and see if we know the 2 letter abbreviation
 
         if (array_key_exists(
-                strtoupper($state),
-                MedusaDefaults::STATES_BY_NAME
-            ) === true
+            strtoupper($state),
+            MedusaDefaults::STATES_BY_NAME
+        ) === true
         ) {
             $tmp = MedusaDefaults::STATES_BY_NAME;
 
@@ -2164,9 +2166,9 @@ class User extends Authenticatable implements CanResetPasswordContract
             $event->end_date >= date('Y-m-d')) {
             // Is the user doing the check-in a requestor or a registrar?
             if ($event->requestor === $this->id || in_array(
-                                                       $this->id,
-                                                       $event->registrars
-                                                   ) === true) {
+                $this->id,
+                $event->registrars
+            ) === true) {
                 $checkIns = [];
                 if (isset($event->checkins) === true) {
                     $checkIns = $event->checkins;
