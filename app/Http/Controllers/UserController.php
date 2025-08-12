@@ -195,6 +195,62 @@ class UserController extends Controller
     }
 
     /**
+     * Export a list of users to a CSV file, primarily for the use of BuPers.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    function exportUsers(Request $request)
+    {
+        if (($redirect = $this->checkPermissions('VIEW_MEMBERS')) !== true) {
+            return $redirect;
+        }
+
+        $users = User::where('active', '=', 1)
+            ->where('registration_status', '=', 'Active')
+            ->orderBy('registration_date', 'desc')
+            ->get();
+
+        $filename = 'members-'.date('Y-m-d').'.csv';
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+        ];
+
+        $callback = function() use ($users) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, ['Name', 'RMN No.', 'Branch', 'Rank Code', 'Registration Date', 'Chapter']);
+
+            foreach ($users as $user) {
+                fputcsv(
+                    $handle,
+                    [
+                        $user->getFullName(),
+                        $user->member_id,
+                        $user->branch,
+                        $user->rank['grade'],
+                        $user->registration_date,
+                        $user->getAssignmentName(),
+                    ]
+                );
+            }
+
+            fclose($handle);
+        };
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
+    }
+
+    /**
      * Display a listing of users.
      *
      * @return Response

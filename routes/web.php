@@ -149,6 +149,15 @@ Route::get(
 
 Route::post('/users/list/{branch}', 'UserController@getUserList');
 
+Route::get(
+    '/user/export',
+    [
+        'as' => 'user.export',
+        'uses' => 'UserController@exportUsers',
+        'middleware' => 'auth',
+    ]
+);
+
 Route::resource('user', 'UserController', ['middleware' => 'auth']);
 
 Route::get(
