@@ -224,7 +224,7 @@ class UserController extends Controller
         $callback = function() use ($users) {
             $handle = fopen('php://output', 'w');
 
-            fputcsv($handle, ['Name', 'RMN No.', 'Branch', 'Rank Code', 'Registration Date', 'Chapter']);
+            fputcsv($handle, ['Name', 'RMN No.', 'Branch', 'Rank Code', 'Rate', 'Registration Date', 'Chapter']);
 
             foreach ($users as $user) {
                 fputcsv(
@@ -234,6 +234,7 @@ class UserController extends Controller
                         $user->member_id,
                         $user->branch,
                         $user->rank['grade'],
+                        ($user->branch == 'CIVIL' || $user->branch=='RMMM') ? $user->getRate() : '',
                         $user->registration_date,
                         $user->getAssignmentName(),
                     ]
