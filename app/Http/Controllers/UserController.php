@@ -1369,6 +1369,9 @@ class UserController extends Controller
         }
 
         foreach ($user->assignment as $assignment) {
+            if (empty($assignment)) {
+                continue;
+            }
             if (in_array($assignment['chapter_id'], $chapterIdFromForm) === false) {
                 // This assignment was not present in the form submission
                 $history[] = [
