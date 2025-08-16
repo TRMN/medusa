@@ -418,6 +418,8 @@ class User extends Authenticatable implements CanResetPasswordContract
             return $this->rating;
         } elseif ($this->branch == 'CIVIL') {
             return 'DIPLOMATIC';
+        } elseif ($this->branch == 'RMMM') {
+            return 'BASIC';
         }
     }
 
