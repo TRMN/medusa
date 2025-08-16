@@ -11,7 +11,7 @@
     <br/>
     <div class="btn-group text-center padding-bottom-10 btn-group-sm" role="group">
         <br/><a href="{!!route('user.export')!!}">
-            <button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Export Members to CSV
+            <button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Export Anniversary Members to CSV
             </button>
         </a>
     </div>
