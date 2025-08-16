@@ -221,24 +221,37 @@ class UserController extends Controller
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
         ];
 
-        $callback = function() use ($users) {
+        $thisYear = date('Y');
+        $thisMonth = date('m');
+
+        $callback = function() use ($users, $thisYear, $thisMonth) {
             $handle = fopen('php://output', 'w');
 
             fputcsv($handle, ['Name', 'RMN No.', 'Branch', 'Rank Code', 'Rate', 'Registration Date', 'Chapter']);
 
             foreach ($users as $user) {
-                fputcsv(
-                    $handle,
-                    [
-                        $user->getFullName(),
-                        $user->member_id,
-                        $user->branch,
-                        $user->rank['grade'],
-                        ($user->branch == 'CIVIL' || $user->branch=='RMMM') ? $user->getRate() : '',
-                        $user->registration_date,
-                        $user->getAssignmentName(),
-                    ]
-                );
+
+                if (empty($user->registration_date) === true) {
+                    continue; // Skip users without a registration date
+                }
+
+                [ $year, $month, $day ] = explode('-', $user->registration_date);
+                $yearDiff = $thisYear - $year;
+
+                if ($yearDiff > 0 && $yearDiff % 5 == 0 && $month == $thisMonth) {
+                    fputcsv(
+                        $handle,
+                        [
+                            $user->getFullName(),
+                            $user->member_id,
+                            $user->branch,
+                            $user->rank['grade'],
+                            ($user->branch == 'CIVIL' || $user->branch == 'RMMM') ? $user->getRate() : '',
+                            $user->registration_date,
+                            $user->getAssignmentName(),
+                        ]
+                    );
+                }
             }
 
             fclose($handle);
