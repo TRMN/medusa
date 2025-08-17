@@ -207,8 +207,17 @@ class UserController extends Controller
             return $redirect;
         }
 
+        $thisYear = date('Y');
+        $thisMonth = date('m');
+
         $users = User::where('active', '=', 1)
             ->where('registration_status', '=', 'Active')
+            ->where(function ($query) use ($thisMonth, $thisYear) {
+                $query->where('registration_date', 'like', ($thisYear - 5) . '-' . $thisMonth . '-%')
+                    ->orWhere('registration_date', 'like', ($thisYear - 10) . '-' . $thisMonth . '-%')
+                    ->orWhere('registration_date', 'like', ($thisYear - 15) . '-' . $thisMonth . '-%')
+                    ->orWhere('registration_date', 'like', ($thisYear - 20) . '-' . $thisMonth . '-%');
+            })
             ->orderBy('registration_date', 'desc')
             ->get();
 
@@ -221,37 +230,24 @@ class UserController extends Controller
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
         ];
 
-        $thisYear = date('Y');
-        $thisMonth = date('m');
-
-        $callback = function() use ($users, $thisYear, $thisMonth) {
+        $callback = function() use ($users) {
             $handle = fopen('php://output', 'w');
 
             fputcsv($handle, ['Name', 'RMN No.', 'Branch', 'Rank Code', 'Rate', 'Registration Date', 'Chapter']);
 
             foreach ($users as $user) {
-
-                if (empty($user->registration_date) === true) {
-                    continue; // Skip users without a registration date
-                }
-
-                [ $year, $month, $day ] = explode('-', $user->registration_date);
-                $yearDiff = $thisYear - $year;
-
-                if ($yearDiff > 0 && $yearDiff % 5 == 0 && $month == $thisMonth) {
-                    fputcsv(
-                        $handle,
-                        [
-                            $user->getFullName(),
-                            $user->member_id,
-                            $user->branch,
-                            $user->rank['grade'],
-                            ($user->branch == 'CIVIL' || $user->branch == 'RMMM') ? $user->getRate() : '',
-                            $user->registration_date,
-                            $user->getAssignmentName(),
-                        ]
-                    );
-                }
+                fputcsv(
+                    $handle,
+                    [
+                        $user->getFullName(),
+                        $user->member_id,
+                        $user->branch,
+                        $user->rank['grade'],
+                        ($user->branch == 'CIVIL' || $user->branch == 'RMMM') ? $user->getRate() : '',
+                        $user->registration_date,
+                        $user->getAssignmentName(),
+                    ]
+                );
             }
 
             fclose($handle);
