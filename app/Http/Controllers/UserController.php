@@ -911,7 +911,8 @@ class UserController extends Controller
                 break;
             case 'RMMM':
                 $data['rank']['grade'] = 'C-1';
-                $billet = 'Apprentice Merchant Spacer';
+                $data['rating'] = 'CATERING';
+                $billet = 'Apprentice Spacer';
                 break;
             case 'RMACS':
                 $data['rank']['grade'] = 'C-1';
