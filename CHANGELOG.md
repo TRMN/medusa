@@ -1,5 +1,20 @@
 # MEDUSA CHANGELOG
 
+## 2.1.1
+   - Fixed issue with dropdown for ratings not properly initializing when editing a member (TT005578).
+   - Added CSV export for 5, 10, 15 and 20 year member anniversaries (TT005596).
+   - Fix issue with undefined index (TT005599).
+
+## 2.1.0
+   - Added support for the new promotion requirements (TT005562).
+   - Added means to purge denied applications (TT003879).
+   - Removed the mentions of Medusa Mobile (TT005475).
+   - Fix problem with a null dereference when looking at home fleet assets (TT005573).
+   - Fix the acceptance email (TT005057).
+   - Remove DOB from reports (TT005554).
+   - Fix navbar for branches (TT004220).
+   - Fix postnominal for SXC (TT005543).
+
 ## 2.0.13
  - Added Yawata Strike Memorial Ribbon svg & listener.  Added listener for Queen Elizabeth III Diamond Jubilee Medal.  Refactored coronation and jubilee qualification check to be a generic award with date qualifications
 

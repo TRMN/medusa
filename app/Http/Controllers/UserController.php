@@ -195,6 +195,72 @@ class UserController extends Controller
     }
 
     /**
+     * Export a list of users to a CSV file, primarily for the use of BuPers.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    function exportUsers(Request $request)
+    {
+        if (($redirect = $this->checkPermissions('VIEW_MEMBERS')) !== true) {
+            return $redirect;
+        }
+
+        $thisYear = date('Y');
+        $thisMonth = date('m');
+
+        $users = User::where('active', '=', 1)
+            ->where('registration_status', '=', 'Active')
+            ->where(function ($query) use ($thisMonth, $thisYear) {
+                $query->where('registration_date', 'like', ($thisYear - 5) . '-' . $thisMonth . '-%')
+                    ->orWhere('registration_date', 'like', ($thisYear - 10) . '-' . $thisMonth . '-%')
+                    ->orWhere('registration_date', 'like', ($thisYear - 15) . '-' . $thisMonth . '-%')
+                    ->orWhere('registration_date', 'like', ($thisYear - 20) . '-' . $thisMonth . '-%');
+            })
+            ->orderBy('registration_date', 'desc')
+            ->get();
+
+        $filename = 'members-'.date('Y-m-d').'.csv';
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+        ];
+
+        $callback = function() use ($users) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, ['Name', 'RMN No.', 'Branch', 'Rank Code', 'Rate', 'Registration Date', 'Chapter']);
+
+            foreach ($users as $user) {
+                fputcsv(
+                    $handle,
+                    [
+                        $user->getFullName(),
+                        $user->member_id,
+                        $user->branch,
+                        $user->rank['grade'],
+                        ($user->branch == 'CIVIL' || $user->branch == 'RMMM') ? $user->getRate() : '',
+                        $user->registration_date,
+                        $user->getAssignmentName(),
+                    ]
+                );
+            }
+
+            fclose($handle);
+        };
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
+    }
+
+    /**
      * Display a listing of users.
      *
      * @return Response
@@ -845,7 +911,8 @@ class UserController extends Controller
                 break;
             case 'RMMM':
                 $data['rank']['grade'] = 'C-1';
-                $billet = 'Apprentice Merchant Spacer';
+                $data['rating'] = 'CATERING';
+                $billet = 'Apprentice Spacer';
                 break;
             case 'RMACS':
                 $data['rank']['grade'] = 'C-1';
@@ -1313,6 +1380,9 @@ class UserController extends Controller
         }
 
         foreach ($user->assignment as $assignment) {
+            if (empty($assignment)) {
+                continue;
+            }
             if (in_array($assignment['chapter_id'], $chapterIdFromForm) === false) {
                 // This assignment was not present in the form submission
                 $history[] = [
