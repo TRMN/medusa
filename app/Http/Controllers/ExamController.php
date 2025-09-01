@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\GradeEntered;
 use App\Exam;
 use App\ExamList;
+use App\MedusaConfig;
 use App\Message;
 use App\User;
 use Illuminate\Support\Arr;
@@ -332,4 +333,73 @@ class ExamController extends Controller
                 ->with('status', 'There was a problem removing '.$examId.' from the members academic record');
         }
     }
+
+    /**
+     * Export a list of users to a CSV file, primarily for the use of BuPers.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    function examExport(\Illuminate\Http\Request $request)
+    {
+        if (($redirect = $this->checkPermissions('EDIT_GRADE')) !== true) {
+            return $redirect;
+        }
+
+        $examConfig = MedusaConfig::get('pp.exams', []);
+
+        $thisYear = date('Y');
+        $thisMonth = date('m');
+
+        $exams = ExamList::select()
+            ->orderBy('exam_id', 'asc')
+            ->get();
+
+        $filename = 'exams-'.date('Y-m-d').'.csv';
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+        ];
+
+        $callback = function() use ($exams, $examConfig) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, ['Exam ID', 'Exam Name', 'Points', 'Enabled']);
+
+            $examPoints = 0;
+            foreach ($exams as $exam) {
+                foreach ($examConfig as $points => $patterns) {
+                    foreach ($patterns as $pattern) {
+                        if (preg_match($pattern, $exam->exam_id) === 1) {
+                            $examPoints = $points;
+                            break 2;
+                        }
+                    }
+                }
+
+                fputcsv(
+                    $handle,
+                    [
+                        $exam->exam_id,
+                        $exam->name,
+                        $examPoints,
+                        $exam->enabled ? 'YES' : 'NO',
+                    ]
+                );
+            }
+
+            fclose($handle);
+        };
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
+    }
+
 }
