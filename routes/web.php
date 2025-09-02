@@ -377,6 +377,14 @@ Route::post(
     ]
 );
 Route::get(
+    '/exam/export',
+    [
+        'as' => 'exam.export',
+        'uses' => 'ExamController@examExport',
+        'middleware' => 'auth',
+    ]
+);
+Route::get(
     '/exam/list',
     [
         'as' => 'exam.list',

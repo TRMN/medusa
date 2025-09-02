@@ -6,7 +6,12 @@
 
 @section('content')
     <div><h3 class="trmn">Course List</h3></div>
-
+    <div class="btn-group text-center padding-bottom-10 btn-group-sm" role="group">
+        <br/><a href="{!!route('exam.export')!!}">
+            <button class="btn btn-sm btn-primary"><span class="fa fa-download"></span> Export Exams to CSV
+            </button>
+        </a>
+    </div>
     <table class="trmnTableWithActions compact row-border">
         <thead>
         <tr>
