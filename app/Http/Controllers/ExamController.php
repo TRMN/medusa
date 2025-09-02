@@ -335,7 +335,8 @@ class ExamController extends Controller
     }
 
     /**
-     * Export a list of users to a CSV file, primarily for the use of BuPers.
+     * Export a list of exams withpoints to a CSV file, primarily for the use
+     * of BuTrain.
      *
      * @param \Illuminate\Http\Request $request
      *
