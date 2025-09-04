@@ -371,8 +371,8 @@ class ExamController extends Controller
 
             fputcsv($handle, ['Exam ID', 'Exam Name', 'Points', 'Enabled']);
 
-            $examPoints = 0;
             foreach ($exams as $exam) {
+                $examPoints = 1;
                 foreach ($examConfig as $points => $patterns) {
                     foreach ($patterns as $pattern) {
                         if (preg_match($pattern, $exam->exam_id) === 1) {
