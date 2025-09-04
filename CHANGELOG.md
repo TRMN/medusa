@@ -1,5 +1,8 @@
 # MEDUSA CHANGELOG
 
+## 2.1.2
+   - Added CSV export for exams with computed points based on the pp.exams
+     regular expressions (TT005607).
 ## 2.1.1
    - Fixed issue with dropdown for ratings not properly initializing when editing a member (TT005578).
    - Added CSV export for 5, 10, 15 and 20 year member anniversaries (TT005596).
