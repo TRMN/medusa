@@ -45,10 +45,10 @@ class McamReport extends Command
             $reportDate = date('Y-m-01');
         }
 
-        $endOfMonth = Carbon::parse($reportDate)->endOfMonth();
+        $endOfMonth = Carbon::parse($reportDate)->endOfMonth()->format('Y-m-d');
 
         $mcam['report_date'] = date('F, Y', strtotime($reportDate));
-        $mcam['MCAM'] = AwardLog::getAwardLogData(['award' => 'MCAM', 'start' => $reportDate, 'end' => $endOfMonth->format('Y-m-d')]);
+        $mcam['MCAM'] = AwardLog::getAwardLogData(['award' => 'MCAM', 'start' => $reportDate, 'end' => $endOfMonth]);
 
         \Mail::to(config('awards.SWP-notification.email'))->send(new \App\Mail\mcamReport($mcam));
     }

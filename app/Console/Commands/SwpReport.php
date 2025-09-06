@@ -44,11 +44,11 @@ class SwpReport extends Command
             $reportDate = date('Y-m-01');
         }
 
-        $endOfMonth = Carbon::parse($reportDate)->endOfMonth();
+        $endOfMonth = Carbon::parse($reportDate)->endOfMonth()->format('Y-m-d');
 
         $swp['report_date'] = date('F, Y', strtotime($reportDate));
-        $swp['ESWP'] = AwardLog::getAwardLogData(['award' => 'ESWP', 'start' => $reportDate, 'end' => $endOfMonth->format('Y-m-d')]);
-        $swp['OSWP'] = AwardLog::getAwardLogData(['award' => 'OSWP', 'start' => $reportDate, 'end' => $endOfMonth->format('Y-m-d')]);
+        $swp['ESWP'] = AwardLog::getAwardLogData(['award' => 'ESWP', 'start' => $reportDate, 'end' => $endOfMonth]);
+        $swp['OSWP'] = AwardLog::getAwardLogData(['award' => 'OSWP', 'start' => $reportDate, 'end' => $endOfMonth]);
 
         \Mail::to(config('awards.SWP-notification.email'))->send(new \App\Mail\swpReport($swp));
     }

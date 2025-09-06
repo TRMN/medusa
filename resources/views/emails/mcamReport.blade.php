@@ -2,7 +2,7 @@
     The following individuals have qualified for the indicated MCAM for {{$mcamReport['report_date']}}
 
     @component('mail::table')
-        | Name | Member ID | MCAM Ordinal |
+        | Name | Member ID | Award Number |
         |------|:-----------:|:----------:|
         @if (!empty($mcamReport['MCAM']) || !empty($mcamReport['MCAM']))
             @foreach($mcamReport['MCAM'] as $line)
