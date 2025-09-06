@@ -1,5 +1,8 @@
 # MEDUSA CHANGELOG
 
+## 2.1.3
+   - Added MCAM report (TT005608).
+   - Fixed missing end date for SWP report.
 ## 2.1.2
    - Added CSV export for exams with computed points based on the pp.exams
      regular expressions (TT005607).
