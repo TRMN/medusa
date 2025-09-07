@@ -6,21 +6,21 @@ use App\AwardLog;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class SwpReport extends Command
+class McamReport extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'report:swp {date? : Month to run the report for in the format YYYY-MM}';
+    protected $signature = 'report:mcam {date? : Month to run the report for in the format YYYY-MM}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate and email SWP report';
+    protected $description = 'Generate and email MCAM report';
 
     /**
      * Create a new command instance.
@@ -47,10 +47,9 @@ class SwpReport extends Command
 
         $endOfMonth = Carbon::parse($reportDate)->endOfMonth()->format('Y-m-d');
 
-        $swp['report_date'] = date('F, Y', strtotime($reportDate));
-        $swp['ESWP'] = AwardLog::getAwardLogData(['award' => 'ESWP', 'start' => $reportDate, 'end' => $endOfMonth]);
-        $swp['OSWP'] = AwardLog::getAwardLogData(['award' => 'OSWP', 'start' => $reportDate, 'end' => $endOfMonth]);
+        $mcam['report_date'] = date('F, Y', strtotime($reportDate));
+        $mcam['MCAM'] = AwardLog::getAwardLogData(['award' => 'MCAM', 'start' => $reportDate, 'end' => $endOfMonth]);
 
-        \Mail::to(config('awards.SWP-notification.email'))->send(new \App\Mail\swpReport($swp));
+        \Mail::to(config('awards.SWP-notification.email'))->send(new \App\Mail\mcamReport($mcam));
     }
 }

@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AddFleetCoPermission::class,
         \App\Console\Commands\UpdatePromotionStatus::class,
         \App\Console\Commands\SwpReport::class,
+        \App\Console\Commands\McamReport::class,
         \App\Console\Commands\SWPCheck::class,
     ];
 
@@ -40,6 +41,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('member:updps')->dailyAt('02:00');
         $schedule->command('report:swp')->monthlyOn(1, '00:15');
+        $schedule->command('report:mcam')->monthlyOn(1, '00:17');
         $schedule->command('user:swpCheck')->monthlyOn(1, '00:05');
     }
 
