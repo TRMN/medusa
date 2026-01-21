@@ -427,7 +427,7 @@ Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
 Route::get('manage-awards', 'AwardsController@index')->name('awards.index')
     ->middleware('auth');
 
-Route::get('awards-list', function(){
+Route::get('awards-list', function () {
     // this returns the contents of the rendered template to the client as a string
     return View::make("awards.body")
                ->render();
