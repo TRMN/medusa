@@ -42,19 +42,7 @@ Route::get('oauth/events', 'OAuthController@getScheduledEvents')
 Route::get('oauth/checkin', 'OAuthController@checkMemberIn')->middleware('auth:api');
 Route::get(
     '/.well-known/openid-configuration',
-    function () {
-        return response()->json(
-            \App\MedusaConfig::get(
-                'openid-configuration',
-                [
-                    'issuer' => secure_url('/'),
-                    'authorization_endpoint' => secure_url('/').'/oauth/authorize',
-                    'token_endpoint' => secure_url('/').'/oauth/token',
-                    'userinfo_endpoint' => secure_url('/').'/oauth/profile',
-                ]
-            )
-        );
-    }
+    'OAuthController@openidConfiguration'
 );
 
 Route::model('oauthclient', \App\OAuthClient::class);
@@ -427,11 +415,7 @@ Route::resource('billet', 'BilletController', ['middleware' => 'auth']);
 Route::get('manage-awards', 'AwardsController@index')->name('awards.index')
     ->middleware('auth');
 
-Route::get('awards-list', function(){
-    // this returns the contents of the rendered template to the client as a string
-    return View::make("awards.body")
-               ->render();
-});
+Route::get('awards-list', 'AwardsController@list');
 
 
 // IdController
@@ -567,27 +551,13 @@ Route::post('/api/rankcheck')->uses('ApiController@checkRankQual')->middleware('
 
 Route::get('/api/awards/get_ribbon_image/{ribbonCode}/{ribbonCount}/{ribbonName}', 'ApiController@getRibbonImage');
 
-Route::get('/api/lastexam/{memberid}', function ($memberid) {
-    $exams = \App\Exam::where('member_id', '=', $memberid)->first();
-
-    if (isset($exams) === true) {
-        return $exams['updated_at'];
-    } else {
-        return false;
-    }
-});
+Route::get('/api/lastexam/{memberid}', 'ApiController@getLastExam');
 
 Route::get('/api/rank/transfer/{user}/{old}/{new}')->uses('ApiController@getNewRank')->middleware('auth');
 
 Route::get(
     '/getRoutes',
-    function () {
-        foreach (app()->router->getRoutes() as $route) {
-            if (in_array('GET', $route->methods()) === true) {
-                echo dirname($route->uri())."<br />\n";
-            }
-        }
-    }
+    'ApiController@getRoutes'
 );
 
 // These MUST be the last two routes
@@ -602,7 +572,5 @@ Route::get(
 
 Route::any(
     '{catchall}',
-    function ($url) {
-        return response()->view('errors.404', [], 404);
-    }
+    'ApiController@catchall'
 )->where('catchall', '(.*)');

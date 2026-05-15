@@ -12,4 +12,10 @@ class AwardsController extends Controller
 
         return view('awards.index');
     }
+
+    public function list()
+    {
+        // this returns the contents of the rendered template to the client as a string
+        return \Illuminate\Support\Facades\View::make("awards.body")->render();
+    }
 }

@@ -21,3 +21,5 @@ public/images/RMN*
 storage/
 !/resources/views/vendor/
 
+.envrc
+.shift

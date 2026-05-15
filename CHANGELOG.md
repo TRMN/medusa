@@ -1,5 +1,8 @@
 # MEDUSA CHANGELOG
 
+## 2.1.4
+   - Fixed error when running `php artisan optimize` caused by using Closures in the route files
+  
 ## 2.1.3
    - Added MCAM report (TT005608).
    - Fixed missing end date for SWP report.

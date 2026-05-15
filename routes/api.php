@@ -11,6 +11,4 @@
 |
 */
 
-Route::get('/oauthuser', function (\Illuminate\Http\Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::get('/oauthuser', 'OAuthController@oauthUser')->middleware('auth:api');
