@@ -411,6 +411,26 @@ class OAuthController extends Controller
         }
     }
 
+    public function openidConfiguration()
+    {
+        return response()->json(
+            \App\MedusaConfig::get(
+                'openid-configuration',
+                [
+                    'issuer' => secure_url('/'),
+                    'authorization_endpoint' => secure_url('/').'/oauth/authorize',
+                    'token_endpoint' => secure_url('/').'/oauth/token',
+                    'userinfo_endpoint' => secure_url('/').'/oauth/profile',
+                ]
+            )
+        );
+    }
+
+    public function oauthUser(Request $request)
+    {
+        return $request->user();
+    }
+
     private function getUserFromRequest(Request $request)
     {
         return \App\User::find(json_decode($request->user())->_id);

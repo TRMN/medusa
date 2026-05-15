@@ -237,6 +237,31 @@ class ApiController extends Controller
         return Response::json($classes);
     }
 
+    public function getRoutes()
+    {
+        foreach (app()->router->getRoutes() as $route) {
+            if (in_array('GET', $route->methods()) === true) {
+                echo dirname($route->uri())."<br />\n";
+            }
+        }
+    }
+
+    public function catchall($url)
+    {
+        return response()->view('errors.404', [], 404);
+    }
+
+    public function getLastExam($memberid)
+    {
+        $exams = \App\Exam::where('member_id', '=', $memberid)->first();
+
+        if (isset($exams) === true) {
+            return $exams['updated_at'];
+        } else {
+            return false;
+        }
+    }
+
     public function findMember($query = null)
     {
         if (empty($query) === true) {

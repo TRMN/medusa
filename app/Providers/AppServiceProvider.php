@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,19 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::withoutDoubleEncoding();
         Paginator::useBootstrapThree();
+
+        $previousHandler = set_error_handler(function ($level, $message, $file = '', $line = 0) use (&$previousHandler) {
+            if (in_array($level, [E_DEPRECATED, E_USER_DEPRECATED])) {
+                Log::warning("Deprecation: $message in $file on line $line");
+                return true; 
+            }
+
+            if ($previousHandler) {
+                return $previousHandler($level, $message, $file, $line);
+            }
+
+            return false;
+        });
     }
 
     /**
